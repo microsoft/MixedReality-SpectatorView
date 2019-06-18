@@ -1,0 +1,19 @@
+{
+    "name": "Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.Editor",
+    "references": [
+        "Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView",
+        "Microsoft.MixedReality.Toolkit.Extensions.Experimental.Socketer",
+        "Microsoft.MixedReality.Toolkit.Extensions.PhotoCapture",
+        "Microsoft.MixedReality.Toolkit.Extensions.Experimental.Sharing"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": []
+}
