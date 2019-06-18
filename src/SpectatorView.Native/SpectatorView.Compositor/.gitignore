@@ -1,0 +1,34 @@
+UnityPlugin/x64/*
+UnityPlugin/Debug/*
+UnityPlugin/Release/*
+
+SharedHeaders/x64/*
+SharedHeaders/Debug/*
+SharedHeaders/Release/*
+
+Compositor/x64/*
+Compositor/Release/*
+Compositor/Debug/*
+
+# External Dependencies
+Dependencies/*
+
+# Decklink
+Compositor/DeckLink*.idl
+Compositor/DeckLinkAPIVersion.h
+Compositor/DeckLinkAPI_h.h
+Compositor/DeckLinkAPI_i.c
+
+UnityPlugin/DeckLink*.idl
+UnityPlugin/DeckLinkAPIVersion.h
+UnityPlugin/DeckLinkAPI_h.h
+UnityPlugin/DeckLinkAPI_i.c
+
+
+# Elgato
+Compositor/IVideoCaptureFilter*
+
+
+# OpenCV
+Compositor/opencv*.dll
+UnityPlugin/opencv*.dll

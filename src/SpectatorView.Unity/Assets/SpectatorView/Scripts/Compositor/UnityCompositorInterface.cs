@@ -9,91 +9,93 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
 {
     internal static class UnityCompositorInterface
     {
-        [DllImport("UnityCompositorInterface")]
+        private const string CompositorPluginDll = "SpectatorView.Compositor.UnityPlugin";
+
+        [DllImport(CompositorPluginDll)]
         public static extern int GetFrameWidth();
 
-        [DllImport("UnityCompositorInterface")]
+        [DllImport(CompositorPluginDll)]
         public static extern int GetFrameHeight();
 
-        [DllImport("UnityCompositorInterface")]
+        [DllImport(CompositorPluginDll)]
         public static extern bool SetHoloTexture(IntPtr holoTexture);
 
-        [DllImport("UnityCompositorInterface")]
+        [DllImport(CompositorPluginDll)]
         public static extern void SetAlpha(float alpha);
 
-        [DllImport("UnityCompositorInterface")]
+        [DllImport(CompositorPluginDll)]
         public static extern float GetAlpha();
 
-        [DllImport("UnityCompositorInterface")]
+        [DllImport(CompositorPluginDll)]
         public static extern bool CreateUnityColorTexture(out IntPtr srv);
 
-        [DllImport("UnityCompositorInterface")]
+        [DllImport(CompositorPluginDll)]
         public static extern bool CreateUnityHoloTexture(out IntPtr srv);
 
-        [DllImport("UnityCompositorInterface")]
+        [DllImport(CompositorPluginDll)]
         public static extern bool SetMergedRenderTexture(IntPtr texturePtr);
 
-        [DllImport("UnityCompositorInterface")]
+        [DllImport(CompositorPluginDll)]
         public static extern bool SetVideoRenderTexture(IntPtr texturePtr);
 
-        [DllImport("UnityCompositorInterface")]
+        [DllImport(CompositorPluginDll)]
         public static extern bool SetOutputRenderTexture(IntPtr texturePtr);
 
-        [DllImport("UnityCompositorInterface")]
+        [DllImport(CompositorPluginDll)]
         public static extern bool IsRecording();
 
-        [DllImport("UnityCompositorInterface")]
+        [DllImport(CompositorPluginDll)]
         public static extern bool OutputYUV();
 
-        [DllImport("UnityCompositorInterface")]
+        [DllImport(CompositorPluginDll)]
         public static extern bool QueueingHoloFrames();
 
-        [DllImport("UnityCompositorInterface")]
+        [DllImport(CompositorPluginDll)]
         public static extern bool HardwareEncodeVideo();
 
-        [DllImport("UnityCompositorInterface")]
+        [DllImport(CompositorPluginDll)]
         public static extern void StopFrameProvider();
 
-        [DllImport("UnityCompositorInterface")]
+        [DllImport(CompositorPluginDll)]
         public static extern void TakePicture();
 
-        [DllImport("UnityCompositorInterface", CharSet = CharSet.Unicode)]
+        [DllImport(CompositorPluginDll, CharSet = CharSet.Unicode)]
         public static extern void TakeRawPicture(string path);
 
-        [DllImport("UnityCompositorInterface")]
+        [DllImport(CompositorPluginDll)]
         public static extern void StartRecording();
 
-        [DllImport("UnityCompositorInterface")]
+        [DllImport(CompositorPluginDll)]
         public static extern void StopRecording();
         
-        [DllImport("UnityCompositorInterface")]
+        [DllImport(CompositorPluginDll)]
         public static extern bool InitializeFrameProviderOnDevice(int providerId);  //0 = blackmagic, 1 = elgato
 
-        [DllImport("UnityCompositorInterface")]
+        [DllImport(CompositorPluginDll)]
         public static extern void Reset();
 
-        [DllImport("UnityCompositorInterface")]
+        [DllImport(CompositorPluginDll)]
         public static extern long GetColorDuration();
 
-        [DllImport("UnityCompositorInterface")]
+        [DllImport(CompositorPluginDll)]
         public static extern int GetNumQueuedOutputFrames();
 
-        [DllImport("UnityCompositorInterface")]
+        [DllImport(CompositorPluginDll)]
         public static extern IntPtr GetRenderEventFunc();
 
-        [DllImport("UnityCompositorInterface")]
+        [DllImport(CompositorPluginDll)]
         public static extern void SetAudioData(byte[] audioData, int dataLength, double audioTime);
 
-        [DllImport("UnityCompositorInterface")]
+        [DllImport(CompositorPluginDll)]
         public static extern void UpdateCompositor();
 
-        [DllImport("UnityCompositorInterface")]
+        [DllImport(CompositorPluginDll)]
         public static extern void UpdateSpectatorView();
 
-        [DllImport("UnityCompositorInterface")]
+        [DllImport(CompositorPluginDll)]
         public static extern int GetCaptureFrameIndex();
 
-        [DllImport("UnityCompositorInterface")]
+        [DllImport(CompositorPluginDll)]
         public static extern void SetCompositeFrameIndex(int index);
     }
 }
