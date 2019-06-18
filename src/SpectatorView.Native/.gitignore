@@ -11,43 +11,37 @@ ipch/*
 Release/*
 Debug/*
 
-UnityCompositorInterface/x64/*
-UnityCompositorInterface/Debug/*
-UnityCompositorInterface/Release/*
-SpatialPerceptionHelper/ARM/*
+SpectatorView.Compositor/UnityPlugin/x64/*
+SpectatorView.Compositor/UnityPlugin/Debug/*
+SpectatorView.Compositor/UnityPlugin/Release/*
 
-SpatialPerceptionHelper/Generated Files/*
-SpatialPerceptionHelper/x64/*
-SpatialPerceptionHelper/Debug/*
-SpatialPerceptionHelper/Release/*
+SpectatorView.Compositor/SharedHeaders/x64/*
+SpectatorView.Compositor/SharedHeaders/Debug/*
+SpectatorView.Compositor/SharedHeaders/Release/*
 
-SharedHeaders/x64/*
-SharedHeaders/Debug/*
-SharedHeaders/Release/*
-
-CompositorDLL/x64/*
-CompositorDLL/Release/*
-CompositorDLL/Debug/*
+SpectatorView.Compositor/Compositor/x64/*
+SpectatorView.Compositor/Compositor/Release/*
+SpectatorView.Compositor/Compositor/Debug/*
 
 # External Dependencies
-Dependencies/*
+SpectatorView.Compositor/Dependencies/*
 
 # Decklink
-CompositorDLL/DeckLink*.idl
-CompositorDLL/DeckLinkAPIVersion.h
-CompositorDLL/DeckLinkAPI_h.h
-CompositorDLL/DeckLinkAPI_i.c
+SpectatorView.Compositor/Compositor/DeckLink*.idl
+SpectatorView.Compositor/Compositor/DeckLinkAPIVersion.h
+SpectatorView.Compositor/Compositor/DeckLinkAPI_h.h
+SpectatorView.Compositor/Compositor/DeckLinkAPI_i.c
 
-UnityCompositorInterface/DeckLink*.idl
-UnityCompositorInterface/DeckLinkAPIVersion.h
-UnityCompositorInterface/DeckLinkAPI_h.h
-UnityCompositorInterface/DeckLinkAPI_i.c
+SpectatorView.Compositor/UnityPlugin/DeckLink*.idl
+SpectatorView.Compositor/UnityPlugin/DeckLinkAPIVersion.h
+SpectatorView.Compositor/UnityPlugin/DeckLinkAPI_h.h
+SpectatorView.Compositor/UnityPlugin/DeckLinkAPI_i.c
 
 
 # Elgato
-CompositorDLL/IVideoCaptureFilter*
+SpectatorView.Compositor/Compositor/IVideoCaptureFilter*
 
 
 # OpenCV
-CompositorDLL/opencv*.dll
-UnityCompositorInterface/opencv*.dll
+SpectatorView.Compositor/Compositor/opencv*.dll
+SpectatorView.Compositor/UnityPlugin/opencv*.dll

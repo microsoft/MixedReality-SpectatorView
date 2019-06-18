@@ -4,11 +4,11 @@
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros">
     <!-- From: https://sourceforge.net/projects/opencvlibrary/files/opencv-win/3.2.0/opencv-3.2.0-vc14.exe/download -->
-    <OpenCV_vc14>$(SolutionDir)Dependencies\opencv-3.2.0\build\x64\vc14</OpenCV_vc14>
+    <OpenCV_vc14>$(SolutionDir)SpectatorView.Compositor\Dependencies\opencv-3.2.0\build\x64\vc14</OpenCV_vc14>
     <!-- From: https://www.blackmagicdesign.com/support -->
-    <DeckLink_inc>$(SolutionDir)Dependencies\BlackMagic DeckLink</DeckLink_inc>
+    <DeckLink_inc>$(SolutionDir)SpectatorView.Compositor\Dependencies\BlackMagic DeckLink</DeckLink_inc>
     <!-- From: https://github.com/elgatosf/gamecapture -->
-    <Elgato_Filter Condition="$(Elgato_Filter) == ''">$(SolutionDir)Dependencies\Elgato\gamecapture-master\VideoCaptureFilter</Elgato_Filter>
+    <Elgato_Filter Condition="$(Elgato_Filter) == ''">$(SolutionDir)SpectatorView.Compositor\Dependencies\Elgato\gamecapture-master\VideoCaptureFilter</Elgato_Filter>
   </PropertyGroup>
   <PropertyGroup />
   <ItemDefinitionGroup />
