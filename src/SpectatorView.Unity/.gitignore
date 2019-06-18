@@ -60,3 +60,16 @@ sysinfo.txt
 
 # Crashlytics generated file
 crashlytics-build.properties
+
+# Custom - External Unity Packages
+Assets/AzureSpatialAnchorsPlugin.meta
+Assets/AzureSpatialAnchorsPlugin/
+Assets/GoogleARCore/
+Assets/PlayServicesResolver.meta
+Assets/PlayServicesResolver/
+Assets/Plugins.meta
+Assets/Plugins/
+Assets/android-logos.meta
+Assets/android-logos/
+Assets/logos.meta
+Assets/logos/
