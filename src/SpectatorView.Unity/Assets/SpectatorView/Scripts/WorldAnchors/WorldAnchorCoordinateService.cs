@@ -12,6 +12,10 @@ using UnityEngine.XR.WSA.Persistence;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.WorldAnchors
 {
+    /// <summary>
+    /// Represents an <see cref="ISpatialCoordinateService"/> that creates and stores
+    /// coordinates based on WorldAnchors stored in a WorldAnchorStore on the device.
+    /// </summary>
     public class WorldAnchorCoordinateService : SpatialCoordinateServiceUnityBase<string>
     {
         private static Task<WorldAnchorCoordinateService> sharedCoordinateService;
@@ -26,94 +30,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.W
         private WorldAnchorCoordinateService()
         {
         }
-
-#if UNITY_WSA
-        private class WorldAnchorSpatialCoordinate : SpatialCoordinateUnityBase<string>
-        {
-            private WorldAnchor worldAnchor;
-
-            public WorldAnchorSpatialCoordinate(string id, WorldAnchor worldAnchor)
-                : base(id)
-            {
-                this.worldAnchor = worldAnchor;
-                this.worldAnchor.OnTrackingChanged += WorldAnchor_OnTrackingChanged;
-            }
-
-            public override LocatedState State
-            {
-                get
-                {
-                    if (worldAnchor == null)
-                    {
-                        return LocatedState.Resolved;
-                    }
-                    else if (!worldAnchor.isLocated)
-                    {
-                        return LocatedState.Inhibited;
-                    }
-                    else
-                    {
-                        return LocatedState.Tracking;
-                    }
-                }
-            }
-
-            private void WorldAnchor_OnTrackingChanged(WorldAnchor worldAnchor, bool located)
-            {
-                OnStateChanged();
-            }
-
-            protected override Quaternion CoordinateToWorldSpace(Quaternion quaternion)
-            {
-                if (worldAnchor != null)
-                {
-                    return worldAnchor.transform.rotation * quaternion;
-                }
-
-                return base.CoordinateToWorldSpace(quaternion);
-            }
-
-            protected override Vector3 CoordinateToWorldSpace(Vector3 vector)
-            {
-                if (worldAnchor != null)
-                {
-                    return worldAnchor.transform.TransformPoint(vector);
-                }
-
-                return base.CoordinateToWorldSpace(vector);
-            }
-
-            protected override Quaternion WorldToCoordinateSpace(Quaternion quaternion)
-            {
-                if (worldAnchor != null)
-                {
-                    return Quaternion.Inverse(worldAnchor.transform.rotation) * quaternion;
-                }
-
-                return base.WorldToCoordinateSpace(quaternion);
-            }
-
-            protected override Vector3 WorldToCoordinateSpace(Vector3 vector)
-            {
-                if (worldAnchor != null)
-                {
-                    return worldAnchor.transform.InverseTransformPoint(vector);
-                }
-
-                return base.WorldToCoordinateSpace(vector);
-            }
-
-            public void Destroy()
-            {
-                worldAnchor.OnTrackingChanged -= WorldAnchor_OnTrackingChanged;
-                SetCoordinateWorldTransform(worldAnchor.transform.position, worldAnchor.transform.rotation);
-
-                GameObject.Destroy(worldAnchor.gameObject);
-                worldAnchor = null;
-            }
-        }
-#endif
-
+        
         protected override bool SupportsDiscovery => false;
 
         public static Task<WorldAnchorCoordinateService> GetSharedCoordinateServiceAsync()
@@ -252,6 +169,98 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.W
             TaskCompletionSource<WorldAnchorStore> taskSource = new TaskCompletionSource<WorldAnchorStore>();
             WorldAnchorStore.GetAsync(store => taskSource.SetResult(store));
             return taskSource.Task;
+        }
+
+        private class WorldAnchorSpatialCoordinate : SpatialCoordinateUnityBase<string>
+        {
+            private WorldAnchor worldAnchor;
+
+            public WorldAnchorSpatialCoordinate(string id, WorldAnchor worldAnchor)
+                : base(id)
+            {
+                this.worldAnchor = worldAnchor;
+                this.worldAnchor.OnTrackingChanged += WorldAnchor_OnTrackingChanged;
+            }
+
+            public override LocatedState State
+            {
+                get
+                {
+                    if (worldAnchor == null)
+                    {
+                        // Once the WorldAnchor has been destroyed,
+                        // the coordinate will live in a Resolved state
+                        // at the last-known position of the WorldAnchor.
+                        return LocatedState.Resolved;
+                    }
+                    else if (!worldAnchor.isLocated)
+                    {
+                        // When the WorldAnchor exists but is no longer located,
+                        // report the state of the coordinate as Inhibited.
+                        return LocatedState.Inhibited;
+                    }
+                    else
+                    {
+                        // The WorldAnchor exists and is currently located,
+                        // so report the state of the coordinate as Tracking.
+                        return LocatedState.Tracking;
+                    }
+                }
+            }
+
+            private void WorldAnchor_OnTrackingChanged(WorldAnchor worldAnchor, bool located)
+            {
+                OnStateChanged();
+            }
+
+            protected override Quaternion CoordinateToWorldSpace(Quaternion quaternion)
+            {
+                if (worldAnchor != null)
+                {
+                    return worldAnchor.transform.rotation * quaternion;
+                }
+
+                return base.CoordinateToWorldSpace(quaternion);
+            }
+
+            protected override Vector3 CoordinateToWorldSpace(Vector3 vector)
+            {
+                if (worldAnchor != null)
+                {
+                    return worldAnchor.transform.TransformPoint(vector);
+                }
+
+                return base.CoordinateToWorldSpace(vector);
+            }
+
+            protected override Quaternion WorldToCoordinateSpace(Quaternion quaternion)
+            {
+                if (worldAnchor != null)
+                {
+                    return Quaternion.Inverse(worldAnchor.transform.rotation) * quaternion;
+                }
+
+                return base.WorldToCoordinateSpace(quaternion);
+            }
+
+            protected override Vector3 WorldToCoordinateSpace(Vector3 vector)
+            {
+                if (worldAnchor != null)
+                {
+                    return worldAnchor.transform.InverseTransformPoint(vector);
+                }
+
+                return base.WorldToCoordinateSpace(vector);
+            }
+
+            public void Destroy()
+            {
+                worldAnchor.OnTrackingChanged -= WorldAnchor_OnTrackingChanged;
+                SetCoordinateWorldTransform(worldAnchor.transform.position, worldAnchor.transform.rotation);
+
+                GameObject.Destroy(worldAnchor.gameObject);
+                worldAnchor = null;
+            }
         }
 #endif
     }

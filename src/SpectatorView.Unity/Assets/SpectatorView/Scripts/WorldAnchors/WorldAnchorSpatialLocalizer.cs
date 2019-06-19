@@ -10,26 +10,36 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.WorldAnchors
 {
+    /// <summary>
+    /// An <see cref="ISpatialLocalizer"/> that can locate spatial coordinates based on
+    /// WorldAnchors stored in the device's WorldAnchorStore.
+    /// </summary>
     public class WorldAnchorSpatialLocalizer : SpatialLocalizer<WorldAnchorSpatialLocalizationSettings>
     {
         public static readonly Guid Id = new Guid("0858173D-B0F4-4D19-9B33-CADC1EFC96FE");
-
-        public override Guid SpatialLocalizerId => Id;
-
         private Task<WorldAnchorCoordinateService> coordinateServiceTask;
+
+        /// <inheritdoc />
+        public override Guid SpatialLocalizerId => Id;
 
         protected override void Start()
         {
             base.Start();
 
+            // Initialize the shared coordinate service during Start. This way, WorldAnchors
+            // can be located and tracking even before a connection is formed to the device.
+            // This will reduce the amount of time needed to located anchors once a client
+            // does connect to the device.
             coordinateServiceTask = WorldAnchorCoordinateService.GetSharedCoordinateServiceAsync();
         }
 
+        /// <inheritdoc />
         public override bool TryDeserializeSettings(BinaryReader reader, out WorldAnchorSpatialLocalizationSettings settings)
         {
             return WorldAnchorSpatialLocalizationSettings.TryDeserialize(reader, out settings);
         }
 
+        /// <inheritdoc />
         public override bool TryCreateLocalizationSession(IPeerConnection peerConnection, WorldAnchorSpatialLocalizationSettings settings, out ISpatialLocalizationSession session)
         {
             session = new LocalizationSession(this, settings);
