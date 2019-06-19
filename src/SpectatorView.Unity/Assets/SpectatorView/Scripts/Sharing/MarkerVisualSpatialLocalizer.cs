@@ -44,8 +44,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         public override Guid SpatialLocalizerId => Id;
         public static readonly Guid Id = new Guid("BA5C8EA7-439C-4E1A-9925-218A391EF309");
 
-        private Vector3 markerVisualPosition = Vector3.zero;
-        private Vector3 markerVisualRotation = new Vector3(0, 180, 0);
+        private readonly Vector3 markerVisualPosition = Vector3.zero;
+        private readonly Vector3 markerVisualRotation = new Vector3(0, 180, 0);
 
 #if UNITY_EDITOR
         private void OnValidate()
