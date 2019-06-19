@@ -41,7 +41,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         [SerializeField]
         private Transform cameraTransform;
 
-        [Tooltip("Marker Visual poosition relative to the device camera.")]
+        [Tooltip("Marker Visual Position relative to the device camera.")]
         [SerializeField]
         private Vector3 markerVisualPosition = Vector3.zero;
 
