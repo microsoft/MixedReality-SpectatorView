@@ -61,6 +61,19 @@ sysinfo.txt
 # Crashlytics generated file
 crashlytics-build.properties
 
+# Unity UWP Output
+UWP/
+
+# Certificates
+*.cert
+*.privkey
+*.pfx
+*.pfx.meta
+
+# Custom - Generated Asset Caches
+Assets/Generated.StateSynchronization.AssetCaches.meta
+Assets/Generated.StateSynchronization.AssetCaches/
+
 # Custom - External Unity Packages
 Assets/AzureSpatialAnchorsPlugin.meta
 Assets/AzureSpatialAnchorsPlugin/
