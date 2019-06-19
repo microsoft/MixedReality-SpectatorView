@@ -177,7 +177,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.ScreenRecording
         {
             using (var classType = new AndroidJavaClass("java.lang.Class"))
             {
-                using (var screenRecorderClass = classType.CallStatic<AndroidJavaObject>("forName", "com.Microsoft.MixedReality.Toolkit.ScreenRecorderActivity"))
+                using (var screenRecorderClass = classType.CallStatic<AndroidJavaObject>("forName", "Microsoft.MixedReality.SpectatorView.Unity.ScreenRecorderActivity"))
                 {
                     using (var activity = new AndroidJavaClass("com.unity3d.player.UnityPlayer").GetStatic<AndroidJavaObject>("currentActivity"))
                     {
