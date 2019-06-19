@@ -317,6 +317,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8257119450923145156}
   - component: {fileID: 3345868039330529835}
+  - component: {fileID: 2694822923439156071}
   m_Layer: 0
   m_Name: Spatial Coordinate System Manager
   m_TagString: Untagged
@@ -355,6 +356,18 @@ MonoBehaviour:
   debugVisual: {fileID: 1958541147728546, guid: f115aa95a7b0e49498ffb20f0b5278d0,
     type: 3}
   debugVisualScale: 0.02
+--- !u!114 &2694822923439156071
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7014880228344611172}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 73f93b7de46afbf479164e6db8a2693e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7138024644092308250
 GameObject:
   m_ObjectHideFlags: 0

@@ -29,7 +29,7 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.AzureSpatialAncho
             SpatialCoordinateSystemManager.Instance.LocalizeAsync(participant.SocketEndpoint, SpatialAnchorsLocalizer.Id, configuration);
 
             configuration.IsCoordinateCreator = true;
-            SpatialCoordinateSystemManager.Instance.InitiateRemoteLocalization(participant.SocketEndpoint, SpatialAnchorsLocalizer.Id, configuration);
+            SpatialCoordinateSystemManager.Instance.RunRemoteLocalizationAsync(participant.SocketEndpoint, SpatialAnchorsLocalizer.Id, configuration);
         }
     }
 }
