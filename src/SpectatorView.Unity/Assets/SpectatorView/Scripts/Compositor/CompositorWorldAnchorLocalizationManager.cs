@@ -47,6 +47,14 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
             participantLocalizationTasks.Remove(participant);
         }
 
+        /// <summary>
+        /// Runs a localization session on the specific <see cref="SpatialCoordinateSystemParticipant"/>'s connected peer, followed
+        /// by creating a persisted WorldAnchor-based <see cref="ISpatialCoordinate"/> based on the located coordinate.
+        /// </summary>
+        /// <param name="participant">The participant to use to initiate the remote localization sessions.</param>
+        /// <param name="spatialLocalizerId">The ID of the <see cref="ISpatialLocalizer"/> to use
+        /// for discovering a spatial coordinate.</param>
+        /// <param name="settings">The settings to pass to the remote localizer.</param>
         public async void RunRemoteLocalizationWithWorldAnchorPersistence(SpatialCoordinateSystemParticipant participant, Guid spatialLocalizerId, ISpatialLocalizationSettings settings)
         {
             // If the initial request to restore a coordinate from a WorldAnchor hasn't completed, wait for that to complete first.

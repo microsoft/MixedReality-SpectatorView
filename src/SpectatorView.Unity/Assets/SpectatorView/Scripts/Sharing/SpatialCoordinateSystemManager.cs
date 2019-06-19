@@ -42,7 +42,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
         internal const string CoordinateStateMessageHeader = "COORDSTATE";
         private const string LocalizeCommand = "LOCALIZE";
-        private const string LocalizationCompleteCommand = "LOCALIZE_Complete";
+        private const string LocalizationCompleteCommand = "LOCALIZEDONE";
         private readonly Dictionary<Guid, ISpatialLocalizer> localizers = new Dictionary<Guid, ISpatialLocalizer>();
         private readonly Dictionary<SocketEndpoint, TaskCompletionSource<object>> remoteLocalizationSessions = new Dictionary<SocketEndpoint, TaskCompletionSource<object>>();
         private Dictionary<SocketEndpoint, SpatialCoordinateSystemParticipant> participants = new Dictionary<SocketEndpoint, SpatialCoordinateSystemParticipant>();
@@ -148,7 +148,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         {
             foreach (var participant in participants.Values)
             {
-                participant.CheckForStateChanges();
+                participant.EnsureStateChangesAreBroadcast();
             }
         }
 
@@ -256,7 +256,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             // Ensure that the participant's fully-localized state is sent before sending the LocalizationComplete command (versus waiting
             // for the next Update). This way the remote peer receives the located state of the participant before they receive the notification
             // that this localization session completed.
-            participant.CheckForStateChanges();
+            participant.EnsureStateChangesAreBroadcast();
 
             SendLocalizationCompleteCommand(socketEndpoint);
         }

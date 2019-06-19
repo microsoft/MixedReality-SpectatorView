@@ -108,6 +108,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.W
             OnNewCoordinate(id, coordinate);
             return coordinate;
 #else
+            Debug.LogError("Current platform does not support creating WorldAnchor coordinates");
             return await Task.FromResult<ISpatialCoordinate>(null);
 #endif
         }
