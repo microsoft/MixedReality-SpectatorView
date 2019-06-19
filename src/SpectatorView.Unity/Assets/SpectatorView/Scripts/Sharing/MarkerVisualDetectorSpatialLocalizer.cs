@@ -131,7 +131,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                 {
                     case MarkerVisualLocalizationSettings.DiscoveryHeader:
                         int maxSupportedMarkerId = reader.Read();
-                        string coordinateId = DetermineCoordinateId(maxSupportedMarkerId);
+                        coordinateId = DetermineCoordinateId(maxSupportedMarkerId);
                         SendCoordinateAssigned(coordinateId);
                         coordinateAssigned.TrySetResult(coordinateId);
                         break;

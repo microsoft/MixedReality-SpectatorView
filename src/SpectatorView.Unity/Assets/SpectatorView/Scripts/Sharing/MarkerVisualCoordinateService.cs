@@ -55,15 +55,15 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         }
 
         private readonly IMarkerVisual markerVisual;
-        private readonly UnityEngine.Matrix4x4 markerToCamera;
+        private readonly UnityEngine.Matrix4x4 cameraToMarker;
         private readonly UnityEngine.Transform cameraTransform;
 
         private bool debugLogging = false;
 
-        public MarkerVisualCoordinateService(IMarkerVisual markerVisual, UnityEngine.Matrix4x4 markerToCamera, UnityEngine.Transform cameraTransform, bool debugLogging = false)
+        public MarkerVisualCoordinateService(IMarkerVisual markerVisual, UnityEngine.Matrix4x4 cameraToMarker, UnityEngine.Transform cameraTransform, bool debugLogging = false)
         {
             this.markerVisual = markerVisual ?? throw new ArgumentNullException("MarkerVisual was null.");
-            this.markerToCamera = markerToCamera;
+            this.cameraToMarker = cameraToMarker;
             this.cameraTransform = cameraTransform;
             this.debugLogging = debugLogging;
             DebugLog("Service Created");
@@ -100,7 +100,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
             DebugLog($"Waiting for cancellation token: CanBeCanceled:{cancellationToken.CanBeCanceled}, IsCancellationRequested:{cancellationToken.IsCancellationRequested}");
             await Task.WhenAny(Task.Delay(-1, cancellationToken));
-            markerCoordinate.WorldToCoordinate = markerToCamera * cameraTransform.localToWorldMatrix;
+            markerCoordinate.WorldToCoordinate =  cameraTransform.localToWorldMatrix * cameraToMarker;
 
             DebugLog($"Hiding marker");
             markerCoordinate.HideMarker();
