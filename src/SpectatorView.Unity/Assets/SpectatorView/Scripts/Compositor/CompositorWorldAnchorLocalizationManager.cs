@@ -18,7 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
     {
         private const string CompositorWorldAnchorId = "Compositor_SharedSpatialCoordinate";
 
-        private readonly Dictionary<SpatialCoordinateSystemParticipant, Task> participantLocalizationTasks = new Dictionary<SpatialCoordinateSystemParticipant, Task>();
+        private readonly Dictionary<SpatialCoordinateSystemParticipant, Task<bool>> participantLocalizationTasks = new Dictionary<SpatialCoordinateSystemParticipant, Task<bool>>();
 
         private void Start()
         {
@@ -58,25 +58,32 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
         public async void RunRemoteLocalizationWithWorldAnchorPersistence(SpatialCoordinateSystemParticipant participant, Guid spatialLocalizerId, ISpatialLocalizationSettings settings)
         {
             // If the initial request to restore a coordinate from a WorldAnchor hasn't completed, wait for that to complete first.
-            if (participantLocalizationTasks.TryGetValue(participant, out Task currentTask))
+            if (participantLocalizationTasks.TryGetValue(participant, out Task<bool> currentTask))
             {
                 await currentTask;
             }
 
             // Request localization using the specific localizer and settings, and wait for that localization to complete.
             participantLocalizationTasks[participant] = currentTask = SpatialCoordinateSystemManager.Instance.RunRemoteLocalizationAsync(participant.SocketEndpoint, spatialLocalizerId, settings);
-            await currentTask;
+            bool localizationSucceeded = await currentTask;
 
-            // Once the specific localizer has found a shared coordinate, ask the WorldAnchorSpatialLocalizer
-            // to create a WorldAnchor-based coordinate at the same location, and persist that coordinate across sessions.
-            participantLocalizationTasks[participant] = currentTask = SpatialCoordinateSystemManager.Instance.RunRemoteLocalizationAsync(participant.SocketEndpoint, WorldAnchorSpatialLocalizer.Id, new WorldAnchorSpatialLocalizationSettings
+            if (localizationSucceeded)
             {
-                Mode = WorldAnchorLocalizationMode.CreateAnchorAtWorldTransform,
-                AnchorId = CompositorWorldAnchorId,
-                AnchorPosition = participant.PeerSpatialCoordinateWorldPosition,
-                AnchorRotation = participant.PeerSpatialCoordinateWorldRotation
-            });
-            await currentTask;
+                // Once the specific localizer has found a shared coordinate, ask the WorldAnchorSpatialLocalizer
+                // to create a WorldAnchor-based coordinate at the same location, and persist that coordinate across sessions.
+                participantLocalizationTasks[participant] = currentTask = SpatialCoordinateSystemManager.Instance.RunRemoteLocalizationAsync(participant.SocketEndpoint, WorldAnchorSpatialLocalizer.Id, new WorldAnchorSpatialLocalizationSettings
+                {
+                    Mode = WorldAnchorLocalizationMode.CreateAnchorAtWorldTransform,
+                    AnchorId = CompositorWorldAnchorId,
+                    AnchorPosition = participant.PeerSpatialCoordinateWorldPosition,
+                    AnchorRotation = participant.PeerSpatialCoordinateWorldRotation
+                });
+                await currentTask;
+            }
+            else
+            {
+                Debug.LogError($"Remote localization failed on device {participant.SocketEndpoint.Address} for spatial localizer {spatialLocalizerId}");
+            }
         }
     }
 }
