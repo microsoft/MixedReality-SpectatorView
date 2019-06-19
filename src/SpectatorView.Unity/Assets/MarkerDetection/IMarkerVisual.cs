@@ -34,5 +34,12 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.MarkerDetection
         /// <param name="supportedIds">Output maximum marker id</param>
         /// <returns>Returns true if the maximum marker id can be found, otherwise false.</returns>
         bool TryGetMaxSupportedMarkerId(out int markerId);
+
+        /// <summary>
+        /// Tries to set an additional scale factors for the marker visual.
+        /// </summary>
+        /// <param name="scaleFactor">Additional scale factor to account for with the marker visual.</param>
+        /// <returns>Returns true if the scale factor was updated.</returns>
+        bool TrySetScaleFactor(float scaleFactor);
     }
 }

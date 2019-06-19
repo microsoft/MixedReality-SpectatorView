@@ -82,12 +82,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
         [SerializeField]
         protected float _markerSize = 0.03f; // meters
 
-        /// <summary>
-        /// Any additional scale factor to account for when displaying the marker
-        /// </summary>
-        [Tooltip("Any additional scale factor to account for when displaying the marker")]
-        [SerializeField]
-        public float _additionalScaleFactor = 1.0f;
+        private float _additionalScaleFactor = 1.0f;
 
         /// <inheritdoc />
         public void ShowMarker(int id)
@@ -139,6 +134,13 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
         public bool TryGetMaxSupportedMarkerId(out int markerId)
         {
             markerId = cCodes.Length - 1;
+            return true;
+        }
+
+        /// <inheritdoc />
+        public bool TrySetScaleFactor(float scaleFactor)
+        {
+            _additionalScaleFactor = scaleFactor;
             return true;
         }
 

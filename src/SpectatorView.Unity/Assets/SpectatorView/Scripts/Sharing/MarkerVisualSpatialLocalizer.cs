@@ -13,7 +13,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 {
-    internal class MarkerVisualLocalizationSettings : ISpatialLocalizationSettings
+    public class MarkerVisualLocalizationSettings : ISpatialLocalizationSettings
     {
         public const string DiscoveryHeader = "MVISUALDISC";
         public const string CoordinateAssignedHeader = "ASSIGNID";
@@ -30,29 +30,21 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
     /// <summary>
     /// SpatialLocalizer that shows a marker
     /// </summary>
-    internal class MarkerVisualSpatialLocalizer : SpatialLocalizer<MarkerVisualLocalizationSettings>
+    public abstract class MarkerVisualSpatialLocalizer : SpatialLocalizer<MarkerVisualLocalizationSettings>
     {
         [Tooltip("The reference to an IMarkerVisual GameObject.")]
         [SerializeField]
-        private MonoBehaviour MarkerVisual = null;
-        private IMarkerVisual markerVisual = null;
+        protected MonoBehaviour MarkerVisual = null;
+        protected IMarkerVisual markerVisual = null;
 
         [Tooltip("The reference to the camera transform.")]
         [SerializeField]
         private Transform cameraTransform;
 
-        public override Guid SpatialLocalizerId => Id;
-        public static readonly Guid Id = new Guid("BA5C8EA7-439C-4E1A-9925-218A391EF309");
-
         private readonly Vector3 markerVisualPosition = Vector3.zero;
         private readonly Vector3 markerVisualRotation = new Vector3(0, 180, 0);
 
-#if UNITY_EDITOR
-        private void OnValidate()
-        {
-            FieldHelper.ValidateType<IMarkerVisual>(MarkerVisual);
-        }
-#endif
+        public abstract Guid MarkerVisualDetectorSpatialLocalizerId { get; }
 
         /// <inheritdoc />
         public override bool TryCreateLocalizationSession(IPeerConnection peerConnection, MarkerVisualLocalizationSettings settings, out ISpatialLocalizationSession session)

@@ -26,13 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
         [SerializeField]
         protected float _markerSize = 0.03f; // meters
 
-        /// <summary>
-        /// Any additional scale factor to account for when displaying the marker
-        /// </summary>
-        [Tooltip("Any additional scale factor to account for when displaying the marker")]
-        [SerializeField]
-        public float _additionalScaleFactor = 1.0f;
-
+        private float _additionalScaleFactor = 1.0f;
         private float _paddingScaling =  200.0f / (200.0f - (2.0f * 24.0f)); // sv*.png images have 24 pixels of padding
         private const string _textureFileName = "sv*";
         private const int _maxMarkerId = 19;
@@ -94,6 +88,13 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
         public bool TryGetMaxSupportedMarkerId(out int markerId)
         {
             markerId = _maxMarkerId;
+            return true;
+        }
+
+        /// <inheritdoc />
+        public bool TrySetScaleFactor(float scaleFactor)
+        {
+            _additionalScaleFactor = scaleFactor;
             return true;
         }
 
