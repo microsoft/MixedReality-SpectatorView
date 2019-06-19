@@ -156,7 +156,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   debugLogging: 1
-  spatialLocalizer: {fileID: 967102002}
 --- !u!1 &621974539
 GameObject:
   m_ObjectHideFlags: 0
@@ -850,6 +849,9 @@ MonoBehaviour:
   stateSynchronizationSceneManager: {fileID: 685059976}
   stateSynchronizationBroadcaster: {fileID: 2075391329}
   stateSynchronizationObserver: {fileID: 2043021341}
+  enableMobileRecordingService: 1
+  mobileRecordingServiceVisualPrefab: {fileID: 3991847289853751625, guid: 9771d3a665ea3184f9c3731093a51da4,
+    type: 3}
 --- !u!114 &1823455404
 MonoBehaviour:
   m_ObjectHideFlags: 0
