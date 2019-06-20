@@ -88,15 +88,6 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.Common
         {
             ThrowIfDisposed();
 
-            lock (discoveryLockObject)
-            {
-                if (!isTracking)
-                {
-                    UnityEngine.Debug.LogWarning("New coordinate discovered, but spatial coordinate service was not tracking");
-                    return;
-                }
-            }
-
             if (knownCoordinates.TryAdd(id, spatialCoordinate))
             {
                 CoordinatedDiscovered?.Invoke(spatialCoordinate);
@@ -149,7 +140,12 @@ namespace Microsoft.MixedReality.Experimental.SpatialAlignment.Common
 
         public virtual Task<bool> TryDeleteCoordinateAsync(TKey key, CancellationToken cancellationToken)
         {
-            return Task.FromResult(knownCoordinates.TryRemove(key, out _));
+            bool wasRemoved = knownCoordinates.TryRemove(key, out ISpatialCoordinate coordinate);
+            if (wasRemoved)
+            {
+                CoordinateRemoved?.Invoke(coordinate);
+            }
+            return Task.FromResult(wasRemoved);
         }
 
         /// <inheritdoc />

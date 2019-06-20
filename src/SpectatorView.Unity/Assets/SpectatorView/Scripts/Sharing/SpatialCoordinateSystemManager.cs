@@ -42,7 +42,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
         internal const string CoordinateStateMessageHeader = "COORDSTATE";
         private const string LocalizeCommand = "LOCALIZE";
+        private const string LocalizationCompleteCommand = "LOCALIZEDONE";
         private readonly Dictionary<Guid, ISpatialLocalizer> localizers = new Dictionary<Guid, ISpatialLocalizer>();
+        private readonly Dictionary<SocketEndpoint, TaskCompletionSource<bool>> remoteLocalizationSessions = new Dictionary<SocketEndpoint, TaskCompletionSource<bool>>();
         private Dictionary<SocketEndpoint, SpatialCoordinateSystemParticipant> participants = new Dictionary<SocketEndpoint, SpatialCoordinateSystemParticipant>();
         private HashSet<INetworkManager> networkManagers = new HashSet<INetworkManager>();
         private ISpatialLocalizationSession currentLocalizationSession = null;
@@ -89,8 +91,11 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             UnregisterEvents(networkManager);
         }
 
-        public void InitiateRemoteLocalization(SocketEndpoint socketEndpoint, Guid spatialLocalizerID, ISpatialLocalizationSettings settings)
+        public Task<bool> RunRemoteLocalizationAsync(SocketEndpoint socketEndpoint, Guid spatialLocalizerID, ISpatialLocalizationSettings settings)
         {
+            TaskCompletionSource<bool> taskCompletionSource = new TaskCompletionSource<bool>();
+            remoteLocalizationSessions.Add(socketEndpoint, taskCompletionSource);
+
             using (MemoryStream stream = new MemoryStream())
             using (BinaryWriter message = new BinaryWriter(stream))
             {
@@ -100,27 +105,29 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
                 socketEndpoint.Send(stream.ToArray());
             }
+
+            return taskCompletionSource.Task;
         }
 
-        public Task LocalizeAsync(SocketEndpoint socketEndpoint, Guid spatialLocalizerID, ISpatialLocalizationSettings settings)
+        public Task<bool> LocalizeAsync(SocketEndpoint socketEndpoint, Guid spatialLocalizerID, ISpatialLocalizationSettings settings)
         {
             DebugLog("LocalizeAsync");
             if (currentLocalizationSession != null)
             {
                 Debug.LogError($"Failed to start localization session because an existing localization session is in progress");
-                return Task.CompletedTask;
+                return Task.FromResult(false);
             }
 
             if (!participants.TryGetValue(socketEndpoint, out SpatialCoordinateSystemParticipant participant))
             {
                 Debug.LogError($"Could not find a SpatialCoordinateSystemParticipant for SocketEndpoint {socketEndpoint.Address}");
-                return Task.CompletedTask;
+                return Task.FromResult(false);
             }
 
             if (!localizers.TryGetValue(spatialLocalizerID, out ISpatialLocalizer localizer))
             {
                 Debug.LogError($"Could not find a ISpatialLocalizer for spatialLocalizerID {spatialLocalizerID}");
-                return Task.CompletedTask;
+                return Task.FromResult(false);
             }
 
             DebugLog("Returning a localization session.");
@@ -141,7 +148,19 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         {
             foreach (var participant in participants.Values)
             {
-                participant.CheckForStateChanges();
+                participant.EnsureStateChangesAreBroadcast();
+            }
+        }
+
+        private void SendLocalizationCompleteCommand(SocketEndpoint socketEndpoint, bool localizationSuccessful)
+        {
+            using (MemoryStream stream = new MemoryStream())
+            using (BinaryWriter message = new BinaryWriter(stream))
+            {
+                message.Write(LocalizationCompleteCommand);
+                message.Write(localizationSuccessful);
+
+                socketEndpoint.Send(stream.ToArray());
             }
         }
 
@@ -178,6 +197,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
                 ParticipantDisconnected?.Invoke(participant);
             }
+
+            remoteLocalizationSessions.Remove(endpoint);
         }
 
         private void OnCoordinateStateReceived(SocketEndpoint socketEndpoint, string command, BinaryReader reader, int remainingDataSize)
@@ -189,6 +210,20 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             }
 
             participant.ReadCoordinateStateMessage(reader);
+        }
+
+        private void OnLocalizationCompleteMessageReceived(SocketEndpoint socketEndpoint, string command, BinaryReader reader, int remainingDataSize)
+        {
+            bool localizationSuccessful = reader.ReadBoolean();
+
+            if (!remoteLocalizationSessions.TryGetValue(socketEndpoint, out TaskCompletionSource<bool> taskSource))
+            {
+                Debug.LogError($"Remote session from endpoint {socketEndpoint.Address} completed but we were no longer tracking that session");
+                return;
+            }
+
+            remoteLocalizationSessions.Remove(socketEndpoint);
+            taskSource.SetResult(localizationSuccessful);
         }
 
         private async void OnLocalizeMessageReceived(SocketEndpoint socketEndpoint, string command, BinaryReader reader, int remainingDataSize)
@@ -204,22 +239,32 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             if (!localizers.TryGetValue(spatialLocalizerID, out ISpatialLocalizer localizer))
             {
                 Debug.LogError($"Request to begin localization with localizer {spatialLocalizerID} but no localizer with that ID was registered");
+                SendLocalizationCompleteCommand(socketEndpoint, localizationSuccessful: false);
                 return;
             }
 
             if (!localizer.TryDeserializeSettings(reader, out ISpatialLocalizationSettings settings))
             {
                 Debug.LogError($"Failed to deserialize settings for localizer {spatialLocalizerID}");
+                SendLocalizationCompleteCommand(socketEndpoint, localizationSuccessful: false);
                 return;
             }
 
             if (!participants.TryGetValue(socketEndpoint, out SpatialCoordinateSystemParticipant participant))
             {
                 Debug.LogError($"Could not find a SpatialCoordinateSystemParticipant for SocketEndpoint {socketEndpoint.Address}");
+                SendLocalizationCompleteCommand(socketEndpoint, localizationSuccessful: false);
                 return;
             }
 
-            await RunLocalizationSessionAsync(localizer, settings, participant);
+            bool localizationSuccessful = await RunLocalizationSessionAsync(localizer, settings, participant);
+
+            // Ensure that the participant's fully-localized state is sent before sending the LocalizationComplete command (versus waiting
+            // for the next Update). This way the remote peer receives the located state of the participant before they receive the notification
+            // that this localization session completed.
+            participant.EnsureStateChangesAreBroadcast();
+
+            SendLocalizationCompleteCommand(socketEndpoint, localizationSuccessful);
         }
 
         private void OnParticipantDataReceived(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
@@ -240,13 +285,13 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             participant.CurrentLocalizationSession.OnDataReceived(reader);
         }
 
-        private async Task RunLocalizationSessionAsync(ISpatialLocalizer localizer, ISpatialLocalizationSettings settings, SpatialCoordinateSystemParticipant participant)
+        private async Task<bool> RunLocalizationSessionAsync(ISpatialLocalizer localizer, ISpatialLocalizationSettings settings, SpatialCoordinateSystemParticipant participant)
         {
             DebugLog($"Creating localization session: {participant.SocketEndpoint.Address}, {settings.ToString()}, {localizer.ToString()}");
             if (!localizer.TryCreateLocalizationSession(participant, settings, out ISpatialLocalizationSession currentLocalizationSession))
             {
                 Debug.LogError($"Failed to create an ISpatialLocalizationSession from localizer {localizer.SpatialLocalizerId}");
-                return;
+                return false;
             }
 
             using (currentLocalizationSession)
@@ -271,6 +316,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                 }
             }
             currentLocalizationSession = null;
+            return participant.Coordinate != null;
         }
 
         private void RegisterEvents(INetworkManager networkManager)
@@ -278,6 +324,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             networkManager.Connected += OnConnected;
             networkManager.Disconnected += OnDisconnected;
             networkManager.RegisterCommandHandler(LocalizeCommand, OnLocalizeMessageReceived);
+            networkManager.RegisterCommandHandler(LocalizationCompleteCommand, OnLocalizationCompleteMessageReceived);
             networkManager.RegisterCommandHandler(CoordinateStateMessageHeader, OnCoordinateStateReceived);
             networkManager.RegisterCommandHandler(SpatialCoordinateSystemParticipant.LocalizationDataExchangeCommand, OnParticipantDataReceived);
         }
@@ -287,6 +334,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             networkManager.Connected -= OnConnected;
             networkManager.Disconnected -= OnDisconnected;
             networkManager.UnregisterCommandHandler(LocalizeCommand, OnLocalizeMessageReceived);
+            networkManager.UnregisterCommandHandler(LocalizationCompleteCommand, OnLocalizationCompleteMessageReceived);
             networkManager.UnregisterCommandHandler(CoordinateStateMessageHeader, OnCoordinateStateReceived);
             networkManager.UnregisterCommandHandler(SpatialCoordinateSystemParticipant.LocalizationDataExchangeCommand, OnParticipantDataReceived);
         }
