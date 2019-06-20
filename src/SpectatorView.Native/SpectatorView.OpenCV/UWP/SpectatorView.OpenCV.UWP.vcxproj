@@ -29,15 +29,15 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{40a65fa5-46f2-4e86-92b9-cd61a6bed4db}</ProjectGuid>
     <Keyword>DynamicLibrary</Keyword>
-    <RootNamespace>SpectatorViewPlugin</RootNamespace>
+    <RootNamespace>SpectatorView.OpenCV</RootNamespace>
     <DefaultLanguage>en-US</DefaultLanguage>
     <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
     <AppContainerApplication>true</AppContainerApplication>
     <ApplicationType>Windows Store</ApplicationType>
-    <WindowsTargetPlatformVersion>10.0.18334.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.14393.0</WindowsTargetPlatformVersion>
     <WindowsTargetPlatformMinVersion>10.0.10240.0</WindowsTargetPlatformMinVersion>
     <ApplicationTypeRevision>10.0</ApplicationTypeRevision>
-    <ProjectName>SpectatorViewPlugin</ProjectName>
+    <ProjectName>SpectatorView.OpenCV</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

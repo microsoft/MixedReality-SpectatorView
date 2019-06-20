@@ -22,8 +22,9 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{D8ECBA6D-7895-4ABA-879C-E18E18DFCB3C}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>SpectatorViewPlugin.Editor</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.18334.0</WindowsTargetPlatformVersion>
+    <RootNamespace>SpectatorView.OpenCV</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0.14393.0</WindowsTargetPlatformVersion>
+    <TargetName>SpectatorView.OpenCV</TargetName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
