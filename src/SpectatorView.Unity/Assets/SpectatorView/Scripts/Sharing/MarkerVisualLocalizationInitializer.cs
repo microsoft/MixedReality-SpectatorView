@@ -40,12 +40,12 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             {
                 case MarkerType.ArUco:
                     DebugLog("Starting ArUco marker based localization.");
-                    SpatialCoordinateSystemManager.Instance.InitiateRemoteLocalization(participant.SocketEndpoint, ArUcoMarkerVisualSpatialLocalizer.DetectorId, new MarkerVisualDetectorLocalizationSettings());
+                    SpatialCoordinateSystemManager.Instance.RunRemoteLocalizationAsync(participant.SocketEndpoint, ArUcoMarkerVisualSpatialLocalizer.DetectorId, new MarkerVisualDetectorLocalizationSettings());
                     SpatialCoordinateSystemManager.Instance.LocalizeAsync(participant.SocketEndpoint, ArUcoMarkerVisualSpatialLocalizer.Id, new MarkerVisualLocalizationSettings());
                     break;
                 case MarkerType.QRCode:
                     DebugLog("Starting QR Code based localization.");
-                    SpatialCoordinateSystemManager.Instance.InitiateRemoteLocalization(participant.SocketEndpoint, QRCodeMarkerVisualSpatialLocalizer.DetectorId, new MarkerVisualDetectorLocalizationSettings());
+                    SpatialCoordinateSystemManager.Instance.RunRemoteLocalizationAsync(participant.SocketEndpoint, QRCodeMarkerVisualSpatialLocalizer.DetectorId, new MarkerVisualDetectorLocalizationSettings());
                     SpatialCoordinateSystemManager.Instance.LocalizeAsync(participant.SocketEndpoint, QRCodeMarkerVisualSpatialLocalizer.Id, new MarkerVisualLocalizationSettings());
                     break;
                 default:

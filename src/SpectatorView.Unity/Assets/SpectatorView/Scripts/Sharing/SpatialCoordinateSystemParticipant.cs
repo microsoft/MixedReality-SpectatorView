@@ -119,7 +119,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         /// </summary>
         public ISpatialLocalizationSession CurrentLocalizationSession { get; internal set; }
 
-        public void CheckForStateChanges()
+        public void EnsureStateChangesAreBroadcast()
         {
             if (SocketEndpoint != null && SocketEndpoint.IsConnected)
             {
