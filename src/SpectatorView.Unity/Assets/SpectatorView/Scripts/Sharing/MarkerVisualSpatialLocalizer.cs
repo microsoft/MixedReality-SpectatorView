@@ -41,16 +41,11 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         [SerializeField]
         private Transform cameraTransform;
 
-        [Tooltip("Marker Visual poosition relative to the device camera.")]
-        [SerializeField]
-        private Vector3 markerVisualPosition = Vector3.zero;
-
-        [Tooltip("Marker Visual Rotation relative to the device camera.")]
-        [SerializeField]
-        private Vector3 markerVisualRotation = new Vector3(0, 180, 0);
-
         public override Guid SpatialLocalizerId => Id;
         public static readonly Guid Id = new Guid("BA5C8EA7-439C-4E1A-9925-218A391EF309");
+
+        private readonly Vector3 markerVisualPosition = Vector3.zero;
+        private readonly Vector3 markerVisualRotation = new Vector3(0, 180, 0);
 
 #if UNITY_EDITOR
         private void OnValidate()
@@ -99,8 +94,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
                 coordinateFound = new TaskCompletionSource<string>();
                 discoveryCTS = new CancellationTokenSource();
 
-                var markerToCamera = Matrix4x4.TRS(this.localizer.markerVisualPosition, Quaternion.Euler(this.localizer.markerVisualRotation), Vector3.one);
-                this.coordinateService = new MarkerVisualCoordinateService(this.localizer.markerVisual, markerToCamera, this.localizer.cameraTransform, this.localizer.debugLogging);
+                var cameraToMarker = Matrix4x4.TRS(this.localizer.markerVisualPosition, Quaternion.Euler(this.localizer.markerVisualRotation), Vector3.one);
+                this.coordinateService = new MarkerVisualCoordinateService(this.localizer.markerVisual, cameraToMarker, this.localizer.cameraTransform, this.localizer.debugLogging);
             }
 
             /// <inheritdoc />
