@@ -1,7 +1,8 @@
-#include "..\SharedFiles\pch.h"
+﻿#include "..\SharedFiles\pch.h"
 
-#include "..\SharedFiles\ArUcoMarkerDetector.h"
-#include "..\SharedFiles\Calibration.h"
+#include "SpectatorViewPlugin.h"
+#include "ArUcoMarkerDetector.h"
+#include "Calibration.h"
 
 std::unique_ptr<Calibration> calibration;
 std::unique_ptr<ArUcoMarkerDetector> detector;
@@ -200,7 +201,7 @@ extern "C" __declspec(dllexport) bool __stdcall ProcessChessboardImage(
 // Calculates the camera intrinsics based on the provided chessboard images
 // squareSize - size of a chessboard square in meteres
 // intrinsis - output intrinsics
-// sizeExtrinsics - size of extrinsics element in array in floats
+// sizeIntrinsics - size of the intrinsics array for outputting data
 extern "C" __declspec(dllexport) bool __stdcall ProcessChessboardIntrinsics(
     float squareSize,
     float* intrinsics,
@@ -245,18 +246,18 @@ extern "C" __declspec(dllexport) bool __stdcall ProcessIndividualArUcoExtrinsics
 // Returns True if ArUco marker data was available for processing and enough output extrinsics values were provided
 // intrinsics - camera intrinsics to use for extrinsics calculations
 // extrinsics - output camera extrinsics
-// numExtrinsics - the number of extrinsics available for output
+// sizeExtrinsics - size of extrinsics element in array in floats
 extern "C" __declspec(dllexport) bool __stdcall ProcessGlobalArUcoExtrinsics(
     float* intrinsics,
     float* extrinsics,
-    int numExtrinsics)
+    int sizeExtrinsics)
 {
     if (calibration)
     {
         return calibration->ProcessGlobalArUcoExtrinsics(
             intrinsics,
             extrinsics,
-            numExtrinsics);
+            sizeExtrinsics);
     }
 
     return false;

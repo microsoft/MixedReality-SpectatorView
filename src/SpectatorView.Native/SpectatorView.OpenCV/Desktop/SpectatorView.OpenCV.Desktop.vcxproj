@@ -155,13 +155,14 @@
   <ItemGroup>
     <ClInclude Include="..\SharedFiles\ArUcoMarkerDetector.h" />
     <ClInclude Include="..\SharedFiles\Calibration.h" />
+    <ClInclude Include="..\SharedFiles\SpectatorViewPlugin.h" />
     <ClInclude Include="..\SharedFiles\pch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\SharedFiles\ArUcoMarkerDetector.cpp" />
     <ClCompile Include="..\SharedFiles\Calibration.cpp" />
-    <ClCompile Include="dllmain.cpp" />
-    <ClCompile Include="SpectatorViewPlugin.Editor.cpp" />
+    <ClCompile Include="..\SharedFiles\dllmain.cpp" />
+    <ClCompile Include="..\SharedFiles\SpectatorViewPlugin.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
