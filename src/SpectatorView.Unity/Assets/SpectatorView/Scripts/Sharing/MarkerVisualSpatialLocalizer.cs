@@ -32,14 +32,13 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
     /// </summary>
     public abstract class MarkerVisualSpatialLocalizer : SpatialLocalizer<MarkerVisualLocalizationSettings>
     {
-        [Tooltip("The reference to an IMarkerVisual GameObject.")]
+        [Tooltip("The reference to a prefab containing an IMarkerVisual.")]
         [SerializeField]
-        protected MonoBehaviour MarkerVisual = null;
+        protected GameObject MarkerVisualPrefab = null;
+        private GameObject markerVisualGameObject = null;
         protected IMarkerVisual markerVisual = null;
 
-        [Tooltip("The reference to the camera transform.")]
-        [SerializeField]
-        private Transform cameraTransform;
+        private Transform cameraTransform = null;
 
         private readonly Vector3 markerVisualPosition = Vector3.zero;
         private readonly Vector3 markerVisualRotation = new Vector3(0, 180, 0);
@@ -49,7 +48,28 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         /// <inheritdoc />
         public override bool TryCreateLocalizationSession(IPeerConnection peerConnection, MarkerVisualLocalizationSettings settings, out ISpatialLocalizationSession session)
         {
-            markerVisual = (markerVisual == null) ? MarkerVisual as IMarkerVisual : markerVisual;
+            session = null;
+            if (markerVisual == null)
+            {
+                markerVisualGameObject = Instantiate(MarkerVisualPrefab);
+                markerVisual = markerVisualGameObject.GetComponentInChildren<IMarkerVisual>();
+                if (markerVisual == null)
+                {
+                    Debug.LogError("Marker Visual Prefab did not contain an IMarkerVisual component.");
+                    return false;
+                }
+            }
+
+            if (cameraTransform == null)
+            {
+                cameraTransform = Camera.main.transform;
+                if (cameraTransform == null)
+                {
+                    Debug.LogError("Unable to determine camera's location in the scene.");
+                    return false;
+                }
+            }
+
             session = new LocalizationSession(this, settings, peerConnection, debugLogging);
             return true;
         }

@@ -6,16 +6,10 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 {
     public class QRCodeMarkerVisualSpatialLocalizer : MarkerVisualSpatialLocalizer
     {
-        public override Guid SpatialLocalizerId => QRCodeMarkerVisualDetectorSpatialLocalizer.Id;
-
-        public override Guid MarkerVisualDetectorSpatialLocalizerId => Id;
+        public override Guid SpatialLocalizerId => Id;
         public static readonly Guid Id = new Guid("6CEF83A0-1E40-40DE-B36B-762974EFDBD8");
 
-#if UNITY_EDITOR
-        private void OnValidate()
-        {
-            FieldHelper.ValidateType<QRCodeMarkerVisual>(MarkerVisual);
-        }
-#endif
+        public override Guid MarkerVisualDetectorSpatialLocalizerId => DetectorId;
+        public static Guid DetectorId => QRCodeMarkerVisualDetectorSpatialLocalizer.Id;
     }
 }

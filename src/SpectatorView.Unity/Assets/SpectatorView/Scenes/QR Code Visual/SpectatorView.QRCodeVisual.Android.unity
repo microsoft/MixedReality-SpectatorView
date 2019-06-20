@@ -162,7 +162,7 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 97747990}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &465657169
+--- !u!1 &215168363
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -170,22 +170,22 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 465657170}
-  - component: {fileID: 465657171}
+  - component: {fileID: 215168364}
+  - component: {fileID: 215168365}
   m_Layer: 0
-  m_Name: ArUco MarkerVisualLocalizationInitializer
+  m_Name: QR Code MarkerVisualLocalizationInitializer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &465657170
+--- !u!4 &215168364
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 465657169}
+  m_GameObject: {fileID: 215168363}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -193,20 +193,95 @@ Transform:
   m_Father: {fileID: 1782757359}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &465657171
+--- !u!114 &215168365
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 465657169}
+  m_GameObject: {fileID: 215168363}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 65428d5b29901f54f9201e5ca29bdb10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   debugLogging: 1
-  markerType: 0
+  markerType: 1
+--- !u!1001 &557880480
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1782757359}
+    m_Modifications:
+    - target: {fileID: 2053685663436622530, guid: 7f5fdf2d931ebfc44a472a374ccc191e,
+        type: 3}
+      propertyPath: m_Name
+      value: SpectatorView.SpatialCoordinateLocalizers
+      objectReference: {fileID: 0}
+    - target: {fileID: 5795882921077350206, guid: 7f5fdf2d931ebfc44a472a374ccc191e,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5795882921077350206, guid: 7f5fdf2d931ebfc44a472a374ccc191e,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5795882921077350206, guid: 7f5fdf2d931ebfc44a472a374ccc191e,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5795882921077350206, guid: 7f5fdf2d931ebfc44a472a374ccc191e,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5795882921077350206, guid: 7f5fdf2d931ebfc44a472a374ccc191e,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5795882921077350206, guid: 7f5fdf2d931ebfc44a472a374ccc191e,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5795882921077350206, guid: 7f5fdf2d931ebfc44a472a374ccc191e,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5795882921077350206, guid: 7f5fdf2d931ebfc44a472a374ccc191e,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5795882921077350206, guid: 7f5fdf2d931ebfc44a472a374ccc191e,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5795882921077350206, guid: 7f5fdf2d931ebfc44a472a374ccc191e,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5795882921077350206, guid: 7f5fdf2d931ebfc44a472a374ccc191e,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 7f5fdf2d931ebfc44a472a374ccc191e, type: 3}
+--- !u!4 &557880481 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5795882921077350206, guid: 7f5fdf2d931ebfc44a472a374ccc191e,
+    type: 3}
+  m_PrefabInstance: {fileID: 557880480}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &621974539
 GameObject:
   m_ObjectHideFlags: 0
@@ -553,81 +628,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa64e43c5d4d26d4eade391bc1f935ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1001 &1372340129
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 1782757359}
-    m_Modifications:
-    - target: {fileID: 2053685663436622530, guid: 7f5fdf2d931ebfc44a472a374ccc191e,
-        type: 3}
-      propertyPath: m_Name
-      value: SpectatorView.SpatialCoordinateLocalizers
-      objectReference: {fileID: 0}
-    - target: {fileID: 5795882921077350206, guid: 7f5fdf2d931ebfc44a472a374ccc191e,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5795882921077350206, guid: 7f5fdf2d931ebfc44a472a374ccc191e,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5795882921077350206, guid: 7f5fdf2d931ebfc44a472a374ccc191e,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5795882921077350206, guid: 7f5fdf2d931ebfc44a472a374ccc191e,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5795882921077350206, guid: 7f5fdf2d931ebfc44a472a374ccc191e,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5795882921077350206, guid: 7f5fdf2d931ebfc44a472a374ccc191e,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5795882921077350206, guid: 7f5fdf2d931ebfc44a472a374ccc191e,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5795882921077350206, guid: 7f5fdf2d931ebfc44a472a374ccc191e,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 5795882921077350206, guid: 7f5fdf2d931ebfc44a472a374ccc191e,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5795882921077350206, guid: 7f5fdf2d931ebfc44a472a374ccc191e,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5795882921077350206, guid: 7f5fdf2d931ebfc44a472a374ccc191e,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 7f5fdf2d931ebfc44a472a374ccc191e, type: 3}
---- !u!4 &1372340130 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 5795882921077350206, guid: 7f5fdf2d931ebfc44a472a374ccc191e,
-    type: 3}
-  m_PrefabInstance: {fileID: 1372340129}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1782757358
 GameObject:
   m_ObjectHideFlags: 0
@@ -657,8 +657,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2353995268673026218}
-  - {fileID: 465657170}
-  - {fileID: 1372340130}
+  - {fileID: 215168364}
+  - {fileID: 557880481}
   m_Father: {fileID: 1823455402}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -691,7 +691,7 @@ GameObject:
   - component: {fileID: 1823455404}
   - component: {fileID: 1823455403}
   m_Layer: 0
-  m_Name: SpectatorView.ArUcoVisual.Android
+  m_Name: SpectatorView.QRCodeVisual.Android
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

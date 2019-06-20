@@ -7,8 +7,17 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 {
     public class MarkerVisualLocalizationInitializer : MonoBehaviour
     {
+        private enum MarkerType
+        {
+            ArUco,
+            QRCode
+        }
+
         [SerializeField]
         private bool debugLogging = false;
+
+        [SerializeField]
+        private MarkerType markerType = MarkerType.ArUco;
 
         private void Awake()
         {
@@ -25,7 +34,24 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         private void ParticipantConnected(SpatialCoordinateSystemParticipant participant)
         {
             DebugLog($"Participant connected: {participant?.SocketEndpoint?.Address ?? "IPAddress unknown"}");
-            SpatialCoordinateSystemManager.Instance.LocalizeAsync(participant.SocketEndpoint, MarkerVisualSpatialLocalizer.Id, new MarkerVisualLocalizationSettings());
+
+            // Note: We need to send the remote localization message prior to starting marker visual localization. The MarkerVisualSpatialLocalizer won't return until localization has completed.
+            switch (markerType)
+            {
+                case MarkerType.ArUco:
+                    DebugLog("Starting ArUco marker based localization.");
+                    SpatialCoordinateSystemManager.Instance.InitiateRemoteLocalization(participant.SocketEndpoint, ArUcoMarkerVisualSpatialLocalizer.DetectorId, new MarkerVisualDetectorLocalizationSettings());
+                    SpatialCoordinateSystemManager.Instance.LocalizeAsync(participant.SocketEndpoint, ArUcoMarkerVisualSpatialLocalizer.Id, new MarkerVisualLocalizationSettings());
+                    break;
+                case MarkerType.QRCode:
+                    DebugLog("Starting QR Code based localization.");
+                    SpatialCoordinateSystemManager.Instance.InitiateRemoteLocalization(participant.SocketEndpoint, QRCodeMarkerVisualSpatialLocalizer.DetectorId, new MarkerVisualDetectorLocalizationSettings());
+                    SpatialCoordinateSystemManager.Instance.LocalizeAsync(participant.SocketEndpoint, QRCodeMarkerVisualSpatialLocalizer.Id, new MarkerVisualLocalizationSettings());
+                    break;
+                default:
+                    Debug.LogError("Uknown marker type set for localization.");
+                    break;
+            }
         }
 
         private void DebugLog(string message)

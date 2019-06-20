@@ -91,6 +91,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
         public void InitiateRemoteLocalization(SocketEndpoint socketEndpoint, Guid spatialLocalizerID, ISpatialLocalizationSettings settings)
         {
+            DebugLog($"Initiating remote localization: {socketEndpoint.Address}, {spatialLocalizerID.ToString()}");
             using (MemoryStream stream = new MemoryStream())
             using (BinaryWriter message = new BinaryWriter(stream))
             {

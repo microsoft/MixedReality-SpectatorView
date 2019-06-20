@@ -13,6 +13,13 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
         IMarkerVisual
     {
         /// <summary>
+        /// Parent GameObject of any marker visual content
+        /// </summary>
+        [Tooltip("Parent GameObject of any marker visual content")]
+        [SerializeField]
+        private GameObject _content;
+
+        /// <summary>
         /// RawImage used for displaying the ArUco marker
         /// </summary>
         [Tooltip("RawImage used for displaying the ArUco marker")]
@@ -40,7 +47,14 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
                 return;
             }
 
-            gameObject.SetActive(true);
+            if (_content == null)
+            {
+                Debug.LogError("Content not set for QRCodeMarkerVisual. Unable to display marker.");
+                return;
+            }
+
+            _content.SetActive(true);
+
             var textureFileName = _textureFileName.Replace("*", id.ToString());
 
             Texture2D texture;
@@ -66,7 +80,13 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
                 return;
             }
 
-            gameObject.SetActive(false);
+            if (_content == null)
+            {
+                Debug.LogError("Content not set for QRCodeMarkerVisual. Unable to display marker.");
+                return;
+            }
+
+            _content.SetActive(false);
         }
 
         /// <inheritdoc />
