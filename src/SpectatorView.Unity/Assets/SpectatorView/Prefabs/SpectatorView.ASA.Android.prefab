@@ -43,7 +43,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3217623fe6ba03242a9c3d8c66f4a71a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  translatedWorldOrigin: {fileID: 0}
+  debugLogging: 0
+  sharedCoordinateOrigin: {fileID: 0}
 --- !u!1 &5528765749750870470
 GameObject:
   m_ObjectHideFlags: 0
@@ -456,6 +457,12 @@ MonoBehaviour:
   enableMobileRecordingService: 1
   mobileRecordingServiceVisualPrefab: {fileID: 3991847289853751625, guid: 9771d3a665ea3184f9c3731093a51da4,
     type: 3}
+  userDebugVisualPrefab: {fileID: 1958541147728546, guid: f115aa95a7b0e49498ffb20f0b5278d0,
+    type: 3}
+  userDebugVisualScale: 0.02
+  spectatorDebugVisualPrefab: {fileID: 3504969358525992055, guid: e82587d5d3f352d42ad9675adaba5b35,
+    type: 3}
+  spectatorDebugVisualScale: 0.02
 --- !u!1 &5528765751079408163
 GameObject:
   m_ObjectHideFlags: 0

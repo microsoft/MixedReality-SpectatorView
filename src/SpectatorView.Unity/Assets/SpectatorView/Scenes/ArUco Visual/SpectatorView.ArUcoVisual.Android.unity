@@ -112,6 +112,12 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!4 &34779399 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4442908887562770, guid: c10877f7cd5764de18d46d7b777d1faa,
+    type: 3}
+  m_PrefabInstance: {fileID: 97747990}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &97747990
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -157,11 +163,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c10877f7cd5764de18d46d7b777d1faa, type: 3}
---- !u!4 &97747991 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 97747990}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &465657169
 GameObject:
   m_ObjectHideFlags: 0
@@ -733,6 +734,12 @@ MonoBehaviour:
   enableMobileRecordingService: 1
   mobileRecordingServiceVisualPrefab: {fileID: 3991847289853751625, guid: 9771d3a665ea3184f9c3731093a51da4,
     type: 3}
+  userDebugVisualPrefab: {fileID: 1958541147728546, guid: f115aa95a7b0e49498ffb20f0b5278d0,
+    type: 3}
+  userDebugVisualScale: 0.02
+  spectatorDebugVisualPrefab: {fileID: 3504969358525992055, guid: e82587d5d3f352d42ad9675adaba5b35,
+    type: 3}
+  spectatorDebugVisualScale: 0.02
 --- !u!114 &1823455404
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -772,7 +779,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 97747991}
+  - {fileID: 34779399}
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

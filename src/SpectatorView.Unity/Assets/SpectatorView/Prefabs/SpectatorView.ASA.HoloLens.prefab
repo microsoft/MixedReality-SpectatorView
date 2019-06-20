@@ -549,9 +549,14 @@ MonoBehaviour:
   stateSynchronizationSceneManager: {fileID: 6520627995603351790}
   stateSynchronizationBroadcaster: {fileID: 6520627996385174023}
   stateSynchronizationObserver: {fileID: 6520627996426280827}
-  parentOfMainCamera: {fileID: 0}
   enableMobileRecordingService: 1
   mobileRecordingServiceVisualPrefab: {fileID: 0}
+  userDebugVisualPrefab: {fileID: 1958541147728546, guid: f115aa95a7b0e49498ffb20f0b5278d0,
+    type: 3}
+  userDebugVisualScale: 0.02
+  spectatorDebugVisualPrefab: {fileID: 3504969358525992055, guid: e82587d5d3f352d42ad9675adaba5b35,
+    type: 3}
+  spectatorDebugVisualScale: 0.02
 --- !u!1 &6520627996652478600
 GameObject:
   m_ObjectHideFlags: 0
@@ -596,8 +601,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a6f73afd1777564288907da74b2d4af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spectatorView: {fileID: 6520627996605099981}
-  spatialLocalizer: {fileID: 6520627996652478614}
   debugLogging: 1
   showDebugVisuals: 1
   debugVisual: {fileID: 1958541147728546, guid: f115aa95a7b0e49498ffb20f0b5278d0,
@@ -618,9 +621,3 @@ MonoBehaviour:
   debugLogging: 1
   anchorPosition: {x: 0, y: 0, z: 0}
   anchorRotation: {x: 0, y: 0, z: 0}
-  configuration:
-    AccountDomain: 
-    AccountId: 
-    AccountKey: 
-    AccessToken: 
-    AuthenticationToken: 
