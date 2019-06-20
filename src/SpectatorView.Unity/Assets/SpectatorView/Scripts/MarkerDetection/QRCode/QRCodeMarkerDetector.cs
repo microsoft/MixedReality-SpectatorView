@@ -103,6 +103,14 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
                 _qrCodesManager.QRCodeUpdated += QRCodeUpdated;
             }
 
+            StartTracking();
+        }
+
+        private async void StartTracking()
+        {
+            Windows.Security.Authorization.AppCapabilityAccess.AppCapability cap = Windows.Security.Authorization.AppCapabilityAccess.AppCapability.Create("webcam");
+            var accessStatus = await cap.RequestAccessAsync();
+
             var result = _qrCodesManager.StartQRTracking();
             Debug.Log("Started qr tracker: " + result.ToString());
         }
