@@ -17,33 +17,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
     /// <summary>
     /// SpatialLocalizer that is based on a marker detector.
     /// </summary>
-    internal class MarkerDetectorSpatialLocalizer : SpatialLocalizer<MarkerDetectorLocalizationSettings>
+    public abstract class MarkerDetectorSpatialLocalizer : SpatialLocalizer<MarkerDetectorLocalizationSettings>
     {
-        public static readonly Guid Id = new Guid("698D46CF-2099-4E06-9ADE-2FD0C18992F4");
-
-        [Tooltip("The reference to an IMarkerDetector GameObject")]
-        [SerializeField]
-        private MonoBehaviour MarkerDetector = null;
-        private IMarkerDetector markerDetector = null;
-
-        public override Guid SpatialLocalizerId => Id;
-
-#if UNITY_EDITOR
-        private void OnValidate()
-        {
-            FieldHelper.ValidateType<IMarkerDetector>(MarkerDetector);
-        }
-#endif
-
-        private void Awake()
-        {
-            DebugLog("Awake");
-            markerDetector = MarkerDetector as IMarkerDetector;
-            if (markerDetector == null)
-            {
-                Debug.LogWarning("Marker detector not appropriately set for MarkerDetectorSpatialLocalizer");
-            }
-        }
+        protected IMarkerDetector markerDetector = null;
 
         public override bool TryDeserializeSettings(BinaryReader reader, out MarkerDetectorLocalizationSettings settings)
         {
