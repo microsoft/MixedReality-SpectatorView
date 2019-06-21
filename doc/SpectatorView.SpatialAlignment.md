@@ -17,4 +17,4 @@ Different spatial alignment strategies require different external dependencies. 
 
 1. [Azure Spatial Anchors Setup](SpectatorView.Setup.ASA.md)
 2. [QR Code Detection](SpectatorView.Setup.QRCode.md)
-3. [ArUco Marker Detection](SpectatorView.Setup.ArUco.md)
+3. [ArUco Marker Detection](SpectatorView.Setup.ArUcoMarker.md)
