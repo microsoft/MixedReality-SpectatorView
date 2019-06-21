@@ -1,3 +1,9 @@
+# Spectator View
+Spectator View is an augmented reality product that enables viewing HoloLens experiences from additional view points on secondary devices. Spectator View has multiple configurations that support a variety of scenarios from filming quick prototypes to producing keynote demos.
+
+* ### [Architecture](SpectatorView.Architecture.md)
+* ### [Setup](SpectatorView.Setup.md)
+* ### [Debugging](SpectatorView.Debugging.md)
 
 # Contributing
 
