@@ -6,7 +6,7 @@ using System;
 using TMPro;
 #endif
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
+namespace Microsoft.MixedReality.SpectatorView
 {
     internal class TextMeshProObserver : TextMeshProObserverBase
     {

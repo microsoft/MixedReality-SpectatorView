@@ -8,7 +8,7 @@ using System.IO;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.Editor
+namespace Microsoft.MixedReality.SpectatorView.Editor
 {
     public static class StateSynchronizationMenuItems
     {

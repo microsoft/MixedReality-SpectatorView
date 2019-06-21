@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Extensions.Experimental.Socketer;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -13,7 +12,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Storage;
 #endif
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.HolographicCamera
+namespace Microsoft.MixedReality.SpectatorView
 {
     /// <summary>
     /// Loads calibration data from the Pictures library on the device and transfers that data

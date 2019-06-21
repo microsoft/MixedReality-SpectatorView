@@ -1,14 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.PhotoCapture;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using UnityEngine;
 
-using Microsoft.MixedReality.Toolkit.Extensions.Experimental.MarkerDetection;
-using Microsoft.MixedReality.Toolkit.Extensions.PhotoCapture;
-
-namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.MarkerDetection
+namespace Microsoft.MixedReality.SpectatorView
 {
     /// <summary>
     /// Wrapper class for SpectatorView.OpenCV.dll built from the SpectatorView.Native.sln

@@ -9,10 +9,7 @@ using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using UnityEngine;
 
-using Microsoft.MixedReality.Toolkit.Extensions.Experimental.Sharing;
-using Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.Utilities;
-
-namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.Sharing
+namespace Microsoft.MixedReality.SpectatorView
 {
     /// <summary>
     /// Delegate used to specify server and client ports to the <see cref="UDPBroadcastNetworkingService"/>

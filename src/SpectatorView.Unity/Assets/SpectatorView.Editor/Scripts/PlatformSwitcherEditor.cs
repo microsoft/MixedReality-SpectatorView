@@ -4,9 +4,7 @@
 using UnityEditor;
 using UnityEngine;
 
-using Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.Utilities;
-
-namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.Editor
+namespace Microsoft.MixedReality.SpectatorView.Editor
 {
     /// <summary>
     /// Defines functionality for switching platforms in the Unity editor

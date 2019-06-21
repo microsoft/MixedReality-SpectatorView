@@ -4,10 +4,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-using Microsoft.MixedReality.Toolkit.Extensions.Experimental.MarkerDetection;
-using System.IO;
-
-namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.MarkerDetection
+namespace Microsoft.MixedReality.SpectatorView
 {
     public class QRCodeMarkerVisual : MonoBehaviour,
         IMarkerVisual

@@ -11,7 +11,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Experimental.SpatialAlignment.AzureSpatialAnchors
+namespace Microsoft.MixedReality.SpatialAlignment
 {
     /// <summary>
     /// Base class for the various platform implementation sof Azure Spatial Anchors.

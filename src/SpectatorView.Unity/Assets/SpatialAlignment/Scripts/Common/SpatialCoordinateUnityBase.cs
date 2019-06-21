@@ -3,7 +3,7 @@
 
 using System.Numerics;
 
-namespace Microsoft.MixedReality.Experimental.SpatialAlignment.Common
+namespace Microsoft.MixedReality.SpatialAlignment
 {
     /// <summary>
     /// Helper base class for implementations of <see cref="ISpatialCoordinate"/>.

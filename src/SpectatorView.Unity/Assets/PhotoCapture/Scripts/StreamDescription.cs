@@ -3,7 +3,7 @@
 
 using System;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.PhotoCapture
+namespace Microsoft.MixedReality.PhotoCapture
 {
     /// <summary>
     /// The type of camera

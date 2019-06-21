@@ -10,11 +10,7 @@ using UnityEngine;
 using UnityEngine.XR.ARFoundation;
 #endif
 
-using Microsoft.MixedReality.Toolkit.Extensions.Experimental.MarkerDetection;
-using Microsoft.MixedReality.Toolkit.Extensions.Experimental.Sharing;
-using Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.Utilities;
-
-namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.Sharing
+namespace Microsoft.MixedReality.SpectatorView
 {
     /// <summary>
     /// Enum for various visual states associated with setting up a <see cref="MarkerSpatialCoordinateService"/> shared coordinate system

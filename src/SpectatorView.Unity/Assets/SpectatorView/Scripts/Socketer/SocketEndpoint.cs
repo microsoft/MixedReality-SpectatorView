@@ -5,7 +5,7 @@ using System;
 using System.Collections.Concurrent;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.Socketer
+namespace Microsoft.MixedReality.SpectatorView
 {
     public sealed class SocketEndpoint
     {

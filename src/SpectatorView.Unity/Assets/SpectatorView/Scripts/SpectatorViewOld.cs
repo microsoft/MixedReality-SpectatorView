@@ -1,13 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Extensions.Experimental.ScreenRecording;
-using Microsoft.MixedReality.Toolkit.Extensions.Experimental.Sharing;
-using Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.Utilities;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
+namespace Microsoft.MixedReality.SpectatorView
 {
     public class SpectatorViewOld : MonoBehaviour
     {

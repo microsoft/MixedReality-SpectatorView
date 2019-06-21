@@ -6,7 +6,7 @@ using Microsoft.Azure.SpatialAnchors;
 using Microsoft.MixedReality.Experimental.SpatialAlignment.Common;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Experimental.SpatialAlignment.AzureSpatialAnchors
+namespace Microsoft.MixedReality.SpatialAlignment
 {
     /// <summary>
     /// The Spatial Coordinate based on Azure Spatial Anchors service.

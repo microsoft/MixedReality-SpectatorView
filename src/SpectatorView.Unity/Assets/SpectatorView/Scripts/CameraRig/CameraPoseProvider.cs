@@ -1,18 +1,16 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Extensions.Experimental.Socketer;
+using Microsoft.MixedReality.SpatialAlignment;
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using Stopwatch = System.Diagnostics.Stopwatch;
-using UnityEngine.XR.WSA;
-using System.Runtime.InteropServices;
 using System.Globalization;
-using System;
 using System.IO;
-using Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.Compositor;
-using Microsoft.MixedReality.Experimental.SpatialAlignment.Common;
+using System.Runtime.InteropServices;
+using UnityEngine;
+using UnityEngine.XR.WSA;
+using Stopwatch = System.Diagnostics.Stopwatch;
 
 #if !UNITY_EDITOR && UNITY_WSA
 using Windows.Perception;
@@ -20,7 +18,7 @@ using Windows.Perception.Spatial;
 using Calendar = Windows.Globalization.Calendar;
 #endif
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.HolographicCamera
+namespace Microsoft.MixedReality.SpectatorView
 {
     /// <summary>
     /// Component that provides time-adjusted holographic poses to the compositor.

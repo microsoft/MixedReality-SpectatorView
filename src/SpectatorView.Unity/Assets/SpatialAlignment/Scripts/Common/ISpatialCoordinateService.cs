@@ -7,7 +7,7 @@ using System.Numerics;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Microsoft.MixedReality.Experimental.SpatialAlignment.Common
+namespace Microsoft.MixedReality.SpatialAlignment
 {
     /// <summary>
     /// This service is used to discover, track and create coordinates.

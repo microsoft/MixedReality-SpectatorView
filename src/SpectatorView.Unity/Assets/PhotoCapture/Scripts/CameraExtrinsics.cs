@@ -4,7 +4,7 @@
 using System;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.PhotoCapture
+namespace Microsoft.MixedReality.PhotoCapture
 {
     /// <summary>
     /// Camera extrinsics helper class

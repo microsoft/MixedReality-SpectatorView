@@ -5,7 +5,7 @@ using System;
 using System.Text;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.MarkerDetection
+namespace Microsoft.MixedReality.SpectatorView
 {
     /// <summary>
     /// Helper class containing data related to detected markers

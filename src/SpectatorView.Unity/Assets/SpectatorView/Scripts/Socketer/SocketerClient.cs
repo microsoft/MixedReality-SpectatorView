@@ -19,7 +19,7 @@ using Windows.Networking.Connectivity;
 using Windows.Storage.Streams;
 #endif
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.Socketer
+namespace Microsoft.MixedReality.SpectatorView
 {
     /// <summary>
     /// Simple socket client which uses a generic length-type-data protocol.

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.Azure.SpatialAnchors.Unity.IOS.ARKit;
 using UnityEngine.XR.iOS;
 
-namespace Microsoft.MixedReality.Experimental.SpatialAlignment.AzureSpatialAnchors
+namespace Microsoft.MixedReality.SpatialAlignment
 {
     // TODO anborod Validate this works
     internal class SpatialAnchorsIOSCoordinateService : SpatialAnchorsCoordinateService

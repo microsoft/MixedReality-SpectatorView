@@ -11,7 +11,7 @@ using UnityEngine.SceneManagement;
 using UnityEditor;
 #endif
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
+namespace Microsoft.MixedReality.SpectatorView
 {
     internal abstract class AssetCache : ScriptableObject
     {

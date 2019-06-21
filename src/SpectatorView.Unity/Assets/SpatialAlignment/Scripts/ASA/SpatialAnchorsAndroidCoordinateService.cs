@@ -8,7 +8,7 @@ using System;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Experimental.SpatialAlignment.AzureSpatialAnchors
+namespace Microsoft.MixedReality.SpatialAlignment
 {
     /// <summary>
     /// Android implementation of the Azure Spatial Anchors coordinate service.

@@ -1,9 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.IO;
-using UnityEngine;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
+using System.IO;
+
+namespace Microsoft.MixedReality.SpectatorView
 {
     public interface ISpatialLocalizationSettings
     {

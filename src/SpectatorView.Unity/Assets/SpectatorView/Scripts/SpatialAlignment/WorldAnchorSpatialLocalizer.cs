@@ -1,14 +1,16 @@
-﻿using System;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using Microsoft.MixedReality.SpatialAlignment;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.MixedReality.Experimental.SpatialAlignment.Common;
-using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.WorldAnchors
+namespace Microsoft.MixedReality.SpectatorView
 {
     /// <summary>
     /// An <see cref="ISpatialLocalizer"/> that can locate spatial coordinates based on

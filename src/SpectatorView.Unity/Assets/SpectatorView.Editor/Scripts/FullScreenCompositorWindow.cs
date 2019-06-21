@@ -8,7 +8,7 @@ using System.ComponentModel;
 using System.Runtime.InteropServices;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.Editor
+namespace Microsoft.MixedReality.SpectatorView.Editor
 {
     [Description("Compositor Preview")]
     internal class FullScreenCompositorWindow : CompositorWindowBase<FullScreenCompositorWindow>

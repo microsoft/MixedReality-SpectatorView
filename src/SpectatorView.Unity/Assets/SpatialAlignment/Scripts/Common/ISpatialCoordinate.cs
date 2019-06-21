@@ -4,7 +4,7 @@
 using System;
 using System.Numerics;
 
-namespace Microsoft.MixedReality.Experimental.SpatialAlignment.Common
+namespace Microsoft.MixedReality.SpatialAlignment
 {
     /// <summary>
     /// Defines the potential states of alignment for a strategy.

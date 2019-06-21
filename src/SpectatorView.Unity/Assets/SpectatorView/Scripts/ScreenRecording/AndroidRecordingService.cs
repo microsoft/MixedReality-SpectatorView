@@ -4,7 +4,7 @@
 using UnityEngine;
 using System;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.ScreenRecording
+namespace Microsoft.MixedReality.SpectatorView
 {
     /// <summary>
     /// Class implementing <see cref="IRecordingService"/> for the Android platform

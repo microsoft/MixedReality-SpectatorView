@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.Sharing
+namespace Microsoft.MixedReality.SpectatorView
 {
     /// <summary>
     /// Delegate called when a new spatial coordinate state payload has been created

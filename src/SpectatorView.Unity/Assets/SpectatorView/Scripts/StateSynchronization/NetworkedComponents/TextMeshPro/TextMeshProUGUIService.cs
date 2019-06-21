@@ -5,7 +5,7 @@
 using TMPro;
 #endif
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
+namespace Microsoft.MixedReality.SpectatorView
 {
     internal class TextMeshProUGUIService : ComponentBroadcasterService<TextMeshProUGUIService, TextMeshProUGUIObserver>
     {

@@ -3,7 +3,7 @@
 
 using System;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.ScreenRecording
+namespace Microsoft.MixedReality.SpectatorView
 {
     /// <summary>
     /// An interface implemented by classes that perform screen recording

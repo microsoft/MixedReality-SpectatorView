@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using UQuaternion = UnityEngine.Quaternion;
 using UVector3 = UnityEngine.Vector3;
 
-namespace Microsoft.MixedReality.Experimental.SpatialAlignment.Common
+namespace Microsoft.MixedReality.SpatialAlignment
 {
     /// <summary>
     /// Helper Unity side extensions to enable the core abstraction to be Unity agnostic.

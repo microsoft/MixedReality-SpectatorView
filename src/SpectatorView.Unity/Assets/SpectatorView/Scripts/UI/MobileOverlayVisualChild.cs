@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.UI
+namespace Microsoft.MixedReality.SpectatorView
 {
     /// <summary>
     /// Base class that provides showing/hiding functionality for <see cref="IMobileOverlayVisualChild"/>

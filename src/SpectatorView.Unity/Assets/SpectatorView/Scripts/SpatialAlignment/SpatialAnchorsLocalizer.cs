@@ -1,9 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Experimental.SpatialAlignment.Common;
-using Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView;
-using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.IO;
 using System.Text;
@@ -11,7 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Experimental.SpatialAlignment.AzureSpatialAnchors
+namespace Microsoft.MixedReality.SpectatorView
 {
     /// <summary>
     /// This is the localization mechanism for enabling anchor exchange/localization through Azure Spatial Anchors.

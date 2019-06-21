@@ -2,17 +2,10 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System.Collections.Generic;
+using System.Collections.Concurrent;
 using UnityEngine;
 
-using Microsoft.MixedReality.Toolkit.Extensions.Experimental.MarkerDetection;
-using Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.MarkerDetection;
-using Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.Utilities;
-using Microsoft.MixedReality.Toolkit.Extensions.PhotoCapture;
-using System.Text;
-using System;
-using System.Collections.Concurrent;
-
-namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
+namespace Microsoft.MixedReality.SpectatorView
 {
     /// <summary>
     /// Called when HeadsetCalibration has a new qr code/aruco marker payload

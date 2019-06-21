@@ -3,7 +3,7 @@
 
 using System;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.Utilities
+namespace Microsoft.MixedReality.SpectatorView
 {
     /// <summary>
     /// Helper class for validating that an object implements or extends a specific type.

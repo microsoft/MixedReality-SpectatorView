@@ -3,7 +3,7 @@
 
 using System.Collections.Generic;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.MarkerDetection
+namespace Microsoft.MixedReality.SpectatorView
 {
     /// <summary>
     /// Interface that should be implemented by any class that displays markers for detection

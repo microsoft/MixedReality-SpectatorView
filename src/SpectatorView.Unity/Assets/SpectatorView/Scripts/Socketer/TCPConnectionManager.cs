@@ -5,7 +5,7 @@ using System;
 using System.Collections.Concurrent;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.Socketer
+namespace Microsoft.MixedReality.SpectatorView
 {
     /// <summary>
     /// Helper class for setting up a TCP based network connection

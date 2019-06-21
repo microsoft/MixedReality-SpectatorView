@@ -9,7 +9,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.Editor
+namespace Microsoft.MixedReality.SpectatorView.Editor
 {
     public class EditorWindowBase<TWindow> : EditorWindow where TWindow : EditorWindowBase<TWindow>
     {

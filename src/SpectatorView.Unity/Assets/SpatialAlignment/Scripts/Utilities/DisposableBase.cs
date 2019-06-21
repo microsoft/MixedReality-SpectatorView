@@ -4,7 +4,7 @@
 using System;
 using System.Threading;
 
-namespace Microsoft.MixedReality.Toolkit.Utilities
+namespace Microsoft.MixedReality.SpatialAlignment
 {
     /// <summary>
     /// This is a base class for common IDisposable implementation.

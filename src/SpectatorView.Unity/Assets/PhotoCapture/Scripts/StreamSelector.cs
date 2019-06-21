@@ -5,7 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.PhotoCapture
+namespace Microsoft.MixedReality.PhotoCapture
 {
     /// <summary>
     /// Class that helps with picking a specific stream type

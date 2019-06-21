@@ -4,7 +4,7 @@
 using System;
 using System.IO;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
+namespace Microsoft.MixedReality.SpectatorView
 {
     internal class MeshFilterObserver : MeshRendererObserver<MeshFilterService>
     {

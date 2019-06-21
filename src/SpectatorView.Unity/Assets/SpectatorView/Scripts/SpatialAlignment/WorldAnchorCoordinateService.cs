@@ -1,4 +1,7 @@
-﻿using Microsoft.MixedReality.Experimental.SpatialAlignment.Common;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using Microsoft.MixedReality.SpatialAlignment;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,7 +13,7 @@ using UnityEngine.XR.WSA;
 using UnityEngine.XR.WSA.Persistence;
 #endif
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.WorldAnchors
+namespace Microsoft.MixedReality.SpectatorView
 {
     /// <summary>
     /// Represents an <see cref="ISpatialCoordinateService"/> that creates and stores

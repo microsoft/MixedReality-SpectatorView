@@ -26,7 +26,7 @@ using System.Threading;
 
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.Socketer
+namespace Microsoft.MixedReality.SpectatorView
 {
     /// <summary>
     /// Sends and receives packets over the network, using the chosen protocol.

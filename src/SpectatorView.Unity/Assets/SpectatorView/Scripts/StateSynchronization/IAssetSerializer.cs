@@ -3,7 +3,7 @@
 
 using System.IO;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
+namespace Microsoft.MixedReality.SpectatorView
 {
     internal interface IAssetSerializer<TAsset>
     {

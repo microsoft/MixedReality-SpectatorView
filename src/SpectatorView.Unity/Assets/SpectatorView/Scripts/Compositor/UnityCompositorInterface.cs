@@ -5,11 +5,11 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.Compositor
+namespace Microsoft.MixedReality.SpectatorView
 {
     internal static class UnityCompositorInterface
     {
-        private const string CompositorPluginDll = "SpectatorView.Compositor.UnityPlugin";
+        private const string CompositorPluginDll = "SpectatorView.Compositor.UnityPlugin.dll";
 
         [DllImport(CompositorPluginDll)]
         public static extern int GetFrameWidth();

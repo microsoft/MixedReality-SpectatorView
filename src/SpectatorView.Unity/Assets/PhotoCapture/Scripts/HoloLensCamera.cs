@@ -40,7 +40,7 @@ using Quaternion = UnityEngine.Quaternion;
 using Debug = UnityEngine.Debug;
 #endif
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.PhotoCapture
+namespace Microsoft.MixedReality.PhotoCapture
 {
     /// <summary>
     /// The mode to run the camera in

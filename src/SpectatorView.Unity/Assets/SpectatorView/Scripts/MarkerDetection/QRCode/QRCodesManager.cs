@@ -14,7 +14,7 @@ using Windows.Perception.Spatial.Preview;
 #endif
 
 using QRCodesTrackerPlugin;
-namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.QRCodesTracker
+namespace Microsoft.MixedReality.SpectatorView
 {
     public static class QRCodeEventArgs
     {

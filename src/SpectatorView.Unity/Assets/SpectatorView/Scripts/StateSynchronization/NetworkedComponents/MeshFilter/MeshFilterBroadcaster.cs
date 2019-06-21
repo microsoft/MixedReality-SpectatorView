@@ -5,7 +5,7 @@ using System;
 using System.IO;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
+namespace Microsoft.MixedReality.SpectatorView
 {
     internal class MeshFilterBroadcaster : MeshRendererBroadcaster<MeshFilterService>
     {

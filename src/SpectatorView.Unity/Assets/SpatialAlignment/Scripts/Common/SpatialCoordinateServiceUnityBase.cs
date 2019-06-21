@@ -5,7 +5,7 @@ using System.Numerics;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Microsoft.MixedReality.Experimental.SpatialAlignment.Common
+namespace Microsoft.MixedReality.SpatialAlignment
 {
     /// <summary>
     /// Helper base class for <see cref="ISpatialCoordinateService"/> implementations.

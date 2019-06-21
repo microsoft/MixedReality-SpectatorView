@@ -9,7 +9,7 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.Socketer
+namespace Microsoft.MixedReality.SpectatorView
 {
     /// <summary>
     /// Helper class for testing socketer <see cref="TCPConnectionManager"/>

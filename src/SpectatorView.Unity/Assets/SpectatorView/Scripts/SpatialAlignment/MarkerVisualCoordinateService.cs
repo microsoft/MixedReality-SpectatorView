@@ -1,14 +1,13 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Experimental.SpatialAlignment.Common;
-using Microsoft.MixedReality.Toolkit.Extensions.Experimental.MarkerDetection;
+using Microsoft.MixedReality.SpatialAlignment;
 using System;
-using System.Numerics;
 using System.Threading;
 using System.Threading.Tasks;
+using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
+namespace Microsoft.MixedReality.SpectatorView
 {
     /// <summary>
     /// A variant of marker based <see cref="ISpatialCoordinateService"/> implementation. This one tracks coordinates displayed on the screen of current mobile device.
@@ -22,7 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
             private LocatedState locatedState = LocatedState.Resolved;
 
-            public UnityEngine.Matrix4x4 WorldToCoordinate
+            public Matrix4x4 WorldToCoordinate
             {
                 get
                 {

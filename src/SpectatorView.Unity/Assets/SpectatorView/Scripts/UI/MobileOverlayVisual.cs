@@ -3,11 +3,9 @@
 
 using System.Collections.Generic;
 using UnityEngine;
-
-using Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.Utilities;
 using UnityEngine.UI;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.UI
+namespace Microsoft.MixedReality.SpectatorView
 {
     /// <summary>
     /// Delegate called to toggle visibility for <see cref="IMobileOverlayVisualChild"/>ren.

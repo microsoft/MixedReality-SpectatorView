@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.XR.WSA;
 
-namespace Microsoft.MixedReality.Experimental.SpatialAlignment.AzureSpatialAnchors
+namespace Microsoft.MixedReality.SpatialAlignment
 {
     /// <summary>
     /// UWP implementation of the Azure Spatial Anchors coordinate service.

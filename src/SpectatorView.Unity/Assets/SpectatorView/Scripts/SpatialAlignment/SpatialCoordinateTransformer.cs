@@ -1,10 +1,10 @@
-﻿using Microsoft.MixedReality.Experimental.SpatialAlignment.Common;
-using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using Microsoft.MixedReality.SpatialAlignment;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
+namespace Microsoft.MixedReality.SpectatorView
 {
     /// <summary>
     /// Positions a transform representing a world origin such that a connected peer device's world origin (relative to a

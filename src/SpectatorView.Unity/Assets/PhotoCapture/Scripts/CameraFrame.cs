@@ -22,7 +22,7 @@ using Windows.Graphics.Imaging;
 using Windows.Storage.Streams;
 #endif
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.PhotoCapture
+namespace Microsoft.MixedReality.PhotoCapture
 {
     /// <summary>
     /// Represents a camera frame, with all format, resolution, properties and pixel data.
