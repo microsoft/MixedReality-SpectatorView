@@ -1,4 +1,4 @@
-# Requirements
+# QR Code Spatial Alignment Requirements
 > Note: QR Code based localization is only supported for HoloLens 2. This setup process won't break the ability to compile for HoloLens 1 devices, but it also won't enable QR code based localization for HoloLens 1 devices.
 
 ### HoloLens 2
