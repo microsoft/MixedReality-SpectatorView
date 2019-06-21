@@ -1,4 +1,9 @@
 # State synchronization
+
+### Pre-compilation
+1) All of the assets in the unity project are assigned unique identifiers. This allows content in the user's application scene to be recreated/updated/destroyed dynamically in the spectator's application scene. This is done through calling [Spectator View -> Update All Asset Caches](Scripts/Editor/StateSynchronizationMenuItems.cs) in the Unity toolbar.
+
+### In application
 1) On the user device, a [StateSynchronizationBroadcaster](Scripts/StateSynchronization/StateSynchronizationBroadcaster.cs) is enabled, while on the spectator device a 
 [StateSynchronizationObserver](Scripts/StateSynchronization/StateSynchronizationObserver.cs) is enabled.
     * These classes are responsible for delegating both network messages and network changes to the [StateSynchronizationSceneManager](Scripts/StateSynchronization/StateSynchronizationSceneManager.cs), which drives scene state synchronization.
