@@ -19,3 +19,4 @@ For more information on state synchronization, see [SpectatorView.StateSynchroni
 For more information on spatial alignment, see [SpectatorView.SpatialAlignment](SpectatorView.SpatialAlignment.md)
 
 ### Screen Recording
+For more information on screen recording, see [SpectatorView.ScreenRecording](SpectatorView.ScreenRecording.md)
