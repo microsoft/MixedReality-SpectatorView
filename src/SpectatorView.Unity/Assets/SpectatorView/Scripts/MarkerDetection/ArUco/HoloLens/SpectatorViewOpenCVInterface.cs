@@ -15,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
     /// </summary>
     public class SpectatorViewOpenCVInterface
     {
-        private const string SpectatorViewOpenCVDll = "SpectatorView.OpenCV";
+        private const string SpectatorViewOpenCVDll = "SpectatorView.OpenCV.dll";
 
         [DllImport(SpectatorViewOpenCVDll, EntryPoint = "Initialize")]
         internal static extern bool InitializeNative();
