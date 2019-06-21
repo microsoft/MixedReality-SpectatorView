@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 #if UNITY_EDITOR
         private void OnValidate()
         {
-            FieldHelper.ValidateType<SpectatorViewPluginArUcoMarkerDetector>(MarkerDetector);
+            FieldHelper.ValidateType<ArUcoMarkerDetector>(MarkerDetector);
         }
 #endif
     }
