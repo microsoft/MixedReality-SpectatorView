@@ -3,7 +3,6 @@
 
 #if SPATIALALIGNMENT_ASA
 using Microsoft.Azure.SpatialAnchors;
-using Microsoft.MixedReality.Experimental.SpatialAlignment.Common;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.SpatialAlignment

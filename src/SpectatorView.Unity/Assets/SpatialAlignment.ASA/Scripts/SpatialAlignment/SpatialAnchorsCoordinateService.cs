@@ -4,7 +4,7 @@
 #if SPATIALALIGNMENT_ASA
 using Microsoft.Azure.SpatialAnchors;
 using Microsoft.Azure.SpatialAnchors.Unity;
-using Microsoft.MixedReality.Experimental.SpatialAlignment.Common;
+using Microsoft.MixedReality.SpectatorView;
 using System;
 using System.Collections.Generic;
 using System.Threading;

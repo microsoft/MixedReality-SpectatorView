@@ -1,7 +1,6 @@
 {
     "name": "Microsoft.MixedReality.SpatialAlignment",
-    "references": [
-    ],
+    "references": [],
     "optionalUnityReferences": [],
     "includePlatforms": [],
     "excludePlatforms": [],

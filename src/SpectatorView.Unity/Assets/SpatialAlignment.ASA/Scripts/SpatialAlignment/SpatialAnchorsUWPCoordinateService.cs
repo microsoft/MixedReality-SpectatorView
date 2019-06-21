@@ -3,6 +3,7 @@
 
 #if UNITY_WSA && SPATIALALIGNMENT_ASA
 using Microsoft.Azure.SpatialAnchors;
+using Microsoft.MixedReality.SpectatorView;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.XR.WSA;

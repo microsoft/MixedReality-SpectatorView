@@ -4,6 +4,7 @@
 #if UNITY_ANDROID && SPATIALALIGNMENT_ASA
 using Microsoft.Azure.SpatialAnchors;
 using Microsoft.Azure.SpatialAnchors.Unity.Android;
+using Microsoft.MixedReality.SpectatorView;
 using System;
 using System.Threading.Tasks;
 using UnityEngine;
