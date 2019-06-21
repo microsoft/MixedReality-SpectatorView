@@ -19,7 +19,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SpectatorView.Compositor", 
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SpectatorView.OpenCV.CalibrationBoardGenerator", "SpectatorView.OpenCV\CalibrationBoardGenerator\SpectatorView.OpenCV.CalibrationBoardGenerator.vcxproj", "{31F0E0B7-8120-4B73-898F-B74F10089D99}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SpectatorView.OpenCV", "SpectatorView.OpenCV\UWP\SpectatorView.OpenCV.UWP.vcxproj", "{40A65FA5-46F2-4E86-92B9-CD61A6BED4DB}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SpectatorView.OpenCV.UWP", "SpectatorView.OpenCV\UWP\SpectatorView.OpenCV.UWP.vcxproj", "{40A65FA5-46F2-4E86-92B9-CD61A6BED4DB}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SpectatorView.OpenCV.Desktop", "SpectatorView.OpenCV\Desktop\SpectatorView.OpenCV.Desktop.vcxproj", "{D8ECBA6D-7895-4ABA-879C-E18E18DFCB3C}"
 EndProject
