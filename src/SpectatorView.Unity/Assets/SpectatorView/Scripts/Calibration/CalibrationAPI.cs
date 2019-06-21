@@ -11,25 +11,15 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 {
     internal class CalibrationAPI
     {
-#if WINDOWS_UWP
-        [DllImport("SpectatorViewPlugin", EntryPoint = "InitializeCalibration")]
-#else
-        [DllImport("SpectatorViewPlugin.Editor", EntryPoint = "InitializeCalibration")]
-#endif
+        private const string SpectatorViewOpenCVDll = "SpectatorView.OpenCV.dll";
+
+        [DllImport(SpectatorViewOpenCVDll, EntryPoint = "InitializeCalibration")]
         internal static extern bool InitializeCalibrationNative();
 
-#if WINDOWS_UWP
-        [DllImport("SpectatorViewPlugin", EntryPoint = "ResetCalibration")]
-#else
-        [DllImport("SpectatorViewPlugin.Editor", EntryPoint = "ResetCalibration")]
-#endif
+        [DllImport(SpectatorViewOpenCVDll, EntryPoint = "ResetCalibration")]
         internal static extern bool ResetCalibrationNative();
 
-#if WINDOWS_UWP
-        [DllImport("SpectatorViewPlugin", EntryPoint = "ProcessChessboardImage")]
-#else
-        [DllImport("SpectatorViewPlugin.Editor", EntryPoint = "ProcessChessboardImage")]
-#endif
+        [DllImport(SpectatorViewOpenCVDll, EntryPoint = "ProcessChessboardImage")]
         internal static extern bool ProcessChessboardImageNative(
             byte[] image,
             int imageWidth,
@@ -41,21 +31,13 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             int cornerImageRadias,
             int heatmapWidth);
 
-#if WINDOWS_UWP
-        [DllImport("SpectatorViewPlugin", EntryPoint = "ProcessChessboardIntrinsics")]
-#else
-        [DllImport("SpectatorViewPlugin.Editor", EntryPoint = "ProcessChessboardIntrinsics")]
-#endif
+        [DllImport(SpectatorViewOpenCVDll, EntryPoint = "ProcessChessboardIntrinsics")]
         internal static extern bool ProcessChessboardIntrinsicsNative(
             float squareSize,
             float[] intrinsics,
             int sizeIntrinsics);
 
-#if WINDOWS_UWP
-        [DllImport("SpectatorViewPlugin", EntryPoint = "ProcessArUcoData")]
-#else
-        [DllImport("SpectatorViewPlugin.Editor", EntryPoint = "ProcessArUcoData")]
-#endif
+        [DllImport(SpectatorViewOpenCVDll, EntryPoint = "ProcessArUcoData")]
         internal static extern bool ProcessArUcoImageNative(
             byte[] image,
             int imageWidth,
@@ -66,32 +48,21 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             float[] markerCornersRelativeToCamera,
             int numMarkerCornerValues);
 
-#if WINDOWS_UWP
-        [DllImport("SpectatorViewPlugin", EntryPoint = "ProcessIndividualArUcoExtrinsics")]
-#else
-        [DllImport("SpectatorViewPlugin.Editor", EntryPoint = "ProcessIndividualArUcoExtrinsics")]
-#endif
+
+        [DllImport(SpectatorViewOpenCVDll, EntryPoint = "ProcessIndividualArUcoExtrinsics")]
         internal static extern bool ProcessIndividualArUcoExtrinsicsNative(
             float[] intrinsics,
             float[] extrinsics,
             int sizeExtrinsics,
             int numExtrinsics);
 
-#if WINDOWS_UWP
-        [DllImport("SpectatorViewPlugin", EntryPoint = "ProcessGlobalArUcoExtrinsics")]
-#else
-        [DllImport("SpectatorViewPlugin.Editor", EntryPoint = "ProcessGlobalArUcoExtrinsics")]
-#endif
+        [DllImport(SpectatorViewOpenCVDll, EntryPoint = "ProcessGlobalArUcoExtrinsics")]
         internal static extern bool ProcessGlobalArUcoExtrinsicsNative(
             float[] intrinsics,
             float[] extrinsics,
             int sizeExtrinsics);
 
-#if WINDOWS_UWP
-        [DllImport("SpectatorViewPlugin", EntryPoint = "GetLastErrorMessage")]
-#else
-        [DllImport("SpectatorViewPlugin.Editor", EntryPoint = "GetLastErrorMessage")]
-#endif
+        [DllImport(SpectatorViewOpenCVDll, EntryPoint = "GetLastErrorMessage")]
         internal static extern bool GetLastErrorMessageNative(
             char[] buff,
             int size);
@@ -130,13 +101,13 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             }
             catch (Exception e)
             {
-                Debug.LogError($"Exception thrown initializing SpectatorViewPlugin dll for calibration: {e.ToString()}");
+                Debug.LogError($"Exception thrown initializing SpectatorView.OpenCV dll for calibration: {e.ToString()}");
                 initialized = false;
                 return;
             }
 
             initialized = false;
-            Debug.LogError("Failed to initialize SpectatorViewPlugin dll for calibration");
+            Debug.LogError("Failed to initialize SpectatorView.OpenCV dll for calibration");
         }
 
         /// <summary>
@@ -325,7 +296,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         }
 
         /// <summary>
-        /// Prints the last error available for the SpectatorViewPlugin/SpectatorViewPlugin.Editor dll
+        /// Prints the last error available for the SpectatorView.OpenCV dll
         /// </summary>
         public void PrintLastError()
         {
