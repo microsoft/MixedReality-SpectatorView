@@ -93,6 +93,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 
         public Task<bool> RunRemoteLocalizationAsync(SocketEndpoint socketEndpoint, Guid spatialLocalizerID, ISpatialLocalizationSettings settings)
         {
+            DebugLog($"Initiating remote localization: {socketEndpoint.Address}, {spatialLocalizerID.ToString()}");
             TaskCompletionSource<bool> taskCompletionSource = new TaskCompletionSource<bool>();
             remoteLocalizationSessions.Add(socketEndpoint, taskCompletionSource);
 

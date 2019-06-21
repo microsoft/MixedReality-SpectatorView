@@ -69,25 +69,27 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
         };
 
         /// <summary>
+        /// Parent GameObject of any marker visual content
+        /// </summary>
+        [Tooltip("Parent GameObject of any marker visual content")]
+        [SerializeField]
+        private GameObject _content;
+
+        /// <summary>
         /// RawImage used for displaying the ArUco marker
         /// </summary>
         [Tooltip("RawImage used for displaying the ArUco marker")]
         [SerializeField]
-        protected RawImage _rawImage;
+        private RawImage _rawImage;
 
         /// <summary>
         /// Physical size to display the marker (in meters)
         /// </summary>
         [Tooltip("Physical size to display the marker (in meters)")]
         [SerializeField]
-        protected float _markerSize = 0.03f; // meters
+        private float _markerSize = 0.03f; // meters
 
-        /// <summary>
-        /// Any additional scale factor to account for when displaying the marker
-        /// </summary>
-        [Tooltip("Any additional scale factor to account for when displaying the marker")]
-        [SerializeField]
-        public float _additionalScaleFactor = 1.0f;
+        private float _additionalScaleFactor = 1.0f;
 
         /// <inheritdoc />
         public void ShowMarker(int id)
@@ -98,7 +100,13 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
                 return;
             }
 
-            gameObject.SetActive(true);
+            if (_content == null)
+            {
+                Debug.LogError("Content not set for ArUcoMarkerVisual. Unable to display marker.");
+                return;
+            }
+
+            _content.SetActive(true);
 
             if (_rawImage != null)
             {
@@ -117,7 +125,13 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
                 return;
             }
 
-            gameObject.SetActive(false);
+            if (_content == null)
+            {
+                Debug.LogError("Content not set for ArUcoMarkerVisual. Unable to display marker.");
+                return;
+            }
+
+            _content.SetActive(false);
         }
 
         /// <inheritdoc />
@@ -139,6 +153,13 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.M
         public bool TryGetMaxSupportedMarkerId(out int markerId)
         {
             markerId = cCodes.Length - 1;
+            return true;
+        }
+
+        /// <inheritdoc />
+        public bool TrySetScaleFactor(float scaleFactor)
+        {
+            _additionalScaleFactor = scaleFactor;
             return true;
         }
 
