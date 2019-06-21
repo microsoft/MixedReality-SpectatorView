@@ -16,25 +16,24 @@
 
 ## Before building
 1. Obtain your HoloLens's ip address from the settings menu via Settings -> Network & Internet -> Wi-Fi -> Hardware Properties.
-2 In the WSA unity player settings, add the **QRCODESTRACKER_BINARY_AVAILABLE** preprocessor directive. (This is located via Build Settings -> Player Settings -> Other Settings -> 'Scripting Defined Symbols')
-3 In your Unity project, call Spectator View -> Update All Asset Caches to prepare content for state synchronization.
+2. In the WSA unity player settings, add the **QRCODESTRACKER_BINARY_AVAILABLE** preprocessor directive. (This is located via Build Settings -> Player Settings -> Other Settings -> 'Scripting Defined Symbols')
+3. In your Unity project, call Spectator View -> Update All Asset Caches to prepare content for state synchronization.
 
 >> NOTE: Both the HoloLens 2 and android applications should be compiled from the same PC with the same unity project. Updating the asset cache assigns unique identifiers to each item in the unity project. Doing this on different computers can break synchronization.
 
 ### HoloLens scene setup
 4. Add the [SpectatorView.QRCodeVisual.HoloLens prefab](Prefabs/SpectatorView.QRCodeVisual.HoloLens.prefab) to the scene you intend to run on the HoloLens device.
 5. Add a GameObjectHierarchyBroadcaster to the root game object of the content you want synchronized. 
-6. Add a parent game object to your unity camera.
-7. Press the 'HoloLens' button on the [Platform Switcher](Scripts/Editor/PlatformSwitcherEditor.cs) attached to Spectator View in the unity inspector (This should configure the correct build settings and app capabilities).
-8. Build and deploy the application to your HoloLens device.
+6. Press the 'HoloLens' button on the [Platform Switcher](Scripts/Editor/PlatformSwitcherEditor.cs) attached to Spectator View in the unity inspector (This should configure the correct build settings and app capabilities).
+7. Build and deploy the application to your HoloLens device.
 
 ### Android scene setup
-9. Open the [SpectatorView.QRCodeVisual.Android unity scene](Scenes/SpectatorView.ASA.Android.unity) in your unity project.
-10. Again call Spectator View -> Update All Asset Caches to prepare content for state synchronization.
-11. Set the 'User Ip Address' in the Spectator View script to the ip address of your HoloLens device.
-12. Press the 'Android' button on the [Platform Switcher](Scripts/Editor/PlatformSwitcherEditor.cs) attached to Spectator View in the unity inspector (This should configure the correct build settings and app capabilities).
-13. Check 'ARCore Supported' under Build Settings -> Player Settings -> Android -> XR Settings
-14. Build and deploy the application to your android device.
+8. Open the [SpectatorView.QRCodeVisual.Android unity scene](Scenes/SpectatorView.ASA.Android.unity) in your unity project.
+9. Again call Spectator View -> Update All Asset Caches to prepare content for state synchronization.
+10. Set the 'User Ip Address' in the Spectator View script to the ip address of your HoloLens device.
+11. Press the 'Android' button on the [Platform Switcher](Scripts/Editor/PlatformSwitcherEditor.cs) attached to Spectator View in the unity inspector (This should configure the correct build settings and app capabilities).
+12. Check 'ARCore Supported' under Build Settings -> Player Settings -> Android -> XR Settings
+13. Build and deploy the application to your android device.
 
 # Example Scenes
 * HoloLens: [SpectatorView.QRCodeVisual.HoloLens](Scenes/SpectatorView.QRCodeVisual.HoloLens.unity)
