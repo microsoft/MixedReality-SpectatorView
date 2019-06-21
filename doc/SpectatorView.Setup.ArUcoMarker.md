@@ -1,4 +1,4 @@
-# ArUco Marker Detector Requirements
+# ArUco Marker Spatial Alignment Requirements
 > Note: this experience does not work with a HoloLens 2 device. When these setup steps were drafted, the opencv dependencies required for ArUco detection were not available for arm/arm64 build flavors.
 
 ### HoloLens 1
