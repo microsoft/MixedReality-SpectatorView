@@ -73,6 +73,35 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
         [SerializeField]
         public GameObject mobileRecordingServiceVisualPrefab = null;
 
+        [Header("Debugging")]
+        /// <summary>
+        /// Debug visual prefab created by the user.
+        /// </summary>
+        [Tooltip("Debug visual prefab created by the user.")]
+        [SerializeField]
+        public GameObject userDebugVisualPrefab = null;
+
+        /// <summary>
+        /// Scaling applied to user debug visuals.
+        /// </summary>
+        [Tooltip("Scaling applied to spectator debug visuals.")]
+        [SerializeField]
+        public float userDebugVisualScale = 1.0f;
+
+        /// <summary>
+        /// Debug visual prefab created by the spectator.
+        /// </summary>
+        [Tooltip("Debug visual prefab created by the spectator.")]
+        [SerializeField]
+        public GameObject spectatorDebugVisualPrefab = null;
+
+        /// <summary>
+        /// Scaling applied to spectator debug visuals.
+        /// </summary>
+        [Tooltip("Scaling applied to spectator debug visuals.")]
+        [SerializeField]
+        public float spectatorDebugVisualScale = 1.0f;
+
         private GameObject mobileRecordingServiceVisual = null;
         private IRecordingService recordingService = null;
         private IRecordingServiceVisual recordingServiceVisual = null;
@@ -93,11 +122,23 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
             {
                 case Role.User:
                     {
+                        if (userDebugVisualPrefab != null)
+                        {
+                            SpatialCoordinateSystemManager.Instance.debugVisual = userDebugVisualPrefab;
+                            SpatialCoordinateSystemManager.Instance.debugVisualScale = userDebugVisualScale;
+                        }
+
                         RunStateSynchronizationAsBroadcaster();
                     }
                     break;
                 case Role.Spectator:
                     {
+                        if (spectatorDebugVisualPrefab != null)
+                        {
+                            SpatialCoordinateSystemManager.Instance.debugVisual = spectatorDebugVisualPrefab;
+                            SpatialCoordinateSystemManager.Instance.debugVisualScale = spectatorDebugVisualScale;
+                        }
+
                         RunStateSynchronizationAsObserver();
                     }
                     break;

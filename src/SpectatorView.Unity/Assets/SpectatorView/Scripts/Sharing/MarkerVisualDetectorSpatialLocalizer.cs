@@ -14,29 +14,19 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 {
-    internal class MarkerVisualDetectorLocalizationSettings : ISpatialLocalizationSettings
+    public class MarkerVisualDetectorLocalizationSettings : ISpatialLocalizationSettings
     {
         public MarkerVisualDetectorLocalizationSettings() { }
 
         public void Serialize(BinaryWriter writer) { }
     }
 
-    internal class MarkerVisualDetectorSpatialLocalizer : SpatialLocalizer<MarkerVisualDetectorLocalizationSettings>
+    public abstract class MarkerVisualDetectorSpatialLocalizer : SpatialLocalizer<MarkerVisualDetectorLocalizationSettings>
     {
         [Tooltip("The reference to an IMarkerDetector GameObject")]
         [SerializeField]
-        private MonoBehaviour MarkerDetector = null;
+        protected MonoBehaviour MarkerDetector = null;
         private IMarkerDetector markerDetector = null;
-
-        public override Guid SpatialLocalizerId => Id;
-        public static readonly Guid Id = new Guid("2DA7D277-323F-4A0D-B3BB-B2BA6D3EF70E");
-
-#if UNITY_EDITOR
-        private void OnValidate()
-        {
-            FieldHelper.ValidateType<IMarkerDetector>(MarkerDetector);
-        }
-#endif
 
         /// <inheritdoc />
         public override bool TryCreateLocalizationSession(IPeerConnection peerConnection, MarkerVisualDetectorLocalizationSettings settings, out ISpatialLocalizationSession session)

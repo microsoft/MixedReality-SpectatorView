@@ -13,7 +13,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
 {
-    internal class MarkerVisualLocalizationSettings : ISpatialLocalizationSettings
+    public class MarkerVisualLocalizationSettings : ISpatialLocalizationSettings
     {
         public const string DiscoveryHeader = "MVISUALDISC";
         public const string CoordinateAssignedHeader = "ASSIGNID";
@@ -30,34 +30,46 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
     /// <summary>
     /// SpatialLocalizer that shows a marker
     /// </summary>
-    internal class MarkerVisualSpatialLocalizer : SpatialLocalizer<MarkerVisualLocalizationSettings>
+    public abstract class MarkerVisualSpatialLocalizer : SpatialLocalizer<MarkerVisualLocalizationSettings>
     {
-        [Tooltip("The reference to an IMarkerVisual GameObject.")]
+        [Tooltip("The reference to a prefab containing an IMarkerVisual.")]
         [SerializeField]
-        private MonoBehaviour MarkerVisual = null;
-        private IMarkerVisual markerVisual = null;
+        protected GameObject MarkerVisualPrefab = null;
+        private GameObject markerVisualGameObject = null;
+        protected IMarkerVisual markerVisual = null;
 
-        [Tooltip("The reference to the camera transform.")]
-        [SerializeField]
-        private Transform cameraTransform;
-
-        public override Guid SpatialLocalizerId => Id;
-        public static readonly Guid Id = new Guid("BA5C8EA7-439C-4E1A-9925-218A391EF309");
+        private Transform cameraTransform = null;
 
         private readonly Vector3 markerVisualPosition = Vector3.zero;
         private readonly Vector3 markerVisualRotation = new Vector3(0, 180, 0);
 
-#if UNITY_EDITOR
-        private void OnValidate()
-        {
-            FieldHelper.ValidateType<IMarkerVisual>(MarkerVisual);
-        }
-#endif
+        public abstract Guid MarkerVisualDetectorSpatialLocalizerId { get; }
 
         /// <inheritdoc />
         public override bool TryCreateLocalizationSession(IPeerConnection peerConnection, MarkerVisualLocalizationSettings settings, out ISpatialLocalizationSession session)
         {
-            markerVisual = (markerVisual == null) ? MarkerVisual as IMarkerVisual : markerVisual;
+            session = null;
+            if (markerVisual == null)
+            {
+                markerVisualGameObject = Instantiate(MarkerVisualPrefab);
+                markerVisual = markerVisualGameObject.GetComponentInChildren<IMarkerVisual>();
+                if (markerVisual == null)
+                {
+                    Debug.LogError("Marker Visual Prefab did not contain an IMarkerVisual component.");
+                    return false;
+                }
+            }
+
+            if (cameraTransform == null)
+            {
+                cameraTransform = Camera.main.transform;
+                if (cameraTransform == null)
+                {
+                    Debug.LogError("Unable to determine camera's location in the scene.");
+                    return false;
+                }
+            }
+
             session = new LocalizationSession(this, settings, peerConnection, debugLogging);
             return true;
         }
