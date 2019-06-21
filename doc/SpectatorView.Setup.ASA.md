@@ -1,7 +1,7 @@
 # Requirements
-### HoloLens
+### HoloLens 2 & HoloLens
 1. Windows PC
-2. HoloLens
+2. HoloLens 2 or HoloLens
 3. [Visual Studio 2017](https://visualstudio.microsoft.com/vs/) installed on the PC
 4. [Unity](https://unity3d.com/get-unity/download) installed on the PC
 5. [AzureSpatialAnchors v1.1.1](https://github.com/Azure/azure-spatial-anchors-samples/releases/tag/v1.1.1)
