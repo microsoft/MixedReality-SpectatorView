@@ -14,7 +14,7 @@ Not all spatial alignment strategies support all platforms. See the chart below 
 
 2. The SpatialCoordinateSystemManager then listens for network connections (This is facilitated through state synchronization's ICommandRegistry). For each connection, the SpatialCoordinateSystemManager creates a SpatialCoordinateSystemParticipant, which is responsible for monitoring and reporting coordinate state across devices. The SpatialCoordinateSystemParticipant also caches the associated network socket to allow for sending messages across devices during the spatial alignment process.
 
-3. Depending on the experience, the SpatialCoordinateSystemManager is directed to create a LocalizationSession for a specific SpatialLocalizer. For mobile experiences, the mobile device typically has a LocalizationInitializer MonoBehaviour declared in its scene that chooses the correct SpatialLocalizer and starts a localization session for itself as well as the HoloLens upon creation of a SpatialCoordinateSystemParticipant. For DSLR filming, the compositor window in the Unity editor tells both the user HoloLens and HoloLens mounted to the DSLR camera when to localize. LocalizationSession logic varies for different spatial alignment strategies. A more in-depth look at each alignment strategy can be found below.
+3. Depending on the experience, the SpatialCoordinateSystemManager is directed to create a LocalizationSession for a specific SpatialLocalizer. For mobile experiences, the mobile device typically has a LocalizationInitializer MonoBehaviour declared in its scene that chooses the correct SpatialLocalizer and starts a localization session for itself as well as the user HoloLens upon creation of a SpatialCoordinateSystemParticipant. For DSLR filming, the compositor window in the Unity editor tells both the user HoloLens and HoloLens mounted to the DSLR camera when to localize. LocalizationSession logic varies for different spatial alignment strategies. A more in-depth look at each alignment strategy can be found below.
 
 4. Once the LocalizationSession has completed, a SpatialCoordinate will have been located. The position of this SpatialCoordinate in the local application space is then cached in the SpatialCoordinateSystemParticipant. The SpatialCoordinateSystemParticipant then relays this information to its associated peer device. This allows both devices to know the location of the SpatialCoordinate in each others' local application spaces.
 
@@ -26,11 +26,20 @@ Not all spatial alignment strategies support all platforms. See the chart below 
 ### Azure Spatial Anchors
 Coming soon...
 
-### Marker Visual and Marker Detection (QR Code and ArUco Marker)
-Coming soon...
+### Marker Visuals and Marker Detection (QR Codes and ArUco Markers)
+Spatial alignment based on marker visuals and marker detection allows spectator mobile devices to align with a user HoloLens device. Different marker detectors may be used in the experience, but the general application flow is provided below:
 
-### Physical Marker Detection  (QR Code and ArUco Marker)
-Coming soon...
+1. Using a LocalizationInitializer, the mobile device instructs the user HoloLens device to create a LocalizationSession for a MarkerVisualDetectorSpatialLocalizer.
+2. After telling the user HoloLens device to localizer, the mobile device creates its own LocalizationSession using a MarkerVisualSpatialLocalizer.
+3. In the MarkerVisualSpatialLocalizer LocalizationSession, the mobile device tells the user HoloLens device what marker ids are supported by its marker visual.
+4. In the MarkerVisualDetectorSpatialLocalizer LocalizationSession, the user HoloLens device assigns the mobile device a marker id and begins marker detection using the MarkerDetectorCoordinateService.
+5. In the MarkerVisualSpatialLocalizer LocalizationSession, the mobile device receives its assigned marker id and shows a marker visual through its MarkerVisualCoordinateService.
+6. Once the user HoloLens has detected the marker being displayed on the mobile device, a SpatialCoordinate is created and the mobile device is told that the marker visual has been found. The creation of this SpatialCoordinate completes the LocalizationSession on the user HoloLens.
+7. Once informed that the marker has been found, the mobile device creates a SpatialCoordinate that reflects the marker visual's location at the time of detection. The creation of this SpatialCoordinate completes the Localizationsession on the mobile device.
+8. The SpatialCoordinate locations found on both devices are then shared with one another, which allows for the scene to be aligned. 
+
+### Physical Marker Detection  (QR Codes and ArUco Markers)
+Spatial alignment based on physical marker detection allows a spectator HoloLens device to align with a user HoloLens device.
 
 # Setup
 Different spatial alignment strategies require different external dependencies. Below, you can find setup steps for each of the supported localization strategy.
