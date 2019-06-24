@@ -14,8 +14,7 @@ Different dependencies are required for different spectator view functionality.
 > To learn more about the different spatial alignment strategies, look [here](doc/SpectatorView.SpatialAlignment.md).
 
 #### DSLR Filming
-* Setting up [DSLR camera calibration](doc/SpectatorView.Setup.Calibration.md)
-> To learn more about DSLR camera calibration, look [here](doc/SpectatorView.Calibration.md).
+* Setting up a [DSLR camera](doc/SpectatorView.Setup.DSLR.md) based experience
 
 # Debugging
 For more information on debugging Spectator View, see [here](doc/SpectatorView.Debugging.md)
