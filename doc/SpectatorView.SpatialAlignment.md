@@ -1,20 +1,20 @@
-# Spatial alignment
-1) On both the user and spectator devices, a [SpatialCoordinateSystemManager](Scripts/Sharing/SpatialCoordinateSystemManager.cs) exists and registers for network information and messages through the state synchronization [CommandService](Scripts/StateSynchronization/CommandService.cs).
+# Spatial Alignment
 
-2) When the [SpatialCoordinateSystemManager](Scripts/Sharing/SpatialCoordinateSystemManager.cs)
- observes a network connection, it creates a [SpatialCoordinateSystemParticipant](Scripts/Sharing/SpatialCoordinateSystemParticipant.cs). On the user device, a [SpatialCoordinateSystemParticipant](Scripts/Sharing/SpatialCoordinateSystemParticipant.cs) will be created for each spectator. On the spectator device, a [SpatialCoordinateSystemParticipant](Scripts/Sharing/SpatialCoordinateSystemParticipant.cs) will only be created for the user.
+### Platform Support
+Not all spatial alignment strategies support all platforms. See the chart below to determine which strategy best addresses your intended user scenarios.
 
-3) When creating the [SpatialCoordinateSystemParticipant](Scripts/Sharing/SpatialCoordinateSystemParticipant.cs), the [SpatialCoordinateSystemManager](Scripts/Sharing/SpatialCoordinateSystemManager.cs)
- tells the [SpatialCoordinateSystemParticipant](Scripts/Sharing/SpatialCoordinateSystemParticipant.cs) whether or not it is hosting the spatial coordinate system (Typically the user hosts the coordinate system, but this may not always be the case). The 
-[SpatialCoordinateSystemManager](Scripts/Sharing/SpatialCoordinateSystemManager.cs) then instructs the [SpatialCoordinateSystemParticipant](Scripts/Sharing/SpatialCoordinateSystemParticipant.cs) to localize itself relative to the shared experience.
+| Platform  Support      | HoloLens 2 | HoloLens 1 | Android | iOS |
+|:----------------------:|:----------:|:----------:|:-------:|:---:|
+| Azure Spatial Anchors  | x          | x          | x       | x   |
+| QR Code Detection      | x          |            | x       | x   |
+| ArUco Marker Detection |            | x          | x       | x   |
 
-4) When localizing, the [SpatialCoordinateSystemParticipant](Scripts/Sharing/SpatialCoordinateSystemParticipant.cs) is handed the application's [SpatialLocalizer](Scripts/Sharing/SpatialLocalizer.cs). This abstraction allows using different [SpatialLocalizers](Scripts/Sharing/SpatialLocalizer.cs) for different spatial alignment experiences (ex. Azure spatial anchors, marker detection, etc). The [SpatialCoordinateSystemParticipant](Scripts/Sharing/SpatialCoordinateSystemParticipant.cs) then instructs the [SpatialLocalizer](Scripts/Sharing/SpatialLocalizer.cs) to obtain an [ISpatialCoordinate](../Sharing/SpatialAlignment/Common/ISpatialCoordinate.cs) from its [ISpatialCoordinateService](../Sharing/SpatialAlignment/Common/ISpatialCoordinateService.cs).
+### Application Flow
+Coming soon...
 
-5) If the [SpatialLocalizer](Scripts/Sharing/SpatialLocalizer.cs) is running as a host, it creates/obtains an [ISpatialCoordinate](../Sharing/SpatialAlignment/Common/ISpatialCoordinate.cs) id. It then locates said [ISpatialCoordinate](../Sharing/SpatialAlignment/Common/ISpatialCoordinate.cs) in its own local application space.
+### Setup
+Different spatial alignment strategies require different external dependencies. Below, you can find setup steps for each of the supported localization strategy.
 
-6) After the host device locates its [ISpatialCoordinate](../Sharing/SpatialAlignment/Common/ISpatialCoordinate.cs), the [SpatialLocalizer](Scripts/Sharing/SpatialLocalizer.cs) sends the [ISpatialCoordinate](../Sharing/SpatialAlignment/Common/ISpatialCoordinate.cs) id to the [SpatialLocalizer](Scripts/Sharing/SpatialLocalizer.cs) on the non-host device. The non-host device then attempts to find the same [ISpatialCoordinate](../Sharing/SpatialAlignment/Common/ISpatialCoordinate.cs).
-
-7) After sending the [ISpatialCoordinate](../Sharing/SpatialAlignment/Common/ISpatialCoordinate.cs) id, the SpatialLocalizer declares to the [SpatialCoordinateSystemParticipant](Scripts/Sharing/SpatialCoordinateSystemParticipant.cs) that the spatial coordinate was located. The [SpatialCoordinateSystemParticipant](Scripts/Sharing/SpatialCoordinateSystemParticipant.cs) then calculates the local application origin relative to this spatial coordinate. It then sends this local application origin in spatial coordinate space to its peer [SpatialCoordinateSystemParticipant](Scripts/Sharing/SpatialCoordinateSystemParticipant.cs) on the other device (Note: both the host and non-host devices tell each other where these application origins are in the spatial coordinate system).
-
-8) Once application origins have been located for both devices in the spatial coordinate space, transforms are obtained to move content on both the host and non-host devices to the shared coordinate system (Currently, the host device's application origin is used as the real world application origin, so only content on the non-host device is updated). The [SpatialCoordinateSystemManager](Scripts/Sharing/SpatialCoordinateSystemManager.cs)
- then applies this transform to a parent game object of the main unity camera camera, which results in both devices viewing content with the same origin in world space.
+1. [Azure Spatial Anchors Setup](SpectatorView.Setup.ASA.md)
+2. [QR Code Detection](SpectatorView.Setup.QRCode.md)
+3. [ArUco Marker Detection](SpectatorView.Setup.ArUcoMarker.md)
