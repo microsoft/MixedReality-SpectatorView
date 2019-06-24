@@ -10,17 +10,26 @@ Not all spatial alignment strategies support all platforms. See the chart below 
 | ArUco Marker Detection |            | x          | x       | x   |
 
 # Application Flow
-Coming soon...
+1. On startup, SpatialLocalizers declared in the scene register themselves with the SpatialCoordinateSystemManager. Each SpatialLocalizer enables a different spatial alignment strategy and has a unique id so that it can be invoked through local or remote spatial alignment requests.
+
+2. The SpatialCoordinateSystemManager then listens for network connections (This is facilitated through state synchronization's ICommandRegistry). For each connection, the SpatialCoordinateSystemManager creates a SpatialCoordinateSystemParticipant, which is responsible for monitoring and reporting coordinate state across devices. The SpatialCoordinateSystemParticipant also caches the associated network socket to allow for sending messages across devices during the spatial alignment process.
+
+3. Depending on the experience, the SpatialCoordinateSystemManager is directed to create a LocalizationSession for a specific SpatialLocalizer. For mobile experiences, the mobile device typically has a LocalizationInitializer MonoBehaviour declared in its scene that chooses the correct SpatialLocalizer and starts a localization session for itself as well as the HoloLens upon creation of a SpatialCoordinateSystemParticipant. For DSLR filming, the compositor window in the Unity editor tells both the user HoloLens and HoloLens mounted to the DSLR camera when to localize. LocalizationSession logic varies for different spatial alignment strategies. A more in-depth look at each alignment strategy can be found below.
+
+4. Once the LocalizationSession has completed, a SpatialCoordinate will have been located. The position of this SpatialCoordinate in the local application space is then cached in the SpatialCoordinateSystemParticipant. The SpatialCoordinateSystemParticipant then relays this information to its associated peer device. This allows both devices to know the location of the SpatialCoordinate in each others' local application spaces.
+
+5. Once the SpatialCoordinate's location and orientation are known for both devices, the spectator device's camera is updated so that the observed content has a physical origin that's at the same location as the user device's local application origin. For mobile devices, this is achieved through the SpatialCoordinateTransformer class that applies an additional transform to the mobile device's tracking camera. For DSLR filming, the editor combines reported head pose information with this SpatialCoordinate information to update its camera.
+> Note: Spatial alignment relies on updating the unity camera transform on spectator devices for aligning experiences in the physical world. Its possible to move application content instead of transforming unity cameras to align scene content in the physical world. However, transforming application content can make for a more difficult time synchronizing physics state information across devices, so its suggested to update the camera transform.
 
 # Spatial Alignment Strategies
 
 ### Azure Spatial Anchors
 Coming soon...
 
-### Marker Visual and Marker Detection
+### Marker Visual and Marker Detection (QR Code and ArUco Marker)
 Coming soon...
 
-### Physical Marker Detection
+### Physical Marker Detection  (QR Code and ArUco Marker)
 Coming soon...
 
 # Setup
