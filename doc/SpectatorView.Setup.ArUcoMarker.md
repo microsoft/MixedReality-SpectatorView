@@ -18,7 +18,7 @@
 1. Obtain your HoloLens's ip address from the settings menu via Settings -> Network & Internet -> Wi-Fi -> Hardware Properties.
 2. In your Unity project, call Spectator View -> Update All Asset Caches to prepare content for state synchronization.
 
->> NOTE: Both the HoloLens and android applications should be compiled from the same PC with the same unity project. Updating the asset cache assigns unique identifiers to each item in the unity project. Doing this on different computers can break synchronization.
+> NOTE: Both the HoloLens and android applications should be compiled from the same PC with the same unity project. Updating the asset cache assigns unique identifiers to each item in the unity project. Doing this on different computers can break synchronization.
 
 ### HoloLens scene setup
 3. Add the [SpectatorView.ArUcoVisual.HoloLens prefab](Prefabs/SpectatorView.ASA.HoloLens.prefab) to the scene you intend to run on the HoloLens device.
