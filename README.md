@@ -1,8 +1,10 @@
 # Spectator View
 Spectator View is an augmented reality product that enables viewing HoloLens experiences from secondary devices. Spectator View has multiple configurations and supports a variety of scenarios from filming quick prototypes to producing keynote demos.
 
-### [Architecture](doc/SpectatorView.Architecture.md)
-### Setup
+# Architecture
+For more information on Spectator View's architecture, see [here](doc/SpectatorView.Architecture.md).
+
+# Setup
 Different dependencies are required for different spatial alignment strategies. To learn more about the various spatial alignment strategies, look [here](doc/SpectatorView.SpatialAlignment.md).
 
 #### Spatial alignment strategies
@@ -13,7 +15,8 @@ Different dependencies are required for different spatial alignment strategies. 
 #### DSLR Filming
 * Setting up [DSLR camera calibration](doc/SpectatorView.Setup.Calibration.md)
 
-### [Debugging](doc/SpectatorView.Debugging.md)
+# Debugging
+For more information on debugging Spectator View, see [here](doc/SpectatorView.Debugging.md)
 
 # Contributing
 
