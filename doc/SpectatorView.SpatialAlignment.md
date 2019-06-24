@@ -29,15 +29,15 @@ Coming soon...
 ### Marker Visuals and Marker Detection (QR Codes and ArUco Markers)
 Spatial alignment based on marker visuals and marker detection allows spectator mobile devices to align with a user HoloLens device. Different marker detectors may be used in the experience, but the general application flow is provided below:
 
-1. Using a LocalizationInitializer, the mobile device instructs the user HoloLens device to create a LocalizationSession for a MarkerVisualDetectorSpatialLocalizer.
+1. Using a LocalizationInitializer, the mobile device instructs the user HoloLens device to create a LocalizationSession for a MarkerVisualDetectorSpatialLocalizer. This requires populating and sending SpatialLocalizationSettings.
 
-2. After telling the user HoloLens device to localizer, the mobile device creates its own LocalizationSession using a MarkerVisualSpatialLocalizer.
+2. After telling the user HoloLens device to localize, the mobile device creates its own LocalizationSession using a MarkerVisualSpatialLocalizer. This again requires populating SpatialLocalizationSettings.
 
 3. In the MarkerVisualSpatialLocalizer LocalizationSession, the mobile device tells the user HoloLens device what marker ids are supported by its marker visual.
 
-4. In the MarkerVisualDetectorSpatialLocalizer LocalizationSession, the user HoloLens device assigns the mobile device a marker id and begins marker detection using the MarkerDetectorCoordinateService.
+4. In the MarkerVisualDetectorSpatialLocalizer LocalizationSession, the user HoloLens device assigns the mobile device a marker id. The user HoloLens then begins marker detection by starting coordinate discovery for the MarkerDetectorCoordinateService.
 
-5. In the MarkerVisualSpatialLocalizer LocalizationSession, the mobile device receives its assigned marker id and shows a marker visual through its MarkerVisualCoordinateService.
+5. In the MarkerVisualSpatialLocalizer LocalizationSession, the mobile device receives its assigned marker id. It then shows a marker visual by starting coordinate discovery for the MarkerVisualCoordinateService.
 
 6. Once the user HoloLens has detected the marker being displayed on the mobile device, a SpatialCoordinate is created and the mobile device is told that the marker visual has been found. The creation of this SpatialCoordinate completes the LocalizationSession on the user HoloLens.
 
