@@ -19,7 +19,7 @@
 2. In the WSA unity player settings, add the **QRCODESTRACKER_BINARY_AVAILABLE** preprocessor directive. (This is located via Build Settings -> Player Settings -> Other Settings -> 'Scripting Defined Symbols')
 3. In your Unity project, call Spectator View -> Update All Asset Caches to prepare content for state synchronization.
 
->> NOTE: Both the HoloLens 2 and android applications should be compiled from the same PC with the same unity project. Updating the asset cache assigns unique identifiers to each item in the unity project. Doing this on different computers can break synchronization.
+> NOTE: Both the HoloLens 2 and android applications should be compiled from the same PC with the same unity project. Updating the asset cache assigns unique identifiers to each item in the unity project. Doing this on different computers can break synchronization.
 
 ### HoloLens scene setup
 4. Add the [SpectatorView.QRCodeVisual.HoloLens prefab](Prefabs/SpectatorView.QRCodeVisual.HoloLens.prefab) to the scene you intend to run on the HoloLens device.
