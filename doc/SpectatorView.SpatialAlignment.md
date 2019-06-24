@@ -1,6 +1,6 @@
 # Spatial Alignment
 
-### Platform Support
+# Platform Support
 Not all spatial alignment strategies support all platforms. See the chart below to determine which strategy best addresses your intended user scenarios.
 
 | Platform  Support      | HoloLens 2 | HoloLens 1 | Android | iOS |
@@ -9,10 +9,21 @@ Not all spatial alignment strategies support all platforms. See the chart below 
 | QR Code Detection      | x          |            | x       | x   |
 | ArUco Marker Detection |            | x          | x       | x   |
 
-### Application Flow
+# Application Flow
 Coming soon...
 
-### Setup
+# Spatial Alignment Strategies
+
+### Azure Spatial Anchors
+Coming soon...
+
+### Marker Visual and Marker Detection
+Coming soon...
+
+### Physical Marker Detection
+Coming soon...
+
+# Setup
 Different spatial alignment strategies require different external dependencies. Below, you can find setup steps for each of the supported localization strategy.
 
 1. [Azure Spatial Anchors Setup](SpectatorView.Setup.ASA.md)
