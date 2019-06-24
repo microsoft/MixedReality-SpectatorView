@@ -9,7 +9,7 @@ namespace Microsoft.MixedReality.SpectatorView
 {
     internal static class UnityCompositorInterface
     {
-        private const string CompositorPluginDll = "SpectatorView.Compositor.UnityPlugin.dll";
+        private const string CompositorPluginDll = "SpectatorView.Compositor.UnityPlugin";
 
         [DllImport(CompositorPluginDll)]
         public static extern int GetFrameWidth();
