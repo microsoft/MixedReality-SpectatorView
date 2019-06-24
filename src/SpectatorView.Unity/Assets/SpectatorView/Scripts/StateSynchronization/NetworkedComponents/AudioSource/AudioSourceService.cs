@@ -9,7 +9,7 @@ using UnityEngine.Audio;
 using UnityEditor;
 #endif
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
+namespace Microsoft.MixedReality.SpectatorView
 {
     internal class AudioSourceService : ComponentBroadcasterService<AudioSourceService, AudioSourceObserver>, IAssetCache
     {

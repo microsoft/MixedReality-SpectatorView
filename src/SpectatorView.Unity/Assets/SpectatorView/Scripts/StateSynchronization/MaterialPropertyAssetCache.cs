@@ -10,7 +10,7 @@ using UnityEngine.UI;
 using UnityEditor;
 #endif
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
+namespace Microsoft.MixedReality.SpectatorView
 {
     internal class MaterialPropertyAssetCache : AssetCache
     {

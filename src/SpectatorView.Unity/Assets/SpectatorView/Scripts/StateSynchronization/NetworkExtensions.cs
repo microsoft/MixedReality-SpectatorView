@@ -5,7 +5,7 @@ using System;
 using System.IO;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
+namespace Microsoft.MixedReality.SpectatorView
 {
     /// <summary>
     /// Extension methods for writing structured CLR and Unity objects to BinaryWriter and reading those

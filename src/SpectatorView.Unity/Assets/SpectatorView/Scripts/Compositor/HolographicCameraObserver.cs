@@ -1,13 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Extensions.Experimental.Socketer;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.Compositor
+namespace Microsoft.MixedReality.SpectatorView
 {
     /// <summary>
     /// Component that connects to the HoloLens application on the holographic camera rig for synchronizing camera poses and receiving calibration data.
@@ -24,7 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.C
         private DeviceInfoObserver appDeviceObserver = null;
 
         [SerializeField]
-        [Tooltip("The port that the " + nameof(HolographicCamera.HolographicCameraBroadcaster) + " listens for connections on.")]
+        [Tooltip("The port that the " + nameof(HolographicCameraBroadcaster) + " listens for connections on.")]
         private int remotePort = 7502;
 
         protected override int RemotePort => remotePort;

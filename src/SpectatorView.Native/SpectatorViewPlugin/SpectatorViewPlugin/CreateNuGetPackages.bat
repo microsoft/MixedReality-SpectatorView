@@ -1,1 +1,0 @@
-nuget pack SpectatorViewDependencies.Unity.nuspec -Symbols

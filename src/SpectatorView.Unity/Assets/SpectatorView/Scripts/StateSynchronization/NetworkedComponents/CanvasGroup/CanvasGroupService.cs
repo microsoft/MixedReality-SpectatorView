@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
+namespace Microsoft.MixedReality.SpectatorView
 {
     internal class CanvasGroupService : ComponentBroadcasterService<CanvasGroupService, CanvasGroupObserver>
     {

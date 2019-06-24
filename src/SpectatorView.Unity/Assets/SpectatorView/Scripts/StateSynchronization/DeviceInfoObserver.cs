@@ -1,11 +1,13 @@
-﻿using System;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using Microsoft.MixedReality.Toolkit.Extensions.Experimental.Socketer;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
+namespace Microsoft.MixedReality.SpectatorView
 {
     public class DeviceInfoObserver : MonoBehaviour
     {

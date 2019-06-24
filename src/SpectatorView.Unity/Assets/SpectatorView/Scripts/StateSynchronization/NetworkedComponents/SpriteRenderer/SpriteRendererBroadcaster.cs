@@ -4,7 +4,7 @@
 using System.IO;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
+namespace Microsoft.MixedReality.SpectatorView
 {
     internal class SpriteRendererBroadcaster : RendererBroadcaster<SpriteRenderer, SpriteRendererService>
     {

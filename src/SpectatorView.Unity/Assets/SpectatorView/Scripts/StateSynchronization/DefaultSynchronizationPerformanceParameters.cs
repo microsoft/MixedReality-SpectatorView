@@ -7,7 +7,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
+namespace Microsoft.MixedReality.SpectatorView
 {
     internal class DefaultStateSynchronizationPerformanceParameters : StateSynchronizationPerformanceParameters
     {

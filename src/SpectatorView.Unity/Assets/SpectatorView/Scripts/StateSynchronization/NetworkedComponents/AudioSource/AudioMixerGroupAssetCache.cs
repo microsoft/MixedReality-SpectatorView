@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine.Audio;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
+namespace Microsoft.MixedReality.SpectatorView
 {
     [Serializable]
     internal class AudioMixerGroupAsset : AssetCacheEntry<AudioMixerGroup> { }

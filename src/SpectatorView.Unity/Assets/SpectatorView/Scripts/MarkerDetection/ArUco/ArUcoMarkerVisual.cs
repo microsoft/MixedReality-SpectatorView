@@ -2,11 +2,9 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEngine;
-
-using Microsoft.MixedReality.Toolkit.Extensions.Experimental.MarkerDetection;
 using UnityEngine.UI;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.MarkerDetection
+namespace Microsoft.MixedReality.SpectatorView
 {
     /// <summary>
     /// Controls displaying an ArUco marker on a Unity RawImage

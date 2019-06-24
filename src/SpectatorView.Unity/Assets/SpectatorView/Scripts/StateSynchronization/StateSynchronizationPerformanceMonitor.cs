@@ -6,7 +6,7 @@ using System.Diagnostics;
 using System.IO;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
+namespace Microsoft.MixedReality.SpectatorView
 {
     internal enum StateSynchronizationPerformanceFeature : byte
     {
