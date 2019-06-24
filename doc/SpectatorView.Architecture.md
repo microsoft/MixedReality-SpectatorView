@@ -33,8 +33,8 @@ For more information on spatial alignment, see [SpectatorView.SpatialAlignment](
 ### State synchronization
 For more information on state synchronization, see [SpectatorView.StateSynchronization](SpectatorView.StateSynchronization.md)
 
-### Recording
-For more information on recording, see [SpectatorView.Recording](SpectatorView.Recording.md)
+### Compositing and Recording
+For more information on compositing and recording, see [SpectatorView.Recording](SpectatorView.Recording.md)
 
 ### Calibration
 For more information on calibration, see [SpectatorView.Calibration](SpectatorView.Calibration.md)
