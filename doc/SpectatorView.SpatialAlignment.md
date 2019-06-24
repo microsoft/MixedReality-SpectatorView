@@ -1,7 +1,7 @@
 # Spatial Alignment
 
 ### Platform Support
-Not all spatial alignment strategies support all platforms. See the chart below to determine which strategy addresses your user scenarios.
+Not all spatial alignment strategies support all platforms. See the chart below to determine which strategy best addresses your intended user scenarios.
 
 | Platform  Support      | HoloLens 2 | HoloLens 1 | Android | iOS |
 |:----------------------:|:----------:|:----------:|:-------:|:---:|
