@@ -1,6 +1,6 @@
 # Debug Logging
 
-Majority of the Spectator View related classes will have 'Debug Logging' flags that can be toggled on and off through the Unity inspector. Enabling these flags results in richer state information being output to log files as well as debug consoles. It's suggested to enable all of these flags when debugging Spectator View related issues.
+The majority of the Spectator View related classes will have 'Debug Logging' flags that can be toggled on and off through the Unity inspector. Enabling these flags results in richer state information being output to log files as well as debug consoles. It's suggested to enable all of these flags when debugging Spectator View related issues. Most if not all of the prefabs provided in this project will have these flags enabled by default.
 
 # Show Debug Visuals
 
