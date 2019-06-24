@@ -1,7 +1,9 @@
 # State synchronization
 
 ### Pre-compilation
-1) All of the assets in the unity project are assigned unique identifiers. This allows content in the user's application scene to be recreated/updated/destroyed dynamically in the spectator's application scene. This is done through calling [Spectator View -> Update All Asset Caches](Scripts/Editor/StateSynchronizationMenuItems.cs) in the Unity toolbar.
+1) All of the assets in the unity project need to be assigned unique identifiers. This allows content in the user's application scene to be recreated/updated/destroyed dynamically in the spectator's application scene. This is done through calling [Spectator View -> Update All Asset Caches](Scripts/Editor/StateSynchronizationMenuItems.cs) in the Unity toolbar prior to compiling the application.
+
+> Note: Adding, updating and removing assets will require updating these asset caches as well as re-compiling each platform.
 
 ### In application
 1) On the user device, a [StateSynchronizationBroadcaster](Scripts/StateSynchronization/StateSynchronizationBroadcaster.cs) is enabled, while on the spectator device a 
