@@ -4,11 +4,10 @@
 using UnityEngine;
 
 using System.Runtime.CompilerServices;
-using Microsoft.MixedReality.Toolkit.Extensions.Experimental.ScreenRecording;
 
-[assembly: InternalsVisibleToAttribute("Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.Editor")]
+[assembly: InternalsVisibleToAttribute("Microsoft.MixedReality.SpectatorView.Editor")]
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
+namespace Microsoft.MixedReality.SpectatorView
 {
     public enum Role
     {

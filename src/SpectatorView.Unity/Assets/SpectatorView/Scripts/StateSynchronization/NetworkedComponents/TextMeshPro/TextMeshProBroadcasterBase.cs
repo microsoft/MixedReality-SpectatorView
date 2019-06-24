@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Extensions.Experimental.Socketer;
 using System;
 using System.Collections.Generic;
 
@@ -11,7 +10,7 @@ using TMPro;
 using UnityEngine;
 #endif
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
+namespace Microsoft.MixedReality.SpectatorView
 {
     internal abstract class TextMeshProBroadcasterBase<TComponentService> : ComponentBroadcaster<TComponentService, TextMeshProBroadcasterChangeType>
         where TComponentService : Singleton<TComponentService>, IComponentBroadcasterService

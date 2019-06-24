@@ -4,9 +4,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-using Microsoft.MixedReality.Toolkit.Extensions.Experimental.ScreenRecording;
-
-namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.UI
+namespace Microsoft.MixedReality.SpectatorView
 {
     public class RecordingServiceVisual : MonoBehaviour,
         IRecordingServiceVisual,

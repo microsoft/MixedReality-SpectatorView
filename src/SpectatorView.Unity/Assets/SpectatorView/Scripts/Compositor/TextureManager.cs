@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 using System;
 using UnityEngine.Rendering;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.Compositor
+namespace Microsoft.MixedReality.SpectatorView
 {
     /// <summary>
     /// Manages the textures used for compositing holograms with video, and controls

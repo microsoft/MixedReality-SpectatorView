@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.UI
+namespace Microsoft.MixedReality.SpectatorView
 {
     /// <summary>
     /// Helper class that scales mobile UI to show at same physical size across devices

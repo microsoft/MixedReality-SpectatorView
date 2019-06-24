@@ -4,7 +4,7 @@
 using System.IO;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.Compositor
+namespace Microsoft.MixedReality.SpectatorView
 {
     /// <summary>
     /// Used for loading/applying camera intrinsics and camera extrinsics obtained through Spectator View's default calibration process.

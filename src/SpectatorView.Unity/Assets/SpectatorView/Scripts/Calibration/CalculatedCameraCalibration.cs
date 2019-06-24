@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
+namespace Microsoft.MixedReality.SpectatorView
 {
     [Serializable]
     public class CalculatedCameraCalibration

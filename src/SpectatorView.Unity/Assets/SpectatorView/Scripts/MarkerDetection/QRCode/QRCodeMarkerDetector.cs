@@ -6,13 +6,8 @@
 #define ENABLE_QRCODES
 #endif
 
-#if QRCODESTRACKER_BINARY_AVAILABLE
-using Microsoft.MixedReality.Toolkit.Extensions.Experimental.QRCodesTracker;
-#endif
-
 using UnityEngine;
 
-using Microsoft.MixedReality.Toolkit.Extensions.Experimental.MarkerDetection;
 using System.Collections.Generic;
 using System;
 
@@ -21,7 +16,7 @@ using Windows.Perception.Spatial;
 using Windows.Perception.Spatial.Preview;
 #endif
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.MarkerDetection
+namespace Microsoft.MixedReality.SpectatorView
 {
     /// <summary>
     /// QR code detector that implements <see cref="Microsoft.MixedReality.Toolkit.Extensions.MarkerDetection.IVariableSizeMarkerDetector"/>

@@ -1,9 +1,9 @@
-﻿using UnityEngine;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Extensions.Experimental.MarkerDetection;
-using Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.Utilities;
+using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.UI
+namespace Microsoft.MixedReality.SpectatorView
 {
     /// <summary>
     /// Helper class for obtaining additional scaling information to apply to ArUco Marker Images

@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.Compositor
+namespace Microsoft.MixedReality.SpectatorView
 {
     /// <summary>
     /// Manages compositing real-world video and holograms together and creating an output

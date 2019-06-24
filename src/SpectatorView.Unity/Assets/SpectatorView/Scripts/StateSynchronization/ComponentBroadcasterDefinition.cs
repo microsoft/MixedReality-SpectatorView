@@ -4,7 +4,7 @@
 using System;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
+namespace Microsoft.MixedReality.SpectatorView
 {
     /// <summary>
     /// Component which defines when and how to attach a ComponentBroadcaster to a GameObject.

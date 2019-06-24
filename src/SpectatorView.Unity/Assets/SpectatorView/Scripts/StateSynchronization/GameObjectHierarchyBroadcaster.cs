@@ -1,10 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Extensions.Experimental.Socketer;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
+namespace Microsoft.MixedReality.SpectatorView
 {
     /// <summary>
     /// Indicates to the StateSynchronizationBroadcaster that the GameObject

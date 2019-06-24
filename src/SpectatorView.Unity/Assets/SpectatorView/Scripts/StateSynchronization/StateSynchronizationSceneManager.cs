@@ -7,13 +7,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEngine;
-using Microsoft.MixedReality.Toolkit.Extensions.Experimental.Socketer;
 
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
+namespace Microsoft.MixedReality.SpectatorView
 {
     /// <summary>
     /// Service that registers ComponentBroadcasterDefinitions used to create ComponentBroadcasters for components

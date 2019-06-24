@@ -3,7 +3,7 @@
 
 using System;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
+namespace Microsoft.MixedReality.SpectatorView
 {
     [Flags]
     internal enum TextMeshProBroadcasterChangeType : byte

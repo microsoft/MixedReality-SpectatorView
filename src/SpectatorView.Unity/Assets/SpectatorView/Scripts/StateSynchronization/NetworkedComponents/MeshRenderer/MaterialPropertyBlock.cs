@@ -7,7 +7,7 @@ using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityMaterialPropertyBlock = UnityEngine.MaterialPropertyBlock;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
+namespace Microsoft.MixedReality.SpectatorView
 {
     internal class MaterialPropertyBlock
     {

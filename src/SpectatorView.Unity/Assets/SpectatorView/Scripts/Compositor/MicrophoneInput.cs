@@ -5,7 +5,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView.Compositor
+namespace Microsoft.MixedReality.SpectatorView
 {
     /// <summary>
     /// Captures microphone input and plays that input back through an AudioSource.

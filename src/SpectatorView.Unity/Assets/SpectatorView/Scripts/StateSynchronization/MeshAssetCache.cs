@@ -6,7 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Extensions.Experimental.SpectatorView
+namespace Microsoft.MixedReality.SpectatorView
 {
     [Serializable]
     internal class MeshAsset : AssetCacheEntry<Mesh> { }
