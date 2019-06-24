@@ -27,7 +27,7 @@ Not all spatial alignment strategies support all platforms. See the chart below 
 Coming soon...
 
 ### Marker Visuals and Marker Detection (QR Codes and ArUco Markers)
-Spatial alignment based on marker visuals and marker detection allows spectator mobile devices to align with a user HoloLens device. Different marker detectors may be used in the experience, but the general application flow is provided below:
+Spatial alignment based on marker visuals and marker detection allows spectator mobile devices to align with a user HoloLens device. Different marker detectors may be used in the experience (QR Code detection is supported for HoloLens 2, while ArUco marker detection is supported for HoloLens 1), but the general application flow is provided below:
 
 1. Using a LocalizationInitializer, the mobile device instructs the user HoloLens device to create a LocalizationSession for a MarkerVisualDetectorSpatialLocalizer. This requires populating and sending SpatialLocalizationSettings.
 
@@ -46,7 +46,15 @@ Spatial alignment based on marker visuals and marker detection allows spectator 
 8. The SpatialCoordinate locations found on both devices are then shared with one another, which allows for the scene to be aligned. 
 
 ### Physical Marker Detection  (QR Codes and ArUco Markers)
-Spatial alignment based on physical marker detection allows a spectator HoloLens device to align with a user HoloLens device.
+Spatial alignment based on physical marker detection allows a spectator HoloLens device to align with a user HoloLens device. Again, different marker detectors may be used in this experience, but the application flow is the following:
+
+1. The SpatialCoordinateSystemManager is told to start localization using a MarkerDetectorSpatialLocalizer. For the DSLR filming experience, the compositor window in the editor can be used to generate this alignment request. For non-DSLR filming, a LocalizationInitializer can be added to both devices. Regardless of how localization is started, SpatialLocalizationSettings need to be defined and provided to the MarkerDetectorSpatialLocalizer to create a LocalizationSession.
+
+2. In the created LocalizationSession, a call is made to a MarkerDetectorCoordinateService to start discovering SpatialCoordinates, which kicks off marker detection.
+
+3. Once a marker has been found that has the id provided thorugh the SpatialLocalizationSettings, a SpatialCoordinate is created, completing the LocalizationSession.
+
+4. After SpatialCoordinate locations are found on both devices, they are shared with one another through the SpatialCoordinateSystemParticipant, which allows for the scene to be aligned. 
 
 # Setup
 Different spatial alignment strategies require different external dependencies. Below, you can find setup steps for each of the supported localization strategy.
