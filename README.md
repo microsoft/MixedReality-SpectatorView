@@ -4,9 +4,15 @@ Spectator View is an augmented reality product that enables viewing HoloLens exp
 ### [Architecture](doc/SpectatorView.Architecture.md)
 ### Setup
 Different dependencies are required for different spatial alignment strategies. To learn more about the various spatial alignment strategies, look [here](doc/SpectatorView.SpatialAlignment.md).
+
+#### Spatial alignment strategies
 * Setting up an [Azure Spatial Anchors](doc/SpectatorView.Setup.ASA.md) based experience
 * Setting up a [QR Code](doc/SpectatorView.Setup.md) based experience
 * Setting up an [ArUco Marker](doc/SpectatorView.Setup.md) based experience
+
+#### DSLR Filming
+* Setting up [DSLR camera calibration](doc/SpectatorView.Setup.Calibration.md)
+
 ### [Debugging](doc/SpectatorView.Debugging.md)
 
 # Contributing
