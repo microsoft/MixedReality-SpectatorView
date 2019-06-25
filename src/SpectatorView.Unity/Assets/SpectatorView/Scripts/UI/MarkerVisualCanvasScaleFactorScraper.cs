@@ -47,7 +47,7 @@ namespace Microsoft.MixedReality.SpectatorView
                 return;
             }
 
-            Debug.Log("ArUcoMarkerVisual found to have parent canvas with scale factor of: " + _parentCanvas.scaleFactor);
+            Debug.Log("MarkerVisual found to have parent canvas with scale factor of: " + _parentCanvas.scaleFactor);
             _markerVisual.TrySetScaleFactor(1.0f / _parentCanvas.scaleFactor);
         }
     }
