@@ -168,7 +168,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
 
                 if (GUILayout.Button(new GUIContent("Locate Shared Spatial Coordinate", "Detects the shared location used to position objects in the same physical location on multiple devices")))
                 {
-                    CompositorWorldAnchorLocalizationManager.Instance.RunRemoteLocalizationWithWorldAnchorPersistence(spatialCoordinateSystemParticipant, MarkerDetectorSpatialLocalizer.Id, new MarkerDetectorLocalizationSettings
+                    CompositorWorldAnchorLocalizationManager.Instance.RunRemoteLocalizationWithWorldAnchorPersistence(spatialCoordinateSystemParticipant, ArUcoMarkerDetectorSpatialLocalizer.Id, new MarkerDetectorLocalizationSettings
                     {
                         MarkerID = 0,
                         MarkerSize = 0.1f,

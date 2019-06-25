@@ -24,6 +24,13 @@ namespace Microsoft.MixedReality.SpectatorView
 #pragma warning restore 67
 
         /// <summary>
+        /// Check to enable debug logging.
+        /// </summary>
+        [Tooltip(" Check to enable debug logging.")]
+        [SerializeField]
+        private bool _debugLogging = false;
+
+        /// <summary>
         /// Physical size of markers being detected
         /// </summary>
         [Tooltip("Physical size of markers being detected")]
@@ -113,6 +120,14 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
+        private void DebugLog(string message)
+        {
+            if (_debugLogging)
+            {
+                Debug.Log($"ArUcoMarkerDetector: {message}");
+            }
+        }
+
         /// <inheritdoc/>
         public void StartDetecting()
         {
@@ -121,7 +136,7 @@ namespace Microsoft.MixedReality.SpectatorView
             {
                 _detecting = true;
                 _markerObservations.Clear();
-                Debug.Log("Starting ArUco marker detection");
+                DebugLog("Starting ArUco marker detection");
                 SetupCamera();
             }
 #else
@@ -134,7 +149,7 @@ namespace Microsoft.MixedReality.SpectatorView
         {
             _detecting = false;
 #if UNITY_WSA
-            Debug.Log("Stopping ArUco marker detection");
+            DebugLog("Stopping ArUco marker detection");
             CleanUpCamera();
 #else
             Debug.LogError("Capturing is not supported on this platform");
@@ -157,7 +172,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
         private async void SetupCamera()
         {
-            Debug.Log("Setting up HoloLensCamera");
+            DebugLog("Setting up HoloLensCamera");
             if (_holoLensCamera == null)
                 _holoLensCamera = new HoloLensCamera(CaptureMode.SingleLowLatency, PixelFormat.BGRA8);
 
@@ -170,7 +185,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
         private void CleanUpCamera()
         {
-            Debug.Log("Cleaning up HoloLensCamera");
+            DebugLog("Cleaning up HoloLensCamera");
             if (_holoLensCamera != null)
             {
                 _holoLensCamera.Dispose();
@@ -183,7 +198,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
         private void CameraInitialized(HoloLensCamera sender, bool initializeSuccessful)
         {
-            Debug.Log("HoloLensCamera initialized");
+            DebugLog("HoloLensCamera initialized");
             StreamDescription streamDesc = sender.StreamSelector.Select(StreamCompare.EqualTo, 1280, 720).StreamDescriptions[0];
             sender.Start(streamDesc);
         }
@@ -192,7 +207,7 @@ namespace Microsoft.MixedReality.SpectatorView
         {
             if (startSuccessful)
             {
-                Debug.Log("HoloLensCamera successfully started");
+                DebugLog("HoloLensCamera successfully started");
             }
             else
             {
@@ -203,7 +218,7 @@ namespace Microsoft.MixedReality.SpectatorView
         private void FrameCaptured(HoloLensCamera sender, CameraFrame frame)
         {
 #if UNITY_WSA
-            Debug.Log("Image obtained from HoloLens");
+            DebugLog("Image obtained from HoloLens");
             if (_api != null &&
                 _api.IsInitialized)
             {
@@ -261,15 +276,16 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
-        private static void LogMessagesAboutMarker(string markerState, IReadOnlyList<Marker> allMarkers, IReadOnlyList<Marker> inlierMarkers, Marker averageMarker, Marker averageInlierMarker)
+        private void LogMessagesAboutMarker(string markerState, IReadOnlyList<Marker> allMarkers, IReadOnlyList<Marker> inlierMarkers, Marker averageMarker, Marker averageInlierMarker)
         {
+            int markerId = allMarkers.Count > 0 ? allMarkers[0].Id : -1;
             double positionStandardDeviation = StandardDeviation(allMarkers, averageMarker, marker => (marker.Position - averageMarker.Position).magnitude);
             double rotationStandardDeviation = StandardDeviation(allMarkers, averageMarker, marker => Quaternion.Angle(marker.Rotation, averageMarker.Rotation));
 
             double inlierPositionStandardDeviation = StandardDeviation(inlierMarkers, averageInlierMarker, marker => (marker.Position - averageInlierMarker.Position).magnitude);
             double inlierRotationStandardDeviation = StandardDeviation(inlierMarkers, averageInlierMarker, marker => Quaternion.Angle(marker.Rotation, averageInlierMarker.Rotation));
 
-            Debug.Log($"Calculated {markerState} marker position with {inlierMarkers.Count} markers out of {allMarkers.Count} available. Initial position standard deviation was {positionStandardDeviation} and rotation was {rotationStandardDeviation}. After outliers, position deviation was {inlierPositionStandardDeviation} and rotation was {inlierRotationStandardDeviation}. Final position was {averageInlierMarker.Position} which is {(averageInlierMarker.Position - averageMarker.Position).magnitude} away from original pose.");
+            DebugLog($"Marker Id: {markerId} - Calculated {markerState} marker position with {inlierMarkers.Count} markers out of {allMarkers.Count} available. Initial position standard deviation was {positionStandardDeviation} and rotation was {rotationStandardDeviation}. After outliers, position deviation was {inlierPositionStandardDeviation} and rotation was {inlierRotationStandardDeviation}. Final position was {averageInlierMarker.Position} which is {(averageInlierMarker.Position - averageMarker.Position).magnitude} away from original pose.");
         }
 
         private static Marker CalculateAverageMarker(IReadOnlyList<Marker> markers)
@@ -292,19 +308,16 @@ namespace Microsoft.MixedReality.SpectatorView
         private static Quaternion CalculateAverageQuaternion(Quaternion[] quaternions)
         {
             Quaternion mean = quaternions[0];
-            var text = "Quaternions: ";
             for (int i = 1; i < quaternions.Length; i++)
             {
-                text += "{" + quaternions[i].x + ", " + quaternions[i].y + ", " + quaternions[i].z + ", " + quaternions[i].w + "}";
                 float weight = 1.0f / (i + 1);
                 mean = Quaternion.Slerp(mean, quaternions[i], weight);
             }
-            Debug.Log(text);
-            Debug.Log("Mean Quaternion: " + mean.x + ", " + mean.y + ", " + mean.z + ", " + mean.w);
+
             return mean;
         }
 
-        private static List<Marker> CalculateInlierMarkerSet(IReadOnlyList<Marker> allMarkers, Marker averageMarker, double markerInlierStandardDeviationThreshold)
+        private List<Marker> CalculateInlierMarkerSet(IReadOnlyList<Marker> allMarkers, Marker averageMarker, double markerInlierStandardDeviationThreshold)
         {
             double positionStandardDeviation, rotationStandardDeviation;
             CalculateStandardDeviations(allMarkers, averageMarker, out positionStandardDeviation, out rotationStandardDeviation);
@@ -318,7 +331,7 @@ namespace Microsoft.MixedReality.SpectatorView
                 }
                 else
                 {
-                    Debug.Log($"Found an outlier: {allMarkers[i].Position} was {(allMarkers[i].Position - averageMarker.Position).magnitude} away and {Quaternion.Angle(allMarkers[i].Rotation, averageMarker.Rotation)} degrees from average. Standard deviation was pos:{positionStandardDeviation} and rot:{rotationStandardDeviation}");
+                    DebugLog($"Marker Id: {allMarkers[i].Id} - Found an outlier: {allMarkers[i].Position} was {(allMarkers[i].Position - averageMarker.Position).magnitude} away and {Quaternion.Angle(allMarkers[i].Rotation, averageMarker.Rotation)} degrees from average. Standard deviation was pos:{positionStandardDeviation} and rot:{rotationStandardDeviation}");
                 }
             }
 
@@ -395,7 +408,7 @@ namespace Microsoft.MixedReality.SpectatorView
                     // Find a set of markers that are inliers (within a threshold of the average marker).
                     // This is used to reject spurious marker detections outside the norm to prevent them from polluting
                     // the final marker result.
-                    var inliers = CalculateInlierMarkerSet(markers, averageMarker, detector.MarkerInlierStandardDeviationThreshold);
+                    var inliers = detector.CalculateInlierMarkerSet(markers, averageMarker, detector.MarkerInlierStandardDeviationThreshold);
                     if (inliers.Count >= detector.RequiredInlierCount)
                     {
                         // Recompute the average marker using only the set of inliers.
@@ -410,12 +423,12 @@ namespace Microsoft.MixedReality.SpectatorView
                         if (positionStandardDeviation <= detector.MaximumPositionDistanceStandardDeviation && rotationStandardDeviation <= detector.MaximumRotationAngleStandardDeviation)
                         {
                             completedMarker = averageInlierMarker;
-                            LogMessagesAboutMarker("final", markers, inliers, averageMarker, averageInlierMarker);
+                            detector.LogMessagesAboutMarker("final", markers, inliers, averageMarker, averageInlierMarker);
                             return true;
                         }
                         else
                         {
-                            LogMessagesAboutMarker("rejected", markers, inliers, averageMarker, averageInlierMarker);
+                            detector.LogMessagesAboutMarker("rejected", markers, inliers, averageMarker, averageInlierMarker);
                         }
                     }
                 }
