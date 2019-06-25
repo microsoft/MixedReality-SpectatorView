@@ -171,7 +171,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
                     CompositorWorldAnchorLocalizationManager.Instance.RunRemoteLocalizationWithWorldAnchorPersistence(spatialCoordinateSystemParticipant, ArUcoMarkerDetectorSpatialLocalizer.Id, new MarkerDetectorLocalizationSettings
                     {
                         MarkerID = 0,
-                        MarkerSize = 0.067f,
+                        MarkerSize = 0.1f,
                     });
                 }
 
