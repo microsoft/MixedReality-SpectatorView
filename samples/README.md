@@ -22,7 +22,7 @@ Once you have the required software, follow these steps:
 
 This repository currently has the following samples:
 
-- //BUILD 2019 Demo
+- [//BUILD 2019 Demo](./Build2019Demo.Unity/README.md)
 
 ## Troubleshooting
 
