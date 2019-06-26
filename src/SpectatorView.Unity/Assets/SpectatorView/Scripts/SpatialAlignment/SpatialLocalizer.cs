@@ -43,6 +43,8 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
+        protected abstract bool IsSupported { get; }
+
         protected virtual void Start()
         {
             if (!SpatialCoordinateSystemManager.IsInitialized)
@@ -51,12 +53,15 @@ namespace Microsoft.MixedReality.SpectatorView
                 return;
             }
 
-            SpatialCoordinateSystemManager.Instance.RegisterSpatialLocalizer(this);
+            if (IsSupported)
+            {
+                SpatialCoordinateSystemManager.Instance.RegisterSpatialLocalizer(this);
+            }
         }
 
         protected virtual void OnDestroy()
         {
-            if (SpatialCoordinateSystemManager.IsInitialized)
+            if (SpatialCoordinateSystemManager.IsInitialized && IsSupported)
             {
                 SpatialCoordinateSystemManager.Instance.UnregisterSpatialLocalizer(this);
             }

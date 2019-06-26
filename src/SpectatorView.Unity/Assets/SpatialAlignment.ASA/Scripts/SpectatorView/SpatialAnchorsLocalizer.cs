@@ -34,6 +34,18 @@ namespace Microsoft.MixedReality.SpectatorView
         [Tooltip("Rotation of the anchor used for localization.")]
         private Vector3 anchorRotation = Vector3.zero;
 
+        protected override bool IsSupported
+        {
+            get
+            {
+#if SPATIALALIGNMENT_ASA && (UNITY_WSA || UNITY_ANDROID)
+                return true;
+#else
+                return false;
+#endif
+            }
+        }
+
         public override bool TryDeserializeSettings(BinaryReader reader, out SpatialAnchorsConfiguration settings)
         {
             return SpatialAnchorsConfiguration.TryDeserialize(reader, out settings);

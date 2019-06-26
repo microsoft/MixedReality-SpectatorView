@@ -20,6 +20,8 @@ namespace Microsoft.MixedReality.SpectatorView
     /// </summary>
     public class SpectatorView : MonoBehaviour
     {
+        public const string SettingsPrefabName = "SpectatorViewSettings";
+
         /// <summary>
         /// Role of the device in the spectator view experience.
         /// </summary>
@@ -57,21 +59,6 @@ namespace Microsoft.MixedReality.SpectatorView
         [SerializeField]
         private StateSynchronizationObserver stateSynchronizationObserver = null;
 
-        [Header("Recording")]
-        /// <summary>
-        /// Check to enable the mobile recording service.
-        /// </summary>
-        [Tooltip("Check to enable the mobile recording service.")]
-        [SerializeField]
-        public bool enableMobileRecordingService = true;
-
-        /// <summary>
-        /// Prefab for creating a mobile recording service visual.
-        /// </summary>
-        [Tooltip("Prefab for creating a mobile recording service visual.")]
-        [SerializeField]
-        public GameObject mobileRecordingServiceVisualPrefab = null;
-
         [Header("Debugging")]
         /// <summary>
         /// Debug visual prefab created by the user.
@@ -101,13 +88,21 @@ namespace Microsoft.MixedReality.SpectatorView
         [SerializeField]
         public float spectatorDebugVisualScale = 1.0f;
 
+#if UNITY_ANDROID || UNITY_IOS
         private GameObject mobileRecordingServiceVisual = null;
         private IRecordingService recordingService = null;
         private IRecordingServiceVisual recordingServiceVisual = null;
+#endif
 
         private void Awake()
         {
             Debug.Log($"SpectatorView is running as: {Role.ToString()}. Expected User IPAddress: {userIpAddress}");
+
+            GameObject settings = Resources.Load<GameObject>(SettingsPrefabName);
+            if (settings != null)
+            {
+                Instantiate(settings, null);
+            }
 
             if (stateSynchronizationSceneManager == null ||
                 stateSynchronizationBroadcaster == null ||
@@ -170,10 +165,11 @@ namespace Microsoft.MixedReality.SpectatorView
         private void SetupRecordingService()
         {
 #if UNITY_ANDROID || UNITY_IOS
-            if (enableMobileRecordingService &&
-                mobileRecordingServiceVisualPrefab != null)
+            if (MobileRecordingSettings.IsInitialized && 
+                MobileRecordingSettings.Instance.EnableMobileRecordingService &&
+                MobileRecordingSettings.Instance.MobileRecordingServiceVisualPrefab != null)
             {
-                mobileRecordingServiceVisual = Instantiate(mobileRecordingServiceVisualPrefab);
+                mobileRecordingServiceVisual = Instantiate(MobileRecordingSettings.Instance.MobileRecordingServiceVisualPrefab);
 
                 if (!TryCreateRecordingService(out recordingService))
                 {

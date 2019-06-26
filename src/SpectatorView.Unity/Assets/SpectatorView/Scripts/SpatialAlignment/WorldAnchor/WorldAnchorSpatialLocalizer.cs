@@ -24,6 +24,18 @@ namespace Microsoft.MixedReality.SpectatorView
         /// <inheritdoc />
         public override Guid SpatialLocalizerId => Id;
 
+        protected override bool IsSupported
+        {
+            get
+            {
+#if UNITY_WSA
+                return true;
+#else
+                return false;
+#endif
+            }
+        }
+
         protected override void Start()
         {
             base.Start();

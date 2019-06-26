@@ -104,22 +104,28 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
         [MenuItem("Spectator View/Edit Settings", priority = 202)]
         private static void EditCustomSettingsProperties()
         {
-            GameObject prefab = Resources.Load<GameObject>(StateSynchronizationSceneManager.SettingsPrefabName);
+            GameObject prefab = Resources.Load<GameObject>(SpectatorView.SettingsPrefabName);
             if (prefab == null)
             {
-                GameObject hierarchyPrefab = new GameObject(StateSynchronizationSceneManager.SettingsPrefabName);
+                GameObject hierarchyPrefab = new GameObject(SpectatorView.SettingsPrefabName);
                 hierarchyPrefab.AddComponent<BroadcasterSettings>();
+                hierarchyPrefab.AddComponent<SpatialLocalizationInitializationSettings>();
+                hierarchyPrefab.AddComponent<MobileRecordingSettings>();
 
                 AssetCache.EnsureAssetDirectoryExists();
 #if UNITY_2018_3_OR_NEWER
-                prefab = PrefabUtility.SaveAsPrefabAsset(hierarchyPrefab, AssetCache.GetAssetPath(StateSynchronizationSceneManager.SettingsPrefabName, ".prefab"));
+                prefab = PrefabUtility.SaveAsPrefabAsset(hierarchyPrefab, AssetCache.GetAssetPath(SpectatorView.SettingsPrefabName, ".prefab"));
 #else
                 prefab = PrefabUtility.CreatePrefab(AssetCache.GetAssetPath(StateSynchronizationSceneManager.SettingsPrefabName, ".prefab"), hierarchyPrefab);
 #endif
                 Object.DestroyImmediate(hierarchyPrefab);
             }
 
+#if UNITY_2018_3_OR_NEWER
+            AssetDatabase.OpenAsset(prefab);
+#else
             Selection.activeObject = prefab;
+#endif
         }
     }
 }

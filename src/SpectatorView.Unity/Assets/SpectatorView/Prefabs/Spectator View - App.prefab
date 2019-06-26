@@ -1,5 +1,50 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &415470005723002659
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7196902079332765860}
+  - component: {fileID: 8396631008393852441}
+  m_Layer: 0
+  m_Name: CameraTransform
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7196902079332765860
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 415470005723002659}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4941633254257257630}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8396631008393852441
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 415470005723002659}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3217623fe6ba03242a9c3d8c66f4a71a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  debugLogging: 1
+  sharedCoordinateOrigin: {fileID: 0}
 --- !u!1 &4941633253096476538
 GameObject:
   m_ObjectHideFlags: 0
@@ -375,6 +420,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 3998944255825601304}
+  - {fileID: 7196902079332765860}
   m_Father: {fileID: 4941633254297953243}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -385,7 +431,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4941633254257257631}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5a6f73afd1777564288907da74b2d4af, type: 3}
   m_Name: 
@@ -458,8 +504,12 @@ MonoBehaviour:
   stateSynchronizationSceneManager: {fileID: 4941633253159564537}
   stateSynchronizationBroadcaster: {fileID: 4941633254549859856}
   stateSynchronizationObserver: {fileID: 4941633254517527404}
-  enableMobileRecordingService: 1
-  mobileRecordingServiceVisualPrefab: {fileID: 0}
+  userDebugVisualPrefab: {fileID: 1958541147728546, guid: f115aa95a7b0e49498ffb20f0b5278d0,
+    type: 3}
+  userDebugVisualScale: 0.02
+  spectatorDebugVisualPrefab: {fileID: 3504969358525992055, guid: e82587d5d3f352d42ad9675adaba5b35,
+    type: 3}
+  spectatorDebugVisualScale: 0.02
 --- !u!1 &4941633254374932144
 GameObject:
   m_ObjectHideFlags: 0
@@ -613,6 +663,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a244e3e3278e0a24fa787aef94e0e017, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _debugLogging: 0
   _markerSize: 0.03
   _markerPositionBehavior: 0
   RequiredObservations: 5
