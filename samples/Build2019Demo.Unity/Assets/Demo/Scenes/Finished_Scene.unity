@@ -1149,6 +1149,56 @@ PrefabInstance:
       propertyPath: m_isInputParsingRequired
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2707959193023178861, guid: 5074471a74f9fc2428e879bbdd13bac8,
+        type: 3}
+      propertyPath: checkForComponentBroadcasters
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2707959193023178861, guid: 5074471a74f9fc2428e879bbdd13bac8,
+        type: 3}
+      propertyPath: renderQueue
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4865258685378875829, guid: 5074471a74f9fc2428e879bbdd13bac8,
+        type: 3}
+      propertyPath: checkForComponentBroadcasters
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4865258685378875829, guid: 5074471a74f9fc2428e879bbdd13bac8,
+        type: 3}
+      propertyPath: renderQueue
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4434035381507828104, guid: 5074471a74f9fc2428e879bbdd13bac8,
+        type: 3}
+      propertyPath: checkForComponentBroadcasters
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4434035381507828104, guid: 5074471a74f9fc2428e879bbdd13bac8,
+        type: 3}
+      propertyPath: renderQueue
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8169861176136161215, guid: 5074471a74f9fc2428e879bbdd13bac8,
+        type: 3}
+      propertyPath: checkForComponentBroadcasters
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8169861176136161215, guid: 5074471a74f9fc2428e879bbdd13bac8,
+        type: 3}
+      propertyPath: renderQueue
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4547642033525007367, guid: 5074471a74f9fc2428e879bbdd13bac8,
+        type: 3}
+      propertyPath: checkForComponentBroadcasters
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4547642033525007367, guid: 5074471a74f9fc2428e879bbdd13bac8,
+        type: 3}
+      propertyPath: renderQueue
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5074471a74f9fc2428e879bbdd13bac8, type: 3}
 --- !u!4 &3186903327491389440 stripped

@@ -9,10 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1194455710423080315}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4cf55fcc48602c044aaa5095865eef1e, type: 3}
+  m_Script: {fileID: 11500000, guid: 50acc959c89b8fa4a94739da47517392, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  checkForSynchronizedComponents: 1
+  checkForComponentBroadcasters: 1
   shaderKeywords: 2
   renderQueue: 1
   materialProperties: 2
@@ -27,10 +27,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1194455710827732819}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4cf55fcc48602c044aaa5095865eef1e, type: 3}
+  m_Script: {fileID: 11500000, guid: 50acc959c89b8fa4a94739da47517392, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  checkForSynchronizedComponents: 1
+  checkForComponentBroadcasters: 1
   shaderKeywords: 2
   renderQueue: 1
   materialProperties: 2
@@ -45,10 +45,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1751958004823939316}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4cf55fcc48602c044aaa5095865eef1e, type: 3}
+  m_Script: {fileID: 11500000, guid: 50acc959c89b8fa4a94739da47517392, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  checkForSynchronizedComponents: 1
+  checkForComponentBroadcasters: 1
   shaderKeywords: 2
   renderQueue: 1
   materialProperties: 2
@@ -63,10 +63,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 2869883393855965247}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4cf55fcc48602c044aaa5095865eef1e, type: 3}
+  m_Script: {fileID: 11500000, guid: 50acc959c89b8fa4a94739da47517392, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  checkForSynchronizedComponents: 1
+  checkForComponentBroadcasters: 1
   shaderKeywords: 2
   renderQueue: 1
   materialProperties: 2
@@ -114,10 +114,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 5039874239664331265}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4cf55fcc48602c044aaa5095865eef1e, type: 3}
+  m_Script: {fileID: 11500000, guid: 50acc959c89b8fa4a94739da47517392, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  checkForSynchronizedComponents: 1
+  checkForComponentBroadcasters: 1
   shaderKeywords: 2
   renderQueue: 1
   materialProperties: 2

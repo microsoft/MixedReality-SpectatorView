@@ -548,11 +548,11 @@ PlayerSettings:
   m_MobileRenderingPath: 1
   metroPackageName: SpectatorView.Build2019Demo
   metroPackageVersion: 1.0.0.0
-  metroCertificatePath: 
+  metroCertificatePath: D:\Projects\MixedReality\SpectatorView\samples\Build2019Demo.Unity\Assets\WSATestCertificate.pfx
   metroCertificatePassword: 
-  metroCertificateSubject: 
-  metroCertificateIssuer: 
-  metroCertificateNotAfter: 0000000000000000
+  metroCertificateSubject: Microsoft
+  metroCertificateIssuer: Microsoft
+  metroCertificateNotAfter: 00afe2aa5e4bd601
   metroApplicationDescription: Demo of SpectatorView show and //BUILD 2019
   wsaImages: {}
   metroTileShortName: 
