@@ -14,10 +14,24 @@ Once you have the required software, follow these steps:
 
 1. Clone this repository if you haven't yet.
 2. Using your favorite Git management tool, pull latest version of the code.
-3. Run /tools/scripts/ResetSamples.bat to get to a clean state of the Samples folder with appropriate configuration.
+3. Run `/tools/scripts/ResetSamples.bat` to get to a clean state of the Samples folder with appropriate configuration.
+
+> In the future, you can update to latest by invoking `git pull --recurse-submodules`.
 
 ## Contents
 
 This repository currently has the following samples:
 
-- //BUILD 2019 Demo
+- [//BUILD 2019 Demo](./Build2019Demo.Unity/README.md)
+
+## Troubleshooting
+
+If you encounter some issues, the first thing to do is to run `/tools/scripts/ResetSamples.bat`. For additional troubleshooting options look below.
+
+### Unity Project Folder Structure Broken
+
+If you happened to run step 3 above when Unity was open, you will notice that the Project winow may contain the incorrect folder structure. This only happens when a symlink is inflated while Unity is open, to fix this:
+
+1. Close Unity
+2. Delete the Library folder that is adjacent to the Assets folder
+3. Re-open Unity

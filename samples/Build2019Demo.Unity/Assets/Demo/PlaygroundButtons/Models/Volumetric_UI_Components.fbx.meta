@@ -1,0 +1,186 @@
+fileFormatVersion: 2
+guid: 4193fb42ca1134545be0f62926d0e9be
+ModelImporter:
+  serializedVersion: 23
+  fileIDToRecycleName:
+    100000: Button_Stroke_48mm
+    100002: Button_Stroke_96mm
+    100004: UI_Panel_Frame_232x232
+    100006: UI_Panel_Frame_464x232
+    100008: //RootNode
+    100010: Dial_Outline_HalfAccent
+    100012: Button_Stroke_72mm
+    100014: Dial_Outline_72mm
+    100016: UI_Sphere
+    100018: UI_Sphere_Stroke
+    100020: Button_Stroke_Shadow
+    100022: Slider_Track_Dotted
+    100024: Slider_Track_Oval_Outline
+    100026: Slider_Track_Simple
+    100028: UI_Panel_Frame_320x232
+    100030: UI_Shadow_Box
+    100032: Slider_Track_Oval_Shadow
+    100034: UI_Panel_Frame_320x80
+    100036: UI_Panel_Frame_320x120
+    400000: Button_Stroke_48mm
+    400002: Button_Stroke_96mm
+    400004: UI_Panel_Frame_232x232
+    400006: UI_Panel_Frame_464x232
+    400008: //RootNode
+    400010: Dial_Outline_HalfAccent
+    400012: Button_Stroke_72mm
+    400014: Dial_Outline_72mm
+    400016: UI_Sphere
+    400018: UI_Sphere_Stroke
+    400020: Button_Stroke_Shadow
+    400022: Slider_Track_Dotted
+    400024: Slider_Track_Oval_Outline
+    400026: Slider_Track_Simple
+    400028: UI_Panel_Frame_320x232
+    400030: UI_Shadow_Box
+    400032: Slider_Track_Oval_Shadow
+    400034: UI_Panel_Frame_320x80
+    400036: UI_Panel_Frame_320x120
+    2100000: lambert1
+    2300000: Button_Stroke_48mm
+    2300002: Button_Stroke_96mm
+    2300004: UI_Panel_Frame_232x232
+    2300006: UI_Panel_Frame_464x232
+    2300008: Dial_Outline_HalfAccent
+    2300010: Button_Stroke_72mm
+    2300012: Dial_Outline_72mm
+    2300014: UI_Sphere
+    2300016: UI_Sphere_Stroke
+    2300018: Button_Stroke_Shadow
+    2300020: Slider_Track_Dotted
+    2300022: Slider_Track_Oval_Outline
+    2300024: Slider_Track_Simple
+    2300026: UI_Panel_Frame_320x232
+    2300028: UI_Shadow_Box
+    2300030: Slider_Track_Oval_Shadow
+    2300032: UI_Panel_Frame_320x80
+    2300034: UI_Panel_Frame_320x120
+    3300000: Button_Stroke_48mm
+    3300002: Button_Stroke_96mm
+    3300004: UI_Panel_Frame_232x232
+    3300006: UI_Panel_Frame_464x232
+    3300008: Dial_Outline_HalfAccent
+    3300010: Button_Stroke_72mm
+    3300012: Dial_Outline_72mm
+    3300014: UI_Sphere
+    3300016: UI_Sphere_Stroke
+    3300018: Button_Stroke_Shadow
+    3300020: Slider_Track_Dotted
+    3300022: Slider_Track_Oval_Outline
+    3300024: Slider_Track_Simple
+    3300026: UI_Panel_Frame_320x232
+    3300028: UI_Shadow_Box
+    3300030: Slider_Track_Oval_Shadow
+    3300032: UI_Panel_Frame_320x80
+    3300034: UI_Panel_Frame_320x120
+    4300000: UI_Panel_Frame_464x232
+    4300002: UI_Panel_Frame_232x232
+    4300004: Button_Stroke_48mm
+    4300006: Button_Stroke_96mm
+    4300008: Dial_Outline_HalfAccent
+    4300010: Button_Stroke_72mm
+    4300012: Dial_Outline_72mm
+    4300014: UI_Sphere
+    4300016: UI_Sphere_Stroke
+    4300018: Button_Stroke_Shadow
+    4300020: UI_Panel_Frame_320x232
+    4300022: Slider_Track_Dotted
+    4300024: Slider_Track_Simple
+    4300026: Slider_Track_Oval_Outline
+    4300028: UI_Shadow_Box
+    4300030: Slider_Track_Oval_Shadow
+    4300032: UI_Panel_Frame_320x80
+    4300034: UI_Panel_Frame_320x120
+    9500000: //RootNode
+    13700000: Button_Stroke_Shadow
+  externalObjects: {}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 3
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 0
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    previousCalculatedGlobalScale: 0.01
+    hasPreviousCalculatedGlobalScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
