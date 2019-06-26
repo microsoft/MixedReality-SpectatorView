@@ -1,0 +1,131 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: UI_Backplate_Mat
+  m_Shader: {fileID: 4800000, guid: ab8a8fbb7a4580941bf2d983463a6a05, type: 3}
+  m_ShaderKeywords: _BLOB_ENABLE_2__ON _BLOB_ENABLE__ON _SMOOTH_EDGES__ON _UNITY_TO_SRGB__ON
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: 3500
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _Blob_Texture_:
+        m_Texture: {fileID: 2800000, guid: 6de548e8ec86c4547969a0148a6172c7, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BumpMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailAlbedoMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailNormalMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EmissionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Iridescence_Ramp_:
+        m_Texture: {fileID: 2800000, guid: ac20e3743f379204ca53e379eb2fb59e, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MetallicGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _OcclusionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ParallaxMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - Use_Global_Left_Index: 0
+    - Use_Global_Right_Index: 0
+    - _Angle_: -45
+    - _Blob_Enable_: 1
+    - _Blob_Enable_2_: 1
+    - _Blob_Fade_: 1
+    - _Blob_Fade_2_: 1
+    - _Blob_Fade_Length_: 0.1
+    - _Blob_Far_Distance_: 0.1
+    - _Blob_Far_Size_: 0.22
+    - _Blob_Intensity_: 0.3
+    - _Blob_Near_Distance_: 0
+    - _Blob_Near_Size_: 0.02
+    - _Blob_Near_Size_2_: 0.01
+    - _Blob_Pulse_: 0
+    - _Blob_Pulse_2_: 0
+    - _Blob_Pulse_Scalar_: 1
+    - _BumpScale: 1
+    - _Clip_Threshold_: 0.001
+    - _Cutoff: 0.5
+    - _DetailNormalMapScale: 1
+    - _Draw_: 1
+    - _Draw_Fuzz_: 0.05
+    - _Draw_Start_: 0
+    - _DstBlend: 0
+    - _Enable_Cursor_: 0
+    - _Fade_Out_: 1
+    - _Filter_Width_: 1
+    - _Gaze_Fade_: 1
+    - _Gaze_Intensity_: 1
+    - _Gaze_Pulse_: 0
+    - _Gaze_Size_: 0.03
+    - _GlossMapScale: 1
+    - _Glossiness: 0.5
+    - _GlossyReflections: 1
+    - _Highlight_Width_: 0.26
+    - _Iridescence_Intensity_: 0.505
+    - _Left_X0_: 0
+    - _Left_X1_: 0.95
+    - _Line_Width_: 0
+    - _Margin_: 0.005
+    - _Metallic: 0
+    - _Mode: 0
+    - _OcclusionStrength: 1
+    - _Parallax: 0.02
+    - _Radius_: 0.074
+    - _Rate_: 0
+    - _Right_X0_: 0.05
+    - _Right_X1_: 1
+    - _Smooth_Edges_: 1
+    - _SmoothnessTextureChannel: 0
+    - _SpecularHighlights: 1
+    - _SrcBlend: 1
+    - _UVSec: 0
+    - _Unity_To_sRGB_: 1
+    - _ZWrite: 1
+    m_Colors:
+    - _Base_Color_: {r: 0.049172312, g: 0.055713795, b: 0.16037738, a: 0.32156864}
+    - _Blob_Position_: {r: 0.09348604, g: -0.22569478, b: 0.9682006, a: 0}
+    - _Blob_Position_2_: {r: 0, g: 0, b: 0, a: 1}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _Highlight_Color_: {r: 0.98039216, g: 0.98039216, b: 0.98039216, a: 1}
+    - _Highlight_Transform_: {r: 1, g: 1, b: 0, a: 0}
+    - _Line_Color_: {r: 1, g: 1, b: 1, a: 1}
