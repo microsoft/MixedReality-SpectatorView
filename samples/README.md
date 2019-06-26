@@ -16,6 +16,8 @@ Once you have the required software, follow these steps:
 2. Using your favorite Git management tool, pull latest version of the code.
 3. Run /tools/scripts/ResetSamples.bat to get to a clean state of the Samples folder with appropriate configuration.
 
+> In the future, you can update to latest by invoking `git pull --recurse-submodules`.
+
 ## Contents
 
 This repository currently has the following samples:
