@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a86ff8b58c7348e4eb1d8dc3a07a2f93, type: 3}
+  m_Name: MeshAssetCache
+  m_EditorClassIdentifier: 
+  assets:
+  - AssetId:
+      m_storage: be6fe904-4a5f-430f-ba9b-eaff2c786a31
+    Asset: {fileID: 4300000, guid: ce4cfb5a16c86b048bb700360ee47685, type: 3}
+  - AssetId:
+      m_storage: a0f8b277-eb06-437c-8c8d-60a7df3c6fa5
+    Asset: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  - AssetId:
+      m_storage: d9c977c4-986d-49d1-87c2-ca5da716c1c1
+    Asset: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+  - AssetId:
+      m_storage: a8e13887-9f6a-4edc-9ee0-fd4a5b98db23
+    Asset: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+  - AssetId:
+      m_storage: 5fd14294-cbbe-43b2-9e31-e8732b140398
+    Asset: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
