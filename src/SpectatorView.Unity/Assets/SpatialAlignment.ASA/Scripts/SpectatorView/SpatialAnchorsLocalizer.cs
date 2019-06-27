@@ -59,7 +59,7 @@ namespace Microsoft.MixedReality.SpectatorView
             session = new SpatialCoordinateLocalizationSession(this, new SpatialAnchorsAndroidCoordinateService(settings), settings, peerConnection);
             return true;
 #elif UNITY_IOS && SPATIALALIGNMENT_ASA
-            session = new SpatialCoordinateLocalizationSession(this, new SpatialAnchorsIOSCoordinateService(settings), settings, peerConnection);;
+            session = new SpatialCoordinateLocalizationSession(this, new SpatialAnchorsIOSCoordinateService(settings), settings, peerConnection);
             return true;
 #endif
         }

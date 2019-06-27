@@ -10,7 +10,6 @@ using UnityEngine.XR.iOS;
 
 namespace Microsoft.MixedReality.SpatialAlignment
 {
-    // TODO anborod Validate this works
     internal class SpatialAnchorsIOSCoordinateService : SpatialAnchorsCoordinateService
     {
         private UnityARSessionNativeInterface arkitSession;
