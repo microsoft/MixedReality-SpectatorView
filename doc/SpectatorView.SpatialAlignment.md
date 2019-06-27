@@ -57,4 +57,4 @@ Spatial alignment based on physical marker detection allows a spectator HoloLens
 4. After SpatialCoordinate locations are found on both devices, they are shared with one another through the SpatialCoordinateSystemParticipant, which allows for the scene to be aligned. 
 
 # Setup
-Different spatial alignment strategies require different external dependencies, which will require different setup steps. Be sure to obtain the correct dependencies defined [here](SpectatorView.Setup).
+Different spatial alignment strategies require different external dependencies, which will require different setup steps. Be sure to obtain the correct dependencies defined [here](SpectatorView.Setup.md).
