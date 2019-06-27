@@ -91,7 +91,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
         protected void Start()
         {
-#if UNITY_WSA
+#if UNITY_WSA && !UNITY_EDITOR
             _api = new SpectatorViewOpenCVInterface();
             if (!_api.Initialize(_markerSize))
             {

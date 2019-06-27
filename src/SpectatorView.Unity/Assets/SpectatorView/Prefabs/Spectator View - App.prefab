@@ -504,6 +504,8 @@ MonoBehaviour:
   stateSynchronizationSceneManager: {fileID: 4941633253159564537}
   stateSynchronizationBroadcaster: {fileID: 4941633254549859856}
   stateSynchronizationObserver: {fileID: 4941633254517527404}
+  defaultMobileRecordingServiceVisualPrefab: {fileID: 3991847289853751625, guid: 9771d3a665ea3184f9c3731093a51da4,
+    type: 3}
   userDebugVisualPrefab: {fileID: 1958541147728546, guid: f115aa95a7b0e49498ffb20f0b5278d0,
     type: 3}
   userDebugVisualScale: 0.02

@@ -59,6 +59,14 @@ namespace Microsoft.MixedReality.SpectatorView
         [SerializeField]
         private StateSynchronizationObserver stateSynchronizationObserver = null;
 
+        [Header("Recording")]
+        /// <summary>
+        /// Prefab for creating a mobile recording service visual.
+        /// </summary>
+        [Tooltip("Default prefab for creating a mobile recording service visual.")]
+        [SerializeField]
+        public GameObject defaultMobileRecordingServiceVisualPrefab = null;
+
         [Header("Debugging")]
         /// <summary>
         /// Debug visual prefab created by the user.
@@ -133,6 +141,12 @@ namespace Microsoft.MixedReality.SpectatorView
                             SpatialCoordinateSystemManager.Instance.debugVisualScale = spectatorDebugVisualScale;
                         }
 
+                        // When running as a spectator, automatic localization should be initiated if it's configured.
+                        if (SpatialLocalizationInitializationSettings.IsInitialized)
+                        {
+                            SpatialLocalizationInitializationSettings.Instance.ConfigureAutomaticLocalization();
+                        }
+
                         RunStateSynchronizationAsObserver();
                     }
                     break;
@@ -165,11 +179,17 @@ namespace Microsoft.MixedReality.SpectatorView
         private void SetupRecordingService()
         {
 #if UNITY_ANDROID || UNITY_IOS
+            GameObject recordingVisualPrefab = defaultMobileRecordingServiceVisualPrefab;
+            if (MobileRecordingSettings.IsInitialized && MobileRecordingSettings.Instance.OverrideMobileRecordingServicePrefab != null)
+            {
+                recordingVisualPrefab = MobileRecordingSettings.Instance.OverrideMobileRecordingServicePrefab;
+            }
+
             if (MobileRecordingSettings.IsInitialized && 
                 MobileRecordingSettings.Instance.EnableMobileRecordingService &&
-                MobileRecordingSettings.Instance.MobileRecordingServiceVisualPrefab != null)
+                recordingVisualPrefab != null)
             {
-                mobileRecordingServiceVisual = Instantiate(MobileRecordingSettings.Instance.MobileRecordingServiceVisualPrefab);
+                mobileRecordingServiceVisual = Instantiate(recordingVisualPrefab);
 
                 if (!TryCreateRecordingService(out recordingService))
                 {

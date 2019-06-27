@@ -16,12 +16,12 @@ namespace Microsoft.MixedReality.SpectatorView
         /// <summary>
         /// Prefab for creating a mobile recording service visual.
         /// </summary>
-        [Tooltip("Prefab for creating a mobile recording service visual.")]
+        [Tooltip("Prefab for creating a mobile recording service visual, which replaces the defaultMobileRecordingServiceVisualPrefab on the SpectatorView component if set.")]
         [SerializeField]
-        private GameObject mobileRecordingServiceVisualPrefab = null;
+        private GameObject overrideMobileRecordingServiceVisualPrefab = null;
 
         public bool EnableMobileRecordingService => enableMobileRecordingService;
 
-        public GameObject MobileRecordingServicePrefab => mobileRecordingServiceVisualPrefab;
+        public GameObject OverrideMobileRecordingServicePrefab => overrideMobileRecordingServiceVisualPrefab;
     }
 }
