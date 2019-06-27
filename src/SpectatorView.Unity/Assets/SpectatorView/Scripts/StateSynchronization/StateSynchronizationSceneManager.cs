@@ -31,7 +31,6 @@ namespace Microsoft.MixedReality.SpectatorView
 
         public const string DefaultStateSynchronizationPerformanceParametersPrefabName = "DefaultStateSynchronizationPerformanceParameters";
         public const string CustomBroadcasterServicesPrefabName = "CustomBroadcasterServices";
-        public const string SettingsPrefabName = "StateSynchronizationSettings";
 
         private Dictionary<short, GameObject> objectMirrors = new Dictionary<short, GameObject>();
 
@@ -84,12 +83,6 @@ namespace Microsoft.MixedReality.SpectatorView
             if (performanceParameters != null)
             {
                 Instantiate(performanceParameters, null);
-            }
-
-            GameObject settings = Resources.Load<GameObject>(SettingsPrefabName);
-            if (settings != null)
-            {
-                Instantiate(settings, null);
             }
         }
 

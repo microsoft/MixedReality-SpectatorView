@@ -12,5 +12,17 @@ namespace Microsoft.MixedReality.SpectatorView
 
         public override Guid MarkerVisualDetectorSpatialLocalizerId => DetectorId;
         public static Guid DetectorId => QRCodeMarkerVisualDetectorSpatialLocalizer.Id;
+
+        protected override bool IsSupported
+        {
+            get
+            {
+#if UNITY_ANDROID || UNITY_IOS
+                return true;
+#else
+                return false;
+#endif
+            }
+        }
     }
 }

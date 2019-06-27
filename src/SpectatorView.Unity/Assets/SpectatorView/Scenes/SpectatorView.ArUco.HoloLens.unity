@@ -400,7 +400,7 @@ PrefabInstance:
     - target: {fileID: 4941633254297953240, guid: aa311d939e452a045b897dcc7c9c36fb,
         type: 3}
       propertyPath: m_Name
-      value: Spectator View - App
+      value: SpectatorView
       objectReference: {fileID: 0}
     - target: {fileID: 4941633254297953243, guid: aa311d939e452a045b897dcc7c9c36fb,
         type: 3}

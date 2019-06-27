@@ -423,7 +423,7 @@ PrefabInstance:
     - target: {fileID: 8188703494409108216, guid: 87d0c9d301bd81549ab69326b9ea4695,
         type: 3}
       propertyPath: m_Name
-      value: Spectator View - Compositor
+      value: SpectatorView.Compositor
       objectReference: {fileID: 0}
     - target: {fileID: 7614939800065736745, guid: 87d0c9d301bd81549ab69326b9ea4695,
         type: 3}
