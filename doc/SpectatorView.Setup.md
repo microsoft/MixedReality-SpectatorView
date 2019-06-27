@@ -51,7 +51,7 @@ Not all spatial alignment strategies support all platforms. See the chart below 
 
 > NOTE: **Asset Caches need to be updated on one development machine and shared across development machines**. Asset Caches aren't currently created in a deterministic manner and can't be recreated in new development environments. The easiest way to share this with a team is to commit changes to the Generated.StateSynchronization.AssetCaches folder that will appear in the Unity project's Assets directory. For more information on Asset Caches see [SpectatorView.StateSynchronization](SpectatorView.StateSynchronization.md).
 
-### HoloLens
+### HoloLens 2 & HoloLens
 1. Make sure your Unity project contains the asset caches that were created in the 'Before building' steps.
 2. Add the [SpectatorView.*.HoloLens prefab](Prefabs/) that reflects the correct spatial alignment strategy to the scene you intend to run on the HoloLens device.
 3. Add a GameObjectHierarchyBroadcaster to the root game object of the content you want synchronized. 
