@@ -107,6 +107,8 @@ namespace Microsoft.MixedReality.SpectatorView
         [SerializeField]
         private bool debugLogging = false;
 
+        private GameObject settingsGameObject;
+
 #if UNITY_ANDROID || UNITY_IOS
         private GameObject mobileRecordingServiceVisual = null;
         private IRecordingService recordingService = null;
@@ -120,7 +122,7 @@ namespace Microsoft.MixedReality.SpectatorView
             GameObject settings = Resources.Load<GameObject>(SettingsPrefabName);
             if (settings != null)
             {
-                Instantiate(settings, null);
+                settingsGameObject = Instantiate(settings, null);
             }
 
             if (stateSynchronizationSceneManager == null ||
@@ -165,10 +167,13 @@ namespace Microsoft.MixedReality.SpectatorView
 
         private void OnDestroy()
         {
-            if (Role == Role.Spectator)
-            {
-                SpatialCoordinateSystemManager.Instance.ParticipantConnected -= OnParticipantConnected;
-            }
+            Destroy(settingsGameObject);
+
+#if UNITY_ANDROID || UNITY_IOS
+            Destroy(mobileRecordingServiceVisual);
+#endif
+
+            SpatialCoordinateSystemManager.Instance.ParticipantConnected -= OnParticipantConnected;
         }
 
         private void RunStateSynchronizationAsBroadcaster()

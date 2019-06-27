@@ -133,7 +133,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
             if (!peerSupportedLocalizersTaskSource.Task.IsCompleted)
             {
-                peerSupportedLocalizersTaskSource.SetResult(null);
+                peerSupportedLocalizersTaskSource.TrySetCanceled();
             }
 
             if (debugVisual != null)
@@ -231,7 +231,7 @@ namespace Microsoft.MixedReality.SpectatorView
                 supportedLocalizers.Add(reader.ReadGuid());
             }
 
-            peerSupportedLocalizersTaskSource.SetResult(supportedLocalizers);
+            peerSupportedLocalizersTaskSource.TrySetResult(supportedLocalizers);
         }
     }
 }
