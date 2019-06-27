@@ -1,4 +1,4 @@
-# Platform Requirements
+# Filming with an Android or iOS Device Setup
 ### HoloLens 2 & HoloLens
 1. Windows PC
 2. HoloLens 2 or HoloLens
