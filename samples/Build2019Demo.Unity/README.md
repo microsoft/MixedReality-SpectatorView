@@ -2,7 +2,7 @@
 
 This sample of using SpectatorView is very similar to the live code demo presented at //BUILD 2019 conference.
 
-[![//BUILD 2019 Video](../../doc/images/Build2019DemoVideo.png)](https://www.youtube.com/watch?v=P8og3nC5FaQ "//BUILD 2019 Video")
+[![//BUILD 2019 Video](../../doc/images/Build2019DemoVideo.png)](https://www.youtube.com/watch?v=P8og3nC5FaQ&t=2255 "//BUILD 2019 Video")
 
 ## Running the Demo
 
