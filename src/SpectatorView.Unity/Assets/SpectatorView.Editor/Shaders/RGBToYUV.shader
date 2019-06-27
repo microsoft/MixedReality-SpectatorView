@@ -53,6 +53,7 @@ Shader "SV/RGBToYUV"
                 float2 offset = float2(0, 0);
                 if (uv.x < 0.0f)
                 {
+					offset.x += 1.0;
                     offset.y = (0.5 / _Height);
                 }
                 else
