@@ -15,6 +15,18 @@ namespace Microsoft.MixedReality.SpectatorView
         [SerializeField]
         private QRCodeMarkerDetector MarkerDetector = null;
 
+        protected override bool IsSupported
+        {
+            get
+            {
+#if UNITY_WSA && QRCODESTRACKER_BINARY_AVAILABLE
+                return true;
+#else
+                return false;
+#endif
+            }
+        }
+
         private void Awake()
         {
             DebugLog("Awake");

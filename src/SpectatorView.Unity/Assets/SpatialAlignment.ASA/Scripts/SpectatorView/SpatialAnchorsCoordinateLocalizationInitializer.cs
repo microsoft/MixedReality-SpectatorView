@@ -1,13 +1,14 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.SpectatorView
 {
-    public class SpatialAnchorsCoordinateLocalizationInitializer : MonoBehaviour
+    public class SpatialAnchorsCoordinateLocalizationInitializer : SpatialLocalizationInitializer
     {
         /// <summary>
         /// Configuration for the Azure Spatial Anchors service.
@@ -16,17 +17,9 @@ namespace Microsoft.MixedReality.SpectatorView
         [Tooltip("Configuration for the Azure Spatial Anchors service.")]
         private SpatialAnchorsConfiguration configuration = null;
 
-        private void Start()
-        {
-            SpatialCoordinateSystemManager.Instance.ParticipantConnected += Instance_ParticipantConnected;
-        }
+        public override Guid PeerSpatialLocalizerId => SpatialAnchorsLocalizer.Id;
 
-        private void OnDestroy()
-        {
-            SpatialCoordinateSystemManager.Instance.ParticipantConnected -= Instance_ParticipantConnected;
-        }
-
-        private void Instance_ParticipantConnected(SpatialCoordinateSystemParticipant participant)
+        public override void RunLocalization(SpatialCoordinateSystemParticipant participant)
         {
             SpatialCoordinateSystemManager.Instance.LocalizeAsync(participant.SocketEndpoint, SpatialAnchorsLocalizer.Id, configuration);
 
