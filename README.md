@@ -6,8 +6,8 @@ For more information on Spectator View's architecture, see [here](doc/SpectatorV
 
 # Setup
 
-* [**Filming with an Android or iOS device**](doc/SpectatorView.Setup.md)
-* [**Filming with a DSLR camera**](doc/SpectatorView.Setup.DSLR.md)
+* [**Spectating with an Android or iOS device**](doc/SpectatorView.Setup.md)
+* [**Spectating with a DSLR camera**](doc/SpectatorView.Setup.DSLR.md)
 
 # Debugging
 For more information on debugging Spectator View, see [here](doc/SpectatorView.Debugging.md)
