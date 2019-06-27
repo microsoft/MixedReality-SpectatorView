@@ -28,12 +28,8 @@ Coming soon...
 
 #### Install OpenCV Contrib
 
-For ArUco marker detection, you will need to install a x86 uwp friendly version of opencv:
-
+For ArUco marker detection, you will need to install a x86 uwp friendly version of opencv. For DSLR camera calibration, you will need to install a x64 desktop friendly version of opencv.
 - .\vcpkg install opencv[contrib]:x86-uwp --recurse
-
-For DSLR camera calibration, you will need to install a x64 desktop friendly version of opencv:
-
 - .\vcpkg install opencv[contrib]:x64-windows --recurse
 
 >NOTE: Copy the above lines exactly (the []s do not indicate an optional value).
