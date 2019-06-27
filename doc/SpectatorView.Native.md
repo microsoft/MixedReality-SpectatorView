@@ -6,16 +6,35 @@ The following Dlls are built out of the [SpectatorView.Native.sln](../src/Specta
 - **SpectatorView.Compositor.UnityPlugin.dll** is needed for DSLR camera calibartion and DSLR camera spectating experiences.
 - **SpectatorView.OpenCV.dll** is used in both ArUco marker detection and DSLR camera calibration.
 
-## SpectatorView.Compositor.dll & SpectatorView.Compositor.UnityPlugin.dll
+# SpectatorView.Compositor.dll & SpectatorView.Compositor.UnityPlugin.dll
 
-Coming soon...
+### 1. Obtain external dependencies
+**DeckLink Capture Card**
+If you are using a Blackmagic capture card, you will need to install the SDK and create a Visual Studio user macro for its location.
++ Download the DeckLink SDK from here: https://www.blackmagicdesign.com/support - Search for Desktop Video SDK in "Latest Downloads"
++ Extract the SDK anywhere on your computer.
++ Update the DeckLink_inc user macro in [dependencies.props](../src/SpectatorView.Native/SpectatorView.Compositor/dependencies.props) with the corresponding path on your computer.
++ Restart Visual Studio
 
-## SpectatorView.OpenCV.dll
+**Elgato Capture Card**
+If you are using an Elgato capture card, you will need to clone Elgato's [gamecapture github repo](https://github.com/elgatosf/gamecapture).
+- Open a Command Prompt in administrator mode
+- Navigate to a folder in which you would like to store your repositories (ex: c:\git)
+- git clone <https://github.com/elgatosf/gamecapture>
+- Update the Elgato_Filter user macro in [dependencies.props](../src/SpectatorView.Native/SpectatorView.Compositor/dependencies.props) with the corresponding path on your computer.
+- Restart Visual Studio
+
+### 2. Build the Plugins
+- Open [SpectatorView.Native.sln](../src/SpectatorView.Native/SpectatorView.Native.sln) in visual studio.
+- Build a **Release x64** version of SpectatorView.Compositor.dll with [**SpectatorView.Compositor**](../src/SpectatorView.Native/SpectatorView.Compositor/Compositor/SpectatorView.Compositor.vcxproj)
+- Build a **Release x64** version of SpectatorView.Compositor.UnityPlugin.dll with [**SpectatorView.Compositor.UnityPlugin**](../src/SpectatorView.Native/SpectatorView.Compositor/UnityPlugin/SpectatorView.Compositor.UnityPlugin.vcxproj)
+
+# SpectatorView.OpenCV.dll
 >Note: SpectatorView.OpenCV.dll introduces dependencies on OpenCV. OpenCV does not have a MIT license. For more information on OpenCV's license, see [here](https://opencv.org/license/). 
 * **DSLR camera calibration** requires a **Release x64** version of this binary built from the [**SpectatorView.OpenCV.Desktop**](../src/SpectatorView.Native/SpectatorView.OpenCV/Desktop/SpectatorView.OpenCV.Desktop.vcxproj) visual studio project.
 * **ArUco Marker detection** on a HoloLens 1 device requires a **Release x86** version of this binary built from the [**SpectatorView.OpenCV.UWP**](../src/SpectatorView.Native/SpectatorView.OpenCV/UWP/SpectatorView.OpenCV.UWP.vcxproj)
 
-#### 1. Install Vcpkg
+### 1. Install [Vcpkg](https://github.com/microsoft/vcpkg)
 
 - Open a Command Prompt in administrator mode
 - Navigate to a folder in which you would like to store your repositories (ex: c:\git)
@@ -26,7 +45,7 @@ Coming soon...
 - .\bootstrap-vcpkg.bat
 - .\vcpkg integrate install
 
-#### 2. Install OpenCV Contrib
+### 2. Install OpenCV Contrib
 
 For ArUco marker detection, you will need to install a x86 uwp friendly version of opencv. For DSLR camera calibration, you will need to install a x64 desktop friendly version of opencv.
 - .\vcpkg install opencv[contrib]:x86-uwp --recurse
@@ -34,7 +53,7 @@ For ArUco marker detection, you will need to install a x86 uwp friendly version 
 
 >NOTE: Copy the above lines exactly (the []s do not indicate an optional value).
 
-#### 3. Building the Plugin
+### 3. Build the Plugins
 
 - Open [SpectatorView.Native.sln](../src/SpectatorView.Native/SpectatorView.Native.sln) in visual studio.
 - Build a **Release x86** version of SpectatorView.OpenCV.dll with [**SpectatorView.OpenCV.UWP**](../src/SpectatorView.Native/SpectatorView.OpenCV/UWP/SpectatorView.OpenCV.UWP.vcxproj)
