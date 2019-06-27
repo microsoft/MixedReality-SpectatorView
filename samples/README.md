@@ -4,7 +4,7 @@ This folder contains sample and demo projects that are maintained by the Spectao
 
 ## Getting Started
 
-Ensure you have all the required software, which is the same as for the primary SpectatorView project:
+Ensure you have all the required software, for detailed instructions see [Required Software](../README.md):
 
 - Git Tools
 - Visual Studio
@@ -12,8 +12,8 @@ Ensure you have all the required software, which is the same as for the primary 
 
 Once you have the required software, follow these steps:
 
-1. Clone this repository if you haven't yet.
-2. Using your favorite Git management tool, pull latest version of the code.
+1. Using your favorite Git management tool, clone this repository if you haven't yet.
+2. Then with git, pull the latest version of the code.
 3. Run `/tools/scripts/ResetSamples.bat` to get to a clean state of the Samples folder with appropriate configuration.
 
 > In the future, you can update to latest by invoking `git pull --recurse-submodules`.
@@ -28,7 +28,7 @@ This repository currently has the following samples:
 
 If you encounter some issues, the first thing to do is to run `/tools/scripts/ResetSamples.bat`. For additional troubleshooting options look below.
 
-### Unity Project Folder Structure Broken
+### __Issue:__ Unity Project Folder Structure Broken
 
 If you happened to run step 3 above when Unity was open, you will notice that the Project winow may contain the incorrect folder structure. This only happens when a symlink is inflated while Unity is open, to fix this:
 
