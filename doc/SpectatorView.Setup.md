@@ -51,14 +51,14 @@ Not all spatial alignment strategies support all platforms. See the chart below 
 
 > NOTE: **Asset Caches need to be updated on one development machine and shared across development machines**. Asset Caches aren't currently created in a deterministic manner and can't be recreated in new development environments. The easiest way to share this with a team is to commit changes to the Generated.StateSynchronization.AssetCaches folder that will appear in the Unity project's Assets directory. For more information on Asset Caches see [SpectatorView.StateSynchronization](SpectatorView.StateSynchronization.md).
 
-### HoloLens scene setup
+### HoloLens
 1. Make sure your Unity project contains the asset caches that were created in the 'Before building' steps.
 2. Add the [SpectatorView.*.HoloLens prefab](Prefabs/) that reflects the correct spatial alignment strategy to the scene you intend to run on the HoloLens device.
 3. Add a GameObjectHierarchyBroadcaster to the root game object of the content you want synchronized. 
 4. Press the 'HoloLens' button on the [Platform Switcher](Scripts/Editor/PlatformSwitcherEditor.cs) attached to Spectator View in the unity inspector (This should configure the correct build settings and app capabilities).
 5. Build and deploy the application to your HoloLens device.
 
-### Android scene setup
+### Android
 1. Make sure your Unity project contains the asset caches that were created in the 'Before building' steps.
 2. Import [ARCore v1.7.0](https://github.com/google-ar/arcore-unity-sdk/releases/tag/v1.7.0).
 3. Open the [SpectatorView.*.Android unity scene](Scenes/) that reflects the correct spatial alignment strategy in your unity project.
