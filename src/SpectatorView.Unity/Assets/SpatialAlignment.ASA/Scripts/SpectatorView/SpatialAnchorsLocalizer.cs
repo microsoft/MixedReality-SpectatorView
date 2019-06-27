@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
@@ -59,9 +59,8 @@ namespace Microsoft.MixedReality.SpectatorView
             session = new SpatialCoordinateLocalizationSession(this, new SpatialAnchorsAndroidCoordinateService(settings), settings, peerConnection);
             return true;
 #elif UNITY_IOS && SPATIALALIGNMENT_ASA
-            Debug.LogError("SpatialAnchorLocalizer does not yet support iOS");
-            session = null;
-            return false;
+            session = new SpatialCoordinateLocalizationSession(this, new SpatialAnchorsIOSCoordinateService(settings), settings, peerConnection);;
+            return true;
 #endif
         }
 
