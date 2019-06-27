@@ -10,6 +10,18 @@ namespace Microsoft.MixedReality.SpectatorView
         public override Guid SpatialLocalizerId => Id;
         public static readonly Guid Id = new Guid("2DA7D277-323F-4A0D-B3BB-B2BA6D3EF70E");
 
+        protected override bool IsSupported
+        {
+            get
+            {
+#if UNITY_WSA && !UNITY_EDITOR
+                return Windows.ApplicationModel.Package.Current.Id.Architecture == Windows.System.ProcessorArchitecture.X86;
+#else
+                return false;
+#endif
+            }
+        }
+
 #if UNITY_EDITOR
         private void OnValidate()
         {

@@ -42,6 +42,7 @@ namespace Microsoft.MixedReality.SpectatorView
         public event Action<SpatialCoordinateSystemParticipant> ParticipantDisconnected;
 
         internal const string CoordinateStateMessageHeader = "COORDSTATE";
+        internal const string SupportedLocalizersMessageHeader = "SUPPORTLOC";
         private const string LocalizeCommand = "LOCALIZE";
         private const string LocalizationCompleteCommand = "LOCALIZEDONE";
         private readonly Dictionary<Guid, ISpatialLocalizer> localizers = new Dictionary<Guid, ISpatialLocalizer>();
@@ -186,6 +187,8 @@ namespace Microsoft.MixedReality.SpectatorView
                 return;
             }
 
+            participant.SendSupportedLocalizersMessage(endpoint, localizers.Keys);
+
             DebugLog($"Invoking ParticipantConnected event");
             ParticipantConnected.Invoke(participant);
         }
@@ -212,6 +215,17 @@ namespace Microsoft.MixedReality.SpectatorView
             }
 
             participant.ReadCoordinateStateMessage(reader);
+        }
+
+        private void OnSupportedLocalizersMessageReceived(SocketEndpoint socketEndpoint, string command, BinaryReader reader, int remainingDataSize)
+        {
+            if (!participants.TryGetValue(socketEndpoint, out SpatialCoordinateSystemParticipant participant))
+            {
+                Debug.LogError($"Failed to find a SpatialCoordinateSystemParticipant for an attached SocketEndpoint");
+                return;
+            }
+
+            participant.ReadSupportedLocalizersMessage(reader);
         }
 
         private void OnLocalizationCompleteMessageReceived(SocketEndpoint socketEndpoint, string command, BinaryReader reader, int remainingDataSize)
@@ -328,6 +342,7 @@ namespace Microsoft.MixedReality.SpectatorView
             networkManager.RegisterCommandHandler(LocalizeCommand, OnLocalizeMessageReceived);
             networkManager.RegisterCommandHandler(LocalizationCompleteCommand, OnLocalizationCompleteMessageReceived);
             networkManager.RegisterCommandHandler(CoordinateStateMessageHeader, OnCoordinateStateReceived);
+            networkManager.RegisterCommandHandler(SupportedLocalizersMessageHeader, OnSupportedLocalizersMessageReceived);
             networkManager.RegisterCommandHandler(SpatialCoordinateSystemParticipant.LocalizationDataExchangeCommand, OnParticipantDataReceived);
         }
 
@@ -338,6 +353,7 @@ namespace Microsoft.MixedReality.SpectatorView
             networkManager.UnregisterCommandHandler(LocalizeCommand, OnLocalizeMessageReceived);
             networkManager.UnregisterCommandHandler(LocalizationCompleteCommand, OnLocalizationCompleteMessageReceived);
             networkManager.UnregisterCommandHandler(CoordinateStateMessageHeader, OnCoordinateStateReceived);
+            networkManager.UnregisterCommandHandler(SupportedLocalizersMessageHeader, OnSupportedLocalizersMessageReceived);
             networkManager.UnregisterCommandHandler(SpatialCoordinateSystemParticipant.LocalizationDataExchangeCommand, OnParticipantDataReceived);
         }
 

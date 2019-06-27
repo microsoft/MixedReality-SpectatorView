@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.SpatialAlignment;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -24,6 +25,7 @@ namespace Microsoft.MixedReality.SpectatorView
         private GameObject debugVisual;
         private SpatialCoordinateRelativeLocalizer debugCoordinateLocalizer;
         private bool showDebugVisuals;
+        private readonly TaskCompletionSource<ISet<Guid>> peerSupportedLocalizersTaskSource = new TaskCompletionSource<ISet<Guid>>();
 
         public SocketEndpoint SocketEndpoint { get; }
 
@@ -129,6 +131,11 @@ namespace Microsoft.MixedReality.SpectatorView
         {
             base.OnManagedDispose();
 
+            if (!peerSupportedLocalizersTaskSource.Task.IsCompleted)
+            {
+                peerSupportedLocalizersTaskSource.TrySetCanceled();
+            }
+
             if (debugVisual != null)
             {
                 GameObject.Destroy(debugVisual);
@@ -185,6 +192,11 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
+        public Task<ISet<Guid>> GetPeerSupportedLocalizersAsync()
+        {
+            return peerSupportedLocalizersTaskSource.Task;
+        }
+
         internal void ReadCoordinateStateMessage(BinaryReader reader)
         {
             PeerDeviceHasTracking = reader.ReadBoolean();
@@ -192,6 +204,34 @@ namespace Microsoft.MixedReality.SpectatorView
             PeerIsLocatingSpatialCoordinate = reader.ReadBoolean();
             PeerSpatialCoordinateWorldPosition = reader.ReadVector3();
             PeerSpatialCoordinateWorldRotation = reader.ReadQuaternion();
+        }
+
+        internal void SendSupportedLocalizersMessage(SocketEndpoint endpoint, ICollection<Guid> supportedLocalizers)
+        {
+            using (MemoryStream stream = new MemoryStream())
+            using (BinaryWriter writer = new BinaryWriter(stream))
+            {
+                writer.Write(SpatialCoordinateSystemManager.SupportedLocalizersMessageHeader);
+                writer.Write(supportedLocalizers.Count);
+                foreach (Guid supportedLocalizer in supportedLocalizers)
+                {
+                    writer.Write(supportedLocalizer);
+                }
+
+                endpoint.Send(stream.ToArray());
+            }
+        }
+
+        internal void ReadSupportedLocalizersMessage(BinaryReader reader)
+        {
+            int localizerCount = reader.ReadInt32();
+            HashSet<Guid> supportedLocalizers = new HashSet<Guid>();
+            for (int i = 0; i < localizerCount; i++)
+            {
+                supportedLocalizers.Add(reader.ReadGuid());
+            }
+
+            peerSupportedLocalizersTaskSource.TrySetResult(supportedLocalizers);
         }
     }
 }
