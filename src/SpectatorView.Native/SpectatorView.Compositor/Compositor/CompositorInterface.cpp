@@ -31,10 +31,6 @@ void CompositorInterface::SetFrameProvider(IFrameProvider::ProviderType type)
         frameProvider = new ElgatoFrameProvider();
     if (type == IFrameProvider::ProviderType::BlackMagic)
         frameProvider = new DeckLinkManager();
-#if USE_OPENCV
-    if (type == IFrameProvider::ProviderType::OpenCV)
-        frameProvider = new OpenCVFrameProvider();
-#endif
 }
 
 bool CompositorInterface::Initialize(ID3D11Device* device, ID3D11ShaderResourceView* colorSRV, ID3D11Texture2D* outputTexture)

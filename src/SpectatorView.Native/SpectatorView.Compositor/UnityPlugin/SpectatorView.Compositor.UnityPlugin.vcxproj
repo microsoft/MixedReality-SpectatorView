@@ -76,23 +76,23 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(KINECTSDK20_DIR)\inc;$(Canon_SDK)\EDSDK\Header;$(OpenCV_vc14)\..\..\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(OpenCV_vc14)\bin;$(OpenCV_vc14)\lib;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86;$(Canon_SDK)\EDSDK\Library;$(KINECTSDK20_DIR)\lib\x86</LibraryPath>
+    <IncludePath>$(IncludePath)</IncludePath>
+    <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86;</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(KINECTSDK20_DIR)\inc;$(Canon_SDK)\EDSDK\Header;$(OpenCV_vc14)\..\..\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(OpenCV_vc14)\bin;$(OpenCV_vc14)\lib;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64;$(Canon_SDK)\EDSDK_64\Library;$(KINECTSDK20_DIR)\lib\x64</LibraryPath>
+    <IncludePath>$(IncludePath)</IncludePath>
+    <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64;</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(KINECTSDK20_DIR)\inc;$(Canon_SDK)\EDSDK\Header;$(OpenCV_vc14)\..\..\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(OpenCV_vc14)\bin;$(OpenCV_vc14)\lib;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86;$(Canon_SDK)\EDSDK\Library;$(KINECTSDK20_DIR)\lib\x86</LibraryPath>
+    <IncludePath>$(IncludePath)</IncludePath>
+    <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86;</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(KINECTSDK20_DIR)\inc;$(Canon_SDK)\EDSDK\Header;$(OpenCV_vc14)\..\..\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(OpenCV_vc14)\bin;$(OpenCV_vc14)\lib;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64;$(Canon_SDK)\EDSDK_64\Library;$(KINECTSDK20_DIR)\lib\x64</LibraryPath>
+    <IncludePath>$(IncludePath)</IncludePath>
+    <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64;</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -100,24 +100,15 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;UNITYCOMPOSITORINTERFACE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(OpenCV_DIR)\..\..\include;..\SharedHeaders\;..\Compositor</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\SharedHeaders\;..\Compositor</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(OutDir)$(TargetName)$(TargetExt)</AdditionalLibraryDirectories>
     </Link>
-    <PreLinkEvent>
-      <Command>
-      </Command>
-    </PreLinkEvent>
-    <PostBuildEvent>
-      <Command>if EXIST "$(Canon_SDK)\EDSDK\Dll" xcopy /s /y "$(Canon_SDK)\EDSDK\Dll" "$(OutDir)"
-if EXIST "$(OpenCV_vc14)" xcopy /y "$(OpenCV_vc14)\bin\*.dll" "$(OutDir)"</Command>
-    </PostBuildEvent>
     <PreBuildEvent>
-      <Command>if EXIST "$(DeckLink_inc)" xcopy /y "$(DeckLink_inc)"
-if EXIST "$(OpenCV_vc14)" xcopy /y "$(OpenCV_vc14)\bin\*.dll"</Command>
+      <Command>if EXIST "$(DeckLink_inc)" xcopy /y "$(DeckLink_inc)"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -126,24 +117,15 @@ if EXIST "$(OpenCV_vc14)" xcopy /y "$(OpenCV_vc14)\bin\*.dll"</Command>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_USRDLL;UNITYCOMPOSITORINTERFACE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(OpenCV_DIR)\..\..\include;..\SharedHeaders\;..\Compositor</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\SharedHeaders\;..\Compositor</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(OutDir)$(TargetName)$(TargetExt)</AdditionalLibraryDirectories>
     </Link>
-    <PreLinkEvent>
-      <Command>
-      </Command>
-    </PreLinkEvent>
-    <PostBuildEvent>
-      <Command>if EXIST "$(Canon_SDK)\EDSDK_64\Dll" xcopy /s /y "$(Canon_SDK)\EDSDK_64\Dll" "$(OutDir)"
-if EXIST "$(OpenCV_vc14)" xcopy /y "$(OpenCV_vc14)\bin\*.dll" "$(OutDir)"</Command>
-    </PostBuildEvent>
     <PreBuildEvent>
-      <Command>if EXIST "$(DeckLink_inc)" xcopy /y "$(DeckLink_inc)"
-if EXIST "$(OpenCV_vc14)" xcopy /y "$(OpenCV_vc14)\bin\*.dll"</Command>
+      <Command>if EXIST "$(DeckLink_inc)" xcopy /y "$(DeckLink_inc)"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -154,7 +136,7 @@ if EXIST "$(OpenCV_vc14)" xcopy /y "$(OpenCV_vc14)\bin\*.dll"</Command>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;UNITYCOMPOSITORINTERFACE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(OpenCV_DIR)\..\..\include;..\SharedHeaders\;..\Compositor</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\SharedHeaders\;..\Compositor</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -163,17 +145,8 @@ if EXIST "$(OpenCV_vc14)" xcopy /y "$(OpenCV_vc14)\bin\*.dll"</Command>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(OutDir)$(TargetName)$(TargetExt)</AdditionalLibraryDirectories>
     </Link>
-    <PreLinkEvent>
-      <Command>
-      </Command>
-    </PreLinkEvent>
-    <PostBuildEvent>
-      <Command>if EXIST "$(Canon_SDK)\EDSDK\Dll" xcopy /s /y "$(Canon_SDK)\EDSDK\Dll" "$(OutDir)"
-if EXIST "$(OpenCV_vc14)" xcopy /y "$(OpenCV_vc14)\bin\*.dll" "$(OutDir)"</Command>
-    </PostBuildEvent>
     <PreBuildEvent>
-      <Command>if EXIST "$(DeckLink_inc)" xcopy /y "$(DeckLink_inc)"
-if EXIST "$(OpenCV_vc14)" xcopy /y "$(OpenCV_vc14)\bin\*.dll"</Command>
+      <Command>if EXIST "$(DeckLink_inc)" xcopy /y "$(DeckLink_inc)"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -184,7 +157,7 @@ if EXIST "$(OpenCV_vc14)" xcopy /y "$(OpenCV_vc14)\bin\*.dll"</Command>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;_USRDLL;UNITYCOMPOSITORINTERFACE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(OpenCV_DIR)\..\..\include;..\SharedHeaders\;..\Compositor</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\SharedHeaders\;..\Compositor</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -193,17 +166,8 @@ if EXIST "$(OpenCV_vc14)" xcopy /y "$(OpenCV_vc14)\bin\*.dll"</Command>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(OutDir)$(TargetName)$(TargetExt)</AdditionalLibraryDirectories>
     </Link>
-    <PreLinkEvent>
-      <Command>
-      </Command>
-    </PreLinkEvent>
-    <PostBuildEvent>
-      <Command>if EXIST "$(Canon_SDK)\EDSDK_64\Dll" xcopy /s /y "$(Canon_SDK)\EDSDK_64\Dll" "$(OutDir)"
-if EXIST "$(OpenCV_vc14)" xcopy /y "$(OpenCV_vc14)\bin\*.dll" "$(OutDir)"</Command>
-    </PostBuildEvent>
     <PreBuildEvent>
-      <Command>if EXIST "$(DeckLink_inc)" xcopy /y "$(DeckLink_inc)"
-if EXIST "$(OpenCV_vc14)" xcopy /y "$(OpenCV_vc14)\bin\*.dll"</Command>
+      <Command>if EXIST "$(DeckLink_inc)" xcopy /y "$(DeckLink_inc)"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

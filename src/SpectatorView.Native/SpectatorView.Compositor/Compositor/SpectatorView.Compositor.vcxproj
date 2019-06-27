@@ -76,23 +76,23 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(OpenCV_vc14)\..\..\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);$(KINECTSDK20_DIR)\inc;$(Canon_SDK)\EDSDK\Header</IncludePath>
-    <LibraryPath>$(OpenCV_vc14)\bin;$(OpenCV_vc14)\lib;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86;$(Canon_SDK)\EDSDK\Library;$(KINECTSDK20_DIR)\lib\x86</LibraryPath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86;</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(OpenCV_vc14)\..\..\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);$(KINECTSDK20_DIR)\inc;$(Canon_SDK)\EDSDK\Header</IncludePath>
-    <LibraryPath>$(OpenCV_vc14)\bin;$(OpenCV_vc14)\lib;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64;$(Canon_SDK)\EDSDK_64\Library;$(KINECTSDK20_DIR)\lib\x64</LibraryPath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64;</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(OpenCV_vc14)\..\..\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);$(KINECTSDK20_DIR)\inc;$(Canon_SDK)\EDSDK\Header</IncludePath>
-    <LibraryPath>$(OpenCV_vc14)\bin;$(OpenCV_vc14)\lib;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86;$(Canon_SDK)\EDSDK\Library;$(KINECTSDK20_DIR)\lib\x86</LibraryPath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86;</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(OpenCV_vc14)\..\..\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);$(KINECTSDK20_DIR)\inc;$(Canon_SDK)\EDSDK\Header</IncludePath>
-    <LibraryPath>$(OpenCV_vc14)\bin;$(OpenCV_vc14)\lib;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64;$(Canon_SDK)\EDSDK_64\Library;$(KINECTSDK20_DIR)\lib\x64</LibraryPath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64;</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -100,19 +100,14 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;COMPOSITORDLL_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(OpenCV_DIR)\..\..\include;..\SharedHeaders\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\SharedHeaders\</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
-    <PostBuildEvent>
-      <Command>if EXIST "$(Canon_SDK)\EDSDK\Dll" xcopy /s /y "$(Canon_SDK)\EDSDK\Dll" "$(OutDir)"
-if EXIST "$(OpenCV_vc14)" xcopy /y "$(OpenCV_vc14)\bin\*.dll" "$(OutDir)"</Command>
-    </PostBuildEvent>
     <PreBuildEvent>
       <Command>if EXIST "$(DeckLink_inc)" xcopy /y "$(DeckLink_inc)"
-if EXIST "$(OpenCV_vc14)" xcopy /y "$(OpenCV_vc14)\bin\*.dll"
 if EXIST "$(Elgato_Filter)" xcopy /y "$(Elgato_Filter)"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
@@ -122,19 +117,14 @@ if EXIST "$(Elgato_Filter)" xcopy /y "$(Elgato_Filter)"</Command>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_USRDLL;COMPOSITORDLL_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(OpenCV_DIR)\..\..\include;..\SharedHeaders\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\SharedHeaders\</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
-    <PostBuildEvent>
-      <Command>if EXIST "$(Canon_SDK)\EDSDK_64\Dll" xcopy /s /y "$(Canon_SDK)\EDSDK_64\Dll" "$(OutDir)"
-if EXIST "$(OpenCV_vc14)" xcopy /y "$(OpenCV_vc14)\bin\*.dll" "$(OutDir)"</Command>
-    </PostBuildEvent>
     <PreBuildEvent>
       <Command>if EXIST "$(DeckLink_inc)" xcopy /y "$(DeckLink_inc)"
-if EXIST "$(OpenCV_vc14)" xcopy /y "$(OpenCV_vc14)\bin\*.dll"
 if EXIST "$(Elgato_Filter)" xcopy /y "$(Elgato_Filter)"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
@@ -146,7 +136,7 @@ if EXIST "$(Elgato_Filter)" xcopy /y "$(Elgato_Filter)"</Command>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;COMPOSITORDLL_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(OpenCV_DIR)\..\..\include;..\SharedHeaders\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\SharedHeaders\</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -154,13 +144,8 @@ if EXIST "$(Elgato_Filter)" xcopy /y "$(Elgato_Filter)"</Command>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
-    <PostBuildEvent>
-      <Command>if EXIST "$(Canon_SDK)\EDSDK\Dll" xcopy /s /y "$(Canon_SDK)\EDSDK\Dll" "$(OutDir)"
-if EXIST "$(OpenCV_vc14)" xcopy /y "$(OpenCV_vc14)\bin\*.dll" "$(OutDir)"</Command>
-    </PostBuildEvent>
     <PreBuildEvent>
       <Command>if EXIST "$(DeckLink_inc)" xcopy /y "$(DeckLink_inc)"
-if EXIST "$(OpenCV_vc14)" xcopy /y "$(OpenCV_vc14)\bin\*.dll"
 if EXIST "$(Elgato_Filter)" xcopy /y "$(Elgato_Filter)"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
@@ -172,7 +157,7 @@ if EXIST "$(Elgato_Filter)" xcopy /y "$(Elgato_Filter)"</Command>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;_USRDLL;COMPOSITORDLL_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(OpenCV_DIR)\..\..\include;..\SharedHeaders\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\SharedHeaders\</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -180,13 +165,8 @@ if EXIST "$(Elgato_Filter)" xcopy /y "$(Elgato_Filter)"</Command>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
-    <PostBuildEvent>
-      <Command>if EXIST "$(Canon_SDK)\EDSDK_64\Dll" xcopy /s /y "$(Canon_SDK)\EDSDK_64\Dll" "$(OutDir)"
-if EXIST "$(OpenCV_vc14)" xcopy /y "$(OpenCV_vc14)\bin\*.dll" "$(OutDir)"</Command>
-    </PostBuildEvent>
     <PreBuildEvent>
       <Command>if EXIST "$(DeckLink_inc)" xcopy /y "$(DeckLink_inc)"
-if EXIST "$(OpenCV_vc14)" xcopy /y "$(OpenCV_vc14)\bin\*.dll"
 if EXIST "$(Elgato_Filter)" xcopy /y "$(Elgato_Filter)"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
@@ -199,7 +179,6 @@ if EXIST "$(Elgato_Filter)" xcopy /y "$(Elgato_Filter)"</Command>
     <ClInclude Include="ElgatoSampleCallback.h" />
     <ClInclude Include="HologramQueue.h" />
     <ClInclude Include="IFrameProvider.h" />
-    <ClInclude Include="OpenCVFrameProvider.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="StringHelper.h" />
     <ClInclude Include="targetver.h" />
@@ -231,7 +210,6 @@ if EXIST "$(Elgato_Filter)" xcopy /y "$(Elgato_Filter)"</Command>
     </ClCompile>
     <ClCompile Include="ElgatoFrameProvider.cpp" />
     <ClCompile Include="ElgatoSampleCallback.cpp" />
-    <ClCompile Include="OpenCVFrameProvider.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

@@ -12,8 +12,6 @@
 // FrameProvider type - Exactly 1 of these should be true:
 //TODO: Set this to true if using a USB 3 external BlackMagic Shuttle capture card.
 #define USE_DECKLINK_SHUTTLE    FALSE
-//TODO: Set this to true if using OpenCV to get frames from a camera or capture card.
-#define USE_OPENCV              FALSE
 
 // Audio
 //TODO: Set this to true to encode audio with captured video.
