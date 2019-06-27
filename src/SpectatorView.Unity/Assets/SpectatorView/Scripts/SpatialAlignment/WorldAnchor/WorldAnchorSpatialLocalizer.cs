@@ -28,7 +28,7 @@ namespace Microsoft.MixedReality.SpectatorView
         {
             get
             {
-#if UNITY_WSA
+#if UNITY_WSA && !UNITY_EDITOR
                 return true;
 #else
                 return false;

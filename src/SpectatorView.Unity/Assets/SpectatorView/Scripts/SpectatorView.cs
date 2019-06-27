@@ -279,13 +279,11 @@ namespace Microsoft.MixedReality.SpectatorView
                     return;
                 }
 
-                if (defaultSpatialLocalizationInitializers != null)
-
-                DebugLog($"None of the configured LocalizationInitializers were supported by the connected participant, localization will not be started");
+                Debug.LogWarning($"None of the configured LocalizationInitializers were supported by the connected participant, localization will not be started");
             }
             else
             {
-                DebugLog($"No supported localizers were received from the participant, localization will not be started");
+                Debug.LogWarning($"No supported localizers were received from the participant, localization will not be started");
             }
         }
 
