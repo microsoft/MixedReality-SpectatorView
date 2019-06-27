@@ -4,6 +4,8 @@
 using UnityEngine;
 
 using System.Runtime.CompilerServices;
+using System.Collections.Generic;
+using System;
 
 [assembly: InternalsVisibleToAttribute("Microsoft.MixedReality.SpectatorView.Editor")]
 
@@ -59,6 +61,11 @@ namespace Microsoft.MixedReality.SpectatorView
         [SerializeField]
         private StateSynchronizationObserver stateSynchronizationObserver = null;
 
+        [Header("Spatial Alignment")]
+        [Tooltip("A prioritized list of SpatialLocalizationInitializers that should be used when a spectator connects.")]
+        [SerializeField]
+        private SpatialLocalizationInitializer[] defaultSpatialLocalizationInitializers = null;
+
         [Header("Recording")]
         /// <summary>
         /// Prefab for creating a mobile recording service visual.
@@ -95,6 +102,10 @@ namespace Microsoft.MixedReality.SpectatorView
         [Tooltip("Scaling applied to spectator debug visuals.")]
         [SerializeField]
         public float spectatorDebugVisualScale = 1.0f;
+
+        [Tooltip("Enable verbose debug logging messages")]
+        [SerializeField]
+        private bool debugLogging = false;
 
 #if UNITY_ANDROID || UNITY_IOS
         private GameObject mobileRecordingServiceVisual = null;
@@ -142,10 +153,7 @@ namespace Microsoft.MixedReality.SpectatorView
                         }
 
                         // When running as a spectator, automatic localization should be initiated if it's configured.
-                        if (SpatialLocalizationInitializationSettings.IsInitialized)
-                        {
-                            SpatialLocalizationInitializationSettings.Instance.ConfigureAutomaticLocalization();
-                        }
+                        SpatialCoordinateSystemManager.Instance.ParticipantConnected += OnParticipantConnected;
 
                         RunStateSynchronizationAsObserver();
                     }
@@ -153,6 +161,14 @@ namespace Microsoft.MixedReality.SpectatorView
             }
 
             SetupRecordingService();
+        }
+
+        private void OnDestroy()
+        {
+            if (Role == Role.Spectator)
+            {
+                SpatialCoordinateSystemManager.Instance.ParticipantConnected -= OnParticipantConnected;
+            }
         }
 
         private void RunStateSynchronizationAsBroadcaster()
@@ -221,6 +237,71 @@ namespace Microsoft.MixedReality.SpectatorView
             recordingService = null;
             return false;
 #endif
+        }
+
+        private void DebugLog(string message)
+        {
+            if (debugLogging)
+            {
+                UnityEngine.Debug.Log($"SpatialLocalizationInitializationSettings: {message}");
+            }
+        }
+
+        private async void OnParticipantConnected(SpatialCoordinateSystemParticipant participant)
+        {
+            DebugLog($"Waiting for the set of supported localizers from connected participant {participant.SocketEndpoint.Address}");
+
+            // When a remote participant connects, get the set of ISpatialLocalizers that peer
+            // supports. This is asynchronous, as it comes across the network.
+            ISet<Guid> peerSupportedLocalizers = await participant.GetPeerSupportedLocalizersAsync();
+
+            // If there are any supported localizers, find the first configured localizer in the
+            // list that supports that type. If and when one is found, use it to perform localization.
+            if (peerSupportedLocalizers != null)
+            {
+                DebugLog($"Received a set of {peerSupportedLocalizers.Count} supported localizers");
+                
+                if (SpatialLocalizationInitializationSettings.IsInitialized &&
+                    TryRunLocalization(SpatialLocalizationInitializationSettings.Instance.PrioritizedInitializers, peerSupportedLocalizers, participant))
+                {
+                    // Succeeded at using a custom localizer specified by the app.
+                    return;
+                }
+
+                if (TryRunLocalization(defaultSpatialLocalizationInitializers, peerSupportedLocalizers, participant))
+                {
+                    // Succeeded at using one of the default localizers from the prefab.
+                    return;
+                }
+
+                if (defaultSpatialLocalizationInitializers != null)
+
+                DebugLog($"None of the configured LocalizationInitializers were supported by the connected participant, localization will not be started");
+            }
+            else
+            {
+                DebugLog($"No supported localizers were received from the participant, localization will not be started");
+            }
+        }
+
+        private bool TryRunLocalization(IList<SpatialLocalizationInitializer> initializers, ISet<Guid> supportedLocalizers, SpatialCoordinateSystemParticipant participant)
+        {
+            if (initializers == null)
+            {
+                return false;
+            }
+
+            for (int i = 0; i < initializers.Count; i++)
+            {
+                if (supportedLocalizers.Contains(initializers[i].PeerSpatialLocalizerId))
+                {
+                    DebugLog($"Localization initializer {initializers[i].GetType().Name} supported localization with ID {initializers[i].PeerSpatialLocalizerId}, starting localization");
+                    initializers[i].RunLocalization(participant);
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }

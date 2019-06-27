@@ -504,6 +504,9 @@ MonoBehaviour:
   stateSynchronizationSceneManager: {fileID: 4941633253159564537}
   stateSynchronizationBroadcaster: {fileID: 4941633254549859856}
   stateSynchronizationObserver: {fileID: 4941633254517527404}
+  defaultSpatialLocalizationInitializers:
+  - {fileID: 5317805835895109800}
+  - {fileID: 7339675784917655566}
   defaultMobileRecordingServiceVisualPrefab: {fileID: 3991847289853751625, guid: 9771d3a665ea3184f9c3731093a51da4,
     type: 3}
   userDebugVisualPrefab: {fileID: 1958541147728546, guid: f115aa95a7b0e49498ffb20f0b5278d0,
@@ -512,6 +515,7 @@ MonoBehaviour:
   spectatorDebugVisualPrefab: {fileID: 3504969358525992055, guid: e82587d5d3f352d42ad9675adaba5b35,
     type: 3}
   spectatorDebugVisualScale: 0.02
+  debugLogging: 0
 --- !u!1 &4941633254374932144
 GameObject:
   m_ObjectHideFlags: 0
@@ -743,6 +747,30 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7f5fdf2d931ebfc44a472a374ccc191e, type: 3}
+--- !u!114 &7339675784917655566 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 201468391369661480, guid: 7f5fdf2d931ebfc44a472a374ccc191e,
+    type: 3}
+  m_PrefabInstance: {fileID: 7426442734984199206}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65428d5b29901f54f9201e5ca29bdb10, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &5317805835895109800 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3376752394934518926, guid: 7f5fdf2d931ebfc44a472a374ccc191e,
+    type: 3}
+  m_PrefabInstance: {fileID: 7426442734984199206}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65428d5b29901f54f9201e5ca29bdb10, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &3998944255825601304 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5795882921077350206, guid: 7f5fdf2d931ebfc44a472a374ccc191e,
