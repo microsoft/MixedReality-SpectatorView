@@ -2,9 +2,9 @@
 
 The following Dlls are built out of the [SpectatorView.Native.sln](../src/SpectatorView.Native/SpectatorView.Native.sln).
 
-1. **SpectatorView.Compositor.dll** is needed for DSLR camera calibration and DSLR camera spectating experiences.
-2. **SpectatorView.Compositor.UnityPlugin.dll** is needed for DSLR camera calibartion and DSLR camera spectating experiences.
-3. **SpectatorView.OpenCV.dll** is used in both ArUco marker detection and DSLR camera calibration.
+- **SpectatorView.Compositor.dll** is needed for DSLR camera calibration and DSLR camera spectating experiences.
+- **SpectatorView.Compositor.UnityPlugin.dll** is needed for DSLR camera calibartion and DSLR camera spectating experiences.
+- **SpectatorView.OpenCV.dll** is used in both ArUco marker detection and DSLR camera calibration.
 
 ## SpectatorView.Compositor.dll & SpectatorView.Compositor.UnityPlugin.dll
 
@@ -15,7 +15,7 @@ Coming soon...
 * **DSLR camera calibration** requires a **Release x64** version of this binary built from the [**SpectatorView.OpenCV.Desktop**](../src/SpectatorView.Native/SpectatorView.OpenCV/Desktop/SpectatorView.OpenCV.Desktop.vcxproj) visual studio project.
 * **ArUco Marker detection** on a HoloLens 1 device requires a **Release x86** version of this binary built from the [**SpectatorView.OpenCV.UWP**](../src/SpectatorView.Native/SpectatorView.OpenCV/UWP/SpectatorView.OpenCV.UWP.vcxproj)
 
-#### Install Vcpkg
+#### 1. Install Vcpkg
 
 - Open a Command Prompt in administrator mode
 - Navigate to a folder in which you would like to store your repositories (ex: c:\git)
@@ -26,7 +26,7 @@ Coming soon...
 - .\bootstrap-vcpkg.bat
 - .\vcpkg integrate install
 
-#### Install OpenCV Contrib
+#### 2. Install OpenCV Contrib
 
 For ArUco marker detection, you will need to install a x86 uwp friendly version of opencv. For DSLR camera calibration, you will need to install a x64 desktop friendly version of opencv.
 - .\vcpkg install opencv[contrib]:x86-uwp --recurse
@@ -34,11 +34,11 @@ For ArUco marker detection, you will need to install a x86 uwp friendly version 
 
 >NOTE: Copy the above lines exactly (the []s do not indicate an optional value).
 
-#### Building the Plugin
+#### 3. Building the Plugin
 
-1. Open [SpectatorView.Native.sln](../src/SpectatorView.Native/SpectatorView.Native.sln) in visual studio.
-2. Build a **Release x86** version of SpectatorView.OpenCV.dll with [**SpectatorView.OpenCV.UWP**](../src/SpectatorView.Native/SpectatorView.OpenCV/UWP/SpectatorView.OpenCV.UWP.vcxproj)
-2. Build a **Release x64** version of SpectatorView.OpenCV.dll with [**SpectatorView.OpenCV.Desktop**](../src/SpectatorView.Native/SpectatorView.OpenCV/Desktop/SpectatorView.OpenCV.Desktop.vcxproj)
+- Open [SpectatorView.Native.sln](../src/SpectatorView.Native/SpectatorView.Native.sln) in visual studio.
+- Build a **Release x86** version of SpectatorView.OpenCV.dll with [**SpectatorView.OpenCV.UWP**](../src/SpectatorView.Native/SpectatorView.OpenCV/UWP/SpectatorView.OpenCV.UWP.vcxproj)
+- Build a **Release x64** version of SpectatorView.OpenCV.dll with [**SpectatorView.OpenCV.Desktop**](../src/SpectatorView.Native/SpectatorView.OpenCV/Desktop/SpectatorView.OpenCV.Desktop.vcxproj)
 
 ## SpectatorView.OpenCV.dll Troubleshooting
 #### Installing OpenCV Contrib for UWP failed
