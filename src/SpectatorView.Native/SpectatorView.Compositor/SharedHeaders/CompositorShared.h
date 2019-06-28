@@ -3,13 +3,9 @@
 
 #pragma once
 
-//TODO: If you change any of these definitions, recompile UnityCompositorInterface and copy DLL's 
-//      to your Unity project.
-
 // Performance flags, set these to FALSE to improve performance for lower end hardware.
 // Note setting these to false may reduce image quality or hologram stability.
 
-// FrameProvider type - Exactly 1 of these should be true:
 //TODO: Set this to true if using a USB 3 external BlackMagic Shuttle capture card.
 #define USE_DECKLINK_SHUTTLE    FALSE
 

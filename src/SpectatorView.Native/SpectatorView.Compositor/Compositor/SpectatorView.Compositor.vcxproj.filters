@@ -24,6 +24,9 @@
     <ClInclude Include="IFrameProvider.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="OpenCVFrameProvider.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="CompositorInterface.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -51,24 +54,15 @@
     <ClInclude Include="ElgatoSampleCallback.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="IVideoCaptureFilter.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IVideoCaptureFilterTypes.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="qedit.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DeckLinkAPI_h.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="dllmain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="OpenCVFrameProvider.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CompositorInterface.cpp">
@@ -92,16 +86,8 @@
     <ClCompile Include="ElgatoSampleCallback.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DeckLinkAPI_i.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Midl Include="DeckLinkAPI.idl">
-      <Filter>Source Files</Filter>
-    </Midl>
   </ItemGroup>
 </Project>
