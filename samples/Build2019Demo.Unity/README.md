@@ -1,4 +1,4 @@
-# Build 2019 Demo
+# //BUILD 2019 Demo
 
 This sample of using SpectatorView is very similar to the live code demo presented at //BUILD 2019 conference.
 
@@ -35,6 +35,8 @@ These instructions assumes a HoloLens 2 device for host, and an Android phone fo
 2. Build Android Player containing `MixedReality-SpectatorView/SpectatorView/Scenes/SpectatorView.ASA.Android.unity` scene, and deploy this application to the spectating mobile device.
 3. Launch the `SpectatorView.Build2019Demo` on the HoloLens 2 host, and wait for the experience to start.
 4. Launch the `SpectatorView.Build2019Demo` on the Android device, and wait for the connection to happen.
+
+> Building iOS version requires an special step after exporting the Unity project to xCode, see the [official instructions](https://docs.microsoft.com/en-us/azure/spatial-anchors/quickstarts/get-started-unity-ios#open-the-xcode-project).
 
 ## Sample Project Contents
 
