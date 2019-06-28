@@ -154,6 +154,7 @@ PlayerSettings:
   androidMaxAspectRatio: 2.1
   applicationIdentifier:
     Android: Microsoft.MixedReality.SpectatorView.Unity
+    iOS: com.Microsoft.MixedReality.SpectatorView.Unity
   buildNumber: {}
   AndroidBundleVersionCode: 1
   AndroidMinSdkVersion: 24
@@ -410,7 +411,7 @@ PlayerSettings:
   enableInternalProfiler: 0
   logObjCUncaughtExceptions: 1
   enableCrashReportAPI: 0
-  cameraUsageDescription: 
+  cameraUsageDescription: Camera required for AR Foundation
   locationUsageDescription: 
   microphoneUsageDescription: 
   switchNetLibKey: 
@@ -627,10 +628,9 @@ PlayerSettings:
   webGLCompressionFormat: 1
   webGLLinkerTarget: 1
   webGLThreadsSupport: 0
-  scriptingDefineSymbols:
-    7: SPATIALALIGNMENT_ASA
-    14: SPATIALALIGNMENT_ASA;STATESYNC_TEXTMESHPRO
-  platformArchitecture: {}
+  scriptingDefineSymbols: {}
+  platformArchitecture:
+    iOS: 1
   scriptingBackend:
     Metro: 2
   il2cppCompilerConfiguration: {}
@@ -701,12 +701,12 @@ PlayerSettings:
       UserAccountInformation: False
       UserDataTasks: False
       UserNotificationListener: False
-      VideosLibrary: False
+      VideosLibrary: True
       VoipCall: False
       WebCam: True
   metroTargetDeviceFamilies:
     Desktop: False
-    Holographic: False
+    Holographic: True
     IoT: False
     IoTHeadless: False
     Mobile: False
