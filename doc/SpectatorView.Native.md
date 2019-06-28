@@ -40,8 +40,6 @@ If you are using an Elgato capture card, you will need to clone Elgato's [gameca
 - Navigate to a folder in which you would like to store your repositories (ex: c:\git)
 - git clone <https://github.com/Microsoft/vcpkg>
 - cd vcpkg
-- git checkout 05b31030cee412118a9710daf5b4652a684b7f50
->NOTE: The above commit was the last tested commit by a contributor to this repo. If the below setup steps fail with this commit, it is likely worth checking if the failure is a known issue for the vcpkg repo. It is also worth attempting checking out the master branch and reattempting the setup steps.
 - .\bootstrap-vcpkg.bat
 - .\vcpkg integrate install
 
@@ -62,7 +60,7 @@ For ArUco marker detection, you will need to install a x86 uwp friendly version 
 ## SpectatorView.OpenCV.dll Troubleshooting
 #### Installing OpenCV Contrib for UWP failed
 
-The suggested commit above for vcpkg reflects the last locally tested vcpkg commit by a contributor to this repo. When encountering issues with vcpkg, it is likely worth checking out the master branch for the vcpkg repo and repeating the vcpkg related steps. Issues may also already be filed for issues with vcpkg.
+When encountering issues with vcpkg, the most up to date information will be found in the [vcpkg project](https://github.com/microsoft/vcpkg/issues). Searching for specific errors in the [vcpkg issues list](https://github.com/microsoft/vcpkg/issues) will be the quickest way to find potential workarounds.
 >NOTE: When trying other vcpkgs commits, you may end up with a different version of opencv getting installed to your development machine. This will likely require updating the opencv lib dependencies as described below.
 
 #### OpenCV header/dll is not found
