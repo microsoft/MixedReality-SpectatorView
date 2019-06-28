@@ -23,7 +23,7 @@ namespace Microsoft.MixedReality.SpectatorView
         private DeviceInfoObserver appDeviceObserver = null;
 
         [SerializeField]
-        [Tooltip("The port that the " + nameof(HolographicCameraBroadcaster) + " listens for connections on.")]
+        [Tooltip("The port that the HolographicCamera listens for connections on.")]
         private int remotePort = 7502;
 
         protected override int RemotePort => remotePort;

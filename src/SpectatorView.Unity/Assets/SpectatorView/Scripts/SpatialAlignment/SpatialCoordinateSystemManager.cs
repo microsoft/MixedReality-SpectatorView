@@ -378,7 +378,7 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
-        internal bool TryGetSpatialCoordinateSystemParticipant(SocketEndpoint connectedEndpoint, out SpatialCoordinateSystemParticipant participant)
+        public bool TryGetSpatialCoordinateSystemParticipant(SocketEndpoint connectedEndpoint, out SpatialCoordinateSystemParticipant participant)
         {
             return participants.TryGetValue(connectedEndpoint, out participant);
         }
