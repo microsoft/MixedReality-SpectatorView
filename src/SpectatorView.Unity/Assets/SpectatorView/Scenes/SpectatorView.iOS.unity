@@ -184,6 +184,11 @@ PrefabInstance:
       propertyPath: Role
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8396631008393852441, guid: aa311d939e452a045b897dcc7c9c36fb,
+        type: 3}
+      propertyPath: sharedCoordinateOrigin
+      value: 
+      objectReference: {fileID: 1855549804}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: aa311d939e452a045b897dcc7c9c36fb, type: 3}
 --- !u!1001 &1494373461
