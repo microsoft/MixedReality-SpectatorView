@@ -37,6 +37,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
         protected const int textureRenderModeSplit = 1;
         private const float quadPadding = 4;
         private const int connectAndDisconnectButtonWidth = 90;
+        private const int localizerLabelWidth = 80;
 
         protected virtual void OnEnable()
         {
@@ -166,14 +167,37 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
 
                 EditorGUILayout.Space();
 
-                if (GUILayout.Button(new GUIContent("Locate Shared Spatial Coordinate", "Detects the shared location used to position objects in the same physical location on multiple devices")))
+                GUILayout.Label("Spatial Alignment", boldLabelStyle);
+
+                GUILayout.Space(4);
+
+                GUILayout.BeginHorizontal();
                 {
-                    CompositorWorldAnchorLocalizationManager.Instance.RunRemoteLocalizationWithWorldAnchorPersistence(spatialCoordinateSystemParticipant, ArUcoMarkerDetectorSpatialLocalizer.Id, new MarkerDetectorLocalizationSettings
+                    GUILayout.Label("Localizer", GUILayout.Width(localizerLabelWidth));
+                    EditorGUILayout.Popup(0, new string[] { "ArUco Marker", "Azure Spatial Anchor" });
+                    GUIStyle iconButtonStyle = GUI.skin.FindStyle("IconButton") ?? EditorGUIUtility.GetBuiltinSkin(EditorSkin.Inspector).FindStyle("IconButton");
+                    GUIContent content = new GUIContent(EditorGUIUtility.Load("icons/d__Popup.png") as Texture2D);
+                    if (EditorGUILayout.DropdownButton(content, FocusType.Passive, iconButtonStyle, GUILayout.Width(24)))
                     {
-                        MarkerID = 0,
-                        MarkerSize = 0.1f,
-                    });
+
+                    }
+                    //EditorGUILayout.DropdownButton(new GUIContent("Settings"), FocusType.Keyboard, GUILayout.Width(connectAndDisconnectButtonWidth));
                 }
+                GUILayout.EndHorizontal();
+
+                GUILayout.BeginHorizontal();
+                {
+                    GUILayout.Label(string.Empty, GUILayout.Width(localizerLabelWidth));
+                    if (GUILayout.Button(new GUIContent("Locate Shared Spatial Coordinate", "Detects the shared location used to position objects in the same physical location on multiple devices")))
+                    {
+                        CompositorWorldAnchorLocalizationManager.Instance.RunRemoteLocalizationWithWorldAnchorPersistence(spatialCoordinateSystemParticipant, ArUcoMarkerDetectorSpatialLocalizer.Id, new MarkerDetectorLocalizationSettings
+                        {
+                            MarkerID = 0,
+                            MarkerSize = 0.1f,
+                        });
+                    }
+                }
+                GUILayout.EndHorizontal();
 
                 GUI.enabled = true;
             }
