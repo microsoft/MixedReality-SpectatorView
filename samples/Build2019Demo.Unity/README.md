@@ -26,13 +26,13 @@ These instructions assumes a HoloLens 2 device for host, and an Android phone fo
 ![SpectatorView Settings Menu](../../doc/images/SpectatorViewSettingsMenu.png)
 3. Replace `ENTER_ACCOUNT_ID` and `ENTER_ACCOUNT_KEY` with appropriate values. \
 ![Spectator View ASA Settings](../../doc/images/SpectatorViewSettingsASA.png)
-4. Open `MixedReality-SpectatorView/SpectatorView/Scenes/SpectatorView.Android.scene` find SpectatorView prefab, and override the `User Ip Address` value with the IP of your host device.\
+4. Open `MixedReality-SpectatorView/SpectatorView/Scenes/SpectatorView.Android.unity` find SpectatorView prefab, and override the `User Ip Address` value with the IP of your host device.\
 ![Spectator View Spectator IP Settings](../../doc/images/SpectatorViewSpectatorIPSetting.png)
 
 #### Build & Deploy
 
 1. Build UWP Player containing `Demo/Scenes/Finished_Scene` scene, and deploy this application to the HoloLens 2host device.
-2. Build Android Player containing `MixedReality-SpectatorView/SpectatorView/Scenes/SpectatorView.ASA.Android.unity` scene, and deploy this application to the spectating mobile device.
+2. Build Android Player containing `MixedReality-SpectatorView/SpectatorView/Scenes/SpectatorView.Android.unity` scene, and deploy this application to the spectating mobile device.
 3. Launch the `SpectatorView.Build2019Demo` on the HoloLens 2 host, and wait for the experience to start.
 4. Launch the `SpectatorView.Build2019Demo` on the Android device, and wait for the connection to happen.
 
