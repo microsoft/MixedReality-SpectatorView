@@ -53,17 +53,17 @@ Not all spatial alignment strategies support all platforms. See the chart below 
 
 ### HoloLens 2 & HoloLens
 1. Make sure your Unity project contains the asset caches that were created in the 'Before building' steps.
-2. Add the [SpectatorView.*.HoloLens prefab](Prefabs/) that reflects the correct spatial alignment strategy to the scene you intend to run on the HoloLens device.
+2. Add the [SpectatorView prefab](../src/SpectatorView.Unity/Assets/SpectatorView/Prefabs/) that reflects the correct spatial alignment strategy to the scene you intend to run on the HoloLens device.
 3. Add a GameObjectHierarchyBroadcaster to the root game object of the content you want synchronized. 
-4. Press the 'HoloLens' button on the [Platform Switcher](Scripts/Editor/PlatformSwitcherEditor.cs) attached to Spectator View in the unity inspector (This should configure the correct build settings and app capabilities).
+4. Press the 'HoloLens' button on the [Platform Switcher](../src/SpectatorView.Unity/Assets/SpectatorView.Editor/Scripts/PlatformSwitcherEditor.cs) attached to Spectator View in the unity inspector (This should configure the correct build settings and app capabilities).
 5. Build and deploy the application to your HoloLens device.
 
 ### Android
 1. Make sure your Unity project contains the asset caches that were created in the 'Before building' steps.
 2. Import [ARCore v1.7.0](https://github.com/google-ar/arcore-unity-sdk/releases/tag/v1.7.0).
-3. Open the [SpectatorView.*.Android unity scene](Scenes/) that reflects the correct spatial alignment strategy in your unity project.
+3. Open the [SpectatorView.Android unity scene](../src/SpectatorView.Unity/Assets/SpectatorView/Scenes/) that reflects the correct spatial alignment strategy in your unity project.
 4. Set the 'User Ip Address' in the Spectator View script to the ip address of your HoloLens device.
-5. Press the 'Android' button on the [Platform Switcher](Scripts/Editor/PlatformSwitcherEditor.cs) attached to Spectator View in the unity inspector (This should configure the correct build settings and app capabilities).
+5. Press the 'Android' button on the [Platform Switcher](../src/SpectatorView.Unity/Assets/SpectatorView.Editor/Scripts/PlatformSwitcherEditor.cs) attached to Spectator View in the unity inspector (This should configure the correct build settings and app capabilities).
 6. Check 'ARCore Supported' under Build Settings -> Player Settings -> Android -> XR Settings
 7. Export the project to android studio.
 8. Update the AndroidManifest.xml in android studio to use the ScreenRecorderActivity class compared to the UnityPlayerActivity as the application activity.
@@ -73,25 +73,14 @@ Not all spatial alignment strategies support all platforms. See the chart below 
 > Note: Building iOS applications requires a mac.
 1. Make sure your Unity project contains the asset caches that were created in the 'Before building' steps. Asset caches can't be recreated in new development environments, so the asset caches created on the PC need to be checked in or copied over to your mac development environment.
 2. Import [Unity's ARKit Plugin](https://bitbucket.org/Unity-Technologies/unity-arkit-plugin/src/default/).
-3. Open the [SpectatorView.*.iOS unity scene](Scenes/) that reflects the correct spatial alignment strategy in your unity project.
+3. Open the [SpectatorView.iOS unity scene](../src/SpectatorView.Unity/Assets/SpectatorView/Scenes/) that reflects the correct spatial alignment strategy in your unity project.
 4. Set the 'User Ip Address' in the Spectator View script to the ip address of your HoloLens device.
-5. Press the 'iOS' button on the [Platform Switcher](Scripts/Editor/PlatformSwitcherEditor.cs) attached to Spectator View in the unity inspector (This should configure the correct build settings and app capabilities).
+5. Press the 'iOS' button on the [Platform Switcher](../src/SpectatorView.Unity/Assets/SpectatorView.Editor/Scripts/PlatformSwitcherEditor.cs) attached to Spectator View in the unity inspector (This should configure the correct build settings and app capabilities).
 6. Export the iOS project to a XCode solution.
 7. Configure the [signing certificate](https://developer.apple.com/support/code-signing/) for your Unity generated project in XCode to reflect your developer account.
 8. Build and deploy the application through XCode to your desired device.
 
 # Example Scenes
-### Azure Spatial Anchors
-* HoloLens: [SpectatorView.ASA.HoloLens](Scenes/SpectatorView.ASA.HoloLens.unity)
-* Android: [SpectatorView.ASA.Android](Scenes/SpectatorView.ASA.Android.unity)
-* iOS: [SpectatorView.ASA.iOS](Scenes/SpectatorView.ASA.iOS.unity)
-
-### QR Code Detection
-* HoloLens: [SpectatorView.QRCodeVisual.HoloLens](Scenes/SpectatorView.QRCodeVisual.HoloLens.unity)
-* Android: [SpectatorView.QRCodeVisual.Android](Scenes/SpectatorView.QRCodeVisual.Android.unity)
-* iOS: [SpectatorView.QRCodeVisual.iOS](Scenes/SpectatorView.QRCodeVisual.iOS.unity)
-
-### ArUco Marker Detection
-* HoloLens: [SpectatorView.ArUcoVisual.HoloLens](Scenes/SpectatorView.ArUcoVisual.HoloLens.unity)
-* Android: [SpectatorView.ArUcoVisual.Android](Scenes/SpectatorView.ArUcoVisual.Android.unity)
-* iOS: [SpectatorView.ArUcoVisual.iOS](Scenes/SpectatorView.ArUcoVisual.iOS.unity)
+* HoloLens: [SpectatorView.HoloLens](../src/SpectatorView.Unity/Assets/SpectatorView/Scenes/SpectatorView.HoloLens.unity)
+* Android: [SpectatorView.Android](../src/SpectatorView.Unity/Assets/SpectatorView/Scenes/SpectatorView.Android.unity)
+* iOS: [SpectatorView.iOS](../src/SpectatorView.Unity/Assets/SpectatorView/Scenes/SpectatorView.iOS.unity)
