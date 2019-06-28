@@ -212,8 +212,6 @@ namespace Microsoft.MixedReality.SpectatorView
             colorRGBTexture = new RenderTexture(frameWidth, frameHeight, (int)Compositor.TextureDepth);
             alphaTexture = new RenderTexture(frameWidth, frameHeight, (int)Compositor.TextureDepth);
             compositeTexture = new RenderTexture(frameWidth, frameHeight, (int)Compositor.TextureDepth);
-            // this is needed for the shader that converts back to YUV
-            compositeTexture.wrapMode = TextureWrapMode.Repeat;
 
             if (supersampleBuffers.Length > 0)
             {
