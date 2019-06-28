@@ -17,13 +17,15 @@ namespace Microsoft.MixedReality.SpectatorView
         public const string CalibrationDataCommand = "CalibrationData";
 
         [SerializeField]
+        [Tooltip("The CompositionManager used to perform composition of holograms and real-world video.")]
         private CompositionManager compositionManager = null;
 
         [SerializeField]
+        [Tooltip("The DeviceInfoObserver used for the connection between the compositor and the device running the app being viewed.")]
         private DeviceInfoObserver appDeviceObserver = null;
 
         [SerializeField]
-        [Tooltip("The port that the " + nameof(HolographicCameraBroadcaster) + " listens for connections on.")]
+        [Tooltip("The port that the HolographicCamera listens for connections on.")]
         private int remotePort = 7502;
 
         protected override int RemotePort => remotePort;
@@ -58,7 +60,7 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
-        public void HandleCameraCommand(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
+        private void HandleCameraCommand(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
         {
             float timestamp = reader.ReadSingle();
             Vector3 cameraPosition = reader.ReadVector3();
@@ -67,7 +69,7 @@ namespace Microsoft.MixedReality.SpectatorView
             compositionManager.AddCameraPose(cameraPosition, cameraRotation, timestamp);
         }
 
-        public void HandleCalibrationDataCommand(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
+        private void HandleCalibrationDataCommand(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
         {
             int calibrationDataPayloadLength = reader.ReadInt32();
             byte[] calibrationDataPayload = reader.ReadBytes(calibrationDataPayloadLength);
