@@ -4,19 +4,23 @@ This folder contains sample and demo projects that are maintained by the Spectao
 
 ## Getting Started
 
-Ensure you have all the required software, for detailed instructions see [Required Software](../README.md):
+Ensure you have all the required software, for detailed instructions see [Required Software](../README.md).
 
 - Git Tools
 - Visual Studio
 - Unity 2018.3.14f1
+- __(Optional)__ Windows 10.0.18362.0 SDK
+- __(Optional)__ Android Studio
+- __(Optional)__ XCode
 
 Once you have the required software, follow these steps:
 
 1. Using your favorite Git management tool, clone this repository if you haven't yet.
 2. Then with git, pull the latest version of the code.
 3. Run `/tools/scripts/ResetSamples.bat` to get to a clean state of the Samples folder with appropriate configuration.
+    - On Mac or Linux, you can run `/tools/scripts/ResetSamples.sh`.
 
-> In the future, you can update to latest by invoking `git pull --recurse-submodules`.
+> In future updates you can pull to latest by invoking `git pull --recurse-submodules` command.
 
 ## Contents
 

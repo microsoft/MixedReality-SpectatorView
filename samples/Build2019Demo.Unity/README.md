@@ -12,16 +12,29 @@ In order to run the demo, you will need at least two MR/AR capable devices, with
 
 ### Instructions
 
-These instructions assumes a HoloLens 2 device for host, and a mobile phone for spectator
+These instructions assumes a HoloLens 2 device for host, and an Android phone for spectator. For iOS, replace references to Android with iOS.
 
-1. Connect your devices to the same WiFi network, and obtain the host device IP Address.
-2. Build UWP Player containing `Demo/Scenes/Finished_Scene` scene, and deploy this application to the HoloLens 2host device.
-3. `TODO` [Set the IP, ASA keys, etc]
-4. Build Android Player containing `MixedReality-SpectatorView/SpectatorView/Scenes/SpectatorView.ASA.Android.unity` scene, and deploy this application to the spectating mobile device. 
-    - For iOS, repalce `Android` with `iOS` in the scene path.
-5. Launch the `SpectatorView.Build2019Demo` on the HoloLens 2 host, and wait for the experience to start.
-    - You can validate the slider and the buttons work.
-6. Launch the `SpectatorView.Build2019Demo` on the mobile device, and wait for the connection to happen.
+#### Prepare your devices
+
+1. Connect your devices to the same WiFi network.
+2. Obtain and write down the host device IP Address.
+
+#### Configure your project
+
+1. Ensure you have created an [Azure Spatial Anchors](https://docs.microsoft.com/en-us/azure/spatial-anchors/quickstarts/get-started-unity-hololens#create-a-spatial-anchors-resource) account.
+2. Open SpectatorView settings by going to the menu `SpectatorView > Edit Settings`. \
+![SpectatorView Settings Menu](../../doc/images/SpectatorViewSettingsMenu.png)
+3. Replace `ENTER_ACCOUNT_ID` and `ENTER_ACCOUNT_KEY` with appropriate values. \
+![Spectator View ASA Settings](../../doc/images/SpectatorViewSettingsASA.png)
+4. Open `MixedReality-SpectatorView/SpectatorView/Scenes/SpectatorView.Android.scene` find SpectatorView prefab, and override the `User Ip Address` value with the IP of your host device.\
+![Spectator View Spectator IP Settings](../../doc/images/SpectatorViewSpectatorIPSetting.png)
+
+#### Build & Deploy
+
+1. Build UWP Player containing `Demo/Scenes/Finished_Scene` scene, and deploy this application to the HoloLens 2host device.
+2. Build Android Player containing `MixedReality-SpectatorView/SpectatorView/Scenes/SpectatorView.ASA.Android.unity` scene, and deploy this application to the spectating mobile device.
+3. Launch the `SpectatorView.Build2019Demo` on the HoloLens 2 host, and wait for the experience to start.
+4. Launch the `SpectatorView.Build2019Demo` on the Android device, and wait for the connection to happen.
 
 ## Sample Project Contents
 

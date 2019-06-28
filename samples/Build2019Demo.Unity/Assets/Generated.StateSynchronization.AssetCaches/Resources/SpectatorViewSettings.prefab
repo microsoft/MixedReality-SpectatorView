@@ -89,7 +89,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   configuration:
     AccountDomain: 
-    AccountId: f7987ce2-7a81-4232-a665-ac247df35468
-    AccountKey: pQ/Sf/JTnx+ur5iuKU8Xr80IlbVggViAs/DZ3tylJhc=
+    AccountId: ENTER_ACCOUNT_ID
+    AccountKey: ENTER_ACCOUNT_KEY
     AccessToken: 
     AuthenticationToken: 
