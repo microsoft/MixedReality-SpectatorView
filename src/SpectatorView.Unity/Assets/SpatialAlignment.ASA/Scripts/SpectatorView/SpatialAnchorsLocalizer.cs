@@ -38,7 +38,7 @@ namespace Microsoft.MixedReality.SpectatorView
         {
             get
             {
-#if SPATIALALIGNMENT_ASA && (UNITY_WSA || UNITY_ANDROID)
+#if SPATIALALIGNMENT_ASA && (UNITY_WSA || UNITY_ANDROID || UNITY_IOS)
                 return true;
 #else
                 return false;

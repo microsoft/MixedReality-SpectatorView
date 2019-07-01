@@ -54,6 +54,10 @@ ExportedObj/
 # Unity3D generated file on crash reports
 sysinfo.txt
 
+# Custom - Generated Asset Caches
+Assets/Generated.StateSynchronization.AssetCaches.meta
+Assets/Generated.StateSynchronization.AssetCaches/
+
 # Builds
 *.apk
 *.unitypackage
