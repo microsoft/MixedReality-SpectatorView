@@ -9,7 +9,8 @@
 1. Windows PC
 2. Android Device that supports [AR Core](https://developers.google.com/ar/discover/supported-devices)
 3. [Android Studio](https://developer.android.com/studio)
-4. [ARCore v1.7.0](https://github.com/google-ar/arcore-unity-sdk/releases/tag/v1.7.0) (Note: only v1.7.0 has been tested, use other versions at your own risk)
+4. Obtain [ARCore v1.7.0](https://github.com/google-ar/arcore-unity-sdk/releases/tag/v1.7.0) (Note: only v1.7.0 has been tested, use other versions at your own risk). This can be achieved through running the [ResetSamples](../tools/Scripts/ResetSamples.bat) script or by manually copying assets content into the [ARCore-Unity-SDK folder](../external/ARCore-Unity-SDK).
+>Note: ARCore does not share MixedReality-SpectatorView's MIT license. For more information on ARCore licensing, see [here](https://github.com/google-ar/arcore-unity-sdk/blob/master/LICENSE).
 
 ### iOS
 1. Mac
@@ -17,7 +18,8 @@
 3. [Unity](https://unity3d.com/get-unity/download) installed on the Mac
 4. [XCode](https://developer.apple.com/xcode/) installed on the Mac
 5. Obtain an [apple developer license](https://developer.apple.com/programs/enroll/)
-6. [Unity's ARKit Plugin](https://bitbucket.org/Unity-Technologies/unity-arkit-plugin/src/default/)
+6. Obtain [Unity's ARKit Plugin](https://bitbucket.org/Unity-Technologies/unity-arkit-plugin/src/default/) and place it within the [ARKit assets folder](../src/SpectatorView.Unity/Assets/ARKit) in SpectatorView.Unity.
+>Note: Unity's ARKit Plugin has two licenses, one of which is not a MIT license. For more information on ARKit licensing, see [here](https://bitbucket.org/Unity-Technologies/unity-arkit-plugin/src/default/LICENSES/).
 
 # Other Dependencies
 Not all spatial alignment strategies support all platforms. See the chart below to determine which strategy best addresses your intended user scenarios.
@@ -30,16 +32,16 @@ Not all spatial alignment strategies support all platforms. See the chart below 
 
 ### Azure Spatial Anchors
 1. Setup an [Azure Spatial Anchors account](https://docs.microsoft.com/en-us/azure/spatial-anchors/quickstarts/get-started-unity-hololens) and obtain the Account Domain, Account ID and the Primary Key.
-2. [AzureSpatialAnchors v1.1.1](https://github.com/Azure/azure-spatial-anchors-samples/releases/tag/v1.1.1)
+2. Obtain [AzureSpatialAnchors v1.1.1](https://github.com/Azure/azure-spatial-anchors-samples/releases/tag/v1.1.1). This can be achieved through running the [ResetSamples](../tools/Scripts/ResetSamples.bat) script or by manually copying assets content into the [Azure-Spatial-Anchors-Samples folder](../external/Azure-Spatial-Anchors-Samples).
 3. In the Android, iOS and WSA unity player settings, add the **SPATIALALIGNMENT_ASA** preprocessor directive. (This is located via Build Settings -> Player Settings -> Other Settings -> 'Scripting Defined Symbols')
 4. When in Unity preparing to build your application, set the Account Domain, Account Id and Account Key for the Spatial Anchors Localizer using values you obtained creating an azure spatial anchors account above. These values are set in the SpatialAnchorsCoordinateLocalizationInitializer MonoBehaviour defined, which will exist for the Android and iOS experiences.
 
 ### QR Code Detection
-1. Obtain the [MixedReality QR Code Plugin](https://github.com/dorreneb/mixed-reality/releases) and include the associated dll's in your Unity project.
+1. Obtain the [MixedReality QR Code Plugin](https://github.com/dorreneb/mixed-reality/releases) and include the associated dll's into the [MixedReality-QRCodePlugin folder](../external/MixedReality-QRCodePlugin).
 2. In the WSA unity player settings, add the **QRCODESTRACKER_BINARY_AVAILABLE** preprocessor directive. (This is located via Build Settings -> Player Settings -> Other Settings -> 'Scripting Defined Symbols')
 
 ### ArUco Marker Detection
-1. Build [SpectatorView.OpenCV.dll](../src/SpectatorView.Native/SpectatorView.OpenCV/UWP) and include the associated dll's in your Unity project.
+1. Build a x86 Release version of [SpectatorView.OpenCV.dll](SpectatorView.Native.md) and include the associated dll's in your Unity project. Addint the plugins to your Unity project can be achieved by running the [CopyPluginsToUnity](../tools/Scripts/CopyPluginsToUnity.bat) script.
 
 # Building
 ### Before building
