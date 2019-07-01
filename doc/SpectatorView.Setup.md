@@ -13,12 +13,13 @@
 >Note: ARCore does not share MixedReality-SpectatorView's MIT license. For more information on ARCore licensing, see [here](https://github.com/google-ar/arcore-unity-sdk/blob/master/LICENSE).
 
 ### iOS
+>Note: ARKit contains some scripts that will generate build failures for HoloLens builds. You will only need to obtain the ARKit Unity Plugin described below on your mac device.
 1. Mac
 2. ARM64 iOS Device that supports [AR Kit](https://developer.apple.com/library/archive/documentation/DeviceInformation/Reference/iOSDeviceCompatibility/DeviceCompatibilityMatrix/DeviceCompatibilityMatrix.html)
 3. [Unity](https://unity3d.com/get-unity/download) installed on the Mac
 4. [XCode](https://developer.apple.com/xcode/) installed on the Mac
 5. Obtain an [apple developer license](https://developer.apple.com/programs/enroll/)
-6. Obtain [Unity's ARKit Plugin](https://bitbucket.org/Unity-Technologies/unity-arkit-plugin/src/default/) and place it within the [ARKit assets folder](../src/SpectatorView.Unity/Assets/ARKit) in SpectatorView.Unity.
+6. Obtain [Unity's ARKit Plugin](https://bitbucket.org/Unity-Technologies/unity-arkit-plugin/src/default/) and place it within the [ARKit-Unity-Plugin folder](../external/ARKit-Unity-Plugin).
 >Note: Unity's ARKit Plugin has two licenses, one of which is not a MIT license. For more information on ARKit licensing, see [here](https://bitbucket.org/Unity-Technologies/unity-arkit-plugin/src/default/LICENSES/).
 
 # Other Dependencies
@@ -42,6 +43,7 @@ Not all spatial alignment strategies support all platforms. See the chart below 
 
 ### ArUco Marker Detection
 1. Build a x86 Release version of [SpectatorView.OpenCV.dll](SpectatorView.Native.md) and include the associated dll's in your Unity project. Addint the plugins to your Unity project can be achieved by running the [CopyPluginsToUnity](../tools/Scripts/CopyPluginsToUnity.bat) script.
+>Note: No arm version of SpectatorView.OpenCV.dll exists, which will cause build errors for HoloLens 2 devices if these dlls are kept in the project when building for HoloLens 2. It is suggested to delete any SpectatorView.Native directories in the Assets folder when building for HoloLens 2 (This will have been created by the above CopyPluginsToUnity script). When building for HoloLens 1 or running DSLR camera experiences, recopy these dll's to the project.
 
 # Building
 ### Before building
