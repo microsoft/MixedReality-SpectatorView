@@ -1,0 +1,213 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c29111bdcab2ead418210130d901092a, type: 3}
+  m_Name: SpriteAssetCache
+  m_EditorClassIdentifier: 
+  assets:
+  - AssetId:
+      m_storage: 74fae14d-39c0-497e-ae6d-72f1f2084231
+    Asset: {fileID: 21300000, guid: d651fc00b471cfe44834a222e9433461, type: 3}
+  - AssetId:
+      m_storage: f42bb34d-53dc-481f-bcc7-9823e4c197e7
+    Asset: {fileID: 21300000, guid: 6deea620179caad4d97d51e0e6e03010, type: 3}
+  - AssetId:
+      m_storage: 30df0952-4da8-4b65-a4bf-9e2bd95db273
+    Asset: {fileID: 21300000, guid: 84643a20fa6b4fa7969ef84ad2e40992, type: 3}
+  - AssetId:
+      m_storage: e52d6769-916e-45d4-83f9-9e60a8d5fa94
+    Asset: {fileID: 21300000, guid: acc34040a66fe4170bc8885268860cfe, type: 3}
+  - AssetId:
+      m_storage: f842e9e4-deba-495b-ae69-a3b0ed76f8fd
+    Asset: {fileID: 21300000, guid: b2c8cdd0abb099e43b24fe3c1944e166, type: 3}
+  - AssetId:
+      m_storage: 091b7262-8f5c-43b5-b8a4-401a6a083eb3
+    Asset: {fileID: 21300000, guid: 3ba76ce0e2c9a7c45801facdc7e24384, type: 3}
+  - AssetId:
+      m_storage: 395056aa-7f64-491e-b73b-456d289b9de3
+    Asset: {fileID: 21300000, guid: 61438131b4fdac446a91f664f1770aad, type: 3}
+  - AssetId:
+      m_storage: 11b0cc54-384a-4363-a516-78cb37b3697c
+    Asset: {fileID: 21300000, guid: 8a0da39193021fa4cb9b71d883d30b97, type: 3}
+  - AssetId:
+      m_storage: c48ae6f2-9a63-4ebb-8beb-f609a0f00b8b
+    Asset: {fileID: 21300000, guid: 2e1868a15829536459f5d0022d6ec0b5, type: 3}
+  - AssetId:
+      m_storage: c7fb622c-deb9-4e38-b041-36ae1855cec4
+    Asset: {fileID: 21300000, guid: 4af5db224464bf34cb8fdc70ee470b65, type: 3}
+  - AssetId:
+      m_storage: e51c16d3-814c-4e17-bc17-b7170e831b05
+    Asset: {fileID: 21300000, guid: f2237692de9624a4692e4b0440c5f476, type: 3}
+  - AssetId:
+      m_storage: 207bf807-be6c-4f35-9c67-1c8a708ff975
+    Asset: {fileID: 21300000, guid: a7d0f692b982a754b8ae2353d5e88d64, type: 3}
+  - AssetId:
+      m_storage: b12a4dc8-90a6-4f1b-9a81-2497701f2eed
+    Asset: {fileID: 21300000, guid: 1520ffe22e0382949b34d64a73900077, type: 3}
+  - AssetId:
+      m_storage: 8a3a318c-6240-48a7-aff9-7a34ae5f6197
+    Asset: {fileID: 21300000, guid: c2c00ef21cc44bcfa09695879e0ebecd, type: 3}
+  - AssetId:
+      m_storage: 1b276a3c-1b19-4075-8a07-3dd84c128283
+    Asset: {fileID: 21300000, guid: 0b431d73cc837214fbf67cab3535f975, type: 3}
+  - AssetId:
+      m_storage: b7ddc170-8d2d-4321-a232-24c232274894
+    Asset: {fileID: 21300000, guid: 739d0ad3b6c10dc49b8a45caf9002249, type: 3}
+  - AssetId:
+      m_storage: 4b38f031-3567-4874-9c21-28e2d6d43b06
+    Asset: {fileID: 21300000, guid: d867b2e361e90944b8b1ee90338f4350, type: 3}
+  - AssetId:
+      m_storage: f936f98c-201f-467b-a2ee-9eb78430b155
+    Asset: {fileID: 21300000, guid: 0ac4e434e8bf54a418c7e6ff28cdf07b, type: 3}
+  - AssetId:
+      m_storage: a54d1215-1350-4093-aa43-b98fc6866ae3
+    Asset: {fileID: 21300000, guid: 6344c4749a5854a4fb033def626a8547, type: 3}
+  - AssetId:
+      m_storage: 2970e75b-5dae-4501-8b53-f3f0709fd69e
+    Asset: {fileID: 21300000, guid: 0ea40b842547d784082ebf2698d3f08b, type: 3}
+  - AssetId:
+      m_storage: 6b8b9634-a79a-4c49-b27a-c81f1e827dac
+    Asset: {fileID: 21300000, guid: 6588fe8449020f74488b8b667ce2f435, type: 3}
+  - AssetId:
+      m_storage: 88e14552-363c-4d53-8cd5-9d77133113c2
+    Asset: {fileID: 21300000, guid: 3cf132d4fa07f4f0cb2883499c5c7dd0, type: 3}
+  - AssetId:
+      m_storage: 9e196a5d-d80a-4431-aab5-8dbeb467cf6c
+    Asset: {fileID: 21300000, guid: 96d001f4572ca3e4485a62e1a049524e, type: 3}
+  - AssetId:
+      m_storage: dc63b986-89db-433d-8699-c55726572b4f
+    Asset: {fileID: 21300000, guid: e331c3759dc6afb4086a58238fc6934c, type: 3}
+  - AssetId:
+      m_storage: 9baa0140-ff74-421e-affd-efca8cebec4b
+    Asset: {fileID: 21300000, guid: 01e02995805eb483690380a911a657e2, type: 3}
+  - AssetId:
+      m_storage: 14e1ad32-9213-4da4-8313-71f0ffed36e6
+    Asset: {fileID: 21300000, guid: 8e8fc4c5d417b754280cd920d79a5e7f, type: 3}
+  - AssetId:
+      m_storage: 0e3938eb-0401-48b4-b677-e3efe4a1b50b
+    Asset: {fileID: 21300000, guid: 28ea40d50737d3c47af018f7f3ea24ee, type: 3}
+  - AssetId:
+      m_storage: ad541728-da7c-4202-b5d4-1d5733774193
+    Asset: {fileID: 21300000, guid: 0090fa36b85033b419f35f16ae7caa38, type: 3}
+  - AssetId:
+      m_storage: 97072b73-692e-4433-9933-5f39e7437f90
+    Asset: {fileID: 21300000, guid: 68157127a1550704596f2546ea8893d9, type: 3}
+  - AssetId:
+      m_storage: ca1c7ed1-4bd5-4e17-8c9b-63fd2450b259
+    Asset: {fileID: 21300000, guid: b7c2f847b30734945a20fd895bfd2717, type: 3}
+  - AssetId:
+      m_storage: b5d6e1e2-3f44-45ef-9d23-fd067de115ac
+    Asset: {fileID: 21300000, guid: d7776e47f36f995458a92021b99f44d5, type: 3}
+  - AssetId:
+      m_storage: 70505db5-7499-4054-9ad5-3fdc1ce69379
+    Asset: {fileID: 21300000, guid: 375eed972162232439848c636aab9117, type: 3}
+  - AssetId:
+      m_storage: e93255ae-3906-416f-95d6-420e31ef4ffb
+    Asset: {fileID: 21300000, guid: f8eca3a711f4842eba0c52ea9885ef7f, type: 3}
+  - AssetId:
+      m_storage: 6d14fbfb-78a0-4b9b-99f3-95e130e3ea66
+    Asset: {fileID: 21300000, guid: c82628e7a85e39c4181b8f4bbc022896, type: 3}
+  - AssetId:
+      m_storage: 8965520c-51eb-4aa9-b24b-cedc6216a015
+    Asset: {fileID: 21300000, guid: 788648182fdba814396e5258870a63f0, type: 3}
+  - AssetId:
+      m_storage: 6ea99f1a-bc09-4c94-81e6-0a78fe2cb282
+    Asset: {fileID: 21300000, guid: eabaead825c4fa8469474a08de620d78, type: 3}
+  - AssetId:
+      m_storage: 703d481b-88b9-4ea2-b115-f273f9e8140d
+    Asset: {fileID: 21300000, guid: 1780007991c511c4194928e7d680db74, type: 3}
+  - AssetId:
+      m_storage: 699ecc71-412f-4b7f-9415-f3d740266056
+    Asset: {fileID: 21300000, guid: 03b731c99d54dfb4abde4d7d1b1b9199, type: 3}
+  - AssetId:
+      m_storage: c47aa651-9ded-4fd9-8f5d-b7139c3c715c
+    Asset: {fileID: 21300000, guid: 599a5fd92bab81a4ab02e52d0b1b1c60, type: 3}
+  - AssetId:
+      m_storage: e1117981-e53e-406a-8407-db404572dfe1
+    Asset: {fileID: 21300000, guid: 01b6830a93a36904ab139325358f2d35, type: 3}
+  - AssetId:
+      m_storage: a2d58e3c-91b9-4411-9de4-199897e7f089
+    Asset: {fileID: 21300000, guid: 3038942a8632b664795da551e3a65b25, type: 3}
+  - AssetId:
+      m_storage: cf52c4c2-72e5-4dbf-9682-8d470444ee8d
+    Asset: {fileID: 21300000, guid: ec74779aec7b9eb4aa02bc94fe6c78c9, type: 3}
+  - AssetId:
+      m_storage: 6eb7f2fc-7970-470e-97fa-a9797c50e588
+    Asset: {fileID: 21300000, guid: 2f3bf31bda2bd84439e477aac79990ca, type: 3}
+  - AssetId:
+      m_storage: 00490c22-55ce-486a-b6c1-f9d6da6edea2
+    Asset: {fileID: 21300000, guid: 2a95b12bf068e064988984ff0723e935, type: 3}
+  - AssetId:
+      m_storage: e5916ef6-92f2-468c-a496-a5a29f9a071a
+    Asset: {fileID: 21300000, guid: bb5f245b92ffd1840ba3de676b3b9e36, type: 3}
+  - AssetId:
+      m_storage: 90302828-a038-47f2-b58a-5a78f96877dc
+    Asset: {fileID: 21300000, guid: 8a86432c6c39223479e7d6b663242ae9, type: 3}
+  - AssetId:
+      m_storage: ec7c25da-b3d1-4d58-8e96-f95bf25dda23
+    Asset: {fileID: 21300000, guid: 4c433abcdb28444ebb7bd395ba5c76fc, type: 3}
+  - AssetId:
+      m_storage: 96bbac50-1ece-4c5d-991f-b266bc6cf8e1
+    Asset: {fileID: 21300000, guid: 94c407cca90801e47aead1757ce0ae05, type: 3}
+  - AssetId:
+      m_storage: e6877438-495e-4613-a6fa-7611b7c7a1ec
+    Asset: {fileID: 21300000, guid: 4dfd3f5da88944ec6ac5977d676c30c6, type: 3}
+  - AssetId:
+      m_storage: 38b05501-67e5-446f-aa6f-b3781f8bc2e8
+    Asset: {fileID: 21300000, guid: 417cf16dd6895c44f82149efa15170d5, type: 3}
+  - AssetId:
+      m_storage: e2159e6f-aa9e-4843-851b-b258adf88c2e
+    Asset: {fileID: 21300000, guid: 8485eaaddfc849647a3b00d6006e6bc8, type: 3}
+  - AssetId:
+      m_storage: bcb7b5a0-3f10-4868-8f2d-f5fcf983204c
+    Asset: {fileID: 21300000, guid: b866a23e6fb794a45bb571ce249f1c93, type: 3}
+  - AssetId:
+      m_storage: e1824c3b-a4ff-411c-a9ef-9673e9024d42
+    Asset: {fileID: 21300000, guid: edf886be8536b9248994f01ae476fe11, type: 3}
+  - AssetId:
+      m_storage: 59d99e8b-dcdb-4b14-8bcf-809ee3ba3955
+    Asset: {fileID: 21300000, guid: c91313de4a579684fb5a4d33009a2497, type: 3}
+  - AssetId:
+      m_storage: 4179a1ee-e357-4eb3-8f38-c521825bbfa0
+    Asset: {fileID: 21300000, guid: 426a1feed7328674199565d08aa1abe4, type: 3}
+  - AssetId:
+      m_storage: b6ead579-f752-4007-b9aa-76eef1fd0972
+    Asset: {fileID: 21300000, guid: 4f391b0f78f0f294585d13e6e4ddbcc4, type: 3}
+  - AssetId:
+      m_storage: 8380703a-1adb-408d-8110-166de07a8e57
+    Asset: {fileID: 21300000, guid: b98b3e1f52d80b34a8c2a7a75d3e70ec, type: 3}
+  - AssetId:
+      m_storage: 721be5fd-9c7c-4f2b-833c-e8253fedba3a
+    Asset: {fileID: 21300000, guid: cd82213f1cb29ac40823f002b56504fa, type: 3}
+  - AssetId:
+      m_storage: 09c75909-7438-424e-b4e9-efb3e792fde4
+    Asset: {fileID: 21300000, guid: 2b90b3ff0e9f24a43a1f8ffacaa12ca7, type: 3}
+  - AssetId:
+      m_storage: aeb01b55-659d-4afc-9155-3693119db3fb
+    Asset: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  - AssetId:
+      m_storage: c69b9f4f-1281-405e-a266-a02daa03f50e
+    Asset: {fileID: 10917, guid: 0000000000000000f000000000000000, type: 0}
+  - AssetId:
+      m_storage: 15889bff-68c9-4de2-be44-8f36022ac3ab
+    Asset: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  - AssetId:
+      m_storage: 640a6439-a25b-4c84-adbc-7ce1600f3d11
+    Asset: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
+  - AssetId:
+      m_storage: 180c7943-a4e5-4964-9bcc-39e9abae3689
+    Asset: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  - AssetId:
+      m_storage: d0921009-1e0e-47e3-99f0-4bd00ef02758
+    Asset: {fileID: 10915, guid: 0000000000000000f000000000000000, type: 0}
+  - AssetId:
+      m_storage: 0c80b38b-1c82-49d2-8e21-b94d537f0ca3
+    Asset: {fileID: 10911, guid: 0000000000000000f000000000000000, type: 0}
