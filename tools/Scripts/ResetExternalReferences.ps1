@@ -1,0 +1,1 @@
+dir '$PSScriptRoot\..\..\src' -Recurse -File | ?{$_.LinkType -eq "SymbolicLink" } | Remove-Item
