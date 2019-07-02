@@ -1,0 +1,251 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93de580ac7303fa43b2629ad89e36082, type: 3}
+  m_Name: MaterialPropertyAssetCache
+  m_EditorClassIdentifier: 
+  materialPropertyAssets:
+  - shader: {fileID: 10770, guid: 0000000000000000f000000000000000, type: 0}
+    shaderName: UI/Default
+    propertyName: _MainTex
+    propertyType: 4
+  - shader: {fileID: 10770, guid: 0000000000000000f000000000000000, type: 0}
+    shaderName: UI/Default
+    propertyName: _Color
+    propertyType: 0
+  - shader: {fileID: 10770, guid: 0000000000000000f000000000000000, type: 0}
+    shaderName: UI/Default
+    propertyName: _StencilComp
+    propertyType: 2
+  - shader: {fileID: 10770, guid: 0000000000000000f000000000000000, type: 0}
+    shaderName: UI/Default
+    propertyName: _Stencil
+    propertyType: 2
+  - shader: {fileID: 10770, guid: 0000000000000000f000000000000000, type: 0}
+    shaderName: UI/Default
+    propertyName: _StencilOp
+    propertyType: 2
+  - shader: {fileID: 10770, guid: 0000000000000000f000000000000000, type: 0}
+    shaderName: UI/Default
+    propertyName: _StencilWriteMask
+    propertyType: 2
+  - shader: {fileID: 10770, guid: 0000000000000000f000000000000000, type: 0}
+    shaderName: UI/Default
+    propertyName: _StencilReadMask
+    propertyType: 2
+  - shader: {fileID: 10770, guid: 0000000000000000f000000000000000, type: 0}
+    shaderName: UI/Default
+    propertyName: _ColorMask
+    propertyType: 2
+  - shader: {fileID: 10770, guid: 0000000000000000f000000000000000, type: 0}
+    shaderName: UI/Default
+    propertyName: _UseUIAlphaClip
+    propertyType: 2
+  - shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
+    shaderName: Standard
+    propertyName: _Color
+    propertyType: 0
+  - shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
+    shaderName: Standard
+    propertyName: _MainTex
+    propertyType: 4
+  - shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
+    shaderName: Standard
+    propertyName: _Cutoff
+    propertyType: 3
+  - shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
+    shaderName: Standard
+    propertyName: _Glossiness
+    propertyType: 3
+  - shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
+    shaderName: Standard
+    propertyName: _GlossMapScale
+    propertyType: 3
+  - shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
+    shaderName: Standard
+    propertyName: _SmoothnessTextureChannel
+    propertyType: 2
+  - shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
+    shaderName: Standard
+    propertyName: _Metallic
+    propertyType: 3
+  - shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
+    shaderName: Standard
+    propertyName: _MetallicGlossMap
+    propertyType: 4
+  - shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
+    shaderName: Standard
+    propertyName: _SpecularHighlights
+    propertyType: 2
+  - shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
+    shaderName: Standard
+    propertyName: _GlossyReflections
+    propertyType: 2
+  - shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
+    shaderName: Standard
+    propertyName: _BumpScale
+    propertyType: 2
+  - shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
+    shaderName: Standard
+    propertyName: _BumpMap
+    propertyType: 4
+  - shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
+    shaderName: Standard
+    propertyName: _Parallax
+    propertyType: 3
+  - shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
+    shaderName: Standard
+    propertyName: _ParallaxMap
+    propertyType: 4
+  - shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
+    shaderName: Standard
+    propertyName: _OcclusionStrength
+    propertyType: 3
+  - shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
+    shaderName: Standard
+    propertyName: _OcclusionMap
+    propertyType: 4
+  - shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
+    shaderName: Standard
+    propertyName: _EmissionColor
+    propertyType: 0
+  - shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
+    shaderName: Standard
+    propertyName: _EmissionMap
+    propertyType: 4
+  - shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
+    shaderName: Standard
+    propertyName: _DetailMask
+    propertyType: 4
+  - shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
+    shaderName: Standard
+    propertyName: _DetailAlbedoMap
+    propertyType: 4
+  - shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
+    shaderName: Standard
+    propertyName: _DetailNormalMapScale
+    propertyType: 2
+  - shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
+    shaderName: Standard
+    propertyName: _DetailNormalMap
+    propertyType: 4
+  - shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
+    shaderName: Standard
+    propertyName: _UVSec
+    propertyType: 2
+  - shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
+    shaderName: Standard
+    propertyName: _Mode
+    propertyType: 2
+  - shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
+    shaderName: Standard
+    propertyName: _SrcBlend
+    propertyType: 2
+  - shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
+    shaderName: Standard
+    propertyName: _DstBlend
+    propertyType: 2
+  - shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
+    shaderName: Standard
+    propertyName: _ZWrite
+    propertyType: 2
+  - shader: {fileID: 4800000, guid: b0afe19eb5a14bd4a804a6dcae920c15, type: 3}
+    shaderName: SV/RGBToYUV
+    propertyName: _RGBTex
+    propertyType: 4
+  - shader: {fileID: 4800000, guid: b0afe19eb5a14bd4a804a6dcae920c15, type: 3}
+    shaderName: SV/RGBToYUV
+    propertyName: _Width
+    propertyType: 2
+  - shader: {fileID: 4800000, guid: b0afe19eb5a14bd4a804a6dcae920c15, type: 3}
+    shaderName: SV/RGBToYUV
+    propertyName: _Height
+    propertyType: 2
+  - shader: {fileID: 1, guid: 0000000000000000f000000000000000, type: 0}
+    shaderName: Legacy Shaders/Diffuse Fast
+    propertyName: _Color
+    propertyType: 0
+  - shader: {fileID: 1, guid: 0000000000000000f000000000000000, type: 0}
+    shaderName: Legacy Shaders/Diffuse Fast
+    propertyName: _MainTex
+    propertyType: 4
+  - shader: {fileID: 4800000, guid: acab126297274c848beb9908fb34d939, type: 3}
+    shaderName: SV/Downsample
+    propertyName: _MainTex
+    propertyType: 4
+  - shader: {fileID: 4800000, guid: acab126297274c848beb9908fb34d939, type: 3}
+    shaderName: SV/Downsample
+    propertyName: _HeightOffset
+    propertyType: 2
+  - shader: {fileID: 4800000, guid: acab126297274c848beb9908fb34d939, type: 3}
+    shaderName: SV/Downsample
+    propertyName: _WidthOffset
+    propertyType: 2
+  - shader: {fileID: 4800000, guid: c8a28ad8c8326d048a8a0af8fa87e004, type: 3}
+    shaderName: SV/HoloAlpha
+    propertyName: _BackTex
+    propertyType: 4
+  - shader: {fileID: 4800000, guid: c8a28ad8c8326d048a8a0af8fa87e004, type: 3}
+    shaderName: SV/HoloAlpha
+    propertyName: _FronTex
+    propertyType: 4
+  - shader: {fileID: 4800000, guid: c8a28ad8c8326d048a8a0af8fa87e004, type: 3}
+    shaderName: SV/HoloAlpha
+    propertyName: _Alpha
+    propertyType: 2
+  - shader: {fileID: 4800000, guid: eea5640f3b88bc740b064fb8e21f7084, type: 3}
+    shaderName: SV/YUVToRGB
+    propertyName: _YUVTex
+    propertyType: 4
+  - shader: {fileID: 4800000, guid: eea5640f3b88bc740b064fb8e21f7084, type: 3}
+    shaderName: SV/YUVToRGB
+    propertyName: _Width
+    propertyType: 2
+  - shader: {fileID: 4800000, guid: eea5640f3b88bc740b064fb8e21f7084, type: 3}
+    shaderName: SV/YUVToRGB
+    propertyName: _Height
+    propertyType: 2
+  - shader: {fileID: 4800000, guid: eea5640f3b88bc740b064fb8e21f7084, type: 3}
+    shaderName: SV/YUVToRGB
+    propertyName: _AlphaScale
+    propertyType: 2
+  - shader: {fileID: 4800000, guid: bd694db3311e85043ade9f089995566b, type: 3}
+    shaderName: SV/RGBToNV12
+    propertyName: _RGBTex
+    propertyType: 4
+  - shader: {fileID: 4800000, guid: bd694db3311e85043ade9f089995566b, type: 3}
+    shaderName: SV/RGBToNV12
+    propertyName: _Width
+    propertyType: 2
+  - shader: {fileID: 4800000, guid: bd694db3311e85043ade9f089995566b, type: 3}
+    shaderName: SV/RGBToNV12
+    propertyName: _Height
+    propertyType: 2
+  - shader: {fileID: 4800000, guid: 85fad1b1898fc6c43b34ef1668215c99, type: 3}
+    shaderName: SV/ExtractAlpha
+    propertyName: _MainTex
+    propertyType: 4
+  - shader: {fileID: 4800000, guid: ea4b73caa6ce81141a44be6d0a0c6829, type: 3}
+    shaderName: SV/IgnoreAlpha
+    propertyName: _MainTex
+    propertyType: 4
+  - shader: {fileID: 4800000, guid: d205647913a7f2247a941d09358bc180, type: 3}
+    shaderName: SV/BGRToRGB
+    propertyName: _FlipTex
+    propertyType: 4
+  - shader: {fileID: 4800000, guid: d205647913a7f2247a941d09358bc180, type: 3}
+    shaderName: SV/BGRToRGB
+    propertyName: _AlphaScale
+    propertyType: 2
+  - shader: {fileID: 4800000, guid: d205647913a7f2247a941d09358bc180, type: 3}
+    shaderName: SV/BGRToRGB
+    propertyName: _YFlip
+    propertyType: 2
