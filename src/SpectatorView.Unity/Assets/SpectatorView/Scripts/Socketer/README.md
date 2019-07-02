@@ -1,6 +1,6 @@
 # Socketer Overview
 
-There are a thousand libraries for using sockets on Windows.  The problem is that each one tends tosupport only one protocol, doesn't support UWP or *only* supports UWP, are still complex to use, and/or requirevery different coding patterns.  Supporting another protocol means a different library with a completelydifferent usage convention.  There are also unfortunately a number of caveats when using sockets.  They mostly justwork, until you find the situation where they just don't.  So, this is Yet Another Socket Library, thathopefully gives greater flexibility for those situations, and greater ease of use.  It is intended for fast projects, not production code.
+There are a thousand libraries for using sockets on Windows.  The problem is that each one tends to support only one protocol, doesn't support UWP or *only* supports UWP, are still complex to use, and/or require very different coding patterns.  Supporting another protocol means a different library with a completely different usage convention.  There are also unfortunately a number of caveats when using sockets.  They mostly just work, until you find the situation where they just don't.  So, this is Yet Another Socket Library, that hopefully gives greater flexibility for those situations, and greater ease of use.  It is intended for fast projects, not production code.
 
 ## Use (C#)
 
