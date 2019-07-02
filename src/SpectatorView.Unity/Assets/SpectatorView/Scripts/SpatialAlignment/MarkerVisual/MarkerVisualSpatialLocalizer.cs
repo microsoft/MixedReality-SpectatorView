@@ -6,6 +6,7 @@ using System;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+using UnityEditor;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.SpectatorView
@@ -21,7 +22,6 @@ namespace Microsoft.MixedReality.SpectatorView
 
         /// <inheritdoc />
         public void Serialize(BinaryWriter writer) { }
-
     }
 
     /// <summary>

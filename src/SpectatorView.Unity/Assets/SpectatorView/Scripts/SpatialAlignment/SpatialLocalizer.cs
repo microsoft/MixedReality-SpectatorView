@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.SpectatorView
     /// Helper class to enable spatial localization between two entities on SpectatorView.
     /// </summary>
     /// <remarks>In the future this would move to SpatialLocalization in a better form, abstraction-wise.</remarks>
-    public abstract class SpatialLocalizer<TSpatialLocalizationSettings> : MonoBehaviour, ISpatialLocalizer where TSpatialLocalizationSettings : ISpatialLocalizationSettings
+    public abstract class SpatialLocalizer<TSpatialLocalizationSettings> : MonoBehaviour, ISpatialLocalizer where TSpatialLocalizationSettings : ISpatialLocalizationSettings, new()
     {
         public abstract Guid SpatialLocalizerId { get; }
 
@@ -43,6 +43,8 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
+        public abstract string DisplayName { get; }
+
         protected abstract bool IsSupported { get; }
 
         protected virtual void Start()
@@ -70,6 +72,11 @@ namespace Microsoft.MixedReality.SpectatorView
         public abstract bool TryDeserializeSettings(BinaryReader reader, out TSpatialLocalizationSettings settings);
 
         public abstract bool TryCreateLocalizationSession(IPeerConnection peerConnection, TSpatialLocalizationSettings settings, out ISpatialLocalizationSession session);
+
+        public virtual ISpatialLocalizationSettings CreateDefaultSettings()
+        {
+            return new TSpatialLocalizationSettings();
+        }
 
         bool ISpatialLocalizer.TryDeserializeSettings(BinaryReader reader, out ISpatialLocalizationSettings settings)
         {

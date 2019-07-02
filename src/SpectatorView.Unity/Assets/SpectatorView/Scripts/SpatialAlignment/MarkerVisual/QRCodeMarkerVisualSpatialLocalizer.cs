@@ -10,6 +10,8 @@ namespace Microsoft.MixedReality.SpectatorView
         public override Guid SpatialLocalizerId => Id;
         public static readonly Guid Id = new Guid("6CEF83A0-1E40-40DE-B36B-762974EFDBD8");
 
+        public override string DisplayName => "QR Code Visual";
+
         public override Guid MarkerVisualDetectorSpatialLocalizerId => DetectorId;
         public static Guid DetectorId => QRCodeMarkerVisualDetectorSpatialLocalizer.Id;
 

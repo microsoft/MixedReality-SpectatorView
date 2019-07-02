@@ -20,6 +20,8 @@ namespace Microsoft.MixedReality.SpectatorView
 
         public override Guid SpatialLocalizerId => Id;
 
+        public override string DisplayName => "Azure Spatial Anchor";
+
         /// <summary>
         /// Location of the anchor used for localization.
         /// </summary>

@@ -1,9 +1,13 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Net;
+using System.Text;
 using UnityEditor;
 using UnityEngine;
 
@@ -37,13 +41,24 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
         protected const int textureRenderModeSplit = 1;
         private const float quadPadding = 4;
         private const int connectAndDisconnectButtonWidth = 90;
-        private const int localizerLabelWidth = 80;
+        private const int settingsButtonWidth = 24;
+        private Dictionary<string, Rect> buttonRects = new Dictionary<string, Rect>();
+
+        protected Guid selectedLocalizerId = Guid.Empty;
 
         protected virtual void OnEnable()
         {
             renderFrameWidth = CompositionManager.GetVideoFrameWidth();
             renderFrameHeight = CompositionManager.GetVideoFrameHeight();
             aspect = ((float)renderFrameWidth) / renderFrameHeight;
+
+            Guid.TryParse(PlayerPrefs.GetString(nameof(selectedLocalizerId)), out selectedLocalizerId);
+        }
+
+        protected virtual void OnDisable()
+        {
+            PlayerPrefs.SetString(nameof(selectedLocalizerId), selectedLocalizerId.ToString());
+            PlayerPrefs.Save();
         }
 
         protected void HolographicCameraNetworkConnectionGUI(string deviceTypeLabel, DeviceInfoObserver deviceInfo, SpatialCoordinateSystemParticipant spatialCoordinateSystemParticipant, bool showCalibrationStatus, ref string ipAddressField)
@@ -52,7 +67,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
             boldLabelStyle.fontStyle = FontStyle.Bold;
 
             CompositionManager compositionManager = GetCompositionManager();
-            
+
             EditorGUILayout.BeginVertical("Box");
             {
                 Color titleColor;
@@ -171,37 +186,105 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
 
                 GUILayout.Space(4);
 
-                GUILayout.BeginHorizontal();
-                {
-                    GUILayout.Label("Localizer", GUILayout.Width(localizerLabelWidth));
-                    EditorGUILayout.Popup(0, new string[] { "ArUco Marker", "Azure Spatial Anchor" });
-                    GUIStyle iconButtonStyle = GUI.skin.FindStyle("IconButton") ?? EditorGUIUtility.GetBuiltinSkin(EditorSkin.Inspector).FindStyle("IconButton");
-                    GUIContent content = new GUIContent(EditorGUIUtility.Load("icons/d__Popup.png") as Texture2D);
-                    if (EditorGUILayout.DropdownButton(content, FocusType.Passive, iconButtonStyle, GUILayout.Width(24)))
-                    {
-
-                    }
-                    //EditorGUILayout.DropdownButton(new GUIContent("Settings"), FocusType.Keyboard, GUILayout.Width(connectAndDisconnectButtonWidth));
-                }
-                GUILayout.EndHorizontal();
-
-                GUILayout.BeginHorizontal();
-                {
-                    GUILayout.Label(string.Empty, GUILayout.Width(localizerLabelWidth));
-                    if (GUILayout.Button(new GUIContent("Locate Shared Spatial Coordinate", "Detects the shared location used to position objects in the same physical location on multiple devices")))
-                    {
-                        CompositorWorldAnchorLocalizationManager.Instance.RunRemoteLocalizationWithWorldAnchorPersistence(spatialCoordinateSystemParticipant, ArUcoMarkerDetectorSpatialLocalizer.Id, new MarkerDetectorLocalizationSettings
-                        {
-                            MarkerID = 0,
-                            MarkerSize = 0.1f,
-                        });
-                    }
-                }
-                GUILayout.EndHorizontal();
+                SpatialLocalizationGUI(deviceTypeLabel, spatialCoordinateSystemParticipant);
 
                 GUI.enabled = true;
             }
             EditorGUILayout.EndVertical();
+        }
+
+        private void SpatialLocalizationGUI(string deviceTypeLabel, SpatialCoordinateSystemParticipant spatialCoordinateSystemParticipant)
+        {
+            string[] localizerNames;
+            int selectedLocalizerIndex = 0;
+            ISpatialLocalizer[] localizers = null;
+            bool wasEnabled = GUI.enabled;
+
+            if (SpatialCoordinateSystemManager.IsInitialized && spatialCoordinateSystemParticipant != null)
+            {
+                var supportedPeerLocalizers = spatialCoordinateSystemParticipant?.GetPeerSupportedLocalizersAsync();
+                if (supportedPeerLocalizers.IsCompleted)
+                {
+                    localizers = SpatialCoordinateSystemManager.Instance.Localizers.Where(localizer => supportedPeerLocalizers.Result.Contains(localizer.SpatialLocalizerId)).ToArray();
+                    localizerNames = localizers.Select(localizer => localizer.DisplayName).ToArray();
+                    for (int i = 0; i < localizers.Length; i++)
+                    {
+                        if (localizers[i].SpatialLocalizerId == selectedLocalizerId)
+                        {
+                            selectedLocalizerIndex = i;
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    GUI.enabled = false;
+                    localizerNames = new string[] { "Determining supported methods..." };
+                }
+            }
+            else
+            {
+                GUI.enabled = false;
+                localizerNames = new string[] { "Connect to determine supported methods" };
+            }
+
+            GUILayout.BeginHorizontal();
+            {
+                selectedLocalizerIndex = EditorGUILayout.Popup(selectedLocalizerIndex, localizerNames);
+                if (localizers != null)
+                {
+                    selectedLocalizerId = localizers[selectedLocalizerIndex].SpatialLocalizerId;
+                }
+
+                SpatialLocalizationSettingsGUI(deviceTypeLabel, selectedLocalizerIndex, localizers);
+            }
+            GUILayout.EndHorizontal();
+
+            GUILayout.BeginHorizontal();
+            {
+                if (GUILayout.Button(new GUIContent("Locate Shared Spatial Coordinate", "Detects the shared location used to position objects in the same physical location on multiple devices")))
+                {
+                    CompositorWorldAnchorLocalizationManager.Instance.RunRemoteLocalizationWithWorldAnchorPersistence(spatialCoordinateSystemParticipant, selectedLocalizerId, LoadLocalizerSettings(localizers[selectedLocalizerIndex]));
+                }
+                GUILayout.Label(string.Empty, GUILayout.Width(settingsButtonWidth));
+            }
+            GUILayout.EndHorizontal();
+
+            GUI.enabled = wasEnabled;
+        }
+
+        private void SpatialLocalizationSettingsGUI(string deviceTypeLabel, int selectedLocalizerIndex, ISpatialLocalizer[] localizers)
+        {
+            GUIStyle iconButtonStyle = GUI.skin.FindStyle("IconButton") ?? EditorGUIUtility.GetBuiltinSkin(EditorSkin.Inspector).FindStyle("IconButton");
+            GUIContent content = new GUIContent(EditorGUIUtility.Load("icons/d__Popup.png") as Texture2D);
+
+            ISpatialLocalizationSettings settings = localizers == null ? null : LoadLocalizerSettings(localizers[selectedLocalizerIndex]);
+            IEditableSpatialLocalizationSettings settingsEditor = settings as IEditableSpatialLocalizationSettings;
+
+            bool wasEnabled = GUI.enabled;
+            GUI.enabled = settingsEditor != null;
+
+            if (EditorGUILayout.DropdownButton(content, FocusType.Passive, iconButtonStyle, GUILayout.Width(settingsButtonWidth)))
+            {
+                Action<SpatialLocalizationSettingsEditor> editingCompleted = null;
+                Guid localizerId = localizers[selectedLocalizerIndex].SpatialLocalizerId;
+                editingCompleted = e =>
+                {
+                    e.EditingCompleted -= editingCompleted;
+                    SaveLocalizerSettings(localizerId, settings);
+                };
+
+                var editor = settingsEditor.CreateEditor();
+                editor.EditingCompleted += editingCompleted;
+                PopupWindow.Show(buttonRects[deviceTypeLabel], editor);
+            }
+
+            if (Event.current.type == EventType.Repaint)
+            {
+                buttonRects[deviceTypeLabel] = GUILayoutUtility.GetLastRect();
+            }
+
+            GUI.enabled = wasEnabled;
         }
 
         protected virtual Rect ComputeCompositeGUIRect(float frameWidth, float frameHeight)
@@ -377,6 +460,42 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
             {
                 return null;
             }
+        }
+
+        private void SaveLocalizerSettings(Guid spatialLocalizerId, ISpatialLocalizationSettings settings)
+        {
+            using (MemoryStream stream = new MemoryStream())
+            using (BinaryWriter writer = new BinaryWriter(stream))
+            {
+                settings.Serialize(writer);
+                PlayerPrefs.SetString(spatialLocalizerId.ToString(), Convert.ToBase64String(stream.ToArray()));
+                PlayerPrefs.Save();
+            }
+        }
+
+        private ISpatialLocalizationSettings LoadLocalizerSettings(ISpatialLocalizer spatialLocalizer)
+        {
+            ISpatialLocalizationSettings settings;
+            string settingsString = PlayerPrefs.GetString(spatialLocalizer.SpatialLocalizerId.ToString(), null);
+            if (string.IsNullOrEmpty(settingsString))
+            {
+                settings = spatialLocalizer.CreateDefaultSettings();
+            }
+            else
+            {
+                byte[] settingsBytes = Convert.FromBase64String(settingsString);
+                using (MemoryStream stream = new MemoryStream(settingsBytes))
+                using (BinaryReader reader = new BinaryReader(stream))
+                {
+                    if (!spatialLocalizer.TryDeserializeSettings(reader, out settings))
+                    {
+                        Debug.LogError($"Failed to deserialize settings for spatial localizer {spatialLocalizer.DisplayName} ({spatialLocalizer.SpatialLocalizerId}), using default settings");
+                        settings = spatialLocalizer.CreateDefaultSettings();
+                    }
+                }
+            }
+
+            return settings;
         }
     }
 }

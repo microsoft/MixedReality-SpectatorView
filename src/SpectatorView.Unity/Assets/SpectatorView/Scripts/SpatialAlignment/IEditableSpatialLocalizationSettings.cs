@@ -6,8 +6,10 @@ using UnityEditor;
 
 namespace Microsoft.MixedReality.SpectatorView
 {
-    public interface ISpatialLocalizationSettings
+#if UNITY_EDITOR
+    public interface IEditableSpatialLocalizationSettings
     {
-        void Serialize(BinaryWriter writer);
+        SpatialLocalizationSettingsEditor CreateEditor();
     }
+#endif
 }

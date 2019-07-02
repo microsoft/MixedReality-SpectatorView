@@ -24,6 +24,9 @@ namespace Microsoft.MixedReality.SpectatorView
         /// <inheritdoc />
         public override Guid SpatialLocalizerId => Id;
 
+        /// <inheritdoc />
+        public override string DisplayName => "World Anchor";
+
         protected override bool IsSupported
         {
             get

@@ -10,6 +10,8 @@ namespace Microsoft.MixedReality.SpectatorView
         public override Guid SpatialLocalizerId => Id;
         public static readonly Guid Id = new Guid("2DA7D277-323F-4A0D-B3BB-B2BA6D3EF70E");
 
+        public override string DisplayName => "ArUco Marker Visual Detector";
+
         protected override bool IsSupported
         {
             get
