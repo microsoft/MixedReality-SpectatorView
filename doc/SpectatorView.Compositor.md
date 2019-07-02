@@ -1,90 +1,83 @@
-# README
 ## Overview
-Spectator view renders holograms from Unity over a color frame from a capture card.  This uses the calibration data from the calibration app to render the holograms at the correct size and orientation.  
-
-Use this app to take pictures and videos of your project.  Output pictures and videos will be saved to "My Documents\HologramCapture\".
-The compositor runs as a Unity Editor Window when you have the spectator view addon in your project (see the sample project).
-
-**DISCLAIMER:** Video recording is in alpha and you might experience some latency between hologram position in video to real-life.  Move the camera slower or target a stationary camera to mitigate this.
+SpectatorView renders holograms from Unity over a color frame from a capture card.  This uses the calibration data from the calibration app to render the holograms at the correct size and orientation. The Compositor window can save still images or videos to disk, and outputs video to the output port of supported capture cards. Output pictures and videos will be saved to "My Documents\HologramCapture\".
 
 ## Setup
-Open the Compositor sln with Visual Studio under Compositor\Compositor.sln
 
-![compositor sln](../DocumentationImages/compositor_sln.png)
+### Install SDK and native Unity plugins
 
-### DeckLink Capture Card
-If you are using a Blackmagic capture card, you will need to install the SDK and create a Visual Studio user macro for its location.
-+ Download the DeckLink SDK from here: https://www.blackmagicdesign.com/support - Search for Desktop Video SDK in "Latest Downloads"
-+ Extract the SDK anywhere on your computer.
-+ Update the DeckLink_inc user macro in dependencies.props with the corresponding path on your computer.
-+ Restart Visual Studio if the Calibration or Compositor sln's are open.
+Follow the instructions documented in [SpectatorView.Native](SpectatorView.Native.md) for installing the correct SDK for your capture card, and for building and installing the Unity plugins used by the SpectatorView compositor. 
 
-### OpenCV 3.2
-If you are not using a capture card with an included FrameProvider, you will need to install Open CV to get color frames from a different capture device.
-+ Download and install OpenCV 3.2 from here: http://opencv.org/downloads.html
-+ Extract OpenCV anywhere on your computer.
-+ Update the OpenCV_vc14 user macro in dependencies.props with the corresponding path on your computer.
-+ Restart Visual Studio if the Calibration or Compositor sln's are open.
+### Build and install the HolographicCamera App
 
-![Dependencies](../DocumentationImages/dependencies.png)
+The HolographicCamera app is a UWP application that runs on the HoloLens attached to your video camera. This app reads calibration data stored on the HoloLens and communicates that data to the Unity compositor. This app also transmits the position and rotation of the camera to the Unity compositor.
 
-### Code Changes
+1. Open the [HolographicCamera.Unity](../src/HolographicCamera.Unity) project in Unity
+2. Open the Build window and switch platforms to the Universal Windows Platform
+3. Build the Unity project to create a Visual Studio solution
+4. Open the generated Visual Studio solution.
+5. Change the Solution Configuration to Release and the Architecture to x86.
+6. Deploy the application to the HoloLens attached to your video camera.
 
-#### If you are shooting at a resolution other than 1080P:
-+ In CompositorShared.h in the SharedHeaders project, change **FRAME_WIDTH** and **FRAME_HEIGHT** to match the resolution you are recording.
-+ Build UnityCompositorInterface for x64 and x86 and run CopyDLL.cmd
-+ The DeckLinkManager will attempt to find the appropriate frame format based on your frame dimensions.  If your frame dimensions are not being picked up, you may need to modify the call to StartCapture in DeckLinkManager.cpp.
+### Copy calibration data to the HoloLens
 
-#### If you are using a different capture card that does not run on BlackMagic's DeckLink SDK:
-+ First try using the OpenCV FrameProvider:
-    + **NOTE:** This will require an x64 build of Unity unless you built your own x86 OpenCV 3.2 binaries
-    + In CompositorShared.h in the SharedHeaders project, change **USE_OPENCV** to TRUE, change the other FrameProvider preprocessor definitions to FALSE.
-    + In OpenCVFrameProvider.h, change **CAMERA_ID** to be the index of the capture device you are using.
-+ If that did not work and your capture card has an SDK, use that:
-    + Extend IFrameProvider and set the frameProvider in CompositorApp.cpp to be your new IFrameProvider.
-    + See DeckLinkManager.cpp for how we are doing this for the BlackMagic card.
-    
-#### If you are using the Canon SDK:
-+ Update the Canon_SDK user macro in dependencies.props with the corresponding path on your computer.
-+ In CompositorShared.h in the SharedHeaders project, change **USE_CANON_SDK** to TRUE
-+ In CompositorShared.h in the SharedHeaders project, change **HOLOGRAM_WIDTH** and **HOLOGRAM_HEIGHT** to match the photo dimensions from your camera.
-+ Build UnityCompositorInterface for x64 and x86 and run CopyDLL.cmd
+Calibration data stores the camera intrinsic information for your video camera, and the camera extrinsic information that represents the positional and rotational offset between the HoloLens and the video camera.
 
+1. Follow the steps at [SpectatorView.Calibration](SpectatorView.Calibration.md) to produce a calibration file for your camera and HoloLens.
+2. Use the [Device Portal](https://docs.microsoft.com/en-us/windows/uwp/debug-test-perf/device-portal-hololens) to connect to the HoloLens attached to your camera.
+3. On the File Explorer tab in the device portal, upload the calibration file to the Pictures library. The final file path should be "User Folders\Pictures\CalibrationData.json".
 
-## Application
-+ When you have made all of the above code changes, build the entire solution for Release x86 and Release x64 (depending on what Unity architecture you are using).
-    + Ensure SpationPerceptionHelper is built for x86 since it will be run on the HoloLens.
+## Running the compositor
 
-![Build](../DocumentationImages/compositor_build.png)
+Follow the instructions at [SpectatorView.Setup](SpectatorView.Setup.md) to include SpectatorView support in your application. Once you have the HolographicCamera app installed and running and SpectatorView support enabled in your application and running, you are ready to run the compositor.
 
-+ Run CopyDLL.cmd to get the Compositor binaries and dependencies into your Unity project.
-+ Load your Unity project.
-+ Open the compositor in Unity's menu bar under "Spectator View/Compositor".
-+ Press Play in Unity.
-+ Ensure the Unity Game window is visible and "edit/ project settings/ player/ Run in Background" is checked for WSA and standalone.
+### Start the Compositor
+1. Open the [SpectatorViewCompositor](../src/SpectatorView.Unity/Assets/SpectatorView.Editor/Scenes/SpectatorViewCompositor.unity) scene in your application's Unity project (with your build platform set to Universal Windows Platform).
+2. Open the Compositor Window from the Spectator View -> Compositor menu.
+3. Press Play to run the scene.
 
-    ![Run In Background](../DocumentationImages/Unity/run_in_bg.png)
+You should now see video output from your camera in the Compositor window. If you don't, here are some troubleshooting suggestions:
++ Make sure the camera is turned on and that the lens cap is off.
++ Make sure the camera is connected to the input port of the capture card.
++ Try using software for your capture card (e.g. Blackmagic Media Express) to validate that camera input is coming into your computer.
 
-+ See sample project for more details about instrumenting your Unity project for spectator view.
+### Connect the compositor to the HolographicCamera
+Connecting the compositor to the HolographicCamera app running on your camera's HoloLens will provide calibration and pose information for the camera to the compositor.
 
-    ![Compositor](../DocumentationImages/Unity/Compositor.png)
+1. Find the IP address for your HoloLens and enter it inside the first text area in the Holographic Camera box inside the Compositor window.
+2. Launch the HolographicCamera (SpectatorView.HolographicCamera) app on the camera's HoloLens.
+3. Click the "Connect" button inside the Compositor window's Holographic Camera box.
 
-+ If you see a black screen: ensure your camera is on, lens cap is off, live view is on, and HDMI mirroring is on.
-+ The spectator view Compositor window allows you to:
-    + Start recording video
-    + Take a picture
-    + Change hologram opacity
-    + Change the frame offset (which adjusts the color timestamp to account for capture card latency)
-    + Open the directory the captures are saved to
-    + Request spatial mapping data from the spectator view camera (if a SpatialMappingManager exists in your project)
-    + Visualize the scene's composite view as well as color, holograms, and alpha channel individually.
-+ If you take a picture or video, the file will be saved in "My Documents\HologramCapture\"
-+ Holograms will not move with the camera until you follow the instructions in the sample project.
-+ If you have followed all of the steps in the sample project: as you move the camera around, the composite image will show the holograms where they should be with respect to your HoloLens.
+You should now see the status change from "Not connected" to "Connected to &lt;your HoloLens name&gt; (&lt;your HoloLens IP address&gt;)". You should also see the Calibration status change from "Not loaded" to "Loaded".
 
+### Locate a shared spatial coordinate for the HolographicCamera
+Shared spatial coordinates let the HoloLens on the camera and the HoloLens running your application refer to real-world coordinates in a coordinate space shared between both devices. See [SpectatorView.SpatialAlignment](SpectatorView.SpatialAlignment.md) for more information about shared spatial coordinates.
 
-## Documentation
-+ [Overview](../README.md)
-+ [Calibration](../Calibration/README.md)
-+ **Compositor**
-+ [Sample](../Samples/README.md)
+In Preview the Compositor window uses an ArUco marker detector to detect ArUco marker 0 at a printed size of 10cm by 10cm. In future releases, the Compositor window will allow you to choose which type of spatial coordinate sharing to use.
+
+1. Click the "Located Shared Spatial Coordinate" button inside the Holographic Camera box. This should cause the video camera light on your HoloLens to come on, and cause the HoloLens to start searching fo the ArUco marker.
+2. Aim the HoloLens at the ArUco marker you've printed out. Once the HoloLens detects the marker, the Compositor window's status should change from "Locating shared spatial coordinate..." to "Located".
+
+### Connect the compositor to your application
+The steps for connecting the Compositor to your application are the same as for the HolographicCamera app. Once your application is connected to the compositor, you should start to see your application's content appear in the Unity editor through the [State Synchronization](SpectatorView.StateSynchronization.md) system. Once the shared spatial coordinate is located for both the HolographicCamera and for your application, the content from your application should appear on top of the real-world video in the same location as it does in the application on your HoloLens.
+
+## Options and configuration
+### Recording
+The **Recording** expander in the Compositor window can be used to start and stop recording or to take a still picture. Videos and pictures are saved in your Documents\HologramCapture directory. By default, audio from your computer's microphone will be recorded as part of the video.
+
+The compositor also outputs video to your capture card (for cards that support output).
+
+### Settings
+The **Hologram Settings** expander lets you configure the following options.
+
+**Video source** - before you run the Compositor scene, you can choose which capture card should be used as the input video source. The source cannot be changed once you've started video playback.
+
+**Alpha** - allows you to change the opacity of holograms as they're rendered on top of video. A value of 1 will make holograms completely opaque, while 0 will make holograms completely transparent.
+
+**Frame time adjustment** - provides a way to manually adjust for the latency in the capture card and in the network traffic between the HolographicCamera app and the compositor. When you move the camera, if the holograms seem to lag behind or follow ahead of the real world, adjust this slider to correct for the latency.
+
+### Compositor stats
+When the compositor is running, the **Compositor Stats** expander shows you statistics about composition.
+
+**Framerate** - this framerate box shows the minimum, maximum, and average framerates over the previous second. In order to maintain uninterrupted output of video at 60 frames a second, your scene must render 60 frames a second on average. If you consistently render under 60 frames a second, you may need to make performance tradeoffs in your scene (e.g. decreasing render quality) in order to record smooth video
+
+**Queued output frames** - Shows how many already-rendered frames are queued for output to the capture card. This buffer is used to ensure that video frame output remains smooth over brief frame hitches in your scene. If your scene consistently runs under the target framerate or consistently experiences hitches, the video stream will eventually hitch once this buffer is depleted.
