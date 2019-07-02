@@ -74,6 +74,10 @@ UWP/
 *.pfx
 *.pfx.meta
 
+# Native Plugins
+Assets/SpectatorView.Native.meta
+Assets/SpectatorView.Native/
+
 # Custom - External Unity Packages
 Assets/AzureSpatialAnchorsPlugin.meta
 Assets/AzureSpatialAnchorsPlugin/
