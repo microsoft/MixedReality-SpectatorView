@@ -235,6 +235,11 @@ PrefabInstance:
       propertyPath: Role
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4941633254297953242, guid: aa311d939e452a045b897dcc7c9c36fb,
+        type: 3}
+      propertyPath: userIpAddress
+      value: 10.89.160.6
+      objectReference: {fileID: 0}
     - target: {fileID: 8396631008393852441, guid: aa311d939e452a045b897dcc7c9c36fb,
         type: 3}
       propertyPath: sharedCoordinateOrigin

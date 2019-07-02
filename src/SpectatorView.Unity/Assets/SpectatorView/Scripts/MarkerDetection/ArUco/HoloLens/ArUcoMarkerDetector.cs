@@ -42,9 +42,9 @@ namespace Microsoft.MixedReality.SpectatorView
         private MarkerPositionBehavior _markerPositionBehavior = MarkerPositionBehavior.Moving;
 
         private HoloLensCamera _holoLensCamera;
-        private SpectatorViewOpenCVInterface _api;
+        private SpectatorViewOpenCVInterface _api = null;
         private bool _detecting = false;
-        private Dictionary<int, List<Marker>> _markerObservations;
+        private Dictionary<int, List<Marker>> _markerObservations = null;
         private Dictionary<int, Marker> _nextMarkerUpdate;
         private MarkerDetectionCompletionStrategy _detectionCompletionStrategy;
 
