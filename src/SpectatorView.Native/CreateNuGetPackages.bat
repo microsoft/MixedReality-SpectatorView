@@ -1,1 +1,0 @@
-nuget pack SpectatorView.OpenCV.nuspec -Symbols

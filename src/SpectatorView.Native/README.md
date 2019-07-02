@@ -13,12 +13,12 @@ The instructions below show how to build SpectatorView.Compositor.dll & Spectato
 ### 1. Obtain external dependencies
 
 **DeckLink Capture Card**
-If you are using a Blackmagic capture card, you will need to install the SDK and create a Visual Studio user macro for its location.
-
-- Download the DeckLink SDK from here: <https://www.blackmagicdesign.com/support> - Search for Desktop Video SDK in "Latest Downloads"
-- Extract the SDK anywhere on your computer.
-- Update the DeckLink_inc user macro in [dependencies.props](SpectatorView.Compositor/dependencies.props) with the corresponding path on your computer.
-- Restart Visual Studio
+If you are using a Blackmagic design capture card, you will need to install the SDK and create a Visual Studio user macro for its location.
++ Download Blackmagic design's Desktop Video & Desktop Video SDK from here: https://www.blackmagicdesign.com/support - Search for Desktop Video & Desktop Video SDK in "Latest Downloads" (Note: **10.9.11** is the current version used in the SpectatorView.Compositor.dll. Newer versions may contain breaks.)
+>Note: Desktop Video SDK 10.9.11 does not have a MIT license. License information is provided when downloading the sdk.
++ Extract the SDK anywhere on your computer.
++ Update the DeckLink_inc user macro in [dependencies.props](../src/SpectatorView.Native/SpectatorView.Compositor/dependencies.props) with the corresponding path on your computer.
++ Restart Visual Studio
 
 **Elgato Capture Card**
 If you are using an Elgato capture card, you will need to clone Elgato's [gamecapture github repo](https://github.com/elgatosf/gamecapture).

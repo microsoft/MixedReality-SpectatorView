@@ -453,7 +453,7 @@ GameObject:
   - component: {fileID: 4941633254297953245}
   - component: {fileID: 4941633254297953242}
   m_Layer: 0
-  m_Name: Spectator View - App
+  m_Name: SpectatorView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -607,7 +607,6 @@ GameObject:
   - component: {fileID: 4941633254549859859}
   - component: {fileID: 4941633254549859856}
   - component: {fileID: 4941633254549859861}
-  - component: {fileID: 4941633254549859863}
   m_Layer: 0
   m_Name: StateSynchronizationBroadcaster
   m_TagString: Untagged
@@ -657,27 +656,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   connectionManager: {fileID: 4941633253096476540}
---- !u!114 &4941633254549859863
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4941633254549859857}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a244e3e3278e0a24fa787aef94e0e017, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _debugLogging: 0
-  _markerSize: 0.03
-  _markerPositionBehavior: 0
-  RequiredObservations: 5
-  RequiredInlierCount: 5
-  MaximumMarkerSampleCount: 15
-  MaximumPositionDistanceStandardDeviation: 0.01
-  MaximumRotationAngleStandardDeviation: 0.75
-  MarkerInlierStandardDeviationThreshold: 1.5
 --- !u!1001 &7426442734984199206
 PrefabInstance:
   m_ObjectHideFlags: 0
