@@ -48,6 +48,14 @@ Not all spatial alignment strategies support all platforms. See the chart below 
 3. In the Android, iOS and WSA unity player settings, add the **SPATIALALIGNMENT_ASA** preprocessor directive. (This is located via Build Settings -> Player Settings -> Other Settings -> 'Scripting Defined Symbols')
 4. When in Unity preparing to build your application, set the Account Domain, Account Id and Account Key for the Spatial Anchors Localizer using values you obtained creating an azure spatial anchors account above. These values are set in the SpatialAnchorsCoordinateLocalizationInitializer MonoBehaviour defined, which will exist for the Android and iOS experiences.
 
+#### Azure Spatial Anchors on iOS
+If you are building Azure Spatial Anchors on iOS, you will need to take some additional steps after generating your XCode project through Unity. After exporting an iOS version of your application in Unity, do the following:
+
+1. In the terminal, navigate to your xcode project folder.
+2. Run **'pod install --repo-update'** in the terminal when in your xcode project folder.
+3. Open and compile your application using the **xcode workspace**. Do NOT use the **xcode project**.
+>Note: Failing to take the above steps may result in errors such as 'Undefined symbols for architecture arm64' and 'framework not found Pods_Unity_iPhone' For more information on building ASA for iOS in Unity see [here](https://docs.microsoft.com/en-us/azure/spatial-anchors/quickstarts/get-started-unity-ios).
+
 ### QR Code Detection
 
 1. Obtain the [MixedReality QR Code Plugin](https://github.com/dorreneb/mixed-reality/releases) and include the associated dll's into the [MixedReality-QRCodePlugin folder](../external/MixedReality-QRCodePlugin).
@@ -102,7 +110,13 @@ Not all spatial alignment strategies support all platforms. See the chart below 
 5. Press the 'iOS' button on the [Platform Switcher](../src/SpectatorView.Unity/Assets/SpectatorView.Editor/Scripts/PlatformSwitcherEditor.cs) attached to Spectator View in the unity inspector (This should configure the correct build settings and app capabilities).
 6. Export the iOS project to a XCode solution.
 7. Configure the [signing certificate](https://developer.apple.com/support/code-signing/) for your Unity generated project in XCode to reflect your developer account.
-8. Build and deploy the application through XCode to your desired device.
+8. Build and deploy the application through XCode to your desired device (See the below steps if using ASA).
+
+#### iOS with Azure Spatial Anchors
+1. In the terminal, navigate to your xcode project folder.
+2. Run **'pod install --repo-update'** in the terminal when in your xcode project folder.
+3. Open and compile your application using the **xcode workspace**. Do NOT use the **xcode project**.
+>Note: Failing to take the above steps may result in errors such as 'Undefined symbols for architecture arm64' and 'framework not found Pods_Unity_iPhone' For more information on building ASA for iOS in Unity see [here](https://docs.microsoft.com/en-us/azure/spatial-anchors/quickstarts/get-started-unity-ios).
 
 ## Spectating Scenes
 
