@@ -24,7 +24,7 @@ Before diving into the abstractions, we operate on two concepts when speaking of
 The following constructs compose the abstraction and facilitate the the localization processes:
 
 - **`ISpatialCoordinate`:** The abstract construct symbolizing a physical world coordinate that can be used to convert between application's world space and coordinate-relative space.
-- **`ISpatialCoordinateService`:** A service for discovering and managing `ISpatialCoordinates`. Different implementations exists based on a different localization methods.
+- **`ISpatialCoordinateService`:** A service for discovering and managing `ISpatialCoordinates`. Different implementations exist based on different localization methods.
 - **`SpatialLocalizerInitializer`:** The construct that begins and facilitates the creation/sharing of ISpatialCoordinates between the local and remote `SpatialLocalizer`.
   - **`SpatialLocalizer`:** This related construct understands how to localize upon or create a `ISpatialCoordinate` for localization.
 - **`SpatialCoordinateSystemManager`:** The singleton manager that manages the incoming/outgoing networking connections, their associated localization state and assigned `ISpatialCoordinates` to them.
