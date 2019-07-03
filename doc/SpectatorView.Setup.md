@@ -65,11 +65,13 @@ If you are building Azure Spatial Anchors on iOS, you will need to take some add
 
 ### ArUco Marker Detection
 
-1. Build a x86 Release version of [SpectatorView.OpenCV.dll](../src/SpectatorView.Native/README.md) and include the associated dll's in your Unity project. Addint the plugins to your Unity project can be achieved by running the [CopyPluginsToUnity](../tools/Scripts/CopyPluginsToUnity.bat) script.
+1. Build a x86 Release version of [SpectatorView.OpenCV.dll](../src/SpectatorView.Native/README.md) and include the associated dll's in your Unity project. Adding the plugins to your Unity project can be achieved by running the [CopyPluginsToUnity](../tools/Scripts/CopyPluginsToUnity.bat) script.
 
 >Note: No arm version of SpectatorView.OpenCV.dll exists, which will cause build errors for HoloLens 2 devices if these dlls are kept in the project when building for HoloLens 2. It is suggested to delete any SpectatorView.Native directories in the Assets folder when building for HoloLens 2 (This will have been created by the above CopyPluginsToUnity script). When building for HoloLens 1 or running DSLR camera experiences, recopy these dll's to the project.
 
-### Before building
+## Building & Deploying
+
+### Before Building
 
 1. Obtain your HoloLens's ip address from the settings menu via Settings -> Network & Internet -> Wi-Fi -> Hardware Properties.
 2. Add any of the preprocessor directives or unity packages described above to your clone of the codebase.
@@ -116,7 +118,7 @@ If you are building Azure Spatial Anchors on iOS, you will need to take some add
 3. Open and compile your application using the **xcode workspace**. Do NOT use the **xcode project**.
 >Note: Failing to take the above steps may result in errors such as 'Undefined symbols for architecture arm64' and 'framework not found Pods_Unity_iPhone' For more information on building ASA for iOS in Unity see [here](https://docs.microsoft.com/en-us/azure/spatial-anchors/quickstarts/get-started-unity-ios).
 
-## Spectation Scenes
+## Spectating Scenes
 
 * HoloLens: [SpectatorView.HoloLens](../src/SpectatorView.Unity/Assets/SpectatorView/Scenes/SpectatorView.HoloLens.unity)
 * Android: [SpectatorView.Android](../src/SpectatorView.Unity/Assets/SpectatorView/Scenes/SpectatorView.Android.unity)
