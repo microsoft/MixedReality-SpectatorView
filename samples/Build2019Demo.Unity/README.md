@@ -22,11 +22,13 @@ These instructions assumes a HoloLens 2 device for host, and an Android phone fo
 #### Configure your project
 
 1. Ensure you have created an [Azure Spatial Anchors](https://docs.microsoft.com/en-us/azure/spatial-anchors/quickstarts/get-started-unity-hololens#create-a-spatial-anchors-resource) account.
-2. Open SpectatorView settings by going to the menu `SpectatorView > Edit Settings`. \
+2. Open the Build2019Demo.Unity project in Unity.
+    - If requested, import the TextMeshPro Essentials.
+3. Open SpectatorView settings by going to the menu `SpectatorView > Edit Settings`. \
 ![SpectatorView Settings Menu](../../doc/images/SpectatorViewSettingsMenu.png)
-3. Replace `ENTER_ACCOUNT_ID` and `ENTER_ACCOUNT_KEY` with appropriate values. \
+4. Replace `ENTER_ACCOUNT_ID` and `ENTER_ACCOUNT_KEY` with appropriate values. \
 ![Spectator View ASA Settings](../../doc/images/SpectatorViewSettingsASA.png)
-4. Open `MixedReality-SpectatorView/SpectatorView/Scenes/SpectatorView.Android.unity` find SpectatorView prefab, and override the `User Ip Address` value with the IP of your host device.\
+5. Open `MixedReality-SpectatorView/SpectatorView/Scenes/SpectatorView.Android.unity` find SpectatorView prefab, and override the `User Ip Address` value with the IP of your host device.\
 ![Spectator View Spectator IP Settings](../../doc/images/SpectatorViewSpectatorIPSetting.png)
 
 #### Build & Deploy

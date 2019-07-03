@@ -31,7 +31,7 @@
 
 >Note: Unity's ARKit Plugin has two licenses, one of which is not a MIT license. For more information on ARKit licensing, see [here](https://bitbucket.org/Unity-Technologies/unity-arkit-plugin/src/default/LICENSES/).
 
-## Other Dependencies
+## Spatial Localizer Dependencies
 
 Not all spatial alignment strategies support all platforms. See the chart below to determine which strategy best addresses your intended user scenarios.
 
