@@ -60,13 +60,14 @@ namespace Microsoft.MixedReality.SpectatorView
         [SerializeField]
         protected RawImage cornersImage;
 
-        private Texture2D chessboardCorners = null;
-        private Texture2D chessboardHeatmap = null;
-        private int cornerScale = 3;
-        private int heatmapWidth = 12;
         private CalculatedCameraIntrinsics intrinsics;
 
 #if UNITY_EDITOR
+        private Texture2D chessboardHeatmap = null;
+        private int heatmapWidth = 12;
+        private Texture2D chessboardCorners = null;
+        private int cornerScale = 3;
+
         private void Start()
         {
             CalibrationDataHelper.Initialize();

@@ -22,8 +22,8 @@ namespace Microsoft.MixedReality.SpectatorView
         /// </summary>
         [Tooltip("IMarkerVisual requiring additional scaling based on parent canvas.")]
         [SerializeField]
-        private MonoBehaviour MarkerVisual;
-        private IMarkerVisual _markerVisual;
+        private MonoBehaviour MarkerVisual = null;
+        private IMarkerVisual _markerVisual = null;
 
 #if UNITY_EDITOR
         private void OnValidate()
