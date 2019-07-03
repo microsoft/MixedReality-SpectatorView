@@ -630,7 +630,7 @@ PlayerSettings:
     1: SPATIALALIGNMENT_ASA
     4: SPATIALALIGNMENT_ASA
     7: SPATIALALIGNMENT_ASA
-    14: SPATIALALIGNMENT_ASA
+    14: SPATIALALIGNMENT_ASA;STATESYNC_TEXTMESHPRO
   platformArchitecture: {}
   scriptingBackend:
     Metro: 2
@@ -649,10 +649,10 @@ PlayerSettings:
   metroCertificatePassword: 
   metroCertificateSubject: Microsoft
   metroCertificateIssuer: Microsoft
-  metroCertificateNotAfter: 00afe2aa5e4bd601
+  metroCertificateNotAfter: 001caf55cf50d601
   metroApplicationDescription: Demo of SpectatorView show and //BUILD 2019
   wsaImages: {}
-  metroTileShortName: 
+  metroTileShortName: SpectatorView.Build2019Demo
   metroTileShowName: 0
   metroMediumTileShowName: 0
   metroLargeTileShowName: 0
