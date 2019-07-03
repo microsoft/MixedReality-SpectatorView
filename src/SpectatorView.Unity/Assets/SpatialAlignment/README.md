@@ -1,5 +1,9 @@
 # Spatial Alignment
 
+Spatial Alignment component provides abstractions for localization of MR content within the physical world. This also incldues abstractions and implementations for the process of exchanging localization information between devivces.
+
+> Note: The code is currently split between this folder,  `..\SpatialAlignment.ASA` and `..\SpectatorView\Scripts\SpatialAlignment`; this will be reconciled in the future updates.
+
 ## Platform Support
 
 Not all spatial alignment strategies support all platforms. See the chart below to determine which strategy best addresses your intended user scenarios.
@@ -9,6 +13,65 @@ Not all spatial alignment strategies support all platforms. See the chart below 
 | Azure Spatial Anchors  | x          | x          | x       | x   |
 | QR Code Detection      | x          |            | x       | x   |
 | ArUco Marker Detection |            | x          | x       | x   |
+
+## Key Concepts
+
+Before diving into the abstractions, we operate on two concepts when speaking of localization:
+
+- **Coordinate Space:** When a rotation/position is meant to be relative to a specific coordinate (location in the real world), we say it is in coordiante space. These roations/positions can be sent across the network and understood by each device that understand what coordiante they are associated with.
+- **Application World Space:** The rotations/positions that are set in Unity to `.position` and `.rotation` properties of `Transform` objets, are specific to the applications own "world space". This "world space" is used by the application to determine how to lay out content relative to each other; and this "world space" itself is relative to the positon/rotation of device when the application was launched.
+
+The following constructs compose the abstraction and facilitate the the localization processes:
+
+- **ISpatialCoordinate:** The abstract cosntruct symbolizing a world coordinate that can be used to convert between apllication's world space and coordinate-relative space.
+- **ISpatialCoordinateService:** A service for discovering and managing ISpatialCoordiantes based on a specific implementation.
+- **SpatialLocalizerInitializer:** The construct that begins and facilitates the creation/sharing of ISpatialCoordinates between the local SpatialLocalizer and remote SpatialLocalizer.
+  - **SpatialLocalizer:** This related construct understands how to localize upon or create a ISpatialCoordinate for localization.
+- **SpatialCoordinateSystemManager:** The singleton manager that manages the incoming/outgoing networking connections, their associated localization state and assigned ISpatialCoordinates to them.
+- **ISpatialLocalizationSettings:** This component exposes the configuration settings for a specific type of SpatialLocalizer.
+  - This class is added to a specially generated prefab in the consuming application, see [Registration & Configuration](###%20Registration%20%26%20Configuration)
+- **SpatialCoordinateSystemParticipant:** Represents the localization state of a connected device, including the location and state of the connected device's shared spatial coordinate.
+
+Furthermore, the following components play a key role in localization:
+
+- **SpecatorView:** This manager singleton selects appropriate mechanism for localization based on current and connected device registration.
+
+## Localization of Devices
+
+The process by which two or more devices agree upon localization details is split into several parts:
+
+- Registration & Configuration
+- Selection of Localization Method at Connection Time
+- Exchange of Localization Information
+
+### Registration & Configuration
+
+Both of these aspects are required to enable a method to be used for localization, however, they are slighly different. SpectatorView comes pre-registered with several SpatialLocalizers that can be found on `SpectatorView\Prefabs\SpectatorView.SpatialCoordinateLocalizers.prefab`:
+
+- Azure Spatial Anchors (SpatialAnchorsLocalizer) localizer will rely on the hosting (User) device to create the common ISpatialCoordianate to be used by all ASA spectating devices connecting
+- Physical Marker localizers will search for some physical marker in the world
+- Marker Visual localizer pairs will display a marker on the screen of a mobile device to be discovered by the other device.
+
+Some of these localization methods require settings, which are set through a SpatialLocalizerInitializer, two can be found on that prefab for the QR and ArUco visual localizers. Additional settings must be added manually by the consuming application onto `Generated.StateSynchronization.AssetCaches\Resources\SpectatorViewSettings.prefab` which is created by invoking the `Spectator View > Edit Settings` menu item, see [Configuring Localizers](###%20Configuring%20Localizers)
+
+### Selection of Localization Method
+
+When the application starts and SpectatorView is initialized, configured localizers are checked for whether they are supported in the current application on the current device and if they are, they are registered with SpectatorView. Afterwards, the process is as follows:
+
+1. SpatialCoordinateSystemManager listens for incoming/outgoing network connections, creating a SpatialCoordinateSystemParticipant for each connection.
+2. SpectatorView queries
+
+### Exchange of Localization Information
+
+## Configuring Localizers
+
+You can add your specific localization settings here, for example for Azure Spatial Anchors:
+
+![Spectator View ASA Settings](../../doc/images/SpectatorViewSettingsASA.png)
+
+### Supported Localization Methods
+
+
 
 ## Application Flow
 
