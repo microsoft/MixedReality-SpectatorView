@@ -60,7 +60,7 @@ namespace Microsoft.MixedReality.SpectatorView
             public override void OnGUI(Rect rect)
             {
                 settings.MarkerID = EditorGUILayout.IntField("Marker ID", settings.MarkerID);
-                settings.MarkerSize = EditorGUILayout.FloatField("Marker Size (mm)", settings.MarkerSize);
+                settings.MarkerSize = EditorGUILayout.FloatField("Marker Size (m)", settings.MarkerSize);
             }
         }
 #endif
