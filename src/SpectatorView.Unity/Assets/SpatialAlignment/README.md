@@ -1,5 +1,9 @@
 # Spatial Alignment
 
+Spatial Alignment component provides abstractions for localization of MR content within the physical world. This also includes abstractions and implementations for the process of exchanging localization information between devices.
+
+> Note: The code is currently split between this folder,  `..\SpatialAlignment.ASA` and `..\SpectatorView\Scripts\SpatialAlignment`; this will be reconciled in the future updates.
+
 ## Platform Support
 
 Not all spatial alignment strategies support all platforms. See the chart below to determine which strategy best addresses your intended user scenarios.
@@ -10,25 +14,77 @@ Not all spatial alignment strategies support all platforms. See the chart below 
 | QR Code Detection      | x          |            | x       | x   |
 | ArUco Marker Detection |            | x          | x       | x   |
 
-## Application Flow
+## Key Concepts
 
-1. On startup, SpatialLocalizers declared in the scene register themselves with the SpatialCoordinateSystemManager. Each SpatialLocalizer enables a different spatial alignment strategy and has a unique id so that it can be invoked through local or remote spatial alignment requests.
+Before diving into the abstractions, we operate on two concepts when speaking of localization:
 
-2. The SpatialCoordinateSystemManager then listens for network connections (This is facilitated through state synchronization's ICommandRegistry). For each connection, the SpatialCoordinateSystemManager creates a SpatialCoordinateSystemParticipant, which is responsible for monitoring and reporting coordinate state across devices. The SpatialCoordinateSystemParticipant also caches the associated network socket to allow for sending messages across devices during the spatial alignment process.
+- **Coordinate Space:** When a rotation/position is meant to be relative to a specific coordinate (location in the real world), we say it is in coordinate space. These rotations/positions can be shared across devices in order to define understood rotations/positions in the shared experience.
+- **Application World Space:** The rotations/positions that are set in Unity to `.position` and `.rotation` properties of `Transform` objects, are specific to the local application's own "world space". This "world space" is used by the local application to determine how to lay out content relative to each other; and this "world space" itself is relative to the position/rotation of device when the application was launched.
 
-3. Depending on the experience, the SpatialCoordinateSystemManager is directed to create a LocalizationSession for a specific SpatialLocalizer. For experiences with the Spectator role chosen on the SpectatorView component, a SpatialLocalizationInitializer that controls localization is chosen from one of two locations. The experience can choose a preferred list of SpatialLocalizationInitializers on the SpectatorViewSettings prefab. In Unity, the Spectator View / Edit Settings menu option will generate this prefab if it does not exist. On the SpatialLocalizationInitializationSettings component, the PrioritizedInitializers list can specify one or more SpatialLocalizationInitializer components. At runtime, the first SpatialLocalizationInitializer that is supported by both devices will be chosen and used to start spatial alignment. If no app-specific SpatialLocalizationInitializer has been specified on the SpectatorViewSettings prefab, a default set specified by the SpectatorView prefab will be consulted in the same manner. For DSLR filming, the compositor window in the Unity editor tells both the user HoloLens and HoloLens mounted to the DSLR camera when to localize. LocalizationSession logic varies for different spatial alignment strategies. A more in-depth look at each alignment strategy can be found below.
+The following constructs compose the abstraction and facilitate the the localization processes:
 
-4. Once the LocalizationSession has completed, a SpatialCoordinate will have been located. The position of this SpatialCoordinate in the local application space is then cached in the SpatialCoordinateSystemParticipant. The SpatialCoordinateSystemParticipant then relays this information to its associated peer device. This allows both devices to know the location of the SpatialCoordinate in each others' local application spaces.
+- **`ISpatialCoordinate`:** The abstract construct symbolizing a physical world coordinate that can be used to convert between application's world space and coordinate-relative space.
+- **`ISpatialCoordinateService`:** A service for discovering and managing `ISpatialCoordinates`. Different implementations exist based on different localization methods.
+- **`SpatialLocalizerInitializer`:** The construct that begins and facilitates the creation/sharing of ISpatialCoordinates between the local and remote `SpatialLocalizer`.
+  - **`SpatialLocalizer`:** This related construct understands how to localize upon or create a `ISpatialCoordinate` for localization.
+- **`SpatialCoordinateSystemManager`:** The singleton manager that manages the incoming/outgoing networking connections, their associated localization state and assigned `ISpatialCoordinates` to them.
+- **`ISpatialLocalizationSettings`:** This component exposes the configuration settings for a specific type of SpatialLocalizer.
+  - This class is added to a specially generated prefab in the consuming application, see [Spatial Alignment Dependencies](../../../../doc/SpectatorView.Setup.md##%20Spatial%20Localizer%20Dependencies) for detailed configuration instructions.
+- **`SpatialCoordinateSystemParticipant`:** Represents the localization state of a connected device, including the location and state of the connected device's shared spatial coordinate.
 
-5. Once the SpatialCoordinate's location and orientation are known for both devices, the spectator device's camera is updated so that the observed content has a physical origin that's at the same location as the user device's local application origin. For mobile devices, this is achieved through the SpatialCoordinateTransformer class that applies an additional transform to the mobile device's tracking camera. For DSLR filming, the editor combines reported head pose information with this SpatialCoordinate information to update its camera.
+Furthermore, the following components play a key role in localization:
 
-> Note: Spatial alignment relies on updating the Unity camera transform on spectator devices for aligning experiences in the physical world. Its possible to move application content instead of transforming Unity cameras to align scene content in the physical world. However, transforming application content can make for a more difficult time synchronizing physics state information across devices, so its suggested to update the camera transform.
+- **SpectatorView:** This manager singleton selects appropriate mechanism for localization based on current and connected device registration.
 
-## Spatial Alignment Strategies
+## Localization of Devices
 
-### Azure Spatial Anchors
+The process by which two or more devices agree upon localization details is split into several parts:
 
-Coming soon...
+- Registration & Configuration
+- Selection of Localization Method at Connection Time
+- Exchange of Localization Information
+
+### Registration & Configuration
+
+Both of these aspects are required to enable a method to be used for localization, however, they are slightly different. `SpectatorView` comes pre-registered with several `SpatialLocalizers` that can be found on `SpectatorView\Prefabs\SpectatorView.SpatialCoordinateLocalizers.prefab`:
+
+- Azure Spatial Anchors (`SpatialAnchorsLocalizer`) localizer will rely on the hosting (User) device to create the common ISpatialCoordinate to be used by all ASA spectating devices connecting
+- Physical Marker localizers will search for some physical marker in the world
+- Marker Visual localizer pairs will display a marker on the screen of a mobile device to be discovered by the other device.
+
+Some of these localization methods require settings, which are set through a `SpatialLocalizerInitializer`, two can be found on that prefab for the QR and ArUco visual localizers. Additional settings must be added manually by the consuming application onto `Generated.StateSynchronization.AssetCaches\Resources\SpectatorViewSettings.prefab` which is created by invoking the `Spectator View > Edit Settings` menu item, see [Spatial Alignment Dependencies](../../../../doc/SpectatorView.Setup.md##%20Spatial%20Localizer%20Dependencies).
+
+### Selection of Localization Method
+
+When the application starts and `SpectatorView` is initialized, configured localizers are checked for whether they are supported in the current application on the current device and if they are, they are registered with `SpectatorView`. Afterwards, the process is as follows:
+
+1. `SpatialCoordinateSystemManager` listens for incoming/outgoing network connections, creating a `SpatialCoordinateSystemParticipant` for each connection.
+2. `SpectatorView` on the spectating device listens for the creations of these participants, and queries for supported localizers of the participant.
+3. Then, based on its own configured prioritized list of `SpatialLocalizationInitializers` and the supported list returned by the hosting (User) device, it identifies the best localization method to use.
+
+> Note: Best localization method is determined as the lowest index of the supported localizers in its configured list.
+
+### Exchange of Localization Information
+
+Having determined the appropriate `SpatialLocalizationInitializer` to use, `SpectatorView` invokes its `RunLocalization` method.
+
+1. The `SpatialLocalizationInitializer` is then responsible for appropriately instantiating and configuring a SpatialLocalizer for localization. It must instantiate and configure localizers for both the local (spectator) and remote (User) participants. Example:
+    - For spectator on the mobile phone, a localizer that will display a marker visual is created.
+    - For remote participant on the HL2, a localizer will create a localizer that will instruct the remote participant to create appropriate marker detector.
+2. Each of instance of the localizers will then execute the appropriate logic to exchange and create the `ISpatialCoordinate` to be used for localization.
+3. When the coordinate is created, the participant is updated with it, and other systems (such as `SpatialCoordinateTransformer`) will use it to synchronize positions.
+
+## Detailed Breakdown of Spatial Localization Methods
+
+### Azure Spatial Anchors Localization
+
+Localization here happens by having the hosting device (User) create an `ISpatialCoordinate` backed by an Azure Spatial Anchor, it will then pass this coordinate to every spectating device requesting it.
+
+1. `SpatialAnchorsCoordinateLocalizationInitializer` will configure a SpatialAnchorsLocalizer using the appropriate Azure settings.
+2. The hosting (User) device will be instructed to create a localization session, and in turn create (if needed) an Azure Spatial Anchors `ISpatialCoordinate`.
+3. The Id of this coordinate will then be communicated to the spectating device.
+4. The spectating version of SpatialAnchorsLocalizer will go ahead and run an ASA discovery session until this coordinate is located.
+5. Once the discovery session locates the coordinate, both sessions are completed.
 
 ### Marker Visuals and Marker Detection (QR Codes and ArUco Markers)
 
@@ -46,7 +102,7 @@ Spatial alignment based on marker visuals and marker detection allows spectator 
 
 6. Once the user HoloLens has detected the marker being displayed on the mobile device, a SpatialCoordinate is created and the mobile device is told that the marker visual has been found. The creation of this SpatialCoordinate completes the LocalizationSession on the user HoloLens.
 
-7. Once informed that the marker has been found, the mobile device creates a SpatialCoordinate that reflects the marker visual's location at the time of detection. The creation of this SpatialCoordinate completes the Localizationsession on the mobile device.
+7. Once informed that the marker has been found, the mobile device creates a SpatialCoordinate that reflects the marker visual's location at the time of detection. The creation of this SpatialCoordinate completes the LocalizationSession on the mobile device.
 
 8. The SpatialCoordinate locations found on both devices are then shared with one another, which allows for the scene to be aligned.
 
@@ -58,7 +114,7 @@ Spatial alignment based on physical marker detection allows a spectator HoloLens
 
 2. In the created LocalizationSession, a call is made to a MarkerDetectorCoordinateService to start discovering SpatialCoordinates, which kicks off marker detection.
 
-3. Once a marker has been found that has the id provided thorugh the SpatialLocalizationSettings, a SpatialCoordinate is created, completing the LocalizationSession.
+3. Once a marker has been found that has the id provided through the SpatialLocalizationSettings, a SpatialCoordinate is created, completing the LocalizationSession.
 
 4. After SpatialCoordinate locations are found on both devices, they are shared with one another through the SpatialCoordinateSystemParticipant, which allows for the scene to be aligned.
 
