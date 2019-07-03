@@ -53,6 +53,8 @@ Not all spatial alignment strategies support all platforms. See the chart below 
 1. Obtain the [MixedReality QR Code Plugin](https://github.com/dorreneb/mixed-reality/releases) and include the associated dll's into the [MixedReality-QRCodePlugin folder](../external/MixedReality-QRCodePlugin).
 2. In the WSA unity player settings, add the **QRCODESTRACKER_BINARY_AVAILABLE** preprocessor directive. (This is located via Build Settings -> Player Settings -> Other Settings -> 'Scripting Defined Symbols')
 
+>Note: **QRCODESTRACKER_BINARY_AVAILABLE should be removed from the WSA Player settings when building for HoloLens 1.** Adding QRCODESTRACKER_BINARY_AVAILABLE to the player settings for Android, iOS and HoloLens 2 builds should not generate any issues for other spatial alignment strategies. However, when building for HoloLens 1, the QRCODESTRACKER_BINARY_AVAILABLE needs to be removed from the WSA Player settings. Compilation checks to determine whether a device supports QR Code detection are currently conducted using this QRCODESTRACKER_BINARY_AVAILABLE flag. HoloLens 1 does not support QR Code detection.
+
 ### ArUco Marker Detection
 
 1. Build a x86 Release version of [SpectatorView.OpenCV.dll](../src/SpectatorView.Native/README.md) and include the associated dll's in your Unity project. Addint the plugins to your Unity project can be achieved by running the [CopyPluginsToUnity](../tools/Scripts/CopyPluginsToUnity.bat) script.
