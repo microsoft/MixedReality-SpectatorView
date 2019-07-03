@@ -13,7 +13,7 @@ These are the simple instructions to get started with Spectator View by adding i
 4. Based on which localizer you wish to have, add the appropriate [Spatial Localizer Dependencies](doc/SpectatorView.Setup.md##Spatial%20Localizer%20Dependencies).
 5. Add the `MixedReality.SpectatorView/SpectatorView/Prefabs/SpectatorView.prefab` prefab to your primary scene.
 6. Configure the localization methods you wish to use: [Spatial Localizer Dependencies](doc/SpectatorView.Setup.md##Spatial%20Localizer%20Dependencies).
-7. Generate and check-in Asset Caches: [Before Building](doc/SpectatorView.Setup.md###Before%20Building)
+7. Generate and check-in Asset Caches to your project repo: [Before Building](doc/SpectatorView.Setup.md###Before%20Building)
 8. Build & Deploy your primary scene onto the hosting device.
 9. Configure the IP Address of the host device in the spectating scene for each platform `MixedReality.SpectatorView/SpectatorView/SpectatorView.<Platform>.unity` you will deploy to.
 10. Build & Deploy your spectating scenes onto the spectating devices.
