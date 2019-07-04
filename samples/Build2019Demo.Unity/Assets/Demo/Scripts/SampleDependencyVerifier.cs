@@ -20,7 +20,7 @@ namespace Microsoft.MixedReality.SpectatorView.Samples
             if (brokenLinks.Count > 0)
             {
 #if UNITY_EDITOR_WIN 
-                AttemptToFixOnWindows(brokenLinks);
+                TryToFixOnWindows(brokenLinks);
 #else
                 EditorUtility.DisplayDialog("Broken Dependencies", $"Broken symbolic links detected, but automatic fix is not available for you development machine OS. Check GitHub for help, or file a new issue.\n\nBroken Symlinks:\n{string.Join("\n", brokenLinks)}", "Ok");
 #endif
@@ -28,7 +28,7 @@ namespace Microsoft.MixedReality.SpectatorView.Samples
             }
         }
 
-        private static void AttemptToFixOnWindows(List<FileInfo> brokenLinks)
+        private static void TryToFixOnWindows(List<FileInfo> brokenLinks)
         {
             FileInfo pathToResetSamples = new FileInfo(Path.GetFullPath(Path.Combine(Application.dataPath, @"..\..\..", @"tools\scripts", FixSymlinksScript)));
             if (!pathToResetSamples.Exists)
@@ -41,7 +41,8 @@ namespace Microsoft.MixedReality.SpectatorView.Samples
                 {
                     Verb = "runas"
                 };
-                Process.Start(processStartInfo).WaitForExit();
+                Process process = Process.Start(processStartInfo);
+                process.WaitForExit();
                 EditorUtility.DisplayDialog("Script Completed", "The reset script has completed, but you may need to restart Unity.", "Ok");
             }
         }
