@@ -9,13 +9,17 @@ using Debug = UnityEngine.Debug;
 namespace Microsoft.MixedReality.SpectatorView.Samples
 {
     [InitializeOnLoad]
-    public class SampleDependencyVerifier : MonoBehaviour
+    public class SampleDependencyVerifier
     {
         private const string FixSymlinksScript = "ResetSamples.ps1";
+
+        private static string DataPath => Application.dataPath;
+
         static SampleDependencyVerifier()
         {
             List<FileInfo> brokenLinks = new List<FileInfo>();
-            SearchForBrokenSymlink(new DirectoryInfo(Application.dataPath), brokenLinks);
+
+            SearchForBrokenSymlink(new DirectoryInfo(DataPath), brokenLinks);
 
             if (brokenLinks.Count > 0)
             {
@@ -30,7 +34,7 @@ namespace Microsoft.MixedReality.SpectatorView.Samples
 
         private static void TryToFixOnWindows(List<FileInfo> brokenLinks)
         {
-            FileInfo pathToResetSamples = new FileInfo(Path.GetFullPath(Path.Combine(Application.dataPath, @"..\..\..", @"tools\scripts", FixSymlinksScript)));
+            FileInfo pathToResetSamples = new FileInfo(Path.GetFullPath(Path.Combine(DataPath, @"..\..\..", @"tools\scripts", FixSymlinksScript)));
             if (!pathToResetSamples.Exists)
             {
                 EditorUtility.DisplayDialog("Broken Dependencies", $"Broken symbolic links detected, but can't find the '{pathToResetSamples}' script to try and fix them. Check GitHub for help, or file a new issue.\n\nBroken Symlinks:\n{string.Join("\n", brokenLinks)}", "Ok");
