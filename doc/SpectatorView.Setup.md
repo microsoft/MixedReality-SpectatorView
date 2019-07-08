@@ -34,6 +34,8 @@
 
 ## Spatial Localizer Dependencies
 
+For more information on spatial localizers, see [here](../src/SpectatorView.Unity/Assets/SpatialAlignment/README.md).
+
 Not all spatial alignment strategies support all platforms. See the chart below to determine which strategy best addresses your intended user scenarios.
 
 | Platform  Support      | HoloLens 2 | HoloLens 1 | Android | iOS |
