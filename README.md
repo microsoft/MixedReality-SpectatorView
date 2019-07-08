@@ -61,6 +61,8 @@ The easiest way to file feedback is by [opening an issue](https://github.com/mic
 9) Android device type/Android OS Version
 10) Android Studio Version
 
+In addition to opening issues, Spectator View contributors are active on [Stack Overflow](https://stackoverflow.com/). Use the [MRTK tag](https://stackoverflow.com/questions/tagged/mrtk) when asking Spectator View related questions.
+
 ## Contributing
 
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a
