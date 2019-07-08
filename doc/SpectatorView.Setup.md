@@ -95,7 +95,7 @@ If you are building Azure Spatial Anchors on iOS, you will need to take some add
 ### Android
 
 1. Make sure your Unity project contains the asset caches that were created in the 'Before building' steps.
-2. Import [ARCore v1.7.0](https://github.com/google-ar/arcore-unity-sdk/releases/tag/v1.7.0) to your Unity Project (Note: This can also be achieved by running the [ResetSamples.bat](../tools/Scripts/ResetSamples.bat) script as an administrator and adding symbolic linked to your Unity project's asset directory similar to how the sample projects are setup).
+2. Download and Import arcore-unity-sdk-1.7.0.unitypackage from [ARCore v1.7.0](https://github.com/google-ar/arcore-unity-sdk/releases/tag/v1.7.0).
 3. Open the [SpectatorView.Android Unity scene](../src/SpectatorView.Unity/Assets/SpectatorView/Scenes/SpectatorView.Android.unity).
 4. Set the 'User Ip Address' for the Spectator View script to the ip address of your HoloLens device.
 5. Press the 'Android' button on the [Platform Switcher](../src/SpectatorView.Unity/Assets/SpectatorView.Editor/Scripts/PlatformSwitcherEditor.cs) attached to Spectator View in the Unity inspector (This should configure the correct build settings and app capabilities).
