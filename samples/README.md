@@ -45,3 +45,5 @@ If you happened to run step 3 above when Unity was open, you will notice that th
 There is a known issue with `MixedRealityToolkit-Unity` codebase that produces build issues due to deeply nested AsmDef files. You will see build errors such as:
 
     DirectoryNotFoundException: Could not find a part of the path "X:\...<SOME_PATH>...\samples\Build2019Demo.Unity\Assets\MixedRealityToolkit-Unity\MixedRealityToolkit.Examples\Demos\Utilities\InspectorFields\Inspectors\MixedRealityToolkit.Examples.Demos.Utilities.InspectorFields.Inspectors.asmdef"
+
+To work around this issue for the time being, place your project in a directory with a shorter name, such as c:\proj.

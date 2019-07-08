@@ -132,3 +132,8 @@ If you would like to try out an example before setting up your own application t
 * iOS: [SpectatorView.iOS](../src/SpectatorView.Unity/Assets/SpectatorView/Scenes/SpectatorView.iOS.unity)
 
 >Note: You will need to update the SpectatorView prefab's 'User Ip Address' field to your HoloLens's IPAddress for the SpectatorView.Android and SpectatorView.iOS scenes when building these examples.
+
+## Troubleshooting
+
+### __Issue:__ DirectoryNotFoundException: Could not find a part of the path "*.asmdef"
+Spectator view uses symbolic linked directories in its sample projects, which results in large file paths. A DirectoryNotFoundException can occur if these file paths become too long. To fix this, place your Unity project in a directory with a shorter name, such as c:\proj.
