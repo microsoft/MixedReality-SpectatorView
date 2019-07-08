@@ -46,6 +46,21 @@ For more information on Spectator View's architecture, see [here](doc/SpectatorV
 
 For more information on debugging Spectator View, see [here](doc/SpectatorView.Debugging.md)
 
+## Filing Feedback
+
+The easiest way to file feedback is by [opening an issue](https://github.com/microsoft/MixedReality-SpectatorView/issues). When filing feedback, please include the following information (when applicable):
+
+1) Whether you're using a HoloLens or HoloLens 2 device
+2) Development PC Windows Version
+3) Unity Version
+4) Whether you are building with .Net, Mono or il2cpp in Unity
+5) Visual Studio Version
+6) Windows SDK Version
+7) iOS device type/iOS Version
+8) Mac OS Version
+9) Android device type/Android OS Version
+10) Android Studio Version
+
 ## Contributing
 
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a
