@@ -17,7 +17,7 @@ Once you have the required software, follow these steps:
 
 1. Using your favorite Git management tool, clone this repository if you haven't yet.
 2. Then with git, pull the latest version of the code.
-3. Run `/tools/scripts/ResetSamples.bat` to get to a clean state of the Samples folder with appropriate configuration.
+3. Run `/tools/scripts/ResetSamples.bat` as an administrator to get to a clean state of the Samples folder with appropriate configuration.
     - On Mac or Linux, you can run `/tools/scripts/ResetSamples.sh`.
 
 > In future updates you can pull to latest by invoking `git pull --recurse-submodules` command.
@@ -30,7 +30,7 @@ This repository currently has the following samples:
 
 ## Troubleshooting
 
-If you encounter some issues, the first thing to do is to run `/tools/scripts/ResetSamples.bat`. For additional troubleshooting options look below.
+If you encounter some issues, the first thing to do is to run `/tools/scripts/ResetSamples.bat` as an administrator. For additional troubleshooting options look below.
 
 ### __Issue:__ Unity Project Folder Structure Broken
 
