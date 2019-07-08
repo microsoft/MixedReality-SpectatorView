@@ -15,7 +15,7 @@
 1. Windows PC
 2. Android Device that supports [AR Core](https://developers.google.com/ar/discover/supported-devices)
 3. [Android Studio](https://developer.android.com/studio)
-4. Obtain [ARCore v1.7.0](https://github.com/google-ar/arcore-unity-sdk/releases/tag/v1.7.0) (Note: only v1.7.0 has been tested, use other versions at your own risk). This can be achieved by running the [ResetSamples](../tools/Scripts/ResetSamples.bat) script as an administrator or by manually copying assets content into the [ARCore-Unity-SDK folder](../external/ARCore-Unity-SDK).
+4. Obtain [ARCore v1.7.0](https://github.com/google-ar/arcore-unity-sdk/releases/tag/v1.7.0) (Note: only v1.7.0 has been tested, use other versions at your own risk). This can be achieved by running the [ResetSamples](../tools/Scripts/ResetSamples.bat) script as an administrator or by manually copying assets content into a ARCore-Unity-SDK folder in the external directory.
 
 >Note: ARCore does not share MixedReality-SpectatorView's MIT license. For more information on ARCore licensing, see [here](https://github.com/google-ar/arcore-unity-sdk/blob/master/LICENSE).
 
