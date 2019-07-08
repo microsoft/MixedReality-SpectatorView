@@ -24,6 +24,7 @@ These instructions assumes a HoloLens 2 device for host, and an Android phone fo
 1. Ensure you have created an [Azure Spatial Anchors](https://docs.microsoft.com/en-us/azure/spatial-anchors/quickstarts/get-started-unity-hololens#create-a-spatial-anchors-resource) account.
 2. Open the Build2019Demo.Unity project in Unity.
     - If requested, import the TextMeshPro Essentials.
+3. Open the [Finished_Scene](Assets/Demo/Scenes/Finished_Scene.unity) sample scene.
 3. Open SpectatorView settings by going to the menu `SpectatorView > Edit Settings`. \
 ![SpectatorView Settings Menu](../../doc/images/SpectatorViewSettingsMenu.png)
 4. Replace `ENTER_ACCOUNT_ID` and `ENTER_ACCOUNT_KEY` with appropriate values. \
