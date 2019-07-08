@@ -5,9 +5,9 @@
   <!-- Change the paths defined below to the appropriate locations on your machine. -->
   <PropertyGroup Label="UserMacros">
     <!-- From: https://www.blackmagicdesign.com/support -->
-    <DeckLink_inc>C:\BlackMagic DeckLink</DeckLink_inc>
+    <DeckLink_inc>C:\Blackmagic DeckLink SDK 10.9.11\Win\include</DeckLink_inc>
     <!-- From: https://github.com/elgatosf/gamecapture -->
-    <Elgato_Filter Condition="$(Elgato_Filter) == ''">C:\git\Elgato\gamecapture-master\VideoCaptureFilter</Elgato_Filter>
+    <Elgato_Filter Condition="$(Elgato_Filter) == ''">C:\gamecapture\VideoCaptureFilter</Elgato_Filter>
   </PropertyGroup>
   <PropertyGroup />
   <ItemDefinitionGroup />

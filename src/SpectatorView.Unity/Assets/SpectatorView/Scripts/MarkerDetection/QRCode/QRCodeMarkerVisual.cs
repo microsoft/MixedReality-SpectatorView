@@ -14,14 +14,14 @@ namespace Microsoft.MixedReality.SpectatorView
         /// </summary>
         [Tooltip("Parent GameObject of any marker visual content")]
         [SerializeField]
-        private GameObject _content;
+        private GameObject _content = null;
 
         /// <summary>
         /// RawImage used for displaying the ArUco marker
         /// </summary>
         [Tooltip("RawImage used for displaying the ArUco marker")]
         [SerializeField]
-        protected RawImage _rawImage;
+        private RawImage _rawImage = null;
 
         /// <summary>
         /// Physical size to display the marker (in meters)

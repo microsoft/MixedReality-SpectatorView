@@ -12,7 +12,11 @@ namespace Microsoft.MixedReality.SpectatorView
         /// </summary>
         [Tooltip("CompositionManager used to obtain the DSLR stream")]
         [SerializeField]
+#if UNITY_EDITOR
         private CompositionManager compositionManager = null;
+#else
+        private CompositionManager compositionManager;
+#endif
 
         public RenderTexture GetVideoCameraFeed()
         {

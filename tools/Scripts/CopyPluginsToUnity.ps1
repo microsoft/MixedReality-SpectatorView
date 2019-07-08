@@ -36,7 +36,8 @@ $CalibrationDlls = @( "$RootDirectory\x64\Release\SpectatorView.OpenCV.dll",
                       "$RootDirectory\x64\Release\opencv_core$OpenCVVersion.dll",
                       "$RootDirectory\x64\Release\opencv_features2d$OpenCVVersion.dll",
                       "$RootDirectory\x64\Release\opencv_flann$OpenCVVersion.dll",
-                      "$RootDirectory\x64\Release\opencv_imgproc$OpenCVVersion.dll")
+                      "$RootDirectory\x64\Release\opencv_imgproc$OpenCVVersion.dll",
+                      "$RootDirectory\x64\Release\zlib1.dll")
 
 Write-Host "Copying DSLR camera calibration dlls to $DesktopDirectory"
 foreach ($Dll in $CalibrationDlls)
@@ -57,7 +58,8 @@ $ArUcoDlls = @( "$RootDirectory\Release\SpectatorView.OpenCV.UWP\SpectatorView.O
                 "$RootDirectory\Release\SpectatorView.OpenCV.UWP\opencv_core$OpenCVVersion.dll",
                 "$RootDirectory\Release\SpectatorView.OpenCV.UWP\opencv_features2d$OpenCVVersion.dll",
                 "$RootDirectory\Release\SpectatorView.OpenCV.UWP\opencv_flann$OpenCVVersion.dll",
-                "$RootDirectory\Release\SpectatorView.OpenCV.UWP\opencv_imgproc$OpenCVVersion.dll")
+                "$RootDirectory\Release\SpectatorView.OpenCV.UWP\opencv_imgproc$OpenCVVersion.dll",
+                "$RootDirectory\Release\SpectatorView.OpenCV.UWP\zlib1.dll")
 
 Write-Host "Copying ArUco marker detector dlls to $WSAx86Directory"
 foreach ($Dll in $ArUcoDlls)
