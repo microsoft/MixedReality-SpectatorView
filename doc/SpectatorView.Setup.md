@@ -76,28 +76,30 @@ If you are building Azure Spatial Anchors on iOS, you will need to take some add
 
 ### Before Building
 
-1. Obtain your HoloLens's ip address from the settings menu via Settings -> Network & Internet -> Wi-Fi -> Hardware Properties.
-2. Add any of the preprocessor directives or unity packages described above to your clone of the codebase.
-3. In your Unity project, call Spectator View -> Update All Asset Caches to prepare content for state synchronization. Commit the updated Generated.StateSynchronization.AssetCaches folder content to your project to share across development devices.
+1. Obtain your HoloLens's ip address from the device's the windows settings menu via Settings -> Network & Internet -> Wi-Fi -> Hardware Properties.
+2. Add any of the preprocessor directives or unity packages described above that you intend to use to your clone of the SpectatorView codebase.
+3. Open the [SpectatorView.HoloLens scene](../src/SpectatorView.Unity/Assets/SpectatorView/Scenes/SpectatorView.HoloLens.unity) in your Unity project.
+4. In the Unity editor, call 'Spectator View -> Update All Asset Caches' (This will be located in the Unity editor toolbar) to prepare content for state synchronization. Add the Generated.StateSynchronization.AssetCaches folder to your project's repository to share across development devices.
 
-> NOTE: **Asset Caches need to be updated on one development machine and shared across development machines**. Asset Caches aren't currently created in a deterministic manner and can't be recreated in new development environments. The easiest way to share this with a team is to commit changes to the Generated.StateSynchronization.AssetCaches folder that will appear in the Unity project's Assets directory. For more information on Asset Caches see [SpectatorView.StateSynchronization](../src/SpectatorView.Unity/Assets/SpectatorView/Scripts/StateSynchronization/README.md).
+> Note: **Asset Caches need to be updated on one development machine and shared across development machines**. Asset Caches aren't currently created in a deterministic manner and can't be recreated in new development environments. The easiest way to share this with a team is to commit changes to the Generated.StateSynchronization.AssetCaches folder that will appear in the Unity project's Assets directory. For more information on Asset Caches see [SpectatorView.StateSynchronization](../src/SpectatorView.Unity/Assets/SpectatorView/Scripts/StateSynchronization/README.md).
 
 ### HoloLens 2 & HoloLens
 
 1. Make sure your Unity project contains the asset caches that were created in the 'Before building' steps.
-2. Add the [SpectatorView prefab](../src/SpectatorView.Unity/Assets/SpectatorView/Prefabs/SpectatorView.prefab) that reflects the correct spatial alignment strategy to the scene you intend to run on the HoloLens device.
-3. Add a GameObjectHierarchyBroadcaster to the root game object of the content you want synchronized.
-4. Press the 'HoloLens' button on the [Platform Switcher](../src/SpectatorView.Unity/Assets/SpectatorView.Editor/Scripts/PlatformSwitcherEditor.cs) attached to Spectator View in the unity inspector (This should configure the correct build settings and app capabilities).
-5. Build and deploy the application to your HoloLens device.
+2. Open the project scene that you intend to use with SpectatorView.
+3. Add the [SpectatorView prefab](../src/SpectatorView.Unity/Assets/SpectatorView/Prefabs/SpectatorView.prefab) to the scene.
+4. Add a GameObjectHierarchyBroadcaster to the root game object of the content you want synchronized.
+5. Press the 'HoloLens' button on the [Platform Switcher](../src/SpectatorView.Unity/Assets/SpectatorView.Editor/Scripts/PlatformSwitcherEditor.cs) attached to Spectator View in the unity inspector (This should configure the correct build settings and app capabilities).
+6. Build and deploy the application to your HoloLens device.
 
 ### Android
 
 1. Make sure your Unity project contains the asset caches that were created in the 'Before building' steps.
-2. Import [ARCore v1.7.0](https://github.com/google-ar/arcore-unity-sdk/releases/tag/v1.7.0).
-3. Open the [SpectatorView.Android unity scene](../src/SpectatorView.Unity/Assets/SpectatorView/Scenes/SpectatorView.Android.unity) that reflects the correct spatial alignment strategy in your unity project.
-4. Set the 'User Ip Address' in the Spectator View script to the ip address of your HoloLens device.
+2. Import [ARCore v1.7.0](https://github.com/google-ar/arcore-unity-sdk/releases/tag/v1.7.0) to your Unity Project (Note: This can also be achieved by running the [ResetSamples.bat](../tools/Scripts/ResetSamples.bat) script and adding symbolic linked to your Unity project's asset directory similar to how the sample projects are setup).
+3. Open the [SpectatorView.Android unity scene](../src/SpectatorView.Unity/Assets/SpectatorView/Scenes/SpectatorView.Android.unity).
+4. Set the 'User Ip Address' for the Spectator View script to the ip address of your HoloLens device.
 5. Press the 'Android' button on the [Platform Switcher](../src/SpectatorView.Unity/Assets/SpectatorView.Editor/Scripts/PlatformSwitcherEditor.cs) attached to Spectator View in the unity inspector (This should configure the correct build settings and app capabilities).
-6. Check 'ARCore Supported' under Build Settings -> Player Settings -> Android -> XR Settings
+6. Check 'ARCore Supported' under 'Build Settings -> Player Settings -> Android -> XR Settings' from the Unity editor toolbar.
 7. Export the project to android studio.
 8. Update the AndroidManifest.xml in android studio to use the ScreenRecorderActivity class compared to the UnityPlayerActivity as the application activity.
 9. Build and deploy the application through android studio to your desired device.
@@ -107,8 +109,8 @@ If you are building Azure Spatial Anchors on iOS, you will need to take some add
 > Note: Building iOS applications requires a mac.
 
 1. Make sure your Unity project contains the asset caches that were created in the 'Before building' steps. Asset caches can't be recreated in new development environments, so the asset caches created on the PC need to be checked in or copied over to your mac development environment.
-2. Import [Unity's ARKit Plugin](https://bitbucket.org/Unity-Technologies/unity-arkit-plugin/src/default/).
-3. Open the [SpectatorView.iOS unity scene](../src/SpectatorView.Unity/Assets/SpectatorView/Scenes/SpectatorView.iOS.unity) that reflects the correct spatial alignment strategy in your unity project.
+2. Import [Unity's ARKit Plugin](https://bitbucket.org/Unity-Technologies/unity-arkit-plugin/src/default/) to your Unity project. To do this, download the source code from the provided link. You can then add the source code directly to your Unity project or you can place the code in the [ARKit-Unity-Plugin folder](../external/ARKit-Unity-Plugin) and a symbolic linked directory to your Unity project's Assets folder. 
+3. Open the [SpectatorView.iOS unity scene](../src/SpectatorView.Unity/Assets/SpectatorView/Scenes/SpectatorView.iOS.unity).
 4. Set the 'User Ip Address' in the Spectator View script to the ip address of your HoloLens device.
 5. Press the 'iOS' button on the [Platform Switcher](../src/SpectatorView.Unity/Assets/SpectatorView.Editor/Scripts/PlatformSwitcherEditor.cs) attached to Spectator View in the unity inspector (This should configure the correct build settings and app capabilities).
 6. Export the iOS project to a XCode solution.
@@ -121,8 +123,12 @@ If you are building Azure Spatial Anchors on iOS, you will need to take some add
 3. Open and compile your application using the **xcode workspace**. Do NOT use the **xcode project**.
 >Note: Failing to take the above steps may result in errors such as 'Undefined symbols for architecture arm64' and 'framework not found Pods_Unity_iPhone' For more information on building ASA for iOS in Unity see [here](https://docs.microsoft.com/en-us/azure/spatial-anchors/quickstarts/get-started-unity-ios).
 
-## Spectating Scenes
+## Example Scenes
+
+If you would like to try out an example before setting up your own application to work with spectator view, run [ResetSamples.bat](../tools/Scripts/ResetSamples.bat). Then, open the [SpectatorView.Example.Unity project](../samples/SpectatorView.Example.Unity). You can then build and deploy the following scenes:
 
 * HoloLens: [SpectatorView.HoloLens](../src/SpectatorView.Unity/Assets/SpectatorView/Scenes/SpectatorView.HoloLens.unity)
 * Android: [SpectatorView.Android](../src/SpectatorView.Unity/Assets/SpectatorView/Scenes/SpectatorView.Android.unity)
 * iOS: [SpectatorView.iOS](../src/SpectatorView.Unity/Assets/SpectatorView/Scenes/SpectatorView.iOS.unity)
+
+>Note: You will need to update the SpectatorView prefab's 'User Ip Address' field to your HoloLens's IPAddress for the SpectatorView.Android and SpectatorView.iOS scenes when building these examples.
