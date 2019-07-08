@@ -75,6 +75,10 @@ namespace Microsoft.MixedReality.SpectatorView
 #elif UNITY_IOS && SPATIALALIGNMENT_ASA
             session = new SpatialCoordinateLocalizationSession(this, new SpatialAnchorsIOSCoordinateService(settings), settings, peerConnection);
             return true;
+#else
+            Debug.LogError("AzureSpatialAnchors is not supported on the current platform.");
+            session = null;
+            return false;
 #endif
         }
 
