@@ -7,7 +7,8 @@
 1. Windows PC
 2. HoloLens 2 or HoloLens
 3. [Visual Studio 2017](https://visualstudio.microsoft.com/vs/) installed on the PC
-4. [Unity](https://unity3d.com/get-unity/download) installed on the PC
+4. [Windows 10 SDK (10.0.18362.0)](https://developer.microsoft.com/en-us/windows/downloads/windows-10-sdk)
+5. [Unity](https://unity3d.com/get-unity/download) installed on the PC
 
 ### Android Requirements
 
