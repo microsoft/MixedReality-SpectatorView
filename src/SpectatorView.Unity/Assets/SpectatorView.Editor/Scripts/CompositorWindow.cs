@@ -56,8 +56,10 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
             appIPAddress = PlayerPrefs.GetString(appIPAddressKey, "localhost");
         }
 
-        private void OnDisable()
+        protected override void OnDisable()
         {
+            base.OnDisable();
+
             PlayerPrefs.SetString(holographicCameraIPAddressKey, holographicCameraIPAddress);
             PlayerPrefs.SetString(appIPAddressKey, appIPAddress);
             PlayerPrefs.Save();

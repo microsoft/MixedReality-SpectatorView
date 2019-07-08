@@ -1,6 +1,6 @@
 # Spectator View Samples
 
-This folder contains sample and demo projects that are maintained by the SpectaotrView team. Below you will find the instructions on how to get started, as well as the sample folder structure setup and dependencies.
+This folder contains sample and demo projects that are maintained by the SpectatorView team. Below you will find the instructions on how to get started, as well as the sample folder structure setup and dependencies.
 
 ## Getting Started
 
@@ -34,8 +34,14 @@ If you encounter some issues, the first thing to do is to run `/tools/scripts/Re
 
 ### __Issue:__ Unity Project Folder Structure Broken
 
-If you happened to run step 3 above when Unity was open, you will notice that the Project winow may contain the incorrect folder structure. This only happens when a symlink is inflated while Unity is open, to fix this:
+If you happened to run step 3 above when Unity was open, you will notice that the Project window may contain the incorrect folder structure. This only happens when a symlink is inflated while Unity is open, to fix this:
 
 1. Close Unity
 2. Delete the Library folder that is adjacent to the Assets folder
 3. Re-open Unity
+
+### __Issue:__ DirectoryNotFoundException during Build
+
+There is a known issue with `MixedRealityToolkit-Unity` codebase that produces build issues due to deeply nested AsmDef files. You will see build errors such as:
+
+    DirectoryNotFoundException: Could not find a part of the path "X:\...<SOME_PATH>...\samples\Build2019Demo.Unity\Assets\MixedRealityToolkit-Unity\MixedRealityToolkit.Examples\Demos\Utilities\InspectorFields\Inspectors\MixedRealityToolkit.Examples.Demos.Utilities.InspectorFields.Inspectors.asmdef"

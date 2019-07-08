@@ -81,7 +81,6 @@ namespace Microsoft.MixedReality.SpectatorView
         private RecordingState state = RecordingState.Ready;
         private bool _updateRecordingUI = false;
         private bool _readyToRecord = false;
-        private bool _isRecordingAvailable = false;
 
         /// <inheritdoc/>
         public event OverlayVisibilityRequest OverlayVisibilityRequest;

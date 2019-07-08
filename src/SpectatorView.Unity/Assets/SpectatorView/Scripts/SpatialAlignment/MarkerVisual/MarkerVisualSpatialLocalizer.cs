@@ -21,7 +21,6 @@ namespace Microsoft.MixedReality.SpectatorView
 
         /// <inheritdoc />
         public void Serialize(BinaryWriter writer) { }
-
     }
 
     /// <summary>

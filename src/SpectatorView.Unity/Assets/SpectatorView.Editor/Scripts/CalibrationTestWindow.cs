@@ -93,8 +93,10 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
             UpdateCalibrationFileForPlayback();
         }
 
-        private void OnDisable()
+        protected override void OnDisable()
         {
+            base.OnDisable();
+
             IsRecording = false;
             IsPlaying = false;
 

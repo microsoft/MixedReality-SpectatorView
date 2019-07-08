@@ -15,6 +15,8 @@ namespace Microsoft.MixedReality.SpectatorView
         [SerializeField]
         private QRCodeMarkerDetector MarkerDetector = null;
 
+        public override string DisplayName => "QR Code";
+
         protected override bool IsSupported
         {
             get

@@ -20,6 +20,10 @@ namespace Microsoft.MixedReality.SpectatorView
     {
         Guid SpatialLocalizerId { get; }
 
+        string DisplayName { get; }
+
+        ISpatialLocalizationSettings CreateDefaultSettings();
+
         bool TryDeserializeSettings(BinaryReader reader, out ISpatialLocalizationSettings settings);
 
         bool TryCreateLocalizationSession(IPeerConnection peerConnection, ISpatialLocalizationSettings settings, out ISpatialLocalizationSession session);

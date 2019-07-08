@@ -51,6 +51,14 @@ namespace Microsoft.MixedReality.SpectatorView
         private HashSet<INetworkManager> networkManagers = new HashSet<INetworkManager>();
         private ISpatialLocalizationSession currentLocalizationSession = null;
 
+        public IReadOnlyCollection<ISpatialLocalizer> Localizers
+        {
+            get
+            {
+                return localizers.Values;
+            }
+        }
+
         public void RegisterSpatialLocalizer(ISpatialLocalizer localizer)
         {
             if (localizers.ContainsKey(localizer.SpatialLocalizerId))

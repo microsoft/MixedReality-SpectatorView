@@ -15,11 +15,15 @@ namespace Microsoft.MixedReality.SpectatorView
         [SerializeField]
         private ArUcoMarkerDetector MarkerDetector = null;
 
+        public override string DisplayName => "ArUco Marker";
+
         protected override bool IsSupported
         {
             get
             {
-#if UNITY_WSA && !UNITY_EDITOR
+#if UNITY_EDITOR
+                return true;
+#elif UNITY_WSA
                 return Windows.ApplicationModel.Package.Current.Id.Architecture == Windows.System.ProcessorArchitecture.X86;
 #else
                 return false;

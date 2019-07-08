@@ -81,12 +81,13 @@ namespace Microsoft.MixedReality.SpectatorView
         protected DebugVisualHelper cameraVisualHelper;
 
         private CalculatedCameraIntrinsics dslrIntrinsics;
-        private HeadsetCalibrationData headsetData = null;
         private List<CalculatedCameraExtrinsics> cameraExtrinsics;
         private CalculatedCameraExtrinsics globalExtrinsics;
         private List<GameObject> parentVisuals = new List<GameObject>();
 
 #if UNITY_EDITOR
+        private HeadsetCalibrationData headsetData = null;
+
         private void OnValidate()
         {
             FieldHelper.ValidateType<INetworkingService>(NetworkingService);
