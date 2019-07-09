@@ -7,7 +7,14 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.SpectatorView
 {
-    internal abstract class DynamicGameObjectHierarchyBroadcaster<TComponentService> : ComponentBroadcaster<TComponentService, byte> where TComponentService : Singleton<TComponentService>, IComponentBroadcasterService
+    /// <summary>
+    /// A ComponentBroadcaster that allows instantiating a custom child hierarchy for the remote DynamicGameObjectHierarchyObserver.
+    /// The corresponding DynamicGameObjectHierarchyObserver is responsible for creating an initially-identical child
+    /// hierarchy. Once both devices have created the same initial hierarchy, the hierarchies are bound together
+    /// and state synchronization is initialized for all of the GameObjects within that hierarchy.
+    /// </summary>
+    /// <typeparam name="TComponentService">The IComponentBroadcasterService responsible for network communication for this ComponentBroadcaster.</typeparam>
+    public abstract class DynamicGameObjectHierarchyBroadcaster<TComponentService> : ComponentBroadcaster<TComponentService, byte> where TComponentService : Singleton<TComponentService>, IComponentBroadcasterService
     {
         private GameObject dynamicObject;
         private Dictionary<SocketEndpoint, PerConnectionInstantiationState> perConnectionInstantiationState = new Dictionary<SocketEndpoint, PerConnectionInstantiationState>();
@@ -27,6 +34,9 @@ namespace Microsoft.MixedReality.SpectatorView
             public const byte ObserverHierarchyBound = 0x3;
         }
 
+        /// <summary>
+        /// Gets or sets the locally-created dynamic GameObject hierarchy root.
+        /// </summary>
         protected GameObject DynamicObject
         {
             get { return dynamicObject; }
@@ -160,8 +170,6 @@ namespace Microsoft.MixedReality.SpectatorView
 
         protected void SendInstantiationRequest()
         {
-            DynamicObject = null;
-
             foreach (KeyValuePair<SocketEndpoint, PerConnectionInstantiationState> state in perConnectionInstantiationState)
             {
                 TransformBroadcaster.BlockedConnections.Add(state.Key);
