@@ -6,7 +6,14 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.SpectatorView
 {
-    internal abstract class DynamicGameObjectHierarchyObserver<TComponentService> : MonoBehaviour, IComponentObserver where TComponentService : Singleton<TComponentService>, IComponentBroadcasterService
+    /// <summary>
+    /// A ComponentObserver that allows instantiating a custom child hierarchy for the remote DynamicGameObjectHierarchyBroadcaster.
+    /// The corresponding DynamicGameObjectHierarchyBroadcaster is responsible for creating an initially-identical child
+    /// hierarchy. Once both devices have created the same initial hierarchy, the hierarchies are bound together
+    /// and state synchronization is initialized for all of the GameObjects within that hierarchy.
+    /// </summary>
+    /// <typeparam name="TComponentService">The IComponentBroadcasterService responsible for network communication for this IComponentObserver.</typeparam>
+    public abstract class DynamicGameObjectHierarchyObserver<TComponentService> : MonoBehaviour, IComponentObserver where TComponentService : Singleton<TComponentService>, IComponentBroadcasterService
     {
         private GameObject dynamicObject;
 
@@ -48,7 +55,6 @@ namespace Microsoft.MixedReality.SpectatorView
         public void Read(SocketEndpoint sendingEndpoint, BinaryReader message)
         {
             byte changeType = message.ReadByte();
-
             Read(sendingEndpoint, message, changeType);
         }
 
