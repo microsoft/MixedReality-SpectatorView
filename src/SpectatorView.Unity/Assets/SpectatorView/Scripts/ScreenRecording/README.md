@@ -18,3 +18,9 @@ SpectatorView supports specifying a custom prefab for starting and stopping reco
 ## Recording DSLR experiences
 
 coming soon...
+
+## Troubleshooting
+### iOS screen recording fails to create a video
+It happens infrequently, but ReplayKit can return true when attempting to start a recording even though it has failed. One known workaround is to restart your iOS devices and try again.
+
+To test whether or not your device is in this state, use the built in iOS screen recording functionality. Enable screen recording in the control center through Settings -> Control Center -> Customize Controls -> Press the '+' next to Screen Recording. You can then start screen recording through the control center. If screen recording generates an error prompt stating that "Screen recording stopped due to mediaservices failure", you have hit this failure state.
