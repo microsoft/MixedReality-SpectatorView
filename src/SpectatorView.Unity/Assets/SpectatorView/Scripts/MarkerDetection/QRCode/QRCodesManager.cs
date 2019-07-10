@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Threading.Tasks;
 
 #if WINDOWS_UWP
 using Windows.Perception.Spatial;
@@ -209,27 +210,40 @@ namespace Microsoft.MixedReality.SpectatorView
             IsTrackerRunning = false;
         }
 
-        protected virtual void Start()
+        protected async void Start()
         {
             if (AutoStartQRTracking)
             {
-                StartQRTracking();
+                await StartQRTracking();
             }
         }
 
-        public QRTrackerStartResult StartQRTracking()
+        public async Task<QRTrackerStartResult> StartQRTracking()
         {
-            if (qrTracker == null)
-            {
-                Debug.Log("Creating qr tracker");
-                qrTracker = new QRTracker();
-                qrTracker.Added += QrTracker_Added;
-                qrTracker.Updated += QrTracker_Updated;
-                qrTracker.Removed += QrTracker_Removed;
-            }
-
             if (!IsTrackerRunning)
             {
+#if WINDOWS_UWP
+                Windows.Security.Authorization.AppCapabilityAccess.AppCapability cap = Windows.Security.Authorization.AppCapabilityAccess.AppCapability.Create("webcam");
+                var accessStatus = await cap.RequestAccessAsync();
+                if (accessStatus != Windows.Security.Authorization.AppCapabilityAccess.AppCapabilityAccessStatus.Allowed)
+                {
+                    Debug.Log("Failed to obtain webcam capability for qr code tracking");
+                }
+                else
+                {
+                    Debug.Log("Webcam capability granted.");
+                }
+#endif
+                // Note: If the QRTracker is created prior to obtaining the webcam capability, initialization will fail.
+                if (qrTracker == null)
+                {
+                    Debug.Log("Creating qr tracker");
+                    qrTracker = new QRTracker();
+                    qrTracker.Added += QrTracker_Added;
+                    qrTracker.Updated += QrTracker_Updated;
+                    qrTracker.Removed += QrTracker_Removed;
+                }
+
                 StartResult = (qrTracker.Start());
                 if (StartResult == QRTrackerStartResult.Success)
                 {
@@ -242,7 +256,7 @@ namespace Microsoft.MixedReality.SpectatorView
                 }
             }
 
-            return StartResult;
+            return await Task.FromResult(StartResult);
         }
 
         public void StopQRTracking()
