@@ -36,7 +36,14 @@ namespace Microsoft.MixedReality.SpectatorView
         /// <inheritdoc />
         public void StartListening(int port)
         {
-            connectionManager.StartListening(port);
+            if (connectionManager != null)
+            {
+                connectionManager.StartListening(port);
+            }
+            else
+            {
+                Debug.LogError($"Failed to start listening: {nameof(connectionManager)} was not assigned.");
+            }
         }
 
         /// <inheritdoc />
@@ -48,7 +55,14 @@ namespace Microsoft.MixedReality.SpectatorView
         /// <inheritdoc />
         public void ConnectTo(string ipAddress, int port)
         {
-            connectionManager.ConnectTo(ipAddress, port);
+            if (connectionManager != null)
+            {
+                connectionManager.ConnectTo(ipAddress, port);
+            }
+            else
+            {
+                Debug.LogError($"Failed to start connecting: {nameof(connectionManager)} was not assigned.");
+            }
         }
 
         /// <summary>
@@ -68,16 +82,30 @@ namespace Microsoft.MixedReality.SpectatorView
         /// </summary>
         public void Disconnect()
         {
-            connectionManager.DisconnectAll();
+            if (connectionManager != null)
+            {
+                connectionManager.DisconnectAll();
+            }
+            else
+            {
+                Debug.LogError($"Failed to disconnect: {nameof(connectionManager)} was not assigned.");
+            }
         }
 
         protected override void Awake()
         {
             base.Awake();
 
-            connectionManager.OnConnected += OnConnected;
-            connectionManager.OnDisconnected += OnDisconnected;
-            connectionManager.OnReceive += OnReceive;
+            if (connectionManager != null)
+            {
+                connectionManager.OnConnected += OnConnected;
+                connectionManager.OnDisconnected += OnDisconnected;
+                connectionManager.OnReceive += OnReceive;
+            }
+            else
+            {
+                Debug.LogError($"{nameof(connectionManager)} is required but was not assigned.");
+            }
         }
 
         protected virtual void Start()
@@ -96,12 +124,15 @@ namespace Microsoft.MixedReality.SpectatorView
         {
             base.OnDestroy();
 
-            connectionManager.StopListening();
-            connectionManager.DisconnectAll();
+            if (connectionManager != null)
+            {
+                connectionManager.StopListening();
+                connectionManager.DisconnectAll();
 
-            connectionManager.OnConnected -= OnConnected;
-            connectionManager.OnDisconnected -= OnDisconnected;
-            connectionManager.OnReceive -= OnReceive;
+                connectionManager.OnConnected -= OnConnected;
+                connectionManager.OnDisconnected -= OnDisconnected;
+                connectionManager.OnReceive -= OnReceive;
+            }
 
             if (SpatialCoordinateSystemManager.IsInitialized)
             {
