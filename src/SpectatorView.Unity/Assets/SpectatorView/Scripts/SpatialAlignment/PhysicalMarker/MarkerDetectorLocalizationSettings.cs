@@ -10,10 +10,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.SpectatorView
 {
-    public class MarkerDetectorLocalizationSettings : ISpatialLocalizationSettings
-#if UNITY_EDITOR
-        , IEditableSpatialLocalizationSettings
-#endif
+    public class MarkerDetectorLocalizationSettings : ISpatialLocalizationSettings, IEditableSpatialLocalizationSettings
     {
         public int MarkerID { get; set; }
         public float MarkerSize { get; set; } = 0.1f;
