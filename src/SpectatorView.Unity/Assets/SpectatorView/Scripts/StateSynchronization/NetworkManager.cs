@@ -33,13 +33,22 @@ namespace Microsoft.MixedReality.SpectatorView
         /// </summary>
         protected abstract int RemotePort { get; }
 
-        /// <summary>
-        /// Connects to the holographic camera rig with the provided remote IP address.
-        /// </summary>
-        /// <param name="remoteAddress">The IP address of the holographic camera rig's HoloLens.</param>
+        /// <inheritdoc />
+        public void StartListening(int port)
+        {
+            connectionManager.StartListening(port);
+        }
+
+        /// <inheritdoc />
         public void ConnectTo(string remoteAddress)
         {
-            connectionManager.ConnectTo(remoteAddress, RemotePort);
+            ConnectTo(remoteAddress, RemotePort);
+        }
+
+        /// <inheritdoc />
+        public void ConnectTo(string ipAddress, int port)
+        {
+            connectionManager.ConnectTo(ipAddress, port);
         }
 
         /// <summary>
