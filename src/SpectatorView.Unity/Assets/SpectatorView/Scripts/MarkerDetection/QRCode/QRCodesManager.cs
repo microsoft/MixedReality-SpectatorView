@@ -48,13 +48,14 @@ namespace Microsoft.MixedReality.SpectatorView
         public bool IsTrackerRunning { get; private set; }
         public QRTrackerStartResult StartResult { get; private set; }
 
-        public event EventHandler<bool> QRCodesTrackingStateChanged;
         public event EventHandler<QRCodeEventArgs<QRCodesTrackerPlugin.QRCode>> QRCodeAdded;
         public event EventHandler<QRCodeEventArgs<QRCodesTrackerPlugin.QRCode>> QRCodeUpdated;
         public event EventHandler<QRCodeEventArgs<QRCodesTrackerPlugin.QRCode>> QRCodeRemoved;
 
         private SortedDictionary<System.Guid, QRCodesTrackerPlugin.QRCode> qrCodesList = new SortedDictionary<System.Guid, QRCodesTrackerPlugin.QRCode>();
         private QRTracker qrTracker;
+        private object startupLock = new object();
+        private bool shouldTrackerBeRunning = false;
 
         private static QRCodesManager qrCodesManager;
         public static QRCodesManager FindOrCreateQRCodesManager(GameObject gameObject)
@@ -214,13 +215,21 @@ namespace Microsoft.MixedReality.SpectatorView
         {
             if (AutoStartQRTracking)
             {
-                await StartQRTracking();
+                await StartQRTrackingAsync();
             }
         }
 
-        public async Task<QRTrackerStartResult> StartQRTracking()
+        public async Task<QRTrackerStartResult> StartQRTrackingAsync()
         {
-            if (!IsTrackerRunning)
+            bool attemptToStart = false;
+            lock (startupLock)
+            {
+                // Check whether any other calls were made to start the tracker when obtaining the lock.
+                attemptToStart = (!shouldTrackerBeRunning && !IsTrackerRunning);
+                shouldTrackerBeRunning = true;
+            }
+
+            if (attemptToStart)
             {
 #if WINDOWS_UWP
                 Windows.Security.Authorization.AppCapabilityAccess.AppCapability cap = Windows.Security.Authorization.AppCapabilityAccess.AppCapability.Create("webcam");
@@ -234,25 +243,32 @@ namespace Microsoft.MixedReality.SpectatorView
                     Debug.Log("Webcam capability granted.");
                 }
 #endif
-                // Note: If the QRTracker is created prior to obtaining the webcam capability, initialization will fail.
-                if (qrTracker == null)
-                {
-                    Debug.Log("Creating qr tracker");
-                    qrTracker = new QRTracker();
-                    qrTracker.Added += QrTracker_Added;
-                    qrTracker.Updated += QrTracker_Updated;
-                    qrTracker.Removed += QrTracker_Removed;
-                }
 
-                StartResult = (qrTracker.Start());
-                if (StartResult == QRTrackerStartResult.Success)
+                lock (startupLock)
                 {
-                    IsTrackerRunning = true;
-                    QRCodesTrackingStateChanged?.Invoke(this, true);
-                }
-                else
-                {
-                    Debug.LogWarning("Failed to start qr tracker: " + StartResult.ToString());
+                    // Note: If the QRTracker is created prior to obtaining the webcam capability, initialization will fail.
+                    if (qrTracker == null)
+                    {
+                        Debug.Log("Creating qr tracker");
+                        qrTracker = new QRTracker();
+                        qrTracker.Added += QrTracker_Added;
+                        qrTracker.Updated += QrTracker_Updated;
+                        qrTracker.Removed += QrTracker_Removed;
+                    }
+
+                    if (shouldTrackerBeRunning &&
+                        !IsTrackerRunning)
+                    {
+                        StartResult = qrTracker.Start();
+                        if (StartResult == QRTrackerStartResult.Success)
+                        {
+                            IsTrackerRunning = true;
+                        }
+                        else
+                        {
+                            Debug.LogWarning("Failed to start qr tracker: " + StartResult.ToString());
+                        }
+                    }
                 }
             }
 
@@ -261,16 +277,21 @@ namespace Microsoft.MixedReality.SpectatorView
 
         public void StopQRTracking()
         {
-            if (IsTrackerRunning)
+            lock(startupLock)
             {
-                IsTrackerRunning = false;
-                qrTracker.Stop();
-                StartResult = QRTrackerStartResult.DeviceNotConnected;
-                QRCodesTrackingStateChanged?.Invoke(this, false);
+                shouldTrackerBeRunning = false;
 
-                lock (qrCodesList)
+                if (qrTracker != null &&
+                    IsTrackerRunning)
                 {
-                    qrCodesList.Clear();
+                    qrTracker.Stop();
+                    IsTrackerRunning = false;
+                    StartResult = QRTrackerStartResult.DeviceNotConnected;
+
+                    lock (qrCodesList)
+                    {
+                        qrCodesList.Clear();
+                    }
                 }
             }
         }
