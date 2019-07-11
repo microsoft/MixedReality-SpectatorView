@@ -105,7 +105,7 @@ namespace Microsoft.MixedReality.SpectatorView
                 _qrCodesManager.QRCodeAdded += QRCodeAdded;
                 _qrCodesManager.QRCodeRemoved += QRCodeRemoved;
                 _qrCodesManager.QRCodeUpdated += QRCodeUpdated;
-                await StartTracking();
+                await StartTrackingAsync();
             }
         }
 
@@ -120,9 +120,9 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
-        private async Task StartTracking()
+        private async Task StartTrackingAsync()
         {
-            var result = await _qrCodesManager.StartQRTracking();
+            var result = await _qrCodesManager.StartQRTrackingAsync();
             DebugLog("Started qr tracker: " + result.ToString());
         }
 
