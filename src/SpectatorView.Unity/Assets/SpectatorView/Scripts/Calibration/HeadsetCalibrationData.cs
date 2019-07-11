@@ -3,13 +3,14 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.SpectatorView
 {
     [Serializable]
-    internal class HeadsetCalibrationData
+    public class HeadsetCalibrationData
     {
         public float timestamp;
         public HeadsetData headsetData;
@@ -22,6 +23,12 @@ namespace Microsoft.MixedReality.SpectatorView
             return payload;
         }
 
+        public void SerializeAndWrite(BinaryWriter writer)
+        {
+            var str = JsonUtility.ToJson(this);
+            writer.Write(str);
+        }
+
         public static bool TryDeserialize(byte[] payload, out HeadsetCalibrationData headsetCalibrationData)
         {
             headsetCalibrationData = null;
@@ -32,15 +39,32 @@ namespace Microsoft.MixedReality.SpectatorView
                 headsetCalibrationData = JsonUtility.FromJson<HeadsetCalibrationData>(str);
                 return true;
             }
-            catch
+            catch (Exception e)
             {
+                Debug.LogError($"Exception thrown: {e}");
+                return false;
+            }
+        }
+
+        public static bool TryDeserialize(BinaryReader reader, out HeadsetCalibrationData headsetCalibrationData)
+        {
+            headsetCalibrationData = null;
+            var str = reader.ReadString();
+            try
+            {
+                headsetCalibrationData = JsonUtility.FromJson<HeadsetCalibrationData>(str);
+                return true;
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"Exception thrown: {e}");
                 return false;
             }
         }
     }
 
     [Serializable]
-    internal struct MarkerPair
+    public struct MarkerPair
     {
         public int id;
         public MarkerCorners qrCodeMarkerCorners;
@@ -48,7 +72,7 @@ namespace Microsoft.MixedReality.SpectatorView
     }
 
     [Serializable]
-    internal struct MarkerCorners
+    public struct MarkerCorners
     {
         public Vector3 topLeft;
         public Vector3 topRight;
@@ -58,14 +82,14 @@ namespace Microsoft.MixedReality.SpectatorView
     }
 
     [Serializable]
-    internal struct HeadsetData
+    public struct HeadsetData
     {
         public Vector3 position;
         public Quaternion rotation;
     }
 
     [Serializable]
-    internal class HeadsetCalibrationDataRequest
+    public class HeadsetCalibrationDataRequest
     {
         public float timestamp;
 
@@ -76,18 +100,40 @@ namespace Microsoft.MixedReality.SpectatorView
             return payload;
         }
 
+        public void SerializeAndWrite(BinaryWriter writer)
+        {
+            var str = JsonUtility.ToJson(this);
+            writer.Write(str);
+        }
+
         public static bool TryDeserialize(byte[] payload, out HeadsetCalibrationDataRequest request)
         {
             request = null;
-
             try
             {
                 var str = Encoding.UTF8.GetString(payload);
                 request = JsonUtility.FromJson<HeadsetCalibrationDataRequest>(str);
                 return true;
             }
-            catch
+            catch (Exception e)
             {
+                Debug.LogError($"Exception thrown: {e}");
+                return false;
+            }
+        }
+
+        public static bool TryDeserialize(BinaryReader reader, out HeadsetCalibrationDataRequest request)
+        {
+            request = null;
+            var str = reader.ReadString();
+            try
+            {
+                request = JsonUtility.FromJson<HeadsetCalibrationDataRequest>(str);
+                return true;
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"Exception thrown: {e}");
                 return false;
             }
         }

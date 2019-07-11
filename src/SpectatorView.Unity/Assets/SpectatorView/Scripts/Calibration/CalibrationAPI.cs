@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.SpectatorView
 {
     internal class CalibrationAPI
     {
-        private const string SpectatorViewOpenCVDll = "SpectatorView.OpenCV.dll";
+        private const string SpectatorViewOpenCVDll = "SpectatorView.OpenCV";
 
         [DllImport(SpectatorViewOpenCVDll, EntryPoint = "InitializeCalibration")]
         internal static extern bool InitializeCalibrationNative();

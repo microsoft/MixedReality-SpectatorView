@@ -60,7 +60,13 @@ namespace Microsoft.MixedReality.SpectatorView
         [SerializeField]
         protected RawImage cornersImage;
 
+        public string IntrinsicsFileName => intrinsicsFileName;
+        public CalculatedCameraIntrinsics Intrinsics => intrinsics;
+        public int ProcessedImages => processedImages;
+
+        private string intrinsicsFileName = string.Empty;
         private CalculatedCameraIntrinsics intrinsics;
+        private int processedImages = 0;
 
 #if UNITY_EDITOR
         private Texture2D chessboardHeatmap = null;
@@ -83,6 +89,7 @@ namespace Microsoft.MixedReality.SpectatorView
                 }
                 else
                 {
+                    processedImages++;
                     CalibrationDataHelper.SaveChessboardDetectedImage(texture, fileName);
                 }
             }
@@ -112,29 +119,54 @@ namespace Microsoft.MixedReality.SpectatorView
 
             if (Input.GetKeyDown(KeyCode.Space))
             {
+                TakePhoto();
+            }
+
+            if (Input.GetKeyDown(KeyCode.Return))
+            {
+                CalculateCameraIntrinsics();
+            }
+        }
+
+        public void TakePhoto()
+        {
+            if (CompositorWrapper.IsInitialized)
+            {
                 var dslrTexture = CompositorWrapper.Instance.GetVideoCameraTexture();
                 var fileName = CalibrationDataHelper.GetUniqueFileName();
                 CalibrationDataHelper.SaveChessboardImage(dslrTexture, fileName);
 
-                if(!ProcessChessboardImage(dslrTexture))
+                if (!ProcessChessboardImage(dslrTexture))
                 {
                     Debug.LogWarning($"Failed to process/locate chessboard in dataset: {fileName}");
                 }
                 else
                 {
+                    processedImages++;
                     CalibrationDataHelper.SaveChessboardDetectedImage(dslrTexture, fileName);
                     CalibrationDataHelper.SaveImage(chessboardHeatmap, "ChessboardHeatmap");
                     CalibrationDataHelper.SaveImage(chessboardCorners, "ChessboardCorners");
                 }
             }
+            else
+            {
+                Debug.LogWarning("CompositorWrapper isn't initialized, failed to take photo.");
+            }
+        }
 
-            if (Input.GetKeyDown(KeyCode.Return))
+        public void CalculateCameraIntrinsics()
+        {
+            if (processedImages > 0)
             {
                 Debug.Log("Starting Camera Intrinsics calculation.");
                 intrinsics = CalibrationAPI.Instance.CalculateChessboardIntrinsics(chessSquareSize);
                 Debug.Log($"Chessboard intrinsics reprojection error: {intrinsics.ToString()}");
-                var file = CalibrationDataHelper.SaveCameraIntrinsics(intrinsics);
-                Debug.Log($"Camera Intrinsics saved to file: {file}");
+                intrinsicsFileName = CalibrationDataHelper.SaveCameraIntrinsics(intrinsics);
+                Debug.Log($"Camera Intrinsics saved to file: {intrinsicsFileName}");
+            }
+            else
+            {
+                Debug.LogWarning("No images have been processed, unable to calculate camera intrinsics.");
             }
         }
 

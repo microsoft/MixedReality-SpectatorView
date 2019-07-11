@@ -28,7 +28,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
         private float uiFrameWidth = 100;
         private float uiFrameHeight = 100;
 
-        private const string notConnectedMessage = "Not connected";
+        protected const string notConnectedMessage = "Not connected";
         private const string trackingLostStatusMessage = "Tracking lost";
         private const string trackingStalledStatusMessage = "No tracking update in over a second";
         private const string locatingSharedSpatialCoordinate = "Locating shared spatial coordinate...";
@@ -40,7 +40,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
         protected const int textureRenderModeComposite = 0;
         protected const int textureRenderModeSplit = 1;
         private const float quadPadding = 4;
-        private const int connectAndDisconnectButtonWidth = 90;
+        protected const int connectAndDisconnectButtonWidth = 90;
         private const int settingsButtonWidth = 24;
         private Dictionary<string, Rect> buttonRects = new Dictionary<string, Rect>();
 

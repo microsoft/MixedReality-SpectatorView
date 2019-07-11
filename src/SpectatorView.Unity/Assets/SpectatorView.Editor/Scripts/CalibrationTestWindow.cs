@@ -69,7 +69,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
 
         private CalibrationRecording recordingForPlayback;
 
-        [MenuItem("Spectator View/Calibration Test", false, 1)]
+        [MenuItem("Spectator View/Calibration Test", false, 2)]
         public static void ShowCalibrationRecordingWindow()
         {
             ShowWindow();
