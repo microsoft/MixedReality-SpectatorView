@@ -3,6 +3,7 @@
 
 using System;
 using System.IO;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -43,6 +44,7 @@ namespace Microsoft.MixedReality.SpectatorView
         {
             holographicCameraBroadcaster.Disconnected += OnDisconnect;
             holographicCameraBroadcaster.RegisterCommandHandler(HeadsetCalibration.RequestCalibrationDataCommandHeader, CalibrationDataRequested);
+            holographicCameraBroadcaster.RegisterCommandHandler(HeadsetCalibration.UploadCalibrationCommandHeader, UploadCalibrationDataAsync);
             headsetCalibration.Updated += OnHeadsetCalibrationUpdated;
         }
 
@@ -97,6 +99,36 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
+#if WINDOWS_UWP
+        private async void UploadCalibrationDataAsync(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
+        {
+            bool succeeded = true;
+            string uploadMessage = "Successfully uploaded calibration data.";
+            Debug.Log("Received a calibration data payload");
+            var size = reader.ReadInt32();
+            var data = reader.ReadBytes(size);
+            if (CalculatedCameraCalibration.TryDeserialize(data, out var calibrationData))
+            {
+                var fileName = "CalibrationData.json";
+                Windows.Storage.StorageFile file = await Windows.Storage.KnownFolders.PicturesLibrary.CreateFileAsync(fileName, Windows.Storage.CreationCollisionOption.ReplaceExisting);
+                await Windows.Storage.FileIO.WriteBytesAsync(file, data);
+            }
+            else
+            {
+                succeeded = false;
+                uploadMessage = "Uploading calibration data failed -  failed to deserialize calibration data.";
+                Debug.LogError(uploadMessage);
+            }
+
+            SendUploadResult(succeeded, uploadMessage);
+        }
+#else
+        private void UploadCalibrationDataAsync(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
+        {
+            SendUploadResult(false, "Uploading calibration data not supported for current platform.");
+        }
+#endif
+
         private void Update()
         {
             if (updateData)
@@ -131,7 +163,27 @@ namespace Microsoft.MixedReality.SpectatorView
                         data.SerializeAndWrite(writer);
                         writer.Flush();
 
-                        Debug.Log("Sending headset calibration data payload");
+                        Debug.Log("Sending headset calibration data payload.");
+                        connectionManager.Broadcast(memoryStream.ToArray());
+                    }
+                }
+            }
+        }
+
+        private void SendUploadResult(bool succeeded, string uploadMessage)
+        {
+            if (holographicCameraBroadcaster != null)
+            {
+                using (MemoryStream memoryStream = new MemoryStream())
+                {
+                    using (BinaryWriter writer = new BinaryWriter(memoryStream))
+                    {
+                        writer.Write(HeadsetCalibration.UploadCalibrationResultCommandHeader);
+                        writer.Write(succeeded);
+                        writer.Write(uploadMessage);
+                        writer.Flush();
+
+                        Debug.Log("Sending upload result message.");
                         connectionManager.Broadcast(memoryStream.ToArray());
                     }
                 }
