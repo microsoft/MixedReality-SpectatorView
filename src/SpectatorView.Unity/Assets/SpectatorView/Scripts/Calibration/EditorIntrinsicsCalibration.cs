@@ -65,7 +65,7 @@ namespace Microsoft.MixedReality.SpectatorView
         public int ProcessedImages => processedImages;
 
         private string intrinsicsFileName = string.Empty;
-        private CalculatedCameraIntrinsics intrinsics;
+        private CalculatedCameraIntrinsics intrinsics = null;
         private int processedImages = 0;
 
 #if UNITY_EDITOR
@@ -76,6 +76,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
         private void Start()
         {
+            CalibrationAPI.Instance.Reset();
             CalibrationDataHelper.Initialize();
             var chessboardImageFileNames = CalibrationDataHelper.GetChessboardImageFileNames();
 
@@ -109,7 +110,9 @@ namespace Microsoft.MixedReality.SpectatorView
         {
             if (feedImage != null &&
                 feedImage.texture == null)
+            {
                 feedImage.texture = CompositorWrapper.Instance.GetVideoCameraFeed();
+            }
 
             if (cornersImage)
                 cornersImage.texture = chessboardCorners;
@@ -163,6 +166,22 @@ namespace Microsoft.MixedReality.SpectatorView
                 Debug.Log($"Chessboard intrinsics reprojection error: {intrinsics.ToString()}");
                 intrinsicsFileName = CalibrationDataHelper.SaveCameraIntrinsics(intrinsics);
                 Debug.Log($"Camera Intrinsics saved to file: {intrinsicsFileName}");
+
+                // Undistort obtained images to understand quality of calculated camera intrinsics.
+                var chessboardImageFileNames = CalibrationDataHelper.GetChessboardImageFileNames();
+                foreach (var fileName in chessboardImageFileNames)
+                {
+                    var texture = CalibrationDataHelper.LoadChessboardImage(fileName);
+                    if (texture == null ||
+                        !UndistortChessboardImage(texture, intrinsics))
+                    {
+                        Debug.LogWarning($"Failed to locate/undistort chessboard image: {fileName}");
+                    }
+                    else
+                    {
+                        CalibrationDataHelper.SaveChessboardUndistortedImage(texture, fileName);
+                    }
+                }
             }
             else
             {
@@ -262,6 +281,38 @@ namespace Microsoft.MixedReality.SpectatorView
                 heatmapImage.texture = chessboardHeatmap;
             }
 
+            return true;
+        }
+
+        private bool UndistortChessboardImage(Texture2D texture, CalculatedCameraIntrinsics intrinsics)
+        {
+            if (texture == null ||
+                texture.format != TextureFormat.RGB24)
+            {
+                return false;
+            }
+
+            int imageWidth = texture.width;
+            int imageHeight = texture.height;
+
+            var unityPixels = texture.GetRawTextureData<byte>();
+            var pixels = unityPixels.ToArray();
+
+            if (!CalibrationAPI.Instance.UndistortChessboardImage(
+                pixels,
+                imageWidth,
+                imageHeight,
+                intrinsics))
+            {
+                return false;
+            }
+
+            for (int i = 0; i < unityPixels.Length; i++)
+            {
+                unityPixels[i] = pixels[i];
+            }
+
+            texture.Apply();
             return true;
         }
 #endif

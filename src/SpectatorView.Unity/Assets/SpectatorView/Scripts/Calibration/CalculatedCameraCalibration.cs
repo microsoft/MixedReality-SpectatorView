@@ -15,6 +15,14 @@ namespace Microsoft.MixedReality.SpectatorView
         public CalculatedCameraExtrinsics Extrinsics;
         public CalculatedCameraIntrinsics Intrinsics;
 
+        public CalculatedCameraCalibration() {}
+
+        public CalculatedCameraCalibration(CalculatedCameraIntrinsics intrinsics, CalculatedCameraExtrinsics extrinsics)
+        {
+            Intrinsics = intrinsics;
+            Extrinsics = extrinsics;
+        }
+
         public byte[] Serialize()
         {
             var str = JsonUtility.ToJson(this);

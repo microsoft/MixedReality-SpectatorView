@@ -45,6 +45,8 @@ namespace Microsoft.MixedReality.SpectatorView
 
         public static readonly string RequestCalibrationDataCommandHeader = "REQCALIBDATA";
         public static readonly string CalibrationDataReceivedCommandHeader = "CALIBDATA";
+        public static readonly string UploadCalibrationCommandHeader= "UPLOADCALIBDATA";
+        public static readonly string UploadCalibrationResultCommandHeader = "UPLOADCALIBRESULT";
 
         private bool markersUpdated = false;
         private Dictionary<int, Marker> qrCodeMarkers = new Dictionary<int, Marker>();

@@ -148,16 +148,37 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
             }
             GUI.enabled = true;
 
-            EditorGUILayout.Space();
-
             if (extrinsics.GlobalExtrinsicsFileName != string.Empty &&
                 extrinsics.GlobalExtrinsics != null)
             {
+                EditorGUILayout.Space();
                 RenderTitle(extrinsics.GlobalExtrinsicsFileName, Color.green);
                 GUILayout.Label($"Calculation succeeded: {extrinsics.GlobalExtrinsics.Succeeded}");
                 GUILayout.Label("View From World:");
                 GUILayout.Label($"{extrinsics.GlobalExtrinsics.ViewFromWorld.ToString("G4")}");
                 GUILayout.Label($"Note: 'Global Extrinsics' and 'Global HoloLens' GameObjects have been added to the Unity scene to demonstrate the calculated offset between the DSLR Camera and HoloLens");
+                EditorGUILayout.Space();
+            }
+
+            if (extrinsics.CalibrationFileName != string.Empty)
+            {
+                RenderTitle(extrinsics.CalibrationFileName, Color.green);
+            }
+
+            GUI.enabled = extrinsics.CalibrationFileName != string.Empty &&
+                cameraDevice != null &&
+                cameraDevice.NetworkManager != null &&
+                cameraDevice.NetworkManager.IsConnected;
+            if (GUILayout.Button(new GUIContent("Upload Calibration Data", "Sends calibration data to the connected HoloLens device."), GUILayout.Width(buttonWidth)))
+            {
+                extrinsics.UploadCalibrationData();
+            }
+            GUI.enabled = true;
+
+            if (extrinsics.UploadResultMessage != string.Empty)
+            {
+                Color color = extrinsics.UploadSucceeded ? Color.green : Color.red;
+                RenderTitle(extrinsics.UploadResultMessage, color);
             }
         }
     }

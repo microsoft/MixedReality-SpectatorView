@@ -33,7 +33,11 @@ namespace Microsoft.MixedReality.SpectatorView
         /// </summary>
         [Tooltip("The HolographicCameraObserver that establishes a network connection with the Holographic Camera.")]
         [SerializeField]
+#if UNITY_EDITOR
         HolographicCameraObserver holographicCameraObserver = null;
+#else
+        HolographicCameraObserver holographicCameraObserver;
+#endif
 
         [Header("UI Parameters")]
         /// <summary>
@@ -68,14 +72,26 @@ namespace Microsoft.MixedReality.SpectatorView
         public int LastCountDetectedMarkers => lastCountDetectedMarkers;
         public CalculatedCameraExtrinsics GlobalExtrinsics => globalExtrinsics;
         public string GlobalExtrinsicsFileName => globalExtrinsicsFileName;
+        public string CalibrationFileName => calibrationFileName;
+        public bool UploadSucceeded => uploadSucceeded;
+        public string UploadResultMessage => uploadResultMessage;
 
         private CalculatedCameraIntrinsics dslrIntrinsics;
         private List<CalculatedCameraExtrinsics> cameraExtrinsics;
-        private CalculatedCameraExtrinsics globalExtrinsics;
+        private CalculatedCameraExtrinsics globalExtrinsics = null;
         private string globalExtrinsicsFileName = string.Empty;
         private List<GameObject> parentVisuals = new List<GameObject>();
         private int processedDatasets = 0;
         private int lastCountDetectedMarkers = 0;
+        private string calibrationFileName = string.Empty;
+        private CalculatedCameraCalibration lastCalibration;
+        private string uploadResultMessage = string.Empty;
+
+#if UNITY_EDITOR
+        private bool uploadSucceeded = false;
+#else
+        private bool uploadSucceeded;
+#endif
 
 #if UNITY_EDITOR
         private HeadsetCalibrationData headsetData = null;
@@ -83,7 +99,8 @@ namespace Microsoft.MixedReality.SpectatorView
         private void Start()
         {
             holographicCameraObserver.RegisterCommandHandler(HeadsetCalibration.CalibrationDataReceivedCommandHeader, OnCalibrationDataReceived);
-
+            holographicCameraObserver.RegisterCommandHandler(HeadsetCalibration.UploadCalibrationResultCommandHeader, OnCalibrationResultReceived);
+            CalibrationAPI.Instance.Reset();
             CalibrationDataHelper.Initialize();
             dslrIntrinsics = CalibrationDataHelper.LoadCameraIntrinsics(cameraIntrinsicsPath);
             if (dslrIntrinsics == null)
@@ -197,12 +214,9 @@ namespace Microsoft.MixedReality.SpectatorView
                 cameraExtrinsics = CalibrationAPI.Instance.CalculateIndividualArUcoExtrinsics(dslrIntrinsics, parentVisuals.Count);
                 if (cameraExtrinsics != null)
                 {
-                    foreach (var extrinsic in cameraExtrinsics)
-                    {
-                        Debug.Log($"Calculated extrinsics: {extrinsic}");
-                    }
                     CreateExtrinsicsVisual(cameraExtrinsics);
                 }
+                Debug.Log("Completed Individual Camera Extrinsics calculations.");
 
                 Debug.Log("Starting the Global Camera Extrinsics calculation.");
                 globalExtrinsics = CalibrationAPI.Instance.CalculateGlobalArUcoExtrinsics(dslrIntrinsics);
@@ -219,11 +233,46 @@ namespace Microsoft.MixedReality.SpectatorView
                     GameObject hololens = null;
                     cameraVisualHelper.CreateOrUpdateVisual(ref hololens, Vector3.zero, Quaternion.identity);
                     hololens.name = "Global HoloLens";
+
+                    lastCalibration = new CalculatedCameraCalibration(dslrIntrinsics, globalExtrinsics);
+                    calibrationFileName = CalibrationDataHelper.SaveCameraCalibration(lastCalibration);
                 }
             }
             else
             {
                 Debug.LogWarning("No usable marker datasets have been processed, unable to calculate camera extrinsics.");
+            }
+        }
+
+        public void UploadCalibrationData()
+        {
+            uploadResultMessage = string.Empty;
+            if (lastCalibration == null)
+            {
+                Debug.LogWarning("Calibration isn't currently loaded, failed to upload calibration data");
+                return;
+            }
+
+            if (holographicCameraObserver != null &&
+                holographicCameraObserver.IsConnected)
+            {
+                using (MemoryStream memoryStream = new MemoryStream())
+                {
+                    using (BinaryWriter writer = new BinaryWriter(memoryStream))
+                    {
+                        writer.Write(HeadsetCalibration.UploadCalibrationCommandHeader);
+                        var payload = lastCalibration.Serialize();
+                        writer.Write(payload.Length);
+                        writer.Write(payload);
+                        writer.Flush();
+                        holographicCameraObserver.Broadcast(memoryStream.ToArray());
+                        Debug.Log("Sent calibration data to the hololens device.");
+                    }
+                }
+            }
+            else
+            {
+                Debug.LogWarning("HolographicCameraObserver isn't setup correctly, failed to request headset data.");
             }
         }
 
@@ -235,6 +284,12 @@ namespace Microsoft.MixedReality.SpectatorView
             {
                 headsetData = headsetCalibrationData;
             }
+        }
+
+        private void OnCalibrationResultReceived(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
+        {
+            uploadSucceeded = reader.ReadBoolean();
+            uploadResultMessage = reader.ReadString();
         }
 
         private bool ProcessArUcoData(HeadsetCalibrationData headsetData, Texture2D dslrTexture)
@@ -273,6 +328,10 @@ namespace Microsoft.MixedReality.SpectatorView
             var parent = new GameObject();
             parent.name = $"Dataset {fileName}";
 
+            var inScene = new GameObject();
+            inScene.name = $"Objects in scene position";
+            inScene.transform.parent = parent.transform;
+
             for (int i = 0; i < data.markers.Count; i++)
             {
                 GameObject temp = null;
@@ -280,13 +339,33 @@ namespace Microsoft.MixedReality.SpectatorView
                 float dist = Vector3.Distance(corners.topLeft, corners.topRight);
                 markerVisualHelper.CreateOrUpdateVisual(ref temp, corners.topLeft, corners.orientation, dist * Vector3.one);
                 temp.name = $"Marker {fileName}.{data.markers[i].id}";
-                temp.transform.parent = parent.transform;
+                temp.transform.parent = inScene.transform;
             }
 
             GameObject camera = null;
             cameraVisualHelper.CreateOrUpdateVisual(ref camera, data.headsetData.position, data.headsetData.rotation);
             camera.name = $"HoloLens {fileName}";
-            camera.transform.parent = parent.transform;
+            camera.transform.parent = inScene.transform;
+
+            var origin = new GameObject();
+            origin.name = $"Objects adjusted to origin";
+            origin.transform.parent = parent.transform;
+
+            GameObject originCamera = null;
+            cameraVisualHelper.CreateOrUpdateVisual(ref originCamera, Vector3.zero, Quaternion.identity);
+            originCamera.name = $"HoloLens {fileName}";
+            originCamera.transform.parent = origin.transform;
+
+            var allCorners = CalibrationAPI.CalcMarkerCornersRelativeToCamera(data);
+            for (int i = 0; i < allCorners.Count; i++)
+            {
+                GameObject temp = null;
+                var corners = allCorners[i];
+                float dist = Vector3.Distance(corners.topLeft, corners.topRight);
+                markerVisualHelper.CreateOrUpdateVisual(ref temp, corners.topLeft, corners.orientation, dist * Vector3.one);
+                temp.name = $"Marker {fileName}.{data.markers[i].id}";
+                temp.transform.parent = origin.transform;
+            }
 
             parentVisuals.Add(parent);
         }

@@ -37,6 +37,14 @@ namespace Microsoft.MixedReality.SpectatorView
             float[] intrinsics,
             int sizeIntrinsics);
 
+        [DllImport(SpectatorViewOpenCVDll, EntryPoint = "UndistortChessboardImage")]
+        internal static extern bool UndistortChessboardImageNative(
+            byte[] image,
+            int imageWidth,
+            int imageHeight,
+            float[] intrinsics,
+            int sizeIntrinsics);
+
         [DllImport(SpectatorViewOpenCVDll, EntryPoint = "ProcessArUcoData")]
         internal static extern bool ProcessArUcoImageNative(
             byte[] image,
@@ -371,6 +379,21 @@ namespace Microsoft.MixedReality.SpectatorView
             }
 
             return null;
+        }
+
+        public bool UndistortChessboardImage(
+            byte[] image,
+            int imageWidth,
+            int imageHeight,
+            CameraIntrinsics intrinsics)
+        {
+            var intrinsicsArray = CreateIntrinsicsArray(intrinsics);
+            return UndistortChessboardImageNative(
+                image,
+                imageWidth,
+                imageHeight,
+                intrinsicsArray,
+                intrinsicsArray.Length);
         }
 
         private float[] CreateIntrinsicsArray(CameraIntrinsics intrinsics)
