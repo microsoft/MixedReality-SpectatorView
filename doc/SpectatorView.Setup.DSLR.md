@@ -131,7 +131,7 @@ After detecting all of the markers, make sure the entire Calibration Board can b
 
 ![Marker](images/CalibrationExtrinsicsSuccessfulUpload.png)
 
-12. After uploading a CalibrationData.json file to your HoloLens 2 device, you have completed calibration.
+12. After uploading a CalibrationData.json file to your HoloLens 2 device's Picture Library, you have completed calibration and can begin filming. However, calibration can generate varying results. It's suggested to test your calibration to ensure it achieves the quality required for your filming needs. Multiple calibration attempts may be required to obtain adequate results.
 
 ## Testing Calibration
 Coming soon...
