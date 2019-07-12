@@ -183,6 +183,45 @@ bool Calibration::ProcessChessboardIntrinsics(
     return true;
 }
 
+bool Calibration::UndistortChessboardImage(
+    unsigned char* image,
+    int imageWidth,
+    int imageHeight,
+    float* intrinsics,
+    int sizeIntrinsics)
+{
+    if (sizeIntrinsics != intrinsicsSize)
+    {
+        lastError = "Intrinsics should have " + std::to_string(intrinsicsSize) + " float values";
+        return false;
+    }
+
+    // Unity textures have image data flipped vertically, so we process flipped images with opencv
+    cv::Mat rgbImage(chessboardImageHeight, chessboardImageWidth, CV_8UC3, image);
+    cv::Mat flippedRgbImage;
+    cv::flip(rgbImage, flippedRgbImage, 0);
+
+    cv::Mat cameraMat(3, 3, CV_64F, cv::Scalar(0));
+    cv::Mat distCoeffMat(1, 5, CV_64F, cv::Scalar(0));
+
+    cameraMat.at<double>(0, 0) = intrinsics[0]; // X Focal length
+    cameraMat.at<double>(1, 1) = intrinsics[1]; // Y Focal length
+    cameraMat.at<double>(0, 2) = intrinsics[2]; // X Principal point
+    cameraMat.at<double>(1, 2) = intrinsics[3]; // Y Principal point
+    cameraMat.at<double>(2, 2) = 1.0;
+    distCoeffMat.at<double>(0, 0) = intrinsics[4]; // 1st Radial distortion coefficient
+    distCoeffMat.at<double>(0, 1) = intrinsics[5]; // 2nd Radial distortion coefficient
+    distCoeffMat.at<double>(0, 4) = intrinsics[6]; // 3rd Radial distortion coefficient
+    distCoeffMat.at<double>(0, 2) = intrinsics[7]; // 1st Tangential distortion coefficient
+    distCoeffMat.at<double>(0, 3) = intrinsics[8]; // 2nd Tangential distortion coefficient
+
+    cv::Mat flippedUndistorted;
+    cv::undistort(flippedRgbImage, flippedUndistorted, cameraMat, distCoeffMat);
+
+    cv::flip(flippedUndistorted, rgbImage, 0);
+    return true;
+}
+
 bool Calibration::ProcessArUcoData(
     unsigned char* image,
     int imageWidth,
