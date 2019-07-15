@@ -22,9 +22,13 @@
 4. Download the [MixedReality QR Code Plugin](https://github.com/dorreneb/mixed-reality/releases) zip folder and extract its contents into the [MixedReality-QRCodePlugin folder](../external/MixedReality-QRCodePlugin).
 5. Print the [Chessboard](images/Chessboard.png) used to calculate DSLR camera intrinsics and mount it to a solid surface.
 
+>Note: This can be obtained by printing two copies of [HalfChessboard.pdf](images/HalfChessboard.pdf) on 8.5x11 sheets of paper.
+
 ![Marker](images/Chessboard.png)
 
 6. Print the [Calibration Board](images/CalibrationBoard.png) used to calculate DSLR camera extrinsics and mount it to a solid surface.
+
+>Note: This can be obtained by printing all of the CalibrationBoard*.pdf files in the [images](images) folder on 8.5x11 sheets of paper. If you choose to print your own board using [CalibrationBoard.png](images/CalibrationBoard.png), make sure that each QR Code is larger than 5cm in length.
 
 ![Marker](images/CalibrationBoard.png)
 
@@ -52,6 +56,8 @@ This [Calibration Board](images/CalibrationBoard.png) contains 18 QR Codes and A
     7. Press 'Request Marker Data' to kick off QR Code detection.
     8. View your printed [Calibration Board](images/CalibrationBoard.png) through the HoloLens 2 device and make sure that blue and green squares appear over the QR Codes and ArUco markers (This may require getting the HoloLens 2 extremely close to the calibration board. 5cm QR Codes need to be detected from a distance of 10cm).
 
+>Note: Don't skip this testing step. You will need to accept the webcam permission dialogue that is launched when first attempting QR Code detection with the newly installed SpectatorView.HolographicCamera application. Once the HoloLens 2 is attached to the DSLR rig, it will be extremely difficult/impossible to accept these dialogues without dismantling your rig.
+
 12. Attach your DSLR camera to the PC capture card and ensure that the camera stream works.
     1. Attach your DSLR camera by HDMI or SDI to the capture card hooked up to your PC.
     2. Turn on your DSLR camera.
@@ -76,12 +82,14 @@ Camera intrinsics quantify focal lengths, principal points and lens distortion i
 ![Marker](images/CalibrationToolbar.png)
 
 3. Open the SpectatorView.IntrinsicsCalibration Unity scene.
-4. Update the Editor Intrinsics Calibration serialized fields in the Unity Inspector.
+4. Update the Editor Intrinsics Calibration serialized fields in the Unity Inspector. You will need to update the Chessboard Width, Chessboard Height and Chess Square Size values to reflect the Chessboard print that you obtained during setup.
 
 ![Marker](images/CalibrationIntrinsicsInspector.png)
-You will need to update the Chessboard Width, Chessboard Height and Chess Square Size values to reflect the Chessboard print that you obtained during setup.
 
 5. Run the SpectatorView.IntrinsicsCalibration Unity scene in the Unity Editor.
+
+>Note: EditorIntrinsicsCalibration does not currently delete obtained Chessboard images with each subsequent run of the SpectatorView.IntrinsicsCalibration Unity scene. If you are calibrating a new DSLR camera or have changed the focal length of the DSLR camera, you will want to manually delete the Calibration folder in your Documents folder prior to running this scene.
+
 6. Begin taking photos of the Chessboard with your DSLR camera through the Unity Editor. To capture a photo Either press 'Take Photo' in the calibration window or select the 'Game' window and press 'Space' on your keyboard.
 
 ![Marker](images/CalibrationIntrinsics.png)
@@ -107,18 +115,23 @@ Chessboard Corners
 9. Locate the output CameraIntrinsics*.json file on your computer. This file, as well as the images used to calculate camera intrinsics should be located in a 'Calibration' folder within your 'Documents' folder.
 
 ## Camera Extrinsics
+
+Camera extrinsics are used to calculate the physical transform from your HoloLens 2 device to the DSLR camera. When filming with the DSLR camera, the HoloLens 2's position and orientation is provided to the Unity Editor. This position and orientation can then be transformed using the camera extrinsics to understand where the DSLR camera is in the scene. The process for obtaining camera extrinsics is explained below.
+
 1. Open the SpectatorView.Example.Unity project.
 2. Open the Calibration window in the Unity Editor. This can be found in the toolbar under 'Spectator View' -> 'Calibration'.
 
 ![Marker](images/CalibrationToolbar.png)
 
 3. Open the SpectatorView.ExtrinsicsCalibration Unity scene.
-4. Update the Editor Extrinsics Calibration serialized fields in the Unity Inspector.
+4. Update the Editor Extrinsics Calibration serialized fields in the Unity Inspector. You will need to set the Camera Intrinsics Path to the CameraIntrinsics*.json file that you created in the previous Camera Intrinsics steps.
 
 ![Marker](images/CalibrationExtrinsicsInspector.png)
-You will need to set the Camera Intrinsics Path to the CameraIntrinsics*.json file that you created in the previous Camera Intrinsics steps.
 
 5. Run the SpectatorView.ExtrinsicsCalibration Unity scene in the Unity Editor.
+
+>Note: EditorExtrinsicsCalibration does not currently delete Calibration board datasets with each subsequent run of the SpectatorView.ExtrinsicsCalibration Unity scene. You likely will get worse calibration results mixing old extrinsics datasets with new extrinsics datasets. Consider deleting HEADSET_DATA, DSLR_ARUCO and DSLR_ARUCO_DETECTED folders in the Calibration folder within your Documents folder before running SpectatorView.ExtrinsicsCalibration.
+
 6. Launch the SpectatorView.HolographicCamera app on your HoloLens 2 device through the device portal.
 7. Specify your device's IP address in the Calibration window and press connect.
 
