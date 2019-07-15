@@ -60,13 +60,24 @@ namespace Microsoft.MixedReality.SpectatorView
         [SerializeField]
         protected RawImage cornersImage;
 
+        /// <summary>
+        /// The name of the file that contains the last calculated camera intrinsics.
+        /// </summary>
         public string IntrinsicsFileName => intrinsicsFileName;
+
+        /// <summary>
+        /// The last calculated camera intrinsics.
+        /// </summary>
         public CalculatedCameraIntrinsics Intrinsics => intrinsics;
-        public int ProcessedImages => processedImages;
+
+        /// <summary>
+        /// The number of usable images processed for camera intrinsics.
+        /// </summary>
+        public int ProcessedImageCount => processedImageCount;
 
         private string intrinsicsFileName = string.Empty;
         private CalculatedCameraIntrinsics intrinsics = null;
-        private int processedImages = 0;
+        private int processedImageCount = 0;
 
 #if UNITY_EDITOR
         private Texture2D chessboardHeatmap = null;
@@ -90,7 +101,7 @@ namespace Microsoft.MixedReality.SpectatorView
                 }
                 else
                 {
-                    processedImages++;
+                    processedImageCount++;
                     CalibrationDataHelper.SaveChessboardDetectedImage(texture, fileName);
                 }
             }
@@ -145,7 +156,7 @@ namespace Microsoft.MixedReality.SpectatorView
                 }
                 else
                 {
-                    processedImages++;
+                    processedImageCount++;
                     CalibrationDataHelper.SaveChessboardDetectedImage(dslrTexture, fileName);
                     CalibrationDataHelper.SaveImage(chessboardHeatmap, "ChessboardHeatmap");
                     CalibrationDataHelper.SaveImage(chessboardCorners, "ChessboardCorners");
@@ -159,7 +170,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
         public void CalculateCameraIntrinsics()
         {
-            if (processedImages > 0)
+            if (processedImageCount > 0)
             {
                 Debug.Log("Starting Camera Intrinsics calculation.");
                 intrinsics = CalibrationAPI.Instance.CalculateChessboardIntrinsics(chessSquareSize);

@@ -12,12 +12,16 @@ namespace Microsoft.MixedReality.SpectatorView
     public class HeadsetRequestHandler : MonoBehaviour
     {
         /// <summary>
-        /// Used to send and receive network messages.
+        /// Used to receive network messages.
         /// </summary>
-        [Tooltip("Used to send and receive network messages.")]
+        [Tooltip("Used to receive network messages.")]
         [SerializeField]
-        protected HolographicCameraBroadcaster holographicCameraBroadcaster;
+        private HolographicCameraBroadcaster holographicCameraBroadcaster = null;
 
+        /// <summary>
+        /// Used to send network messages.
+        /// </summary>
+        [Tooltip("Used to send network messages.")]
         [SerializeField]
         private TCPConnectionManager connectionManager = null;
 
@@ -26,14 +30,14 @@ namespace Microsoft.MixedReality.SpectatorView
         /// </summary>
         [Tooltip("Used to obtain marker and headset data.")]
         [SerializeField]
-        protected HeadsetCalibration headsetCalibration;
+        private HeadsetCalibration headsetCalibration = null;
 
         /// <summary>
         /// Used to display the last request timestamp.
         /// </summary>
         [Tooltip("Used to display the last request timestamp.")]
         [SerializeField]
-        protected Text lastRequestTimestampText;
+        private Text lastRequestTimestampText = null;
 
         private bool initialized = false;
         private string editorAddress = string.Empty;

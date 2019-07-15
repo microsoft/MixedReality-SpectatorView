@@ -381,6 +381,14 @@ namespace Microsoft.MixedReality.SpectatorView
             return null;
         }
 
+        /// <summary>
+        /// Helper function that undistorts chessboard images based on the provided camera intrinsics.
+        /// </summary>
+        /// <param name="image">byte image data</param>
+        /// <param name="imageWidth">image width in pixels</param>
+        /// <param name="imageHeight">image height in pixels</param>
+        /// <param name="intrinsics">camera intrinsics</param>
+        /// <returns>Returns true if undistorting the chessboard image succeeded, otherwise false</returns>
         public bool UndistortChessboardImage(
             byte[] image,
             int imageWidth,

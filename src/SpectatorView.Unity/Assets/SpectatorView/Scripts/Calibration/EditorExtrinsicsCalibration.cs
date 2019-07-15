@@ -68,12 +68,39 @@ namespace Microsoft.MixedReality.SpectatorView
         [SerializeField]
         protected DebugVisualHelper cameraVisualHelper;
 
-        public int ProcessedDatasets => processedDatasets;
-        public int LastCountDetectedMarkers => lastCountDetectedMarkers;
+        /// <summary>
+        /// The number of datasets that have been successfully processed.s
+        /// </summary>
+        public int ProcessedDatasetCount => processedDatasetCount;
+        
+        /// <summary>
+        /// The number of markers detected in the last dataset.
+        /// </summary>
+        public int LastDetectedMarkersCount => lastDetectedMarkersCount;
+        
+        /// <summary>
+        /// The output camera extrinsics calculated from all usable datasets.
+        /// </summary>
         public CalculatedCameraExtrinsics GlobalExtrinsics => globalExtrinsics;
+        
+        /// <summary>
+        /// The file name for the output camera extrinsics calculated from all usable datasets.
+        /// </summary>
         public string GlobalExtrinsicsFileName => globalExtrinsicsFileName;
+        
+        /// <summary>
+        /// The file name for the found calibration data. Calibration data includes both camera intrinsics and extrinsics.
+        /// </summary>
         public string CalibrationFileName => calibrationFileName;
+        
+        /// <summary>
+        /// A flag indicating whether the last attempt at uploading calibration data to a connected HoloLens device succeeded.
+        /// </summary>
         public bool UploadSucceeded => uploadSucceeded;
+
+        /// <summary>
+        /// A message associated with the last attempt to upload calibration data to a connected HoloLens device.
+        /// </summary>
         public string UploadResultMessage => uploadResultMessage;
 
         private CalculatedCameraIntrinsics dslrIntrinsics;
@@ -81,8 +108,8 @@ namespace Microsoft.MixedReality.SpectatorView
         private CalculatedCameraExtrinsics globalExtrinsics = null;
         private string globalExtrinsicsFileName = string.Empty;
         private List<GameObject> parentVisuals = new List<GameObject>();
-        private int processedDatasets = 0;
-        private int lastCountDetectedMarkers = 0;
+        private int processedDatasetCount = 0;
+        private int lastDetectedMarkersCount = 0;
         private string calibrationFileName = string.Empty;
         private CalculatedCameraCalibration lastCalibration;
         private string uploadResultMessage = string.Empty;
@@ -129,7 +156,7 @@ namespace Microsoft.MixedReality.SpectatorView
                 }
                 else
                 {
-                    processedDatasets++;
+                    processedDatasetCount++;
                     CalibrationDataHelper.SaveDSLRArUcoDetectedImage(dslrTexture, fileName);
                     CreateVisual(headsetData, fileName);
                 }
@@ -151,7 +178,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
             if (headsetData != null)
             {
-                lastCountDetectedMarkers = headsetData.markers.Count;
+                lastDetectedMarkersCount = headsetData.markers.Count;
                 if (headsetData.markers.Count < MinimumNumberOfDetectedMarkers)
                 {
                     Debug.Log("Data set did not contain enough markers to use.");
@@ -165,7 +192,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
                     if (ProcessArUcoData(headsetData, dslrTexture))
                     {
-                        processedDatasets++;
+                        processedDatasetCount++;
                         CalibrationDataHelper.SaveDSLRArUcoDetectedImage(dslrTexture, fileName);
                         CreateVisual(headsetData, fileName);
                     }
@@ -180,6 +207,9 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
+        /// <summary>
+        /// Call to request another dataset from the connected HoloLens device.
+        /// </summary>
         public void RequestHeadsetData()
         {
             if (holographicCameraObserver != null &&
@@ -206,9 +236,12 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
+        /// <summary>
+        /// Call to calculate camera extrinsics based on all obtained and usable datasets.
+        /// </summary>
         public void CalculateExtrinsics()
         {
-            if (processedDatasets > 0)
+            if (processedDatasetCount > 0)
             {
                 Debug.Log("Starting Individual Camera Extrinsics calculations.");
                 cameraExtrinsics = CalibrationAPI.Instance.CalculateIndividualArUcoExtrinsics(dslrIntrinsics, parentVisuals.Count);
@@ -244,6 +277,9 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
+        /// <summary>
+        /// Call to attempt uploading the last calculated calibration data to a connected HoloLens device.
+        /// </summary>
         public void UploadCalibrationData()
         {
             uploadResultMessage = string.Empty;
