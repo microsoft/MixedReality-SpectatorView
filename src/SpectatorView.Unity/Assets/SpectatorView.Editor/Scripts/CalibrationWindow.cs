@@ -61,7 +61,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
         private void UpdateIntrinsicsUI(EditorIntrinsicsCalibration intrinsics)
         {
             RenderTitle("Camera Intrinsics", Color.green);
-            GUILayout.Label($"Usable Chessboard Images: {intrinsics.ProcessedImages}");
+            GUILayout.Label($"Usable Chessboard Images: {intrinsics.ProcessedImageCount}");
             EditorGUILayout.Space();
 
             GUI.enabled = CompositorWrapper.IsInitialized;
@@ -70,7 +70,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
                 intrinsics.TakePhoto();
             }
 
-            GUI.enabled = intrinsics.ProcessedImages > 0;
+            GUI.enabled = intrinsics.ProcessedImageCount > 0;
             if (GUILayout.Button(new GUIContent("Calculate Camera Intrinsics", "Calculates the camera intrinsics using all images that contained chessboards."), GUILayout.Width(buttonWidth)))
             {
                 intrinsics.CalculateCameraIntrinsics();
@@ -92,48 +92,12 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
         private void UpdateExtrinsicsUI(EditorExtrinsicsCalibration extrinsics)
         {
             RenderTitle("Camera Extrinsics", Color.green);
-            GUILayout.Label($"Usable marker datasets: {extrinsics.ProcessedDatasets}");
-            GUILayout.Label($"Number of detected markers in last dataset: {extrinsics.LastCountDetectedMarkers}, minimum required: {extrinsics.MinimumNumberOfDetectedMarkers}");
+            GUILayout.Label($"Usable marker datasets: {extrinsics.ProcessedDatasetCount}");
+            GUILayout.Label($"Number of detected markers in last dataset: {extrinsics.LastDetectedMarkersCount}, minimum required: {extrinsics.MinimumNumberOfDetectedMarkers}");
             EditorGUILayout.Space();
 
-            GUIStyle boldLabelStyle = new GUIStyle(GUI.skin.label);
-            boldLabelStyle.fontStyle = FontStyle.Bold;
-
-            RenderTitle(HolographicCameraDeviceTypeLabel, Color.green);
             var cameraDevice = GetHolographicCameraDevice();
-            if (cameraDevice != null && cameraDevice.NetworkManager != null && cameraDevice.NetworkManager.IsConnected)
-            {
-                GUILayout.BeginHorizontal();
-                {
-                    GUILayout.Label("Connection status", boldLabelStyle);
-
-                    if (GUILayout.Button(new GUIContent("Disconnect", "Disconnects the network connection to the holographic camera."), GUILayout.Width(connectAndDisconnectButtonWidth)))
-                    {
-                        cameraDevice.NetworkManager.Disconnect();
-                    }
-                }
-                GUILayout.EndHorizontal();
-
-                if (cameraDevice.NetworkManager.ConnectedIPAddress == cameraDevice.DeviceIPAddress)
-                {
-                    GUILayout.Label($"Connected to {cameraDevice.DeviceName} ({cameraDevice.DeviceIPAddress})");
-                }
-                else
-                {
-                    GUILayout.Label($"Connected to {cameraDevice.DeviceName} ({cameraDevice.NetworkManager.ConnectedIPAddress} -> {cameraDevice.DeviceIPAddress})");
-                }
-            }
-            else
-            {
-                GUILayout.BeginHorizontal();
-                {
-                    holographicCameraIPAddress = EditorGUILayout.TextField(holographicCameraIPAddress);
-                    ConnectButtonGUI(holographicCameraIPAddress, cameraDevice);
-                }
-                GUILayout.EndHorizontal();
-
-                GUILayout.Label(notConnectedMessage);
-            }
+            ConnectionStatusGUI(cameraDevice, ref holographicCameraIPAddress);
 
             EditorGUILayout.Space();
 
@@ -143,7 +107,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
                 extrinsics.RequestHeadsetData();
             }
 
-            GUI.enabled = extrinsics.ProcessedDatasets > 0;
+            GUI.enabled = extrinsics.ProcessedDatasetCount > 0;
             if (GUILayout.Button(new GUIContent("Calculate Camera Extrinsics", "Calculates the camera extrinsics using all valid marker datasets."), GUILayout.Width(buttonWidth)))
             {
                 extrinsics.CalculateExtrinsics();

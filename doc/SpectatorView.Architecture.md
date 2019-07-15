@@ -5,7 +5,7 @@
 ## Supported scenarios
 
 1. Spectating with an Android or iOS device
-2. Spectating with a DSLR camera rig
+2. Spectating with a video camera rig
 
 ## Application Flow
 
@@ -18,16 +18,16 @@
 5. The HoloLens begins [sending scene information](../src/SpectatorView.Unity/Assets/SpectatorView/Scripts/StateSynchronization/README.md) to the mobile device. The mobile device then updates its local application content to reflect what's being observed on the HoloLens device.
 6. The screen of the mobile device can then be [recorded](../src/SpectatorView.Unity/Assets/SpectatorView/Scripts/ScreenRecording/README.md) to film the HoloLens experience.
 
-### 2. Spectating with a DSLR camera rig
+### 2. Spectating with a video camera rig
 
-1. A HoloLens is mounted to the DSLR camera. [Calibration](../src/SpectatorView.Unity/Assets/SpectatorView/Scripts/Calibration/README.md) is then performed to calculate camera intrinsics (Properties such as lens focal length and principal points that are needed for compositing holograms into the DSLR camera feed) and camera extrinsics (The transform of the DSLR camera to the mounted HoloLens). This data is stored on this HoloLens mounted to the DSLR camera.
-2. The PC obtains a DSLR camera stream through a capture card.
-3. The PC connects to sockets open on both the user HoloLens and DSLR camera rig HoloLens through the unity editor.
+1. A HoloLens is mounted to the video camera. [Calibration](../src/SpectatorView.Unity/Assets/SpectatorView/Scripts/Calibration/README.md) is then performed to calculate camera intrinsics (Properties such as lens focal length and principal points that are needed for compositing holograms into the video camera feed) and camera extrinsics (The transform of the video camera to the mounted HoloLens). This data is stored on this HoloLens mounted to the video camera.
+2. The PC obtains a video camera stream through a capture card.
+3. The PC connects to sockets open on both the user HoloLens and video camera rig HoloLens through the unity editor.
 4. The PC obtains camera intrinsic and extrinsic information from the DSLR mounted HoloLens and updates its unity camera to reflect these values.
 5. The PC instructs both HoloLenses to locate a [shared spatial coordinate](../src/SpectatorView.Unity/Assets/SpatialAlignment/README.md).
 6. The PC listens to pose updates from the DSLR mounted HoloLens. Using the camera extrinsics, pose updates and original shared coordinate location, the PC updates its unity camera to have its local application origin reflect the user HoloLens's application origin.
 7. The user HoloLens begins [sending scene information](../src/SpectatorView.Unity/Assets/SpectatorView/Scripts/StateSynchronization/README.md) to the PC. The PC then updates its local application content to reflect what's being observed on the user's HoloLens device.
-8. The PC then [composites](../src/SpectatorView.Unity/Assets/SpectatorView/Scripts/ScreenRecording/README.md) this application content into the DSLR camera stream. This composited content can then be output via the capture card.
+8. The PC then [composites](../src/SpectatorView.Unity/Assets/SpectatorView/Scripts/ScreenRecording/README.md) this application content into the video camera stream. This composited content can then be output via the capture card.
 9. The composited content can then be [recorded](../src/SpectatorView.Unity/Assets/SpectatorView/Scripts/ScreenRecording/README.md) to images on the PC that can later be combined into a video.
 
 ### Spatial alignment

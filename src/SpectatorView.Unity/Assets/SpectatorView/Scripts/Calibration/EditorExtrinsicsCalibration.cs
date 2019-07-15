@@ -216,18 +216,16 @@ namespace Microsoft.MixedReality.SpectatorView
                 holographicCameraObserver.IsConnected)
             {
                 using (MemoryStream memoryStream = new MemoryStream())
+                using (BinaryWriter writer = new BinaryWriter(memoryStream))
                 {
-                    using (BinaryWriter writer = new BinaryWriter(memoryStream))
-                    {
-                        writer.Write(HeadsetCalibration.RequestCalibrationDataCommandHeader);
+                    writer.Write(HeadsetCalibration.RequestCalibrationDataCommandHeader);
 
-                        var request = new HeadsetCalibrationDataRequest();
-                        request.timestamp = Time.time;
-                        request.SerializeAndWrite(writer);
+                    var request = new HeadsetCalibrationDataRequest();
+                    request.timestamp = Time.time;
+                    request.SerializeAndWrite(writer);
 
-                        writer.Flush();
-                        holographicCameraObserver.Broadcast(memoryStream.ToArray());
-                    }
+                    writer.Flush();
+                    holographicCameraObserver.Broadcast(memoryStream.ToArray());
                 }
             }
             else
@@ -293,17 +291,15 @@ namespace Microsoft.MixedReality.SpectatorView
                 holographicCameraObserver.IsConnected)
             {
                 using (MemoryStream memoryStream = new MemoryStream())
+                using (BinaryWriter writer = new BinaryWriter(memoryStream))
                 {
-                    using (BinaryWriter writer = new BinaryWriter(memoryStream))
-                    {
-                        writer.Write(HeadsetCalibration.UploadCalibrationCommandHeader);
-                        var payload = lastCalibration.Serialize();
-                        writer.Write(payload.Length);
-                        writer.Write(payload);
-                        writer.Flush();
-                        holographicCameraObserver.Broadcast(memoryStream.ToArray());
-                        Debug.Log("Sent calibration data to the hololens device.");
-                    }
+                    writer.Write(HeadsetCalibration.UploadCalibrationCommandHeader);
+                    var payload = lastCalibration.Serialize();
+                    writer.Write(payload.Length);
+                    writer.Write(payload);
+                    writer.Flush();
+                    holographicCameraObserver.Broadcast(memoryStream.ToArray());
+                    Debug.Log("Sent calibration data to the hololens device.");
                 }
             }
             else
