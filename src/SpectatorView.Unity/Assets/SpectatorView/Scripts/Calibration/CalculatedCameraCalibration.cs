@@ -16,19 +16,25 @@ namespace Microsoft.MixedReality.SpectatorView
         /// <summary>
         /// Camera extrinsics calculated through calibration.
         /// </summary>
-        public CalculatedCameraExtrinsics Extrinsics;
+        public CalculatedCameraExtrinsics Extrinsics => extrinsics;
 
         /// <summary>
         /// Camera intrinsics calculated through calibration.
         /// </summary>
-        public CalculatedCameraIntrinsics Intrinsics;
+        public CalculatedCameraIntrinsics Intrinsics => intrinsics;
+
+        [SerializeField]
+        private CalculatedCameraExtrinsics extrinsics = null;
+
+        [SerializeField]
+        private CalculatedCameraIntrinsics intrinsics = null;
 
         public CalculatedCameraCalibration() {}
 
         public CalculatedCameraCalibration(CalculatedCameraIntrinsics intrinsics, CalculatedCameraExtrinsics extrinsics)
         {
-            Intrinsics = intrinsics;
-            Extrinsics = extrinsics;
+            this.intrinsics = intrinsics;
+            this.extrinsics = extrinsics;
         }
 
         /// <summary>
