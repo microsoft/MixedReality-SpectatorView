@@ -32,13 +32,6 @@ namespace Microsoft.MixedReality.SpectatorView
         [SerializeField]
         private HeadsetCalibration headsetCalibration = null;
 
-        /// <summary>
-        /// Used to display the last request timestamp.
-        /// </summary>
-        [Tooltip("Used to display the last request timestamp.")]
-        [SerializeField]
-        private Text lastRequestTimestampText = null;
-
         private bool initialized = false;
         private string editorAddress = string.Empty;
         private bool updateData = false;
@@ -143,12 +136,6 @@ namespace Microsoft.MixedReality.SpectatorView
                 {
                     Debug.LogWarning("HeadsetCalibration field is not set, unable to create headset calibration data payload");
                     return;
-                }
-
-                if (request != null &&
-                    lastRequestTimestampText != null)
-                {
-                    lastRequestTimestampText.text = $"Last Request Timestamp: {request.timestamp}";
                 }
 
                 headsetCalibration.UpdateHeadsetCalibrationData();

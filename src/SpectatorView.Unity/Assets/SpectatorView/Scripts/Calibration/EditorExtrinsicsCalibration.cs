@@ -113,12 +113,7 @@ namespace Microsoft.MixedReality.SpectatorView
         private string calibrationFileName = string.Empty;
         private CalculatedCameraCalibration lastCalibration;
         private string uploadResultMessage = string.Empty;
-
-#if UNITY_EDITOR
         private bool uploadSucceeded = false;
-#else
-        private bool uploadSucceeded;
-#endif
 
 #if UNITY_EDITOR
         private HeadsetCalibrationData headsetData = null;

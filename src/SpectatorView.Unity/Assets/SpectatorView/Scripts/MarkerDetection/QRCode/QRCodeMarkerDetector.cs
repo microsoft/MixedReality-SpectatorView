@@ -109,11 +109,11 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
-        protected void OnDisable()
+        protected async void OnDisable()
         {
             if (_qrCodesManager != null)
             {
-                StopTracking();
+                await StopTrackingAsync();
                 _qrCodesManager.QRCodeAdded -= QRCodeAdded;
                 _qrCodesManager.QRCodeRemoved -= QRCodeRemoved;
                 _qrCodesManager.QRCodeUpdated -= QRCodeUpdated;
@@ -126,9 +126,9 @@ namespace Microsoft.MixedReality.SpectatorView
             DebugLog("Started qr tracker: " + result.ToString());
         }
 
-        private void StopTracking()
+        private async Task StopTrackingAsync()
         {
-            _qrCodesManager.StopQRTracking();
+            await _qrCodesManager.StopQRTrackingAsync();
             DebugLog("Stopped qr tracker");
         }
 
