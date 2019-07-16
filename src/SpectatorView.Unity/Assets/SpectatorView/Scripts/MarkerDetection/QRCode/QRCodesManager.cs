@@ -269,7 +269,8 @@ namespace Microsoft.MixedReality.SpectatorView
                 qrTracker.Removed += QrTracker_Removed;
             }
 
-            if (!IsTrackerRunning)
+            if (!token.IsCancellationRequested &&
+                !IsTrackerRunning)
             {
                 StartResult = qrTracker.Start();
                 if (StartResult == QRTrackerStartResult.Success)
