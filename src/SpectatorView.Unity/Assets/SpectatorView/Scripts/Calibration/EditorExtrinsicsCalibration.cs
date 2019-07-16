@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -20,36 +21,23 @@ namespace Microsoft.MixedReality.SpectatorView
 
         [Header("Physical Calibration Board Parameters")]
         /// <summary>
-        /// The number of ArUco markers on the calibration board.
+        /// The minimum number of ArUco markers detected in a sample set to use in processing.
         /// </summary>
-        [Tooltip("The number of ArUco markers on the calibration board.")]
+        [Tooltip("The minimum number of ArUco markers detected in a sample set to use in processing.")]
         [SerializeField]
-        protected int expectedNumberOfMarkers = 18;
+        public int MinimumNumberOfDetectedMarkers = 5;
 
         [Header("HoloLens Parameters")]
         /// <summary>
-        /// Used to setup a network connection.
+        /// The HolographicCameraObserver that establishes a network connection with the Holographic Camera.
         /// </summary>
-        [Tooltip("Used to setup a network connection.")]
+        [Tooltip("The HolographicCameraObserver that establishes a network connection with the Holographic Camera.")]
         [SerializeField]
-        protected MonoBehaviour MatchMakingService;
-        protected IMatchMakingService matchMakingService = null;
-
-        /// <summary>
-        /// Used to send/receive data related to the calibration process.
-        /// </summary>
-        [Tooltip("Used to send/receive data related to the calibration process.")]
-        [SerializeField]
-        protected MonoBehaviour NetworkingService;
-        protected INetworkingService networkingService = null;
-
-        [Header("VR Headset Parameters")]
-        /// <summary>
-        /// Used to obtain headset information for a vr headset.
-        /// </summary>
-        [Tooltip("Used to obtain headset information for a vr headset.")]
-        [SerializeField]
-        protected HeadsetCalibration headsetCalibration = null;
+#if UNITY_EDITOR
+        HolographicCameraObserver holographicCameraObserver = null;
+#else
+        HolographicCameraObserver holographicCameraObserver;
+#endif
 
         [Header("UI Parameters")]
         /// <summary>
@@ -80,22 +68,61 @@ namespace Microsoft.MixedReality.SpectatorView
         [SerializeField]
         protected DebugVisualHelper cameraVisualHelper;
 
+        /// <summary>
+        /// The number of datasets that have been successfully processed.s
+        /// </summary>
+        public int ProcessedDatasetCount => processedDatasetCount;
+        
+        /// <summary>
+        /// The number of markers detected in the last dataset.
+        /// </summary>
+        public int LastDetectedMarkersCount => lastDetectedMarkersCount;
+        
+        /// <summary>
+        /// The output camera extrinsics calculated from all usable datasets.
+        /// </summary>
+        public CalculatedCameraExtrinsics GlobalExtrinsics => globalExtrinsics;
+        
+        /// <summary>
+        /// The file name for the output camera extrinsics calculated from all usable datasets.
+        /// </summary>
+        public string GlobalExtrinsicsFileName => globalExtrinsicsFileName;
+        
+        /// <summary>
+        /// The file name for the found calibration data. Calibration data includes both camera intrinsics and extrinsics.
+        /// </summary>
+        public string CalibrationFileName => calibrationFileName;
+        
+        /// <summary>
+        /// A flag indicating whether the last attempt at uploading calibration data to a connected HoloLens device succeeded.
+        /// </summary>
+        public bool UploadSucceeded => uploadSucceeded;
+
+        /// <summary>
+        /// A message associated with the last attempt to upload calibration data to a connected HoloLens device.
+        /// </summary>
+        public string UploadResultMessage => uploadResultMessage;
+
         private CalculatedCameraIntrinsics dslrIntrinsics;
         private List<CalculatedCameraExtrinsics> cameraExtrinsics;
-        private CalculatedCameraExtrinsics globalExtrinsics;
+        private CalculatedCameraExtrinsics globalExtrinsics = null;
+        private string globalExtrinsicsFileName = string.Empty;
         private List<GameObject> parentVisuals = new List<GameObject>();
+        private int processedDatasetCount = 0;
+        private int lastDetectedMarkersCount = 0;
+        private string calibrationFileName = string.Empty;
+        private CalculatedCameraCalibration lastCalibration;
+        private string uploadResultMessage = string.Empty;
+        private bool uploadSucceeded = false;
 
 #if UNITY_EDITOR
         private HeadsetCalibrationData headsetData = null;
 
-        private void OnValidate()
-        {
-            FieldHelper.ValidateType<INetworkingService>(NetworkingService);
-            FieldHelper.ValidateType<IMatchMakingService>(MatchMakingService);
-        }
-
         private void Start()
         {
+            holographicCameraObserver.RegisterCommandHandler(HeadsetCalibration.CalibrationDataReceivedCommandHeader, OnCalibrationDataReceived);
+            holographicCameraObserver.RegisterCommandHandler(HeadsetCalibration.UploadCalibrationResultCommandHeader, OnCalibrationResultReceived);
+            CalibrationAPI.Instance.Reset();
             CalibrationDataHelper.Initialize();
             dslrIntrinsics = CalibrationDataHelper.LoadCameraIntrinsics(cameraIntrinsicsPath);
             if (dslrIntrinsics == null)
@@ -105,23 +132,6 @@ namespace Microsoft.MixedReality.SpectatorView
             else
             {
                 Debug.Log($"Successfully loaded the provided camera intrinsics file: {dslrIntrinsics}");
-            }
-
-            networkingService = NetworkingService as INetworkingService;
-            if (networkingService != null)
-            {
-                networkingService.DataReceived += OnDataReceived;
-            }
-
-            matchMakingService = MatchMakingService as IMatchMakingService;
-            if (matchMakingService != null)
-            {
-                matchMakingService.Connect();
-            }
-
-            if (headsetCalibration != null)
-            {
-                headsetCalibration.Updated += OnHeadsetCalibrationUpdated;
             }
 
             var arucoDatasetFileNames = CalibrationDataHelper.GetArUcoDatasetFileNames();
@@ -141,17 +151,10 @@ namespace Microsoft.MixedReality.SpectatorView
                 }
                 else
                 {
+                    processedDatasetCount++;
                     CalibrationDataHelper.SaveDSLRArUcoDetectedImage(dslrTexture, fileName);
                     CreateVisual(headsetData, fileName);
                 }
-            }
-        }
-
-        private void OnHeadsetCalibrationUpdated(byte[] data)
-        {
-            if(HeadsetCalibrationData.TryDeserialize(data, out var headsetCalibrationData))
-            {
-                this.headsetData = headsetCalibrationData;
             }
         }
 
@@ -165,35 +168,15 @@ namespace Microsoft.MixedReality.SpectatorView
 
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                if (networkingService != null &&
-                    matchMakingService != null)
-                {
-                    var request = new HeadsetCalibrationDataRequest();
-                    request.timestamp = Time.time;
-                    var payload = request.Serialize();
-
-                    if (networkingService.SendData(payload, NetworkPriority.Critical))
-                    {
-                        Debug.Log($"Sent headset calibration data request to HoloLens at {request.timestamp}");
-                    }
-                    else
-                    {
-                        Debug.LogWarning("Failed to send headset calibration data request to HoloLens");
-                    }
-                }
-
-                if (headsetCalibration != null)
-                {
-                    Debug.Log("Requesting headset calibration data from VR Headset");
-                    headsetCalibration.UpdateHeadsetCalibrationData();
-                }
+                RequestHeadsetData();
             }
 
             if (headsetData != null)
             {
-                if (headsetData.markers.Count != expectedNumberOfMarkers)
+                lastDetectedMarkersCount = headsetData.markers.Count;
+                if (headsetData.markers.Count < MinimumNumberOfDetectedMarkers)
                 {
-                    Debug.Log("Headset has not yet detected all of the markers on the calibration board, dropping payload from headset.");
+                    Debug.Log("Data set did not contain enough markers to use.");
                 }
                 else
                 {
@@ -204,6 +187,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
                     if (ProcessArUcoData(headsetData, dslrTexture))
                     {
+                        processedDatasetCount++;
                         CalibrationDataHelper.SaveDSLRArUcoDetectedImage(dslrTexture, fileName);
                         CreateVisual(headsetData, fileName);
                     }
@@ -214,23 +198,58 @@ namespace Microsoft.MixedReality.SpectatorView
 
             if (Input.GetKeyDown(KeyCode.Return))
             {
+                CalculateExtrinsics();
+            }
+        }
+
+        /// <summary>
+        /// Call to request another dataset from the connected HoloLens device.
+        /// </summary>
+        public void RequestHeadsetData()
+        {
+            if (holographicCameraObserver != null &&
+                holographicCameraObserver.IsConnected)
+            {
+                using (MemoryStream memoryStream = new MemoryStream())
+                using (BinaryWriter writer = new BinaryWriter(memoryStream))
+                {
+                    writer.Write(HeadsetCalibration.RequestCalibrationDataCommandHeader);
+
+                    var request = new HeadsetCalibrationDataRequest();
+                    request.timestamp = Time.time;
+                    request.SerializeAndWrite(writer);
+
+                    writer.Flush();
+                    holographicCameraObserver.Broadcast(memoryStream.ToArray());
+                }
+            }
+            else
+            {
+                Debug.LogWarning("HolographicCameraObserver isn't setup correctly, failed to request headset data.");
+            }
+        }
+
+        /// <summary>
+        /// Call to calculate camera extrinsics based on all obtained and usable datasets.
+        /// </summary>
+        public void CalculateExtrinsics()
+        {
+            if (processedDatasetCount > 0)
+            {
                 Debug.Log("Starting Individual Camera Extrinsics calculations.");
                 cameraExtrinsics = CalibrationAPI.Instance.CalculateIndividualArUcoExtrinsics(dslrIntrinsics, parentVisuals.Count);
                 if (cameraExtrinsics != null)
                 {
-                    foreach (var extrinsic in cameraExtrinsics)
-                    {
-                        Debug.Log($"Calculated extrinsics: {extrinsic}");
-                    }
                     CreateExtrinsicsVisual(cameraExtrinsics);
                 }
+                Debug.Log("Completed Individual Camera Extrinsics calculations.");
 
                 Debug.Log("Starting the Global Camera Extrinsics calculation.");
                 globalExtrinsics = CalibrationAPI.Instance.CalculateGlobalArUcoExtrinsics(dslrIntrinsics);
                 if (globalExtrinsics != null)
                 {
-                    var fileName = CalibrationDataHelper.SaveCameraExtrinsics(globalExtrinsics);
-                    Debug.Log($"Saved global extrinsics: {fileName}");
+                    globalExtrinsicsFileName = CalibrationDataHelper.SaveCameraExtrinsics(globalExtrinsics);
+                    Debug.Log($"Saved global extrinsics: {globalExtrinsicsFileName}");
                     Debug.Log($"Found global extrinsics: {globalExtrinsics}");
                     var position = globalExtrinsics.ViewFromWorld.GetColumn(3);
                     var rotation = Quaternion.LookRotation(globalExtrinsics.ViewFromWorld.GetColumn(2), globalExtrinsics.ViewFromWorld.GetColumn(1));
@@ -240,18 +259,64 @@ namespace Microsoft.MixedReality.SpectatorView
                     GameObject hololens = null;
                     cameraVisualHelper.CreateOrUpdateVisual(ref hololens, Vector3.zero, Quaternion.identity);
                     hololens.name = "Global HoloLens";
+
+                    lastCalibration = new CalculatedCameraCalibration(dslrIntrinsics, globalExtrinsics);
+                    calibrationFileName = CalibrationDataHelper.SaveCameraCalibration(lastCalibration);
                 }
+            }
+            else
+            {
+                Debug.LogWarning("No usable marker datasets have been processed, unable to calculate camera extrinsics.");
             }
         }
 
-        private void OnDataReceived(string playerId, byte[] payload)
+        /// <summary>
+        /// Call to attempt uploading the last calculated calibration data to a connected HoloLens device.
+        /// </summary>
+        public void UploadCalibrationData()
         {
-            Debug.Log($"Received payload of {payload.Length} bytes");
+            uploadResultMessage = string.Empty;
+            if (lastCalibration == null)
+            {
+                Debug.LogWarning("Calibration isn't currently loaded, failed to upload calibration data");
+                return;
+            }
+
+            if (holographicCameraObserver != null &&
+                holographicCameraObserver.IsConnected)
+            {
+                using (MemoryStream memoryStream = new MemoryStream())
+                using (BinaryWriter writer = new BinaryWriter(memoryStream))
+                {
+                    writer.Write(HeadsetCalibration.UploadCalibrationCommandHeader);
+                    var payload = lastCalibration.Serialize();
+                    writer.Write(payload.Length);
+                    writer.Write(payload);
+                    writer.Flush();
+                    holographicCameraObserver.Broadcast(memoryStream.ToArray());
+                    Debug.Log("Sent calibration data to the hololens device.");
+                }
+            }
+            else
+            {
+                Debug.LogWarning("HolographicCameraObserver isn't setup correctly, failed to request headset data.");
+            }
+        }
+
+        private void OnCalibrationDataReceived(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
+        {
+            Debug.Log("Received calibration data payload.");
             HeadsetCalibrationData headsetCalibrationData;
-            if (HeadsetCalibrationData.TryDeserialize(payload, out headsetCalibrationData))
+            if (HeadsetCalibrationData.TryDeserialize(reader, out headsetCalibrationData))
             {
                 headsetData = headsetCalibrationData;
             }
+        }
+
+        private void OnCalibrationResultReceived(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
+        {
+            uploadSucceeded = reader.ReadBoolean();
+            uploadResultMessage = reader.ReadString();
         }
 
         private bool ProcessArUcoData(HeadsetCalibrationData headsetData, Texture2D dslrTexture)
@@ -290,6 +355,10 @@ namespace Microsoft.MixedReality.SpectatorView
             var parent = new GameObject();
             parent.name = $"Dataset {fileName}";
 
+            var inScene = new GameObject();
+            inScene.name = $"Objects in scene position";
+            inScene.transform.parent = parent.transform;
+
             for (int i = 0; i < data.markers.Count; i++)
             {
                 GameObject temp = null;
@@ -297,13 +366,33 @@ namespace Microsoft.MixedReality.SpectatorView
                 float dist = Vector3.Distance(corners.topLeft, corners.topRight);
                 markerVisualHelper.CreateOrUpdateVisual(ref temp, corners.topLeft, corners.orientation, dist * Vector3.one);
                 temp.name = $"Marker {fileName}.{data.markers[i].id}";
-                temp.transform.parent = parent.transform;
+                temp.transform.parent = inScene.transform;
             }
 
             GameObject camera = null;
             cameraVisualHelper.CreateOrUpdateVisual(ref camera, data.headsetData.position, data.headsetData.rotation);
             camera.name = $"HoloLens {fileName}";
-            camera.transform.parent = parent.transform;
+            camera.transform.parent = inScene.transform;
+
+            var origin = new GameObject();
+            origin.name = $"Objects adjusted to origin";
+            origin.transform.parent = parent.transform;
+
+            GameObject originCamera = null;
+            cameraVisualHelper.CreateOrUpdateVisual(ref originCamera, Vector3.zero, Quaternion.identity);
+            originCamera.name = $"HoloLens {fileName}";
+            originCamera.transform.parent = origin.transform;
+
+            var allCorners = CalibrationAPI.CalcMarkerCornersRelativeToCamera(data);
+            for (int i = 0; i < allCorners.Count; i++)
+            {
+                GameObject temp = null;
+                var corners = allCorners[i];
+                float dist = Vector3.Distance(corners.topLeft, corners.topRight);
+                markerVisualHelper.CreateOrUpdateVisual(ref temp, corners.topLeft, corners.orientation, dist * Vector3.one);
+                temp.name = $"Marker {fileName}.{data.markers[i].id}";
+                temp.transform.parent = origin.transform;
+            }
 
             parentVisuals.Add(parent);
         }

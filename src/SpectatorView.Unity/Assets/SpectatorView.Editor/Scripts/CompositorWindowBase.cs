@@ -28,7 +28,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
         private float uiFrameWidth = 100;
         private float uiFrameHeight = 100;
 
-        private const string notConnectedMessage = "Not connected";
+        protected const string notConnectedMessage = "Not connected";
         private const string trackingLostStatusMessage = "Tracking lost";
         private const string trackingStalledStatusMessage = "No tracking update in over a second";
         private const string locatingSharedSpatialCoordinate = "Locating shared spatial coordinate...";
@@ -40,7 +40,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
         protected const int textureRenderModeComposite = 0;
         protected const int textureRenderModeSplit = 1;
         private const float quadPadding = 4;
-        private const int connectAndDisconnectButtonWidth = 90;
+        protected const int connectAndDisconnectButtonWidth = 90;
         private const int settingsButtonWidth = 24;
         private Dictionary<string, Rect> buttonRects = new Dictionary<string, Rect>();
 
@@ -89,43 +89,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
                     titleColor = Color.yellow;
                 }
                 RenderTitle(deviceTypeLabel, titleColor);
-
-                if (deviceInfo != null && deviceInfo.NetworkManager != null && deviceInfo.NetworkManager.IsConnected)
-                {
-                    GUILayout.BeginHorizontal();
-                    {
-                        GUILayout.Label("Connection status", boldLabelStyle);
-
-                        if (GUILayout.Button(new GUIContent("Disconnect", "Disconnects the network connection to the holographic camera."), GUILayout.Width(connectAndDisconnectButtonWidth)))
-                        {
-                            deviceInfo.NetworkManager.Disconnect();
-                        }
-                    }
-                    GUILayout.EndHorizontal();
-
-                    if (deviceInfo.NetworkManager.ConnectedIPAddress == deviceInfo.DeviceIPAddress)
-                    {
-                        GUILayout.Label($"Connected to {deviceInfo.DeviceName} ({deviceInfo.DeviceIPAddress})");
-                    }
-                    else
-                    {
-                        GUILayout.Label($"Connected to {deviceInfo.DeviceName} ({deviceInfo.NetworkManager.ConnectedIPAddress} -> {deviceInfo.DeviceIPAddress})");
-                    }
-
-                    EditorGUILayout.Space();
-                }
-                else
-                {
-                    GUILayout.BeginHorizontal();
-                    {
-                        ipAddressField = EditorGUILayout.TextField(ipAddressField);
-                        ConnectButtonGUI(ipAddressField, deviceInfo);
-                    }
-                    GUILayout.EndHorizontal();
-
-                    GUILayout.Label(notConnectedMessage);
-                    EditorGUILayout.Space();
-                }
+                ConnectionStatusGUI(deviceInfo, ref ipAddressField);
 
                 GUI.enabled = deviceInfo != null && deviceInfo.NetworkManager != null && deviceInfo.NetworkManager.IsConnected && spatialCoordinateSystemParticipant != null;
                 string sharedSpatialCoordinateStatusMessage;
@@ -331,6 +295,49 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
                         Graphics.DrawTexture(framesRect, compositionManager.TextureManager.compositeTexture);
                     }
                 }
+            }
+        }
+
+        protected void ConnectionStatusGUI(DeviceInfoObserver deviceInfo, ref string ipAddressField)
+        {
+            GUIStyle boldLabelStyle = new GUIStyle(GUI.skin.label);
+            boldLabelStyle.fontStyle = FontStyle.Bold;
+
+            if (deviceInfo != null && deviceInfo.NetworkManager != null && deviceInfo.NetworkManager.IsConnected)
+            {
+                GUILayout.BeginHorizontal();
+                {
+                    GUILayout.Label("Connection status", boldLabelStyle);
+
+                    if (GUILayout.Button(new GUIContent("Disconnect", "Disconnects the network connection to the holographic camera."), GUILayout.Width(connectAndDisconnectButtonWidth)))
+                    {
+                        deviceInfo.NetworkManager.Disconnect();
+                    }
+                }
+                GUILayout.EndHorizontal();
+
+                if (deviceInfo.NetworkManager.ConnectedIPAddress == deviceInfo.DeviceIPAddress)
+                {
+                    GUILayout.Label($"Connected to {deviceInfo.DeviceName} ({deviceInfo.DeviceIPAddress})");
+                }
+                else
+                {
+                    GUILayout.Label($"Connected to {deviceInfo.DeviceName} ({deviceInfo.NetworkManager.ConnectedIPAddress} -> {deviceInfo.DeviceIPAddress})");
+                }
+
+                EditorGUILayout.Space();
+            }
+            else
+            {
+                GUILayout.BeginHorizontal();
+                {
+                    ipAddressField = EditorGUILayout.TextField(ipAddressField);
+                    ConnectButtonGUI(ipAddressField, deviceInfo);
+                }
+                GUILayout.EndHorizontal();
+
+                GUILayout.Label(notConnectedMessage);
+                EditorGUILayout.Space();
             }
         }
 

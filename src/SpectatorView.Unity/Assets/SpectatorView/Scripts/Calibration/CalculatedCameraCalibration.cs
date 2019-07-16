@@ -2,19 +2,45 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.SpectatorView
 {
+    /// <summary>
+    /// A class containing camera intrinsic and extrinsic information produced through calibration.
+    /// </summary>
     [Serializable]
     public class CalculatedCameraCalibration
     {
-        public CalculatedCameraExtrinsics Extrinsics;
-        public CalculatedCameraIntrinsics Intrinsics;
+        /// <summary>
+        /// Camera extrinsics calculated through calibration.
+        /// </summary>
+        public CalculatedCameraExtrinsics Extrinsics => extrinsics;
 
+        /// <summary>
+        /// Camera intrinsics calculated through calibration.
+        /// </summary>
+        public CalculatedCameraIntrinsics Intrinsics => intrinsics;
+
+        [SerializeField]
+        private CalculatedCameraExtrinsics extrinsics = null;
+
+        [SerializeField]
+        private CalculatedCameraIntrinsics intrinsics = null;
+
+        public CalculatedCameraCalibration() {}
+
+        public CalculatedCameraCalibration(CalculatedCameraIntrinsics intrinsics, CalculatedCameraExtrinsics extrinsics)
+        {
+            this.intrinsics = intrinsics;
+            this.extrinsics = extrinsics;
+        }
+
+        /// <summary>
+        /// Generates a byte payload for the class.
+        /// </summary>
+        /// <returns>byte payload</returns>
         public byte[] Serialize()
         {
             var str = JsonUtility.ToJson(this);
@@ -22,6 +48,12 @@ namespace Microsoft.MixedReality.SpectatorView
             return payload;
         }
 
+        /// <summary>
+        /// Attempts to create a CalculatedCameraCalibration given a byte payload.
+        /// </summary>
+        /// <param name="payload">input byte payload</param>
+        /// <param name="calibrationData">output calibration data</param>
+        /// <returns>Returns true if the payload was successfully used to generate calibration data, otherwise false</returns>
         public static bool TryDeserialize(byte[] payload, out CalculatedCameraCalibration calibrationData)
         {
             calibrationData = null;

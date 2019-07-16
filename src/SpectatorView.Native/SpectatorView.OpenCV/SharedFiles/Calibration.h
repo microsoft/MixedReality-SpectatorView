@@ -24,6 +24,13 @@ public:
         float* intrinsics,
         int sizeIntrinsics);
 
+    bool UndistortChessboardImage(
+        unsigned char* image,
+        int imageWidth,
+        int imageHeight,
+        float* intrinsics,
+        int sizeIntrinsics);
+
     bool ProcessArUcoData(
         unsigned char* image,
         int imageWidth,

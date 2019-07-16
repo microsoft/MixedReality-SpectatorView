@@ -11,6 +11,9 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Threading.Tasks;
+using System.Threading;
+using Microsoft.MixedReality.SpatialAlignment;
 
 #if WINDOWS_UWP
 using Windows.Perception.Spatial;
@@ -42,18 +45,22 @@ namespace Microsoft.MixedReality.SpectatorView
     public class QRCodesManager : MonoBehaviour
     {
         [Tooltip("Determines if the QR codes scanner should be automatically started.")]
-        public bool AutoStartQRTracking = true;
+        public bool AutoStartQRTracking = false;
 
         public bool IsTrackerRunning { get; private set; }
         public QRTrackerStartResult StartResult { get; private set; }
+        public bool DebugLogging { get; set; }
 
-        public event EventHandler<bool> QRCodesTrackingStateChanged;
         public event EventHandler<QRCodeEventArgs<QRCodesTrackerPlugin.QRCode>> QRCodeAdded;
         public event EventHandler<QRCodeEventArgs<QRCodesTrackerPlugin.QRCode>> QRCodeUpdated;
         public event EventHandler<QRCodeEventArgs<QRCodesTrackerPlugin.QRCode>> QRCodeRemoved;
 
         private SortedDictionary<System.Guid, QRCodesTrackerPlugin.QRCode> qrCodesList = new SortedDictionary<System.Guid, QRCodesTrackerPlugin.QRCode>();
         private QRTracker qrTracker;
+        private object lockObj = new object();
+        private Task<QRTrackerStartResult> startTrackerTask = null;
+        private CancellationTokenSource startTrackerCTS = null;
+        private Task stopTrackerTask = null;
 
         private static QRCodesManager qrCodesManager;
         public static QRCodesManager FindOrCreateQRCodesManager(GameObject gameObject)
@@ -204,37 +211,74 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
-        void Awake()
+        private void Awake()
         {
             IsTrackerRunning = false;
         }
 
-        protected virtual void Start()
+        protected async void Start()
         {
             if (AutoStartQRTracking)
             {
-                StartQRTracking();
+                await StartQRTrackingAsync();
             }
         }
 
-        public QRTrackerStartResult StartQRTracking()
+        public Task<QRTrackerStartResult> StartQRTrackingAsync(CancellationToken cancellationToken = default)
         {
+            lock (lockObj)
+            {
+                if (startTrackerTask != null)
+                {
+                    DebugLog("Returning existing start tracker task");
+                    return startTrackerTask;
+                }
+
+                stopTrackerTask = null;
+                startTrackerCTS = new CancellationTokenSource();
+
+                var hybridCTS = CancellationTokenSource.CreateLinkedTokenSource(startTrackerCTS.Token, cancellationToken);
+                DebugLog("Kicking off a new start tracker task");
+                return startTrackerTask = Task.Run(() => StartQRTrackingAsyncImpl(hybridCTS.Token), hybridCTS.Token);
+            }
+        }
+
+        private async Task<QRTrackerStartResult> StartQRTrackingAsyncImpl(CancellationToken token)
+        {
+#if WINDOWS_UWP
+            DebugLog("Requesting webcam capability");
+            Windows.Security.Authorization.AppCapabilityAccess.AppCapability cap = Windows.Security.Authorization.AppCapabilityAccess.AppCapability.Create("webcam");
+            var accessTask = cap.RequestAccessAsync().AsTask();
+            var completedTask = await Task.WhenAny(accessTask, Task.Delay(-1, token));
+            var accessStatus = (accessTask == completedTask) ? accessTask.Result : Windows.Security.Authorization.AppCapabilityAccess.AppCapabilityAccessStatus.DeniedBySystem;
+            if (accessStatus != Windows.Security.Authorization.AppCapabilityAccess.AppCapabilityAccessStatus.Allowed)
+            {
+                DebugLog("Failed to obtain webcam capability for qr code tracking");
+            }
+            else
+            {
+                DebugLog("Webcam capability granted.");
+            }
+#endif
+
+            // Note: If the QRTracker is created prior to obtaining the webcam capability, initialization will fail.
             if (qrTracker == null)
             {
-                Debug.Log("Creating qr tracker");
+                DebugLog("Creating qr tracker");
                 qrTracker = new QRTracker();
                 qrTracker.Added += QrTracker_Added;
                 qrTracker.Updated += QrTracker_Updated;
                 qrTracker.Removed += QrTracker_Removed;
             }
 
-            if (!IsTrackerRunning)
+            if (!token.IsCancellationRequested &&
+                !IsTrackerRunning)
             {
-                StartResult = (qrTracker.Start());
+                StartResult = qrTracker.Start();
                 if (StartResult == QRTrackerStartResult.Success)
                 {
+                    DebugLog("Successfully started qr tracker");
                     IsTrackerRunning = true;
-                    QRCodesTrackingStateChanged?.Invoke(this, true);
                 }
                 else
                 {
@@ -242,22 +286,58 @@ namespace Microsoft.MixedReality.SpectatorView
                 }
             }
 
-            return StartResult;
+            return await Task.FromResult(StartResult);
         }
 
-        public void StopQRTracking()
+        public Task StopQRTrackingAsync()
         {
-            if (IsTrackerRunning)
+            lock (lockObj)
             {
-                IsTrackerRunning = false;
+                if (startTrackerTask == null)
+                {
+                    DebugLog("StopQRTrackerAsync was called when no start task had been created.");
+                    return Task.CompletedTask;
+                }
+
+                if (stopTrackerTask != null)
+                {
+                    DebugLog("StopQRTrackerAsync was called when already stopping tracking.");
+                    return stopTrackerTask;
+                }
+
+                startTrackerCTS.Cancel();
+                startTrackerCTS.Dispose();
+                startTrackerCTS = null;
+
+                DebugLog("Stop tracker task created.");
+                return stopTrackerTask = Task.Run(() => StopQRTrackingAsyncImpl(startTrackerTask));
+            }
+        }
+
+
+        private async Task StopQRTrackingAsyncImpl(Task previousTask)
+        {
+            await previousTask.IgnoreCancellation();
+
+            if (qrTracker != null &&
+                IsTrackerRunning)
+            {
                 qrTracker.Stop();
+                IsTrackerRunning = false;
                 StartResult = QRTrackerStartResult.DeviceNotConnected;
-                QRCodesTrackingStateChanged?.Invoke(this, false);
+                DebugLog("QR tracker was stopped.");
 
                 lock (qrCodesList)
                 {
                     qrCodesList.Clear();
+                    DebugLog("QR Code list was cleared when stopping.");
                 }
+            }
+
+            lock (lockObj)
+            {
+                startTrackerTask = null;
+                DebugLog("Start tracker task was set back to null.");
             }
         }
 
@@ -296,6 +376,14 @@ namespace Microsoft.MixedReality.SpectatorView
 
             Debug.Log("QR Code Added: " + args.Code.Code);
             QRCodeAdded?.Invoke(this, QRCodeEventArgs.Create(args.Code));
+        }
+
+        private void DebugLog(string message)
+        {
+            if (DebugLogging)
+            {
+                Debug.Log($"QRCodesManager: {message}");
+            }
         }
     }
 }

@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.SpectatorView
 {
     internal class CalibrationAPI
     {
-        private const string SpectatorViewOpenCVDll = "SpectatorView.OpenCV.dll";
+        private const string SpectatorViewOpenCVDll = "SpectatorView.OpenCV";
 
         [DllImport(SpectatorViewOpenCVDll, EntryPoint = "InitializeCalibration")]
         internal static extern bool InitializeCalibrationNative();
@@ -34,6 +34,14 @@ namespace Microsoft.MixedReality.SpectatorView
         [DllImport(SpectatorViewOpenCVDll, EntryPoint = "ProcessChessboardIntrinsics")]
         internal static extern bool ProcessChessboardIntrinsicsNative(
             float squareSize,
+            float[] intrinsics,
+            int sizeIntrinsics);
+
+        [DllImport(SpectatorViewOpenCVDll, EntryPoint = "UndistortChessboardImage")]
+        internal static extern bool UndistortChessboardImageNative(
+            byte[] image,
+            int imageWidth,
+            int imageHeight,
             float[] intrinsics,
             int sizeIntrinsics);
 
@@ -371,6 +379,29 @@ namespace Microsoft.MixedReality.SpectatorView
             }
 
             return null;
+        }
+
+        /// <summary>
+        /// Helper function that undistorts chessboard images based on the provided camera intrinsics.
+        /// </summary>
+        /// <param name="image">byte image data</param>
+        /// <param name="imageWidth">image width in pixels</param>
+        /// <param name="imageHeight">image height in pixels</param>
+        /// <param name="intrinsics">camera intrinsics</param>
+        /// <returns>Returns true if undistorting the chessboard image succeeded, otherwise false</returns>
+        public bool UndistortChessboardImage(
+            byte[] image,
+            int imageWidth,
+            int imageHeight,
+            CameraIntrinsics intrinsics)
+        {
+            var intrinsicsArray = CreateIntrinsicsArray(intrinsics);
+            return UndistortChessboardImageNative(
+                image,
+                imageWidth,
+                imageHeight,
+                intrinsicsArray,
+                intrinsicsArray.Length);
         }
 
         private float[] CreateIntrinsicsArray(CameraIntrinsics intrinsics)
