@@ -248,7 +248,9 @@ namespace Microsoft.MixedReality.SpectatorView
 #if WINDOWS_UWP
             DebugLog("Requesting webcam capability");
             Windows.Security.Authorization.AppCapabilityAccess.AppCapability cap = Windows.Security.Authorization.AppCapabilityAccess.AppCapability.Create("webcam");
-            var accessStatus = await cap.RequestAccessAsync();
+            var accessTask = cap.RequestAccessAsync().AsTask();
+            var completedTask = await Task.WhenAny(accessTask, Task.Delay(-1, token));
+            var accessStatus = (accessTask == completedTask) ? accessTask.Result : Windows.Security.Authorization.AppCapabilityAccess.AppCapabilityAccessStatus.DeniedBySystem;
             if (accessStatus != Windows.Security.Authorization.AppCapabilityAccess.AppCapabilityAccessStatus.Allowed)
             {
                 DebugLog("Failed to obtain webcam capability for qr code tracking");
