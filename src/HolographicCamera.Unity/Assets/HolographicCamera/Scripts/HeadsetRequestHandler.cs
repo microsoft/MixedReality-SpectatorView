@@ -73,7 +73,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
         private void OnDisconnect(SocketEndpoint endpoint)
         {
-            if(endpoint.Address == editorAddress)
+            if (endpoint.Address == editorAddress)
             {
                 DisableChildren();
             }
@@ -147,16 +147,14 @@ namespace Microsoft.MixedReality.SpectatorView
             if (holographicCameraBroadcaster != null)
             {
                 using (MemoryStream memoryStream = new MemoryStream())
+                using (BinaryWriter writer = new BinaryWriter(memoryStream))
                 {
-                    using (BinaryWriter writer = new BinaryWriter(memoryStream))
-                    {
-                        writer.Write(HeadsetCalibration.CalibrationDataReceivedCommandHeader);
-                        data.SerializeAndWrite(writer);
-                        writer.Flush();
+                    writer.Write(HeadsetCalibration.CalibrationDataReceivedCommandHeader);
+                    data.SerializeAndWrite(writer);
+                    writer.Flush();
 
-                        Debug.Log("Sending headset calibration data payload.");
-                        connectionManager.Broadcast(memoryStream.ToArray());
-                    }
+                    Debug.Log("Sending headset calibration data payload.");
+                    connectionManager.Broadcast(memoryStream.ToArray());
                 }
             }
         }
@@ -166,17 +164,15 @@ namespace Microsoft.MixedReality.SpectatorView
             if (holographicCameraBroadcaster != null)
             {
                 using (MemoryStream memoryStream = new MemoryStream())
+                using (BinaryWriter writer = new BinaryWriter(memoryStream))
                 {
-                    using (BinaryWriter writer = new BinaryWriter(memoryStream))
-                    {
-                        writer.Write(HeadsetCalibration.UploadCalibrationResultCommandHeader);
-                        writer.Write(succeeded);
-                        writer.Write(uploadMessage);
-                        writer.Flush();
+                    writer.Write(HeadsetCalibration.UploadCalibrationResultCommandHeader);
+                    writer.Write(succeeded);
+                    writer.Write(uploadMessage);
+                    writer.Flush();
 
-                        Debug.Log("Sending upload result message.");
-                        connectionManager.Broadcast(memoryStream.ToArray());
-                    }
+                    Debug.Log("Sending upload result message.");
+                    connectionManager.Broadcast(memoryStream.ToArray());
                 }
             }
         }
