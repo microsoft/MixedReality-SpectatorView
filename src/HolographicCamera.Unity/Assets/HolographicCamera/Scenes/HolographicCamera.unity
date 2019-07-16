@@ -425,6 +425,16 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7640309728302613564, guid: bca27fe01d928184090d18195e4e204d,
+        type: 3}
+      propertyPath: debugLogging
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1241195415609318179, guid: bca27fe01d928184090d18195e4e204d,
+        type: 3}
+      propertyPath: debugLogging
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 8302803404821102774, guid: bca27fe01d928184090d18195e4e204d, type: 3}
     - {fileID: 8302803404821102771, guid: bca27fe01d928184090d18195e4e204d, type: 3}

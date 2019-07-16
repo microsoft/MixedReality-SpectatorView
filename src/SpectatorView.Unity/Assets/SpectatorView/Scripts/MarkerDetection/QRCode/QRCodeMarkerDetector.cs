@@ -98,6 +98,7 @@ namespace Microsoft.MixedReality.SpectatorView
             if (_qrCodesManager == null)
             {
                 _qrCodesManager = QRCodesManager.FindOrCreateQRCodesManager(gameObject);
+                _qrCodesManager.DebugLogging = debugLogging;
             }
 
             if (_qrCodesManager != null)
