@@ -111,6 +111,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
                 hierarchyPrefab.AddComponent<BroadcasterSettings>();
                 hierarchyPrefab.AddComponent<SpatialLocalizationInitializationSettings>();
                 hierarchyPrefab.AddComponent<MobileRecordingSettings>();
+                hierarchyPrefab.AddComponent<NetworkConfigurationSettings>();
 
                 AssetCache.EnsureAssetDirectoryExists();
 #if UNITY_2018_3_OR_NEWER
