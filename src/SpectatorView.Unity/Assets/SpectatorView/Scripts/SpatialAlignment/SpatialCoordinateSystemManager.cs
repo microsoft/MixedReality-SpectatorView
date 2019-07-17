@@ -190,8 +190,6 @@ namespace Microsoft.MixedReality.SpectatorView
             participant.ShowDebugVisuals = showDebugVisuals;
             participant.SendSupportedLocalizersMessage(endpoint, localizers.Keys);
 
-            participant.SendSupportedLocalizersMessage(endpoint, localizers.Keys);
-
             if (ParticipantConnected == null)
             {
                 DebugLog($"No ParticipantConnected event handlers exist");

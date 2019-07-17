@@ -36,7 +36,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
         private static readonly string holographicCameraIPAddressKey = $"{nameof(CalibrationTestWindow)}.{nameof(holographicCameraIPAddress)}";
         private static readonly string calibrationPlaybackIndexFilePathPreferenceKey = $"{nameof(CalibrationTestWindow)}.{nameof(indexFilePath)}";
         private static readonly string calibrationPlaybackCalibrationFilePathPreferenceKey = $"{nameof(CalibrationTestWindow)}.{nameof(calibrationFilePath)}";
-        private static readonly string markerSizeForPlaybackPreferenceKey = $"{nameof(CalibrationTestWindow)}.MarkerSizeForPlayback";
+        private static readonly string markerSizeForPlaybackPreferenceKey = $"{nameof(CalibrationTestWindow)}.${nameof(markerSizeForPlayback)}";
 
         private const int startStopRecordingButtonWidth = 200;
         private const int startStopRecordingButtonHeight = 100;
