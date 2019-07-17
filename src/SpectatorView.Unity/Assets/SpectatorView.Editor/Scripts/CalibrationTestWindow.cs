@@ -36,6 +36,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
         private static readonly string holographicCameraIPAddressKey = $"{nameof(CalibrationTestWindow)}.{nameof(holographicCameraIPAddress)}";
         private static readonly string calibrationPlaybackIndexFilePathPreferenceKey = $"{nameof(CalibrationTestWindow)}.{nameof(indexFilePath)}";
         private static readonly string calibrationPlaybackCalibrationFilePathPreferenceKey = $"{nameof(CalibrationTestWindow)}.{nameof(calibrationFilePath)}";
+        private static readonly string markerSizeForPlaybackPreferenceKey = $"{nameof(CalibrationTestWindow)}.MarkerSizeForPlayback";
 
         private const int startStopRecordingButtonWidth = 200;
         private const int startStopRecordingButtonHeight = 100;
@@ -58,6 +59,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
 
         private string indexFilePath;
         private string calibrationFilePath;
+        private float markerSizeForPlayback = 0.1f;
 
         private bool isIndexFileParsed;
         private bool isCalibrationDataParsed;
@@ -85,6 +87,8 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
             holographicCameraIPAddress = PlayerPrefs.GetString(holographicCameraIPAddressKey, "localhost");
             indexFilePath = PlayerPrefs.GetString(calibrationPlaybackIndexFilePathPreferenceKey, string.Empty);
             calibrationFilePath = PlayerPrefs.GetString(calibrationPlaybackCalibrationFilePathPreferenceKey, string.Empty);
+            calibrationFilePath = PlayerPrefs.GetString(calibrationPlaybackCalibrationFilePathPreferenceKey, string.Empty);
+            markerSizeForPlayback = PlayerPrefs.GetFloat(markerSizeForPlaybackPreferenceKey, 0.1f);
 
             recordingForRecording.FrameWidth = renderFrameWidth;
             recordingForRecording.FrameHeight = renderFrameHeight;
@@ -103,6 +107,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
             PlayerPrefs.SetString(holographicCameraIPAddressKey, holographicCameraIPAddress);
             PlayerPrefs.SetString(calibrationPlaybackIndexFilePathPreferenceKey, indexFilePath);
             PlayerPrefs.SetString(calibrationPlaybackCalibrationFilePathPreferenceKey, calibrationFilePath);
+            PlayerPrefs.SetFloat(markerSizeForPlaybackPreferenceKey, markerSizeForPlayback);
             PlayerPrefs.Save();
         }
 
@@ -152,7 +157,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
                         EditorGUILayout.BeginVertical("Box", GUILayout.MinHeight(250.0f));
                         {
                             var cameraDevice = GetHolographicCameraDevice();
-                            HolographicCameraNetworkConnectionGUI(HolographicCameraDeviceTypeLabel, cameraDevice, GetSpatialCoordinateSystemParticipant(cameraDevice), showCalibrationStatus: true, ref holographicCameraIPAddress);
+                            HolographicCameraNetworkConnectionGUI(HolographicCameraDeviceTypeLabel, cameraDevice, GetSpatialCoordinateSystemParticipant(cameraDevice), showCalibrationStatus: false, ref holographicCameraIPAddress);
 
                             GUILayout.FlexibleSpace();
 
@@ -246,6 +251,13 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
 
                 GUILayout.Label("Calibration file");
                 CalibrationFilePath = EditorGUILayout.TextField(CalibrationFilePath);
+
+                EditorGUILayout.Space();
+                EditorGUILayout.Space();
+
+                GUILayout.Label("Marker size (m)");
+                var markerSizeString = EditorGUILayout.TextField(markerSizeForPlayback.ToString());
+                float.TryParse(markerSizeString, out markerSizeForPlayback);
             }
             GUILayout.EndVertical();
 
@@ -484,8 +496,8 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
             compositionManager.EnableHolographicCamera(networkManager.transform, calibrationDataForPlayback);
 
             testCube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            testCube.transform.localScale = Vector3.one * DeviceInfoObserver.arUcoMarkerSizeInMeters;
-            testCube.transform.localPosition = new Vector3(0.0f, 0.0f, 0.05f);
+            testCube.transform.localScale = Vector3.one * markerSizeForPlayback;
+            testCube.transform.localPosition = new Vector3(0.0f, 0.0f, markerSizeForPlayback / 2.0f);
         }
 
         private void StopPlayback()

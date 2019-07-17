@@ -189,16 +189,17 @@ namespace Microsoft.MixedReality.SpectatorView
             participants[endpoint] = participant;
             participant.ShowDebugVisuals = showDebugVisuals;
 
+            participant.SendSupportedLocalizersMessage(endpoint, localizers.Keys);
+
             if (ParticipantConnected == null)
             {
                 Debug.LogWarning("Participant created, but no connection listeners were found");
-                return;
             }
-
-            participant.SendSupportedLocalizersMessage(endpoint, localizers.Keys);
-
-            DebugLog($"Invoking ParticipantConnected event");
-            ParticipantConnected.Invoke(participant);
+            else
+            {
+                DebugLog($"Invoking ParticipantConnected event");
+                ParticipantConnected.Invoke(participant);
+            }
         }
 
         private void OnDisconnected(SocketEndpoint endpoint)

@@ -16,7 +16,6 @@ namespace Microsoft.MixedReality.SpectatorView
         public const string CreateSharedSpatialCoordinateCommand = "CreateSharedSpatialCoordinate";
         public const string DeviceInfoCommand = "DeviceInfo";
         public const string StatusCommand = "Status";
-        public const float arUcoMarkerSizeInMeters = 0.1f;
 
         private INetworkManager networkManager;
         private SocketEndpoint connectedEndpoint;
