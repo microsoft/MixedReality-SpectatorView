@@ -8,8 +8,9 @@
 
 using UnityEngine;
 
-using System.Collections.Generic;
 using System;
+using System.Threading.Tasks;
+using System.Collections.Generic;
 
 #if ENABLE_QRCODES
 using Windows.Perception.Spatial;
@@ -24,6 +25,10 @@ namespace Microsoft.MixedReality.SpectatorView
     public class QRCodeMarkerDetector : MonoBehaviour,
         IMarkerDetector
     {
+        [Tooltip("Check to enable debug logging")]
+        [SerializeField]
+        private bool debugLogging = false;
+
 #if ENABLE_QRCODES
         private QRCodesManager _qrCodesManager;
         private Dictionary<Guid, SpatialCoordinateSystem> _markerCoordinateSystems = new Dictionary<Guid, SpatialCoordinateSystem>();
@@ -88,26 +93,44 @@ namespace Microsoft.MixedReality.SpectatorView
         }
 
 #if ENABLE_QRCODES
-        protected void Start()
+        protected async void OnEnable()
         {
             if (_qrCodesManager == null)
             {
                 _qrCodesManager = QRCodesManager.FindOrCreateQRCodesManager(gameObject);
+                _qrCodesManager.DebugLogging = debugLogging;
+            }
+
+            if (_qrCodesManager != null)
+            {
                 _qrCodesManager.QRCodeAdded += QRCodeAdded;
                 _qrCodesManager.QRCodeRemoved += QRCodeRemoved;
                 _qrCodesManager.QRCodeUpdated += QRCodeUpdated;
+                await StartTrackingAsync();
             }
-
-            StartTracking();
         }
 
-        private async void StartTracking()
+        protected async void OnDisable()
         {
-            Windows.Security.Authorization.AppCapabilityAccess.AppCapability cap = Windows.Security.Authorization.AppCapabilityAccess.AppCapability.Create("webcam");
-            var accessStatus = await cap.RequestAccessAsync();
+            if (_qrCodesManager != null)
+            {
+                await StopTrackingAsync();
+                _qrCodesManager.QRCodeAdded -= QRCodeAdded;
+                _qrCodesManager.QRCodeRemoved -= QRCodeRemoved;
+                _qrCodesManager.QRCodeUpdated -= QRCodeUpdated;
+            }
+        }
 
-            var result = _qrCodesManager.StartQRTracking();
-            Debug.Log("Started qr tracker: " + result.ToString());
+        private async Task StartTrackingAsync()
+        {
+            var result = await _qrCodesManager.StartQRTrackingAsync();
+            DebugLog("Started qr tracker: " + result.ToString());
+        }
+
+        private async Task StopTrackingAsync()
+        {
+            await _qrCodesManager.StopQRTrackingAsync();
+            DebugLog("Stopped qr tracker");
         }
 
         protected void Update()
@@ -182,7 +205,7 @@ namespace Microsoft.MixedReality.SpectatorView
                 {
                     if (!_markerIds.TryGetValue(coordinatePair.Key, out var markerId))
                     {
-                        Debug.Log($"Failed to locate marker:{coordinatePair.Key}, {markerId}");
+                        DebugLog($"Failed to locate marker:{coordinatePair.Key}, {markerId}");
                         locatedAllMarkers = false;
                         continue;
                     }
@@ -230,9 +253,17 @@ namespace Microsoft.MixedReality.SpectatorView
                 }
             }
 
-            Debug.Log("Unable to obtain markerId for QR code: " + qrCode);
+            DebugLog("Unable to obtain markerId for QR code: " + qrCode);
             markerId = -1;
             return false;
+        }
+
+        private void DebugLog(string message)
+        {
+            if (debugLogging)
+            {
+                Debug.Log($"QRCodeMarkerDetector: {message}");
+            }
         }
     }
 }

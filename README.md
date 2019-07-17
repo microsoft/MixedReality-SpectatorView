@@ -40,7 +40,7 @@ For more information on Spectator View's architecture, see [here](doc/SpectatorV
 ## Setup
 
 * [**Spectating with an Android or iOS device**](doc/SpectatorView.Setup.md)
-* [**Spectating with a DSLR camera**](doc/SpectatorView.Setup.DSLR.md)
+* [**Spectating with a video camera**](doc/SpectatorView.Setup.VideoCamera.md)
 
 ## Debugging
 

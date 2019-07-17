@@ -200,7 +200,7 @@ extern "C" __declspec(dllexport) bool __stdcall ProcessChessboardImage(
 
 // Calculates the camera intrinsics based on the provided chessboard images
 // squareSize - size of a chessboard square in meteres
-// intrinsis - output intrinsics
+// intrinsics - output intrinsics
 // sizeIntrinsics - size of the intrinsics array for outputting data
 extern "C" __declspec(dllexport) bool __stdcall ProcessChessboardIntrinsics(
     float squareSize,
@@ -211,6 +211,32 @@ extern "C" __declspec(dllexport) bool __stdcall ProcessChessboardIntrinsics(
     {
         return calibration->ProcessChessboardIntrinsics(
             squareSize,
+            intrinsics,
+            sizeIntrinsics);
+    }
+
+    return false;
+}
+
+// Undistorts the provided image using the provided camera intrinsics
+// image - byte data for the image. This data should be in the RGB24 format
+// imageWidth - width of image in pixels
+// imageHeight - height of image in pixels
+// intrinsics - output intrinsics
+// sizeIntrinsics - size of the intrinsics array for outputting data
+extern "C" __declspec(dllexport) bool __stdcall UndistortChessboardImage(
+    unsigned char* image,
+    int imageWidth,
+    int imageHeight,
+    float* intrinsics,
+    int sizeIntrinsics)
+{
+    if (calibration)
+    {
+        return calibration->UndistortChessboardImage(
+            image,
+            imageWidth,
+            imageHeight,
             intrinsics,
             sizeIntrinsics);
     }

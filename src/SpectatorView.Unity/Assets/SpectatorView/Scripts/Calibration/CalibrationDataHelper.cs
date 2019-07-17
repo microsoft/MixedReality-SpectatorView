@@ -13,6 +13,7 @@ namespace Microsoft.MixedReality.SpectatorView
     {
         private const string ChessboardImageDirectoryName = "CHESS";
         private const string ChessboardDetectedImageDirectoryName = "CHESS_DETECTED";
+        private const string ChessboardUndistortedImageDirectoryName = "CHESS_UNDISTORTED";
         private const string DSLRArUcoDirectoryName = "DSLR_ARUCO";
         private const string DSLRArUcoDetectedDirectoryName = "DSLR_ARUCO_DETECTED";
         private const string HeadsetDataDirectory = "HEADSET_DATA";
@@ -24,12 +25,19 @@ namespace Microsoft.MixedReality.SpectatorView
             InitializeDirectory(rootFolder);
             InitializeDirectory(Path.Combine(rootFolder, ChessboardImageDirectoryName));
             InitializeDirectory(Path.Combine(rootFolder, ChessboardDetectedImageDirectoryName));
+            InitializeDirectory(Path.Combine(rootFolder, ChessboardUndistortedImageDirectoryName));
             InitializeDirectory(Path.Combine(rootFolder, DSLRArUcoDirectoryName));
             InitializeDirectory(Path.Combine(rootFolder, DSLRArUcoDetectedDirectoryName));
             InitializeDirectory(Path.Combine(rootFolder, HeadsetDataDirectory));
 
             DirectoryInfo detectedChessboards = new DirectoryInfo(Path.Combine(rootFolder, ChessboardDetectedImageDirectoryName));
             foreach (FileInfo file in detectedChessboards.GetFiles())
+            {
+                file.Delete();
+            }
+
+            DirectoryInfo undistortedChessboards = new DirectoryInfo(Path.Combine(rootFolder, ChessboardUndistortedImageDirectoryName));
+            foreach (FileInfo file in undistortedChessboards.GetFiles())
             {
                 file.Delete();
             }
@@ -94,6 +102,11 @@ namespace Microsoft.MixedReality.SpectatorView
         public static void SaveChessboardDetectedImage(Texture2D image, string fileName)
         {
             SaveImage(ChessboardDetectedImageDirectoryName, image, fileName);
+        }
+
+        public static void SaveChessboardUndistortedImage(Texture2D image, string fileName)
+        {
+            SaveImage(ChessboardUndistortedImageDirectoryName, image, fileName);
         }
 
         public static void SaveDSLRArUcoImage(Texture2D image, string fileName)
@@ -221,6 +234,36 @@ namespace Microsoft.MixedReality.SpectatorView
                 if(CalculatedCameraExtrinsics.TryDeserialize(fileData, out var extrinsics))
                 {
                     return extrinsics;
+                }
+            }
+
+            Debug.LogError($"Failed to load camera extrinsics file {path}");
+            return null;
+        }
+
+        public static string SaveCameraCalibration(CalculatedCameraCalibration calibration)
+        {
+            string path = Path.Combine(GetDocumentsFolderPath(), RootDirectoryName, $"CalibrationData.json");
+            int i = 0;
+            while (File.Exists(path))
+            {
+                path = Path.Combine(GetDocumentsFolderPath(), RootDirectoryName, $"CalibrationData_{i}.json");
+                i++;
+            }
+
+            var payload = calibration.Serialize();
+            File.WriteAllBytes(path, payload);
+            return path;
+        }
+
+        public static CalculatedCameraCalibration LoadCameraCalibration(string path)
+        {
+            if (File.Exists(path))
+            {
+                var fileData = File.ReadAllBytes(path);
+                if (CalculatedCameraCalibration.TryDeserialize(fileData, out var calibration))
+                {
+                    return calibration;
                 }
             }
 
