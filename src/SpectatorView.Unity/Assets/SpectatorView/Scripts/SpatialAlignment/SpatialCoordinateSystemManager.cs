@@ -188,12 +188,13 @@ namespace Microsoft.MixedReality.SpectatorView
             SpatialCoordinateSystemParticipant participant = new SpatialCoordinateSystemParticipant(endpoint, debugVisual, debugVisualScale);
             participants[endpoint] = participant;
             participant.ShowDebugVisuals = showDebugVisuals;
+            participant.SendSupportedLocalizersMessage(endpoint, localizers.Keys);
 
             participant.SendSupportedLocalizersMessage(endpoint, localizers.Keys);
 
             if (ParticipantConnected == null)
             {
-                Debug.LogWarning("Participant created, but no connection listeners were found");
+                DebugLog($"No ParticipantConnected event handlers exist");
             }
             else
             {

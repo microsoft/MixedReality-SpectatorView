@@ -15,7 +15,7 @@
 1. Windows PC
 2. Android Device that supports [AR Core](https://developers.google.com/ar/discover/supported-devices)
 3. [Android Studio](https://developer.android.com/studio)
-4. Obtain [ARCore v1.7.0](https://github.com/google-ar/arcore-unity-sdk/releases/tag/v1.7.0) (Note: only v1.7.0 has been tested, use other versions at your own risk). This can be achieved by running the [ResetSamples](../tools/Scripts/ResetSamples.bat) script as an administrator or by manually copying assets content into a ARCore-Unity-SDK folder in the external directory.
+4. Obtain [ARCore v1.7.0](https://github.com/google-ar/arcore-unity-sdk/releases/tag/v1.7.0) (Note: only v1.7.0 has been tested, use other versions at your own risk). This can be achieved by running the [SetupRepository](../tools/Scripts/SetupRepository.bat) script as an administrator or by manually copying assets content into a ARCore-Unity-SDK folder in the external directory.
 
 >Note: ARCore does not share MixedReality-SpectatorView's MIT license. For more information on ARCore licensing, see [here](https://github.com/google-ar/arcore-unity-sdk/blob/master/LICENSE).
 
@@ -47,7 +47,7 @@ Not all spatial alignment strategies support all platforms. See the chart below 
 ### Azure Spatial Anchors
 
 1. Setup an [Azure Spatial Anchors account](https://docs.microsoft.com/en-us/azure/spatial-anchors/quickstarts/get-started-unity-hololens) and obtain the Account Domain, Account ID and the Primary Key.
-2. Obtain [AzureSpatialAnchors v1.1.1](https://github.com/Azure/azure-spatial-anchors-samples/releases/tag/v1.1.1). This can be achieved by running the [ResetSamples](../tools/Scripts/ResetSamples.bat) script as an administrator or by manually copying assets content into the [Azure-Spatial-Anchors-Samples folder](../external/Azure-Spatial-Anchors-Samples).
+2. Obtain [AzureSpatialAnchors v1.1.1](https://github.com/Azure/azure-spatial-anchors-samples/releases/tag/v1.1.1). This can be achieved by running the [SetupRepository](../tools/Scripts/SetupRepository.bat) script as an administrator or by manually copying assets content into the [Azure-Spatial-Anchors-Samples folder](../external/Azure-Spatial-Anchors-Samples).
 3. In the Android, iOS and WSA Unity player settings, add the **SPATIALALIGNMENT_ASA** preprocessor directive. (This is located via Build Settings -> Player Settings -> Other Settings -> 'Scripting Defined Symbols')
 4. When in Unity preparing to build your application, set the Account Domain, Account Id and Account Key for the Spatial Anchors Localizer using values you obtained creating an azure spatial anchors account above. These values are set in the SpatialAnchorsCoordinateLocalizationInitializer MonoBehaviour defined, which will exist for the Android and iOS experiences.
 
@@ -125,7 +125,7 @@ If you are building Azure Spatial Anchors on iOS, you will need to take some add
 
 ## Example Scenes
 
-If you would like to try out an example before setting up your own application to work with spectator view, run [ResetSamples.bat](../tools/Scripts/ResetSamples.bat) as an administrator. Then, open the [SpectatorView.Example.Unity project](../samples/SpectatorView.Example.Unity). You can then build and deploy the following scenes:
+If you would like to try out an example before setting up your own application to work with spectator view, run [SetupRepository.bat](../tools/Scripts/SetupRepository.bat) as an administrator. Then, open the [SpectatorView.Example.Unity project](../samples/SpectatorView.Example.Unity). You can then build and deploy the following scenes:
 
 * HoloLens: [SpectatorView.HoloLens](../src/SpectatorView.Unity/Assets/SpectatorView/Scenes/SpectatorView.HoloLens.unity)
 * Android: [SpectatorView.Android](../src/SpectatorView.Unity/Assets/SpectatorView/Scenes/SpectatorView.Android.unity)

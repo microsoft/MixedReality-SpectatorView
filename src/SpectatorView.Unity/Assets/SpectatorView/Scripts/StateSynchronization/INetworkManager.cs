@@ -27,8 +27,34 @@ namespace Microsoft.MixedReality.SpectatorView
         /// </summary>
         TimeSpan TimeSinceLastUpdate { get; }
 
+        /// <summary>
+        /// Starts a listening socket on the given port.
+        /// </summary>
+        /// <param name="port">The port to listen for new connections on.</param>
+        void StartListening(int port);
+        
+        /// <summary>
+        /// Connect to a remote device on the default port for this network manager.
+        /// </summary>
+        /// <param name="targetIpString">The IP address of the device to connect to.</param>
         void ConnectTo(string targetIpString);
+
+        /// <summary>
+        /// Connect to a remote device using the specified port.
+        /// </summary>
+        /// <param name="targetIpString">The IP address of the device to connect to.</param>
+        /// <param name="port">The port to use for communication.</param>
+        void ConnectTo(string targetIpString, int port);
+
+        /// <summary>
+        /// Disconnects any active network connections to other devices.
+        /// </summary>
         void Disconnect();
+
+        /// <summary>
+        /// Send a packet of data to all connected devices.
+        /// </summary>
+        /// <param name="data">The data to send to each connected device.</param>
         void Broadcast(byte[] data);
     }
 }
