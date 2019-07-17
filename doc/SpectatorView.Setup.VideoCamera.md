@@ -149,16 +149,49 @@ After detecting all of the markers, make sure the entire Calibration Board can b
 
 ![Marker](images/CalibrationExtrinsicsSuccessfulCalculation.png)
 
-11. Look in the Calibration window to see whether or not the calculation succeeded. If the calculation did succeed, you can choose to upload your calibration file to the device by pressing 'Upload Calibration Data'.
+11. Look in the Calibration window to see whether or not the calculation succeeded. If the calculation did succeed, 'Global Extrinsics' and 'Global HoloLens' game objects will have been placed in your Unity scene. The difference in position and orientation of these prefabs should equate to the physical transform between your HoloLens device and the video camera. It will be used in filming to understand where your video camera is in the physical world relative to the HoloLens.
+
+>Note: The physical transform you observe may be wildly off based on the quality of calibration data you obtained. If these values don't seem correct, you should go through the 'Testing Calibration' process below before uploading your calibration data to your HoloLens device.
+
+![Marker](images/CalibrationGameObjects.png)
+
+12. If your physical transforms look good, you can choose to upload your calibration file to the device by pressing 'Upload Calibration Data'.
 
 >Note: Uploading calibration data to your device will overwrite any previously existing calibration data on the device. CalibrationData.json is stored in the Pictures Library on the HoloLens 2 device and can be manually managed through Device Portal's File Explorer. DO NOT press 'Upload Calibration Data' if you already have valid calibration data on your device and do not want to overwrite it.
 
 ![Marker](images/CalibrationExtrinsicsSuccessfulUpload.png)
 
-12. After uploading a CalibrationData.json file to your HoloLens 2 device's Picture Library, you have completed calibration and can begin filming. However, calibration can generate varying results. It's suggested to test your calibration to ensure it achieves the quality required for your filming needs. Multiple calibration attempts may be required to obtain adequate results.
+13. After uploading a CalibrationData.json file to your HoloLens 2 device's Picture Library, you have completed calibration and can begin filming. However, calibration can generate varying results. It's suggested to test your calibration to ensure it achieves the quality required for your filming needs. Multiple calibration attempts may be required to obtain adequate results.
 
 ## Testing Calibration
-Coming soon...
+It may take multiple attempts at calibration to obtain sufficient results for video camera filming. To assess different calibration results, you can use the 'Calibration Test' window provided in the Spectator View codebase. Instructions for using this window are as follows:
+
+1. Print the following QR code at a size greater than 10cm.
+![Marker](images/OriginQRCode.png)
+2. Build and deploy the SpectatorView.HolographicCamera application to your HoloLens device.
+3. Open the SpectatorView.Example.Unity project.
+4. Open the Calibration Test window in the Unity Editor. This can be found in the toolbar under 'Spectator View' -> 'Calibration Test'.
+5. Open the SpectatorViewCompositor unity scene in the Unity Editor.
+6. Run the SpectatorViewCompositor scene in the Unity Editor.
+![Marker](images/CalibrationWindow.png)
+7. Connect to your HoloLens device using the 'Calibration Test' window.
+8. Locate a shared spatial coordinate using the 'QR Code" localization strategy.
+9. Once you have located the shared spatial coordinate, press 'Start Recording'.
+10. Begin filming the printed QR Code.
+11. After obtaining some footage of the QR Code, press 'Stop Recording'. This should populate the 'Recording index file location'.
+12. Specify the 'Calibration file' that you would like to use for testing.
+13. Measure the physical length of your printed QR Code, and set the 'Marker size (m)' field to this value (Note: this value should be in meters).
+14. Press 'Play' in the 'Calibration Test' window.
+15. A cube will be placed in the scene on top of your printed QR Code. The accuracy of this placement when moving around your video camera allows for a subjective assessment of whether or nto the calibration will suffice for your needs.
+![Marker](images/CalibrationPlayback.png)
+
+## Uploading Calibration Data
+If you chose not to immediately upload your calibration data to your device or have tested multiple calibration data files, you can manually upload the one of your choosing by the following:
+
+1. Open the [Device Portal](https://docs.microsoft.com/en-us/windows/mixed-reality/using-the-windows-device-portal) for your HoloLens 2 device.
+2. Navigate to your HoloLens 2 Device's File explorer in the Device Portal. This can be found by going to 'System' -> 'File explorer'.
+3. Rename your chosen CalibrationData*.json file to CalibrationData.json.
+4. Upload this renamed CalibrationData.json file to the Pictures Library on your HoloLens device. This can be done by going to 'User Folders\Pictures'. Then you can upload the file.
 
 # Filming
-Coming soon...
+After you have calibrated your rig, you will be ready to film HoloLens experiences with your video camera. For more information on filming, see [here](../src/SpectatorView.Unity/Assets/SpectatorView/Scripts/Compositor/README.md).
