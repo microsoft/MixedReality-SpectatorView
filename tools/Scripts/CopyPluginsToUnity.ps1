@@ -4,10 +4,12 @@ $MetaFiles = Join-Path -Path $RootDirectory -ChildPath "UnityMetaFiles"
 $PluginDirectory = Join-Path -Path $PSScriptRoot -ChildPath "\..\..\src\SpectatorView.Unity\Assets\SpectatorView.Native\Plugins"
 $DesktopDirectory = Join-Path -Path $PluginDirectory -ChildPath "x64"
 $WSAx86Directory = Join-Path -Path $PluginDirectory -ChildPath "WSA\x86"
+$WSAARMDirectory = Join-Path -Path $PluginDirectory -ChildPath "WSA\ARM"
 
 New-Item -ItemType Directory -Force -Path $PluginDirectory | Out-Null
 New-Item -ItemType Directory -Force -Path $DesktopDirectory | Out-Null
 New-Item -ItemType Directory -Force -Path $WSAx86Directory | Out-Null
+New-Item -ItemType Directory -Force -Path $WSAARMDirectory | Out-Null
 
 $OpenCVVersion = "343"
 
@@ -73,6 +75,35 @@ foreach ($Dll in $ArUcoDlls)
   }
 }
 
+$WinRTx86ExtensionDlls = @( "$RootDirectory\Release\SpectatorView.WinRTExtensions\SpectatorView.WinRTExtensions.dll")
+
+Write-Host "Copying WinRTExtension dlls to $WSAx86Directory"
+foreach ($Dll in $WinRTx86ExtensionDlls )
+{
+  if (!(Test-Path $Dll)) {
+    Write-Warning "$Dll not found, app functionality may not work correctly."
+  }
+  else
+  {
+    Copy-Item -Force $Dll -Destination $WSAx86Directory
+  }
+}
+
+$WinRTARMExtensionDlls = @( "$RootDirectory\ARM\Release\SpectatorView.WinRTExtensions\SpectatorView.WinRTExtensions.dll")
+
+Write-Host "Copying WinRTExtension dlls to $WSAARMDirectory"
+foreach ($Dll in $WinRTARMExtensionDlls )
+{
+  if (!(Test-Path $Dll)) {
+    Write-Warning "$Dll not found, app functionality may not work correctly."
+  }
+  else
+  {
+    Copy-Item -Force $Dll -Destination $WSAARMDirectory
+  }
+}
+
 Write-Host "Copying .meta files"
 Copy-Item -Force "$MetaFiles\WSA\x86\*.meta" -Destination $WSAx86Directory
+Copy-Item -Force "$MetaFiles\WSA\ARM\*.meta" -Destination $WSAARMDirectory
 Copy-Item -Force "$MetaFiles\x64\*.meta" -Destination $DesktopDirectory

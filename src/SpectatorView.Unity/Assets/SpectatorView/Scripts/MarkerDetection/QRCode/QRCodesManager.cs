@@ -15,6 +15,7 @@ using UnityEngine;
 #if WINDOWS_UWP
 using Windows.Perception.Spatial;
 using Windows.Perception.Spatial.Preview;
+using Microsoft.MixedReality.PhotoCapture;
 #endif
 
 using QRCodesTrackerPlugin;
@@ -124,7 +125,7 @@ namespace Microsoft.MixedReality.SpectatorView
             {
                 try
                 {
-                    var appSpatialCoordinateSystem = (SpatialCoordinateSystem)System.Runtime.InteropServices.Marshal.GetObjectForIUnknown(UnityEngine.XR.WSA.WorldManager.GetNativeISpatialCoordinateSystemPtr());
+                    WinRTExtensions.GetSpatialCoordinateSystem(UnityEngine.XR.WSA.WorldManager.GetNativeISpatialCoordinateSystemPtr(), out SpatialCoordinateSystem appSpatialCoordinateSystem);
                     if (appSpatialCoordinateSystem != null)
                     {
                         // Get the relative transform from the unity origin
