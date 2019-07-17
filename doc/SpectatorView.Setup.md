@@ -100,9 +100,15 @@ If you are building Azure Spatial Anchors on iOS, you will need to take some add
 4. Set the 'User Ip Address' for the Spectator View script to the ip address of your HoloLens device.
 5. Press the 'Android' button on the [Platform Switcher](../src/SpectatorView.Unity/Assets/SpectatorView.Editor/Scripts/PlatformSwitcherEditor.cs) attached to Spectator View in the Unity inspector (This should configure the correct build settings and app capabilities).
 6. Check 'ARCore Supported' under 'Build Settings -> Player Settings -> Android -> XR Settings' from the Unity editor toolbar.
-7. Export the project to android studio.
-8. Update the AndroidManifest.xml in android studio to use the ScreenRecorderActivity class compared to the UnityPlayerActivity as the application activity.
-9. Build and deploy the application through android studio to your desired device.
+7. Export your project to android studio. Be sure to declare the SpectatorView.Android scene as the scene included.
+
+![Marker](images/AndroidExport.png)
+
+8. Update the AndroidManifest.xml in android studio to use the Microsoft.MixedReality.SpectatorView.Unity.ScreenRecorderActivity class compared to the UnityPlayerActivity as the application activity.
+
+![Marker](images/AndroidManifest.png)
+
+9. Build and deploy the application through android studio to your desired device. If it is a new Android development device, you may need to enable developer options and debugging. For information on setting up your Android device for debugging, see [here](https://developer.android.com/studio/debug/dev-options).
 
 ### iOS
 
