@@ -15,10 +15,6 @@ On start, the [SpectatorView](../SpectatorView.cs) MonoBehaviour checks whether 
 
 SpectatorView supports specifying a custom prefab for starting and stopping recording. To do this, create a prefab containing an Unity component that implements [IRecordingServiceVisual](IRecordingServiceVisual.cs). Then, specify this prefab as the 'Override Mobile Recording Service Visual' in the [MobileRecordingSettings](MobileRecordingSettings.cs) declared for the scene (To view these settings, press Spectator View -> Edit Settings in the Unity toolbar). When the application starts, the [SpectatorView](../SpectatorView.cs) MonoBehaviour will instantiate this prefab. It will then search for an [IRecordingServiceVisual](IRecordingServiceVisual.cs) in the created prefab to provide a reference to the [IRecordingService](IRecordingService.cs).
 
-## Recording DSLR experiences
-
-coming soon...
-
 ## Troubleshooting
 ### iOS screen recording fails to create a video
 It happens infrequently, but ReplayKit can return true when attempting to start a recording even though it has failed. One known workaround is to restart your iOS devices and try again.
