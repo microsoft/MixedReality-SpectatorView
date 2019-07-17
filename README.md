@@ -12,7 +12,7 @@ Active development occurs in MixedReality-SpectatorView's master branch. It's su
 
 ### Setting up your local environment
 
-The MixedReality-SpectatorView repository uses unity packages, git submodules and symbolic linked directories for obtaining and referencing external dependencies. Prior to opening any Unity projects, its suggested to run `tools/Scripts/SetupRepository.bat` as an administrator on your PC (On Mac or Linux, you can run `/tools/scripts/SetupRepository.sh`). This script has a few purposes:
+The MixedReality-SpectatorView repository uses Unity packages, git submodules and symbolic linked directories for obtaining and referencing external dependencies. Prior to opening any Unity projects, its suggested to run `tools/Scripts/SetupRepository.bat` as an administrator on your PC (On Mac or Linux, you can run `/tools/scripts/SetupRepository.sh`). This script has a few purposes:
 
 1. It configures your git repository to use clrf line endings and support symbolic linked directories.
 2. It obtains and updates all git submodules declared in the MixedReality-SpectatorView repository.
