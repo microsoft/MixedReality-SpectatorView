@@ -11,6 +11,12 @@ using Windows.Perception.Spatial;
 
 namespace Microsoft.MixedReality.PhotoCapture
 {
+    /// <summary>
+    /// Provides extension methods that help marshal WinRT IInspectable objects that have been passed to managed code as an IntPtr.
+    /// On .NET Native, IInspectable pointers cannot be marshalled from native to managed code using Marshal.GetObjectForIUnknown.
+    /// This class calls into a native method that specifically marshals the type as a specific WinRT interface, which
+    /// is supported by the marshaller on both .NET Core and .NET Native.
+    /// </summary>
     public static class WinRTExtensions
     {
         [DllImport("SpectatorView.WinRTExtensions.dll")]
