@@ -37,7 +37,7 @@ Set-Location (Split-Path $MyInvocation.MyCommand.Path)
 # for inter-directory linking to build the HolographicCamera.Unity project
 # as well as for the samples to include submodule repository content
 # via directory symlinks.
-Write-Output "Enabling symbolic link directories for the repository."
+Write-Output "Enabling symbolic links for the repository."
 git config core.symlinks true
 
 # Ensure consistent line endings.
@@ -50,10 +50,9 @@ git submodule update --init
 
 # If any links were created to the submodules but were broken,
 # restore those symlinks now that the submodules are cloned.
-Write-Output "Updating all symbolic link directories."
+Write-Output "Fixing all symbolic links."
 dir "$PSScriptRoot\..\..\" -Recurse -File | ?{$_.LinkType -eq "SymbolicLink" } | Restore-SymbolicLink
 
 # If any links were created before the repository was configured to use
 # symlinks, those links need to be restored.
-Write-Output "Fixing any custom symbolic links."
 git status --porcelain | Restore-SymbolicLinkFromTypeChange
