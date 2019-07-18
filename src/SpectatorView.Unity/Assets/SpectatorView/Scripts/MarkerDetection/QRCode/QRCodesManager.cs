@@ -132,7 +132,7 @@ namespace Microsoft.MixedReality.SpectatorView
             {
                 try
                 {
-                    WinRTExtensions.GetSpatialCoordinateSystem(UnityEngine.XR.WSA.WorldManager.GetNativeISpatialCoordinateSystemPtr(), out SpatialCoordinateSystem appSpatialCoordinateSystem);
+                    var appSpatialCoordinateSystem = WinRTExtensions.GetSpatialCoordinateSystem(UnityEngine.XR.WSA.WorldManager.GetNativeISpatialCoordinateSystemPtr());
                     if (appSpatialCoordinateSystem != null)
                     {
                         // Get the relative transform from the unity origin

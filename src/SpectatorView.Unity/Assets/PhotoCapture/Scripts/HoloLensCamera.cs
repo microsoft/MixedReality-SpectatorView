@@ -881,7 +881,7 @@ namespace Microsoft.MixedReality.PhotoCapture
             coordinateSystemPtr = UnityEngine.XR.WSA.WorldManager.GetNativeISpatialCoordinateSystemPtr();
             if (coordinateSystemPtr != null)
             {
-                WinRTExtensions.GetSpatialCoordinateSystem(coordinateSystemPtr, out rootCoordinateSystem);
+                rootCoordinateSystem = WinRTExtensions.GetSpatialCoordinateSystem(coordinateSystemPtr);
             }
 #endif
         }

@@ -19,8 +19,22 @@ namespace Microsoft.MixedReality.PhotoCapture
     /// </summary>
     public static class WinRTExtensions
     {
-        [DllImport("SpectatorView.WinRTExtensions.dll")]
-        public static extern void GetSpatialCoordinateSystem(IntPtr nativePtr, out SpatialCoordinateSystem coordinateSystem);
+        [DllImport("SpectatorView.WinRTExtensions.dll", EntryPoint = "MarshalIInspectable")]
+        private static extern void GetSpatialCoordinateSystem(IntPtr nativePtr, out SpatialCoordinateSystem coordinateSystem);
+
+        public static SpatialCoordinateSystem GetSpatialCoordinateSystem(IntPtr nativePtr)
+        {
+            try
+            {
+                GetSpatialCoordinateSystem(nativePtr, out SpatialCoordinateSystem coordinateSystem);
+                return coordinateSystem;
+            }
+            catch
+            {
+                Debug.LogError("Call to the SpectatorView.WinRTExtensions plugin failed. The plugin is required for correct behavior when using .NET Native compilation");
+                return Marshal.GetObjectForIUnknown(nativePtr) as SpatialCoordinateSystem;
+            }
+        }
     }
 }
 #endif
