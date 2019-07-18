@@ -46,23 +46,30 @@ Not all spatial alignment strategies support all platforms. See the chart below 
 
 ### Azure Spatial Anchors
 
-1. Setup an [Azure Spatial Anchors account](https://docs.microsoft.com/en-us/azure/spatial-anchors/quickstarts/get-started-unity-hololens) and obtain the Account Domain, Account ID and the Primary Key.
+1. Setup an [Azure Spatial Anchors account](https://docs.microsoft.com/en-us/azure/spatial-anchors/quickstarts/get-started-unity-hololens) and obtain an `Account ID` and `Primary Key`.
 2. Obtain [AzureSpatialAnchors v1.1.1](https://github.com/Azure/azure-spatial-anchors-samples/releases/tag/v1.1.1). This can be achieved by running the [SetupRepository](../tools/Scripts/SetupRepository.bat) script as an administrator or by manually copying assets content into the [Azure-Spatial-Anchors-Samples folder](../external/Azure-Spatial-Anchors-Samples).
-3. In the Android, iOS and WSA Unity player settings, add the **SPATIALALIGNMENT_ASA** preprocessor directive. (This is located via Build Settings -> Player Settings -> Other Settings -> 'Scripting Defined Symbols')
-4. When in Unity preparing to build your application, set the Account Domain, Account Id and Account Key for the Spatial Anchors Localizer using values you obtained creating an azure spatial anchors account above. These values are set in the SpatialAnchorsCoordinateLocalizationInitializer MonoBehaviour defined, which will exist for the Android and iOS experiences.
+3. In the Android, iOS and WSA Unity player settings, add the `SPATIALALIGNMENT_ASA` preprocessor directive. (This is located via Build Settings -> Player Settings -> Other Settings -> 'Scripting Defined Symbols')
+4. Create a `SpectatorViewSettings` prefab by calling 'Spectator View' -> 'Edit Settings' in the toolbar.
+
+![Marker](images/SpectatorViewSettingsMenu.png)
+
+5. Add a `SpatialAnchorsCoordinateLocalizationInitializer` to this SpectatorViewSettings prefab. Update the Account ID and Account Key to be the Account ID and Primary Key values that you obtained in step 1. 
+6. Update the `SpatialLocalizationInitializationSettings` Prioritized Initializers list to reference the `SpatialAnchorCoordinateLocalizationInitializer` you created.
+
+![Marker](images/ASAInspector.png)
 
 #### Azure Spatial Anchors on iOS
 If you are building Azure Spatial Anchors on iOS, you will need to take some additional steps after generating your XCode project through Unity. After exporting an iOS version of your application in Unity, do the following:
 
 1. In the terminal, navigate to your xcode project folder.
-2. Run **'pod install --repo-update'** in the terminal when in your xcode project folder.
+2. Run `'pod install --repo-update'` in the terminal when in your xcode project folder.
 3. Open and compile your application using the **xcode workspace**. Do NOT use the **xcode project**.
 >Note: Failing to take the above steps may result in errors such as 'Undefined symbols for architecture arm64' and 'framework not found Pods_Unity_iPhone' For more information on building ASA for iOS in Unity see [here](https://docs.microsoft.com/en-us/azure/spatial-anchors/quickstarts/get-started-unity-ios).
 
 ### QR Code Detection
 
 1. Download the [MixedReality QR Code Plugin](https://github.com/dorreneb/mixed-reality/releases) zip folder and extract its contents into the [MixedReality-QRCodePlugin folder](../external/MixedReality-QRCodePlugin).
-2. In the WSA Unity player settings, add the **QRCODESTRACKER_BINARY_AVAILABLE** preprocessor directive. (This is located via Build Settings -> Player Settings -> Other Settings -> 'Scripting Defined Symbols')
+2. In the WSA Unity player settings, add the `QRCODESTRACKER_BINARY_AVAILABLE` preprocessor directive. (This is located via Build Settings -> Player Settings -> Other Settings -> 'Scripting Defined Symbols')
 
 >Note: **QRCODESTRACKER_BINARY_AVAILABLE should be removed from the WSA Player settings when building for HoloLens 1.** Adding QRCODESTRACKER_BINARY_AVAILABLE to the player settings for Android, iOS and HoloLens 2 builds should not generate any issues for other spatial alignment strategies. However, when building for HoloLens 1, the QRCODESTRACKER_BINARY_AVAILABLE needs to be removed from the WSA Player settings. Compilation checks to determine whether a device supports QR Code detection are currently conducted using this QRCODESTRACKER_BINARY_AVAILABLE flag. HoloLens 1 does not support QR Code detection.
 
@@ -125,7 +132,7 @@ If you are building Azure Spatial Anchors on iOS, you will need to take some add
 
 #### iOS with Azure Spatial Anchors
 1. In the terminal, navigate to your xcode project folder.
-2. Run **'pod install --repo-update'** in the terminal when in your xcode project folder.
+2. Run `'pod install --repo-update'` in the terminal when in your xcode project folder.
 3. Open and compile your application using the **xcode workspace**. Do NOT use the **xcode project**.
 >Note: Failing to take the above steps may result in errors such as 'Undefined symbols for architecture arm64' and 'framework not found Pods_Unity_iPhone' For more information on building ASA for iOS in Unity see [here](https://docs.microsoft.com/en-us/azure/spatial-anchors/quickstarts/get-started-unity-ios).
 
