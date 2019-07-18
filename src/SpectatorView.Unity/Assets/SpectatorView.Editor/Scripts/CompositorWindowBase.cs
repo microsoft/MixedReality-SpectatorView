@@ -171,12 +171,20 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
                 {
                     localizers = SpatialCoordinateSystemManager.Instance.Localizers.Where(localizer => supportedPeerLocalizers.Result.Contains(localizer.SpatialLocalizerId)).ToArray();
                     localizerNames = localizers.Select(localizer => localizer.DisplayName).ToArray();
-                    for (int i = 0; i < localizers.Length; i++)
+                    if (localizerNames.Length == 0)
                     {
-                        if (localizers[i].SpatialLocalizerId == selectedLocalizerId)
+                        GUI.enabled = false;
+                        localizerNames = new string[] { "No supported localization methods found." };
+                    }
+                    else
+                    {
+                        for (int i = 0; i < localizers.Length; i++)
                         {
-                            selectedLocalizerIndex = i;
-                            break;
+                            if (localizers[i].SpatialLocalizerId == selectedLocalizerId)
+                            {
+                                selectedLocalizerIndex = i;
+                                break;
+                            }
                         }
                     }
                 }
@@ -195,12 +203,12 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
             GUILayout.BeginHorizontal();
             {
                 selectedLocalizerIndex = EditorGUILayout.Popup(selectedLocalizerIndex, localizerNames);
-                if (localizers != null)
+                if (localizers != null &&
+                    localizers.Length> selectedLocalizerIndex)
                 {
                     selectedLocalizerId = localizers[selectedLocalizerIndex].SpatialLocalizerId;
+                    SpatialLocalizationSettingsGUI(deviceTypeLabel, selectedLocalizerIndex, localizers);
                 }
-
-                SpatialLocalizationSettingsGUI(deviceTypeLabel, selectedLocalizerIndex, localizers);
             }
             GUILayout.EndHorizontal();
 
