@@ -4,15 +4,31 @@ Spectator View is an augmented reality product that enables viewing HoloLens exp
 
 ## Getting Started
 
-### Obtaining the Code
+### Obtaining the code
 
 Active development occurs in MixedReality-SpectatorView's master branch. It's suggested to consume Spectator View code from one of the release branches compared to the master branch.
 
 >Note: Spectator view uses symbolic linked directories in its sample projects, which results in large file paths. It's suggested to place your Unity project in a short named directory (such as C:\sv). Otherwise, file paths may become too long to resolve in Unity.
 
+### Setting up your local environment
+
+The MixedReality-SpectatorView repository uses Unity packages, git submodules and symbolic linked directories for obtaining and referencing external dependencies. Prior to opening any Unity projects, its suggested to run `tools/Scripts/SetupRepository.bat` as an administrator on your PC (On Mac or Linux, you can run `/tools/scripts/SetupRepository.sh`). This script has a few purposes:
+
+1. It configures your git repository to use clrf line endings and support symbolic linked directories.
+2. It obtains and updates all git submodules declared in the MixedReality-SpectatorView repository.
+3. It fixes any symbolic linked directories in the MixedReality-SpectatorView respository.
+
+> Note: Not all submodules have the same [MIT license](LICENSE) as the MixedReality-SpectatorView repository. Submodules in this project currently include: [MixedRealityToolkit-Unity](https://github.com/microsoft/MixedRealityToolkit-Unity), [Azure-Spatial-Anchors-Samples](https://github.com/Azure/azure-spatial-anchors-samples) and [ARCore-Unity-SDK](https://github.com/google-ar/arcore-unity-sdk). You should view and accept the licenses in these projects before running the [SetupRepository.bat](tools/Scripts/SetupRepository.bat) script.
+
+### Samples
+
+It's easy to get started by building off one of the samples, or inspecting them to understand project setup. For more information, see [Samples](samples/README.md).
+
+## Setting up your own project
+
 ### Basic Setup
 
-Below are simple instructions for adding Spectator View to your project. For more robust setup instructions, see the 'Setup' section below.
+Below are simple instructions for adding Spectator View to your project:
 
 1. Ensure you have all of the [Software & Hardware](doc/SpectatorView.Setup.md##Software%20%26%20Hardware%20Requirements).
     - Ensure you have added the appropriate platform dependencies to your project (ARCore/ARKit)
@@ -29,24 +45,21 @@ Below are simple instructions for adding Spectator View to your project. For mor
 
 > Note: Some platforms require a special build step, for build information see: [Building & Deploying](doc/SpectatorView.Setup.md###Building%20%26%20Deploying)
 
-### Samples
+### Detailed Setup
+For more information on setting up a Spectator View project, see the following pages:
 
-It's also easy to get started by building off one of the samples, or inspecting them to understand project setup. For more information, see [Samples](samples/README.md).
+* [Spectating with an Android or iOS device](doc/SpectatorView.Setup.md)
+* [Spectating with a video camera](doc/SpectatorView.Setup.VideoCamera.md)
 
 ## Architecture
 
 For more information on Spectator View's architecture, see [here](doc/SpectatorView.Architecture.md).
 
-## Setup
-
-* [**Spectating with an Android or iOS device**](doc/SpectatorView.Setup.md)
-* [**Spectating with a video camera**](doc/SpectatorView.Setup.VideoCamera.md)
-
 ## Debugging
 
 For more information on debugging Spectator View, see [here](doc/SpectatorView.Debugging.md)
 
-## Filing Feedback
+## Filing feedback
 
 The easiest way to file feedback is by [opening an issue](https://github.com/microsoft/MixedReality-SpectatorView/issues). When filing feedback, please include the following information (when applicable):
 
