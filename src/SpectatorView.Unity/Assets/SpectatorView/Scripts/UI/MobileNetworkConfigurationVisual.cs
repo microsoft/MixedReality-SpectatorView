@@ -29,6 +29,7 @@ namespace Microsoft.MixedReality.SpectatorView
         private string ipAddress = "127.0.0.1";
 
         public event NetworkConfigurationUpdatedHandler NetworkConfigurationUpdated;
+        private readonly string ipAddressPlayerPrefKey = $"{nameof(MobileNetworkConfigurationVisual)}.{nameof(ipAddress)}";
 
         private void OnEnable()
         {
@@ -37,7 +38,14 @@ namespace Microsoft.MixedReality.SpectatorView
                 connectButton.onClick.AddListener(OnConnectButtonClick);
             }
 
+            ipAddress = PlayerPrefs.GetString(ipAddressPlayerPrefKey, ipAddress);
             ipAddressField.text = ipAddress;
+        }
+
+        private void OnDisable()
+        {
+            PlayerPrefs.SetString(ipAddressPlayerPrefKey, ipAddress);
+            PlayerPrefs.Save();
         }
 
         private void OnConnectButtonClick()
