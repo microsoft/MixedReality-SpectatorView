@@ -21,8 +21,11 @@ namespace Microsoft.MixedReality.SpectatorView
         {
             get
             {
-#if UNITY_WSA && QRCODESTRACKER_BINARY_AVAILABLE
+#if UNITY_EDITOR
+                // We return true for the editor so that this localizer registers as supported by the Unity editor for composited video camera experiences.
                 return true;
+#elif QRCODESTRACKER_BINARY_AVAILABLE && UNITY_WSA
+                return (Windows.ApplicationModel.Package.Current.Id.Architecture != Windows.System.ProcessorArchitecture.X86); // HoloLens 1 is not supported.
 #else
                 return false;
 #endif
