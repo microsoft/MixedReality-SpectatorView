@@ -6,9 +6,22 @@ Spectator View is an augmented reality product that enables viewing HoloLens exp
 
 ### Obtaining the Code
 
-Active development occurs in MixedReality-SpectatorView's master branch. It's suggested to consume Spectator View code from one of the release branches compared to the master branch.
+`Currently, the supported process for obtaining and consuming Spectator View code is through cloning the git repository.` Downloading source code from the release tab is possible, but helper scripts may not be able to resolve symbolic links and git submodules correctly. Sample projects will likely break if you only obtain the source code. Steps to for cloning and using the github repository are as follows:
 
->Note: Spectator view uses symbolic linked directories in its sample projects, which results in large file paths. It's suggested to place your Unity project in a short named directory (such as C:\sv). Otherwise, file paths may become too long to resolve in Unity.
+1. Download [git](https://git-scm.com/downloads)
+2. Clone the MixedReality-SpectatorView repository by running the following command:
+
+`git clone https://github.com/microsoft/MixedReality-SpectatorView.git sv`
+
+>Note 1: Spectator view uses symbolic linked directories in its sample projects, which results in large file paths. It's suggested to place your Unity project in a short named directory (such as C:\sv). Otherwise, file paths may become too long to resolve in Unity.
+
+>Note 2: If you are anticipating contributing to the MixedReality-SpectatorView project, you should fork your own version of the repository and clone it instead.
+
+3. Check out a release branch by running the following commands from your git repository directory:
+
+`git fetch origin release/1.0.0-beta`
+
+`git checkout release/1.0.0-beta`
 
 ### Basic Setup
 
