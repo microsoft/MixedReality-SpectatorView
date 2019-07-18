@@ -133,6 +133,10 @@ If you would like to try out an example before setting up your own application t
 
 >Note: You will need to update the SpectatorView prefab's 'User Ip Address' field to your HoloLens's IPAddress for the SpectatorView.Android and SpectatorView.iOS scenes when building these examples.
 
+## Customizing UI
+
+Spectator View contains some ability for customizing UI. For more information, see [here](../src/SpectatorView.Unity/Assets/SpectatorView/Scripts/UI/README.md).
+
 ## Troubleshooting
 
 ### __Issue:__ DirectoryNotFoundException: Could not find a part of the path "*.asmdef"

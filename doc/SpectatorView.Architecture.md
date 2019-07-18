@@ -45,3 +45,7 @@ For more information on compositing and recording, see [SpectatorView.Recording]
 ### Calibration
 
 For more information on calibration, see [SpectatorView.Calibration](../src/SpectatorView.Unity/Assets/SpectatorView/Scripts/Calibration/README.md)
+
+### Customizing UI
+
+For more information on creating and customizing UI, see [here](../src/SpectatorView.Unity/Assets/SpectatorView/Scripts/UI/README.md).
