@@ -32,16 +32,16 @@
 
 ### Spatial alignment
 
-For more information on spatial alignment, see [SpectatorView.SpatialAlignment](../src/SpectatorView.Unity/Assets/SpatialAlignment/README.md)
+For more information on spatial alignment, see [here](../src/SpectatorView.Unity/Assets/SpatialAlignment/README.md).
 
 ### State synchronization
 
-For more information on state synchronization, see [SpectatorView.StateSynchronization](../src/SpectatorView.Unity/Assets/SpectatorView/Scripts/StateSynchronization/README.md)
+For more information on state synchronization, see [here](../src/SpectatorView.Unity/Assets/SpectatorView/Scripts/StateSynchronization/README.md).
 
-### Compositing and Recording
+### Screen Recording
 
-For more information on compositing and recording, see [SpectatorView.Recording](../src/SpectatorView.Unity/Assets/SpectatorView/Scripts/ScreenRecording/README.md)
+For more information on compositing and recording, see [here](../src/SpectatorView.Unity/Assets/SpectatorView/Scripts/ScreenRecording/README.md).
 
-### Calibration
+### Video Camera Recording
 
-For more information on calibration, see [SpectatorView.Calibration](../src/SpectatorView.Unity/Assets/SpectatorView/Scripts/Calibration/README.md)
+For more information on recording with a video camera, see [here](../src/SpectatorView.Unity/Assets/SpectatorView/Scripts/Compositor/README.md).
