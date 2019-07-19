@@ -7,14 +7,14 @@ If ( -not $projPathValid)
 {
 	Write-Error "Invalid Unity project path specified: $projPath"
 	Write-Host "`n"
-	Write-Host "Example Usage: SetupDependencies.bat C:\Your\Unity\Project\Assets C:\MixedReality-SpectatorView"
+	Write-Host "Example Usage: AddDependencies.bat C:\Your\Unity\Project\Assets C:\MixedReality-SpectatorView"
 	Write-Host "`n"
 }
 ElseIf ( -not $repoPathValid)
 {
 	Write-Error "Invalid MixedReality-SpectatorView repository path specified: $repoPath"
 	Write-Host "`n"
-	Write-Host "Example Usage: SetupDependencies.bat C:\Your\Unity\Project\Assets C:\MixedReality-SpectatorView"
+	Write-Host "Example Usage: AddDependencies.bat C:\Your\Unity\Project\Assets C:\MixedReality-SpectatorView"
 	Write-Host "`n"
 }
 Else
