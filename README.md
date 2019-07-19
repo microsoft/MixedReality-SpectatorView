@@ -31,7 +31,7 @@ The MixedReality-SpectatorView repository uses Unity packages, git submodules an
 
 * The setup script will configure your git repository to use clrf line endings and support symbolic linked directories.
 * The setup script will obtain and update all git submodules declared in the MixedReality-SpectatorView repository.
-*  The setup script will fix any symbolic linked directories in the MixedReality-SpectatorView repository.
+* The setup script will fix any symbolic linked directories in the MixedReality-SpectatorView repository.
 
 > Note: Not all submodules have the same [MIT license](LICENSE) as the MixedReality-SpectatorView repository. Submodules in this project currently include: [MixedRealityToolkit-Unity](https://github.com/microsoft/MixedRealityToolkit-Unity), [Azure-Spatial-Anchors-Samples](https://github.com/Azure/azure-spatial-anchors-samples) and [ARCore-Unity-SDK](https://github.com/google-ar/arcore-unity-sdk). You should view and accept the licenses in these projects before running the [SetupRepository.bat](tools/Scripts/SetupRepository.bat) script.
 
@@ -83,7 +83,7 @@ After obtaining a local clone of the MixedReality-SpectatorView repository and r
 
 1. Close any instances of Unity.
 2. Open an administrator command window.
-3. Run `tools\Scripts\AddDependencies.bat c:\Your\Unity\Project\Assets c:\Your\MixedReality-SpectatorView\`
+3. Run `tools\Scripts\AddDependencies.bat c:\Your\Unity\Project\Assets c:\Your\MixedReality-SpectatorView\` (On Mac or Linux, you can run `'sh tools/Scripts/AddDependencies.sh //Users/You/Your/Unity/Project/Assets //Users/You/Your/MixedReality-SpectatorView/'`).
 
 Now, when you reopen your project in Unity, folders should appear in your project's Assets folder.
 
