@@ -113,7 +113,7 @@ If you are building Azure Spatial Anchors on iOS, you will need to take some add
 4. Set the 'User Ip Address' for the Spectator View script to the ip address of your HoloLens device.
 5. Press the 'Android' button on the [Platform Switcher](../src/SpectatorView.Unity/Assets/SpectatorView.Editor/Scripts/PlatformSwitcherEditor.cs) attached to Spectator View in the Unity inspector (This should configure the correct build settings and app capabilities).
 6. Check 'ARCore Supported' under 'Build Settings -> Player Settings -> Android -> XR Settings' from the Unity editor toolbar.
-7. Export your project to android studio. Be sure to declare the SpectatorView.Android scene as the scene included.
+7. Export your project to android studio. Be sure to declare the SpectatorView.Android scene as the scene included. If SpectatorView.Android does not exist in your list of scenes to choose from in the build settings, open the scene in the Unity editor. Then reopen the build settings and press 'Add Open Scenes'.
 
 ![Marker](images/AndroidExport.png)
 
@@ -132,7 +132,7 @@ If you are building Azure Spatial Anchors on iOS, you will need to take some add
 3. Open the [SpectatorView.iOS Unity scene](../src/SpectatorView.Unity/Assets/SpectatorView/Scenes/SpectatorView.iOS.unity).
 4. Set the 'User Ip Address' in the Spectator View script to the ip address of your HoloLens device.
 5. Press the 'iOS' button on the [Platform Switcher](../src/SpectatorView.Unity/Assets/SpectatorView.Editor/Scripts/PlatformSwitcherEditor.cs) attached to Spectator View in the Unity inspector (This should configure the correct build settings and app capabilities).
-6. Export the iOS project to a XCode solution.
+6. Export the iOS project to a XCode solution. Be sure to include the SpectatorView.iOS scene. If SpectatorView.iOS scene does not exist in your list of scenes to choose from in the build settings, open the scene in the Unity editor. Then reopen the build settings and press 'Add Open Scenes'.
 7. Configure the [signing certificate](https://developer.apple.com/support/code-signing/) for your Unity generated project in XCode to reflect your developer account.
 8. Build and deploy the application through XCode to your desired device (See the below steps if using ASA).
 
