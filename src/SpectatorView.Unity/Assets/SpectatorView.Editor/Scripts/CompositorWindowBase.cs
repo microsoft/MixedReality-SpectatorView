@@ -204,7 +204,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
             {
                 selectedLocalizerIndex = EditorGUILayout.Popup(selectedLocalizerIndex, localizerNames);
                 if (localizers != null &&
-                    localizers.Length> selectedLocalizerIndex)
+                    selectedLocalizerIndex < localizers.Length)
                 {
                     selectedLocalizerId = localizers[selectedLocalizerIndex].SpatialLocalizerId;
                     SpatialLocalizationSettingsGUI(deviceTypeLabel, selectedLocalizerIndex, localizers);
