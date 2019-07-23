@@ -16,8 +16,8 @@ namespace Microsoft.MixedReality.SpectatorView
         {
             get
             {
-#if QRCODESTRACKER_BINARY_AVAILABLE && UNITY_WSA
-                return true;
+#if QRCODESTRACKER_BINARY_AVAILABLE && UNITY_WSA && !UNITY_EDITOR
+                return (Windows.ApplicationModel.Package.Current.Id.Architecture != Windows.System.ProcessorArchitecture.X86); // HoloLens 1 is not supported.
 #else
                 return false;
 #endif

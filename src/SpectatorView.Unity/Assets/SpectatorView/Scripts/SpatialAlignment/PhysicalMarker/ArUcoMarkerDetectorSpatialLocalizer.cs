@@ -22,6 +22,7 @@ namespace Microsoft.MixedReality.SpectatorView
             get
             {
 #if UNITY_EDITOR
+                // We return true for the editor so that this localizer registers as available for video camera compositing scenarios.
                 return true;
 #elif UNITY_WSA
                 return Windows.ApplicationModel.Package.Current.Id.Architecture == Windows.System.ProcessorArchitecture.X86;
