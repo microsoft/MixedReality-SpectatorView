@@ -2,6 +2,8 @@
 
 ## Software & Hardware Requirements
 
+>Note: Spectator View does not currently support Unity's [ARFoundation package](https://docs.unity3d.com/Packages/com.unity.xr.arfoundation@1.0/manual/index.html). For Android and iOS experiences, Spectator View requires using ARCore and ARKit.
+
 ### HoloLens 2 & HoloLens Requirements
 
 1. Windows PC
