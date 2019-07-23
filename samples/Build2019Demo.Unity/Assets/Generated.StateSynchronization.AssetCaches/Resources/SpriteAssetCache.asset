@@ -95,9 +95,6 @@ MonoBehaviour:
       m_storage: 0e3938eb-0401-48b4-b677-e3efe4a1b50b
     Asset: {fileID: 21300000, guid: 28ea40d50737d3c47af018f7f3ea24ee, type: 3}
   - AssetId:
-      m_storage: ad541728-da7c-4202-b5d4-1d5733774193
-    Asset: {fileID: 21300000, guid: 0090fa36b85033b419f35f16ae7caa38, type: 3}
-  - AssetId:
       m_storage: 97072b73-692e-4433-9933-5f39e7437f90
     Asset: {fileID: 21300000, guid: 68157127a1550704596f2546ea8893d9, type: 3}
   - AssetId:
@@ -146,9 +143,6 @@ MonoBehaviour:
       m_storage: 00490c22-55ce-486a-b6c1-f9d6da6edea2
     Asset: {fileID: 21300000, guid: 2a95b12bf068e064988984ff0723e935, type: 3}
   - AssetId:
-      m_storage: e5916ef6-92f2-468c-a496-a5a29f9a071a
-    Asset: {fileID: 21300000, guid: bb5f245b92ffd1840ba3de676b3b9e36, type: 3}
-  - AssetId:
       m_storage: 90302828-a038-47f2-b58a-5a78f96877dc
     Asset: {fileID: 21300000, guid: 8a86432c6c39223479e7d6b663242ae9, type: 3}
   - AssetId:
@@ -191,23 +185,5 @@ MonoBehaviour:
       m_storage: 09c75909-7438-424e-b4e9-efb3e792fde4
     Asset: {fileID: 21300000, guid: 2b90b3ff0e9f24a43a1f8ffacaa12ca7, type: 3}
   - AssetId:
-      m_storage: aeb01b55-659d-4afc-9155-3693119db3fb
-    Asset: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  - AssetId:
-      m_storage: c69b9f4f-1281-405e-a266-a02daa03f50e
-    Asset: {fileID: 10917, guid: 0000000000000000f000000000000000, type: 0}
-  - AssetId:
       m_storage: 15889bff-68c9-4de2-be44-8f36022ac3ab
     Asset: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  - AssetId:
-      m_storage: 640a6439-a25b-4c84-adbc-7ce1600f3d11
-    Asset: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
-  - AssetId:
-      m_storage: 180c7943-a4e5-4964-9bcc-39e9abae3689
-    Asset: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
-  - AssetId:
-      m_storage: d0921009-1e0e-47e3-99f0-4bd00ef02758
-    Asset: {fileID: 10915, guid: 0000000000000000f000000000000000, type: 0}
-  - AssetId:
-      m_storage: 0c80b38b-1c82-49d2-8e21-b94d537f0ca3
-    Asset: {fileID: 10911, guid: 0000000000000000f000000000000000, type: 0}
