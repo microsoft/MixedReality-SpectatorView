@@ -280,24 +280,38 @@ namespace Microsoft.MixedReality.SpectatorView
         private void SetupNetworkConfigurationVisual()
         {
 #if UNITY_ANDROID || UNITY_IOS
-            GameObject mobileNetworkConfigurationVisualPrefab = defaultMobileNetworkConfigurationVisualPrefab;
-            if (NetworkConfigurationSettings.IsInitialized && NetworkConfigurationSettings.Instance.OverrideMobileNetworkConfigurationVisualPrefab != null)
+            if (mobileNetworkConfigurationVisual == null)
             {
-                mobileNetworkConfigurationVisualPrefab = NetworkConfigurationSettings.Instance.OverrideMobileNetworkConfigurationVisualPrefab;
+                if (networkConfigurationVisual != null)
+                {
+                    networkConfigurationVisual.NetworkConfigurationUpdated -= OnNetworkConfigurationUpdated;
+                    networkConfigurationVisual = null;
+                }
+
+                GameObject mobileNetworkConfigurationVisualPrefab = defaultMobileNetworkConfigurationVisualPrefab;
+                if (NetworkConfigurationSettings.IsInitialized && NetworkConfigurationSettings.Instance.OverrideMobileNetworkConfigurationVisualPrefab != null)
+                {
+                    mobileNetworkConfigurationVisualPrefab = NetworkConfigurationSettings.Instance.OverrideMobileNetworkConfigurationVisualPrefab;
+                }
+
+                mobileNetworkConfigurationVisual = Instantiate(mobileNetworkConfigurationVisualPrefab);
+                networkConfigurationVisual = mobileNetworkConfigurationVisual.GetComponentInChildren<INetworkConfigurationVisual>(true);
+                if (networkConfigurationVisual == null)
+                {
+                    Debug.LogError("Network configuration visual was not found. No connection will be established. Visual will be destroyed.");
+                    Destroy(mobileNetworkConfigurationVisual);
+                    mobileNetworkConfigurationVisual = null;
+                }
+                else
+                {
+                    networkConfigurationVisual.NetworkConfigurationUpdated += OnNetworkConfigurationUpdated;
+                }
             }
 
-            mobileNetworkConfigurationVisual = Instantiate(mobileNetworkConfigurationVisualPrefab);
-            networkConfigurationVisual = mobileNetworkConfigurationVisual.GetComponentInChildren<INetworkConfigurationVisual>(true);
-            if (networkConfigurationVisual == null)
+            if (networkConfigurationVisual != null)
             {
-                Debug.LogError("Network configuration visual was not found. No connection will be established. Visual will be destroyed.");
-                Destroy(mobileNetworkConfigurationVisual);
-                mobileNetworkConfigurationVisual = null;
-                return;
+                networkConfigurationVisual.Show();
             }
-
-            networkConfigurationVisual.NetworkConfigurationUpdated += OnNetworkConfigurationUpdated;
-            networkConfigurationVisual.Show();
 #endif
         }
 
