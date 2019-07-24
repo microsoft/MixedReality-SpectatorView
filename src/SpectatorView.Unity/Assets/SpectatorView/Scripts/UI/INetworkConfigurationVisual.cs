@@ -11,5 +11,16 @@ namespace Microsoft.MixedReality.SpectatorView
         /// Called when the associated network configuration has been updated.
         /// </summary>
         event Action<INetworkConfigurationVisual, string> NetworkConfigurationUpdated;
+
+        /// <summary>
+        /// Called to show the network configuration visual.
+        /// </summary>
+        void Show();
+
+
+        /// <summary>
+        /// Called to hide the network configuration visual.
+        /// </summary>
+        void Hide();
     }
 }

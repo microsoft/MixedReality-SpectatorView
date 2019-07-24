@@ -32,6 +32,16 @@ namespace Microsoft.MixedReality.SpectatorView
         public event Action<INetworkConfigurationVisual, string> NetworkConfigurationUpdated;
         private readonly string ipAddressPlayerPrefKey = $"{nameof(MobileNetworkConfigurationVisual)}.{nameof(ipAddress)}";
 
+        public void Show()
+        {
+            this.gameObject.SetActive(true);
+        }
+
+        public void Hide()
+        {
+            this.gameObject.SetActive(false);
+        }
+
         private void OnEnable()
         {
             if (connectButton != null)

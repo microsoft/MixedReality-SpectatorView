@@ -197,6 +197,13 @@ namespace Microsoft.MixedReality.SpectatorView
 
 #if UNITY_ANDROID || UNITY_IOS
             Destroy(mobileRecordingServiceVisual);
+
+            if (mobileNetworkConfigurationVisual != null)
+            {
+                Destroy(mobileNetworkConfigurationVisual);
+                mobileNetworkConfigurationVisual = null;
+                networkConfigurationVisual = null;
+            }
 #endif
 
             SpatialCoordinateSystemManager.Instance.ParticipantConnected -= OnParticipantConnected;
@@ -283,11 +290,14 @@ namespace Microsoft.MixedReality.SpectatorView
             networkConfigurationVisual = mobileNetworkConfigurationVisual.GetComponentInChildren<INetworkConfigurationVisual>(true);
             if (networkConfigurationVisual == null)
             {
-                Debug.LogError("Network configuration visual was not found. No connection will be established.");
+                Debug.LogError("Network configuration visual was not found. No connection will be established. Visual will be destroyed.");
+                Destroy(mobileNetworkConfigurationVisual);
+                mobileNetworkConfigurationVisual = null;
                 return;
             }
 
             networkConfigurationVisual.NetworkConfigurationUpdated += OnNetworkConfigurationUpdated;
+            networkConfigurationVisual.Show();
 #endif
         }
 
@@ -296,13 +306,13 @@ namespace Microsoft.MixedReality.SpectatorView
         {
 #if UNITY_ANDROID || UNITY_IOS
             this.userIpAddress = ipAddress;
-            RunStateSynchronizationAsObserver();
-            if (mobileNetworkConfigurationVisual != null)
+            if (networkConfigurationVisual != null)
             {
-                Destroy(mobileNetworkConfigurationVisual);
-                mobileNetworkConfigurationVisual = null;
-                networkConfigurationVisual = null;
+                networkConfigurationVisual.NetworkConfigurationUpdated -= OnNetworkConfigurationUpdated;
+                networkConfigurationVisual.Hide();
             }
+
+            RunStateSynchronizationAsObserver();
 #endif
         }
 
