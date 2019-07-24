@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
 using System.Net;
 using UnityEngine;
 using UnityEngine.UI;
@@ -28,7 +29,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
         private string ipAddress = "127.0.0.1";
 
-        public event NetworkConfigurationUpdatedHandler NetworkConfigurationUpdated;
+        public event Action<INetworkConfigurationVisual, string> NetworkConfigurationUpdated;
         private readonly string ipAddressPlayerPrefKey = $"{nameof(MobileNetworkConfigurationVisual)}.{nameof(ipAddress)}";
 
         private void OnEnable()
