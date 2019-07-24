@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 // Assuming assembly reference 'System.Numerics.Vectors, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a' used by 'Windows.Foundation.UniversalApiContract' matches
@@ -18,6 +18,7 @@ using Microsoft.MixedReality.SpatialAlignment;
 #if WINDOWS_UWP
 using Windows.Perception.Spatial;
 using Windows.Perception.Spatial.Preview;
+using Microsoft.MixedReality.PhotoCapture;
 #endif
 
 using QRCodesTrackerPlugin;
@@ -131,7 +132,7 @@ namespace Microsoft.MixedReality.SpectatorView
             {
                 try
                 {
-                    var appSpatialCoordinateSystem = (SpatialCoordinateSystem)System.Runtime.InteropServices.Marshal.GetObjectForIUnknown(UnityEngine.XR.WSA.WorldManager.GetNativeISpatialCoordinateSystemPtr());
+                    var appSpatialCoordinateSystem = WinRTExtensions.GetSpatialCoordinateSystem(UnityEngine.XR.WSA.WorldManager.GetNativeISpatialCoordinateSystemPtr());
                     if (appSpatialCoordinateSystem != null)
                     {
                         // Get the relative transform from the unity origin

@@ -2,6 +2,8 @@
 
 ## Software & Hardware Requirements
 
+>Note: Spectator View does not currently support Unity's [ARFoundation package](https://docs.unity3d.com/Packages/com.unity.xr.arfoundation@1.0/manual/index.html). For Android and iOS experiences, Spectator View requires using ARCore and ARKit.
+
 ### HoloLens 2 & HoloLens Requirements
 
 1. Windows PC
@@ -32,9 +34,13 @@
 
 >Note: Unity's ARKit Plugin has two licenses, one of which is not a MIT license. For more information on ARKit licensing, see [here](https://bitbucket.org/Unity-Technologies/unity-arkit-plugin/src/default/LICENSES/).
 
+# Preparing your project
+
+To use the Spectator View codebase, its suggested to clone and reference the MixedReality-SpectatorView repository through symbolic linked directories in your Unity project. Before beginning on the steps below, go through the repository setup process [here](../README.md). This will ensure that the Unity editor components referenced below exist in your project.
+
 ## Spatial Localizer Dependencies
 
-For more information on spatial localizers, see [here](../src/SpectatorView.Unity/Assets/SpatialAlignment/README.md).
+Spectator View requires multiple devices understanding a shared application origin in the physical world. In order to establish this shared application origin, you will need to choose and use a spatial alignment strategy. Different dependencies are needed for different strategies. For more information on spatial alignment strategies, see [here](../src/SpectatorView.Unity/Assets/SpatialAlignment/README.md).
 
 Not all spatial alignment strategies support all platforms. See the chart below to determine which strategy best addresses your intended user scenarios.
 
@@ -46,29 +52,38 @@ Not all spatial alignment strategies support all platforms. See the chart below 
 
 ### Azure Spatial Anchors
 
-1. Setup an [Azure Spatial Anchors account](https://docs.microsoft.com/en-us/azure/spatial-anchors/quickstarts/get-started-unity-hololens) and obtain the Account Domain, Account ID and the Primary Key.
+1. Setup an [Azure Spatial Anchors account](https://docs.microsoft.com/en-us/azure/spatial-anchors/quickstarts/get-started-unity-hololens) and obtain an `Account ID` and `Primary Key`.
 2. Obtain [AzureSpatialAnchors v1.1.1](https://github.com/Azure/azure-spatial-anchors-samples/releases/tag/v1.1.1). This can be achieved by running the [SetupRepository](../tools/Scripts/SetupRepository.bat) script as an administrator or by manually copying assets content into the [Azure-Spatial-Anchors-Samples folder](../external/Azure-Spatial-Anchors-Samples).
-3. In the Android, iOS and WSA Unity player settings, add the **SPATIALALIGNMENT_ASA** preprocessor directive. (This is located via Build Settings -> Player Settings -> Other Settings -> 'Scripting Defined Symbols')
-4. When in Unity preparing to build your application, set the Account Domain, Account Id and Account Key for the Spatial Anchors Localizer using values you obtained creating an azure spatial anchors account above. These values are set in the SpatialAnchorsCoordinateLocalizationInitializer MonoBehaviour defined, which will exist for the Android and iOS experiences.
+3. In the Android, iOS and WSA Unity player settings, add the `SPATIALALIGNMENT_ASA` preprocessor directive. (This is located via Build Settings -> Player Settings -> Other Settings -> 'Scripting Defined Symbols')
+4. Create a `SpectatorViewSettings` prefab by calling 'Spectator View' -> 'Edit Settings' in the toolbar.
+
+![Marker](images/SpectatorViewSettingsMenu.png)
+
+5. Add a `SpatialAnchorsCoordinateLocalizationInitializer` to this SpectatorViewSettings prefab. Update the Account ID and Account Key to be the Account ID and Primary Key values that you obtained in step 1. 
+6. Update the `SpatialLocalizationInitializationSettings` Prioritized Initializers list to reference the `SpatialAnchorCoordinateLocalizationInitializer` you created.
+
+![Marker](images/ASAInspector.png)
 
 #### Azure Spatial Anchors on iOS
 If you are building Azure Spatial Anchors on iOS, you will need to take some additional steps after generating your XCode project through Unity. After exporting an iOS version of your application in Unity, do the following:
 
 1. In the terminal, navigate to your xcode project folder.
-2. Run **'pod install --repo-update'** in the terminal when in your xcode project folder.
+2. Run `'pod install --repo-update'` in the terminal when in your xcode project folder.
 3. Open and compile your application using the **xcode workspace**. Do NOT use the **xcode project**.
 >Note: Failing to take the above steps may result in errors such as 'Undefined symbols for architecture arm64' and 'framework not found Pods_Unity_iPhone' For more information on building ASA for iOS in Unity see [here](https://docs.microsoft.com/en-us/azure/spatial-anchors/quickstarts/get-started-unity-ios).
 
 ### QR Code Detection
 
 1. Download the [MixedReality QR Code Plugin](https://github.com/dorreneb/mixed-reality/releases) zip folder and extract its contents into the [MixedReality-QRCodePlugin folder](../external/MixedReality-QRCodePlugin).
-2. In the WSA Unity player settings, add the **QRCODESTRACKER_BINARY_AVAILABLE** preprocessor directive. (This is located via Build Settings -> Player Settings -> Other Settings -> 'Scripting Defined Symbols')
+2. In the WSA Unity player settings, add the `QRCODESTRACKER_BINARY_AVAILABLE` preprocessor directive. (This is located via Build Settings -> Player Settings -> Other Settings -> 'Scripting Defined Symbols')
+3. Build an x86 Release version of [SpectatorView.WinRTExtensions.dll](../src/SpectatorView.Native/README.md) and include the associated dll's in your Unity project. Adding the plugins to your Unity project can be achieved by running the [CopyPluginsToUnity](../tools/Scripts/CopyPluginsToUnity.bat) script.
+
 
 >Note: **QRCODESTRACKER_BINARY_AVAILABLE should be removed from the WSA Player settings when building for HoloLens 1.** Adding QRCODESTRACKER_BINARY_AVAILABLE to the player settings for Android, iOS and HoloLens 2 builds should not generate any issues for other spatial alignment strategies. However, when building for HoloLens 1, the QRCODESTRACKER_BINARY_AVAILABLE needs to be removed from the WSA Player settings. Compilation checks to determine whether a device supports QR Code detection are currently conducted using this QRCODESTRACKER_BINARY_AVAILABLE flag. HoloLens 1 does not support QR Code detection.
 
 ### ArUco Marker Detection
 
-1. Build a x86 Release version of [SpectatorView.OpenCV.dll](../src/SpectatorView.Native/README.md) and include the associated dll's in your Unity project. Adding the plugins to your Unity project can be achieved by running the [CopyPluginsToUnity](../tools/Scripts/CopyPluginsToUnity.bat) script.
+1. Build an x86 Release version of SpectatorView.OpenCV.dll and SpectatorView.WinRTExtensions.dll (see instructions [here](../src/SpectatorView.Native/README.md)) and include the associated dll's in your Unity project. Adding the plugins to your Unity project can be achieved by running the [CopyPluginsToUnity](../tools/Scripts/CopyPluginsToUnity.bat) script.
 
 >Note: No arm version of SpectatorView.OpenCV.dll exists, which will cause build errors for HoloLens 2 devices if these dlls are kept in the project when building for HoloLens 2. It is suggested to delete any SpectatorView.Native directories in the Assets folder when building for HoloLens 2 (This will have been created by the above CopyPluginsToUnity script). When building for HoloLens 1 or running video camera experiences, recopy these dll's to the project.
 
@@ -100,9 +115,15 @@ If you are building Azure Spatial Anchors on iOS, you will need to take some add
 4. Set the 'User Ip Address' for the Spectator View script to the ip address of your HoloLens device.
 5. Press the 'Android' button on the [Platform Switcher](../src/SpectatorView.Unity/Assets/SpectatorView.Editor/Scripts/PlatformSwitcherEditor.cs) attached to Spectator View in the Unity inspector (This should configure the correct build settings and app capabilities).
 6. Check 'ARCore Supported' under 'Build Settings -> Player Settings -> Android -> XR Settings' from the Unity editor toolbar.
-7. Export the project to android studio.
-8. Update the AndroidManifest.xml in android studio to use the ScreenRecorderActivity class compared to the UnityPlayerActivity as the application activity.
-9. Build and deploy the application through android studio to your desired device.
+7. Export your project to android studio. Be sure to declare the SpectatorView.Android scene as the scene included. If SpectatorView.Android does not exist in your list of scenes to choose from in the build settings, open the scene in the Unity editor. Then reopen the build settings and press 'Add Open Scenes'.
+
+![Marker](images/AndroidExport.png)
+
+8. Update the AndroidManifest.xml in android studio to use the Microsoft.MixedReality.SpectatorView.Unity.ScreenRecorderActivity class compared to the UnityPlayerActivity as the application activity.
+
+![Marker](images/AndroidManifest.png)
+
+9. Build and deploy the application through android studio to your desired device. If it is a new Android development device, you may need to enable developer options and debugging. For information on setting up your Android device for debugging, see [here](https://developer.android.com/studio/debug/dev-options).
 
 ### iOS
 
@@ -113,13 +134,13 @@ If you are building Azure Spatial Anchors on iOS, you will need to take some add
 3. Open the [SpectatorView.iOS Unity scene](../src/SpectatorView.Unity/Assets/SpectatorView/Scenes/SpectatorView.iOS.unity).
 4. Set the 'User Ip Address' in the Spectator View script to the ip address of your HoloLens device.
 5. Press the 'iOS' button on the [Platform Switcher](../src/SpectatorView.Unity/Assets/SpectatorView.Editor/Scripts/PlatformSwitcherEditor.cs) attached to Spectator View in the Unity inspector (This should configure the correct build settings and app capabilities).
-6. Export the iOS project to a XCode solution.
+6. Export the iOS project to a XCode solution. Be sure to include the SpectatorView.iOS scene. If SpectatorView.iOS scene does not exist in your list of scenes to choose from in the build settings, open the scene in the Unity editor. Then reopen the build settings and press 'Add Open Scenes'.
 7. Configure the [signing certificate](https://developer.apple.com/support/code-signing/) for your Unity generated project in XCode to reflect your developer account.
 8. Build and deploy the application through XCode to your desired device (See the below steps if using ASA).
 
 #### iOS with Azure Spatial Anchors
 1. In the terminal, navigate to your xcode project folder.
-2. Run **'pod install --repo-update'** in the terminal when in your xcode project folder.
+2. Run `'pod install --repo-update'` in the terminal when in your xcode project folder.
 3. Open and compile your application using the **xcode workspace**. Do NOT use the **xcode project**.
 >Note: Failing to take the above steps may result in errors such as 'Undefined symbols for architecture arm64' and 'framework not found Pods_Unity_iPhone' For more information on building ASA for iOS in Unity see [here](https://docs.microsoft.com/en-us/azure/spatial-anchors/quickstarts/get-started-unity-ios).
 
