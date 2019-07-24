@@ -19,6 +19,8 @@ namespace Microsoft.MixedReality.SpectatorView
         }
 
         private Canvas canvas;
+        private bool previousEnabled;
+        private CanvasProperties previousProperties;
 
         protected override void Awake()
         {
@@ -39,12 +41,28 @@ namespace Microsoft.MixedReality.SpectatorView
 
         protected override ChangeType CalculateDeltaChanges()
         {
-            // Warning: CanvasBroadcaster does not currently report changes
-            return ChangeType.None;
+            ChangeType changeType = ChangeType.None;
+
+            if (previousEnabled != canvas.enabled)
+            {
+                previousEnabled = canvas.enabled;
+                changeType |= ChangeType.Enabled;
+            }
+
+            var newProperties = new CanvasProperties(canvas);
+            if (previousProperties != newProperties)
+            {
+                previousProperties = newProperties;
+                changeType |= ChangeType.Properties;
+            }
+
+            return changeType;
         }
 
         protected override void SendCompleteChanges(IEnumerable<SocketEndpoint> endpoints)
         {
+            previousEnabled = canvas.enabled;
+            previousProperties = new CanvasProperties(canvas);
             SendDeltaChanges(endpoints, ChangeType.Enabled | ChangeType.Properties);
         }
 
@@ -59,19 +77,65 @@ namespace Microsoft.MixedReality.SpectatorView
 
                 if (HasFlag(changeType, ChangeType.Enabled))
                 {
-                    message.Write(canvas.enabled);
+                    message.Write(previousEnabled);
                 }
 
                 if (HasFlag(changeType, ChangeType.Properties))
                 {
-                    message.Write((byte)canvas.renderMode);
-                    message.Write(canvas.sortingLayerID);
-                    message.Write(canvas.sortingOrder);
-                    message.Write(canvas.overrideSorting);
+                    message.Write((byte)previousProperties.renderMode);
+                    message.Write(previousProperties.sortingLayerID);
+                    message.Write(previousProperties.sortingOrder);
+                    message.Write(previousProperties.overrideSorting);
                 }
 
                 message.Flush();
                 StateSynchronizationSceneManager.Instance.Send(endpoints, memoryStream.ToArray());
+            }
+        }
+
+        private struct CanvasProperties
+        {
+            public CanvasProperties(Canvas canvas)
+            {
+                renderMode = canvas.renderMode;
+                sortingLayerID = canvas.sortingLayerID;
+                sortingOrder = canvas.sortingOrder;
+                overrideSorting = canvas.overrideSorting;
+            }
+
+            public RenderMode renderMode;
+            public int sortingLayerID;
+            public int sortingOrder;
+            public bool overrideSorting;
+
+            public static bool operator ==(CanvasProperties first, CanvasProperties second)
+            {
+                return first.Equals(second);
+            }
+
+            public static bool operator !=(CanvasProperties first, CanvasProperties second)
+            {
+                return !first.Equals(second);
+            }
+
+            public override bool Equals(object obj)
+            {
+                if (!(obj is CanvasProperties))
+                {
+                    return false;
+                }
+
+                CanvasProperties other = (CanvasProperties)obj;
+                return
+                    other.renderMode == renderMode &&
+                    other.sortingLayerID == sortingLayerID &&
+                    other.sortingOrder == sortingOrder &&
+                    other.overrideSorting == overrideSorting;
+            }
+
+            public override int GetHashCode()
+            {
+                return renderMode.GetHashCode();
             }
         }
     }
