@@ -501,6 +501,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Role: 0
   userIpAddress: 127.0.0.1
+  useMobileNetworkConfigurationVisual: 1
+  defaultMobileNetworkConfigurationVisualPrefab: {fileID: 9128832365225436076, guid: e14699ad6aa64ed459c4ecba1c9f6001,
+    type: 3}
   stateSynchronizationSceneManager: {fileID: 4941633253159564537}
   stateSynchronizationBroadcaster: {fileID: 4941633254549859856}
   stateSynchronizationObserver: {fileID: 4941633254517527404}

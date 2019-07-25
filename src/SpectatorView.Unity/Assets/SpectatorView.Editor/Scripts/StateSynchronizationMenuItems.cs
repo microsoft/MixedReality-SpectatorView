@@ -70,15 +70,11 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
                 hierarchyPrefab.AddComponent<DefaultStateSynchronizationPerformanceParameters>();
 
                 AssetCache.EnsureAssetDirectoryExists();
-#if UNITY_2018_3_OR_NEWER
                 prefab = PrefabUtility.SaveAsPrefabAsset(hierarchyPrefab, AssetCache.GetAssetPath(StateSynchronizationSceneManager.DefaultStateSynchronizationPerformanceParametersPrefabName, ".prefab"));
-#else
-                prefab = PrefabUtility.CreatePrefab(AssetCache.GetAssetPath(StateSynchronizationSceneManager.DefaultSynchronizationPerformanceParametersPrefabName, ".prefab"), hierarchyPrefab);
-#endif
                 Object.DestroyImmediate(hierarchyPrefab);
             }
 
-            Selection.activeObject = prefab;
+            AssetDatabase.OpenAsset(prefab);
         }
 
         [MenuItem("Spectator View/Edit Custom Network Services", priority = 201)]
@@ -90,42 +86,51 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
                 GameObject hierarchyPrefab = new GameObject(StateSynchronizationSceneManager.CustomBroadcasterServicesPrefabName);
 
                 AssetCache.EnsureAssetDirectoryExists();
-#if UNITY_2018_3_OR_NEWER
                 prefab = PrefabUtility.SaveAsPrefabAsset(hierarchyPrefab, AssetCache.GetAssetPath(StateSynchronizationSceneManager.CustomBroadcasterServicesPrefabName, ".prefab"));
-#else
-                prefab = PrefabUtility.CreatePrefab(AssetCache.GetAssetPath(StateSynchronizationSceneManager.CustomNetworkServicesPrefabName, ".prefab"), hierarchyPrefab);
-#endif
                 Object.DestroyImmediate(hierarchyPrefab);
             }
 
-            Selection.activeObject = prefab;
+            AssetDatabase.OpenAsset(prefab);
         }
 
         [MenuItem("Spectator View/Edit Settings", priority = 202)]
         private static void EditCustomSettingsProperties()
         {
             GameObject prefab = Resources.Load<GameObject>(SpectatorView.SettingsPrefabName);
+            GameObject hierarchyPrefab = null;
             if (prefab == null)
             {
-                GameObject hierarchyPrefab = new GameObject(SpectatorView.SettingsPrefabName);
+                hierarchyPrefab = new GameObject(SpectatorView.SettingsPrefabName);
                 hierarchyPrefab.AddComponent<BroadcasterSettings>();
                 hierarchyPrefab.AddComponent<SpatialLocalizationInitializationSettings>();
                 hierarchyPrefab.AddComponent<MobileRecordingSettings>();
+                hierarchyPrefab.AddComponent<NetworkConfigurationSettings>();
 
                 AssetCache.EnsureAssetDirectoryExists();
-#if UNITY_2018_3_OR_NEWER
                 prefab = PrefabUtility.SaveAsPrefabAsset(hierarchyPrefab, AssetCache.GetAssetPath(SpectatorView.SettingsPrefabName, ".prefab"));
-#else
-                prefab = PrefabUtility.CreatePrefab(AssetCache.GetAssetPath(StateSynchronizationSceneManager.SettingsPrefabName, ".prefab"), hierarchyPrefab);
-#endif
                 Object.DestroyImmediate(hierarchyPrefab);
             }
+            else
+            {
+                GameObject editablePrefab = PrefabUtility.LoadPrefabContents(AssetCache.GetAssetPath(SpectatorView.SettingsPrefabName, ".prefab"));
+                EnsureComponent<BroadcasterSettings>(editablePrefab);
+                EnsureComponent<SpatialLocalizationInitializationSettings>(editablePrefab);
+                EnsureComponent<MobileRecordingSettings>(editablePrefab);
+                EnsureComponent<NetworkConfigurationSettings>(editablePrefab);
+                PrefabUtility.SaveAsPrefabAsset(editablePrefab, AssetCache.GetAssetPath(SpectatorView.SettingsPrefabName, ".prefab"));
+                PrefabUtility.UnloadPrefabContents(editablePrefab);
+            }
 
-#if UNITY_2018_3_OR_NEWER
             AssetDatabase.OpenAsset(prefab);
-#else
-            Selection.activeObject = prefab;
-#endif
+        }
+
+        private static void EnsureComponent<T>(GameObject go) where T : Component
+        {
+            T component = go.GetComponent<T>();
+            if (component == null)
+            {
+                component = go.AddComponent<T>();
+            }
         }
     }
 }

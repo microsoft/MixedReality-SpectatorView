@@ -14,6 +14,10 @@
 
 # Calibration
 
+Video camera filming relies on a physically mounted HoloLens 2 device generating position and orientation information for your video camera in the shared application space. This allows the Unity editor to understand where the video frame was filmed from in order to generate and composite Holograms into the feed. To get accurate tracking of your video camera in the physical world, you need to calculate the physical transform between the HoloLens 2 device and the video camera sensor. This is achieved through calibration.
+
+The below instructions assume that you have already gone through the repository setup instructions [here](../README.md) to obtain and reference the Spectator View codebase.
+
 ## Setup
 
 1. Build x64 Release versions of SpectatorView.Compositor.dll & SpectatorView.Compositor.UnityPlugin.dll based on the instructions [here](../src/SpectatorView.Native/ReadME.md).

@@ -10,20 +10,20 @@ Follow the instructions documented in [SpectatorView.Native](../../../../../Spec
 
 ### Build and install the HolographicCamera App
 
-The HolographicCamera app is a UWP application that runs on the HoloLens attached to your video camera. This app reads calibration data stored on the HoloLens and communicates that data to the Unity compositor. This app also transmits the position and rotation of the camera to the Unity compositor.
+The HolographicCamera app is a UWP application that runs on the HoloLens 2 attached to your video camera. This app reads calibration data stored on the HoloLens and communicates that data to the Unity compositor. This app also transmits the position and rotation of the camera to the Unity compositor. If you have gone through the calibration process described [here](../../../../../../doc/SpectatorView.Setup.VideoCamera.md), you may already have this application installed on your device.
 
 1. Open the [HolographicCamera.Unity](../../../../../HolographicCamera.Unity/) project in Unity
 2. Open the Build window and switch platforms to the Universal Windows Platform
 3. Build the Unity project to create a Visual Studio solution
 4. Open the generated Visual Studio solution.
-5. Change the Solution Configuration to Release and the Architecture to x86.
-6. Deploy the application to the HoloLens attached to your video camera.
+5. Change the Solution Configuration to Release and the Architecture to ARM.
+6. Deploy the application to the HoloLens 2 attached to your video camera.
 
-### Copy calibration data to the HoloLens
+### Copy calibration data to your HoloLens 2
 
-Calibration data stores the camera intrinsic information for your video camera, and the camera extrinsic information that represents the positional and rotational offset between the HoloLens and the video camera.
+Calibration data stores the camera intrinsic information for your video camera, and the camera extrinsic information that represents the positional and rotational offset between the HoloLens and the video camera. If you uploaded a CalibrationData.json file when calibrating the video camera rig, you can skip the steps below. However, filming won't be possible if a CalibrationData.json file isn't placed in the HoloLens 2's Pictures folder.
 
-1. Follow the steps at [SpectatorView.Calibration](../Calibration/README.md) to produce a calibration file for your camera and HoloLens.
+1. Follow the steps [here](../../../../../../doc/SpectatorView.Setup.VideoCamera.md) to produce a calibration file for your camera and HoloLens.
 2. Use the [Device Portal](https://docs.microsoft.com/en-us/windows/uwp/debug-test-perf/device-portal-hololens) to connect to the HoloLens attached to your camera.
 3. On the File Explorer tab in the device portal, upload the calibration file to the Pictures library. The final file path should be "User Folders\Pictures\CalibrationData.json".
 

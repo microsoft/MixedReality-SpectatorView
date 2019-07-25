@@ -13,6 +13,7 @@ namespace Microsoft.MixedReality.SpectatorView
     public class TransformBroadcaster : ComponentBroadcaster<TransformBroadcasterService, TransformBroadcasterChangeType>
     {
         public const string SpectatorViewHiddenTag = "SpectatorViewHidden";
+        public const string SpectatorViewChildrenHiddenTag = "SpectatorViewChildrenHidden";
         private short id;
 
         private bool previousIsActive = true;
@@ -38,6 +39,11 @@ namespace Microsoft.MixedReality.SpectatorView
         private bool isIdInitialized = false;
         private bool? isHidden;
 
+        /// <summary>
+        /// Gets a cached version of the Transform associated with this Component.
+        /// This field is cached due to its frequent access. Calling Component.transform
+        /// incurs extra cost inside the Unity engine to perform thread-safety checks.
+        /// </summary>
         private Transform CachedTransform
         {
             get
@@ -51,7 +57,36 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
-        private RectTransform CachedRectTransform => cachedRectTransform ?? (cachedRectTransform = GetComponent<RectTransform>());
+        /// <summary>
+        /// Gets a cached version of the GameObject associated with this Component.
+        /// This field is cached due to its frequent access. Calling Component.gameObject
+        /// incurs extra cost inside the Unity engine to perform thread-safety checks.
+        /// </summary>
+        private GameObject CachedGameObject
+        {
+            get
+            {
+                if (cachedGameObject == null)
+                {
+                    cachedGameObject = this.gameObject;
+                }
+
+                return cachedGameObject;
+            }
+        }
+
+        private RectTransform CachedRectTransform
+        {
+            get
+            {
+                if (cachedRectTransform == null)
+                {
+                    cachedRectTransform = GetComponent<RectTransform>();
+                }
+
+                return cachedRectTransform;
+            }
+        }
 
         protected override bool UpdateWhenDisabled => true;
 
@@ -177,11 +212,9 @@ namespace Microsoft.MixedReality.SpectatorView
             if (!isIdInitialized)
             {
                 transformBroadcaster = this;
-                cachedTransform = transform;
-                cachedGameObject = gameObject;
                 id = StateSynchronizationSceneManager.Instance.GetNewTransformId();
 
-                StateSynchronizationSceneManager.Instance.AssignMirror(this.cachedGameObject, this.id);
+                StateSynchronizationSceneManager.Instance.AssignMirror(this.CachedGameObject, this.id);
 
                 AttachTransformBroadcasterControllers();
 
@@ -253,7 +286,7 @@ namespace Microsoft.MixedReality.SpectatorView
             {
                 if (cachedName == null)
                 {
-                    cachedName = this.cachedGameObject.name;
+                    cachedName = this.CachedGameObject.name;
                 }
 
                 return cachedName;
@@ -267,7 +300,7 @@ namespace Microsoft.MixedReality.SpectatorView
         {
             get
             {
-                return this.cachedGameObject.layer;
+                return this.CachedGameObject.layer;
             }
         }
 
@@ -309,55 +342,63 @@ namespace Microsoft.MixedReality.SpectatorView
             GetLocalPose(out newPosition, out newRotation, out newScale);
             bool newIsActive = SynchronizedIsActive;
 
-            if (previousName != CachedName)
-            {
-                previousName = CachedName;
-                changeType |= TransformBroadcasterChangeType.Name;
-            }
-            if (previousLayer != newLayer)
-            {
-                previousLayer = newLayer;
-                changeType |= TransformBroadcasterChangeType.Layer;
-            }
-            if (previousParentId != newParentId)
-            {
-                previousParentId = newParentId;
-                changeType |= TransformBroadcasterChangeType.Parent;
-            }
-            if (previousPosition != newPosition)
-            {
-                previousPosition = newPosition;
-                changeType |= TransformBroadcasterChangeType.Position;
-            }
-            if (previousRotation != newRotation)
-            {
-                previousRotation = newRotation;
-                changeType |= TransformBroadcasterChangeType.Rotation;
-            }
-            if (previousScale != newScale)
-            {
-                previousScale = newScale;
-                changeType |= TransformBroadcasterChangeType.Scale;
-            }
             if (previousIsActive != newIsActive)
             {
                 previousIsActive = newIsActive;
                 changeType |= TransformBroadcasterChangeType.IsActive;
             }
 
-            RectTransform rectTrans = CachedRectTransform;
-            if (rectTrans && rectCache == null)
+            // If this component is not active and enabled in the hierarchy, we only need
+            // to synchronize the isActive state. This is a performance win for large dynamic hierarchies, which don't
+            // need to keep the other Transform-related properties in sync.
+            if (isActiveAndEnabled)
             {
-                rectCache = new RectTransformBroadcaster();
-            }
-            else if (rectTrans == null && rectCache != null)
-            {
-                rectCache = null;
-            }
+                if (previousName != CachedName)
+                {
+                    previousName = CachedName;
+                    changeType |= TransformBroadcasterChangeType.Name;
+                }
+                if (previousLayer != newLayer)
+                {
+                    previousLayer = newLayer;
+                    changeType |= TransformBroadcasterChangeType.Layer;
+                }
+                if (previousParentId != newParentId)
+                {
+                    previousParentId = newParentId;
+                    changeType |= TransformBroadcasterChangeType.Parent;
+                }
+                if (previousPosition != newPosition)
+                {
+                    previousPosition = newPosition;
+                    changeType |= TransformBroadcasterChangeType.Position;
+                }
+                if (previousRotation != newRotation)
+                {
+                    previousRotation = newRotation;
+                    changeType |= TransformBroadcasterChangeType.Rotation;
+                }
+                if (previousScale != newScale)
+                {
+                    previousScale = newScale;
+                    changeType |= TransformBroadcasterChangeType.Scale;
+                }
 
-            if (rectCache != null && rectCache.UpdateChange(rectTrans))
-            {
-                changeType |= TransformBroadcasterChangeType.RectTransform;
+
+                RectTransform rectTrans = CachedRectTransform;
+                if (rectTrans && rectCache == null)
+                {
+                    rectCache = new RectTransformBroadcaster();
+                }
+                else if (rectTrans == null && rectCache != null)
+                {
+                    rectCache = null;
+                }
+
+                if (rectCache != null && rectCache.UpdateChange(rectTrans))
+                {
+                    changeType |= TransformBroadcasterChangeType.RectTransform;
+                }
             }
 
             return changeType;
@@ -439,7 +480,7 @@ namespace Microsoft.MixedReality.SpectatorView
                 if (componentDefinition.IsTransformBroadcasterController)
                 {
                     bool changesDetected;
-                    componentDefinition.EnsureComponentBroadcastersCreated(cachedGameObject, out changesDetected);
+                    componentDefinition.EnsureComponentBroadcastersCreated(this.CachedGameObject, out changesDetected);
                 }
             }
         }
@@ -458,7 +499,7 @@ namespace Microsoft.MixedReality.SpectatorView
                         if (!componentDefinition.IsTransformBroadcasterController)
                         {
                             bool changesDetected;
-                            componentDefinition.EnsureComponentBroadcastersCreated(cachedGameObject, out changesDetected);
+                            componentDefinition.EnsureComponentBroadcastersCreated(this.CachedGameObject, out changesDetected);
                             anyChangesDetected |= changesDetected;
                         }
                     }
@@ -484,11 +525,11 @@ namespace Microsoft.MixedReality.SpectatorView
             {
                 if (ParentId == NullTransformId)
                 {
-                    return cachedGameObject.activeInHierarchy;
+                    return this.CachedGameObject.activeInHierarchy;
                 }
                 else
                 {
-                    return cachedGameObject.activeSelf;
+                    return this.CachedGameObject.activeSelf;
                 }
             }
         }
@@ -534,9 +575,14 @@ namespace Microsoft.MixedReality.SpectatorView
 
         private void EnsureChildTransformsAreSynchronized()
         {
-            for (int i = 0; i < this.transform.childCount; i++)
+            if (this.CachedGameObject.tag == SpectatorViewChildrenHiddenTag)
             {
-                ComponentExtensions.EnsureComponent<TransformBroadcaster>(this.transform.GetChild(i).gameObject);
+                return;
+            }
+
+            for (int i = 0; i < CachedTransform.childCount; i++)
+            {
+                ComponentExtensions.EnsureComponent<TransformBroadcaster>(CachedTransform.GetChild(i).gameObject);
             }
         }
     }
