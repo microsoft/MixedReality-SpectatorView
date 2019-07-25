@@ -12,23 +12,51 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
 {
     public static class StateSynchronizationMenuItems
     {
+        private static IEqualityComparer<IAssetCache> assetTypeComparer = new AssetCacheTypeEqualityComparer();
+
+        private class AssetCacheTypeEqualityComparer : IEqualityComparer<IAssetCache>
+        {
+            public bool Equals(IAssetCache x, IAssetCache y)
+            {
+                if (ReferenceEquals(x, y))
+                {
+                    return true;
+                }
+                if (ReferenceEquals(x, null) || ReferenceEquals(y, null))
+                {
+                    return false;
+                }
+
+                return x.GetType().Equals(y.GetType());
+            }
+
+            public int GetHashCode(IAssetCache obj)
+            {
+                return obj.GetType().GetHashCode();
+            }
+        }
+
+        private static IEnumerable<IAssetCache> GetAllAssetCaches()
+        {
+            var assetCaches = AssetCache.EnumerateAllComponentsInScenesAndPrefabs<IAssetCache>();
+            return assetCaches.Distinct(assetTypeComparer);
+        }
+
         [MenuItem("Spectator View/Update All Asset Caches", priority = 100)]
         public static void UpdateAllAssetCaches()
         {
             bool assetCacheFound = false;
-            var scene = SceneManager.GetActiveScene();
-            foreach (GameObject root in scene.GetRootGameObjects())
+
+            foreach (IAssetCache assetCache in GetAllAssetCaches())
             {
-                foreach (IAssetCache assetCache in root.GetComponentsInChildren<IAssetCache>(includeInactive: true))
-                {
-                    assetCacheFound = true;
-                    assetCache.UpdateAssetCache();
-                }
+                Debug.Log($"Updating asset cache {assetCache.GetType().Name}...");
+                assetCache.UpdateAssetCache();
+                assetCacheFound = true;
             }
 
             if (!assetCacheFound)
             {
-                Debug.LogWarning("No asset caches were found in the scene. Unable to update asset caches.");
+                Debug.LogWarning("No asset caches were found in the project. Unable to update asset caches.");
                 return;
             }
 
@@ -40,19 +68,17 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
         public static void ClearAllAssetCaches()
         {
             bool assetCacheFound = false;
-            var scene = SceneManager.GetActiveScene();
-            foreach (GameObject root in scene.GetRootGameObjects())
+
+            foreach (IAssetCache assetCache in GetAllAssetCaches())
             {
-                foreach (IAssetCache assetCache in root.GetComponentsInChildren<IAssetCache>(includeInactive: true))
-                {
-                    assetCacheFound = true;
-                    assetCache.ClearAssetCache();
-                }
+                Debug.Log($"Clearing asset cache {assetCache.GetType().Name}...");
+                assetCache.ClearAssetCache();
+                assetCacheFound = true;
             }
 
             if (!assetCacheFound)
             {
-                Debug.LogWarning("No asset caches were found in the scene. Unable to clear asset caches.");
+                Debug.LogWarning("No asset caches were found in the project. Unable to clear asset caches.");
                 return;
             }
 

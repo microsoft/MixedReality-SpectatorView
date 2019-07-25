@@ -56,8 +56,6 @@ namespace Microsoft.MixedReality.SpectatorView
                 EnsureAssetDirectoryExists();
 
                 AssetDatabase.CreateAsset(asset, assetPathAndName);
-                AssetDatabase.SaveAssets();
-                AssetDatabase.Refresh();
             }
             return asset;
 #else
@@ -113,7 +111,7 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
-        protected static IEnumerable<T> EnumerateAllComponentsInScenesAndPrefabs<T>()
+        public static IEnumerable<T> EnumerateAllComponentsInScenesAndPrefabs<T>()
         {
 #if UNITY_EDITOR
             foreach (string prefabPath in UnityEditor.AssetDatabase.GetAllAssetPaths().Where(path => IsPrefabOrFBX(Path.GetExtension(path).ToLowerInvariant())))
@@ -128,12 +126,15 @@ namespace Microsoft.MixedReality.SpectatorView
                 }
             }
 
+            Scene activeScene = SceneManager.GetActiveScene();
+            bool foundActiveScene = false;
             List<Scene> scenesToClose = new List<Scene>();
             for (int i = 0; i < UnityEditor.EditorBuildSettings.scenes.Length; i++)
             {
                 if (UnityEditor.EditorBuildSettings.scenes[i].enabled)
                 {
                     Scene scene = UnityEditor.SceneManagement.EditorSceneManager.GetSceneByBuildIndex(i);
+                    foundActiveScene = foundActiveScene || scene == activeScene;
                     if (!scene.isLoaded)
                     {
                         UnityEditor.SceneManagement.EditorSceneManager.OpenScene(UnityEditor.EditorBuildSettings.scenes[i].path, UnityEditor.SceneManagement.OpenSceneMode.Additive);
@@ -145,6 +146,15 @@ namespace Microsoft.MixedReality.SpectatorView
                     {
                         yield return descendant;
                     }
+                }
+            }
+
+            if (!foundActiveScene)
+            {
+                var rootGameObjects = activeScene.GetRootGameObjects();
+                foreach (T descendant in rootGameObjects.SelectMany(go => go.GetComponentsInChildren<T>(includeInactive: true)))
+                {
+                    yield return descendant;
                 }
             }
 
