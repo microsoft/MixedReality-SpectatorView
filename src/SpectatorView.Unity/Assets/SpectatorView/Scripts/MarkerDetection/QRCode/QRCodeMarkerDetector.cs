@@ -59,6 +59,8 @@ namespace Microsoft.MixedReality.SpectatorView
         /// <inheritdoc />
         public void StartDetecting()
         {
+            enabled = true;
+
 #if ENABLE_QRCODES
             _tracking = true;
 #else
@@ -75,6 +77,8 @@ namespace Microsoft.MixedReality.SpectatorView
 #else
             Debug.LogError("Current platform does not support qr code marker detector");
 #endif
+
+            enabled = false;
         }
 
         /// <inheritdoc />
@@ -90,6 +94,17 @@ namespace Microsoft.MixedReality.SpectatorView
 
             size = 0.0f;
             return false;
+        }
+
+        protected void Update()
+        {
+#if ENABLE_QRCODES
+            if (_tracking &&
+                _processMarkers)
+            {
+                ProcessMarkerUpdates();
+            }
+#endif
         }
 
 #if ENABLE_QRCODES
@@ -131,15 +146,6 @@ namespace Microsoft.MixedReality.SpectatorView
         {
             await _qrCodesManager.StopQRTrackingAsync();
             DebugLog("Stopped qr tracker");
-        }
-
-        protected void Update()
-        {
-            if (_tracking &&
-                _processMarkers)
-            {
-                ProcessMarkerUpdates();
-            }
         }
 
         private void QRCodeAdded(object sender, QRCodeEventArgs<QRCodesTrackerPlugin.QRCode> e)
