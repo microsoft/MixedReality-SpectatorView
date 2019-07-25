@@ -68,6 +68,7 @@ namespace Microsoft.MixedReality.SpectatorView
                 if (HasFlag(changeFlags, ChangeType.Properties))
                 {
                     message.Write(previousValues.enabled);
+                    message.Write(previousValues.showMaskGraphic);
                 }
 
                 message.Flush();
@@ -80,9 +81,11 @@ namespace Microsoft.MixedReality.SpectatorView
             public MaskProperties(Mask mask)
             {
                 enabled = mask.enabled;
+                showMaskGraphic = mask.showMaskGraphic;
             }
 
             public bool enabled;
+            public bool showMaskGraphic;
 
             public static bool operator ==(MaskProperties first, MaskProperties second)
             {
@@ -103,7 +106,8 @@ namespace Microsoft.MixedReality.SpectatorView
 
                 MaskProperties other = (MaskProperties)obj;
                 return
-                    other.enabled == enabled;
+                    other.enabled == enabled &&
+                    other.showMaskGraphic == showMaskGraphic;
             }
 
             public override int GetHashCode()
