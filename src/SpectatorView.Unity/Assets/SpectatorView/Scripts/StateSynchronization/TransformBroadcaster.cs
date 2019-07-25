@@ -39,6 +39,11 @@ namespace Microsoft.MixedReality.SpectatorView
         private bool isIdInitialized = false;
         private bool? isHidden;
 
+        /// <summary>
+        /// Gets a cached version of the Transform associated with this Component.
+        /// This field is cached due to its frequent access. Calling Component.transform
+        /// incurs extra cost inside the Unity engine to perform thread-safety checks.
+        /// </summary>
         private Transform CachedTransform
         {
             get
@@ -52,6 +57,11 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
+        /// <summary>
+        /// Gets a cached version of the GameObject associated with this Component.
+        /// This field is cached due to its frequent access. Calling Component.gameObject
+        /// incurs extra cost inside the Unity engine to perform thread-safety checks.
+        /// </summary>
         private GameObject CachedGameObject
         {
             get
@@ -65,7 +75,18 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
-        private RectTransform CachedRectTransform => cachedRectTransform ?? (cachedRectTransform = GetComponent<RectTransform>());
+        private RectTransform CachedRectTransform
+        {
+            get
+            {
+                if (cachedRectTransform == null)
+                {
+                    cachedRectTransform = GetComponent<RectTransform>();
+                }
+
+                return cachedRectTransform;
+            }
+        }
 
         protected override bool UpdateWhenDisabled => true;
 
@@ -321,55 +342,63 @@ namespace Microsoft.MixedReality.SpectatorView
             GetLocalPose(out newPosition, out newRotation, out newScale);
             bool newIsActive = SynchronizedIsActive;
 
-            if (previousName != CachedName)
-            {
-                previousName = CachedName;
-                changeType |= TransformBroadcasterChangeType.Name;
-            }
-            if (previousLayer != newLayer)
-            {
-                previousLayer = newLayer;
-                changeType |= TransformBroadcasterChangeType.Layer;
-            }
-            if (previousParentId != newParentId)
-            {
-                previousParentId = newParentId;
-                changeType |= TransformBroadcasterChangeType.Parent;
-            }
-            if (previousPosition != newPosition)
-            {
-                previousPosition = newPosition;
-                changeType |= TransformBroadcasterChangeType.Position;
-            }
-            if (previousRotation != newRotation)
-            {
-                previousRotation = newRotation;
-                changeType |= TransformBroadcasterChangeType.Rotation;
-            }
-            if (previousScale != newScale)
-            {
-                previousScale = newScale;
-                changeType |= TransformBroadcasterChangeType.Scale;
-            }
             if (previousIsActive != newIsActive)
             {
                 previousIsActive = newIsActive;
                 changeType |= TransformBroadcasterChangeType.IsActive;
             }
 
-            RectTransform rectTrans = CachedRectTransform;
-            if (rectTrans && rectCache == null)
+            // If this component is not active and enabled in the hierarchy, we only need
+            // to synchronize the isActive state. This is a performance win for large dynamic hierarchies, which don't
+            // need to keep the other Transform-related properties in sync.
+            if (isActiveAndEnabled)
             {
-                rectCache = new RectTransformBroadcaster();
-            }
-            else if (rectTrans == null && rectCache != null)
-            {
-                rectCache = null;
-            }
+                if (previousName != CachedName)
+                {
+                    previousName = CachedName;
+                    changeType |= TransformBroadcasterChangeType.Name;
+                }
+                if (previousLayer != newLayer)
+                {
+                    previousLayer = newLayer;
+                    changeType |= TransformBroadcasterChangeType.Layer;
+                }
+                if (previousParentId != newParentId)
+                {
+                    previousParentId = newParentId;
+                    changeType |= TransformBroadcasterChangeType.Parent;
+                }
+                if (previousPosition != newPosition)
+                {
+                    previousPosition = newPosition;
+                    changeType |= TransformBroadcasterChangeType.Position;
+                }
+                if (previousRotation != newRotation)
+                {
+                    previousRotation = newRotation;
+                    changeType |= TransformBroadcasterChangeType.Rotation;
+                }
+                if (previousScale != newScale)
+                {
+                    previousScale = newScale;
+                    changeType |= TransformBroadcasterChangeType.Scale;
+                }
 
-            if (rectCache != null && rectCache.UpdateChange(rectTrans))
-            {
-                changeType |= TransformBroadcasterChangeType.RectTransform;
+
+                RectTransform rectTrans = CachedRectTransform;
+                if (rectTrans && rectCache == null)
+                {
+                    rectCache = new RectTransformBroadcaster();
+                }
+                else if (rectTrans == null && rectCache != null)
+                {
+                    rectCache = null;
+                }
+
+                if (rectCache != null && rectCache.UpdateChange(rectTrans))
+                {
+                    changeType |= TransformBroadcasterChangeType.RectTransform;
+                }
             }
 
             return changeType;
