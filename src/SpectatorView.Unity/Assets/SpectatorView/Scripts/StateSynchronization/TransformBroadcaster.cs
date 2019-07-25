@@ -13,6 +13,7 @@ namespace Microsoft.MixedReality.SpectatorView
     public class TransformBroadcaster : ComponentBroadcaster<TransformBroadcasterService, TransformBroadcasterChangeType>
     {
         public const string SpectatorViewHiddenTag = "SpectatorViewHidden";
+        public const string SpectatorViewChildrenHiddenTag = "SpectatorViewChildrenHidden";
         private short id;
 
         private bool previousIsActive = true;
@@ -48,6 +49,19 @@ namespace Microsoft.MixedReality.SpectatorView
                 }
 
                 return cachedTransform;
+            }
+        }
+
+        private GameObject CachedGameObject
+        {
+            get
+            {
+                if (cachedGameObject == null)
+                {
+                    cachedGameObject = this.gameObject;
+                }
+
+                return cachedGameObject;
             }
         }
 
@@ -177,11 +191,9 @@ namespace Microsoft.MixedReality.SpectatorView
             if (!isIdInitialized)
             {
                 transformBroadcaster = this;
-                cachedTransform = transform;
-                cachedGameObject = gameObject;
                 id = StateSynchronizationSceneManager.Instance.GetNewTransformId();
 
-                StateSynchronizationSceneManager.Instance.AssignMirror(this.cachedGameObject, this.id);
+                StateSynchronizationSceneManager.Instance.AssignMirror(this.CachedGameObject, this.id);
 
                 AttachTransformBroadcasterControllers();
 
@@ -253,7 +265,7 @@ namespace Microsoft.MixedReality.SpectatorView
             {
                 if (cachedName == null)
                 {
-                    cachedName = this.cachedGameObject.name;
+                    cachedName = this.CachedGameObject.name;
                 }
 
                 return cachedName;
@@ -267,7 +279,7 @@ namespace Microsoft.MixedReality.SpectatorView
         {
             get
             {
-                return this.cachedGameObject.layer;
+                return this.CachedGameObject.layer;
             }
         }
 
@@ -439,7 +451,7 @@ namespace Microsoft.MixedReality.SpectatorView
                 if (componentDefinition.IsTransformBroadcasterController)
                 {
                     bool changesDetected;
-                    componentDefinition.EnsureComponentBroadcastersCreated(cachedGameObject, out changesDetected);
+                    componentDefinition.EnsureComponentBroadcastersCreated(this.CachedGameObject, out changesDetected);
                 }
             }
         }
@@ -458,7 +470,7 @@ namespace Microsoft.MixedReality.SpectatorView
                         if (!componentDefinition.IsTransformBroadcasterController)
                         {
                             bool changesDetected;
-                            componentDefinition.EnsureComponentBroadcastersCreated(cachedGameObject, out changesDetected);
+                            componentDefinition.EnsureComponentBroadcastersCreated(this.CachedGameObject, out changesDetected);
                             anyChangesDetected |= changesDetected;
                         }
                     }
@@ -484,11 +496,11 @@ namespace Microsoft.MixedReality.SpectatorView
             {
                 if (ParentId == NullTransformId)
                 {
-                    return cachedGameObject.activeInHierarchy;
+                    return this.CachedGameObject.activeInHierarchy;
                 }
                 else
                 {
-                    return cachedGameObject.activeSelf;
+                    return this.CachedGameObject.activeSelf;
                 }
             }
         }
@@ -534,9 +546,14 @@ namespace Microsoft.MixedReality.SpectatorView
 
         private void EnsureChildTransformsAreSynchronized()
         {
-            for (int i = 0; i < this.transform.childCount; i++)
+            if (this.CachedGameObject.tag == SpectatorViewChildrenHiddenTag)
             {
-                ComponentExtensions.EnsureComponent<TransformBroadcaster>(this.transform.GetChild(i).gameObject);
+                return;
+            }
+
+            for (int i = 0; i < CachedTransform.childCount; i++)
+            {
+                ComponentExtensions.EnsureComponent<TransformBroadcaster>(CachedTransform.GetChild(i).gameObject);
             }
         }
     }
