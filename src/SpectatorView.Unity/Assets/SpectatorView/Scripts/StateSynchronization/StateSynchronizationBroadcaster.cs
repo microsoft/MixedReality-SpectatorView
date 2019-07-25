@@ -29,6 +29,8 @@ namespace Microsoft.MixedReality.SpectatorView
         private const float PerfUpdateTimeSeconds = 1.0f;
         private float timeUntilNextPerfUpdate = PerfUpdateTimeSeconds;
 
+        private GameObject dontDestroyOnLoadGameObject;
+        
         protected override int RemotePort => Port;
 
         protected override void Awake()
@@ -131,6 +133,21 @@ namespace Microsoft.MixedReality.SpectatorView
                     {
                         ComponentExtensions.EnsureComponent<TransformBroadcaster>(root);
                     }
+                }
+
+                // GameObjects that are marked DontDestroyOnLoad exist in a special scene, and that scene
+                // cannot be enumerated via the SceneManager. The only way to access that scene is from a
+                // GameObject inside that scene, so we need to create a GameObject we have access to inside
+                // that scene in order to enumerate all of its root GameObjects.
+                if (dontDestroyOnLoadGameObject == null)
+                {
+                    dontDestroyOnLoadGameObject = new GameObject("StateSynchronizationBroadcaster_DontDestroyOnLoad");
+                    DontDestroyOnLoad(dontDestroyOnLoadGameObject);
+                }
+
+                foreach (GameObject root in dontDestroyOnLoadGameObject.scene.GetRootGameObjects())
+                {
+                    ComponentExtensions.EnsureComponent<TransformBroadcaster>(root);
                 }
             }
         }
