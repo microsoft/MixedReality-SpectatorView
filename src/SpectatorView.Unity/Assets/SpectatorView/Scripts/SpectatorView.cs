@@ -33,11 +33,22 @@ namespace Microsoft.MixedReality.SpectatorView
 
         [Header("Networking")]
         /// <summary>
-        /// User ip address
+        /// User ip address, this value is used for the user if 'Use Mobile Network Configuration Visual' is set to false.
         /// </summary>
-        [Tooltip("User ip address")]
+        [Tooltip("User ip address, this value is used for the user if 'Use Mobile Network Configuration Visual' is set to false.")]
         [SerializeField]
         private string userIpAddress = "127.0.0.1";
+
+        /// <summary>
+        /// Prefab for creating a mobile network configuration visual.
+        /// </summary>
+        [Tooltip("Default prefab for creating a mobile network configuration visual.")]
+        [SerializeField]
+#if UNITY_IOS || UNITY_ANDROID
+        private GameObject defaultMobileNetworkConfigurationVisualPrefab = null;
+#else
+        private GameObject defaultMobileNetworkConfigurationVisualPrefab;
+#endif
 
         [Header("State Synchronization")]
         /// <summary>
@@ -72,7 +83,11 @@ namespace Microsoft.MixedReality.SpectatorView
         /// </summary>
         [Tooltip("Default prefab for creating a mobile recording service visual.")]
         [SerializeField]
-        public GameObject defaultMobileRecordingServiceVisualPrefab = null;
+#if UNITY_IOS || UNITY_ANDROID
+        private GameObject defaultMobileRecordingServiceVisualPrefab = null;
+#else
+        private GameObject defaultMobileRecordingServiceVisualPrefab;
+#endif
 
         [Header("Debugging")]
         /// <summary>
@@ -113,6 +128,8 @@ namespace Microsoft.MixedReality.SpectatorView
         private GameObject mobileRecordingServiceVisual = null;
         private IRecordingService recordingService = null;
         private IRecordingServiceVisual recordingServiceVisual = null;
+        private GameObject mobileNetworkConfigurationVisual = null;
+        private INetworkConfigurationVisual networkConfigurationVisual = null;
 #endif
 
         private void Awake()
@@ -157,7 +174,16 @@ namespace Microsoft.MixedReality.SpectatorView
                         // When running as a spectator, automatic localization should be initiated if it's configured.
                         SpatialCoordinateSystemManager.Instance.ParticipantConnected += OnParticipantConnected;
 
-                        RunStateSynchronizationAsObserver();
+                        if (!ShouldUseNetworkConfigurationVisual())
+                        {
+                            DebugLog("Not using a network configuration visual, beginning state synchronization as an observer.");
+                            RunStateSynchronizationAsObserver();
+                        }
+                        else
+                        {
+                            DebugLog("Using a network configuration visual. State synchronization will be delayed until a connection is started by the user.");
+                            SetupNetworkConfigurationVisual();
+                        }
                     }
                     break;
             }
@@ -171,6 +197,13 @@ namespace Microsoft.MixedReality.SpectatorView
 
 #if UNITY_ANDROID || UNITY_IOS
             Destroy(mobileRecordingServiceVisual);
+
+            if (mobileNetworkConfigurationVisual != null)
+            {
+                Destroy(mobileNetworkConfigurationVisual);
+                mobileNetworkConfigurationVisual = null;
+                networkConfigurationVisual = null;
+            }
 #endif
 
             SpatialCoordinateSystemManager.Instance.ParticipantConnected -= OnParticipantConnected;
@@ -218,7 +251,7 @@ namespace Microsoft.MixedReality.SpectatorView
                     return;
                 }
 
-                recordingServiceVisual = mobileRecordingServiceVisual.GetComponentInChildren<IRecordingServiceVisual>();
+                recordingServiceVisual = mobileRecordingServiceVisual.GetComponentInChildren<IRecordingServiceVisual>(true);
                 if (recordingServiceVisual == null)
                 {
                     Debug.LogError("Failed to find an IRecordingServiceVisual in the created mobileRecordingServiceVisualPrefab. Note: It's assumed that the IRecordingServiceVisual is enabled by default in the mobileRecordingServiceVisualPrefab.");
@@ -240,6 +273,76 @@ namespace Microsoft.MixedReality.SpectatorView
             return true;
 #else
             recordingService = null;
+            return false;
+#endif
+        }
+
+        private void SetupNetworkConfigurationVisual()
+        {
+#if UNITY_ANDROID || UNITY_IOS
+            if (mobileNetworkConfigurationVisual == null)
+            {
+                if (networkConfigurationVisual != null)
+                {
+                    networkConfigurationVisual.NetworkConfigurationUpdated -= OnNetworkConfigurationUpdated;
+                    networkConfigurationVisual = null;
+                }
+
+                GameObject mobileNetworkConfigurationVisualPrefab = defaultMobileNetworkConfigurationVisualPrefab;
+                if (NetworkConfigurationSettings.IsInitialized && NetworkConfigurationSettings.Instance.OverrideMobileNetworkConfigurationVisualPrefab != null)
+                {
+                    mobileNetworkConfigurationVisualPrefab = NetworkConfigurationSettings.Instance.OverrideMobileNetworkConfigurationVisualPrefab;
+                }
+
+                mobileNetworkConfigurationVisual = Instantiate(mobileNetworkConfigurationVisualPrefab);
+                networkConfigurationVisual = mobileNetworkConfigurationVisual.GetComponentInChildren<INetworkConfigurationVisual>(true);
+                if (networkConfigurationVisual == null)
+                {
+                    Debug.LogError("Network configuration visual was not found. No connection will be established. Visual will be destroyed.");
+                    Destroy(mobileNetworkConfigurationVisual);
+                    mobileNetworkConfigurationVisual = null;
+                }
+                else
+                {
+                    networkConfigurationVisual.NetworkConfigurationUpdated += OnNetworkConfigurationUpdated;
+                }
+            }
+
+            if (networkConfigurationVisual != null)
+            {
+                networkConfigurationVisual.Show();
+            }
+#endif
+        }
+
+
+        private void OnNetworkConfigurationUpdated(object sender, string ipAddress)
+        {
+#if UNITY_ANDROID || UNITY_IOS
+            this.userIpAddress = ipAddress;
+            if (networkConfigurationVisual != null)
+            {
+                networkConfigurationVisual.NetworkConfigurationUpdated -= OnNetworkConfigurationUpdated;
+                networkConfigurationVisual.Hide();
+            }
+
+            RunStateSynchronizationAsObserver();
+#endif
+        }
+
+
+        private bool ShouldUseNetworkConfigurationVisual()
+        {
+#if UNITY_ANDROID || UNITY_IOS
+            if (NetworkConfigurationSettings.IsInitialized)
+            {
+                return NetworkConfigurationSettings.Instance.EnableMobileNetworkConfigurationVisual;
+            }
+            else
+            {
+                return (defaultMobileNetworkConfigurationVisualPrefab != null);
+            }
+#else
             return false;
 #endif
         }

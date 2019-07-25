@@ -45,3 +45,7 @@ For more information on compositing and recording, see [here](../src/SpectatorVi
 ### Video Camera Recording
 
 For more information on recording with a video camera, see [here](../src/SpectatorView.Unity/Assets/SpectatorView/Scripts/Compositor/README.md).
+
+### Customizing UI
+
+For more information on creating and customizing UI, see [here](../src/SpectatorView.Unity/Assets/SpectatorView/Scripts/UI/README.md).
