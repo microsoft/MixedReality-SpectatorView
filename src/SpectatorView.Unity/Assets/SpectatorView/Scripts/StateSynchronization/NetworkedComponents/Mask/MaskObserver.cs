@@ -15,6 +15,7 @@ namespace Microsoft.MixedReality.SpectatorView
             if (MaskBroadcaster.HasFlag(changeType, MaskBroadcaster.ChangeType.Properties))
             {
                 attachedComponent.enabled = message.ReadBoolean();
+                attachedComponent.showMaskGraphic = message.ReadBoolean();
             }
         }
     }
