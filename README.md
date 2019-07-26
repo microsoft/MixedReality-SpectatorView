@@ -16,12 +16,11 @@ Spectator View is an augmented reality product that enables viewing HoloLens exp
 ![Marker](doc/images/CloneRepo.png)
 
 5. Change directories to that of your project's repository.
-
-![Marker](doc/images/ChangeDir.png)
-
 6. Add the MixedReality-SpectatorView codebase as a submodule for your project by running `git submodule add https://github.com/microsoft/MixedReality-SpectatorView.git sv`
 
 >Note: If you are anticipating contributing to the MixedReality-SpectatorView project, you should fork your own version of the repository and add it as a submodule instead of the Microsoft repository. Your forked repository url will look something like this: `https://github.com/YourGitHubAliasHere/MixedReality-SpectatorView.git`.
+
+![Marker](doc/images/AddSubmodule.png)
 
 7. Change directories to the MixedReality-SpectatorView submodule.
 8. Choose the appropriate branch that you would like to use for the MixedReality-SpectatorView submodule.
@@ -52,6 +51,7 @@ If you are using the master branch, you will need to run the following command:
 
 1. Run `'tools/Scripts/SetupRepository.bat'` as an administrator on your PC (On Mac or Linux, you can run `'sh /tools/scripts/SetupRepository.sh'`). These scripts are located within your MixedReality-SpectatorView submodule.
 
+![Marker](doc/images/SetupRepo.png)
 
 ### Samples
 
@@ -92,6 +92,8 @@ After obtaining a local clone of the MixedReality-SpectatorView repository and r
 3. Run `tools\Scripts\AddDependencies.bat "Assets" "sv"` (These paths are the relative paths to your project Assets folder and your MixedReality-SpectatorView submodule from the root directory of your repository).  This script is located within your MixedReality-SpectatorView submodule.
 
 Now, when you reopen your project in Unity, folders should appear in your project's Assets folder.
+
+![Marker](doc/images/AddDependencies.png)
 
 ### Basic Setup
 
