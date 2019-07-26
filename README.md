@@ -23,7 +23,13 @@ Spectator View is an augmented reality product that enables viewing HoloLens exp
 ![Marker](doc/images/AddSubmodule.png)
 
 7. Change directories to the MixedReality-SpectatorView submodule.
-8. Choose the appropriate branch that you would like to use for the MixedReality-SpectatorView submodule.
+8. Choose the appropriate branch that you would like to use for the MixedReality-SpectatorView submodule. By default, the submodule will be directed at master, which may not be the most stable branch for consumption. To change branches run the following commands:
+
+    1. Change directories into the submodule.
+    2. Run `git fetch origin release/1.0.0-beta`
+    3. Run `git checkout release/1.0.0-beta`
+    4. Run `git branch` to make sure you are using the release/1.0.0-beta branch
+
 
 After running these git commands, you will have a local copy of the MixedReality-SpectatorView codebase. Next, you will need to follow the instructions in `Setup your local environment` to obtain external dependencies.
 
