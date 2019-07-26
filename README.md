@@ -57,8 +57,6 @@ If you are using the master branch, you will need to run the following command:
 
 After going through the setup steps in 'Obtaining the code' and 'Setting up your local environment', sample projects will be configured for use in your clone of the MixedReality-SpectatorView repository. It's easy to get started by building off one of the samples or by inspecting them to understand project setup. For more information, see [Samples](samples/README.md).
 
-## Setting up your own project
-
 ### Adding references to your own project
 
 After obtaining a local clone of the MixedReality-SpectatorView repository and resolving its external dependencies (see above), the suggested mechanism for referencing the code is by adding symbolic linked directories to your Unity project's Assets folder. You can do this with the following:
@@ -95,7 +93,18 @@ Now, when you reopen your project in Unity, folders should appear in your projec
 
 ![Marker](doc/images/AddDependencies.png)
 
-### Basic Setup
+### Sharing the project
+
+After adding the MixedReality-SpectatorView repository as a submodule, you can commit the symbolic linked directories and submodule meta files to your repository to share with your team. If a team member wants to then use this repository they should do the following:
+
+1. Clone the project repository.
+2. Run `tools\Scripts\FixSymbolicLinks.ps1` from the root directory of your project's repository.
+
+![Marker](doc/images/FixSymbolicLinks.png)
+
+3. Run `tools\Scripts\SetupRepository.ps1` in the MixedReality-SpectatorView submodule.
+
+### Basic Unity Setup
 
 Below are simple instructions for adding Spectator View to your project:
 
@@ -114,7 +123,7 @@ Below are simple instructions for adding Spectator View to your project:
 
 > Note: Some platforms require a special build step, for build information see: [Building & Deploying](doc/SpectatorView.Setup.md###Building%20%26%20Deploying)
 
-### Detailed Setup
+### Detailed Unity Setup
 For more information on setting up a Spectator View project, see the following pages:
 
 * [Spectating with an Android or iOS device](doc/SpectatorView.Setup.md)
