@@ -88,7 +88,7 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
-        protected void OnEnable()
+        private void OnEnable()
         {
             UpdateDetectionCompletionStrategy();
 
@@ -108,7 +108,7 @@ namespace Microsoft.MixedReality.SpectatorView
             StopDetecting();
         }
 
-        protected void Update()
+        private void Update()
         {
             if (_detecting)
             {
@@ -135,7 +135,7 @@ namespace Microsoft.MixedReality.SpectatorView
         }
 
         /// <inheritdoc/>
-        public void StartDetecting()
+        public async void StartDetecting()
         {
             enabled = true;
 
@@ -145,7 +145,7 @@ namespace Microsoft.MixedReality.SpectatorView
                 _detecting = true;
                 _markerObservations.Clear();
                 DebugLog("Starting ArUco marker detection");
-                SetupCameraAsync();
+                await SetupCameraAsync();
             }
 #else
             Debug.LogError("Capturing is not supported on this platform");
@@ -153,14 +153,14 @@ namespace Microsoft.MixedReality.SpectatorView
         }
 
         /// <inheritdoc/>
-        public void StopDetecting()
+        public async void StopDetecting()
         {
             if (_detecting)
             {
                 _detecting = false;
 #if UNITY_WSA
                 DebugLog("Stopping ArUco marker detection");
-                CleanUpCameraAsync();
+                await CleanUpCameraAsync();
 #else
                 Debug.LogError("Capturing is not supported on this platform");
 #endif
