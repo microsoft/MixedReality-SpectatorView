@@ -75,6 +75,27 @@ foreach ($Dll in $ArUcoDlls)
   }
 }
 
+$EmptyArUcoDlls = @( "$RootDirectory\EmptyDlls\ARM\SpectatorView.OpenCV.dll",
+                     "$RootDirectory\EmptyDlls\ARM\opencv_aruco$OpenCVVersion.dll",
+                     "$RootDirectory\EmptyDlls\ARM\opencv_calib3d$OpenCVVersion.dll",
+                     "$RootDirectory\EmptyDlls\ARM\opencv_core$OpenCVVersion.dll",
+                     "$RootDirectory\EmptyDlls\ARM\opencv_features2d$OpenCVVersion.dll",
+                     "$RootDirectory\EmptyDlls\ARM\opencv_flann$OpenCVVersion.dll",
+                     "$RootDirectory\EmptyDlls\ARM\opencv_imgproc$OpenCVVersion.dll",
+                     "$RootDirectory\EmptyDlls\ARM\zlib1.dll")
+
+Write-Host "Copying empty ArUco marker detector dlls to $WSAARMDirectory"
+foreach ($Dll in $EmptyArUcoDlls)
+{
+  if (!(Test-Path $Dll)) {
+    Write-Warning "$Dll not found, visual studio build may fail."
+  }
+  else
+  {
+    Copy-Item -Force $Dll -Destination $WSAARMDirectory
+  }
+}
+
 $WinRTx86ExtensionDlls = @( "$RootDirectory\Release\SpectatorView.WinRTExtensions\SpectatorView.WinRTExtensions.dll")
 
 Write-Host "Copying WinRTExtension dlls to $WSAx86Directory"
