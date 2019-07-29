@@ -162,3 +162,6 @@ Spectator View contains some ability for customizing UI. For more information, s
 
 ### __Issue:__ DirectoryNotFoundException: Could not find a part of the path "*.asmdef"
 Spectator view uses symbolic linked directories in its sample projects, which results in large file paths. A DirectoryNotFoundException can occur if these file paths become too long. To fix this, place your Unity project in a directory with a shorter name, such as c:\proj.
+
+### __Issue:__ Android screen recording fails to begin based on PERMISSION_DENIED
+In some instances, contributors have experienced issues with android permissions after exporting their Unity project to Android Studio and declaring the ScreenRecordingActivity as their main activity in the AndroidManifest.xml. It's been observed that `android:maxSdkVersion=18` arguments can appear in the exported solution for the WRITE_EXTERNAL_STORAGE and READ_EXTERNAL_STORAGE user-permissions declared in their AndroidManifest. Removing `maxSdkVersion` declarations has unblocked users and allowed screen recording to work.
