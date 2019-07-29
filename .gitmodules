@@ -1,7 +1,7 @@
 [submodule "external/MixedRealityToolkit-Unity"]
 	path = external/MixedRealityToolkit-Unity
 	url = https://github.com/microsoft/MixedRealityToolkit-Unity
-	branch = mrtk_release
+	branch = mrtk_development
 	ignore = dirty
 [submodule "external/ARCore-Unity-SDK"]
 	path = external/ARCore-Unity-SDK
