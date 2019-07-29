@@ -82,7 +82,7 @@ After obtaining a local clone of the MixedReality-SpectatorView repository and r
 5. `mklink /D "MixedReality-SpectatorView" "..\sv\src\SpectatorView.Unity\Assets"`
 6. `mklink /D "ARKit-Unity-Plugin" "..\sv\external\ARKit-Unity-Plugin"`
 7. `mklink /D "AzureSpatialAnchorsPlugin" "..\sv\external\Azure-Spatial-Anchors-Samples\Unity\Assets\AzureSpatialAnchorsPlugin"`
-8. `mklink /D "GoogleARCore" "..\sv\external\ARCore-Unity-SDK\Assets"`
+8. `mklink /D "GoogleARCore" "..\sv\external\ARCore-Unity-SDK\Assets\GoogleARCore"`
 9. `mklink /D "MixedReality-QRCodePlugin" "..\sv\external\MixedReality-QRCodePlugin"`
 10. `mkdir AzureSpatialAnchors.Resources`
 11. `cd AzureSpatialAnchors.Resources`
