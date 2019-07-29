@@ -80,13 +80,15 @@ Not all spatial alignment strategies support all platforms. See the chart below 
 
 ![Marker](images/ASAInspector.png)
 
+> Note: Use of an Account Id and Account Key can accelerate your development process. However, hardcoding these values into your application isn't a safe practice and should be avoided for enterprise deployed solutions. For your end application, its suggested to use an Access or Authentication token. More information on how to setup and use AAD tokens with ASA can be found [here](https://docs.microsoft.com/en-us/azure/spatial-anchors/concepts/authentication?tabs=csharp#azure-ad-user-authentication).
+
 #### Azure Spatial Anchors on iOS
 If you are building Azure Spatial Anchors on iOS, you will need to take some additional steps after generating your XCode project through Unity. After exporting an iOS version of your application in Unity, do the following:
 
 1. In the terminal, navigate to your xcode project folder.
 2. Run `'pod install --repo-update'` in the terminal when in your xcode project folder.
 3. Open and compile your application using the **xcode workspace**. Do NOT use the **xcode project**.
->Note: Failing to take the above steps may result in errors such as 'Undefined symbols for architecture arm64' and 'framework not found Pods_Unity_iPhone' For more information on building ASA for iOS in Unity see [here](https://docs.microsoft.com/en-us/azure/spatial-anchors/quickstarts/get-started-unity-ios).
+> Note: Failing to take the above steps may result in errors such as 'Undefined symbols for architecture arm64' and 'framework not found Pods_Unity_iPhone' For more information on building ASA for iOS in Unity see [here](https://docs.microsoft.com/en-us/azure/spatial-anchors/quickstarts/get-started-unity-ios).
 
 ### QR Code Detection
 
@@ -98,7 +100,9 @@ If you are building Azure Spatial Anchors on iOS, you will need to take some add
 
 ### ArUco Marker Detection
 
-1. Build an x86 Release version of SpectatorView.OpenCV.dll and SpectatorView.WinRTExtensions.dll (see instructions [here](../src/SpectatorView.Native/README.md)) and include the associated dll's in your Unity project. Adding the plugins to your Unity project can be achieved by running the [CopyPluginsToUnity](../tools/Scripts/CopyPluginsToUnity.bat) script.
+1. Build an x86 Release version of SpectatorView.OpenCV.dll and SpectatorView.WinRTExtensions.dll (see instructions [here](../src/SpectatorView.Native/README.md)) and include the associated dll's in your Unity project. 
+
+2. Add the plugins to your Unity project by running the [CopyPluginsToUnity](../tools/Scripts/CopyPluginsToUnity.bat) script. This will add an empty SpectatorView.OpenCV.dll (and dependencies) for the ARM build flavor, which prevents HoloLens 2 build errors.
 
 ## Building & Deploying
 
@@ -176,3 +180,6 @@ Spectator View contains some ability for customizing UI. For more information, s
 
 ### __Issue:__ DirectoryNotFoundException: Could not find a part of the path "*.asmdef"
 Spectator view uses symbolic linked directories in its sample projects, which results in large file paths. A DirectoryNotFoundException can occur if these file paths become too long. To fix this, place your Unity project in a directory with a shorter name, such as c:\proj.
+
+### __Issue:__ Android screen recording fails to begin based on PERMISSION_DENIED
+In some instances, contributors have experienced issues with android permissions after exporting their Unity project to Android Studio and declaring the ScreenRecordingActivity as their main activity in the AndroidManifest.xml. It's been observed that `android:maxSdkVersion=18` arguments can appear in the exported solution for the WRITE_EXTERNAL_STORAGE and READ_EXTERNAL_STORAGE user-permissions declared in their AndroidManifest. Removing `maxSdkVersion` declarations has unblocked users and allowed screen recording to work.

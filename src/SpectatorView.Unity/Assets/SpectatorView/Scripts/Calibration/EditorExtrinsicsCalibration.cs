@@ -33,11 +33,9 @@ namespace Microsoft.MixedReality.SpectatorView
         /// </summary>
         [Tooltip("The HolographicCameraObserver that establishes a network connection with the Holographic Camera.")]
         [SerializeField]
-#if UNITY_EDITOR
+#pragma warning disable 414 // The field is assigned but its value is never used
         HolographicCameraObserver holographicCameraObserver = null;
-#else
-        HolographicCameraObserver holographicCameraObserver;
-#endif
+#pragma warning restore 414
 
         [Header("UI Parameters")]
         /// <summary>

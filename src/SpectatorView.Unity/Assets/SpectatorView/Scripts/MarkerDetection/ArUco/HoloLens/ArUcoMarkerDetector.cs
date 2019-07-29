@@ -5,6 +5,8 @@ using Microsoft.MixedReality.PhotoCapture;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Threading;
+using System.Threading.Tasks;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -44,9 +46,14 @@ namespace Microsoft.MixedReality.SpectatorView
         private HoloLensCamera _holoLensCamera;
         private SpectatorViewOpenCVInterface _api = null;
         private bool _detecting = false;
-        private Dictionary<int, List<Marker>> _markerObservations = null;
         private Dictionary<int, Marker> _nextMarkerUpdate;
         private MarkerDetectionCompletionStrategy _detectionCompletionStrategy;
+        private object lockObj = new object();
+        private Task setupCameraTask = null;
+
+#pragma warning disable 414 // The field is assigned but its value is never used
+        private Dictionary<int, List<Marker>> _markerObservations = null;
+#pragma warning restore 414
 
         [HideInInspector]
         public int RequiredObservations = 5;
@@ -84,13 +91,10 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
-        private void Awake()
+        private void OnEnable()
         {
             UpdateDetectionCompletionStrategy();
-        }
 
-        protected void Start()
-        {
 #if UNITY_WSA && !UNITY_EDITOR
             _api = new SpectatorViewOpenCVInterface();
             if (!_api.Initialize(_markerSize))
@@ -102,7 +106,12 @@ namespace Microsoft.MixedReality.SpectatorView
 #endif
         }
 
-        protected void Update()
+        private void OnDisable()
+        {
+            StopDetecting();
+        }
+
+        private void Update()
         {
             if (_detecting)
             {
@@ -129,15 +138,17 @@ namespace Microsoft.MixedReality.SpectatorView
         }
 
         /// <inheritdoc/>
-        public void StartDetecting()
+        public async void StartDetecting()
         {
+            enabled = true;
+
 #if UNITY_WSA
             if (!_detecting)
             {
                 _detecting = true;
                 _markerObservations.Clear();
                 DebugLog("Starting ArUco marker detection");
-                SetupCamera();
+                await SetupCameraAsync();
             }
 #else
             Debug.LogError("Capturing is not supported on this platform");
@@ -145,15 +156,20 @@ namespace Microsoft.MixedReality.SpectatorView
         }
 
         /// <inheritdoc/>
-        public void StopDetecting()
+        public async void StopDetecting()
         {
-            _detecting = false;
+            if (_detecting)
+            {
+                _detecting = false;
 #if UNITY_WSA
-            DebugLog("Stopping ArUco marker detection");
-            CleanUpCamera();
+                DebugLog("Stopping ArUco marker detection");
+                await CleanUpCameraAsync();
 #else
-            Debug.LogError("Capturing is not supported on this platform");
+                Debug.LogError("Capturing is not supported on this platform");
 #endif
+            }
+
+            enabled = false;
         }
 
         /// <inheritdoc/>
@@ -170,30 +186,53 @@ namespace Microsoft.MixedReality.SpectatorView
             return false;
         }
 
-        private async void SetupCamera()
+        private Task SetupCameraAsync()
         {
-            DebugLog("Setting up HoloLensCamera");
-            if (_holoLensCamera == null)
-                _holoLensCamera = new HoloLensCamera(CaptureMode.SingleLowLatency, PixelFormat.BGRA8);
+            lock (lockObj)
+            {
+                if (setupCameraTask != null)
+                {
+                    DebugLog("Returning existing setup camera task");
+                    return setupCameraTask;
+                }
 
-            _holoLensCamera.OnCameraInitialized += CameraInitialized;
-            _holoLensCamera.OnCameraStarted += CameraStarted;
-            _holoLensCamera.OnFrameCaptured += FrameCaptured;
+                DebugLog("Setting up HoloLensCamera");
+                if (_holoLensCamera == null)
+                {
+                    _holoLensCamera = new HoloLensCamera(CaptureMode.SingleLowLatency, PixelFormat.BGRA8);
+                    _holoLensCamera.OnCameraInitialized += CameraInitialized;
+                    _holoLensCamera.OnCameraStarted += CameraStarted;
+                    _holoLensCamera.OnFrameCaptured += FrameCaptured;
+                }
 
-            await _holoLensCamera.Initialize();
+                return setupCameraTask = _holoLensCamera.Initialize();
+            }
         }
 
-        private void CleanUpCamera()
+        private Task CleanUpCameraAsync()
         {
-            DebugLog("Cleaning up HoloLensCamera");
-            if (_holoLensCamera != null)
+            lock (lockObj)
             {
-                _holoLensCamera.Dispose();
-                _holoLensCamera.OnCameraInitialized -= CameraInitialized;
-                _holoLensCamera.OnCameraStarted -= CameraStarted;
-                _holoLensCamera.OnFrameCaptured -= FrameCaptured;
-                _holoLensCamera = null;
+                if (setupCameraTask == null)
+                {
+                    DebugLog("CleanupCameraAsync was called when no start task had been created.");
+                    return Task.CompletedTask;
+                }
+
+                DebugLog("Cleaning up HoloLensCamera");
+                if (_holoLensCamera != null)
+                {
+                    _holoLensCamera.Dispose();
+                    _holoLensCamera.OnCameraInitialized -= CameraInitialized;
+                    _holoLensCamera.OnCameraStarted -= CameraStarted;
+                    _holoLensCamera.OnFrameCaptured -= FrameCaptured;
+                    _holoLensCamera = null;
+                }
+
+                setupCameraTask = null;
             }
+
+            return Task.CompletedTask;
         }
 
         private void CameraInitialized(HoloLensCamera sender, bool initializeSuccessful)
