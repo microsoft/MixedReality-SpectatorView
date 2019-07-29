@@ -20,7 +20,9 @@ namespace Microsoft.MixedReality.SpectatorView
     public class DeviceInfoBroadcaster : MonoBehaviour
     {
         [SerializeField]
+#pragma warning disable 414 // The field is assigned but its value is never used
         private TCPConnectionManager connectionManager = null;
+#pragma warning restore 414
 
 #if UNITY_WSA
         private void Awake()
