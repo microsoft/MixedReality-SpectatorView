@@ -46,11 +46,14 @@ namespace Microsoft.MixedReality.SpectatorView
         private HoloLensCamera _holoLensCamera;
         private SpectatorViewOpenCVInterface _api = null;
         private bool _detecting = false;
-        private Dictionary<int, List<Marker>> _markerObservations = null;
         private Dictionary<int, Marker> _nextMarkerUpdate;
         private MarkerDetectionCompletionStrategy _detectionCompletionStrategy;
         private object lockObj = new object();
         private Task setupCameraTask = null;
+
+#pragma warning disable 414 // The field is assigned but its value is never used
+        private Dictionary<int, List<Marker>> _markerObservations = null;
+#pragma warning restore 414
 
         [HideInInspector]
         public int RequiredObservations = 5;
