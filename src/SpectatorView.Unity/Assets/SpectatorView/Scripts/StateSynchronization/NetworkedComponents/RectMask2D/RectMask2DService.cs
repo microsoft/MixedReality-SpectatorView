@@ -8,7 +8,7 @@ namespace Microsoft.MixedReality.SpectatorView
 {
     internal class RectMask2DService : ComponentBroadcasterService<RectMask2DService, RectMask2DObserver>
     {
-        public static readonly ShortID ID = new ShortID("RM2");
+        public static readonly ShortID ID = new ShortID("RMK");
 
         public override ShortID GetID() { return ID; }
 
