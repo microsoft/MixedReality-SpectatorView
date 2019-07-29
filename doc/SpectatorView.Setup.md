@@ -61,11 +61,11 @@ Not all spatial alignment strategies support all platforms. See the chart below 
 
 4. Add the `SPATIALALIGNMENT_ASA` preprocessor directive to your **Android Player Settings** (This is located via Build Settings -> Player Settings -> Other Settings -> 'Scripting Defined Symbols'). **Be sure to pick the Android tab in the Player Settings.**
 
->Note: If the Android Player Settings don't exist as an option, you may need to install the Android Build tools for Unity. For instructions on how to do this, see [here](https://docs.unity3d.com/Manual/GettingStartedAddingEditorComponents.html).
+> Note: If the Android Player Settings don't exist as an option, you may need to install the Android Build tools for Unity. For instructions on how to do this, see [here](https://docs.unity3d.com/Manual/GettingStartedAddingEditorComponents.html).
 
 ![Marker](images/AndroidPlayerSettings.png)
 
-5. Add the `SPATIALALIGNMENT_ASA` preprocessor directive to your iOS player settings (This is located via Build Settings -> Player Settings -> Other Settings -> 'Scripting Defined Symbols').  **Be sure to pick the iOS tab in the Player Settings.**
+5. Add the `SPATIALALIGNMENT_ASA` preprocessor directive to your **iOS player settings** (This is located via Build Settings -> Player Settings -> Other Settings -> 'Scripting Defined Symbols').  **Be sure to pick the iOS tab in the Player Settings.**
 
 >Note: If the iOS Player Settings don't exist as an option, you may need to install the iOS Build tools for Unity. For instructions on how to do this, see [here](https://docs.unity3d.com/Manual/GettingStartedAddingEditorComponents.html).
 
@@ -132,15 +132,15 @@ If you are building Azure Spatial Anchors on iOS, you will need to take some add
 3. Open the [SpectatorView.Android Unity scene](../src/SpectatorView.Unity/Assets/SpectatorView/Scenes/SpectatorView.Android.unity).
 4. Press the 'Android' button on the [Platform Switcher](../src/SpectatorView.Unity/Assets/SpectatorView.Editor/Scripts/PlatformSwitcherEditor.cs) attached to Spectator View in the Unity inspector (This should configure the correct build settings and app capabilities).
 5. Check 'ARCore Supported' under 'Build Settings -> Player Settings -> Android -> XR Settings' from the Unity editor toolbar.
-6. Export your project to android studio. Be sure to declare the SpectatorView.Android scene as the scene included. If SpectatorView.Android does not exist in your list of scenes to choose from in the build settings, open the scene in the Unity editor. Then reopen the build settings and press 'Add Open Scenes'.
+6. Export your project to Android Studio. Be sure to declare the SpectatorView.Android scene as the scene included. If SpectatorView.Android does not exist in your list of scenes to choose from in the build settings, open the scene in the Unity editor. Then reopen the build settings and press 'Add Open Scenes'.
 
 ![Marker](images/AndroidExport.png)
 
-8. Update the AndroidManifest.xml in android studio to use the Microsoft.MixedReality.SpectatorView.Unity.ScreenRecorderActivity class compared to the UnityPlayerActivity as the application activity.
+8. Update the AndroidManifest.xml in Android Studio to use the Microsoft.MixedReality.SpectatorView.Unity.ScreenRecorderActivity class compared to the UnityPlayerActivity as the application activity.
 
 ![Marker](images/AndroidManifest.png)
 
-9. Build and deploy the application through android studio to your desired device. If it is a new Android development device, you may need to enable developer options and debugging. For information on setting up your Android device for debugging, see [here](https://developer.android.com/studio/debug/dev-options).
+9. Build and deploy the application through Android Studio to your desired device. If it is a new Android development device, you may need to enable developer options and debugging. For information on setting up your Android device for debugging, see [here](https://developer.android.com/studio/debug/dev-options).
 
 ### iOS
 
