@@ -35,11 +35,15 @@ These instructions assumes a HoloLens 2 device for host, and an Android phone fo
 #### Build & Deploy
 
 1. Build UWP Player containing `Demo/Scenes/Finished_Scene.unity` scene, and deploy this application to the HoloLens 2host device.
-2. Build Android Player containing `MixedReality-SpectatorView/SpectatorView/Scenes/SpectatorView.Android.unity` scene, and deploy this application to the spectating mobile device.
-3. Launch the `SpectatorView.Build2019Demo` on the HoloLens 2 host, and wait for the experience to start.
-4. Launch the `SpectatorView.Build2019Demo` on the Android device, and wait for the connection to happen.
+2. Export Android Player containing `MixedReality-SpectatorView/SpectatorView/Scenes/SpectatorView.Android.unity` scene to an Android Studio solution.
+3. Open the Android Studio solution and change the main activity in the AndroidManifest.xml file to `Microsoft.MixedReality.SpectatorView.Unity.ScreenRecorderActivity`.
+4. Build the Android Studio solution and deploy this application to the spectating mobile device.
+5. Launch the `SpectatorView.Build2019Demo` on the HoloLens 2 host, and wait for the experience to start.
+6. Launch the `SpectatorView.Build2019Demo` on the Android device, and wait for the connection to happen.
 
-> Building iOS version requires an special step after exporting the Unity project to xCode, see the [official instructions](https://docs.microsoft.com/en-us/azure/spatial-anchors/quickstarts/get-started-unity-ios#open-the-xcode-project).
+> Note 1: Building iOS version requires an special step after exporting the Unity project to xCode, see the [official instructions](https://docs.microsoft.com/en-us/azure/spatial-anchors/quickstarts/get-started-unity-ios#open-the-xcode-project).
+
+> Note 2: Additional setup instructions for spectating with mobile devices can be found [here](../../doc/SpectatorView.Setup.md).
 
 ## Sample Project Contents
 
