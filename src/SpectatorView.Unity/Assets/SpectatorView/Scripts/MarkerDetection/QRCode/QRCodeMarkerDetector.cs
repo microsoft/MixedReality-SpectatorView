@@ -8,7 +8,9 @@
 
 using UnityEngine;
 
+#if ENABLE_QRCODES
 using Microsoft.MixedReality.QR;
+#endif
 
 using System;
 using System.Threading.Tasks;
@@ -35,10 +37,10 @@ namespace Microsoft.MixedReality.SpectatorView
         private QRCodesManager _qrCodesManager;
         private Dictionary<QRCode, SpatialCoordinateSystem> _markerCoordinateSystems = new Dictionary<QRCode, SpatialCoordinateSystem>();
         private bool _processMarkers = false;
+        private Dictionary<QRCode, int> _markerIds = new Dictionary<QRCode, int>();
 #endif
 
         private object _contentLock = new object();
-        private Dictionary<QRCode, int> _markerIds = new Dictionary<QRCode, int>();
         private Dictionary<int, float> _markerSizes = new Dictionary<int, float>();
         private readonly string _qrCodeNamePrefix = "sv";
 
@@ -251,6 +253,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
         private void TrimMarkers()
         {
+#if ENABLE_QRCODES
             lock (_contentLock)
             {
                 long currTime = System.Diagnostics.Stopwatch.GetTimestamp();
@@ -272,11 +275,10 @@ namespace Microsoft.MixedReality.SpectatorView
                     }
 
                     _markerIds.Remove(key);
-#if ENABLE_QRCODES
                     _markerCoordinateSystems.Remove(key);
-#endif
                 }
             }
+#endif
         }
 
         private bool TryGetMarkerId(string qrCode, out int markerId)
