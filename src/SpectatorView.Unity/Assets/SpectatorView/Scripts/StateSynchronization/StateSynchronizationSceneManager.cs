@@ -60,6 +60,12 @@ namespace Microsoft.MixedReality.SpectatorView
         /// <param name="componentDefinition">The definition controlling when a component should be broadcast.</param>
         public void RegisterService(IComponentBroadcasterService service, ComponentBroadcasterDefinition componentDefinition)
         {
+            if (componentBroadcasterServices.TryGetValue(service.GetID(), out IComponentBroadcasterService existingService))
+            {
+                Debug.LogError($"Duplicate IComponentBroadcasterService key detected: {service.GetID().ToString()} was previously registered for a service with type {existingService.GetType().Name} and now it is being re-registered for a service with type {service.GetType().Name}.");
+                return;
+            }
+
             componentBroadcasterDefinitions.Add(componentDefinition);
             componentBroadcasterServices.Add(service.GetID(), service);
         }
