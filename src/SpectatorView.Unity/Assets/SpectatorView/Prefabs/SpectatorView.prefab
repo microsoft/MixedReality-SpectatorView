@@ -200,7 +200,7 @@ MonoBehaviour:
   userIpAddress: 127.0.0.1
   defaultMobileNetworkConfigurationVisualPrefab: {fileID: 9128832365225436076, guid: e14699ad6aa64ed459c4ecba1c9f6001,
     type: 3}
-  stateSynchronizationSceneManager: {fileID: 0}
+  stateSynchronizationSceneManager: {fileID: 4715176406495730955}
   stateSynchronizationBroadcaster: {fileID: 4941633254549859856}
   stateSynchronizationObserver: {fileID: 4941633254517527404}
   defaultSpatialLocalizationInitializers:
@@ -362,6 +362,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4941633254257257630}
     m_Modifications:
+    - target: {fileID: 2053685663436622530, guid: 7f5fdf2d931ebfc44a472a374ccc191e,
+        type: 3}
+      propertyPath: m_Name
+      value: SpectatorView.SpatialCoordinateLocalizers
+      objectReference: {fileID: 0}
     - target: {fileID: 5795882921077350206, guid: 7f5fdf2d931ebfc44a472a374ccc191e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -416,11 +421,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2053685663436622530, guid: 7f5fdf2d931ebfc44a472a374ccc191e,
-        type: 3}
-      propertyPath: m_Name
-      value: SpectatorView.SpatialCoordinateLocalizers
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7f5fdf2d931ebfc44a472a374ccc191e, type: 3}
@@ -529,3 +529,15 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 8145183886527470022}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &4715176406495730955 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3487521567490933965, guid: df296c708e424ae44af8ee68d559f3b4,
+    type: 3}
+  m_PrefabInstance: {fileID: 8145183886527470022}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b7a21ab2fbede343a7695b9bcd313c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
