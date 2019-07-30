@@ -71,8 +71,6 @@ static ID3D11ShaderResourceView* g_UnityColorSRV = nullptr;
 
 static ID3D11Device* g_pD3D11Device = NULL;
 
-static LONGLONG colorTime = INVALID_TIMESTAMP;
-
 static bool takePicture = false;
 static bool takeRawPicture = false;
 static std::wstring rawPicturePath;
@@ -140,16 +138,6 @@ UNITYDLL void UpdateCompositor()
 
     //Update video encoder
     ci->Update();
-}
-
-UNITYDLL void UpdateSpectatorView()
-{
-    if (ci == nullptr)
-    {
-        return;
-    }
-
-    colorTime = ci->GetTimestamp(ci->GetCaptureFrameIndex());
 }
 
 static LONGLONG queuedVideoFrameTime;
@@ -295,12 +283,12 @@ EXTERN_C UnityRenderingEvent __declspec(dllexport) __stdcall GetRenderEventFunc(
 
 UNITYDLL int GetFrameWidth()
 {
-    return HOLOGRAM_WIDTH;
+    return FRAME_WIDTH;
 }
 
 UNITYDLL int GetFrameHeight()
 {
-    return HOLOGRAM_HEIGHT;
+    return FRAME_HEIGHT;
 }
 
 UNITYDLL bool InitializeFrameProviderOnDevice(int providerId)

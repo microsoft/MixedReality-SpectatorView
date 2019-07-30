@@ -41,15 +41,9 @@
 #define FRAME_BPP      4            // RGBA
 #define FRAME_BPP_RAW  2            // YUV
 
-#define HOLOGRAM_WIDTH              FRAME_WIDTH
-#define HOLOGRAM_HEIGHT             FRAME_HEIGHT
-
 // Color camera buffer size.
 #define FRAME_BUFSIZE               (FRAME_WIDTH * FRAME_HEIGHT * FRAME_BPP)
 #define FRAME_BUFSIZE_RAW           (FRAME_WIDTH * FRAME_HEIGHT * FRAME_BPP_RAW)
-
-// Hologram buffer size.
-#define HOLOGRAM_BUFSIZE            (HOLOGRAM_WIDTH * HOLOGRAM_HEIGHT * FRAME_BPP)
 
 // Return timestamps in HNS.  Do not change this value.
 #define QPC_MULTIPLIER 10000000

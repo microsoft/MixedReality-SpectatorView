@@ -363,8 +363,6 @@ namespace Microsoft.MixedReality.SpectatorView
 
             UpdateStatsElement(framerateStatistics, 1.0f / Time.deltaTime);
 
-            UnityCompositorInterface.UpdateSpectatorView();
-
             int captureFrameIndex = UnityCompositorInterface.GetCaptureFrameIndex();
 
             int prevCompositeFrame = CurrentCompositeFrame;

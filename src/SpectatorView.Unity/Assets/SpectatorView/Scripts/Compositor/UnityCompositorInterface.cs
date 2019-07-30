@@ -90,9 +90,6 @@ namespace Microsoft.MixedReality.SpectatorView
         public static extern void UpdateCompositor();
 
         [DllImport(CompositorPluginDll)]
-        public static extern void UpdateSpectatorView();
-
-        [DllImport(CompositorPluginDll)]
         public static extern int GetCaptureFrameIndex();
 
         [DllImport(CompositorPluginDll)]
