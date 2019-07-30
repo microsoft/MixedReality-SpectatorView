@@ -44,11 +44,9 @@ namespace Microsoft.MixedReality.SpectatorView
         /// </summary>
         [Tooltip("Default prefab for creating a mobile network configuration visual.")]
         [SerializeField]
-#if UNITY_IOS || UNITY_ANDROID
+#pragma warning disable 414 // The field is assigned but its value is never used
         private GameObject defaultMobileNetworkConfigurationVisualPrefab = null;
-#else
-        private GameObject defaultMobileNetworkConfigurationVisualPrefab;
-#endif
+#pragma warning restore 414
 
         [Header("State Synchronization")]
         /// <summary>
@@ -83,11 +81,9 @@ namespace Microsoft.MixedReality.SpectatorView
         /// </summary>
         [Tooltip("Default prefab for creating a mobile recording service visual.")]
         [SerializeField]
-#if UNITY_IOS || UNITY_ANDROID
+#pragma warning disable 414 // The field is assigned but its value is never used
         private GameObject defaultMobileRecordingServiceVisualPrefab = null;
-#else
-        private GameObject defaultMobileRecordingServiceVisualPrefab;
-#endif
+#pragma warning restore 414
 
         [Header("Debugging")]
         /// <summary>
