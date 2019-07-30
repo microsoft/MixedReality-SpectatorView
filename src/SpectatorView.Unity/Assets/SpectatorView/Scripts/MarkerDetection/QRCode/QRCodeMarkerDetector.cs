@@ -8,6 +8,8 @@
 
 using UnityEngine;
 
+using Microsoft.MixedReality.QR;
+
 using System;
 using System.Threading.Tasks;
 using System.Collections.Generic;
@@ -31,14 +33,13 @@ namespace Microsoft.MixedReality.SpectatorView
 
 #if ENABLE_QRCODES
         private QRCodesManager _qrCodesManager;
-        private Dictionary<Guid, SpatialCoordinateSystem> _markerCoordinateSystems = new Dictionary<Guid, SpatialCoordinateSystem>();
+        private Dictionary<QRCode, SpatialCoordinateSystem> _markerCoordinateSystems = new Dictionary<QRCode, SpatialCoordinateSystem>();
         private bool _processMarkers = false;
 #endif
 
         private object _contentLock = new object();
-        private Dictionary<Guid, int> _markerIds = new Dictionary<Guid, int>();
+        private Dictionary<QRCode, int> _markerIds = new Dictionary<QRCode, int>();
         private Dictionary<int, float> _markerSizes = new Dictionary<int, float>();
-        private Dictionary<int, List<Marker>> _markerObservations = new Dictionary<int, List<Marker>>();
         private readonly string _qrCodeNamePrefix = "sv";
 
 #if ENABLE_QRCODES
@@ -62,7 +63,9 @@ namespace Microsoft.MixedReality.SpectatorView
             enabled = true;
 
 #if ENABLE_QRCODES
+            TrimMarkers();
             _tracking = true;
+            _processMarkers = true;
 #else
             Debug.LogError("Current platform does not support qr code marker detector");
 #endif
@@ -125,7 +128,7 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
-        protected async void OnDisable()
+        protected async void OnDestroy()
         {
             if (_qrCodesManager != null)
             {
@@ -138,53 +141,53 @@ namespace Microsoft.MixedReality.SpectatorView
 
         private async Task StartTrackingAsync()
         {
-            var result = await _qrCodesManager.StartQRTrackingAsync();
-            DebugLog("Started qr tracker: " + result.ToString());
+            var result = await _qrCodesManager.StartQRWatchingAsync();
+            DebugLog($"Started qr watcher: {result.ToString()}");
         }
 
         private async Task StopTrackingAsync()
         {
-            await _qrCodesManager.StopQRTrackingAsync();
-            DebugLog("Stopped qr tracker");
+            await _qrCodesManager.StopQRWatchingAsync();
+            DebugLog("Stopped qr watcher");
         }
 
-        private void QRCodeAdded(object sender, QRCodeEventArgs<QRCodesTrackerPlugin.QRCode> e)
+        private void QRCodeAdded(object sender, QRCode qrCode)
         {
-            if (TryGetMarkerId(e.Data.Code, out var markerId))
+            if (TryGetMarkerId(qrCode.Data, out var markerId))
             {
                 lock (_contentLock)
                 {
-                    _markerIds[e.Data.Id] = markerId;
-                    _markerSizes[markerId] = e.Data.PhysicalSizeMeters;
+                    _markerIds[qrCode] = markerId;
+                    _markerSizes[markerId] = qrCode.PhysicalSideLength;
                     _processMarkers = true;
                 }
             }
         }
 
-        private void QRCodeUpdated(object sender, QRCodeEventArgs<QRCodesTrackerPlugin.QRCode> e)
+        private void QRCodeUpdated(object sender, QRCode qrCode)
         {
-            if (TryGetMarkerId(e.Data.Code, out var markerId))
+            if (TryGetMarkerId(qrCode.Data, out var markerId))
             {
                 lock (_contentLock)
                 {
-                    _markerIds[e.Data.Id] = markerId;
-                    _markerSizes[markerId] = e.Data.PhysicalSizeMeters;
+                    _markerIds[qrCode] = markerId;
+                    _markerSizes[markerId] = qrCode.PhysicalSideLength;
                     _processMarkers = true;
                 }
             }
         }
 
-        private void QRCodeRemoved(object sender, QRCodeEventArgs<QRCodesTrackerPlugin.QRCode> e)
+        private void QRCodeRemoved(object sender, QRCode qrCode)
         {
             lock (_contentLock)
             {
-                if (_markerIds.TryGetValue(e.Data.Id, out var markerId))
+                if (_markerIds.TryGetValue(qrCode, out var markerId))
                 {
                     _markerSizes.Remove(markerId);
                 }
 
-                _markerIds.Remove(e.Data.Id);
-                _markerCoordinateSystems.Remove(e.Data.Id);
+                _markerIds.Remove(qrCode);
+                _markerCoordinateSystems.Remove(qrCode);
                 _processMarkers = true;
             }
         }
@@ -199,7 +202,7 @@ namespace Microsoft.MixedReality.SpectatorView
                 {
                     if (!_markerCoordinateSystems.ContainsKey(markerPair.Key))
                     {
-                        var coordinateSystem = SpatialGraphInteropPreview.CreateCoordinateSystemForNode(markerPair.Key);
+                        var coordinateSystem = SpatialGraphInteropPreview.CreateCoordinateSystemForNode(markerPair.Key.SpatialGraphNodeId);
                         if (coordinateSystem != null)
                         {
                             _markerCoordinateSystems[markerPair.Key] = coordinateSystem;
@@ -216,7 +219,7 @@ namespace Microsoft.MixedReality.SpectatorView
                         continue;
                     }
 
-                    if (_qrCodesManager.TryGetLocationForQRCode(coordinatePair.Key, out var location))
+                    if (_qrCodesManager.TryGetLocationForQRCode(coordinatePair.Value, out var location))
                     {
                         var translation = location.GetColumn(3);
                         // The obtained QRCode orientation will reflect a positive y axis down the QRCode.
@@ -246,6 +249,36 @@ namespace Microsoft.MixedReality.SpectatorView
         }
 #endif // ENABLE_QRCODES
 
+        private void TrimMarkers()
+        {
+            lock (_contentLock)
+            {
+                long currTime = System.Diagnostics.Stopwatch.GetTimestamp();
+                List<QRCode> keysToRemove = new List<QRCode>();
+                foreach (var markerPair in _markerIds)
+                {
+                    if (markerPair.Key.SystemRelativeLastDetectedTime.Ticks < currTime)
+                    {
+                        keysToRemove.Add(markerPair.Key);
+                    }
+                }
+
+                foreach (var key in keysToRemove)
+                {
+                    DebugLog($"Removing QRCode based on old detection timestamp: {key.Data}");
+                    if (_markerIds.TryGetValue(key, out int id))
+                    {
+                        _markerSizes.Remove(id);
+                    }
+
+                    _markerIds.Remove(key);
+#if ENABLE_QRCODES
+                    _markerCoordinateSystems.Remove(key);
+#endif
+                }
+            }
+        }
+
         private bool TryGetMarkerId(string qrCode, out int markerId)
         {
             markerId = -1;
@@ -259,7 +292,7 @@ namespace Microsoft.MixedReality.SpectatorView
                 }
             }
 
-            DebugLog("Unable to obtain markerId for QR code: " + qrCode);
+            DebugLog($"Unable to obtain markerId for QR code: {qrCode}");
             markerId = -1;
             return false;
         }
