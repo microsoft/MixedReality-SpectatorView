@@ -6,14 +6,12 @@ package Microsoft.MixedReality.SpectatorView.Unity;
 import com.unity3d.player.UnityPlayerActivity;
 
 import android.Manifest;
-import android.content.ContentProvider;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.hardware.display.DisplayManager;
@@ -21,12 +19,7 @@ import android.hardware.display.VirtualDisplay;
 import android.media.CamcorderProfile;
 import android.media.MediaRecorder;
 import android.media.projection.*;
-import android.os.Bundle;
-import android.util.Log;
 import android.content.*;
-import android.database.Cursor;
-
-import java.io.File;
 
 enum ScreenRecorderActivityState {
     NO_PERMISSIONS,
