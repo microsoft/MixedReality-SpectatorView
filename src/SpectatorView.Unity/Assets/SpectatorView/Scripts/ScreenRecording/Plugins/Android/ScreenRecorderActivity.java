@@ -6,9 +6,11 @@ package Microsoft.MixedReality.SpectatorView.Unity;
 import com.unity3d.player.UnityPlayerActivity;
 
 import android.Manifest;
+import android.content.ContentProvider;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.app.Activity;
@@ -21,6 +23,8 @@ import android.media.MediaRecorder;
 import android.media.projection.*;
 import android.os.Bundle;
 import android.util.Log;
+import android.content.*;
+import android.database.Cursor;
 
 import java.io.File;
 
@@ -89,7 +93,17 @@ public class ScreenRecorderActivity extends UnityPlayerActivity {
                 }
             }
 
-            Log.d(TAG, "Failed to obtain record audio permission");
+            StringBuilder errBuild = new StringBuilder("Failed to obtain permission: ");
+            for (int i = 0; i < permissions.length; i++)
+            {
+                if (grantResults.length > i &&
+                    grantResults[i] == PackageManager.PERMISSION_DENIED)
+                {
+                    errBuild.append(permissions[i].toString());
+                    errBuild.append(";");
+                }
+            }
+            Log.d(TAG, errBuild.toString());
         }
     }
 
@@ -165,8 +179,11 @@ public class ScreenRecorderActivity extends UnityPlayerActivity {
     public boolean ShowRecording() {
         if (IsRecordingAvailable())
         {
+            Uri videoContentUri = GetVideoContentUri(DIRECTORY_NAME + fileName);
+            Log.d(TAG, "Attempting to launch file: " + videoContentUri.toString());
             Intent showRecordingIntent = new Intent(Intent.ACTION_VIEW);
-            showRecordingIntent.setType("video/*");
+            showRecordingIntent.setDataAndType(videoContentUri, "video/mp4");
+            showRecordingIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             this.startActivity(showRecordingIntent);
             return true;
         }
@@ -174,6 +191,12 @@ public class ScreenRecorderActivity extends UnityPlayerActivity {
         return false;
     }
 
+    private Uri GetVideoContentUri(String videoFile) {
+        ContentValues values = new ContentValues();
+        values.put(MediaStore.Video.Media.DATA, videoFile);
+        return this.getContentResolver().insert(
+                MediaStore.Video.Media.EXTERNAL_CONTENT_URI, values);
+    }
 
     public String GetLastErrorMessage() {
         return lastErrorMessage;
