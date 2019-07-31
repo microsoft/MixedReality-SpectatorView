@@ -140,11 +140,15 @@ If you are building Azure Spatial Anchors on iOS, you will need to take some add
 
 ![Marker](images/AndroidExport.png)
 
-8. Update the AndroidManifest.xml in Android Studio to use the Microsoft.MixedReality.SpectatorView.Unity.ScreenRecorderActivity class compared to the UnityPlayerActivity as the application activity.
+8. Update the AndroidManifest.xml in Android Studio to use the `Microsoft.MixedReality.SpectatorView.Unity.ScreenRecorderActivity` class compared to the UnityPlayerActivity as the application activity.
 
-![Marker](images/AndroidManifest.png)
+![Marker](images/AndroidManifestActivity.png)
 
-9. Build and deploy the application through Android Studio to your desired device. If it is a new Android development device, you may need to enable developer options and debugging. For information on setting up your Android device for debugging, see [here](https://developer.android.com/studio/debug/dev-options).
+9. Update the AndroidManifest.xml in Android Studio to contain `android.permission.CAMERA`, `android.permission.INTERNET`, `android.permission.RECORD_AUDIO` and `android.permission.WRITE_EXTERNAL_STORAGE` uses-permissions.
+
+![Marker](images/AndroidManifestPermission.png)
+
+10. Build and deploy the application through Android Studio to your desired device. If it is a new Android development device, you may need to enable developer options and debugging. For information on setting up your Android device for debugging, see [here](https://developer.android.com/studio/debug/dev-options).
 
 ### iOS
 
