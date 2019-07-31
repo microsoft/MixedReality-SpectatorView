@@ -23,7 +23,7 @@
     <ProjectGuid>{D390EF5F-0771-4FCD-876A-542EB8DBEAC3}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>SpectatorView.Compositor</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

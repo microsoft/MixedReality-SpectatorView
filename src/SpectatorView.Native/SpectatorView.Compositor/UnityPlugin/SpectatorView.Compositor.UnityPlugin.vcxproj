@@ -23,7 +23,7 @@
     <ProjectGuid>{7EEE5BF7-87D2-42C9-AB5E-699EA3EEA423}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>UnityCompositorInterface</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

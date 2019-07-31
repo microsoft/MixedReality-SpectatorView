@@ -59,7 +59,7 @@ bool Calibration::ProcessChessboardImage(
     cv::flip(rgbImage, flippedRgbImage, 0);
 
     cv::Mat flippedGrayImage;
-    cv::cvtColor(flippedRgbImage, flippedGrayImage, CV_RGB2GRAY);
+    cv::cvtColor(flippedRgbImage, flippedGrayImage, cv::ColorConversionCodes::COLOR_RGB2GRAY);
 
     std::vector<cv::Point2f> chessboardImagePoints;
     cv::Size patternSize = cv::Size(boardWidth - 1, boardHeight - 1);
@@ -83,7 +83,7 @@ bool Calibration::ProcessChessboardImage(
         cv::flip(corners, flippedCorners, 0);
         for (auto corner : chessboardImagePoints)
         {
-            cv::circle(flippedCorners, corner, cornerImageRadias, cv::Scalar(255, 255, 255), CV_FILLED);
+            cv::circle(flippedCorners, corner, cornerImageRadias, cv::Scalar(255, 255, 255), cv::LineTypes::FILLED);
         }
 
         // Create a 2D heatmap for this dataset
@@ -177,7 +177,7 @@ bool Calibration::ProcessChessboardIntrinsics(
         distCoeff,
         rvec,
         tvec,
-        CV_CALIB_USE_INTRINSIC_GUESS);
+        cv::CALIB_USE_INTRINSIC_GUESS);
 
     StoreIntrinsics(reprojectionError, cameraMat, distCoeff, chessboardImageWidth, chessboardImageHeight, intrinsics);
     return true;
@@ -312,7 +312,7 @@ bool Calibration::ProcessArUcoData(
 
     // Convert the image to grayscale for processing
     cv::Mat upsideDownGrayImage;
-    cv::cvtColor(rgbImage, upsideDownGrayImage, CV_RGB2GRAY);
+    cv::cvtColor(rgbImage, upsideDownGrayImage, cv::ColorConversionCodes::COLOR_RGB2GRAY);
 
     // The obtained image data needs to be flipped vertically for processing
     cv::Mat grayImage;
@@ -373,7 +373,7 @@ bool Calibration::ProcessArUcoData(
     cv::flip(rgbImage, rgbImageHelper, 0);
     for (auto point : imagePoints)
     {
-        cv::circle(rgbImageHelper, point, 3, cv::Scalar(0, 255, 0), CV_FILLED);
+        cv::circle(rgbImageHelper, point, 3, cv::Scalar(0, 255, 0), cv::LineTypes::FILLED);
     }
     cv::flip(rgbImageHelper, rgbImage, 0);
 
@@ -444,7 +444,7 @@ bool Calibration::ProcessIndividualArUcoExtrinsics(
                 rvecsMatIterative,
                 tvecsMatIterative,
                 false,
-                CV_ITERATIVE);
+				cv::SOLVEPNP_ITERATIVE);
             StoreExtrinsics(
                 iterativeError,
                 rvecsMatIterative,
@@ -515,7 +515,7 @@ bool Calibration::ProcessGlobalArUcoExtrinsics(
         rvecsMatIterative,
         tvecsMatIterative,
         false,
-        CV_ITERATIVE);
+		cv::SOLVEPNP_ITERATIVE);
     StoreExtrinsics(
         iterativeError,
         rvecsMatIterative,
