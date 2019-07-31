@@ -24,16 +24,19 @@ namespace Microsoft.MixedReality.PhotoCapture
 
         public static SpatialCoordinateSystem GetSpatialCoordinateSystem(IntPtr nativePtr)
         {
+
+#if !ENABLE_IL2CPP
             try
             {
                 GetSpatialCoordinateSystem(nativePtr, out SpatialCoordinateSystem coordinateSystem);
                 return coordinateSystem;
             }
-            catch
+            catch (Exception e)
             {
-                Debug.LogError("Call to the SpectatorView.WinRTExtensions plugin failed. The plugin is required for correct behavior when using .NET Native compilation");
-                return Marshal.GetObjectForIUnknown(nativePtr) as SpatialCoordinateSystem;
+                Debug.LogError($"Call to the SpectatorView.WinRTExtensions plugin failed. The plugin is required for correct behavior when using .NET Native compilation. Exception: {e.ToString()}");
             }
+#endif
+            return Marshal.GetObjectForIUnknown(nativePtr) as SpatialCoordinateSystem;            
         }
     }
 }
