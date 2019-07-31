@@ -37,9 +37,10 @@ These instructions assumes a HoloLens 2 device for host, and an Android phone fo
 1. Build UWP Player containing `Demo/Scenes/Finished_Scene.unity` scene, and deploy this application to the HoloLens 2host device.
 2. Export Android Player containing `MixedReality-SpectatorView/SpectatorView/Scenes/SpectatorView.Android.unity` scene to an Android Studio solution.
 3. Open the Android Studio solution and change the main activity in the AndroidManifest.xml file to `Microsoft.MixedReality.SpectatorView.Unity.ScreenRecorderActivity`.
+9. Update the AndroidManifest.xml in Android Studio to contain `android.permission.CAMERA`, `android.permission.INTERNET`, `android.permission.RECORD_AUDIO` and `android.permission.WRITE_EXTERNAL_STORAGE` uses-permissions.
 4. Build the Android Studio solution and deploy this application to the spectating mobile device.
 5. Launch the `SpectatorView.Build2019Demo` on the HoloLens 2 host, and wait for the experience to start.
-6. Launch the `SpectatorView.Build2019Demo` on the Android device, and wait for the connection to happen.
+6. Launch the `SpectatorView.Build2019Demo` on the Android device, and connect to the HoloLens device.
 
 > Note 1: Building iOS version requires an special step after exporting the Unity project to xCode, see the [official instructions](https://docs.microsoft.com/en-us/azure/spatial-anchors/quickstarts/get-started-unity-ios#open-the-xcode-project).
 
