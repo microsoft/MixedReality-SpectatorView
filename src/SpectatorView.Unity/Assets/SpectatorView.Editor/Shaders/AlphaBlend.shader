@@ -1,18 +1,17 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-Shader "SV/HoloAlpha"
+Shader "SV/AlphaBlend"
 {
     Properties
     {
         _BackTex("BackTex", 2D) = "white" {}
-        _FronTex("FrontTex", 2D) = "white" {}
+        _MainTex("FrontTex", 2D) = "white" {}
         _Alpha("Alpha", float) = 0.9
     }
     SubShader
     {
-        Tags { "RenderType"="Opaque" }
-        LOD 100
+        Cull Off ZWrite Off ZTest Always
 
         Pass
         {
@@ -34,10 +33,6 @@ Shader "SV/HoloAlpha"
                 float4 vertex : SV_POSITION;
             };
 
-            sampler2D _BackTex;
-            sampler2D _FrontTex;
-            float _Alpha;
-
             v2f vert (appdata v)
             {
                 v2f o;
@@ -46,14 +41,17 @@ Shader "SV/HoloAlpha"
                 return o;
             }
             
+            sampler2D _MainTex;
+            sampler2D _BackTex;
+            float _Alpha;
+
             fixed4 frag (v2f i) : SV_Target
             {
-                fixed4 backCol = tex2D(_BackTex, i.uv);
-                fixed4 frontCol = tex2D(_FrontTex, i.uv);
-            
-                fixed4 composite = backCol * (1 - _Alpha) + frontCol * _Alpha;
-                composite.a = 1.0f;
-                return composite;
+                half4 front = tex2D(_MainTex, i.uv);
+                half4 back = tex2D(_BackTex, i.uv);
+                half4 col = lerp(back, front, front.a * _Alpha);
+                col.a = 1;
+                return col;
             }
             ENDCG
         }

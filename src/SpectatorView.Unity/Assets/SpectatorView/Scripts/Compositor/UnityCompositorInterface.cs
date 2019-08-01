@@ -1,12 +1,15 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-#if UNITY_EDITOR
 using System;
 using System.Runtime.InteropServices;
 
 namespace Microsoft.MixedReality.SpectatorView
 {
+    public enum FrameProviderDeviceType : int { BlackMagic = 0, Elgato = 1 };
+    public enum VideoRecordingFrameLayout : int { Composite = 0, Quad = 1 };
+
+#if UNITY_EDITOR
     internal static class UnityCompositorInterface
     {
         private const string CompositorPluginDll = "SpectatorView.Compositor.UnityPlugin";
@@ -16,6 +19,12 @@ namespace Microsoft.MixedReality.SpectatorView
 
         [DllImport(CompositorPluginDll)]
         public static extern int GetFrameHeight();
+
+        [DllImport(CompositorPluginDll)]
+        public static extern int GetVideoRecordingFrameWidth([MarshalAs(UnmanagedType.I4)] VideoRecordingFrameLayout frameLayout);
+
+        [DllImport(CompositorPluginDll)]
+        public static extern int GetVideoRecordingFrameHeight([MarshalAs(UnmanagedType.I4)] VideoRecordingFrameLayout frameLayout);
 
         [DllImport(CompositorPluginDll)]
         public static extern bool SetHoloTexture(IntPtr holoTexture);
@@ -63,13 +72,13 @@ namespace Microsoft.MixedReality.SpectatorView
         public static extern void TakeRawPicture(string path);
 
         [DllImport(CompositorPluginDll)]
-        public static extern void StartRecording();
+        public static extern void StartRecording(int frameLayout);
 
         [DllImport(CompositorPluginDll)]
         public static extern void StopRecording();
         
         [DllImport(CompositorPluginDll)]
-        public static extern bool InitializeFrameProviderOnDevice(int providerId);  //0 = blackmagic, 1 = elgato
+        public static extern bool InitializeFrameProviderOnDevice([MarshalAs(UnmanagedType.I4)] FrameProviderDeviceType providerId);
 
         [DllImport(CompositorPluginDll)]
         public static extern void Reset();
@@ -90,13 +99,10 @@ namespace Microsoft.MixedReality.SpectatorView
         public static extern void UpdateCompositor();
 
         [DllImport(CompositorPluginDll)]
-        public static extern void UpdateSpectatorView();
-
-        [DllImport(CompositorPluginDll)]
         public static extern int GetCaptureFrameIndex();
 
         [DllImport(CompositorPluginDll)]
         public static extern void SetCompositeFrameIndex(int index);
     }
-}
 #endif
+}

@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 #include "stdafx.h"
@@ -8,7 +8,7 @@
 
 
 VideoEncoder::VideoEncoder(UINT frameWidth, UINT frameHeight, UINT frameStride, UINT fps,
-    UINT32 audioSampleRate, UINT32 audioChannels, UINT32 audioBPS) :
+    UINT32 audioSampleRate, UINT32 audioChannels, UINT32 audioBPS, UINT32 videoBitrate, UINT32 videoMpegLevel) :
     frameWidth(frameWidth),
     frameHeight(frameHeight),
     frameStride(frameStride),
@@ -16,8 +16,9 @@ VideoEncoder::VideoEncoder(UINT frameWidth, UINT frameHeight, UINT frameStride, 
     audioChannels(audioChannels),
     audioBPS(audioBPS),
     fps(fps),
-    bitRate(62 * 1000 * 1000 + 500 * 1000), // 62,5 MBit/s
+    bitRate(videoBitrate),
     videoEncodingFormat(MFVideoFormat_H264),
+    videoEncodingMpegLevel(videoMpegLevel),
     isRecording(false)
 {
 #if HARDWARE_ENCODE_VIDEO
@@ -108,13 +109,7 @@ void VideoEncoder::StartRecording(LPCWSTR videoPath, bool encodeAudio)
     if (SUCCEEDED(hr)) { hr = MFSetAttributeRatio(pVideoTypeOut, MF_MT_FRAME_RATE, fps, 1); }
     if (SUCCEEDED(hr)) { hr = MFSetAttributeRatio(pVideoTypeOut, MF_MT_PIXEL_ASPECT_RATIO, 1, 1); }
 
-    /* With a resolution of 1080p, 60 FPS and a desired bitrate of 62,5 MBit/s after compression the following level-profile combination is needed:
-     * - Level   = 4.2 (allows for max. 1920x1080 @ 64 FPS)
-     * - Profile = High (allows for max. 62.5 MBit/s)
-     *
-     * See: https://de.wikipedia.org/wiki/H.264#Level
-     */
-    if (SUCCEEDED(hr)) { hr = pVideoTypeOut->SetUINT32(MF_MT_MPEG2_LEVEL, eAVEncH264VLevel4_2); }
+    if (SUCCEEDED(hr)) { hr = pVideoTypeOut->SetUINT32(MF_MT_MPEG2_LEVEL, videoEncodingMpegLevel); }
     if (SUCCEEDED(hr)) { hr = pVideoTypeOut->SetUINT32(MF_MT_MPEG2_PROFILE, eAVEncH264VProfile_High); }
 
     if (SUCCEEDED(hr)) { hr = sinkWriter->AddStream(pVideoTypeOut, &videoStreamIndex); }
@@ -288,8 +283,8 @@ void VideoEncoder::WriteVideo(byte* buffer, LONGLONG timestamp, LONGLONG duratio
 
     // Copy frame to a temporary buffer and process on a background thread.
 #if HARDWARE_ENCODE_VIDEO
-    BYTE* tmpVideoBuffer = new BYTE[(int)(1.5f * frameHeight * frameWidth)];
-    memcpy(tmpVideoBuffer, buffer, (int)(1.5f * frameHeight * frameWidth));
+    BYTE* tmpVideoBuffer = new BYTE[(int)(FRAME_BPP_NV12 * frameHeight * frameWidth)];
+    memcpy(tmpVideoBuffer, buffer, (int)(FRAME_BPP_NV12 * frameHeight * frameWidth));
 #else
     BYTE* tmpVideoBuffer = new BYTE[frameHeight * frameStride];
     memcpy(tmpVideoBuffer, buffer, frameHeight * frameStride);
@@ -313,8 +308,8 @@ void VideoEncoder::WriteVideo(byte* buffer, LONGLONG timestamp, LONGLONG duratio
 
 #if HARDWARE_ENCODE_VIDEO
         cbWidth = frameWidth;
-        cbBuffer = (int)(1.5f * frameWidth * frameHeight);
-        imageHeight = (int)(1.5f * frameHeight);
+        cbBuffer = (int)(FRAME_BPP_NV12 * frameWidth * frameHeight);
+        imageHeight = (int)(FRAME_BPP_NV12 * frameHeight);
 #endif
 
         IMFSample* pVideoSample = NULL;

@@ -5,7 +5,7 @@ Shader "SV/YUVToRGB"
 {
     Properties
     {
-        _YUVTex ("Texture", 2D) = "white" {}
+        _MainTex("Texture", 2D) = "white" {}
         _Width("Width", int) = 0
         _Height("Height", int) = 0
         _AlphaScale("AlaphScale", float) = 1
@@ -39,7 +39,7 @@ Shader "SV/YUVToRGB"
                 float4 vertex : SV_POSITION;
             };
 
-            sampler2D _YUVTex;
+            sampler2D _MainTex;
             int _Width;
             int _Height;
             float _AlphaScale;
@@ -63,7 +63,7 @@ Shader "SV/YUVToRGB"
                 uv.x = ((yuvIndex / 4.0f) % (_Width / 4.0f)) / (_Width / 4.0f);
                 uv.y = ((yuvIndex / 4.0f) / (_Width / 4.0f)) / _Height;
 
-                fixed4 yuvPixel = tex2D(_YUVTex, uv);
+                fixed4 yuvPixel = tex2D(_MainTex, uv);
                 int val = 0;
                 if (index % 2 != 0)
                 {

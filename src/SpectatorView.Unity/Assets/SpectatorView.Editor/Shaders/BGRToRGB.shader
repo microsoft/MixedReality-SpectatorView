@@ -5,7 +5,7 @@ Shader "SV/BGRToRGB"
 {
     Properties
     {
-        _FlipTex("Texture", 2D) = "white" {}
+        _MainTex("Texture", 2D) = "white" {}
         _AlphaScale("AlaphScale", float) = 1
         _YFlip("YFlip", int) = 1
     }
@@ -34,7 +34,7 @@ Shader "SV/BGRToRGB"
                 float4 vertex : SV_POSITION;
             };
 
-            sampler2D _FlipTex;
+            sampler2D _MainTex;
             float _AlphaScale;
             float _YFlip;
 
@@ -49,7 +49,7 @@ Shader "SV/BGRToRGB"
             fixed4 frag (v2f i) : SV_Target
             {
                 i.uv.y = (_YFlip * (1 - i.uv.y)) + ((1 - _YFlip) * i.uv.y);
-                fixed4 col = tex2D(_FlipTex, i.uv);
+                fixed4 col = tex2D(_MainTex, i.uv);
                 col.a *= _AlphaScale;
                 return col.bgra;
             }

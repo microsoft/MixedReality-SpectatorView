@@ -17,32 +17,46 @@
 
 #define UNITYDLL EXTERN_C __declspec(dllexport)
 
-static CompositorInterface* ci = NULL;
+static CompositorInterface* ci = nullptr;
 static bool isRecording = false;
 static bool videoInitialized = false;
 
-static BYTE* colorBytes = new BYTE[FRAME_BUFSIZE];
-static BYTE* holoBytes = new BYTE[FRAME_BUFSIZE];
+static BYTE* colorBytes = new BYTE[FRAME_BUFSIZE_RGBA];
+static BYTE* holoBytes = new BYTE[FRAME_BUFSIZE_RGBA];
 
 #define NUM_VIDEO_BUFFERS 10
 
 static byte** videoBytes = nullptr;
 static int videoBufferIndex = 0;
 
-void AllocateVideoBuffers()
+void AllocateVideoBuffers(VideoRecordingFrameLayout frameLayout)
 {
     if (videoBytes != nullptr)
         return;
 
     videoBytes = new byte*[NUM_VIDEO_BUFFERS];
 
-    for (int i = 0; i < NUM_VIDEO_BUFFERS; i++)
+    int frameBufferSize;
+    if (frameLayout == VideoRecordingFrameLayout::Quad)
     {
 #if HARDWARE_ENCODE_VIDEO
-        videoBytes[i] = new byte[(int)(1.5f * FRAME_WIDTH * FRAME_HEIGHT)];
+        frameBufferSize = QUAD_FRAME_BUFSIZE_NV12;
 #else
-        videoBytes[i] = new byte[FRAME_BUFSIZE];
+        frameBufferSize = QUAD_FRAME_BUFSIZE_RGBA;
 #endif
+    }
+    else
+    {
+#if HARDWARE_ENCODE_VIDEO
+        frameBufferSize = FRAME_BUFSIZE_NV12;
+#else
+        frameBufferSize = FRAME_BUFSIZE_RGBA;
+#endif
+    }
+
+    for (int i = 0; i < NUM_VIDEO_BUFFERS; i++)
+    {
+        videoBytes[i] = new byte[frameBufferSize];
     }
 }
 
@@ -70,8 +84,6 @@ static ID3D11Texture2D* g_outputTexture = nullptr;
 static ID3D11ShaderResourceView* g_UnityColorSRV = nullptr;
 
 static ID3D11Device* g_pD3D11Device = NULL;
-
-static LONGLONG colorTime = INVALID_TIMESTAMP;
 
 static bool takePicture = false;
 static bool takeRawPicture = false;
@@ -111,8 +123,6 @@ static void UNITY_INTERFACE_API OnGraphicsDeviceEvent(UnityGfxDeviceEventType ev
 
 void UNITY_INTERFACE_API UnityPluginLoad(IUnityInterfaces *unityInterfaces)
 {
-    AllocateVideoBuffers();
-
     InitializeCriticalSection(&lock);
 
     s_UnityInterfaces = unityInterfaces;
@@ -124,7 +134,6 @@ void UNITY_INTERFACE_API UnityPluginLoad(IUnityInterfaces *unityInterfaces)
 
 void UNITY_INTERFACE_API UnityPluginUnload()
 {
-    FreeVideoBuffers();
     s_Graphics->UnregisterDeviceEventCallback(OnGraphicsDeviceEvent);
     OnGraphicsDeviceEvent(kUnityGfxDeviceEventShutdown);
 
@@ -142,16 +151,6 @@ UNITYDLL void UpdateCompositor()
     ci->Update();
 }
 
-UNITYDLL void UpdateSpectatorView()
-{
-    if (ci == nullptr)
-    {
-        return;
-    }
-
-    colorTime = ci->GetTimestamp(ci->GetCaptureFrameIndex());
-}
-
 static LONGLONG queuedVideoFrameTime;
 static int queuedVideoFrameCount = 0;
 
@@ -162,9 +161,9 @@ void UpdateVideoRecordingFrame()
     {
         videoBufferIndex = (videoBufferIndex + 1) % NUM_VIDEO_BUFFERS;
 #if HARDWARE_ENCODE_VIDEO
-        float bpp = 1.5f;
+        float bpp = FRAME_BPP_NV12;
 #else
-        float bpp = FRAME_BPP;
+        float bpp = FRAME_BPP_RGBA;
 #endif
 
         VideoTextureBuffer.FetchTextureData(g_pD3D11Device, videoBytes[videoBufferIndex], bpp);
@@ -218,21 +217,21 @@ static void __stdcall OnRenderEvent(int eventID)
         {
             takePicture = false;
 
-            DirectXHelper::GetBytesFromTexture(g_pD3D11Device, g_compositeTexture, FRAME_BPP, holoBytes);
+            DirectXHelper::GetBytesFromTexture(g_pD3D11Device, g_compositeTexture, FRAME_BPP_RGBA, holoBytes);
 
-            DirectXHelper::FlipHorizontally(holoBytes, FRAME_HEIGHT, FRAME_WIDTH * FRAME_BPP);
-            ci->TakePicture(g_pD3D11Device, FRAME_WIDTH, FRAME_HEIGHT, FRAME_BPP, holoBytes);
+            DirectXHelper::FlipHorizontally(holoBytes, FRAME_HEIGHT, FRAME_WIDTH * FRAME_BPP_RGBA);
+            ci->TakePicture(g_pD3D11Device, FRAME_WIDTH, FRAME_HEIGHT, FRAME_BPP_RGBA, holoBytes);
         }
 
         if (takeRawPicture && g_colorTexture != nullptr)
         {
             takeRawPicture = false;
 
-            DirectXHelper::GetBytesFromTexture(g_pD3D11Device, g_compositeTexture, FRAME_BPP, holoBytes);
+            DirectXHelper::GetBytesFromTexture(g_pD3D11Device, g_compositeTexture, FRAME_BPP_RGBA, holoBytes);
 
             std::ofstream strm;
             strm.open(rawPicturePath, std::ios::out | std::ios::binary | std::ios::trunc);
-            strm.write((const char*)(holoBytes), FRAME_BUFSIZE);
+            strm.write((const char*)(holoBytes), FRAME_BUFSIZE_RGBA);
             strm.close();
         }
     }
@@ -295,12 +294,36 @@ EXTERN_C UnityRenderingEvent __declspec(dllexport) __stdcall GetRenderEventFunc(
 
 UNITYDLL int GetFrameWidth()
 {
-    return HOLOGRAM_WIDTH;
+    return FRAME_WIDTH;
 }
 
 UNITYDLL int GetFrameHeight()
 {
-    return HOLOGRAM_HEIGHT;
+    return FRAME_HEIGHT;
+}
+
+UNITYDLL int GetVideoRecordingFrameWidth(VideoRecordingFrameLayout frameLayout)
+{
+    if (frameLayout == VideoRecordingFrameLayout::Quad)
+    {
+        return QUAD_FRAME_WIDTH;
+    }
+    else
+    {
+        return FRAME_WIDTH;
+    }
+}
+
+UNITYDLL int GetVideoRecordingFrameHeight(VideoRecordingFrameLayout frameLayout)
+{
+    if (frameLayout == VideoRecordingFrameLayout::Quad)
+    {
+        return QUAD_FRAME_HEIGHT;
+    }
+    else
+    {
+        return FRAME_HEIGHT;
+    }
 }
 
 UNITYDLL bool InitializeFrameProviderOnDevice(int providerId)
@@ -334,6 +357,8 @@ UNITYDLL void StopFrameProvider()
     {
         ci->StopFrameProvider();
     }
+
+    FreeVideoBuffers();
 }
 
 UNITYDLL void SetAudioData(BYTE* audioData, int audioSize, double audioTime)
@@ -363,13 +388,15 @@ UNITYDLL void TakeRawPicture(LPCWSTR lpFilePath)
     rawPicturePath = lpFilePath;
 }
 
-UNITYDLL void StartRecording()
+UNITYDLL void StartRecording(VideoRecordingFrameLayout frameLayout)
 {
     if (videoInitialized && ci != nullptr)
     {
         lastVideoFrame = -1;
+        AllocateVideoBuffers(frameLayout);
+        VideoTextureBuffer.ReleaseTextures();
         VideoTextureBuffer.Reset();
-        ci->StartRecording();
+        ci->StartRecording(frameLayout);
         isRecording = true;
     }
 }
@@ -379,6 +406,7 @@ UNITYDLL void StopRecording()
     if (videoInitialized && ci != nullptr)
     {
         ci->StopRecording();
+        FreeVideoBuffers();
         isRecording = false;
     }
 }
@@ -464,10 +492,7 @@ UNITYDLL bool SetHoloTexture(ID3D11Texture2D* holoTexture)
 
 UNITYDLL bool SetVideoRenderTexture(ID3D11Texture2D* tex)
 {
-    if (g_videoTexture == nullptr)
-    {
-        g_videoTexture = tex;
-    }
+    g_videoTexture = tex;
 
     return g_videoTexture != nullptr;
 }
@@ -486,7 +511,7 @@ UNITYDLL bool CreateUnityColorTexture(ID3D11ShaderResourceView*& srv)
 {
     if (g_UnityColorSRV == nullptr && g_pD3D11Device != nullptr)
     {
-        g_colorTexture = DirectXHelper::CreateTexture(g_pD3D11Device, colorBytes, FRAME_WIDTH, FRAME_HEIGHT, FRAME_BPP);
+        g_colorTexture = DirectXHelper::CreateTexture(g_pD3D11Device, colorBytes, FRAME_WIDTH, FRAME_HEIGHT, FRAME_BPP_RGBA);
 
         if (g_colorTexture == nullptr)
         {

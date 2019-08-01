@@ -100,9 +100,9 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
             EditorGUILayout.BeginVertical("Box");
             {
                 //Title
+                CompositionManager compositionManager = GetCompositionManager();
                 {
                     string title;
-                    CompositionManager compositionManager = GetCompositionManager();
                     if (compositionManager != null && compositionManager.IsVideoFrameProviderInitialized)
                     {
                         float framesPerSecond = compositionManager.GetVideoFramerate();
@@ -115,10 +115,11 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
 
                     RenderTitle(title, Color.green);
                 }
+
                 EditorGUILayout.BeginHorizontal("Box");
                 {
-                    string[] compositionOptions = new string[] { "Final composited texture", "All intermediate textures" };
-                    GUIContent renderingModeLabel = new GUIContent("Display texture", "Choose between displaying the composited video texture or seeing intermediate textures displayed in 4 sections (top right: input video, bottom right: alpha mask, bottom left: opaque hologram, top left: final alpha-blended hologram)");
+                    string[] compositionOptions = new string[] { "Final composited texture", "Quadrant with intermediate textures" };
+                    GUIContent renderingModeLabel = new GUIContent("Display texture", "Choose between displaying the composited video texture or seeing intermediate textures displayed in 4 sections (bottom left: input video, top left: opaque hologram, top right: hologram alpha mask, bottom right: hologram alpha-blended onto video)");
                     textureRenderMode = EditorGUILayout.Popup(renderingModeLabel, textureRenderMode, compositionOptions);
                     FullScreenCompositorWindow fullscreenWindow = FullScreenCompositorWindow.TryGetWindow();
                     if (fullscreenWindow != null)
@@ -149,6 +150,17 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
                 EditorGUILayout.BeginVertical("Box");
                 {
                     RenderTitle("Recording", Color.green);
+
+                    EditorGUILayout.BeginHorizontal("Box");
+                    {
+                        bool wasEnabled = GUI.enabled;
+                        GUI.enabled = compositionManager != null && !compositionManager.IsRecording();
+                        string[] compositionOptions = new string[] { "Final composited texture", "Quadrant with intermediate textures" };
+                        GUIContent renderingModeLabel = new GUIContent("Video recording texture", "Choose between displaying the composited video texture or seeing intermediate textures displayed in 4 sections (bottom left: input video, top left: opaque hologram, top right: hologram alpha mask, bottom right: hologram alpha-blended onto video)");
+                        compositionManager.VideoRecordingLayout = (VideoRecordingFrameLayout)EditorGUILayout.Popup(renderingModeLabel, (int)compositionManager.VideoRecordingLayout, compositionOptions);
+                        GUI.enabled = wasEnabled;
+                    }
+                    EditorGUILayout.EndHorizontal();
 
                     GUI.enabled = compositionManager != null && compositionManager.TextureManager != null;
                     if (compositionManager == null || !compositionManager.IsRecording())
@@ -200,7 +212,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
 
                         GUI.enabled = compositionManager == null || !compositionManager.IsVideoFrameProviderInitialized;
                         GUIContent label = new GUIContent("Video source", "The video capture card you want to use as input for compositing.");
-                        compositionManager.CaptureDevice = (CompositionManager.FrameProviderDeviceType)EditorGUILayout.Popup(label, ((int)compositionManager.CaptureDevice), Enum.GetNames(typeof(CompositionManager.FrameProviderDeviceType)));
+                        compositionManager.CaptureDevice = (FrameProviderDeviceType)EditorGUILayout.Popup(label, ((int)compositionManager.CaptureDevice), Enum.GetNames(typeof(FrameProviderDeviceType)));
                         GUI.enabled = true;
 
                         EditorGUILayout.Space();

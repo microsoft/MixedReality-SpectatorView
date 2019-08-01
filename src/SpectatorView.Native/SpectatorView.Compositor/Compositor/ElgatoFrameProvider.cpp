@@ -268,7 +268,7 @@ HRESULT ElgatoFrameProvider::SetSampleGrabberParameters()
     amt.subtype = MEDIASUBTYPE_UYVY;
     amt.formattype = FORMAT_VideoInfo;
     amt.bFixedSizeSamples = TRUE;
-    amt.lSampleSize = FRAME_WIDTH * FRAME_HEIGHT * FRAME_BPP_RAW;
+    amt.lSampleSize = FRAME_WIDTH * FRAME_HEIGHT * FRAME_BPP_YUV;
     amt.bTemporalCompression = FALSE;
     
     VIDEOINFOHEADER vih;
@@ -278,7 +278,7 @@ HRESULT ElgatoFrameProvider::SetSampleGrabberParameters()
     vih.AvgTimePerFrame = (REFERENCE_TIME)((1.0f / 30.0f) * QPC_MULTIPLIER);
     vih.bmiHeader.biWidth = FRAME_WIDTH;
     vih.bmiHeader.biHeight = FRAME_HEIGHT;
-    vih.bmiHeader.biSizeImage = FRAME_WIDTH * FRAME_HEIGHT * FRAME_BPP_RAW;
+    vih.bmiHeader.biSizeImage = FRAME_WIDTH * FRAME_HEIGHT * FRAME_BPP_YUV;
         
     amt.pbFormat = (BYTE*)&vih;
     
