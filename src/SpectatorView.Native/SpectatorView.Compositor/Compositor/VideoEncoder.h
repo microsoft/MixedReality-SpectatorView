@@ -28,7 +28,7 @@ class VideoEncoder
 {
 public:
     VideoEncoder(UINT frameWidth, UINT frameHeight, UINT frameStride, UINT fps,
-        UINT32 audioSampleRate, UINT32 audioChannels, UINT32 audioBPS);
+        UINT32 audioSampleRate, UINT32 audioChannels, UINT32 audioBPS, UINT32 videoBitrate, UINT32 videoMpegLevel);
     ~VideoEncoder();
 
     bool Initialize(ID3D11Device* device);
@@ -95,6 +95,7 @@ private:
     UINT frameStride;
     UINT32 fps;
     UINT32 bitRate;
+    UINT32 videoEncodingMpegLevel;
     GUID videoEncodingFormat;
     GUID inputFormat;
     LONGLONG prevVideoTime = INVALID_TIMESTAMP;

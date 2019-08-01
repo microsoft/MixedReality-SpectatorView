@@ -32,6 +32,19 @@
 // This must be: 12000, 16000, 20000, or 24000.
 #define AUDIO_BPS           24000
 
+/* With a resolution of 1080p, 60 FPS and a desired bitrate of 62,5 MBit/s after compression the following level-profile combination is needed:
+ * - Level   = 4.2 (allows for max. 1920x1080 @ 64 FPS)
+ * - Profile = High (allows for max. 62.5 MBit/s)With a resolution of 4K, 60 FPS and a desired bitrate of 300 MBit/s after compression the following level-profile combination is needed:
+ * With a resolution of 4K, 60 FPS and a desired bitrate of 300 MBit/s after compression the following level-profile combination is needed:
+ * - Level   = 5.2 (allows for max. 3840x2160 @ 66.8 FPS)
+ * - Profile = High (allows for max. 300 MBit/s)
+ *
+ * See: https://de.wikipedia.org/wiki/H.264#Level
+ */
+#define VIDEO_BITRATE_1080P         (62 * 1000 * 1000 + 500 * 1000) // 62.5 Mbit/s
+#define VIDEO_BITRATE_4K            (300 * 1000 * 1000)             // 300 MBit/s
+#define VIDEO_MPEG_LEVEL_1080P      eAVEncH264VLevel4_2
+#define VIDEO_MPEG_LEVEL_4K         eAVEncH264VLevel5_2
 
 // Frame Dimensions and buffer lengths
 //TODO: change this to match video dimensions from your tethered camera.

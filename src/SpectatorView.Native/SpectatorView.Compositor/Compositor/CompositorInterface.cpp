@@ -3,7 +3,7 @@
 
 #include "stdafx.h"
 #include "CompositorInterface.h"
-
+#include "codecapi.h"
 
 CompositorInterface::CompositorInterface()
 {
@@ -151,10 +151,10 @@ void CompositorInterface::TakePicture(ID3D11Device* device, int width, int heigh
 bool CompositorInterface::InitializeVideoEncoder(ID3D11Device* device)
 {
     videoEncoder1080p = new VideoEncoder(FRAME_WIDTH, FRAME_HEIGHT, FRAME_WIDTH * FRAME_BPP_RGBA, VIDEO_FPS,
-        AUDIO_SAMPLE_RATE, AUDIO_CHANNELS, AUDIO_BPS);
+        AUDIO_SAMPLE_RATE, AUDIO_CHANNELS, AUDIO_BPS, VIDEO_BITRATE_1080P, VIDEO_MPEG_LEVEL_1080P);
 
     videoEncoder4K = new VideoEncoder(QUAD_FRAME_WIDTH, QUAD_FRAME_HEIGHT, QUAD_FRAME_WIDTH * FRAME_BPP_RGBA, VIDEO_FPS,
-        AUDIO_SAMPLE_RATE, AUDIO_CHANNELS, AUDIO_BPS);
+        AUDIO_SAMPLE_RATE, AUDIO_CHANNELS, AUDIO_BPS, VIDEO_BITRATE_4K, VIDEO_MPEG_LEVEL_4K);
 
     return videoEncoder1080p->Initialize(device) && videoEncoder4K->Initialize(device);
 }

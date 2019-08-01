@@ -8,7 +8,7 @@
 
 
 VideoEncoder::VideoEncoder(UINT frameWidth, UINT frameHeight, UINT frameStride, UINT fps,
-    UINT32 audioSampleRate, UINT32 audioChannels, UINT32 audioBPS) :
+    UINT32 audioSampleRate, UINT32 audioChannels, UINT32 audioBPS, UINT32 videoBitrate, UINT32 videoMpegLevel) :
     frameWidth(frameWidth),
     frameHeight(frameHeight),
     frameStride(frameStride),
@@ -16,8 +16,9 @@ VideoEncoder::VideoEncoder(UINT frameWidth, UINT frameHeight, UINT frameStride, 
     audioChannels(audioChannels),
     audioBPS(audioBPS),
     fps(fps),
-    bitRate(300 * 1000 * 1000), // 300 MBit/s
+    bitRate(videoBitrate),
     videoEncodingFormat(MFVideoFormat_H264),
+    videoEncodingMpegLevel(videoMpegLevel),
     isRecording(false)
 {
 #if HARDWARE_ENCODE_VIDEO
@@ -108,13 +109,7 @@ void VideoEncoder::StartRecording(LPCWSTR videoPath, bool encodeAudio)
     if (SUCCEEDED(hr)) { hr = MFSetAttributeRatio(pVideoTypeOut, MF_MT_FRAME_RATE, fps, 1); }
     if (SUCCEEDED(hr)) { hr = MFSetAttributeRatio(pVideoTypeOut, MF_MT_PIXEL_ASPECT_RATIO, 1, 1); }
 
-    /* With a resolution of 4K, 60 FPS and a desired bitrate of 300 MBit/s after compression the following level-profile combination is needed:
-     * - Level   = 5.2 (allows for max. 3840x2160 @ 66.8)
-     * - Profile = High (allows for max. 300 MBit/s)
-     *
-     * See: https://de.wikipedia.org/wiki/H.264#Level
-     */
-    if (SUCCEEDED(hr)) { hr = pVideoTypeOut->SetUINT32(MF_MT_MPEG2_LEVEL, eAVEncH264VLevel5_2); }
+    if (SUCCEEDED(hr)) { hr = pVideoTypeOut->SetUINT32(MF_MT_MPEG2_LEVEL, videoEncodingMpegLevel); }
     if (SUCCEEDED(hr)) { hr = pVideoTypeOut->SetUINT32(MF_MT_MPEG2_PROFILE, eAVEncH264VProfile_High); }
 
     if (SUCCEEDED(hr)) { hr = sinkWriter->AddStream(pVideoTypeOut, &videoStreamIndex); }
