@@ -56,11 +56,11 @@ private:
     CRITICAL_SECTION          m_outputCriticalSection;
 
     BYTE* localFrameBuffer;
-    BYTE* rawBuffer =           new BYTE[FRAME_BUFSIZE_RAW];
+    BYTE* rawBuffer =           new BYTE[FRAME_BUFSIZE_YUV];
 
-    BYTE* stagingBuffer =       new BYTE[FRAME_BUFSIZE];
-    BYTE* outputBuffer =        new BYTE[FRAME_BUFSIZE];
-    BYTE* outputBufferRaw =     new BYTE[FRAME_BUFSIZE_RAW];
+    BYTE* stagingBuffer =       new BYTE[FRAME_BUFSIZE_RGBA];
+    BYTE* outputBuffer =        new BYTE[FRAME_BUFSIZE_RGBA];
+    BYTE* outputBufferRaw =     new BYTE[FRAME_BUFSIZE_YUV];
 
     BMDTimeValue frameDuration = 0;
 

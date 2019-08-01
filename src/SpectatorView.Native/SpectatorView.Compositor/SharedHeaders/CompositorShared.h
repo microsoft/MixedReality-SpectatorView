@@ -42,14 +42,17 @@
 #define QUAD_FRAME_HEIGHT (FRAME_HEIGHT * 2)
 
 
-#define FRAME_BPP      4            // RGBA
-#define FRAME_BPP_RAW  2            // YUV
+#define FRAME_BPP_RGBA 4
+#define FRAME_BPP_YUV  2
+#define FRAME_BPP_NV12 1.5f
 
 // Color camera buffer size.
-#define FRAME_BUFSIZE               (FRAME_WIDTH * FRAME_HEIGHT * FRAME_BPP)
-#define FRAME_BUFSIZE_RAW           (FRAME_WIDTH * FRAME_HEIGHT * FRAME_BPP_RAW)
-#define QUAD_FRAME_BUFSIZE          (FRAME_BUFSIZE * 4)
-#define QUAD_FRAME_BUFSIZE_RAW      (FRAME_BUFSIZE_RAW * 4)
+#define FRAME_BUFSIZE_RGBA          (FRAME_WIDTH * FRAME_HEIGHT * FRAME_BPP_RGBA)
+#define FRAME_BUFSIZE_YUV           (FRAME_WIDTH * FRAME_HEIGHT * FRAME_BPP_YUV)
+#define FRAME_BUFSIZE_NV12          ((int)(FRAME_WIDTH * FRAME_HEIGHT * FRAME_BPP_NV12))
+#define QUAD_FRAME_BUFSIZE_RGBA     (FRAME_BUFSIZE_RGBA * 4)
+#define QUAD_FRAME_BUFSIZE_YUV      (FRAME_BUFSIZE_YUV * 4)
+#define QUAD_FRAME_BUFSIZE_NV12     (FRAME_BUFSIZE_NV12 * 4)
 
 // Return timestamps in HNS.  Do not change this value.
 #define QPC_MULTIPLIER 10000000

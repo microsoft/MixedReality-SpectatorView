@@ -164,7 +164,7 @@ public:
         for (int i = 0; i < MAX_NUM_OUTPUT_FRAMES; i++)
         {
             HRESULT result = m_deckLinkOutput->CreateVideoFrame(
-                FRAME_WIDTH, FRAME_HEIGHT, FRAME_WIDTH * ((pixelFormat == BMDPixelFormat::bmdFormat8BitYUV) ? FRAME_BPP_RAW : FRAME_BPP),
+                FRAME_WIDTH, FRAME_HEIGHT, FRAME_WIDTH * ((pixelFormat == BMDPixelFormat::bmdFormat8BitYUV) ? FRAME_BPP_YUV : FRAME_BPP_RGBA),
                 pixelFormat, bmdVideoInputFlagDefault,
                 &outputVideoFrames[i]);
         }
@@ -328,7 +328,7 @@ DeckLinkDevice::DeckLinkDevice(IDeckLink* device) :
 
     for (int i = 0; i < MAX_NUM_CACHED_BUFFERS; i++)
     {
-        bufferCache[i].buffer = new BYTE[FRAME_BUFSIZE];
+        bufferCache[i].buffer = new BYTE[FRAME_BUFSIZE_RGBA];
         bufferCache[i].timeStamp = 0;
     }
 
@@ -444,12 +444,12 @@ bool DeckLinkDevice::Init(ID3D11ShaderResourceView* colorSRV, ID3D11Texture2D* o
     IDeckLinkDisplayMode*           displayMode = NULL;
     BSTR                            deviceNameBSTR = NULL;
 
-    ZeroMemory(rawBuffer, FRAME_BUFSIZE_RAW);
-    ZeroMemory(outputBuffer, FRAME_BUFSIZE);
-    ZeroMemory(outputBufferRaw, FRAME_BUFSIZE_RAW);
+    ZeroMemory(rawBuffer, FRAME_BUFSIZE_YUV);
+    ZeroMemory(outputBuffer, FRAME_BUFSIZE_RGBA);
+    ZeroMemory(outputBufferRaw, FRAME_BUFSIZE_YUV);
 
     for (int i = 0; i < MAX_NUM_CACHED_BUFFERS; i++)
-        ZeroMemory(bufferCache[i].buffer, FRAME_BUFSIZE);
+        ZeroMemory(bufferCache[i].buffer, FRAME_BUFSIZE_RGBA);
 
     captureFrameIndex = 0;
 
@@ -678,7 +678,7 @@ HRESULT DeckLinkDevice::VideoInputFrameArrived(/* in */ IDeckLinkVideoInputFrame
             }
             else
             {
-                memcpy(buffer, rawBuffer, FRAME_BUFSIZE_RAW);
+                memcpy(buffer, rawBuffer, FRAME_BUFSIZE_YUV);
             }
         }
     }
@@ -691,14 +691,14 @@ HRESULT DeckLinkDevice::VideoInputFrameArrived(/* in */ IDeckLinkVideoInputFrame
             if (_useCPU)
             {
                 //TODO: Remove this block if R and B components are swapped in color feed.
-                memcpy(stagingBuffer, localFrameBuffer, FRAME_BUFSIZE);
+                memcpy(stagingBuffer, localFrameBuffer, FRAME_BUFSIZE_RGBA);
                 DirectXHelper::ConvertBGRAtoRGBA(stagingBuffer, FRAME_WIDTH, FRAME_HEIGHT, true);
                 // Do not cache frames when using the CPU
-                memcpy(buffer, stagingBuffer, FRAME_BUFSIZE);
+                memcpy(buffer, stagingBuffer, FRAME_BUFSIZE_RGBA);
             }
             else
             {
-                memcpy(buffer, localFrameBuffer, FRAME_BUFSIZE);
+                memcpy(buffer, localFrameBuffer, FRAME_BUFSIZE_RGBA);
             }
         }
     }
@@ -741,7 +741,7 @@ void DeckLinkDevice::Update(int compositeFrameIndex)
         const BufferCache& buffer = bufferCache[compositeFrameIndex % MAX_NUM_CACHED_BUFFERS];
         if (buffer.buffer != nullptr)
         {
-            DirectXHelper::UpdateSRV(device, _colorSRV, buffer.buffer, FRAME_WIDTH * FRAME_BPP);
+            DirectXHelper::UpdateSRV(device, _colorSRV, buffer.buffer, FRAME_WIDTH * FRAME_BPP_RGBA);
         }
 
         if (!_passthroughOutput && compositeFrameIndex != lastCompositorFrameIndex)
@@ -761,11 +761,11 @@ void DeckLinkDevice::Update(int compositeFrameIndex)
                         /*result = */videoFrame->GetBytes((void**)&outBytes);
                         if (pixelFormat == PixelFormat::YUV)
                         {
-                            outputTextureBuffer.FetchTextureData(device, outBytes, FRAME_BPP_RAW);
+                            outputTextureBuffer.FetchTextureData(device, outBytes, FRAME_BPP_YUV);
                         }
                         else if (pixelFormat == PixelFormat::BGRA)
                         {
-                            outputTextureBuffer.FetchTextureData(device, outBytes, FRAME_BPP);
+                            outputTextureBuffer.FetchTextureData(device, outBytes, FRAME_BPP_RGBA);
                         }
                         s_outputScheduler.QueueFrame(videoFrame);
                     }
@@ -786,7 +786,7 @@ bool DeckLinkDevice::OutputYUV()
 void DeckLinkDevice::BufferCache::ComputePixelChange(BYTE* prevBuffer, BMDPixelFormat framePixelFormat)
 {
     pixelChange = 0;
-    int bpp = framePixelFormat == BMDPixelFormat::bmdFormat8BitYUV ? FRAME_BPP_RAW : FRAME_BPP;
+    int bpp = framePixelFormat == BMDPixelFormat::bmdFormat8BitYUV ? FRAME_BPP_YUV : FRAME_BPP_RGBA;
 
     for (int x = 50; x < FRAME_WIDTH - 50; x += 100)
     {

@@ -150,10 +150,10 @@ void CompositorInterface::TakePicture(ID3D11Device* device, int width, int heigh
 
 bool CompositorInterface::InitializeVideoEncoder(ID3D11Device* device)
 {
-    videoEncoder1080p = new VideoEncoder(FRAME_WIDTH, FRAME_HEIGHT, FRAME_WIDTH * FRAME_BPP, VIDEO_FPS,
+    videoEncoder1080p = new VideoEncoder(FRAME_WIDTH, FRAME_HEIGHT, FRAME_WIDTH * FRAME_BPP_RGBA, VIDEO_FPS,
         AUDIO_SAMPLE_RATE, AUDIO_CHANNELS, AUDIO_BPS);
 
-    videoEncoder4K = new VideoEncoder(QUAD_FRAME_WIDTH, QUAD_FRAME_HEIGHT, QUAD_FRAME_WIDTH * FRAME_BPP, VIDEO_FPS,
+    videoEncoder4K = new VideoEncoder(QUAD_FRAME_WIDTH, QUAD_FRAME_HEIGHT, QUAD_FRAME_WIDTH * FRAME_BPP_RGBA, VIDEO_FPS,
         AUDIO_SAMPLE_RATE, AUDIO_CHANNELS, AUDIO_BPS);
 
     return videoEncoder1080p->Initialize(device) && videoEncoder4K->Initialize(device);

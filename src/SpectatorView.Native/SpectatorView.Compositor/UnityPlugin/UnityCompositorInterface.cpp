@@ -22,8 +22,8 @@ static bool isRecording = false;
 static bool videoInitialized = false;
 static VideoRecordingFrameLayout g_frameLayout = VideoRecordingFrameLayout::Composite;
 
-static BYTE* colorBytes = new BYTE[FRAME_BUFSIZE];
-static BYTE* holoBytes = new BYTE[FRAME_BUFSIZE];
+static BYTE* colorBytes = new BYTE[FRAME_BUFSIZE_RGBA];
+static BYTE* holoBytes = new BYTE[FRAME_BUFSIZE_RGBA];
 
 #define NUM_VIDEO_BUFFERS 10
 
@@ -41,17 +41,17 @@ void AllocateVideoBuffers()
     if (g_frameLayout == VideoRecordingFrameLayout::Quad)
     {
 #if HARDWARE_ENCODE_VIDEO
-        frameBufferSize = QUAD_FRAME_BUFSIZE_RAW;
+        frameBufferSize = QUAD_FRAME_BUFSIZE_NV12;
 #else
-        frameBufferSize = QUAD_FRAME_BUFSIZE;
+        frameBufferSize = QUAD_FRAME_BUFSIZE_RGBA;
 #endif
     }
     else
     {
 #if HARDWARE_ENCODE_VIDEO
-        frameBufferSize = FRAME_BUFSIZE_RAW;
+        frameBufferSize = FRAME_BUFSIZE_NV12;
 #else
-        frameBufferSize = FRAME_BUFSIZE;
+        frameBufferSize = FRAME_BUFSIZE_RGBA;
 #endif
     }
 
@@ -162,9 +162,9 @@ void UpdateVideoRecordingFrame()
     {
         videoBufferIndex = (videoBufferIndex + 1) % NUM_VIDEO_BUFFERS;
 #if HARDWARE_ENCODE_VIDEO
-        float bpp = FRAME_BPP_RAW;
+        float bpp = FRAME_BPP_NV12;
 #else
-        float bpp = FRAME_BPP;
+        float bpp = FRAME_BPP_RGBA;
 #endif
 
         VideoTextureBuffer.FetchTextureData(g_pD3D11Device, videoBytes[videoBufferIndex], bpp);
@@ -218,21 +218,21 @@ static void __stdcall OnRenderEvent(int eventID)
         {
             takePicture = false;
 
-            DirectXHelper::GetBytesFromTexture(g_pD3D11Device, g_compositeTexture, FRAME_BPP, holoBytes);
+            DirectXHelper::GetBytesFromTexture(g_pD3D11Device, g_compositeTexture, FRAME_BPP_RGBA, holoBytes);
 
-            DirectXHelper::FlipHorizontally(holoBytes, FRAME_HEIGHT, FRAME_WIDTH * FRAME_BPP);
-            ci->TakePicture(g_pD3D11Device, FRAME_WIDTH, FRAME_HEIGHT, FRAME_BPP, holoBytes);
+            DirectXHelper::FlipHorizontally(holoBytes, FRAME_HEIGHT, FRAME_WIDTH * FRAME_BPP_RGBA);
+            ci->TakePicture(g_pD3D11Device, FRAME_WIDTH, FRAME_HEIGHT, FRAME_BPP_RGBA, holoBytes);
         }
 
         if (takeRawPicture && g_colorTexture != nullptr)
         {
             takeRawPicture = false;
 
-            DirectXHelper::GetBytesFromTexture(g_pD3D11Device, g_compositeTexture, FRAME_BPP, holoBytes);
+            DirectXHelper::GetBytesFromTexture(g_pD3D11Device, g_compositeTexture, FRAME_BPP_RGBA, holoBytes);
 
             std::ofstream strm;
             strm.open(rawPicturePath, std::ios::out | std::ios::binary | std::ios::trunc);
-            strm.write((const char*)(holoBytes), FRAME_BUFSIZE);
+            strm.write((const char*)(holoBytes), FRAME_BUFSIZE_RGBA);
             strm.close();
         }
     }
@@ -318,6 +318,7 @@ UNITYDLL bool InitializeFrameProviderOnDevice(int providerId, VideoRecordingFram
     }
 
     g_frameLayout = frameLayout;
+    VideoTextureBuffer.ReleaseTextures();
     AllocateVideoBuffers();
 
     if (ci == nullptr)
@@ -491,7 +492,7 @@ UNITYDLL bool CreateUnityColorTexture(ID3D11ShaderResourceView*& srv)
 {
     if (g_UnityColorSRV == nullptr && g_pD3D11Device != nullptr)
     {
-        g_colorTexture = DirectXHelper::CreateTexture(g_pD3D11Device, colorBytes, FRAME_WIDTH, FRAME_HEIGHT, FRAME_BPP);
+        g_colorTexture = DirectXHelper::CreateTexture(g_pD3D11Device, colorBytes, FRAME_WIDTH, FRAME_HEIGHT, FRAME_BPP_RGBA);
 
         if (g_colorTexture == nullptr)
         {

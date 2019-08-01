@@ -269,9 +269,9 @@ public:
 
     static void ConvertRGBAtoNV12(BYTE* input, BYTE*& outputYUV, int width, int height)
     {
-        for (int i = 0, j = 0, k = 0; i < width * height * FRAME_BPP - 4 * FRAME_BPP; i += 4 * FRAME_BPP, j += FRAME_BPP_RAW * 2)
+        for (int i = 0, j = 0, k = 0; i < width * height * FRAME_BPP_RGBA - 4 * FRAME_BPP_RGBA; i += 4 * FRAME_BPP_RGBA, j += FRAME_BPP_YUV * 2)
         {
-            int row = (int)(i / (width * FRAME_BPP));
+            int row = (int)(i / (width * FRAME_BPP_RGBA));
 
             int b1, g1, r1, a1;
             int b2, g2, r2, a2;
@@ -324,7 +324,7 @@ public:
     // Swap B and R components and force alpha to 255.
     static void ConvertBGRAtoRGBA(BYTE*& bytes, int width, int height, bool forceOpaque = true)
     {
-        for (int i = 0; i < width * height * FRAME_BPP - FRAME_BPP; i += 4)
+        for (int i = 0; i < width * height * FRAME_BPP_RGBA - FRAME_BPP_RGBA; i += 4)
         {
             byte swap = bytes[i];
             bytes[i] = bytes[i + 2];
@@ -402,7 +402,7 @@ public:
 
     static void AlphaBlend(/*[in out]*/ BYTE*& back, const BYTE* front, int bufferSize, float alpha)
     {
-        for (int i = 0; i < bufferSize - FRAME_BPP; i += FRAME_BPP)
+        for (int i = 0; i < bufferSize - FRAME_BPP_RGBA; i += FRAME_BPP_RGBA)
         {
             byte br, bg, bb, ba;
             byte fr, fg, fb, fa;
@@ -439,7 +439,7 @@ public:
 
     static void AlphaAsRGBA(BYTE* input, BYTE*& output, int width, int height)
     {
-        for (int i = 0; i < width * height * FRAME_BPP - 4; i += 4)
+        for (int i = 0; i < width * height * FRAME_BPP_RGBA - 4; i += 4)
         {
             byte a = input[i + 3];
 
@@ -508,7 +508,7 @@ public:
 private:
     static void ConvertYUVtoBGRA_CPU(BYTE* input, BYTE* alphaInput, BYTE*& output, int width, int height, bool rgba = false)
     {
-        for (int i = 0, j = 0, a = 0; i < width * height * FRAME_BPP_RAW - (FRAME_BPP_RAW * 4); i += FRAME_BPP_RAW * 4, j += FRAME_BPP * 4, a += 4)
+        for (int i = 0, j = 0, a = 0; i < width * height * FRAME_BPP_YUV - (FRAME_BPP_YUV * 4); i += FRAME_BPP_YUV * 4, j += FRAME_BPP_RGBA * 4, a += 4)
         {
             int u, y0, v, y1;
             int u2, y02, v2, y12;
@@ -587,7 +587,7 @@ private:
 
     static void ConvertBGRAtoYUV_CPU(BYTE* input, BYTE*& output, BYTE*& alphaOut, int width, int height)
     {
-        for (int i = 0, j = 0, a = 0; i < width * height * FRAME_BPP - 4 * FRAME_BPP; i += 4 * FRAME_BPP, j += 4 * FRAME_BPP_RAW, a += FRAME_BPP)
+        for (int i = 0, j = 0, a = 0; i < width * height * FRAME_BPP_RGBA - 4 * FRAME_BPP_RGBA; i += 4 * FRAME_BPP_RGBA, j += 4 * FRAME_BPP_YUV, a += FRAME_BPP_RGBA)
         {
             int b1, g1, r1, a1;
             int b2, g2, r2, a2;
@@ -639,7 +639,7 @@ private:
 
     static void ConvertRGBAtoYUV_CPU(BYTE* input, BYTE*& output, int width, int height)
     {
-        for (int i = 0, j = 0; i < width * height * FRAME_BPP - 4 * FRAME_BPP; i += 4 * FRAME_BPP, j += 4 * FRAME_BPP_RAW)
+        for (int i = 0, j = 0; i < width * height * FRAME_BPP_RGBA - 4 * FRAME_BPP_RGBA; i += 4 * FRAME_BPP_RGBA, j += 4 * FRAME_BPP_YUV)
         {
             int b1, g1, r1, a1;
             int b2, g2, r2, a2;
@@ -686,7 +686,7 @@ private:
 
     static void ConvertBGRAtoYUV_CPU(BYTE* input, BYTE*& output, int width, int height)
     {
-        for (int i = 0, j = 0; i < width * height * FRAME_BPP - 4 * FRAME_BPP; i += 4 * FRAME_BPP, j += 4 * FRAME_BPP_RAW)
+        for (int i = 0, j = 0; i < width * height * FRAME_BPP_RGBA - 4 * FRAME_BPP_RGBA; i += 4 * FRAME_BPP_RGBA, j += 4 * FRAME_BPP_YUV)
         {
             int b1, g1, r1, a1;
             int b2, g2, r2, a2;

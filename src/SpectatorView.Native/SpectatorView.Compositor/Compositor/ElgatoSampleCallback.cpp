@@ -11,9 +11,9 @@ ElgatoSampleCallback::ElgatoSampleCallback(ID3D11Device* device) :
     InitializeCriticalSection(&frameAccessCriticalSection);
 
     for(int i =0; i < MAX_NUM_CACHED_BUFFERS; i++)
-        bufferCache[i] = new BYTE[FRAME_BUFSIZE];
+        bufferCache[i] = new BYTE[FRAME_BUFSIZE_RGBA];
 
-    stagingBytes = new BYTE[FRAME_BUFSIZE];
+    stagingBytes = new BYTE[FRAME_BUFSIZE_RGBA];
 
     captureFrameIndex = 0;
 }
@@ -37,10 +37,10 @@ STDMETHODIMP ElgatoSampleCallback::BufferCB(double time, BYTE *pBuffer, long len
     latestTimeStamp = t.QuadPart;
 
     int copyLength = length;
-    if (copyLength > FRAME_BUFSIZE)
+    if (copyLength > FRAME_BUFSIZE_RGBA)
     {
         // This might happen if the camera is outputting 4K but the system is expecting 1080.
-        copyLength = FRAME_BUFSIZE;
+        copyLength = FRAME_BUFSIZE_RGBA;
     }
 
     captureFrameIndex++;
@@ -56,10 +56,10 @@ void ElgatoSampleCallback::UpdateSRV(ID3D11ShaderResourceView* srv, bool useCPU,
     {
         // Do not cache when using the CPU
         DirectXHelper::ConvertYUVtoBGRA(srcBuffer, stagingBytes, FRAME_WIDTH, FRAME_HEIGHT, true);
-        DirectXHelper::UpdateSRV(_device, srv, stagingBytes, FRAME_WIDTH * FRAME_BPP);
+        DirectXHelper::UpdateSRV(_device, srv, stagingBytes, FRAME_WIDTH * FRAME_BPP_RGBA);
     }
     else
     {
-        DirectXHelper::UpdateSRV(_device, srv, srcBuffer, FRAME_WIDTH * FRAME_BPP);
+        DirectXHelper::UpdateSRV(_device, srv, srcBuffer, FRAME_WIDTH * FRAME_BPP_RGBA);
     }
 }
