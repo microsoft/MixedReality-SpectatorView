@@ -277,26 +277,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
                 {
                     if (textureRenderMode == textureRenderModeSplit)
                     {
-                        Rect[] quadrantRects = CalculateVideoQuadrants(framesRect);
-                        if (compositionManager.TextureManager.compositeTexture != null)
-                        {
-                            Graphics.DrawTexture(quadrantRects[0], compositionManager.TextureManager.compositeTexture);
-                        }
-
-                        if (compositionManager.TextureManager.colorRGBTexture != null)
-                        {
-                            Graphics.DrawTexture(quadrantRects[1], compositionManager.TextureManager.colorRGBTexture, compositionManager.TextureManager.IgnoreAlphaMaterial);
-                        }
-
-                        if (compositionManager.TextureManager.renderTexture != null)
-                        {
-                            Graphics.DrawTexture(quadrantRects[2], compositionManager.TextureManager.renderTexture, compositionManager.TextureManager.IgnoreAlphaMaterial);
-                        }
-
-                        if (compositionManager.TextureManager.alphaTexture != null)
-                        {
-                            Graphics.DrawTexture(quadrantRects[3], compositionManager.TextureManager.alphaTexture, compositionManager.TextureManager.IgnoreAlphaMaterial);
-                        }
+                        Graphics.DrawTexture(framesRect, compositionManager.TextureManager.quadViewOutputTexture, compositionManager.TextureManager.IgnoreAlphaMaterial);
                     }
                     else
                     {
@@ -410,18 +391,6 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
             {
                 uiFrameWidth = uiFrameHeight * aspect;
             }
-        }
-
-        private Rect[] CalculateVideoQuadrants(Rect videoRect)
-        {
-            float quadWidth = videoRect.width / 2 - quadPadding / 2;
-            float quadHeight = videoRect.height / 2 - quadPadding / 2;
-            Rect[] rects = new Rect[4];
-            rects[0] = new Rect(videoRect.x, videoRect.y, quadWidth, quadHeight);
-            rects[1] = new Rect(videoRect.x + quadWidth + quadPadding, videoRect.y, quadWidth, quadHeight);
-            rects[2] = new Rect(videoRect.x, videoRect.y + quadHeight + quadPadding, quadWidth, quadHeight);
-            rects[3] = new Rect(videoRect.x + quadWidth + quadPadding, videoRect.y + quadHeight + quadPadding, quadWidth, quadHeight);
-            return rects;
         }
 
         protected CompositionManager GetCompositionManager()

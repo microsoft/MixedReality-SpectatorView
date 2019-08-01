@@ -40,6 +40,11 @@ namespace Microsoft.MixedReality.SpectatorView
         public RenderTexture alphaTexture { get; private set; }
 
         /// <summary>
+        /// The texture containing the raw video, alpha mask, hologram, and composite textures.
+        /// </summary>
+        public RenderTexture quadViewOutputTexture { get; private set; }
+
+        /// <summary>
         /// The raw color image data coming from the capture card
         /// </summary>
         private Texture2D colorTexture = null;
@@ -58,11 +63,6 @@ namespace Microsoft.MixedReality.SpectatorView
         /// The final composite texture converted into the format expected by output on the capture card (YUV or BGRA)
         /// </summary>
         private RenderTexture displayOutputTexture = null;
-
-        /// <summary>
-        /// The texture containing the raw video, alpha mask, hologram, and composite textures.
-        /// </summary>
-        private RenderTexture quadViewOutputTexture = null;
 
         public RenderTexture[] supersampleBuffers;
 
