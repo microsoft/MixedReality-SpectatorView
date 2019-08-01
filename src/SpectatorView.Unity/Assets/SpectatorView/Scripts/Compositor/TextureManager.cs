@@ -248,6 +248,9 @@ namespace Microsoft.MixedReality.SpectatorView
         private void OnPreRender()
         {
             Graphics.Blit(CurrentColorTexture, colorRGBTexture, CurrentColorMaterial);
+
+            // Clear the camera's background by blitting using a shader that simply
+            // clears the target texture without reading from the source texture.
             Graphics.Blit(null, spectatorViewCamera.targetTexture, textureClearMat);
         }
 
