@@ -17,7 +17,8 @@ namespace Microsoft.MixedReality.SpectatorView
         private const int DSPBufferSize = 1024;
         private const AudioSpeakerMode SpeakerMode = AudioSpeakerMode.Stereo;
 
-        public enum FrameProviderDeviceType { BlackMagic, Elgato };
+        public enum FrameProviderDeviceType : int { BlackMagic = 0, Elgato = 1 };
+        public enum VideoRecordingFrameLayout : int { Composite = 0, Quad = 1 };
         public enum Depth { None, Sixteen = 16, TwentyFour = 24 }
         public enum AntiAliasingSamples { One = 1, Two = 2, Four = 4, Eight = 8 };
 
@@ -69,6 +70,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
         private float videoTimestampToHolographicTimestampOffset = -10.0f;
         private int captureDeviceIndex = -1;
+        private int videoRecordingLayout = -1;
         private TextureManager textureManager = null;
         private MicrophoneInput microphoneInput;
 
@@ -163,7 +165,7 @@ namespace Microsoft.MixedReality.SpectatorView
             {
                 if (captureDeviceIndex == -1)
                 {
-                    captureDeviceIndex = PlayerPrefs.GetInt("CaptureDevice", (int)FrameProviderDeviceType.BlackMagic);
+                    captureDeviceIndex = PlayerPrefs.GetInt(nameof(CaptureDevice), (int)FrameProviderDeviceType.BlackMagic);
                 }
                 return (FrameProviderDeviceType)captureDeviceIndex;
             }
@@ -172,7 +174,28 @@ namespace Microsoft.MixedReality.SpectatorView
                 if (captureDeviceIndex != (int)value)
                 {
                     captureDeviceIndex = (int)value;
-                    PlayerPrefs.SetInt("CaptureDevice", captureDeviceIndex);
+                    PlayerPrefs.SetInt(nameof(CaptureDevice), captureDeviceIndex);
+                    PlayerPrefs.Save();
+                }
+            }
+        }
+
+        public VideoRecordingFrameLayout VideoRecordingLayout
+        {
+            get
+            {
+                if (videoRecordingLayout == -1)
+                {
+                    videoRecordingLayout = PlayerPrefs.GetInt(nameof(VideoRecordingLayout), (int)VideoRecordingFrameLayout.Composite);
+                }
+                return (VideoRecordingFrameLayout)videoRecordingLayout;
+            }
+            set
+            {
+                if (videoRecordingLayout != (int)value)
+                {
+                    videoRecordingLayout = (int)value;
+                    PlayerPrefs.SetInt(nameof(VideoRecordingLayout), videoRecordingLayout);
                     PlayerPrefs.Save();
                 }
             }
@@ -272,6 +295,44 @@ namespace Microsoft.MixedReality.SpectatorView
         }
 
 #if UNITY_EDITOR
+        /// <summary>
+        /// Gets the width of the frame for video recording purposes, based
+        /// on the current rendering mode.
+        /// </summary>
+        public int VideoRecordingFrameWidth
+        {
+            get
+            {
+                if (VideoRecordingLayout == VideoRecordingFrameLayout.Composite)
+                {
+                    return UnityCompositorInterface.GetFrameWidth();
+                }
+                else
+                {
+                    return 2 * UnityCompositorInterface.GetFrameWidth();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets the width of the frame for video recording purposes, based
+        /// on the current rendering mode.
+        /// </summary>
+        public int VideoRecordingFrameHeight
+        {
+            get
+            {
+                if (VideoRecordingLayout == VideoRecordingFrameLayout.Composite)
+                {
+                    return UnityCompositorInterface.GetFrameHeight();
+                }
+                else
+                {
+                    return 2 * UnityCompositorInterface.GetFrameHeight();
+                }
+            }
+        }
+
         /// <summary>
         /// Gets the time duration of a single video frame.
         /// </summary>
@@ -428,7 +489,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
             if (!isVideoFrameProviderInitialized)
             {
-                isVideoFrameProviderInitialized = UnityCompositorInterface.InitializeFrameProviderOnDevice((int)CaptureDevice);
+                isVideoFrameProviderInitialized = UnityCompositorInterface.InitializeFrameProviderOnDevice((int)CaptureDevice, (int)VideoRecordingLayout);
                 if (isVideoFrameProviderInitialized)
                 {
                     CurrentCompositeFrame = 0;

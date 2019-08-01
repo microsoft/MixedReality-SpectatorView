@@ -100,9 +100,9 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
             EditorGUILayout.BeginVertical("Box");
             {
                 //Title
+                CompositionManager compositionManager = GetCompositionManager();
                 {
                     string title;
-                    CompositionManager compositionManager = GetCompositionManager();
                     if (compositionManager != null && compositionManager.IsVideoFrameProviderInitialized)
                     {
                         float framesPerSecond = compositionManager.GetVideoFramerate();
@@ -115,23 +115,41 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
 
                     RenderTitle(title, Color.green);
                 }
-                EditorGUILayout.BeginHorizontal("Box");
-                {
-                    string[] compositionOptions = new string[] { "Final composited texture", "All intermediate textures" };
-                    GUIContent renderingModeLabel = new GUIContent("Display texture", "Choose between displaying the composited video texture or seeing intermediate textures displayed in 4 sections (top right: input video, bottom right: alpha mask, bottom left: opaque hologram, top left: final alpha-blended hologram)");
-                    textureRenderMode = EditorGUILayout.Popup(renderingModeLabel, textureRenderMode, compositionOptions);
-                    FullScreenCompositorWindow fullscreenWindow = FullScreenCompositorWindow.TryGetWindow();
-                    if (fullscreenWindow != null)
-                    {
-                        fullscreenWindow.TextureRenderMode = textureRenderMode;
-                    }
 
-                    if (GUILayout.Button("Fullscreen", GUILayout.Width(120)))
+                EditorGUILayout.BeginVertical("Box");
+                {
+                    EditorGUILayout.BeginHorizontal();
                     {
-                        FullScreenCompositorWindow.ShowFullscreen();
+                        bool wasEnabled = GUI.enabled;
+                        GUI.enabled = compositionManager.TextureManager == null;
+                        string[] compositionOptions = new string[] { "Final composited texture", "All intermediate textures" };
+                        GUIContent renderingModeLabel = new GUIContent("Video recording texture", "Choose between displaying the composited video texture or seeing intermediate textures displayed in 4 sections (top right: input video, bottom right: alpha mask, bottom left: opaque hologram, top left: final alpha-blended hologram)");
+                        compositionManager.VideoRecordingLayout = (CompositionManager.VideoRecordingFrameLayout)EditorGUILayout.Popup(renderingModeLabel, (int)compositionManager.VideoRecordingLayout, compositionOptions);
+                        GUI.enabled = wasEnabled;
                     }
+                    EditorGUILayout.EndHorizontal();
+
+                    EditorGUILayout.Space();
+
+                    EditorGUILayout.BeginHorizontal();
+                    {
+                        string[] compositionOptions = new string[] { "Final composited texture", "All intermediate textures" };
+                        GUIContent renderingModeLabel = new GUIContent("Display texture", "Choose between displaying the composited video texture or seeing intermediate textures displayed in 4 sections (top right: input video, bottom right: alpha mask, bottom left: opaque hologram, top left: final alpha-blended hologram)");
+                        textureRenderMode = EditorGUILayout.Popup(renderingModeLabel, textureRenderMode, compositionOptions);
+                        FullScreenCompositorWindow fullscreenWindow = FullScreenCompositorWindow.TryGetWindow();
+                        if (fullscreenWindow != null)
+                        {
+                            fullscreenWindow.TextureRenderMode = textureRenderMode;
+                        }
+
+                        if (GUILayout.Button("Fullscreen", GUILayout.Width(120)))
+                        {
+                            FullScreenCompositorWindow.ShowFullscreen();
+                        }
+                    }
+                    EditorGUILayout.EndHorizontal();
                 }
-                EditorGUILayout.EndHorizontal();
+                EditorGUILayout.EndVertical();
 
                 // Rendering
                 CompositeTextureGUI(textureRenderMode);

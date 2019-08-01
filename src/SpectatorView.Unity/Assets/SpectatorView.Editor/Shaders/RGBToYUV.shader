@@ -5,7 +5,7 @@ Shader "SV/RGBToYUV"
 {
     Properties
     {
-        _RGBTex("Texture", 2D) = "white" {}
+        _MainTex("Texture", 2D) = "white" {}
 
         _Width("Width", int) = 0
         _Height("Height", int) = 0
@@ -35,7 +35,7 @@ Shader "SV/RGBToYUV"
                 fixed4 vertex : SV_POSITION;
             };
 
-            sampler2D _RGBTex;
+            sampler2D _MainTex;
 
             int _Width;
             int _Height;
@@ -60,7 +60,7 @@ Shader "SV/RGBToYUV"
                 {
                     offset.y = -(0.5 / _Height);
                 }
-                return tex2D(_RGBTex, uv + offset);
+                return tex2D(_MainTex, uv + offset);
             }
 
             fixed4 frag(v2f i) : SV_Target

@@ -38,12 +38,18 @@
 #define FRAME_WIDTH    1920
 #define FRAME_HEIGHT   1080
 
+#define QUAD_FRAME_WIDTH (FRAME_WIDTH * 2)
+#define QUAD_FRAME_HEIGHT (FRAME_HEIGHT * 2)
+
+
 #define FRAME_BPP      4            // RGBA
 #define FRAME_BPP_RAW  2            // YUV
 
 // Color camera buffer size.
 #define FRAME_BUFSIZE               (FRAME_WIDTH * FRAME_HEIGHT * FRAME_BPP)
 #define FRAME_BUFSIZE_RAW           (FRAME_WIDTH * FRAME_HEIGHT * FRAME_BPP_RAW)
+#define QUAD_FRAME_BUFSIZE          (FRAME_BUFSIZE * 4)
+#define QUAD_FRAME_BUFSIZE_RAW      (FRAME_BUFSIZE_RAW * 4)
 
 // Return timestamps in HNS.  Do not change this value.
 #define QPC_MULTIPLIER 10000000
@@ -55,3 +61,9 @@
 #define INITIAL_FRAME_OFFSET 0.0f
 
 #define HARDWARE_ENCODE_VIDEO TRUE
+
+enum class VideoRecordingFrameLayout
+{
+    Composite = 0,
+    Quad = 1
+};

@@ -17,9 +17,10 @@
 
 #define UNITYDLL EXTERN_C __declspec(dllexport)
 
-static CompositorInterface* ci = NULL;
+static CompositorInterface* ci = nullptr;
 static bool isRecording = false;
 static bool videoInitialized = false;
+static VideoRecordingFrameLayout g_frameLayout = VideoRecordingFrameLayout::Composite;
 
 static BYTE* colorBytes = new BYTE[FRAME_BUFSIZE];
 static BYTE* holoBytes = new BYTE[FRAME_BUFSIZE];
@@ -36,13 +37,27 @@ void AllocateVideoBuffers()
 
     videoBytes = new byte*[NUM_VIDEO_BUFFERS];
 
-    for (int i = 0; i < NUM_VIDEO_BUFFERS; i++)
+    int frameBufferSize;
+    if (g_frameLayout == VideoRecordingFrameLayout::Quad)
     {
 #if HARDWARE_ENCODE_VIDEO
-        videoBytes[i] = new byte[(int)(1.5f * FRAME_WIDTH * FRAME_HEIGHT)];
+        frameBufferSize = QUAD_FRAME_BUFSIZE_RAW;
 #else
-        videoBytes[i] = new byte[FRAME_BUFSIZE];
+        frameBufferSize = QUAD_FRAME_BUFSIZE;
 #endif
+    }
+    else
+    {
+#if HARDWARE_ENCODE_VIDEO
+        frameBufferSize = FRAME_BUFSIZE_RAW;
+#else
+        frameBufferSize = FRAME_BUFSIZE;
+#endif
+    }
+
+    for (int i = 0; i < NUM_VIDEO_BUFFERS; i++)
+    {
+        videoBytes[i] = new byte[frameBufferSize];
     }
 }
 
@@ -109,8 +124,6 @@ static void UNITY_INTERFACE_API OnGraphicsDeviceEvent(UnityGfxDeviceEventType ev
 
 void UNITY_INTERFACE_API UnityPluginLoad(IUnityInterfaces *unityInterfaces)
 {
-    AllocateVideoBuffers();
-
     InitializeCriticalSection(&lock);
 
     s_UnityInterfaces = unityInterfaces;
@@ -122,7 +135,6 @@ void UNITY_INTERFACE_API UnityPluginLoad(IUnityInterfaces *unityInterfaces)
 
 void UNITY_INTERFACE_API UnityPluginUnload()
 {
-    FreeVideoBuffers();
     s_Graphics->UnregisterDeviceEventCallback(OnGraphicsDeviceEvent);
     OnGraphicsDeviceEvent(kUnityGfxDeviceEventShutdown);
 
@@ -150,7 +162,7 @@ void UpdateVideoRecordingFrame()
     {
         videoBufferIndex = (videoBufferIndex + 1) % NUM_VIDEO_BUFFERS;
 #if HARDWARE_ENCODE_VIDEO
-        float bpp = 1.5f;
+        float bpp = FRAME_BPP_RAW;
 #else
         float bpp = FRAME_BPP;
 #endif
@@ -291,7 +303,7 @@ UNITYDLL int GetFrameHeight()
     return FRAME_HEIGHT;
 }
 
-UNITYDLL bool InitializeFrameProviderOnDevice(int providerId)
+UNITYDLL bool InitializeFrameProviderOnDevice(int providerId, VideoRecordingFrameLayout frameLayout)
 {
     if (g_outputTexture == nullptr ||
         g_UnityColorSRV == nullptr ||
@@ -304,6 +316,9 @@ UNITYDLL bool InitializeFrameProviderOnDevice(int providerId)
     {
         return true;
     }
+
+    g_frameLayout = frameLayout;
+    AllocateVideoBuffers();
 
     if (ci == nullptr)
     {
@@ -322,6 +337,8 @@ UNITYDLL void StopFrameProvider()
     {
         ci->StopFrameProvider();
     }
+
+    FreeVideoBuffers();
 }
 
 UNITYDLL void SetAudioData(BYTE* audioData, int audioSize, double audioTime)
@@ -357,7 +374,7 @@ UNITYDLL void StartRecording()
     {
         lastVideoFrame = -1;
         VideoTextureBuffer.Reset();
-        ci->StartRecording();
+        ci->StartRecording(g_frameLayout);
         isRecording = true;
     }
 }

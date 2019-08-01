@@ -17,7 +17,10 @@ private:
     IFrameProvider* frameProvider;
     float alpha = 0.9f;
 
-    VideoEncoder* videoEncoder = nullptr;
+    VideoEncoder* videoEncoder1080p = nullptr;
+    VideoEncoder* videoEncoder4K = nullptr;
+    VideoEncoder* activeVideoEncoder = nullptr;
+
     int videoIndex = -1;
     LONGLONG videoRecordingStartTime;
     double audioRecordingStartTime;
@@ -51,7 +54,7 @@ public:
     DLLEXPORT void TakePicture(ID3D11Device* device, int width, int height, int bpp, BYTE* bytes);
 
     DLLEXPORT bool InitializeVideoEncoder(ID3D11Device* device);
-    DLLEXPORT void StartRecording();
+    DLLEXPORT void StartRecording(VideoRecordingFrameLayout frameLayout);
     DLLEXPORT void StopRecording();
     DLLEXPORT void RecordFrameAsync(BYTE* videoFrame, LONGLONG frameTime, int numFrames);
     DLLEXPORT void RecordAudioFrameAsync(BYTE* audioFrame, int audioSize, double audioTime);

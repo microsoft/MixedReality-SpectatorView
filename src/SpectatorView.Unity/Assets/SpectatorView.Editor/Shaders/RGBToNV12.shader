@@ -5,7 +5,7 @@ Shader "SV/RGBToNV12"
 {
     Properties
     {
-        _RGBTex("Texture", 2D) = "white" {}
+        _MainTex("Texture", 2D) = "white" {}
         _Width("Width", int) = 0
         _Height("Height", int) = 0
     }
@@ -41,7 +41,7 @@ Shader "SV/RGBToNV12"
                 fixed4 yuv2;
             };
 
-            sampler2D _RGBTex;
+            sampler2D _MainTex;
             int _Width;
             int _Height;
 
@@ -67,10 +67,10 @@ Shader "SV/RGBToNV12"
                 uv4.x = (((rgbaIndex + 3) / 4.0f) % (_Width / 4.0f)) / (_Width / 4.0f);
                 uv4.y = 1 - (((rgbaIndex + 3) / 4.0f) / (_Width / 4.0f)) / _Height;
 
-                fixed4 col1 = tex2D(_RGBTex, uv1);
-                fixed4 col2 = tex2D(_RGBTex, uv2);
-                fixed4 col3 = tex2D(_RGBTex, uv3);
-                fixed4 col4 = tex2D(_RGBTex, uv4);
+                fixed4 col1 = tex2D(_MainTex, uv1);
+                fixed4 col2 = tex2D(_MainTex, uv2);
+                fixed4 col3 = tex2D(_MainTex, uv3);
+                fixed4 col4 = tex2D(_MainTex, uv4);
 
                 pd.yuv1 = GetYUV(col1, col2);
                 pd.yuv2 = GetYUV(col3, col4);

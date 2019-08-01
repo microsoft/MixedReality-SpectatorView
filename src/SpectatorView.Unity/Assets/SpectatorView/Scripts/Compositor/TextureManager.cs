@@ -59,6 +59,11 @@ namespace Microsoft.MixedReality.SpectatorView
         /// </summary>
         private RenderTexture displayOutputTexture = null;
 
+        /// <summary>
+        /// The texture containing the raw video, alpha mask, hologram, and composite textures.
+        /// </summary>
+        private RenderTexture quadViewOutputTexture = null;
+
         public RenderTexture[] supersampleBuffers;
 
         public event Action TextureRenderCompleted;
@@ -71,6 +76,9 @@ namespace Microsoft.MixedReality.SpectatorView
         private Material NV12VideoMat;
         private Material BGRVideoMat;
         private Material holoAlphaMat;
+        private Material quadViewMat;
+        private Material alphaBlendMat;
+        private Material textureClearMat;
         private Material extractAlphaMat;
         private Material downsampleMat;
         private Material[] downsampleMats;
@@ -79,6 +87,8 @@ namespace Microsoft.MixedReality.SpectatorView
 
         private int frameWidth;
         private int frameHeight;
+        private int videoRecordingFrameWidth;
+        private int videoRecordingFrameHeight;
         private bool outputYUV;
         private bool hardwareEncodeVideo;
         private IntPtr renderEvent;
@@ -145,6 +155,8 @@ namespace Microsoft.MixedReality.SpectatorView
         {
             frameWidth = UnityCompositorInterface.GetFrameWidth();
             frameHeight = UnityCompositorInterface.GetFrameHeight();
+            videoRecordingFrameWidth = Compositor.VideoRecordingFrameWidth;
+            videoRecordingFrameHeight = Compositor.VideoRecordingFrameHeight;
             outputYUV = UnityCompositorInterface.OutputYUV();
             renderEvent = UnityCompositorInterface.GetRenderEventFunc();
             hardwareEncodeVideo = UnityCompositorInterface.HardwareEncodeVideo();
@@ -159,6 +171,9 @@ namespace Microsoft.MixedReality.SpectatorView
             holoAlphaMat = LoadMaterial("HoloAlpha");
             extractAlphaMat = LoadMaterial("ExtractAlpha");
             ignoreAlphaMat = LoadMaterial("IgnoreAlpha");
+            quadViewMat = LoadMaterial("QuadView");
+            alphaBlendMat = LoadMaterial("AlphaBlend");
+            textureClearMat = LoadMaterial("TextureClear");
 
             SetHologramShaderAlpha(Compositor.DefaultAlpha);
 
@@ -239,7 +254,7 @@ namespace Microsoft.MixedReality.SpectatorView
         private void OnPreRender()
         {
             Graphics.Blit(CurrentColorTexture, colorRGBTexture, CurrentColorMaterial);
-            Graphics.Blit(colorRGBTexture, spectatorViewCamera.targetTexture);
+            Graphics.Blit(null, spectatorViewCamera.targetTexture, textureClearMat);
         }
 
         private void OnPostRender()
@@ -260,19 +275,36 @@ namespace Microsoft.MixedReality.SpectatorView
 
             // force set this every frame as it sometimes get unset somehow when alt-tabbing
             renderTexture = sourceTexture;
-            holoAlphaMat.SetTexture("_FrontTex", renderTexture);
-            Graphics.Blit(sourceTexture, compositeTexture, holoAlphaMat);
+
+            //composite hologram onto video
+            BlitCompositeTexture(renderTexture, colorRGBTexture, compositeTexture);
+
+            //holoAlphaMat.SetTexture("_FrontTex", renderTexture);
+            //Graphics.Blit(sourceTexture, compositeTexture, holoAlphaMat);
 
             Graphics.Blit(compositeTexture, displayOutputTexture, outputYUV ? RGBToYUVMat : RGBToBGRMat);
 
             Graphics.Blit(renderTexture, alphaTexture, extractAlphaMat);
 
+            BlitQuadView(renderTexture, alphaTexture, colorRGBTexture, compositeTexture, quadViewOutputTexture);
+
             // Video texture.
             if (UnityCompositorInterface.IsRecording())
             {
                 videoOutputTexture.DiscardContents();
+
+                Texture videoSourceTexture;
+                if (Compositor.VideoRecordingLayout == CompositionManager.VideoRecordingFrameLayout.Quad)
+                {
+                    videoSourceTexture = quadViewOutputTexture;
+                }
+                else
+                {
+                    videoSourceTexture = compositeTexture;
+                }
+
                 // convert composite to the format expected by our video encoder (NV12 or BGR)
-                Graphics.Blit(compositeTexture, videoOutputTexture, hardwareEncodeVideo ? NV12VideoMat : BGRVideoMat);
+                Graphics.Blit(videoSourceTexture, videoOutputTexture, hardwareEncodeVideo ? NV12VideoMat : BGRVideoMat);
             }
 
             TextureRenderCompleted?.Invoke();
@@ -286,34 +318,42 @@ namespace Microsoft.MixedReality.SpectatorView
             GL.IssuePluginEvent(renderEvent, 1);
         }
 
+        private void BlitCompositeTexture(Texture hologramTex, Texture videoFeedTex, RenderTexture compositeTex)
+        {
+            alphaBlendMat.SetTexture("_BackTex", videoFeedTex);
+            Graphics.Blit(hologramTex, compositeTex, alphaBlendMat);
+        }
+
+        private void BlitQuadView(
+            Texture hologramTex,
+            Texture hologramAlphaTex,
+            Texture srcVideoTex,
+            Texture compositeTex,
+            RenderTexture outputTex)
+        {
+            quadViewMat.SetTexture("_HologramTex", hologramTex);
+            quadViewMat.SetTexture("_HologramAlphaTex", hologramAlphaTex);
+            quadViewMat.SetTexture("_CompositeTex", compositeTex);
+
+            Graphics.Blit(srcVideoTex, outputTex, quadViewMat);
+        }
+
         private void SetShaderValues()
         {
-            holoAlphaMat.SetTexture("_FrontTex", renderTexture);
-            holoAlphaMat.SetTexture("_BackTex", colorRGBTexture);
-
-            BGRToRGBMat.SetTexture("_FlipTex", CurrentColorTexture);
             BGRToRGBMat.SetInt("_YFlip", overrideColorTexture == null ? 1 : 0);
             BGRToRGBMat.SetFloat("_AlphaScale", 0);
 
-            RGBToBGRMat.SetTexture("_FlipTex", compositeTexture);
-
-            YUVToRGBMat.SetTexture("_YUVTex", CurrentColorTexture);
             YUVToRGBMat.SetFloat("_AlphaScale", 0);
             YUVToRGBMat.SetFloat("_Width", frameWidth);
             YUVToRGBMat.SetFloat("_Height", frameHeight);
 
-            RGBToYUVMat.SetTexture("_RGBTex", compositeTexture);
             RGBToYUVMat.SetFloat("_Width", frameWidth);
             RGBToYUVMat.SetFloat("_Height", frameHeight);
 
-            NV12VideoMat.SetTexture("_RGBTex", compositeTexture);
-            NV12VideoMat.SetFloat("_Width", frameWidth);
-            NV12VideoMat.SetFloat("_Height", frameHeight);
+            NV12VideoMat.SetFloat("_Width", videoRecordingFrameWidth);
+            NV12VideoMat.SetFloat("_Height", videoRecordingFrameHeight);
 
-            BGRVideoMat.SetTexture("_FlipTex", compositeTexture);
             BGRVideoMat.SetFloat("_YFlip", 0);
-
-            extractAlphaMat.SetTexture("_MainTex", renderTexture);
         }
 
         /// <summary>
@@ -350,12 +390,24 @@ namespace Microsoft.MixedReality.SpectatorView
             {
                 // The output texture should always specify Linear read/write so that color space conversions are not performed when recording
                 // the video when using Linear rendering in Unity.
-                videoOutputTexture = new RenderTexture(frameWidth, frameHeight, 0, RenderTextureFormat.ARGB32, RenderTextureReadWrite.Linear);
+                videoOutputTexture = new RenderTexture(videoRecordingFrameWidth, videoRecordingFrameHeight, 0, RenderTextureFormat.ARGB32, RenderTextureReadWrite.Linear);
                 videoOutputTexture.filterMode = FilterMode.Point;
                 videoOutputTexture.anisoLevel = 0;
                 videoOutputTexture.antiAliasing = 1;
                 videoOutputTexture.depth = 0;
                 videoOutputTexture.useMipMap = false;
+            }
+
+            if (quadViewOutputTexture == null)
+            {
+                // The output texture should always specify Linear read/write so that color space conversions are not performed when recording
+                // the video when using Linear rendering in Unity.
+                quadViewOutputTexture = new RenderTexture(videoRecordingFrameWidth, videoRecordingFrameHeight, 0, RenderTextureFormat.ARGB32, RenderTextureReadWrite.Linear);
+                quadViewOutputTexture.filterMode = FilterMode.Point;
+                quadViewOutputTexture.anisoLevel = 0;
+                quadViewOutputTexture.antiAliasing = 1;
+                quadViewOutputTexture.depth = 0;
+                quadViewOutputTexture.useMipMap = false;
             }
 
             if (displayOutputTexture == null)

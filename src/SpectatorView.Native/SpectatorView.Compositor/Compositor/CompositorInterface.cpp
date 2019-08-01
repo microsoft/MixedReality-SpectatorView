@@ -60,9 +60,9 @@ void CompositorInterface::UpdateFrameProvider()
 
 void CompositorInterface::Update()
 {
-    if (videoEncoder != nullptr)
+    if (activeVideoEncoder != nullptr)
     {
-        videoEncoder->Update();
+        activeVideoEncoder->Update();
     }
 }
 
@@ -150,15 +150,27 @@ void CompositorInterface::TakePicture(ID3D11Device* device, int width, int heigh
 
 bool CompositorInterface::InitializeVideoEncoder(ID3D11Device* device)
 {
-    videoEncoder = new VideoEncoder(FRAME_WIDTH, FRAME_HEIGHT, FRAME_WIDTH * FRAME_BPP, VIDEO_FPS,
+    videoEncoder1080p = new VideoEncoder(FRAME_WIDTH, FRAME_HEIGHT, FRAME_WIDTH * FRAME_BPP, VIDEO_FPS,
         AUDIO_SAMPLE_RATE, AUDIO_CHANNELS, AUDIO_BPS);
 
-    return videoEncoder->Initialize(device);
+    videoEncoder4K = new VideoEncoder(QUAD_FRAME_WIDTH, QUAD_FRAME_HEIGHT, QUAD_FRAME_WIDTH * FRAME_BPP, VIDEO_FPS,
+        AUDIO_SAMPLE_RATE, AUDIO_CHANNELS, AUDIO_BPS);
+
+    return videoEncoder1080p->Initialize(device) && videoEncoder4K->Initialize(device);
 }
 
-void CompositorInterface::StartRecording()
+void CompositorInterface::StartRecording(VideoRecordingFrameLayout frameLayout)
 {
-    if (videoEncoder == nullptr)
+    if (frameLayout == VideoRecordingFrameLayout::Composite)
+    {
+        activeVideoEncoder = videoEncoder1080p;
+    }
+    else
+    {
+        activeVideoEncoder = videoEncoder4K;
+    }
+
+    if (activeVideoEncoder == nullptr)
     {
         return;
     }
@@ -168,22 +180,23 @@ void CompositorInterface::StartRecording()
     audioRecordingStartTime = -1.0;
 
     std::wstring videoPath = DirectoryHelper::FindUniqueFileName(outputPath, L"Video", L".mp4", videoIndex);
-    videoEncoder->StartRecording(videoPath.c_str(), ENCODE_AUDIO);
+    activeVideoEncoder->StartRecording(videoPath.c_str(), ENCODE_AUDIO);
 }
 
 void CompositorInterface::StopRecording()
 {
-    if (videoEncoder == nullptr)
+    if (activeVideoEncoder == nullptr)
     {
         return;
     }
 
-    videoEncoder->StopRecording();
+    activeVideoEncoder->StopRecording();
+    activeVideoEncoder = nullptr;
 }
 
 void CompositorInterface::RecordFrameAsync(BYTE* videoFrame, LONGLONG frameTime, int numFrames)
 {
-    if (frameProvider == nullptr || videoEncoder == nullptr)
+    if (frameProvider == nullptr || activeVideoEncoder == nullptr)
     {
         return;
     }
@@ -192,12 +205,12 @@ void CompositorInterface::RecordFrameAsync(BYTE* videoFrame, LONGLONG frameTime,
     else if (numFrames > 5) 
         numFrames = 5;
 
-    videoEncoder->QueueVideoFrame(videoFrame, frameTime, numFrames * frameProvider->GetDurationHNS());
+    activeVideoEncoder->QueueVideoFrame(videoFrame, frameTime, numFrames * frameProvider->GetDurationHNS());
 }
 
 void CompositorInterface::RecordAudioFrameAsync(BYTE* audioFrame, int audioSize, double audioTime)
 {
-    if (videoEncoder == nullptr)
+    if (activeVideoEncoder == nullptr)
     {
         return;
     }
@@ -207,7 +220,7 @@ void CompositorInterface::RecordAudioFrameAsync(BYTE* audioFrame, int audioSize,
 
     LONGLONG frameTime = videoRecordingStartTime + (LONGLONG)((audioTime - audioRecordingStartTime) * QPC_MULTIPLIER);
 
-    videoEncoder->QueueAudioFrame(audioFrame, audioSize, frameTime);
+    activeVideoEncoder->QueueAudioFrame(audioFrame, audioSize, frameTime);
 }
 
 bool CompositorInterface::OutputYUV()

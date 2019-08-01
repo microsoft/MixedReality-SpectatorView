@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 #include "stdafx.h"
@@ -16,7 +16,7 @@ VideoEncoder::VideoEncoder(UINT frameWidth, UINT frameHeight, UINT frameStride, 
     audioChannels(audioChannels),
     audioBPS(audioBPS),
     fps(fps),
-    bitRate(62 * 1000 * 1000 + 500 * 1000), // 62,5 MBit/s
+    bitRate(300 * 1000 * 1000), // 300 MBit/s
     videoEncodingFormat(MFVideoFormat_H264),
     isRecording(false)
 {
@@ -108,13 +108,13 @@ void VideoEncoder::StartRecording(LPCWSTR videoPath, bool encodeAudio)
     if (SUCCEEDED(hr)) { hr = MFSetAttributeRatio(pVideoTypeOut, MF_MT_FRAME_RATE, fps, 1); }
     if (SUCCEEDED(hr)) { hr = MFSetAttributeRatio(pVideoTypeOut, MF_MT_PIXEL_ASPECT_RATIO, 1, 1); }
 
-    /* With a resolution of 1080p, 60 FPS and a desired bitrate of 62,5 MBit/s after compression the following level-profile combination is needed:
-     * - Level   = 4.2 (allows for max. 1920x1080 @ 64 FPS)
-     * - Profile = High (allows for max. 62.5 MBit/s)
+    /* With a resolution of 4K, 60 FPS and a desired bitrate of 300 MBit/s after compression the following level-profile combination is needed:
+     * - Level   = 5.2 (allows for max. 3840x2160 @ 66.8)
+     * - Profile = High (allows for max. 300 MBit/s)
      *
      * See: https://de.wikipedia.org/wiki/H.264#Level
      */
-    if (SUCCEEDED(hr)) { hr = pVideoTypeOut->SetUINT32(MF_MT_MPEG2_LEVEL, eAVEncH264VLevel4_2); }
+    if (SUCCEEDED(hr)) { hr = pVideoTypeOut->SetUINT32(MF_MT_MPEG2_LEVEL, eAVEncH264VLevel5_2); }
     if (SUCCEEDED(hr)) { hr = pVideoTypeOut->SetUINT32(MF_MT_MPEG2_PROFILE, eAVEncH264VProfile_High); }
 
     if (SUCCEEDED(hr)) { hr = sinkWriter->AddStream(pVideoTypeOut, &videoStreamIndex); }
