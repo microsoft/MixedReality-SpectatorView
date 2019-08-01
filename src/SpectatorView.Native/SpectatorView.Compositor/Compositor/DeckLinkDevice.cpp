@@ -758,7 +758,7 @@ void DeckLinkDevice::Update(int compositeFrameIndex)
                     IDeckLinkMutableVideoFrame* videoFrame = s_outputScheduler.GetAvailableVideoFrame();
                     if (videoFrame)
                     {
-                        /*result = */videoFrame->GetBytes((void**)&outBytes);
+                        videoFrame->GetBytes((void**)&outBytes);
                         if (pixelFormat == PixelFormat::YUV)
                         {
                             outputTextureBuffer.FetchTextureData(device, outBytes, FRAME_BPP_YUV);
