@@ -55,6 +55,11 @@ namespace Microsoft.MixedReality.SpectatorView
         private Texture2D overrideColorTexture = null;
 
         /// <summary>
+        /// An override texture that will be used instead of the composited texture for recording. This texture will also be provided to the capture card output.
+        /// </summary>
+        private Texture overrideOutputTexture = null;
+
+        /// <summary>
         /// The final composite texture converted to NV12 format for use in creating video file
         /// </summary>
         private RenderTexture videoOutputTexture = null;
@@ -146,6 +151,16 @@ namespace Microsoft.MixedReality.SpectatorView
         {
             overrideColorTexture = texture;
             SetShaderValues();
+        }
+
+        /// <summary>
+        /// Sets a texture that will output to recordings and the capture card output.
+        /// </summary>
+        /// <param name="texture">A texture that overrides the output recording/capture card texture, or null to resume outputting the
+        /// composited texture to recordings and the capture card.</param>
+        public void SetOverrideOutputTexture(Texture texture)
+        {
+            overrideOutputTexture = texture;
         }
 
         private void Start()
@@ -273,14 +288,17 @@ namespace Microsoft.MixedReality.SpectatorView
             // force set this every frame as it sometimes get unset somehow when alt-tabbing
             renderTexture = sourceTexture;
 
-            //composite hologram onto video
+            // composite hologram onto video
             BlitCompositeTexture(renderTexture, colorRGBTexture, compositeTexture);
 
-            Graphics.Blit(compositeTexture, displayOutputTexture, outputYUV ? RGBToYUVMat : RGBToBGRMat);
+            // If an output texture override has been specified, use it instead of the composited texture
+            Texture outputTexture = (overrideOutputTexture == null) ? compositeTexture : overrideOutputTexture;
+
+            Graphics.Blit(outputTexture, displayOutputTexture, outputYUV ? RGBToYUVMat : RGBToBGRMat);
 
             Graphics.Blit(renderTexture, alphaTexture, extractAlphaMat);
 
-            BlitQuadView(renderTexture, alphaTexture, colorRGBTexture, compositeTexture, quadViewOutputTexture);
+            BlitQuadView(renderTexture, alphaTexture, colorRGBTexture, outputTexture, quadViewOutputTexture);
 
             // Video texture.
             if (UnityCompositorInterface.IsRecording())
@@ -294,7 +312,7 @@ namespace Microsoft.MixedReality.SpectatorView
                 }
                 else
                 {
-                    videoSourceTexture = compositeTexture;
+                    videoSourceTexture = outputTexture;
                 }
 
                 // convert composite to the format expected by our video encoder (NV12 or BGR)
