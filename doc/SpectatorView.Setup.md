@@ -187,3 +187,6 @@ Spectator view uses symbolic linked directories in its sample projects, which re
 
 ### __Issue:__ Android screen recording fails to begin based on PERMISSION_DENIED
 In some instances, contributors have experienced issues with android permissions after exporting their Unity project to Android Studio and declaring the ScreenRecordingActivity as their main activity in the AndroidManifest.xml. It's been observed that `android:maxSdkVersion=18` arguments can appear in the exported solution for the WRITE_EXTERNAL_STORAGE and READ_EXTERNAL_STORAGE user-permissions declared in their AndroidManifest. Removing `maxSdkVersion` declarations has unblocked users and allowed screen recording to work.
+
+### __Issue:__ System.* types fail to resolve when first building a HoloLens visual studio solution generated from Unity
+When first opening a visual studio solution generated from Unity for the Spectator View codebase, the build may fail. Typically after this first failure, an `Opening repositories` step will run and output to the visual studio console. Reattempting the build after this step has ran typically results in the solution succeeding to compile.
