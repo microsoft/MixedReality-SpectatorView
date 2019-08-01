@@ -157,7 +157,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
                         GUI.enabled = compositionManager != null && !compositionManager.IsRecording();
                         string[] compositionOptions = new string[] { "Final composited texture", "Quadrant with intermediate textures" };
                         GUIContent renderingModeLabel = new GUIContent("Video recording texture", "Choose between displaying the composited video texture or seeing intermediate textures displayed in 4 sections (bottom left: input video, top left: opaque hologram, top right: hologram alpha mask, bottom right: hologram alpha-blended onto video)");
-                        compositionManager.VideoRecordingLayout = (CompositionManager.VideoRecordingFrameLayout)EditorGUILayout.Popup(renderingModeLabel, (int)compositionManager.VideoRecordingLayout, compositionOptions);
+                        compositionManager.VideoRecordingLayout = (VideoRecordingFrameLayout)EditorGUILayout.Popup(renderingModeLabel, (int)compositionManager.VideoRecordingLayout, compositionOptions);
                         GUI.enabled = wasEnabled;
                     }
                     EditorGUILayout.EndHorizontal();
@@ -212,7 +212,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
 
                         GUI.enabled = compositionManager == null || !compositionManager.IsVideoFrameProviderInitialized;
                         GUIContent label = new GUIContent("Video source", "The video capture card you want to use as input for compositing.");
-                        compositionManager.CaptureDevice = (CompositionManager.FrameProviderDeviceType)EditorGUILayout.Popup(label, ((int)compositionManager.CaptureDevice), Enum.GetNames(typeof(CompositionManager.FrameProviderDeviceType)));
+                        compositionManager.CaptureDevice = (FrameProviderDeviceType)EditorGUILayout.Popup(label, ((int)compositionManager.CaptureDevice), Enum.GetNames(typeof(FrameProviderDeviceType)));
                         GUI.enabled = true;
 
                         EditorGUILayout.Space();

@@ -17,8 +17,6 @@ namespace Microsoft.MixedReality.SpectatorView
         private const int DSPBufferSize = 1024;
         private const AudioSpeakerMode SpeakerMode = AudioSpeakerMode.Stereo;
 
-        public enum FrameProviderDeviceType : int { BlackMagic = 0, Elgato = 1 };
-        public enum VideoRecordingFrameLayout : int { Composite = 0, Quad = 1 };
         public enum Depth { None, Sixteen = 16, TwentyFour = 24 }
         public enum AntiAliasingSamples { One = 1, Two = 2, Four = 4, Eight = 8 };
 
@@ -303,14 +301,7 @@ namespace Microsoft.MixedReality.SpectatorView
         {
             get
             {
-                if (VideoRecordingLayout == VideoRecordingFrameLayout.Composite)
-                {
-                    return UnityCompositorInterface.GetFrameWidth();
-                }
-                else
-                {
-                    return 2 * UnityCompositorInterface.GetFrameWidth();
-                }
+                return UnityCompositorInterface.GetVideoRecordingFrameWidth(VideoRecordingLayout);
             }
         }
 
@@ -322,14 +313,7 @@ namespace Microsoft.MixedReality.SpectatorView
         {
             get
             {
-                if (VideoRecordingLayout == VideoRecordingFrameLayout.Composite)
-                {
-                    return UnityCompositorInterface.GetFrameHeight();
-                }
-                else
-                {
-                    return 2 * UnityCompositorInterface.GetFrameHeight();
-                }
+                return UnityCompositorInterface.GetVideoRecordingFrameHeight(VideoRecordingLayout);
             }
         }
 
@@ -489,7 +473,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
             if (!isVideoFrameProviderInitialized)
             {
-                isVideoFrameProviderInitialized = UnityCompositorInterface.InitializeFrameProviderOnDevice((int)CaptureDevice);
+                isVideoFrameProviderInitialized = UnityCompositorInterface.InitializeFrameProviderOnDevice(CaptureDevice);
                 if (isVideoFrameProviderInitialized)
                 {
                     CurrentCompositeFrame = 0;

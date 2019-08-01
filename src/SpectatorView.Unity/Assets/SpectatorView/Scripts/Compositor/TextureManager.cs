@@ -285,7 +285,7 @@ namespace Microsoft.MixedReality.SpectatorView
                 videoOutputTexture.DiscardContents();
 
                 Texture videoSourceTexture;
-                if (Compositor.VideoRecordingLayout == CompositionManager.VideoRecordingFrameLayout.Quad)
+                if (Compositor.VideoRecordingLayout == VideoRecordingFrameLayout.Quad)
                 {
                     videoSourceTexture = quadViewOutputTexture;
                 }
@@ -401,7 +401,7 @@ namespace Microsoft.MixedReality.SpectatorView
             {
                 // The output texture should always specify Linear read/write so that color space conversions are not performed when recording
                 // the video when using Linear rendering in Unity.
-                quadViewOutputTexture = new RenderTexture(2 * frameWidth, 2 * frameHeight, 0, RenderTextureFormat.ARGB32, RenderTextureReadWrite.Linear);
+                quadViewOutputTexture = new RenderTexture(UnityCompositorInterface.GetVideoRecordingFrameWidth(VideoRecordingFrameLayout.Quad), UnityCompositorInterface.GetVideoRecordingFrameHeight(VideoRecordingFrameLayout.Quad), 0, RenderTextureFormat.ARGB32, RenderTextureReadWrite.Linear);
                 quadViewOutputTexture.filterMode = FilterMode.Point;
                 quadViewOutputTexture.anisoLevel = 0;
                 quadViewOutputTexture.antiAliasing = 1;

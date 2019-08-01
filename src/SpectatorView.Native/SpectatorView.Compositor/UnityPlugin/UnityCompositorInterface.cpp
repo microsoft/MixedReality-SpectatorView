@@ -302,6 +302,30 @@ UNITYDLL int GetFrameHeight()
     return FRAME_HEIGHT;
 }
 
+UNITYDLL int GetVideoRecordingFrameWidth(VideoRecordingFrameLayout frameLayout)
+{
+    if (frameLayout == VideoRecordingFrameLayout::Quad)
+    {
+        return QUAD_FRAME_WIDTH;
+    }
+    else
+    {
+        return FRAME_WIDTH;
+    }
+}
+
+UNITYDLL int GetVideoRecordingFrameHeight(VideoRecordingFrameLayout frameLayout)
+{
+    if (frameLayout == VideoRecordingFrameLayout::Quad)
+    {
+        return QUAD_FRAME_HEIGHT;
+    }
+    else
+    {
+        return FRAME_HEIGHT;
+    }
+}
+
 UNITYDLL bool InitializeFrameProviderOnDevice(int providerId)
 {
     if (g_outputTexture == nullptr ||
