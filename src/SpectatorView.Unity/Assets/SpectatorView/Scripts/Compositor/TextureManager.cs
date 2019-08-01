@@ -75,7 +75,6 @@ namespace Microsoft.MixedReality.SpectatorView
         private Material RGBToYUVMat;
         private Material NV12VideoMat;
         private Material BGRVideoMat;
-        private Material holoAlphaMat;
         private Material quadViewMat;
         private Material alphaBlendMat;
         private Material textureClearMat;
@@ -164,7 +163,6 @@ namespace Microsoft.MixedReality.SpectatorView
             RGBToBGRMat = LoadMaterial("BGRToRGB");
             NV12VideoMat = LoadMaterial("RGBToNV12");
             BGRVideoMat = LoadMaterial("BGRToRGB");
-            holoAlphaMat = LoadMaterial("HoloAlpha");
             extractAlphaMat = LoadMaterial("ExtractAlpha");
             ignoreAlphaMat = LoadMaterial("IgnoreAlpha");
             quadViewMat = LoadMaterial("QuadView");
@@ -275,9 +273,6 @@ namespace Microsoft.MixedReality.SpectatorView
             //composite hologram onto video
             BlitCompositeTexture(renderTexture, colorRGBTexture, compositeTexture);
 
-            //holoAlphaMat.SetTexture("_FrontTex", renderTexture);
-            //Graphics.Blit(sourceTexture, compositeTexture, holoAlphaMat);
-
             Graphics.Blit(compositeTexture, displayOutputTexture, outputYUV ? RGBToYUVMat : RGBToBGRMat);
 
             Graphics.Blit(renderTexture, alphaTexture, extractAlphaMat);
@@ -356,7 +351,7 @@ namespace Microsoft.MixedReality.SpectatorView
         public void SetHologramShaderAlpha(float alpha)
         {
             UnityCompositorInterface.SetAlpha(alpha);
-            holoAlphaMat.SetFloat("_Alpha", alpha);
+            alphaBlendMat.SetFloat("_Alpha", alpha);
         }
 
         public void InitializeVideoRecordingTextures()
