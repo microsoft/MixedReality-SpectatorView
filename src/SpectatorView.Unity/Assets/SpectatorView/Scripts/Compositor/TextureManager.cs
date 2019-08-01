@@ -87,8 +87,6 @@ namespace Microsoft.MixedReality.SpectatorView
 
         private int frameWidth;
         private int frameHeight;
-        private int videoRecordingFrameWidth;
-        private int videoRecordingFrameHeight;
         private bool outputYUV;
         private bool hardwareEncodeVideo;
         private IntPtr renderEvent;
@@ -155,8 +153,6 @@ namespace Microsoft.MixedReality.SpectatorView
         {
             frameWidth = UnityCompositorInterface.GetFrameWidth();
             frameHeight = UnityCompositorInterface.GetFrameHeight();
-            videoRecordingFrameWidth = Compositor.VideoRecordingFrameWidth;
-            videoRecordingFrameHeight = Compositor.VideoRecordingFrameHeight;
             outputYUV = UnityCompositorInterface.OutputYUV();
             renderEvent = UnityCompositorInterface.GetRenderEventFunc();
             hardwareEncodeVideo = UnityCompositorInterface.HardwareEncodeVideo();
@@ -350,9 +346,6 @@ namespace Microsoft.MixedReality.SpectatorView
             RGBToYUVMat.SetFloat("_Width", frameWidth);
             RGBToYUVMat.SetFloat("_Height", frameHeight);
 
-            NV12VideoMat.SetFloat("_Width", videoRecordingFrameWidth);
-            NV12VideoMat.SetFloat("_Height", videoRecordingFrameHeight);
-
             BGRVideoMat.SetFloat("_YFlip", 0);
         }
 
@@ -364,6 +357,29 @@ namespace Microsoft.MixedReality.SpectatorView
         {
             UnityCompositorInterface.SetAlpha(alpha);
             holoAlphaMat.SetFloat("_Alpha", alpha);
+        }
+
+        public void InitializeVideoRecordingTextures()
+        {
+            var videoRecordingFrameWidth = Compositor.VideoRecordingFrameWidth;
+            var videoRecordingFrameHeight = Compositor.VideoRecordingFrameHeight;
+
+            NV12VideoMat.SetFloat("_Width", videoRecordingFrameWidth);
+            NV12VideoMat.SetFloat("_Height", videoRecordingFrameHeight);
+
+            // The output texture should always specify Linear read/write so that color space conversions are not performed when recording
+            // the video when using Linear rendering in Unity.
+            videoOutputTexture = new RenderTexture(videoRecordingFrameWidth, videoRecordingFrameHeight, 0, RenderTextureFormat.ARGB32, RenderTextureReadWrite.Linear);
+            videoOutputTexture.filterMode = FilterMode.Point;
+            videoOutputTexture.anisoLevel = 0;
+            videoOutputTexture.antiAliasing = 1;
+            videoOutputTexture.depth = 0;
+            videoOutputTexture.useMipMap = false;
+
+            // hack, this forces the nativetexturepointer to be assigned inside the engine
+            videoOutputTexture.colorBuffer.ToString();
+
+            UnityCompositorInterface.SetVideoRenderTexture(videoOutputTexture.GetNativeTexturePtr());
         }
 
         #region UnityExternalTextures
@@ -386,23 +402,11 @@ namespace Microsoft.MixedReality.SpectatorView
 
         private void CreateOutputTextures()
         {
-            if (videoOutputTexture == null)
-            {
-                // The output texture should always specify Linear read/write so that color space conversions are not performed when recording
-                // the video when using Linear rendering in Unity.
-                videoOutputTexture = new RenderTexture(videoRecordingFrameWidth, videoRecordingFrameHeight, 0, RenderTextureFormat.ARGB32, RenderTextureReadWrite.Linear);
-                videoOutputTexture.filterMode = FilterMode.Point;
-                videoOutputTexture.anisoLevel = 0;
-                videoOutputTexture.antiAliasing = 1;
-                videoOutputTexture.depth = 0;
-                videoOutputTexture.useMipMap = false;
-            }
-
             if (quadViewOutputTexture == null)
             {
                 // The output texture should always specify Linear read/write so that color space conversions are not performed when recording
                 // the video when using Linear rendering in Unity.
-                quadViewOutputTexture = new RenderTexture(videoRecordingFrameWidth, videoRecordingFrameHeight, 0, RenderTextureFormat.ARGB32, RenderTextureReadWrite.Linear);
+                quadViewOutputTexture = new RenderTexture(2 * frameWidth, 2 * frameHeight, 0, RenderTextureFormat.ARGB32, RenderTextureReadWrite.Linear);
                 quadViewOutputTexture.filterMode = FilterMode.Point;
                 quadViewOutputTexture.anisoLevel = 0;
                 quadViewOutputTexture.antiAliasing = 1;
@@ -426,11 +430,9 @@ namespace Microsoft.MixedReality.SpectatorView
         private void SetOutputTextures()
         {
             // hack, this forces the nativetexturepointer to be assigned inside the engine
-            videoOutputTexture.colorBuffer.ToString();
             displayOutputTexture.colorBuffer.ToString();
             compositeTexture.colorBuffer.ToString();
 
-            UnityCompositorInterface.SetVideoRenderTexture(videoOutputTexture.GetNativeTexturePtr());
             UnityCompositorInterface.SetOutputRenderTexture(displayOutputTexture.GetNativeTexturePtr());
             UnityCompositorInterface.SetHoloTexture(compositeTexture.GetNativeTexturePtr());
         }

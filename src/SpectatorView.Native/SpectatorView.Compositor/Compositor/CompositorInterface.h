@@ -11,6 +11,12 @@
 
 #define DLLEXPORT __declspec(dllexport)
 
+enum class VideoRecordingFrameLayout
+{
+    Composite = 0,
+    Quad = 1
+};
+
 class CompositorInterface
 {
 private:

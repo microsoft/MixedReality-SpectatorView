@@ -63,13 +63,13 @@ namespace Microsoft.MixedReality.SpectatorView
         public static extern void TakeRawPicture(string path);
 
         [DllImport(CompositorPluginDll)]
-        public static extern void StartRecording();
+        public static extern void StartRecording(int frameLayout);
 
         [DllImport(CompositorPluginDll)]
         public static extern void StopRecording();
         
         [DllImport(CompositorPluginDll)]
-        public static extern bool InitializeFrameProviderOnDevice(int providerId, int frameLayout);  //0 = blackmagic, 1 = elgato
+        public static extern bool InitializeFrameProviderOnDevice(int providerId);  //0 = blackmagic, 1 = elgato
 
         [DllImport(CompositorPluginDll)]
         public static extern void Reset();

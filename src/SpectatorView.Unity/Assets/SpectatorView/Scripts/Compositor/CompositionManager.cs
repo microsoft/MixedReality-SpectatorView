@@ -489,7 +489,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
             if (!isVideoFrameProviderInitialized)
             {
-                isVideoFrameProviderInitialized = UnityCompositorInterface.InitializeFrameProviderOnDevice((int)CaptureDevice, (int)VideoRecordingLayout);
+                isVideoFrameProviderInitialized = UnityCompositorInterface.InitializeFrameProviderOnDevice((int)CaptureDevice);
                 if (isVideoFrameProviderInitialized)
                 {
                     CurrentCompositeFrame = 0;
@@ -630,7 +630,8 @@ namespace Microsoft.MixedReality.SpectatorView
 
         public void StartRecording()
         {
-            UnityCompositorInterface.StartRecording();
+            TextureManager.InitializeVideoRecordingTextures();
+            UnityCompositorInterface.StartRecording((int)VideoRecordingLayout);
         }
 
         public void StopRecording()

@@ -64,9 +64,3 @@
 #define INITIAL_FRAME_OFFSET 0.0f
 
 #define HARDWARE_ENCODE_VIDEO TRUE
-
-enum class VideoRecordingFrameLayout
-{
-    Composite = 0,
-    Quad = 1
-};

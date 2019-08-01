@@ -116,40 +116,23 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
                     RenderTitle(title, Color.green);
                 }
 
-                EditorGUILayout.BeginVertical("Box");
+                EditorGUILayout.BeginHorizontal("Box");
                 {
-                    EditorGUILayout.BeginHorizontal();
+                    string[] compositionOptions = new string[] { "Final composited texture", "All intermediate textures" };
+                    GUIContent renderingModeLabel = new GUIContent("Display texture", "Choose between displaying the composited video texture or seeing intermediate textures displayed in 4 sections (top right: input video, bottom right: alpha mask, bottom left: opaque hologram, top left: final alpha-blended hologram)");
+                    textureRenderMode = EditorGUILayout.Popup(renderingModeLabel, textureRenderMode, compositionOptions);
+                    FullScreenCompositorWindow fullscreenWindow = FullScreenCompositorWindow.TryGetWindow();
+                    if (fullscreenWindow != null)
                     {
-                        bool wasEnabled = GUI.enabled;
-                        GUI.enabled = compositionManager.TextureManager == null;
-                        string[] compositionOptions = new string[] { "Final composited texture", "All intermediate textures" };
-                        GUIContent renderingModeLabel = new GUIContent("Video recording texture", "Choose between displaying the composited video texture or seeing intermediate textures displayed in 4 sections (top right: input video, bottom right: alpha mask, bottom left: opaque hologram, top left: final alpha-blended hologram)");
-                        compositionManager.VideoRecordingLayout = (CompositionManager.VideoRecordingFrameLayout)EditorGUILayout.Popup(renderingModeLabel, (int)compositionManager.VideoRecordingLayout, compositionOptions);
-                        GUI.enabled = wasEnabled;
+                        fullscreenWindow.TextureRenderMode = textureRenderMode;
                     }
-                    EditorGUILayout.EndHorizontal();
 
-                    EditorGUILayout.Space();
-
-                    EditorGUILayout.BeginHorizontal();
+                    if (GUILayout.Button("Fullscreen", GUILayout.Width(120)))
                     {
-                        string[] compositionOptions = new string[] { "Final composited texture", "All intermediate textures" };
-                        GUIContent renderingModeLabel = new GUIContent("Display texture", "Choose between displaying the composited video texture or seeing intermediate textures displayed in 4 sections (top right: input video, bottom right: alpha mask, bottom left: opaque hologram, top left: final alpha-blended hologram)");
-                        textureRenderMode = EditorGUILayout.Popup(renderingModeLabel, textureRenderMode, compositionOptions);
-                        FullScreenCompositorWindow fullscreenWindow = FullScreenCompositorWindow.TryGetWindow();
-                        if (fullscreenWindow != null)
-                        {
-                            fullscreenWindow.TextureRenderMode = textureRenderMode;
-                        }
-
-                        if (GUILayout.Button("Fullscreen", GUILayout.Width(120)))
-                        {
-                            FullScreenCompositorWindow.ShowFullscreen();
-                        }
+                        FullScreenCompositorWindow.ShowFullscreen();
                     }
-                    EditorGUILayout.EndHorizontal();
                 }
-                EditorGUILayout.EndVertical();
+                EditorGUILayout.EndHorizontal();
 
                 // Rendering
                 CompositeTextureGUI(textureRenderMode);
@@ -167,6 +150,17 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
                 EditorGUILayout.BeginVertical("Box");
                 {
                     RenderTitle("Recording", Color.green);
+
+                    EditorGUILayout.BeginHorizontal();
+                    {
+                        bool wasEnabled = GUI.enabled;
+                        GUI.enabled = compositionManager != null && !compositionManager.IsRecording();
+                        string[] compositionOptions = new string[] { "Final composited texture", "All intermediate textures" };
+                        GUIContent renderingModeLabel = new GUIContent("Video recording texture", "Choose between displaying the composited video texture or seeing intermediate textures displayed in 4 sections (top right: input video, bottom right: alpha mask, bottom left: opaque hologram, top left: final alpha-blended hologram)");
+                        compositionManager.VideoRecordingLayout = (CompositionManager.VideoRecordingFrameLayout)EditorGUILayout.Popup(renderingModeLabel, (int)compositionManager.VideoRecordingLayout, compositionOptions);
+                        GUI.enabled = wasEnabled;
+                    }
+                    EditorGUILayout.EndHorizontal();
 
                     GUI.enabled = compositionManager != null && compositionManager.TextureManager != null;
                     if (compositionManager == null || !compositionManager.IsRecording())

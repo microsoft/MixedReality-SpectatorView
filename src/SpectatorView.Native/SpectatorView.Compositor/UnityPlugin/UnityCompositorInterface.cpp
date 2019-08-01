@@ -20,7 +20,6 @@
 static CompositorInterface* ci = nullptr;
 static bool isRecording = false;
 static bool videoInitialized = false;
-static VideoRecordingFrameLayout g_frameLayout = VideoRecordingFrameLayout::Composite;
 
 static BYTE* colorBytes = new BYTE[FRAME_BUFSIZE_RGBA];
 static BYTE* holoBytes = new BYTE[FRAME_BUFSIZE_RGBA];
@@ -30,7 +29,7 @@ static BYTE* holoBytes = new BYTE[FRAME_BUFSIZE_RGBA];
 static byte** videoBytes = nullptr;
 static int videoBufferIndex = 0;
 
-void AllocateVideoBuffers()
+void AllocateVideoBuffers(VideoRecordingFrameLayout frameLayout)
 {
     if (videoBytes != nullptr)
         return;
@@ -38,7 +37,7 @@ void AllocateVideoBuffers()
     videoBytes = new byte*[NUM_VIDEO_BUFFERS];
 
     int frameBufferSize;
-    if (g_frameLayout == VideoRecordingFrameLayout::Quad)
+    if (frameLayout == VideoRecordingFrameLayout::Quad)
     {
 #if HARDWARE_ENCODE_VIDEO
         frameBufferSize = QUAD_FRAME_BUFSIZE_NV12;
@@ -303,7 +302,7 @@ UNITYDLL int GetFrameHeight()
     return FRAME_HEIGHT;
 }
 
-UNITYDLL bool InitializeFrameProviderOnDevice(int providerId, VideoRecordingFrameLayout frameLayout)
+UNITYDLL bool InitializeFrameProviderOnDevice(int providerId)
 {
     if (g_outputTexture == nullptr ||
         g_UnityColorSRV == nullptr ||
@@ -316,10 +315,6 @@ UNITYDLL bool InitializeFrameProviderOnDevice(int providerId, VideoRecordingFram
     {
         return true;
     }
-
-    g_frameLayout = frameLayout;
-    VideoTextureBuffer.ReleaseTextures();
-    AllocateVideoBuffers();
 
     if (ci == nullptr)
     {
@@ -369,13 +364,15 @@ UNITYDLL void TakeRawPicture(LPCWSTR lpFilePath)
     rawPicturePath = lpFilePath;
 }
 
-UNITYDLL void StartRecording()
+UNITYDLL void StartRecording(VideoRecordingFrameLayout frameLayout)
 {
     if (videoInitialized && ci != nullptr)
     {
         lastVideoFrame = -1;
+        AllocateVideoBuffers(frameLayout);
+        VideoTextureBuffer.ReleaseTextures();
         VideoTextureBuffer.Reset();
-        ci->StartRecording(g_frameLayout);
+        ci->StartRecording(frameLayout);
         isRecording = true;
     }
 }
@@ -385,6 +382,7 @@ UNITYDLL void StopRecording()
     if (videoInitialized && ci != nullptr)
     {
         ci->StopRecording();
+        FreeVideoBuffers();
         isRecording = false;
     }
 }
@@ -470,10 +468,7 @@ UNITYDLL bool SetHoloTexture(ID3D11Texture2D* holoTexture)
 
 UNITYDLL bool SetVideoRenderTexture(ID3D11Texture2D* tex)
 {
-    if (g_videoTexture == nullptr)
-    {
-        g_videoTexture = tex;
-    }
+    g_videoTexture = tex;
 
     return g_videoTexture != nullptr;
 }
