@@ -288,8 +288,8 @@ void VideoEncoder::WriteVideo(byte* buffer, LONGLONG timestamp, LONGLONG duratio
 
     // Copy frame to a temporary buffer and process on a background thread.
 #if HARDWARE_ENCODE_VIDEO
-    BYTE* tmpVideoBuffer = new BYTE[(int)(1.5f * frameHeight * frameWidth)];
-    memcpy(tmpVideoBuffer, buffer, (int)(1.5f * frameHeight * frameWidth));
+    BYTE* tmpVideoBuffer = new BYTE[(int)(FRAME_BPP_NV12 * frameHeight * frameWidth)];
+    memcpy(tmpVideoBuffer, buffer, (int)(FRAME_BPP_NV12 * frameHeight * frameWidth));
 #else
     BYTE* tmpVideoBuffer = new BYTE[frameHeight * frameStride];
     memcpy(tmpVideoBuffer, buffer, frameHeight * frameStride);
@@ -313,8 +313,8 @@ void VideoEncoder::WriteVideo(byte* buffer, LONGLONG timestamp, LONGLONG duratio
 
 #if HARDWARE_ENCODE_VIDEO
         cbWidth = frameWidth;
-        cbBuffer = (int)(1.5f * frameWidth * frameHeight);
-        imageHeight = (int)(1.5f * frameHeight);
+        cbBuffer = (int)(FRAME_BPP_NV12 * frameWidth * frameHeight);
+        imageHeight = (int)(FRAME_BPP_NV12 * frameHeight);
 #endif
 
         IMFSample* pVideoSample = NULL;
