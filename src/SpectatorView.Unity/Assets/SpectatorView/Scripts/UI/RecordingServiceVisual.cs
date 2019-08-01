@@ -91,15 +91,6 @@ namespace Microsoft.MixedReality.SpectatorView
             _recordingService = recordingService;
         }
 
-        protected void Awake()
-        {
-            if (_recordingService == null)
-            {
-                Debug.LogError("Error: Recording service not set for RecordingServiceVisual");
-                return;
-            }
-        }
-
         protected void Update()
         {
             if (_recordingService != null &&

@@ -35,7 +35,8 @@ These instructions assume that a HoloLens 2 device will be used to host the shar
 1. Build UWP Player containing `Demo/Scenes/Finished_Scene.unity` scene, and deploy this application to the HoloLens 2 device.
 2. Export Android Player containing `MixedReality-SpectatorView/SpectatorView/Scenes/SpectatorView.Android.unity` scene to an Android Studio solution.
 3. Open the Android Studio solution and change the main activity in the AndroidManifest.xml file to `Microsoft.MixedReality.SpectatorView.Unity.ScreenRecorderActivity`.
-4. Build the Android Studio solution and deploy this application to the spectating mobile device.
+9. Update the AndroidManifest.xml in Android Studio to contain `android.permission.CAMERA`, `android.permission.INTERNET`, `android.permission.RECORD_AUDIO` and `android.permission.WRITE_EXTERNAL_STORAGE` uses-permissions.
+4. Build the Android Studio solution and deploy this application to the spectating Android device.
 5. Launch the `SpectatorView.Build2019Demo` on the HoloLens 2, and wait for the experience to start.
 6. Launch the `SpectatorView.Build2019Demo` on the Android device and connect to the HoloLens device by specifying the HoloLens's IP Address.
 
