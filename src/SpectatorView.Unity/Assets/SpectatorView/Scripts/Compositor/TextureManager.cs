@@ -20,6 +20,13 @@ namespace Microsoft.MixedReality.SpectatorView
         public CompositionManager Compositor { get; set; }
 
         /// <summary>
+        /// Gets or sets whether or not the quadrant video output is required.
+        /// The quadrant frame will not be rendered when this is not set and when
+        /// the video recording mode does not require it.
+        /// </summary>
+        public bool IsQuadrantVideoOutputRequired { get; set; }
+
+        /// <summary>
         /// The color image texture coming from the camera, converted to RGB. The Unity camera is "cleared" to this texture
         /// </summary>
         public RenderTexture colorRGBTexture { get; private set; }
@@ -64,6 +71,14 @@ namespace Microsoft.MixedReality.SpectatorView
         /// </summary>
         private RenderTexture displayOutputTexture = null;
 
+        /// <summary>
+        /// Gets whether or not holograms should be rendered on a black background (which allows for post-processing in quadrant mode)
+        /// or against the video background (which allows for correct alpha blending for partially-transparent holograms).
+        /// </summary>
+        private bool IsVideoOutputQuadrantMode => Compositor != null && Compositor.VideoRecordingLayout == VideoRecordingFrameLayout.Quad;
+
+        private bool ShouldProduceQuadrantVideoFrame => IsQuadrantVideoOutputRequired || IsVideoOutputQuadrantMode;
+
         public RenderTexture[] supersampleBuffers;
 
         public event Action TextureRenderCompleted;
@@ -75,6 +90,7 @@ namespace Microsoft.MixedReality.SpectatorView
         private Material RGBToYUVMat;
         private Material NV12VideoMat;
         private Material BGRVideoMat;
+        private Material holoAlphaMat;
         private Material quadViewMat;
         private Material alphaBlendMat;
         private Material textureClearMat;
@@ -163,6 +179,7 @@ namespace Microsoft.MixedReality.SpectatorView
             RGBToBGRMat = LoadMaterial("BGRToRGB");
             NV12VideoMat = LoadMaterial("RGBToNV12");
             BGRVideoMat = LoadMaterial("BGRToRGB");
+            holoAlphaMat = LoadMaterial("HoloAlpha");
             extractAlphaMat = LoadMaterial("ExtractAlpha");
             ignoreAlphaMat = LoadMaterial("IgnoreAlpha");
             quadViewMat = LoadMaterial("QuadView");
@@ -249,9 +266,18 @@ namespace Microsoft.MixedReality.SpectatorView
         {
             Graphics.Blit(CurrentColorTexture, colorRGBTexture, CurrentColorMaterial);
 
-            // Clear the camera's background by blitting using a shader that simply
-            // clears the target texture without reading from the source texture.
-            Graphics.Blit(null, spectatorViewCamera.targetTexture, textureClearMat);
+            if (IsVideoOutputQuadrantMode)
+            {
+                // Clear the camera's background by blitting using a shader that simply
+                // clears the target texture without reading from the source texture.
+                Graphics.Blit(null, spectatorViewCamera.targetTexture, textureClearMat);
+            }
+            else
+            {
+                // Set the input video source as the background for the camera
+                // so that holograms are alpha-blended onto the correct texture
+                Graphics.Blit(colorRGBTexture, spectatorViewCamera.targetTexture);
+            }
         }
 
         private void OnPostRender()
@@ -273,14 +299,28 @@ namespace Microsoft.MixedReality.SpectatorView
             // force set this every frame as it sometimes get unset somehow when alt-tabbing
             renderTexture = sourceTexture;
 
-            //composite hologram onto video
-            BlitCompositeTexture(renderTexture, colorRGBTexture, compositeTexture);
+            if (IsVideoOutputQuadrantMode)
+            {
+                // composite hologram onto video
+                BlitCompositeTexture(renderTexture, colorRGBTexture, compositeTexture);
+            }
+            else
+            {
+                // Render the real-world video back onto the composited frame to reduce the opacity
+                // of the hologram by the appropriate amount.
+                holoAlphaMat.SetTexture("_FrontTex", renderTexture);
+                Graphics.Blit(sourceTexture, compositeTexture, holoAlphaMat);
+            }
 
             Graphics.Blit(compositeTexture, displayOutputTexture, outputYUV ? RGBToYUVMat : RGBToBGRMat);
 
             Graphics.Blit(renderTexture, alphaTexture, extractAlphaMat);
 
-            BlitQuadView(renderTexture, alphaTexture, colorRGBTexture, compositeTexture, quadViewOutputTexture);
+            if (ShouldProduceQuadrantVideoFrame)
+            {
+                CreateQuadrantTexture();
+                BlitQuadView(renderTexture, alphaTexture, colorRGBTexture, compositeTexture, quadViewOutputTexture);
+            }
 
             // Video texture.
             if (UnityCompositorInterface.IsRecording())
@@ -288,7 +328,7 @@ namespace Microsoft.MixedReality.SpectatorView
                 videoOutputTexture.DiscardContents();
 
                 Texture videoSourceTexture;
-                if (Compositor.VideoRecordingLayout == VideoRecordingFrameLayout.Quad)
+                if (IsVideoOutputQuadrantMode)
                 {
                     videoSourceTexture = quadViewOutputTexture;
                 }
@@ -334,6 +374,8 @@ namespace Microsoft.MixedReality.SpectatorView
 
         private void SetShaderValues()
         {
+            holoAlphaMat.SetTexture("_BackTex", colorRGBTexture);
+
             BGRToRGBMat.SetInt("_YFlip", overrideColorTexture == null ? 1 : 0);
             BGRToRGBMat.SetFloat("_AlphaScale", 0);
 
@@ -355,6 +397,7 @@ namespace Microsoft.MixedReality.SpectatorView
         {
             UnityCompositorInterface.SetAlpha(alpha);
             alphaBlendMat.SetFloat("_Alpha", alpha);
+            holoAlphaMat.SetFloat("_Alpha", alpha);
         }
 
         public void InitializeVideoRecordingTextures()
@@ -398,7 +441,7 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
-        private void CreateOutputTextures()
+        private void CreateQuadrantTexture()
         {
             if (quadViewOutputTexture == null)
             {
@@ -411,7 +454,10 @@ namespace Microsoft.MixedReality.SpectatorView
                 quadViewOutputTexture.depth = 0;
                 quadViewOutputTexture.useMipMap = false;
             }
+        }
 
+        private void CreateOutputTextures()
+        {
             if (displayOutputTexture == null)
             {
                 // The output texture should always specify Linear read/write so that color space conversions are not performed when recording
