@@ -281,7 +281,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
                     }
                     else
                     {
-                        Graphics.DrawTexture(framesRect, compositionManager.TextureManager.compositeTexture);
+                        Graphics.DrawTexture(framesRect, compositionManager.TextureManager.previewTexture);
                     }
                 }
             }

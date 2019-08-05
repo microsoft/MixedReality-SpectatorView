@@ -42,6 +42,11 @@ namespace Microsoft.MixedReality.SpectatorView
         public RenderTexture compositeTexture { get; private set; }
 
         /// <summary>
+        /// The texture output to a capture card when quadrant view isn't enabled
+        /// </summary>
+        public Texture previewTexture => overrideOutputTexture == null ? compositeTexture : overrideOutputTexture;
+
+        /// <summary>
         /// An RGBA texture where all 4 channels contain the hologram alpha value
         /// </summary>
         public RenderTexture alphaTexture { get; private set; }
