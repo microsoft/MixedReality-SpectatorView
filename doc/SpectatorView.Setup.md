@@ -39,7 +39,7 @@
 
 To use the Spectator View codebase, its suggested to clone and reference the MixedReality-SpectatorView repository through symbolic linked directories in your Unity project. Before beginning on the steps below, go through the repository setup process [here](../README.md). This will ensure that the Unity editor components referenced below exist in your project.
 
-## Spatial Localizer Dependencies
+## Spatial Alignment Strategy Dependencies
 
 Spectator View requires multiple devices understanding a shared application origin in the physical world. In order to establish this shared application origin, you will need to choose and use a spatial alignment strategy. Different dependencies are needed for different strategies. For more information on spatial alignment strategies, see [here](../src/SpectatorView.Unity/Assets/SpatialAlignment/README.md).
 
@@ -112,6 +112,8 @@ If you are building Azure Spatial Anchors on iOS, you will need to take some add
 2. Add any of the preprocessor directives or Unity packages described above that you intend to use to your clone of the SpectatorView codebase.
 3. Open the [SpectatorView.HoloLens scene](../src/SpectatorView.Unity/Assets/SpectatorView/Scenes/SpectatorView.HoloLens.unity) in your Unity project.
 4. In the Unity editor, call 'Spectator View -> Update All Asset Caches' (This will be located in the Unity editor toolbar) to prepare content for state synchronization. Add the Generated.StateSynchronization.AssetCaches folder to your project's repository to share across development devices.
+
+![Marker](images/UpdateAllAssetCaches.png)
 
 > Note: **Asset Caches need to be updated on one development machine and shared across development machines**. Asset Caches aren't currently created in a deterministic manner and can't be recreated in new development environments. The easiest way to share this with a team is to commit changes to the Generated.StateSynchronization.AssetCaches folder that will appear in the Unity project's Assets directory. For more information on Asset Caches see [SpectatorView.StateSynchronization](../src/SpectatorView.Unity/Assets/SpectatorView/Scripts/StateSynchronization/README.md).
 

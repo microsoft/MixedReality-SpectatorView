@@ -4,16 +4,6 @@ Spatial Alignment component provides abstractions for localization of MR content
 
 > Note: The code is currently split between this folder,  `..\SpatialAlignment.ASA` and `..\SpectatorView\Scripts\SpatialAlignment`; this will be reconciled in the future updates.
 
-## Platform Support
-
-Not all spatial alignment strategies support all platforms. See the chart below to determine which strategy best addresses your intended user scenarios.
-
-| Platform  Support      | HoloLens 2 | HoloLens 1 | Android | iOS |
-|:----------------------:|:----------:|:----------:|:-------:|:---:|
-| Azure Spatial Anchors  | x          | x          | x       | x   |
-| QR Code Detection      | x          |            | x       | x   |
-| ArUco Marker Detection |            | x          | x       | x   |
-
 ## Key Concepts
 
 Before diving into the abstractions, we operate on two concepts when speaking of localization:
@@ -74,7 +64,17 @@ Having determined the appropriate `SpatialLocalizationInitializer` to use, `Spec
 2. Each of instance of the localizers will then execute the appropriate logic to exchange and create the `ISpatialCoordinate` to be used for localization.
 3. When the coordinate is created, the participant is updated with it, and other systems (such as `SpatialCoordinateTransformer`) will use it to synchronize positions.
 
-## Detailed Breakdown of Spatial Localization Methods
+## Detailed Breakdown of Spatial Alignment Strategies
+
+### Platform Support
+
+Not all spatial alignment strategies support all platforms. See the chart below to determine which strategy best addresses your intended user scenarios.
+
+| Platform  Support      | HoloLens 2 | HoloLens 1 | Android | iOS |
+|:----------------------:|:----------:|:----------:|:-------:|:---:|
+| Azure Spatial Anchors  | x          | x          | x       | x   |
+| QR Code Detection      | x          |            | x       | x   |
+| ArUco Marker Detection |            | x          | x       | x   |
 
 ### Azure Spatial Anchors Localization
 

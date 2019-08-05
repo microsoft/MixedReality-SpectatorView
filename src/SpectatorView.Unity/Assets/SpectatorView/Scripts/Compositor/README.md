@@ -72,9 +72,9 @@ The steps for connecting the Compositor to your application are the same as for 
 
 The **Recording** expander in the Compositor window can be used to start and stop recording or to take a still picture. Videos and pictures are saved in your Documents\HologramCapture directory. By default, audio from your computer's microphone will be recorded as part of the video.
 
-The **Video recording texture** option allows you to choose between recording only the final composited video or recording a split view with the original video, the opaque hologram without background, the alpha mask for the holograms, and the final composited video.
+The **Video output mode** option allows you to choose between **Normal** mode, which records only the final composited video, or **Split channels**, which records a split view with the original video, the opaque hologram without background, the alpha mask for the holograms, and the final composited video.
 
-The compositor also outputs video to your capture card (for cards that support output).
+The compositor also outputs video to your capture card (for cards that support output). The output to your video card is always the final composited video.
 
 ### Settings
 
