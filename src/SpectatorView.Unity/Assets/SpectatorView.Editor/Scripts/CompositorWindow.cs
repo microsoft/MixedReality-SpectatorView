@@ -123,7 +123,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
                     textureRenderMode = EditorGUILayout.Popup(renderingModeLabel, textureRenderMode, compositionOptions);
                     if (compositionManager != null && compositionManager.TextureManager != null)
                     {
-                        compositionManager.TextureManager.IsQuadrantVideoOutputRequired = textureRenderMode == (int)VideoRecordingFrameLayout.Quad;
+                        compositionManager.TextureManager.IsQuadrantVideoFrameNeededForPreviewing = textureRenderMode == (int)VideoRecordingFrameLayout.Quad;
                     }
                     FullScreenCompositorWindow fullscreenWindow = FullScreenCompositorWindow.TryGetWindow();
                     if (fullscreenWindow != null)

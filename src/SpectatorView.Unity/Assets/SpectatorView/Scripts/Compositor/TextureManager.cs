@@ -20,11 +20,11 @@ namespace Microsoft.MixedReality.SpectatorView
         public CompositionManager Compositor { get; set; }
 
         /// <summary>
-        /// Gets or sets whether or not the quadrant video output is required.
+        /// Gets or sets whether or not the quadrant video recording is required.
         /// The quadrant frame will not be rendered when this is not set and when
         /// the video recording mode does not require it.
         /// </summary>
-        public bool IsQuadrantVideoOutputRequired { get; set; }
+        public bool IsQuadrantVideoFrameNeededForPreviewing { get; set; }
 
         /// <summary>
         /// The color image texture coming from the camera, converted to RGB. The Unity camera is "cleared" to this texture
@@ -72,12 +72,12 @@ namespace Microsoft.MixedReality.SpectatorView
         private RenderTexture displayOutputTexture = null;
 
         /// <summary>
-        /// Gets whether or not holograms should be rendered on a black background (which allows for post-processing in quadrant mode)
+        /// Gets whether or not holograms should be rendered on a black background for video recording (which allows for post-processing in quadrant mode)
         /// or against the video background (which allows for correct alpha blending for partially-transparent holograms).
         /// </summary>
-        private bool IsVideoOutputQuadrantMode => Compositor != null && Compositor.VideoRecordingLayout == VideoRecordingFrameLayout.Quad;
+        private bool IsVideoRecordingQuadrantMode => Compositor != null && Compositor.VideoRecordingLayout == VideoRecordingFrameLayout.Quad;
 
-        private bool ShouldProduceQuadrantVideoFrame => IsQuadrantVideoOutputRequired || IsVideoOutputQuadrantMode;
+        private bool ShouldProduceQuadrantVideoFrame => IsQuadrantVideoFrameNeededForPreviewing || IsVideoRecordingQuadrantMode;
 
         public RenderTexture[] supersampleBuffers;
 
@@ -266,10 +266,12 @@ namespace Microsoft.MixedReality.SpectatorView
         {
             Graphics.Blit(CurrentColorTexture, colorRGBTexture, CurrentColorMaterial);
 
-            if (IsVideoOutputQuadrantMode)
+            if (IsVideoRecordingQuadrantMode)
             {
                 // Clear the camera's background by blitting using a shader that simply
                 // clears the target texture without reading from the source texture.
+                // This is applicable for video recording in quadrant mode or for
+                // showing a preview of the quadrant mode on screen.
                 Graphics.Blit(null, spectatorViewCamera.targetTexture, textureClearMat);
             }
             else
@@ -299,9 +301,10 @@ namespace Microsoft.MixedReality.SpectatorView
             // force set this every frame as it sometimes get unset somehow when alt-tabbing
             renderTexture = sourceTexture;
 
-            if (IsVideoOutputQuadrantMode)
+            if (IsVideoRecordingQuadrantMode)
             {
-                // composite hologram onto video
+                // Composite hologram onto video for recording quadrant mode video, or for previewing
+                // that quadrant-mode video on screen.
                 BlitCompositeTexture(renderTexture, colorRGBTexture, compositeTexture);
             }
             else
@@ -328,7 +331,7 @@ namespace Microsoft.MixedReality.SpectatorView
                 videoOutputTexture.DiscardContents();
 
                 Texture videoSourceTexture;
-                if (IsVideoOutputQuadrantMode)
+                if (IsVideoRecordingQuadrantMode)
                 {
                     videoSourceTexture = quadViewOutputTexture;
                 }
