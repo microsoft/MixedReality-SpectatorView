@@ -118,9 +118,9 @@ namespace Microsoft.MixedReality.SpectatorView
         [SerializeField]
         private bool debugLogging = false;
 
-        [Tooltip("Check to hide the development console every update.")]
+        [Tooltip("Check to hide the developer console every update.")]
         [SerializeField]
-        private bool hideDevelopmentConsole = false;
+        private bool hideDeveloperConsole = false;
 
         private GameObject settingsGameObject;
 
@@ -193,7 +193,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
         private void Update()
         {
-            if (hideDevelopmentConsole &&
+            if (hideDeveloperConsole &&
                 Debug.developerConsoleVisible)
             {
                 Debug.developerConsoleVisible = false;
