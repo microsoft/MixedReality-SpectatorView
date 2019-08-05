@@ -42,7 +42,7 @@ namespace Microsoft.MixedReality.SpectatorView
         public RenderTexture compositeTexture { get; private set; }
 
         /// <summary>
-        /// The texture output to a capture card when quadrant view isn't enabled
+        /// The texture that is output to the capture card.
         /// </summary>
         public Texture previewTexture => overrideOutputTexture == null ? compositeTexture : overrideOutputTexture;
 
