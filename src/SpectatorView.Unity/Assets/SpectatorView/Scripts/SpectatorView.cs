@@ -118,7 +118,7 @@ namespace Microsoft.MixedReality.SpectatorView
         [SerializeField]
         private bool debugLogging = false;
 
-        [Tooltip("Check to hide the developer console every update.")]
+        [Tooltip("Check to hide the on-device developer console every update.")]
         [SerializeField]
         private bool hideDeveloperConsole = false;
 
