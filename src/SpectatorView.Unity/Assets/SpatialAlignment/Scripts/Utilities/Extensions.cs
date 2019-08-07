@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.SpatialAlignment
     public static class Extensions
     {
         /// <summary>
-        /// Converts a <see cref="Vector3"/> to a <see cref="UVector3"/>.
+        /// Converts a System.Numerics.Vector3 to a UnityEngine.Vector3.
         /// </summary>
         public static UVector3 AsUnityVector(this Vector3 input)
         {
@@ -25,7 +25,7 @@ namespace Microsoft.MixedReality.SpatialAlignment
         }
 
         /// <summary>
-        /// Converts a <see cref="UVector3"/> to a <see cref="Vector3"/>.
+        /// Converts a UnityEngine.Vector3. to a System.Numerics.Vector3.
         /// </summary>
         public static Vector3 AsNumericsVector(this UVector3 input)
         {
@@ -33,7 +33,7 @@ namespace Microsoft.MixedReality.SpatialAlignment
         }
 
         /// <summary>
-        /// Converts a <see cref="Quaternion"/> to a <see cref="UQuaternion"/>.
+        /// Converts a System.Numerics.Quaternion to a UnityEngine.Quaternion.
         /// </summary>
         public static UQuaternion AsUnityQuaternion(this Quaternion input)
         {
@@ -41,7 +41,7 @@ namespace Microsoft.MixedReality.SpatialAlignment
         }
 
         /// <summary>
-        /// Converts a <see cref="UQuaternion"/> to a <see cref="Quaternion"/>.
+        /// Converts a UnityEngine.Quaternion to a System.Numerics.Quaternion.
         /// </summary>
         public static Quaternion AsNumericsQuaternion(this UQuaternion input)
         {
@@ -126,9 +126,9 @@ namespace Microsoft.MixedReality.SpatialAlignment
         }
 
         /// <summary>
-        /// Prevents <see cref="TaskCanceledException"/> or <see cref="OperationCanceledException"/> from trickling up.
+        /// Prevents <see cref="System.Threading.Tasks.TaskCanceledException"/> or <see cref="OperationCanceledException"/> from trickling up.
         /// </summary>
-        /// <param name="task">The task to ignore exceptions for./param>
+        /// <param name="task">The task to ignore exceptions for.</param>
         /// <returns>A wrapping task for the given task.</returns>
         public static Task IgnoreCancellation(this Task task)
         {
@@ -143,10 +143,10 @@ namespace Microsoft.MixedReality.SpatialAlignment
         }
 
         /// <summary>
-        /// Prevents <see cref="TaskCanceledException"/> or <see cref="OperationCanceledException"/> from trickling up.
+        /// Prevents <see cref="System.Threading.Tasks.TaskCanceledException"/> or <see cref="OperationCanceledException"/> from trickling up.
         /// </summary>
         /// <typeparam name="T">The result type of the Task.</typeparam>
-        /// <param name="task">The task to ignore exceptions for./param>
+        /// <param name="task">The task to ignore exceptions for.</param>
         /// <param name="defaultCancellationReturn">The default value to return in case the task is cancelled.</param>
         /// <returns>A wrapping task for the given task.</returns>
         public static Task<T> IgnoreCancellation<T>(this Task<T> task, T defaultCancellationReturn = default(T))
@@ -165,9 +165,9 @@ namespace Microsoft.MixedReality.SpatialAlignment
         }
 
         /// <summary>
-        /// A simple helper to enable "awaiting" a <see cref="CancellationToken"/> by creating a task wrapping it.
+        /// A simple helper to enable "awaiting" a <see cref="System.Threading.CancellationToken"/> by creating a task wrapping it.
         /// </summary>
-        /// <param name="cancellationToken">The <see cref="CancellationToken"/> to await.</param>
+        /// <param name="cancellationToken">The <see cref="System.Threading.CancellationToken"/> to await.</param>
         /// <returns>The task that can be awaited.</returns>
         public static Task AsTask(this CancellationToken cancellationToken)
         {
@@ -201,7 +201,7 @@ namespace Microsoft.MixedReality.SpatialAlignment
         }
 
         /// <summary>
-        /// Helper class to enable await on <see cref="SynchronizationContext"/>. 
+        /// Helper class to enable await on <see cref="System.Threading.SynchronizationContext"/>. 
         /// This is useful if you want to switch execution flow of an async function to a different thread, like Unity game thread for example.
         /// </summary>
         public struct SynchronizationContextAwaiter : INotifyCompletion
@@ -225,7 +225,7 @@ namespace Microsoft.MixedReality.SpatialAlignment
         }
 
         /// <summary>
-        /// Required extension method to enable awaiting on <see cref="SynchronizationContext"/>.
+        /// Required extension method to enable awaiting on <see cref="System.Threading.SynchronizationContext"/>.
         /// </summary>
         /// <param name="context">Context to await (switch execution flow to).</param>
         /// <returns>Awaiter for the "await" keyword to work.</returns>

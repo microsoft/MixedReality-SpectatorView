@@ -4,7 +4,7 @@ This folder contains sample and demo projects that are maintained by the Spectat
 
 ## Getting Started
 
-Ensure you have all the required software, for detailed instructions see [Required Software](../README.md).
+Ensure you have all the required software, for detailed instructions see [Required Software](../doc/SpectatorView.Setup.md#Software & Hardware Requirements).
 
 - Git Tools
 - Visual Studio

@@ -24,7 +24,7 @@ using Windows.Perception.Spatial.Preview;
 namespace Microsoft.MixedReality.SpectatorView
 {
     /// <summary>
-    /// QR code detector that implements <see cref="Microsoft.MixedReality.Toolkit.Extensions.MarkerDetection.IVariableSizeMarkerDetector"/>
+    /// QR code detector that implements <see cref="Microsoft.MixedReality.SpectatorView.IMarkerDetector"/>
     /// </summary>
     public class QRCodeMarkerDetector : MonoBehaviour,
         IMarkerDetector

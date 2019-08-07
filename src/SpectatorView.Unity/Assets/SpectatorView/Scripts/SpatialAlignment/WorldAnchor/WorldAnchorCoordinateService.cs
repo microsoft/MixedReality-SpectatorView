@@ -16,7 +16,7 @@ using UnityEngine.XR.WSA.Persistence;
 namespace Microsoft.MixedReality.SpectatorView
 {
     /// <summary>
-    /// Represents an <see cref="ISpatialCoordinateService"/> that creates and stores
+    /// Represents an <see cref="Microsoft.MixedReality.SpatialAlignment.ISpatialCoordinateService"/> that creates and stores
     /// coordinates based on WorldAnchors stored in a WorldAnchorStore on the device.
     /// </summary>
     public class WorldAnchorCoordinateService : SpatialCoordinateServiceUnityBase<string>
