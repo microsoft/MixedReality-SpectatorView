@@ -15,7 +15,7 @@ using UnityEditor;
 namespace Microsoft.MixedReality.SpectatorView
 {
     /// <summary>
-    /// Class implementing <see cref="Microsoft.MixedReality.Toolkit.Extensions.Experimental.MarkerDetection.IMarkerDetector"/> capable of detecting ArUco markers
+    /// Class implementing <see cref="Microsoft.MixedReality.SpectatorView.IMarkerDetector"/> capable of detecting ArUco markers
     /// </summary>
     public class ArUcoMarkerDetector : MonoBehaviour,
         IMarkerDetector

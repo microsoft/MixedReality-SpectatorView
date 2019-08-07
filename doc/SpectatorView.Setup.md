@@ -1,4 +1,5 @@
-# Spectating with an Android or iOS Device Setup
+# Spectator View Mobile Setup
+To setup spectator view with a video camera, see [here](SpectatorView.Setup.VideoCamera.md).
 
 ## Software & Hardware Requirements
 
@@ -17,7 +18,7 @@
 1. Windows PC
 2. Android Device that supports [AR Core](https://developers.google.com/ar/discover/supported-devices)
 3. [Android Studio](https://developer.android.com/studio)
-4. Obtain [ARCore v1.7.0](https://github.com/google-ar/arcore-unity-sdk/releases/tag/v1.7.0) (Note: only v1.7.0 has been tested, use other versions at your own risk). This can be achieved by running the [SetupRepository](../tools/Scripts/SetupRepository.bat) script as an administrator or by manually copying assets content into a ARCore-Unity-SDK folder in the external directory.
+4. Obtain [ARCore v1.7.0](https://github.com/google-ar/arcore-unity-sdk/releases/tag/v1.7.0) (Note: only v1.7.0 has been tested, use other versions at your own risk). This can be achieved by running the `tools/Scripts/SetupRepository.bat` script as an administrator or by manually copying assets content into a ARCore-Unity-SDK folder in the external directory.
 5. [Unity](https://unity3d.com/get-unity/download) installed on your development device with [Android build support](https://docs.unity3d.com/Manual/android-sdksetup.html). This module can be included when first installing Unity, or you can use [Unity Hub to add the module](https://docs.unity3d.com/Manual/GettingStartedAddingEditorComponents.html) after installing.
 
 >Note: ARCore does not share MixedReality-SpectatorView's MIT license. For more information on ARCore licensing, see [here](https://github.com/google-ar/arcore-unity-sdk/blob/master/LICENSE).
@@ -31,7 +32,7 @@
 3. [Unity](https://unity3d.com/get-unity/download) installed on the Mac with [iOS build support](https://docs.unity3d.com/Manual/iphone-GettingStarted.html).  This module can be included when first installing Unity, or you can use [Unity Hub to add the module](https://docs.unity3d.com/Manual/GettingStartedAddingEditorComponents.html) after installing.
 4. [XCode](https://developer.apple.com/xcode/) installed on the Mac
 5. Obtain an [apple developer license](https://developer.apple.com/programs/enroll/)
-6. Obtain [Unity's ARKit Plugin](https://bitbucket.org/Unity-Technologies/unity-arkit-plugin/src/default/) and place it within the [ARKit-Unity-Plugin folder](../external/ARKit-Unity-Plugin).
+6. Obtain [Unity's ARKit Plugin](https://bitbucket.org/Unity-Technologies/unity-arkit-plugin/src/default/) and place it within the `external/ARKit-Unity-Plugin` folder.
 
 >Note: Unity's ARKit Plugin has two licenses, one of which is not a MIT license. For more information on ARKit licensing, see [here](https://bitbucket.org/Unity-Technologies/unity-arkit-plugin/src/default/LICENSES/).
 
@@ -54,7 +55,7 @@ Not all spatial alignment strategies support all platforms. See the chart below 
 ### Azure Spatial Anchors
 
 1. Setup an [Azure Spatial Anchors account](https://docs.microsoft.com/en-us/azure/spatial-anchors/quickstarts/get-started-unity-hololens) and obtain an `Account ID` and `Primary Key`.
-2. Obtain [AzureSpatialAnchors v1.1.1](https://github.com/Azure/azure-spatial-anchors-samples/releases/tag/v1.1.1). This can be achieved by running the [SetupRepository](../tools/Scripts/SetupRepository.bat) script as an administrator or by manually copying assets content into the [Azure-Spatial-Anchors-Samples folder](../external/Azure-Spatial-Anchors-Samples).
+2. Obtain [AzureSpatialAnchors v1.1.1](https://github.com/Azure/azure-spatial-anchors-samples/releases/tag/v1.1.1). This can be achieved by running the `tools/Scripts/SetupRepository.bat` script as an administrator or by manually copying assets content into the `external/Azure-Spatial-Anchors-Samples` folder.
 3. Add the `SPATIALALIGNMENT_ASA` preprocessor directive to your **Universal Windows Platform Player Settings** (This is located via Build Settings -> Player Settings -> Other Settings -> 'Scripting Defined Symbols')
 
 ![Marker](images/UWPPlayerSEttings.png)
@@ -92,8 +93,8 @@ If you are building Azure Spatial Anchors on iOS, you will need to take some add
 
 ### QR Code Detection
 
-1. Download the QR APIs Nuget Package [releases.zip](https://github.com/dorreneb/mixed-reality/releases/tag/1.1) folder and extract its contents into the [MixedReality-QRCodePlugin folder](../external/MixedReality-QRCodePlugin).
-2. Build an x86 Release version of [SpectatorView.WinRTExtensions.dll](../src/SpectatorView.Native/README.md) and include the associated dll's in your Unity project. Adding the plugins to your Unity project can be achieved by running the [CopyPluginsToUnity](../tools/Scripts/CopyPluginsToUnity.bat) script.
+1. Download the QR APIs Nuget Package [releases.zip](https://github.com/dorreneb/mixed-reality/releases/tag/1.1) folder and extract its contents into the `external/MixedReality-QRCodePlugin` folder.
+2. Build an x86 Release version of [SpectatorView.WinRTExtensions.dll](../src/SpectatorView.Native/README.md) and include the associated dll's in your Unity project. Adding the plugins to your Unity project can be achieved by running the `tools/Scripts/CopyPluginsToUnity.bat` script.
 3. In the WSA Unity player settings, add the `QRCODESTRACKER_BINARY_AVAILABLE` preprocessor directive. (This is located via Build Settings -> Player Settings -> Other Settings -> 'Scripting Defined Symbols')
 
 ![Marker](images/QRCodePlayerSettings.png)
@@ -102,7 +103,7 @@ If you are building Azure Spatial Anchors on iOS, you will need to take some add
 
 1. Build an x86 Release version of SpectatorView.OpenCV.dll and SpectatorView.WinRTExtensions.dll (see instructions [here](../src/SpectatorView.Native/README.md)) and include the associated dll's in your Unity project. 
 
-2. Add the plugins to your Unity project by running the [CopyPluginsToUnity](../tools/Scripts/CopyPluginsToUnity.bat) script. This will add an empty SpectatorView.OpenCV.dll (and dependencies) for the ARM build flavor, which prevents HoloLens 2 build errors.
+2. Add the plugins to your Unity project by running the `tools/Scripts/CopyPluginsToUnity.bat` script. This will add an empty SpectatorView.OpenCV.dll (and dependencies) for the ARM build flavor, which prevents HoloLens 2 build errors.
 
 ## Building & Deploying
 
@@ -110,7 +111,7 @@ If you are building Azure Spatial Anchors on iOS, you will need to take some add
 
 1. Obtain your HoloLens's ip address from its windows settings menu via Settings -> Network & Internet -> Wi-Fi -> Hardware Properties.
 2. Add any of the preprocessor directives or Unity packages described above that you intend to use to your clone of the SpectatorView codebase.
-3. Open the [SpectatorView.HoloLens scene](../src/SpectatorView.Unity/Assets/SpectatorView/Scenes/SpectatorView.HoloLens.unity) in your Unity project.
+3. Open the `SpectatorView.HoloLens` scene in your Unity project.
 4. In the Unity editor, call 'Spectator View -> Update All Asset Caches' (This will be located in the Unity editor toolbar) to prepare content for state synchronization. Add the Generated.StateSynchronization.AssetCaches folder to your project's repository to share across development devices.
 
 ![Marker](images/UpdateAllAssetCaches.png)
@@ -121,22 +122,22 @@ If you are building Azure Spatial Anchors on iOS, you will need to take some add
 
 1. Make sure your Unity project contains the asset caches that were created in the 'Before building' steps.
 2. Open the project scene that you intend to use with SpectatorView.
-3. Add the [SpectatorView prefab](../src/SpectatorView.Unity/Assets/SpectatorView/Prefabs/SpectatorView.prefab) to the scene.
+3. Add the `SpectatorView` prefab to the scene.
 4. Setup your scene to synchronize content. You can either have all content synchronized by checking 'Automatically Broadcast All Game Objects' in BroadcasterSettings located in your SpectatorViewSettings prefab. Or, you can manually add GameObjectHierarchyBroadcaster components to all parent game objects in the scene that you want synchronized.
 
 ![Marker](images/SpectatorViewSettingsMenu.png)
 
 ![Marker](images/BroadcastAll.png)
 
-5. Press the 'HoloLens' button on the [Platform Switcher](../src/SpectatorView.Unity/Assets/SpectatorView.Editor/Scripts/PlatformSwitcherEditor.cs) attached to Spectator View in the Unity inspector (This should configure the correct build settings and app capabilities).
+5. Press the 'HoloLens' button on the `Platform Switcher` attached to Spectator View in the Unity inspector (This should configure the correct build settings and app capabilities).
 6. Build and deploy the application to your HoloLens device.
 
 ### Android
 
 1. Make sure your Unity project contains the asset caches that were created in the 'Before building' steps.
-2. Make sure that you have a reference to ARCore v1.7.0 in your project. This can be achieved by running the [SetupRepository](../tools/Scripts/SetupRepository.bat) script as an administrator or by downloading and importing the package from [ARCore v1.7.0](https://github.com/google-ar/arcore-unity-sdk/releases/tag/v1.7.0).
-3. Open the [SpectatorView.Android Unity scene](../src/SpectatorView.Unity/Assets/SpectatorView/Scenes/SpectatorView.Android.unity).
-4. Press the 'Android' button on the [Platform Switcher](../src/SpectatorView.Unity/Assets/SpectatorView.Editor/Scripts/PlatformSwitcherEditor.cs) attached to Spectator View in the Unity inspector (This should configure the correct build settings and app capabilities).
+2. Make sure that you have a reference to ARCore v1.7.0 in your project. This can be achieved by running the `tools/Scripts/SetupRepository.bat` script as an administrator or by downloading and importing the package from [ARCore v1.7.0](https://github.com/google-ar/arcore-unity-sdk/releases/tag/v1.7.0).
+3. Open the `SpectatorView.Android` Unity scene.
+4. Press the 'Android' button on the `Platform Switcher` attached to Spectator View in the Unity inspector (This should configure the correct build settings and app capabilities).
 5. Check 'ARCore Supported' under 'Build Settings -> Player Settings -> Android -> XR Settings' from the Unity editor toolbar.
 6. Export your project to Android Studio. Be sure to declare the SpectatorView.Android scene as the scene included. If SpectatorView.Android does not exist in your list of scenes to choose from in the build settings, open the scene in the Unity editor. Then reopen the build settings and press 'Add Open Scenes'.
 
@@ -157,9 +158,9 @@ If you are building Azure Spatial Anchors on iOS, you will need to take some add
 > Note: Building iOS applications requires a mac.
 
 1. Make sure your Unity project contains the asset caches that were created in the 'Before building' steps. Asset caches can't be recreated in new development environments, so the asset caches created on the PC need to be checked in or copied over to your mac development environment.
-2. Import [Unity's ARKit Plugin](https://bitbucket.org/Unity-Technologies/unity-arkit-plugin/src/default/) to your Unity project. To do this, download the source code from the provided link. You can then add the source code to the [ARKit-Unity-Plugin folder](../external/ARKit-Unity-Plugin). The [AddDependencies](../tools/Scripts/AddDependencies.bat) script should have added a symbolic link to this folder to your project when setting things up.
-3. Open the [SpectatorView.iOS Unity scene](../src/SpectatorView.Unity/Assets/SpectatorView/Scenes/SpectatorView.iOS.unity).
-4. Press the 'iOS' button on the [Platform Switcher](../src/SpectatorView.Unity/Assets/SpectatorView.Editor/Scripts/PlatformSwitcherEditor.cs) attached to Spectator View in the Unity inspector (This should configure the correct build settings and app capabilities).
+2. Import [Unity's ARKit Plugin](https://bitbucket.org/Unity-Technologies/unity-arkit-plugin/src/default/) to your Unity project. To do this, download the source code from the provided link. You can then add the source code to the `external/ARKit-Unity-Plugin` folder. The `tools/Scripts/AddDependencies.bat` script should have added a symbolic link to this folder to your project when setting things up.
+3. Open the `SpectatorView.iOS` Unity scene.
+4. Press the 'iOS' button on the `Platform Switcher` attached to Spectator View in the Unity inspector (This should configure the correct build settings and app capabilities).
 5. Export the iOS project to a XCode solution. Be sure to include the SpectatorView.iOS scene. If SpectatorView.iOS scene does not exist in your list of scenes to choose from in the build settings, open the scene in the Unity editor. Then reopen the build settings and press 'Add Open Scenes'.
 6. Configure the [signing certificate](https://developer.apple.com/support/code-signing/) for your Unity generated project in XCode to reflect your developer account.
 7. Build and deploy the application through XCode to your desired device (See the below steps if using ASA).
@@ -172,11 +173,11 @@ If you are building Azure Spatial Anchors on iOS, you will need to take some add
 
 ## Example Scenes
 
-If you would like to try out an example before setting up your own application to work with spectator view, run [SetupRepository.bat](../tools/Scripts/SetupRepository.bat) as an administrator. Then, open the [SpectatorView.Example.Unity project](../samples/SpectatorView.Example.Unity). You can then build and deploy the following scenes:
+If you would like to try out an example before setting up your own application to work with spectator view, run `tools/Scripts/SetupRepository.bat` as an administrator. Then, open the `samples/SpectatorView.Example.Unity` project. You can then build and deploy the following scenes:
 
-* HoloLens: [SpectatorView.HoloLens](../src/SpectatorView.Unity/Assets/SpectatorView/Scenes/SpectatorView.HoloLens.unity)
-* Android: [SpectatorView.Android](../src/SpectatorView.Unity/Assets/SpectatorView/Scenes/SpectatorView.Android.unity)
-* iOS: [SpectatorView.iOS](../src/SpectatorView.Unity/Assets/SpectatorView/Scenes/SpectatorView.iOS.unity)
+* HoloLens: `SpectatorView.HoloLens`
+* Android: `SpectatorView.Android`
+* iOS: `SpectatorView.iOS`
 
 ## Customizing UI
 

@@ -11,7 +11,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.SpectatorView
 {
     /// <summary>
-    /// A marker detection based implementation of <see cref="ISpatialCoordinateService"/>.
+    /// A marker detection based implementation of <see cref="Microsoft.MixedReality.SpatialAlignment.ISpatialCoordinateService"/>.
     /// </summary>
     public class MarkerDetectorCoordinateService : SpatialCoordinateServiceBase<int>
     {

@@ -1,0 +1,72 @@
+{
+  "metadata": [
+    {
+      // generate meta data for api docs
+      "src": [
+        {
+          "files": [ "**/*.cs"],
+          "src": "src/SpectatorView.Unity"
+        },
+        {
+          "files": [ "**/*.cs"],
+          "src": "src/HolographicCamera.Unity/Assets/HolographicCamera"
+        },
+        {
+          "files": [ "**/*.cs"],
+          "src": "samples/Build2019Demo.Unity/Assets/Demo"
+        }
+      ],
+      "dest": "api"
+    }
+  ],
+  "build": {
+    "content": [
+      {
+        "files": [ "README.md", "toc.yml" ],
+        "src": "."
+      },
+      {
+        "files": [ "*.yml"],
+        "src": "doc/build/api",
+        "dest": "api"
+      },
+      {
+        "files": [
+          "src/SpectatorView.Unity/**/*.md",
+          "src/SpectatorView.Native/**/*.md",
+          "samples/README.md",
+          "samples/Build2019Demo.Unity/README.md",
+          "doc/*.md" ]
+      }
+    ],
+    "resource": [
+      {
+        "files": ["index.html"],
+        "src": "doc"
+      },
+      {
+        "files": ["doc/**/*.png", "doc/**/*.ico"]
+      }
+    ],
+    "template": [
+        // gets default template (html/css/jscript) from docfx and copies subsequent templates on top
+        "default",
+        "template/mr-sv"
+    ],
+    "globalMetadata": {
+      // global docfx config - see docfx documentation for more config params (https://dotnet.github.io/docfx/tutorial/docfx.exe_user_manual.html)
+      "_appTitle": "MixedReality-SpectatorView Documentation",
+      "_enableSearch": true,
+      "_disableNavbar": false,
+      "_appLogoPath": "doc/images/spectatorview-logo.png",
+      "_appFaviconPath": "doc/images/favicon.ico",
+      "_gitContribute": {
+        "repo": "https://github.com/Microsoft/MixedReality-SpectatorView",
+        "branch": "master"
+      }
+    },
+    "markdownEngineName": "markdig",
+    "dest": "generated",
+    "xrefService": [ "https://xref.docs.microsoft.com/query?uid={uid}" ] //msdn xref service for resolving crefs
+  }
+}

@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.SpectatorView
 {
     /// <summary>
-    /// Settings used by a <see cref="Broadcaster"/>
+    /// Settings used by a <see cref="StateSynchronizationBroadcaster"/>
     /// </summary>
     public class BroadcasterSettings : Singleton<BroadcasterSettings>
     {

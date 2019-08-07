@@ -34,7 +34,7 @@ jobs:
       
       # Invoke docfx.exe to build the docs, and output both to console and to a variable $output
       $output = ""
-      Invoke-Expression "$($DocFxDir.FullName)\tools\docfx.exe docs\docfx.json --intermediateFolder build\docs\obj -o build\docs -f" | Tee-Object -Variable output | Write-Host
+      Invoke-Expression "$($DocFxDir.FullName)\tools\docfx.exe docfx.json --intermediateFolder doc\build\obj -o doc\build -f" | Tee-Object -Variable output | Write-Host
 
       # # Check the console output stored in $output for any error or warning message,
       # # and force the task to fail if there is any.
@@ -58,7 +58,7 @@ jobs:
       )
     inputs:
       targetType: filePath
-      filePath: tools/ci/commitGeneratedDocs.ps1
+      filePath: tools/Scripts/commitGeneratedDocs.ps1
       arguments: '-SourceBranch $(Build.SourceBranch)'
       failOnStderr: false
     env:

@@ -213,7 +213,7 @@ namespace Microsoft.MixedReality.SpatialAlignment
         protected abstract bool TryParse(string id, out TKey result);
 
         /// <summary>
-        /// Implement this method for the logic begin and end tracking (when <see cref="CancellationToken"/> is cancelled).
+        /// Implement this method for the logic begin and end tracking (when <see cref="System.Threading.CancellationToken"/> is cancelled).
         /// </summary>
         protected abstract Task OnDiscoverCoordinatesAsync(CancellationToken cancellationToken, TKey[] idsToLocate = null);
     }
