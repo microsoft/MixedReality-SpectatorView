@@ -11,8 +11,7 @@ trigger:
     - master
   paths:
     include:
-    - *.md
-    - *.cs
+    - *
 
 # Do not trigger CI on PRs
 pr: none
