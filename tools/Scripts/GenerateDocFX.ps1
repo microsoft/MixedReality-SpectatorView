@@ -23,7 +23,7 @@ Write-Host  "DocFx install : $DocFxExe"
 # Generate the documentation
 $logFile = "docfx.log"
 Invoke-Expression "$($DocFxDir.FullName)\tools\docfx.exe $PSScriptRoot\..\..\docfx.json --intermediateFolder $PSScriptRoot\..\..\doc\build\obj --force -o $PSScriptRoot\..\..\doc\build $(if ($serve) {' --serve'} else {''})" | Tee-Object -FilePath $logFile
-Write-Host "Documentation generated at $PSScriptRoot\..\..\doc\build\generated\index.html"
+Write-Host "Documentation generated at $PSScriptRoot\..\..\doc\build\generated"
 
 # Clean-up obj/xdoc folders in source -- See https://github.com/dotnet/docfx/issues/1156
 $XdocDirs = Get-ChildItem -Path $PSScriptRoot\..\..\ -Recurse | Where-Object {$_.PSIsContainer -eq $true -and $_.Name -eq "xdoc"}
