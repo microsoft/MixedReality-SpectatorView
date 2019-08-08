@@ -1,1 +1,0 @@
-The dlls in this directory are empty and exist to prevent compilation errors when building for ARM platforms. OpenCV is not supported for ARM; however, the Unity output build attempts to locate ARM versions of these binaries when compiling. If nothing is present, the build will fail not finding the ARM flavor of the opencv dlls.

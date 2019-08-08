@@ -1,1 +1,0 @@
-This is an empty dll that exists to prevent compilation errors when building for ARM platforms. OpenCV is not supported for ARM.
