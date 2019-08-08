@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.SpectatorView
 {
     /// <summary>
-    /// MonoBehaviour associated with PlatformSwitcherEditor'
+    /// MonoBehaviour associated with PlatformSwitcherEditor
     /// </summary>
     public class PlatformSwitcher : MonoBehaviour
     {
