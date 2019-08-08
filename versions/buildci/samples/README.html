@@ -1,0 +1,156 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Spectator View Samples | MixedReality-SpectatorView Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Spectator View Samples | MixedReality-SpectatorView Documentation ">
+    <meta name="generator" content="docfx 2.44.0.0">
+    
+    <link rel="shortcut icon" href="../doc/images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="../toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../doc/images/spectatorview-logo.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        <div class="article row grid">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="spectator-view-samples">Spectator View Samples</h1>
+
+<p>This folder contains sample and demo projects that are maintained by the SpectatorView team. Below you will find the instructions on how to get started, as well as the sample folder structure setup and dependencies.</p>
+<h2 id="getting-started">Getting Started</h2>
+<p>Ensure you have all the required software, for detailed instructions see [Required Software](../doc/SpectatorView.Setup.md#Software &amp; Hardware Requirements).</p>
+<ul>
+<li>Git Tools</li>
+<li>Visual Studio</li>
+<li>Unity 2018.3.14f1</li>
+<li><strong>(Optional)</strong> Windows 10.0.18362.0 SDK</li>
+<li><strong>(Optional)</strong> Android Studio</li>
+<li><strong>(Optional)</strong> XCode</li>
+</ul>
+<p>Once you have the required software, follow these steps:</p>
+<ol>
+<li>Using your favorite Git management tool, clone this repository if you haven't yet.</li>
+<li>Then with git, pull the latest version of the code.</li>
+<li>Run <code>/tools/scripts/SetupRepository.bat</code> as an administrator to get ensure the appropriate submodules for the sample projects are cloned and the correct directories are linked into the sample project.
+<ul>
+<li>On Mac or Linux, you can run <code>/tools/scripts/SetupRepository.sh</code>.</li>
+</ul>
+</li>
+</ol>
+<blockquote>
+<p>In future updates you can pull to latest by invoking <code>git pull --recurse-submodules</code> command.</p>
+</blockquote>
+<h2 id="contents">Contents</h2>
+<p>This repository currently has the following samples:</p>
+<ul>
+<li><a href="Build2019Demo.Unity/README.html">//BUILD 2019 Demo</a></li>
+</ul>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<p>If you encounter some issues, the first thing to do is to run <code>/tools/scripts/SetupRepository.bat</code> as an administrator. For additional troubleshooting options look below.</p>
+<h3 id="issue-unity-project-folder-structure-broken"><strong>Issue:</strong> Unity Project Folder Structure Broken</h3>
+<p>If you happened to run step 3 above when Unity was open, you will notice that the Project window may contain the incorrect folder structure. This only happens when a symlink is inflated while Unity is open, to fix this:</p>
+<ol>
+<li>Close Unity</li>
+<li>Delete the Library folder that is adjacent to the Assets folder</li>
+<li>Re-open Unity</li>
+</ol>
+<h3 id="issue-directorynotfoundexception-during-build"><strong>Issue:</strong> DirectoryNotFoundException during Build</h3>
+<p>There is a known issue with <code>MixedRealityToolkit-Unity</code> codebase that produces build issues due to deeply nested AsmDef files. You will see build errors such as:</p>
+<pre><code>DirectoryNotFoundException: Could not find a part of the path &quot;X:\...&lt;SOME_PATH&gt;...\samples\Build2019Demo.Unity\Assets\MixedRealityToolkit-Unity\MixedRealityToolkit.Examples\Demos\Utilities\InspectorFields\Inspectors\MixedRealityToolkit.Examples.Demos.Utilities.InspectorFields.Inspectors.asmdef&quot;
+</code></pre>
+<p>To work around this issue for the time being, place your project in a directory with a shorter name, such as c:\proj.</p>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Microsoft/MixedReality-SpectatorView/blob/master/samples/README.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

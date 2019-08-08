@@ -1,0 +1,168 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>//BUILD 2019 Demo | MixedReality-SpectatorView Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="//BUILD 2019 Demo | MixedReality-SpectatorView Documentation ">
+    <meta name="generator" content="docfx 2.44.0.0">
+    
+    <link rel="shortcut icon" href="../../doc/images/favicon.ico">
+    <link rel="stylesheet" href="../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../styles/docfx.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <meta property="docfx:navrel" content="../../toc.html">
+    <meta property="docfx:tocrel" content="../../toc.html">
+    
+    <meta property="docfx:rel" content="../../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../index.html">
+                <img id="logo" class="svg" src="../../doc/images/spectatorview-logo.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        <div class="article row grid">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="build-2019-demo">//BUILD 2019 Demo</h1>
+
+<p>This sample of using SpectatorView is very similar to the live code demo presented at //BUILD 2019 conference.</p>
+<p><a href="https://www.youtube.com/watch?v=P8og3nC5FaQ&amp;t=2255" title="//BUILD 2019 Video"><img src="../../doc/images/Build2019DemoVideo.png" alt="//BUILD 2019 Video"></a></p>
+<h2 id="running-the-demo">Running the Demo</h2>
+<p>In order to run the demo, you will need at least two MR/AR capable devices. You should ideally use a HoloLens or HoloLens 2 device to host and interact with the shared application experience. You can then use a mobile device to view the application experience. Once you have the devices ready, follow the instructions below.</p>
+<blockquote>
+<p><strong>ARKit Note:</strong> If you wish to run the experience on an iOS device with ARKit, download the <a href="https://bitbucket.org/Unity-Technologies/unity-arkit-plugin/downloads/">ARKit repository</a>, unzip it, and copy the contents of the <code>Unity-Technologies-unity-arkit-plugin-94e47eae5954/Assets</code> folder to <code>/samples/Build2019Demo.Unity/Assets/</code>.</p>
+</blockquote>
+<h3 id="instructions">Instructions</h3>
+<p>These instructions assume that a HoloLens 2 device will be used to host the shared experience and that an Android phone will be used to spectate the shared experience. For iOS, replace references to Android with iOS.</p>
+<h4 id="prepare-your-devices">Prepare your devices</h4>
+<ol>
+<li>Connect your devices to the same WiFi network.</li>
+<li>Obtain and write down your HoloLens's IP Address (This can be found in the settings menu).</li>
+</ol>
+<h4 id="configure-your-project">Configure your project</h4>
+<ol>
+<li>Ensure you have created an <a href="https://docs.microsoft.com/en-us/azure/spatial-anchors/quickstarts/get-started-unity-hololens#create-a-spatial-anchors-resource">Azure Spatial Anchors</a> account.</li>
+<li>Open the Build2019Demo.Unity project in Unity.
+<ul>
+<li>If requested, import the TextMeshPro Essentials.</li>
+</ul>
+</li>
+<li>Open the <code>Finished_Scene</code> sample scene.</li>
+<li>Open SpectatorView settings by going to the menu <code>SpectatorView &gt; Edit Settings</code>. <br>
+<img src="../../doc/images/SpectatorViewSettingsMenu.png" alt="SpectatorView Settings Menu"></li>
+<li>Replace <code>ENTER_ACCOUNT_ID</code> and <code>ENTER_ACCOUNT_KEY</code> with appropriate values. <br>
+<img src="../../doc/images/SpectatorViewSettingsASA.png" alt="Spectator View ASA Settings"></li>
+</ol>
+<h4 id="build--deploy">Build &amp; Deploy</h4>
+<ol>
+<li>Build UWP Player containing <code>Demo/Scenes/Finished_Scene.unity</code> scene, and deploy this application to the HoloLens 2 device.</li>
+<li>Export Android Player containing <code>MixedReality-SpectatorView/SpectatorView/Scenes/SpectatorView.Android.unity</code> scene to an Android Studio solution.</li>
+<li>Open the Android Studio solution and change the main activity in the AndroidManifest.xml file to <code>Microsoft.MixedReality.SpectatorView.Unity.ScreenRecorderActivity</code>.</li>
+<li>Update the AndroidManifest.xml in Android Studio to contain <code>android.permission.CAMERA</code>, <code>android.permission.INTERNET</code>, <code>android.permission.RECORD_AUDIO</code> and <code>android.permission.WRITE_EXTERNAL_STORAGE</code> uses-permissions.</li>
+<li>Build the Android Studio solution and deploy this application to the spectating Android device.</li>
+<li>Launch the <code>SpectatorView.Build2019Demo</code> on the HoloLens 2, and wait for the experience to start.</li>
+<li>Launch the <code>SpectatorView.Build2019Demo</code> on the Android device and connect to the HoloLens device by specifying the HoloLens's IP Address.</li>
+</ol>
+<blockquote>
+<p>Note 1: Building iOS version requires an special step after exporting the Unity project to xCode, see the <a href="https://docs.microsoft.com/en-us/azure/spatial-anchors/quickstarts/get-started-unity-ios#open-the-xcode-project">official instructions</a>.</p>
+</blockquote>
+<blockquote>
+<p>Note 2: Additional setup instructions for spectating with mobile devices can be found <a href="../../doc/SpectatorView.Setup.html">here</a>.</p>
+</blockquote>
+<h2 id="sample-project-contents">Sample Project Contents</h2>
+<p>The demo consists of a simple experience with a buttons panel and a slider, configured for spectation by another device using SpectatorView functionality. The Unity project structure contains:</p>
+<ul>
+<li><strong>ARKit:</strong> This folder is not checked-in by default, but it's needed to run the experience on ARKit iOS device; see the <strong>ARKit Note</strong> above.</li>
+<li><strong>AzureSpatialAnchors:</strong> This folder contains the Azure Spatial Anchors (ASA) plugin referenced from the submodule added at <code>/external/Azure-Spatial-Anchors-Samples/</code>; the source is hosted on <a href="https://github.com/Azure/azure-spatial-anchors-samples">GitHub</a>.</li>
+<li><strong>Demo:</strong> Demo assets and prefabs for the simple experience.</li>
+<li><strong>GoogleARCore:</strong> This folder contains the ARCore SDK referenced from the submodule added at <code>/external/ARCore-Unity-SDK/</code>; the source is hosted on <a href="https://github.com/google-ar/arcore-unity-sdk">GitHub</a>.</li>
+<li><strong>MixedReality-SpectatorView:</strong> Spectator View assets symlinked from <code>/src/SpectatorView.Unity/Assets</code></li>
+<li><strong>MixedRealityToolkit-Unity:</strong> MixedRealityToolkit-Unity assets symlinked from the common submodule located at <code>/external/MixedRealityToolkit-Unity/Assets</code></li>
+<li><strong>Plugins:</strong> This folder contains parts of the ASA plugin that need to be in this location.</li>
+</ul>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Microsoft/MixedReality-SpectatorView/blob/master/samples/Build2019Demo.Unity/README.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
+  </body>
+</html>

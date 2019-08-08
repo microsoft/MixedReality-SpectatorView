@@ -1,0 +1,750 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class SocketerClient
+   | MixedReality-SpectatorView Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class SocketerClient
+   | MixedReality-SpectatorView Documentation ">
+    <meta name="generator" content="docfx 2.44.0.0">
+    
+    <link rel="shortcut icon" href="../doc/images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../doc/images/spectatorview-logo.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Microsoft.MixedReality.SpectatorView.SocketerClient">
+  
+  
+  <h1 id="Microsoft_MixedReality_SpectatorView_SocketerClient" data-uid="Microsoft.MixedReality.SpectatorView.SocketerClient" class="text-break">Class SocketerClient
+  </h1>
+  <div class="markdown level0 summary"><p>Simple socket client which uses a generic length-type-data protocol.
+Chunk format(everything in little-endian order) :
+uint32_t data_length;
+uint8_t data[data_length];
+NOTE! The code assumes you are running on a little-endian system.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><span class="xref">SocketerClient</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Microsoft.MixedReality.SpectatorView.html">Microsoft.MixedReality.SpectatorView</a></h6>
+  <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
+  <h5 id="Microsoft_MixedReality_SpectatorView_SocketerClient_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class SocketerClient</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  
+  
+  <a id="Microsoft_MixedReality_SpectatorView_SocketerClient__ctor_" data-uid="Microsoft.MixedReality.SpectatorView.SocketerClient.#ctor*"></a>
+  <h4 id="Microsoft_MixedReality_SpectatorView_SocketerClient__ctor_Microsoft_MixedReality_SpectatorView_SocketerClient_Protocol_System_Int32_" data-uid="Microsoft.MixedReality.SpectatorView.SocketerClient.#ctor(Microsoft.MixedReality.SpectatorView.SocketerClient.Protocol,System.Int32)">SocketerClient(SocketerClient.Protocol, Int32)</h4>
+  <div class="markdown level1 summary"><p>Creates a Socker that waits for packets or connections.
+Waits for the other Socketer to connect to it.  TCP Socketers can still SendNetworkMessage after a connection.  UDP Listeners are not able to SendNetworkMessage.
+Does not need to have a Host specified.  Listeners may listen to multiple Senders.  TCP Listeners, when calling SendNetworkMessage, will send to every
+connected Sender.  You must call Start to begin.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public SocketerClient(SocketerClient.Protocol protocol, int port)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.SpectatorView.SocketerClient.Protocol.html">SocketerClient.Protocol</a></td>
+        <td><span class="parametername">protocol</span></td>
+        <td><p>Underlying protocol to use.  Each has advantages and disadvantages.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">port</span></td>
+        <td><p>The port to use.  Suggested values are between 10000 and 40000, and must agree
+with the Socketer on the other end.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_SpectatorView_SocketerClient__ctor_" data-uid="Microsoft.MixedReality.SpectatorView.SocketerClient.#ctor*"></a>
+  <h4 id="Microsoft_MixedReality_SpectatorView_SocketerClient__ctor_Microsoft_MixedReality_SpectatorView_SocketerClient_Protocol_System_String_System_Int32_" data-uid="Microsoft.MixedReality.SpectatorView.SocketerClient.#ctor(Microsoft.MixedReality.SpectatorView.SocketerClient.Protocol,System.String,System.Int32)">SocketerClient(SocketerClient.Protocol, String, Int32)</h4>
+  <div class="markdown level1 summary"><p>Creates a Socketer that sends packets or initiates connections.
+Actively tries to connect/send to the other Socketer.  TCP Socketers can still receive messages.  UDP Senders cannot.  Must have a Host specified.
+May only send to one listening Socketer.  You must call Start to begin.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public SocketerClient(SocketerClient.Protocol protocol, string host, int port)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.SpectatorView.SocketerClient.Protocol.html">SocketerClient.Protocol</a></td>
+        <td><span class="parametername">protocol</span></td>
+        <td><p>Underlying protocol to use.  Each has advantages and disadvantages.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">host</span></td>
+        <td><p>The IP address to connect or send packets to.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">port</span></td>
+        <td><p>The port to use.  Suggested values are between 10000 and 40000, and must agree
+with the Socketer on the other end.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  
+  
+  <a id="Microsoft_MixedReality_SpectatorView_SocketerClient_Host_" data-uid="Microsoft.MixedReality.SpectatorView.SocketerClient.Host*"></a>
+  <h4 id="Microsoft_MixedReality_SpectatorView_SocketerClient_Host" data-uid="Microsoft.MixedReality.SpectatorView.SocketerClient.Host">Host</h4>
+  <div class="markdown level1 summary"><p>The IP address to connect or send packets to.  Only populated for senders.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string Host { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_SpectatorView_SocketerClient_OutputQueueLength_" data-uid="Microsoft.MixedReality.SpectatorView.SocketerClient.OutputQueueLength*"></a>
+  <h4 id="Microsoft_MixedReality_SpectatorView_SocketerClient_OutputQueueLength" data-uid="Microsoft.MixedReality.SpectatorView.SocketerClient.OutputQueueLength">OutputQueueLength</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static int OutputQueueLength { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_SpectatorView_SocketerClient_Port_" data-uid="Microsoft.MixedReality.SpectatorView.SocketerClient.Port*"></a>
+  <h4 id="Microsoft_MixedReality_SpectatorView_SocketerClient_Port" data-uid="Microsoft.MixedReality.SpectatorView.SocketerClient.Port">Port</h4>
+  <div class="markdown level1 summary"><p>The port to use.  Suggested values are between 10000 and 40000, and must agree.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int Port { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_SpectatorView_SocketerClient_SocketDirection_" data-uid="Microsoft.MixedReality.SpectatorView.SocketerClient.SocketDirection*"></a>
+  <h4 id="Microsoft_MixedReality_SpectatorView_SocketerClient_SocketDirection" data-uid="Microsoft.MixedReality.SpectatorView.SocketerClient.SocketDirection">SocketDirection</h4>
+  <div class="markdown level1 summary"><p>Whether this object should listen for incoming connections/packets, or send them.
+TCP Socketers are able to both send and recieve once a connection is intitiated.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public SocketerClient.ProtocolDirection SocketDirection { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.SpectatorView.SocketerClient.ProtocolDirection.html">SocketerClient.ProtocolDirection</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_SpectatorView_SocketerClient_SocketProtocol_" data-uid="Microsoft.MixedReality.SpectatorView.SocketerClient.SocketProtocol*"></a>
+  <h4 id="Microsoft_MixedReality_SpectatorView_SocketerClient_SocketProtocol" data-uid="Microsoft.MixedReality.SpectatorView.SocketerClient.SocketProtocol">SocketProtocol</h4>
+  <div class="markdown level1 summary"><p>The protocol to use:  TCP or UDP.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public SocketerClient.Protocol SocketProtocol { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.SpectatorView.SocketerClient.Protocol.html">SocketerClient.Protocol</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_SpectatorView_SocketerClient_SuppressUDPHeaders_" data-uid="Microsoft.MixedReality.SpectatorView.SocketerClient.SuppressUDPHeaders*"></a>
+  <h4 id="Microsoft_MixedReality_SpectatorView_SocketerClient_SuppressUDPHeaders" data-uid="Microsoft.MixedReality.SpectatorView.SocketerClient.SuppressUDPHeaders">SuppressUDPHeaders</h4>
+  <div class="markdown level1 summary"><p>This is a special case property that you probably don't have to touch.  It removes socketer's own headers
+that are layered on top of UDP (it does not affect TCP).  The effect is that the type parameter on
+SendNetworkMessage is ignored, which can be helpful if you wish to implement other protocols (like Open Sound Control)
+on top of Socketer.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool SuppressUDPHeaders { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  
+  
+  <a id="Microsoft_MixedReality_SpectatorView_SocketerClient_CreateListener_" data-uid="Microsoft.MixedReality.SpectatorView.SocketerClient.CreateListener*"></a>
+  <h4 id="Microsoft_MixedReality_SpectatorView_SocketerClient_CreateListener_Microsoft_MixedReality_SpectatorView_SocketerClient_Protocol_System_Int32_" data-uid="Microsoft.MixedReality.SpectatorView.SocketerClient.CreateListener(Microsoft.MixedReality.SpectatorView.SocketerClient.Protocol,System.Int32)">CreateListener(SocketerClient.Protocol, Int32)</h4>
+  <div class="markdown level1 summary"><p>Creates a Socker that waits for packets or connections.
+Waits for the other Socketer to connect to it.  TCP Socketers can still SendNetworkMessage after a connection.  UDP Listeners are not able to SendNetworkMessage.
+Does not need to have a Host specified.  Listeners may listen to multiple Senders.  TCP Listeners, when calling SendNetworkMessage, will send to every
+connected Sender.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static SocketerClient CreateListener(SocketerClient.Protocol protocol, int port)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.SpectatorView.SocketerClient.Protocol.html">SocketerClient.Protocol</a></td>
+        <td><span class="parametername">protocol</span></td>
+        <td><p>Underlying protocol to use.  Each has advantages and disadvantages.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">port</span></td>
+        <td><p>The port to use.  Suggested values are between 10000 and 40000, and must agree
+with the Socketer on the other end.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.SpectatorView.SocketerClient.html">SocketerClient</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_SpectatorView_SocketerClient_CreateSender_" data-uid="Microsoft.MixedReality.SpectatorView.SocketerClient.CreateSender*"></a>
+  <h4 id="Microsoft_MixedReality_SpectatorView_SocketerClient_CreateSender_Microsoft_MixedReality_SpectatorView_SocketerClient_Protocol_System_String_System_Int32_" data-uid="Microsoft.MixedReality.SpectatorView.SocketerClient.CreateSender(Microsoft.MixedReality.SpectatorView.SocketerClient.Protocol,System.String,System.Int32)">CreateSender(SocketerClient.Protocol, String, Int32)</h4>
+  <div class="markdown level1 summary"><p>Creates a Socketer that sends packets or initiates connections.
+Actively tries to connect/send to the other Socketer.  TCP Socketers can still receive messages.  UDP Senders cannot.  Must have a Host specified.
+May only send to one listening Socketer.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static SocketerClient CreateSender(SocketerClient.Protocol protocol, string host, int port)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.SpectatorView.SocketerClient.Protocol.html">SocketerClient.Protocol</a></td>
+        <td><span class="parametername">protocol</span></td>
+        <td><p>Underlying protocol to use.  Each has advantages and disadvantages.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">host</span></td>
+        <td><p>The IP address to connect or send packets to.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">port</span></td>
+        <td><p>The port to use.  Suggested values are between 10000 and 40000, and must agree.
+with the Socketer on the other end.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.SpectatorView.SocketerClient.html">SocketerClient</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_SpectatorView_SocketerClient_Disconnect_" data-uid="Microsoft.MixedReality.SpectatorView.SocketerClient.Disconnect*"></a>
+  <h4 id="Microsoft_MixedReality_SpectatorView_SocketerClient_Disconnect_System_Int32_" data-uid="Microsoft.MixedReality.SpectatorView.SocketerClient.Disconnect(System.Int32)">Disconnect(Int32)</h4>
+  <div class="markdown level1 summary"><p>Disconnects the client</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Disconnect(int sourceId)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">sourceId</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_SpectatorView_SocketerClient_GetLocalIPAddress_" data-uid="Microsoft.MixedReality.SpectatorView.SocketerClient.GetLocalIPAddress*"></a>
+  <h4 id="Microsoft_MixedReality_SpectatorView_SocketerClient_GetLocalIPAddress" data-uid="Microsoft.MixedReality.SpectatorView.SocketerClient.GetLocalIPAddress">GetLocalIPAddress()</h4>
+  <div class="markdown level1 summary"><p>Gets the IP of this machine.  Suitable for use as a Host on another Socketer.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static string GetLocalIPAddress()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><p>The host of the local Socketer.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_SpectatorView_SocketerClient_SendNetworkMessage_" data-uid="Microsoft.MixedReality.SpectatorView.SocketerClient.SendNetworkMessage*"></a>
+  <h4 id="Microsoft_MixedReality_SpectatorView_SocketerClient_SendNetworkMessage_System_Byte___System_Int32_" data-uid="Microsoft.MixedReality.SpectatorView.SocketerClient.SendNetworkMessage(System.Byte[],System.Int32)">SendNetworkMessage(Byte[], Int32)</h4>
+  <div class="markdown level1 summary"><p>Sends a byte array to the other side.  Works for all Socketers except UDP Listeners.
+If the other Socketer is not listening, the messages are lost.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SendNetworkMessage(byte[] message, int sourceId = 0)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>[]</td>
+        <td><span class="parametername">message</span></td>
+        <td><p>Message contents.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">sourceId</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_SpectatorView_SocketerClient_SendNetworkMessage_" data-uid="Microsoft.MixedReality.SpectatorView.SocketerClient.SendNetworkMessage*"></a>
+  <h4 id="Microsoft_MixedReality_SpectatorView_SocketerClient_SendNetworkMessage_System_String_System_Int32_" data-uid="Microsoft.MixedReality.SpectatorView.SocketerClient.SendNetworkMessage(System.String,System.Int32)">SendNetworkMessage(String, Int32)</h4>
+  <div class="markdown level1 summary"><p>Sends a string to the other side.  Works for all Socketers except UDP Listeners.
+If the other Socketer is not listening, the messages are lost.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SendNetworkMessage(string message, int sourceId = 0)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">message</span></td>
+        <td><p>Message contents.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">sourceId</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_SpectatorView_SocketerClient_Start_" data-uid="Microsoft.MixedReality.SpectatorView.SocketerClient.Start*"></a>
+  <h4 id="Microsoft_MixedReality_SpectatorView_SocketerClient_Start" data-uid="Microsoft.MixedReality.SpectatorView.SocketerClient.Start">Start()</h4>
+  <div class="markdown level1 summary"><p>Begins either listening or sending.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Start()</code></pre>
+  </div>
+  
+  
+  <a id="Microsoft_MixedReality_SpectatorView_SocketerClient_Stop_" data-uid="Microsoft.MixedReality.SpectatorView.SocketerClient.Stop*"></a>
+  <h4 id="Microsoft_MixedReality_SpectatorView_SocketerClient_Stop" data-uid="Microsoft.MixedReality.SpectatorView.SocketerClient.Stop">Stop()</h4>
+  <div class="markdown level1 summary"><p>Stops listening or sending.  This should be called when you are done.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Stop()</code></pre>
+  </div>
+  <h3 id="events">Events
+  </h3>
+  
+  
+  <h4 id="Microsoft_MixedReality_SpectatorView_SocketerClient_Connected" data-uid="Microsoft.MixedReality.SpectatorView.SocketerClient.Connected">Connected</h4>
+  <div class="markdown level1 summary"><p>Called when a TCP connection is made.  Not called for UDP Socketers.  Will typically NOT be on the same thread as your UI/Update thread.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event Action&lt;SocketerClient, int, string&gt; Connected</code></pre>
+  </div>
+  <h5 class="eventType">Event Type</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.action-3">Action</a>&lt;<a class="xref" href="Microsoft.MixedReality.SpectatorView.SocketerClient.html">SocketerClient</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="Microsoft_MixedReality_SpectatorView_SocketerClient_Disconnected" data-uid="Microsoft.MixedReality.SpectatorView.SocketerClient.Disconnected">Disconnected</h4>
+  <div class="markdown level1 summary"><p>Called when a TCP connection is lost.  Not called for UDP Socketers.  Will typically NOT be on the same thread as your UI/Update thread.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event Action&lt;SocketerClient, int, string&gt; Disconnected</code></pre>
+  </div>
+  <h5 class="eventType">Event Type</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.action-3">Action</a>&lt;<a class="xref" href="Microsoft.MixedReality.SpectatorView.SocketerClient.html">SocketerClient</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="Microsoft_MixedReality_SpectatorView_SocketerClient_Message" data-uid="Microsoft.MixedReality.SpectatorView.SocketerClient.Message">Message</h4>
+  <div class="markdown level1 summary"><p>Called when a message is received.  Will typically NOT be on the same thread as your UI/Update thread.  This is by design.  The Unity MonoBehaviour
+does call this on the Update thread; see that class for a suggested implementation of handling threads.  If a Dispatcher is available, simply call
+that in your handler for this event.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event Action&lt;SocketerClient, MessageEvent&gt; Message</code></pre>
+  </div>
+  <h5 class="eventType">Event Type</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.action-2">Action</a>&lt;<a class="xref" href="Microsoft.MixedReality.SpectatorView.SocketerClient.html">SocketerClient</a>, <a class="xref" href="Microsoft.MixedReality.SpectatorView.MessageEvent.html">MessageEvent</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

@@ -1,0 +1,274 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Spectator View | MixedReality-SpectatorView Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Spectator View | MixedReality-SpectatorView Documentation ">
+    <meta name="generator" content="docfx 2.44.0.0">
+    
+    <link rel="shortcut icon" href="doc/images/favicon.ico">
+    <link rel="stylesheet" href="styles/docfx.vendor.css">
+    <link rel="stylesheet" href="styles/docfx.css">
+    <link rel="stylesheet" href="styles/main.css">
+    <meta property="docfx:navrel" content="toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="index.html">
+                <img id="logo" class="svg" src="doc/images/spectatorview-logo.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        <div class="article row grid">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="spectator-view">Spectator View</h1>
+
+<p>Spectator View is an augmented reality product that enables viewing HoloLens experiences from secondary devices. Spectator View has multiple configurations and supports a variety of scenarios from filming quick prototypes to producing keynote demos.</p>
+<h2 id="getting-started">Getting Started</h2>
+<h3 id="obtaining-the-code">Obtaining the code</h3>
+<p><strong>Currently, the supported process for obtaining and consuming Spectator View code is by adding the repository as a submodule to your project</strong> Downloading source code from the releases tab is possible, but helper scripts and sample projects may break if you choose not to reference the codebase as a submodule. Steps for cloning and using the git repository are as follows:</p>
+<ol>
+<li>Download <a href="https://git-scm.com/downloads">git</a></li>
+<li>Setup a repository for your project. For more information on how to setup a repository, see <a href="https://help.github.com/en/articles/create-a-repo">here</a>.</li>
+<li>Open an administrator command window.</li>
+<li>Clone your project's repository.</li>
+</ol>
+<p><img src="doc/images/CloneRepo.png" alt="Marker"></p>
+<ol start="5">
+<li>Change directories to that of your project's repository.</li>
+<li>Add the MixedReality-SpectatorView codebase as a submodule for your project by running <code>git submodule add https://github.com/microsoft/MixedReality-SpectatorView.git sv</code></li>
+</ol>
+<blockquote>
+<p>Note: If you are anticipating contributing to the MixedReality-SpectatorView project, you should fork your own version of the repository and add it as a submodule instead of the Microsoft repository. Your forked repository url will look something like this: <code>https://github.com/YourGitHubAliasHere/MixedReality-SpectatorView.git</code>.</p>
+</blockquote>
+<p><img src="doc/images/AddSubmodule.png" alt="Marker"></p>
+<ol start="7">
+<li><p>Change directories to the MixedReality-SpectatorView submodule.</p>
+</li>
+<li><p>Choose the appropriate branch that you would like to use for the MixedReality-SpectatorView submodule. By default, the submodule will be directed at master, which may not be the most stable branch for consumption. To change branches run the following commands:</p>
+<ol>
+<li>Change directories into the submodule.</li>
+<li>Run <code>git fetch origin release/1.0.0-beta</code></li>
+<li>Run <code>git checkout release/1.0.0-beta</code></li>
+<li>Run <code>git branch</code> to make sure you are using the release/1.0.0-beta branch</li>
+</ol>
+</li>
+</ol>
+<p>After running these git commands, you will have a local copy of the MixedReality-SpectatorView codebase. Next, you will need to follow the instructions in <code>Setup your local environment</code> to obtain external dependencies.</p>
+<h3 id="setting-up-your-local-environment">Setting up your local environment</h3>
+<p>The MixedReality-SpectatorView repository uses Unity packages, git submodules and symbolic linked directories for obtaining and referencing external dependencies. Prior to opening any Unity projects, you will need to run a setup script.</p>
+<ul>
+<li>The setup script will configure your git repository to use clrf line endings and support symbolic linked directories.</li>
+<li>The setup script will obtain and update all git submodules declared in the MixedReality-SpectatorView repository.</li>
+<li>The setup script will fix any symbolic linked directories in the MixedReality-SpectatorView repository.</li>
+</ul>
+<blockquote>
+<p>Note: Not all submodules have the same MIT <code>LICENSE</code> as the MixedReality-SpectatorView repository. Submodules in this project currently include: <a href="https://github.com/microsoft/MixedRealityToolkit-Unity">MixedRealityToolkit-Unity</a>, <a href="https://github.com/Azure/azure-spatial-anchors-samples">Azure-Spatial-Anchors-Samples</a> and <a href="https://github.com/google-ar/arcore-unity-sdk">ARCore-Unity-SDK</a>. You should view and accept the licenses in these projects before running the <code>tools/Scripts/SetupRepository.bat</code> script.</p>
+</blockquote>
+<p>Depending on what release you are using the correct setup script may vary. Choose the appropriate script below based on the git branch that you have checked out in your clone of the MixedReality-SpectatorView repository.</p>
+<h4 id="setting-up-the-release100-beta-branch">Setting up the <code>release/1.0.0-beta</code> branch</h4>
+<p>If you are using the release/1.0.0-beta branch, You will need to run the following command:</p>
+<ol>
+<li>Run <code>'tools/Scripts/ResetSamples.bat'</code> as an administrator on a PC  (On Mac or Linux, you can run <code>'sh /tools/scripts/ResetSamples.sh'</code>). These scripts are located within your MixedReality-SpectatorView submodule.</li>
+</ol>
+<h4 id="setting-up-the-master-branch">Setting up the <code>master</code> branch</h4>
+<p>If you are using the master branch, you will need to run the following command:</p>
+<ol>
+<li>Run <code>'tools/Scripts/SetupRepository.bat'</code> as an administrator on your PC (On Mac or Linux, you can run <code>'sh /tools/scripts/SetupRepository.sh'</code>). These scripts are located within your MixedReality-SpectatorView submodule.</li>
+</ol>
+<p><img src="doc/images/SetupRepo.png" alt="Marker"></p>
+<h3 id="samples">Samples</h3>
+<p>After going through the setup steps in 'Obtaining the code' and 'Setting up your local environment', sample projects will be configured for use in your clone of the MixedReality-SpectatorView repository. It's easy to get started by building off one of the samples or by inspecting them to understand project setup. For more information, see <a href="samples/README.html">Samples</a>.</p>
+<h3 id="adding-references-to-your-own-project">Adding references to your own project</h3>
+<p>After obtaining a local clone of the MixedReality-SpectatorView repository and resolving its external dependencies (see above), the suggested mechanism for referencing the code is by adding symbolic linked directories to your Unity project's Assets folder. You can do this with the following:</p>
+<blockquote>
+<p>Note: Symbolic linked directories should be setup as relative paths. Using relative paths should allow directories to resolve correctly regardless of where you or your team members clone your project repository in their local file systems. The instructions below demonstrate setting up symbolic linked directories based on the following paths:</p>
+<ul>
+<li><strong>Project repository directory:</strong> c:\Your\Unity\Project</li>
+<li><strong>Project Assets directory:</strong> c:\Your\Unity\Project\Assets</li>
+<li><strong>MixedReality-SpectatorView submodule directory:</strong> c:\Your\Unity\Project\sv</li>
+</ul>
+</blockquote>
+<h4 id="using-the-release100-beta-branch">Using the <code>release/1.0.0-beta</code> branch</h4>
+<ol>
+<li>Close any instances of Unity.</li>
+<li>Open an administrator command window.</li>
+<li>Run the following commands, updating the paths to reflect your local environment:</li>
+</ol>
+<ol start="4">
+<li><code>cd c:\Your\Unity\Project\Assets</code></li>
+<li><code>mklink /D &quot;MixedReality-SpectatorView&quot; &quot;..\sv\src\SpectatorView.Unity\Assets&quot;</code></li>
+<li><code>mklink /D &quot;ARKit-Unity-Plugin&quot; &quot;..\sv\external\ARKit-Unity-Plugin&quot;</code></li>
+<li><code>mklink /D &quot;AzureSpatialAnchorsPlugin&quot; &quot;..\sv\external\Azure-Spatial-Anchors-Samples\Unity\Assets\AzureSpatialAnchorsPlugin&quot;</code></li>
+<li><code>mklink /D &quot;GoogleARCore&quot; &quot;..\sv\external\ARCore-Unity-SDK\Assets\GoogleARCore&quot;</code></li>
+<li><code>mklink /D &quot;MixedReality-QRCodePlugin&quot; &quot;..\sv\external\MixedReality-QRCodePlugin&quot;</code></li>
+<li><code>mkdir AzureSpatialAnchors.Resources</code></li>
+<li><code>cd AzureSpatialAnchors.Resources</code></li>
+<li><code>mklink /D &quot;android-logos&quot; &quot;..\sv\external\Azure-Spatial-Anchors-Samples\Unity\Assets\android-logos&quot;</code></li>
+<li><code>mklink /D &quot;logos&quot; &quot;..\sv\external\Azure-Spatial-Anchors-Samples\Unity\Assets\logos&quot;</code></li>
+</ol>
+<h4 id="using-the-master-branch">Using the <code>master</code> branch</h4>
+<ol>
+<li>Close any instances of Unity.</li>
+<li>Open an administrator command window.</li>
+<li>Run <code>tools\Scripts\AddDependencies.bat &quot;Assets&quot; &quot;sv&quot;</code> (These paths are the relative paths to your project Assets folder and your MixedReality-SpectatorView submodule from the root directory of your repository).  This script is located within your MixedReality-SpectatorView submodule.</li>
+</ol>
+<p>Now, when you reopen your project in Unity, folders should appear in your project's Assets folder.</p>
+<p><img src="doc/images/AddDependencies.png" alt="Marker"></p>
+<h3 id="sharing-the-project">Sharing the project</h3>
+<p>After adding the MixedReality-SpectatorView repository as a submodule, you can commit the symbolic linked directories and submodule meta files to your repository to share with your team. If a team member wants to then use this repository they should do the following:</p>
+<ol>
+<li>Clone the project repository.</li>
+<li>Run <code>tools\Scripts\FixSymbolicLinks.ps1</code> from the root directory of your project's repository.</li>
+</ol>
+<p><img src="doc/images/FixSymbolicLinks.png" alt="Marker"></p>
+<ol start="3">
+<li>Run <code>tools\Scripts\SetupRepository.ps1</code> in the MixedReality-SpectatorView submodule.</li>
+</ol>
+<h3 id="basic-unity-setup">Basic Unity Setup</h3>
+<p>Below are quick instructions for adding Spectator View to your project:</p>
+<ol>
+<li><p>Ensure you have all of the [Software &amp; Hardware](doc/SpectatorView.Setup.md##Software &amp; Hardware Requirements) required for building and using Spectator View.</p>
+</li>
+<li><p>Go through the [Getting Started](#Getting Started) steps above to obtain and reference the MixedReality-SpectatorView codebase in your project.</p>
+</li>
+<li><p>Add the <code>MixedReality.SpectatorView/SpectatorView/Prefabs/SpectatorView.prefab</code> to the primary scene that will run on your HoloLens device. This prefab contains the bulk of Spectator View code for synchronizing and aligning holograms across multiple devices.</p>
+</li>
+<li><p>Choose a [Spatial Alignment Strategy](src/SpectatorView.Unity/Assets/SpatialAlignment/README.md### Detailed Breakdown of Spatial Alignment Strategies) that will allow multiple devices to view holograms in the same location in the physical world. There are different mechanisms for achieving alignment, such as <a href="https://azure.microsoft.com/en-us/services/spatial-anchors/">Azure Spatial Anchors</a> and marker detector based approaches. Not all approaches work for all devices, so you will need to pick the strategy that best addresses your needs.</p>
+</li>
+<li><p>Add the [dependencies](doc/SpectatorView.Setup.md## Spatial Alignment Strategy Dependencies) required for your Spatial Alignment Strategy to your Unity project. This may involve updating git submodules, adding symbolic linked directories, and manually downloading and extracting zip files. With the end of this step, you will have all of the needed code from external projects included in your Unity project.</p>
+</li>
+<li><p>Update your Unity project and player settings based on the [requirements](doc/SpectatorView.Setup.md### Spatial Alignment Strategy Dependencies) of your Spatial Alignment Strategy. This often involves adding preprocessor directives to different platform player settings to enable code paths specific to your desired Spatial Alignment Strategy.</p>
+</li>
+<li><p>Generate and check-in Asset Caches to your project repository. These Asset Caches act as GameObject registries and will allow different devices running your application to understand what Unity GameObjects are being created, destroyed and updated throughout the application life cycle. To generate these asset caches, run [Spectator View -&gt; Update All Asset Caches](doc/SpectatorView.Setup.md#### Before Building) in the Unity Editor toolbar.</p>
+</li>
+<li><p>Build &amp; Deploy your primary scene to the HoloLens device.</p>
+</li>
+<li><p>Open the example spectating scene appropriate for your mobile device type. This should either be <code>SpectatorView.Android.unity</code> or <code>SpectatorView.iOS.unity</code>.</p>
+</li>
+<li><p>Build &amp; Deploy your spectating scene onto your mobile device. Platform specific build instructions can be found [here for Android](doc/SpectatorView.Setup.md### Android) and [here for iOS](doc/SpectatorView.Setup.md### iOS).</p>
+</li>
+</ol>
+<h3 id="detailed-unity-setup">Detailed Unity Setup</h3>
+<p>For more information on setting up a Spectator View project, see the following pages:</p>
+<ul>
+<li><a href="doc/SpectatorView.Setup.html">Spectating with an Android or iOS device</a></li>
+<li><a href="doc/SpectatorView.Setup.VideoCamera.html">Spectating with a video camera</a></li>
+</ul>
+<h2 id="architecture">Architecture</h2>
+<p>For more information on Spectator View's architecture, see <a href="doc/SpectatorView.Architecture.html">here</a>.</p>
+<h2 id="debugging">Debugging</h2>
+<p>For more information on debugging Spectator View, see <a href="doc/SpectatorView.Debugging.html">here</a></p>
+<h2 id="filing-feedback">Filing feedback</h2>
+<p>The easiest way to file feedback is by <a href="https://github.com/microsoft/MixedReality-SpectatorView/issues">opening an issue</a>. When filing feedback, please include the following information (when applicable):</p>
+<ol>
+<li>Whether you're using a HoloLens or HoloLens 2 device</li>
+<li>Development PC Windows Version</li>
+<li>Unity Version</li>
+<li>Whether you are building with .Net, Mono or il2cpp in Unity</li>
+<li>Visual Studio Version</li>
+<li>Windows SDK Version</li>
+<li>iOS device type/iOS Version</li>
+<li>Mac OS Version</li>
+<li>Android device type/Android OS Version</li>
+<li>Android Studio Version</li>
+</ol>
+<p>In addition to opening issues, Spectator View contributors are active on <a href="https://stackoverflow.com/">Stack Overflow</a>. Use the <a href="https://stackoverflow.com/questions/tagged/mrtk">MRTK tag</a> when asking Spectator View related questions.</p>
+<h2 id="contributing">Contributing</h2>
+<p>This project welcomes contributions and suggestions.  Most contributions require you to agree to a
+Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us
+the rights to use your contribution. For details, visit <a href="https://cla.microsoft.com">https://cla.microsoft.com</a>.</p>
+<p>When you submit a pull request, a CLA-bot will automatically determine whether you need to provide
+a CLA and decorate the PR appropriately (e.g., label, comment). Simply follow the instructions
+provided by the bot. You will only need to do this once across all repos using our CLA.</p>
+<p>This project has adopted the <a href="https://opensource.microsoft.com/codeofconduct/">Microsoft Open Source Code of Conduct</a>.
+For more information see the <a href="https://opensource.microsoft.com/codeofconduct/faq/">Code of Conduct FAQ</a> or
+contact <a href="mailto:opencode@microsoft.com">opencode@microsoft.com</a> with any additional questions or comments.</p>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Microsoft/MixedReality-SpectatorView/blob/master/README.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="styles/docfx.js"></script>
+    <script type="text/javascript" src="styles/main.js"></script>
+  </body>
+</html>

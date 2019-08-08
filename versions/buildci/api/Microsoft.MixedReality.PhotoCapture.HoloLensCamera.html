@@ -1,0 +1,817 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class HoloLensCamera
+   | MixedReality-SpectatorView Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class HoloLensCamera
+   | MixedReality-SpectatorView Documentation ">
+    <meta name="generator" content="docfx 2.44.0.0">
+    
+    <link rel="shortcut icon" href="../doc/images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../doc/images/spectatorview-logo.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Microsoft.MixedReality.PhotoCapture.HoloLensCamera">
+  
+  
+  <h1 id="Microsoft_MixedReality_PhotoCapture_HoloLensCamera" data-uid="Microsoft.MixedReality.PhotoCapture.HoloLensCamera" class="text-break">Class HoloLensCamera
+  </h1>
+  <div class="markdown level0 summary"><p>Exposes functionality for all of HoloLens's cameras.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><span class="xref">HoloLensCamera</span></div>
+  </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Microsoft.MixedReality.PhotoCapture.html">Microsoft.MixedReality.PhotoCapture</a></h6>
+  <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
+  <h5 id="Microsoft_MixedReality_PhotoCapture_HoloLensCamera_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class HoloLensCamera : IDisposable</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  
+  
+  <a id="Microsoft_MixedReality_PhotoCapture_HoloLensCamera__ctor_" data-uid="Microsoft.MixedReality.PhotoCapture.HoloLensCamera.#ctor*"></a>
+  <h4 id="Microsoft_MixedReality_PhotoCapture_HoloLensCamera__ctor_Microsoft_MixedReality_PhotoCapture_CaptureMode_Microsoft_MixedReality_PhotoCapture_PixelFormat_" data-uid="Microsoft.MixedReality.PhotoCapture.HoloLensCamera.#ctor(Microsoft.MixedReality.PhotoCapture.CaptureMode,Microsoft.MixedReality.PhotoCapture.PixelFormat)">HoloLensCamera(CaptureMode, PixelFormat)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public HoloLensCamera(CaptureMode captureMode, PixelFormat pixelFormat = PixelFormat.BGRA8)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.PhotoCapture.CaptureMode.html">CaptureMode</a></td>
+        <td><span class="parametername">captureMode</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.PhotoCapture.PixelFormat.html">PixelFormat</a></td>
+        <td><span class="parametername">pixelFormat</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  
+  
+  <a id="Microsoft_MixedReality_PhotoCapture_HoloLensCamera_AutoExposure_" data-uid="Microsoft.MixedReality.PhotoCapture.HoloLensCamera.AutoExposure*"></a>
+  <h4 id="Microsoft_MixedReality_PhotoCapture_HoloLensCamera_AutoExposure" data-uid="Microsoft.MixedReality.PhotoCapture.HoloLensCamera.AutoExposure">AutoExposure</h4>
+  <div class="markdown level1 summary"><p>True if exposure is automatic, false if exposure is manually set through Exposure property.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool AutoExposure { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_PhotoCapture_HoloLensCamera_AutoGain_" data-uid="Microsoft.MixedReality.PhotoCapture.HoloLensCamera.AutoGain*"></a>
+  <h4 id="Microsoft_MixedReality_PhotoCapture_HoloLensCamera_AutoGain" data-uid="Microsoft.MixedReality.PhotoCapture.HoloLensCamera.AutoGain">AutoGain</h4>
+  <div class="markdown level1 summary"><p>True if automatic gain adjustment, false if gain is manually set through Gain property.
+Note: Setting the value is a non-awaited asynchronous operation, so a get immediately after a set may not
+result in the same value.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool AutoGain { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_PhotoCapture_HoloLensCamera_Brightness_" data-uid="Microsoft.MixedReality.PhotoCapture.HoloLensCamera.Brightness*"></a>
+  <h4 id="Microsoft_MixedReality_PhotoCapture_HoloLensCamera_Brightness" data-uid="Microsoft.MixedReality.PhotoCapture.HoloLensCamera.Brightness">Brightness</h4>
+  <div class="markdown level1 summary"><p>Relative brightness value of the camera image. Range is 0 to 1.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double Brightness { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_PhotoCapture_HoloLensCamera_CaptureMode_" data-uid="Microsoft.MixedReality.PhotoCapture.HoloLensCamera.CaptureMode*"></a>
+  <h4 id="Microsoft_MixedReality_PhotoCapture_HoloLensCamera_CaptureMode" data-uid="Microsoft.MixedReality.PhotoCapture.HoloLensCamera.CaptureMode">CaptureMode</h4>
+  <div class="markdown level1 summary"><p>The capture mode of this camera</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public CaptureMode CaptureMode { get; protected set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.PhotoCapture.CaptureMode.html">CaptureMode</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_PhotoCapture_HoloLensCamera_Contrast_" data-uid="Microsoft.MixedReality.PhotoCapture.HoloLensCamera.Contrast*"></a>
+  <h4 id="Microsoft_MixedReality_PhotoCapture_HoloLensCamera_Contrast" data-uid="Microsoft.MixedReality.PhotoCapture.HoloLensCamera.Contrast">Contrast</h4>
+  <div class="markdown level1 summary"><p>Relative contrast value of the camera image. Range is 0 to 1.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double Contrast { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_PhotoCapture_HoloLensCamera_Exposure_" data-uid="Microsoft.MixedReality.PhotoCapture.HoloLensCamera.Exposure*"></a>
+  <h4 id="Microsoft_MixedReality_PhotoCapture_HoloLensCamera_Exposure" data-uid="Microsoft.MixedReality.PhotoCapture.HoloLensCamera.Exposure">Exposure</h4>
+  <div class="markdown level1 summary"><p>Current exposure duration in seconds.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double Exposure { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_PhotoCapture_HoloLensCamera_Gain_" data-uid="Microsoft.MixedReality.PhotoCapture.HoloLensCamera.Gain*"></a>
+  <h4 id="Microsoft_MixedReality_PhotoCapture_HoloLensCamera_Gain" data-uid="Microsoft.MixedReality.PhotoCapture.HoloLensCamera.Gain">Gain</h4>
+  <div class="markdown level1 summary"><p>Current camera gain setting. This is a 0 to 1 value that linearly maps to ISO values usable by the device.
+Note: Setting the value is a non-awaited asynchronous operation, so a get immediately after a set may not
+result in the same value.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float Gain { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_PhotoCapture_HoloLensCamera_KeepSoftwareBitmap_" data-uid="Microsoft.MixedReality.PhotoCapture.HoloLensCamera.KeepSoftwareBitmap*"></a>
+  <h4 id="Microsoft_MixedReality_PhotoCapture_HoloLensCamera_KeepSoftwareBitmap" data-uid="Microsoft.MixedReality.PhotoCapture.HoloLensCamera.KeepSoftwareBitmap">KeepSoftwareBitmap</h4>
+  <div class="markdown level1 summary"><p>Specifies whether to keep a reference to the camera frames SoftwareBitmap for future operations.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool KeepSoftwareBitmap { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_PhotoCapture_HoloLensCamera_ManualExposureSupported_" data-uid="Microsoft.MixedReality.PhotoCapture.HoloLensCamera.ManualExposureSupported*"></a>
+  <h4 id="Microsoft_MixedReality_PhotoCapture_HoloLensCamera_ManualExposureSupported" data-uid="Microsoft.MixedReality.PhotoCapture.HoloLensCamera.ManualExposureSupported">ManualExposureSupported</h4>
+  <div class="markdown level1 summary"><p>True if manual exposure is supported</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool ManualExposureSupported { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_PhotoCapture_HoloLensCamera_ManualGainSupported_" data-uid="Microsoft.MixedReality.PhotoCapture.HoloLensCamera.ManualGainSupported*"></a>
+  <h4 id="Microsoft_MixedReality_PhotoCapture_HoloLensCamera_ManualGainSupported" data-uid="Microsoft.MixedReality.PhotoCapture.HoloLensCamera.ManualGainSupported">ManualGainSupported</h4>
+  <div class="markdown level1 summary"><p>Returns whether the camera gain can be set manually or not.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool ManualGainSupported { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_PhotoCapture_HoloLensCamera_MaxExposure_" data-uid="Microsoft.MixedReality.PhotoCapture.HoloLensCamera.MaxExposure*"></a>
+  <h4 id="Microsoft_MixedReality_PhotoCapture_HoloLensCamera_MaxExposure" data-uid="Microsoft.MixedReality.PhotoCapture.HoloLensCamera.MaxExposure">MaxExposure</h4>
+  <div class="markdown level1 summary"><p>Minimum Exposure value</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double MaxExposure { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_PhotoCapture_HoloLensCamera_MinExposure_" data-uid="Microsoft.MixedReality.PhotoCapture.HoloLensCamera.MinExposure*"></a>
+  <h4 id="Microsoft_MixedReality_PhotoCapture_HoloLensCamera_MinExposure" data-uid="Microsoft.MixedReality.PhotoCapture.HoloLensCamera.MinExposure">MinExposure</h4>
+  <div class="markdown level1 summary"><p>Maximum exposure value</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double MinExposure { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_PhotoCapture_HoloLensCamera_Resolution_" data-uid="Microsoft.MixedReality.PhotoCapture.HoloLensCamera.Resolution*"></a>
+  <h4 id="Microsoft_MixedReality_PhotoCapture_HoloLensCamera_Resolution" data-uid="Microsoft.MixedReality.PhotoCapture.HoloLensCamera.Resolution">Resolution</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public CameraResolution Resolution { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.PhotoCapture.CameraResolution.html">CameraResolution</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_PhotoCapture_HoloLensCamera_State_" data-uid="Microsoft.MixedReality.PhotoCapture.HoloLensCamera.State*"></a>
+  <h4 id="Microsoft_MixedReality_PhotoCapture_HoloLensCamera_State" data-uid="Microsoft.MixedReality.PhotoCapture.HoloLensCamera.State">State</h4>
+  <div class="markdown level1 summary"><p>Current state of the camera</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public CameraState State { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.PhotoCapture.CameraState.html">CameraState</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_PhotoCapture_HoloLensCamera_StreamSelector_" data-uid="Microsoft.MixedReality.PhotoCapture.HoloLensCamera.StreamSelector*"></a>
+  <h4 id="Microsoft_MixedReality_PhotoCapture_HoloLensCamera_StreamSelector" data-uid="Microsoft.MixedReality.PhotoCapture.HoloLensCamera.StreamSelector">StreamSelector</h4>
+  <div class="markdown level1 summary"><p>All native resolutions supported in the current camera mode</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public StreamSelector StreamSelector { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.PhotoCapture.StreamSelector.html">StreamSelector</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  
+  
+  <a id="Microsoft_MixedReality_PhotoCapture_HoloLensCamera_Dispose_" data-uid="Microsoft.MixedReality.PhotoCapture.HoloLensCamera.Dispose*"></a>
+  <h4 id="Microsoft_MixedReality_PhotoCapture_HoloLensCamera_Dispose" data-uid="Microsoft.MixedReality.PhotoCapture.HoloLensCamera.Dispose">Dispose()</h4>
+  <div class="markdown level1 summary"><p>Disposes the camera</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Dispose()</code></pre>
+  </div>
+  
+  
+  <a id="Microsoft_MixedReality_PhotoCapture_HoloLensCamera_Initialize_" data-uid="Microsoft.MixedReality.PhotoCapture.HoloLensCamera.Initialize*"></a>
+  <h4 id="Microsoft_MixedReality_PhotoCapture_HoloLensCamera_Initialize" data-uid="Microsoft.MixedReality.PhotoCapture.HoloLensCamera.Initialize">Initialize()</h4>
+  <div class="markdown level1 summary"><p>Initializes the camera</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task Initialize()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_PhotoCapture_HoloLensCamera_Start_" data-uid="Microsoft.MixedReality.PhotoCapture.HoloLensCamera.Start*"></a>
+  <h4 id="Microsoft_MixedReality_PhotoCapture_HoloLensCamera_Start_Microsoft_MixedReality_PhotoCapture_StreamDescription_" data-uid="Microsoft.MixedReality.PhotoCapture.HoloLensCamera.Start(Microsoft.MixedReality.PhotoCapture.StreamDescription)">Start(StreamDescription)</h4>
+  <div class="markdown level1 summary"><p>Start the video stream. This just prepares the stream for capture, and doesn't start collecting frames</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Start(StreamDescription streamDesc)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.PhotoCapture.StreamDescription.html">StreamDescription</a></td>
+        <td><span class="parametername">streamDesc</span></td>
+        <td><p>The description of the stream to start.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_PhotoCapture_HoloLensCamera_StartContinuousCapture_" data-uid="Microsoft.MixedReality.PhotoCapture.HoloLensCamera.StartContinuousCapture*"></a>
+  <h4 id="Microsoft_MixedReality_PhotoCapture_HoloLensCamera_StartContinuousCapture" data-uid="Microsoft.MixedReality.PhotoCapture.HoloLensCamera.StartContinuousCapture">StartContinuousCapture()</h4>
+  <div class="markdown level1 summary"><p>Starts continuous capture</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool StartContinuousCapture()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p>Returns true if starting continuous capture succeeded</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_PhotoCapture_HoloLensCamera_Stop_" data-uid="Microsoft.MixedReality.PhotoCapture.HoloLensCamera.Stop*"></a>
+  <h4 id="Microsoft_MixedReality_PhotoCapture_HoloLensCamera_Stop" data-uid="Microsoft.MixedReality.PhotoCapture.HoloLensCamera.Stop">Stop()</h4>
+  <div class="markdown level1 summary"><p>Stop the camera. This will release resources and</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Stop()</code></pre>
+  </div>
+  
+  
+  <a id="Microsoft_MixedReality_PhotoCapture_HoloLensCamera_StopContinuousCapture_" data-uid="Microsoft.MixedReality.PhotoCapture.HoloLensCamera.StopContinuousCapture*"></a>
+  <h4 id="Microsoft_MixedReality_PhotoCapture_HoloLensCamera_StopContinuousCapture" data-uid="Microsoft.MixedReality.PhotoCapture.HoloLensCamera.StopContinuousCapture">StopContinuousCapture()</h4>
+  <div class="markdown level1 summary"><p>Stops continuous capture</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void StopContinuousCapture()</code></pre>
+  </div>
+  
+  
+  <a id="Microsoft_MixedReality_PhotoCapture_HoloLensCamera_TakeSingle_" data-uid="Microsoft.MixedReality.PhotoCapture.HoloLensCamera.TakeSingle*"></a>
+  <h4 id="Microsoft_MixedReality_PhotoCapture_HoloLensCamera_TakeSingle" data-uid="Microsoft.MixedReality.PhotoCapture.HoloLensCamera.TakeSingle">TakeSingle()</h4>
+  <div class="markdown level1 summary"><p>Take a single exposure. The camera must be in the ready state for this call to work. All types
+of cameras can grab a single frame if not recording continuous</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool TakeSingle()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="events">Events
+  </h3>
+  
+  
+  <h4 id="Microsoft_MixedReality_PhotoCapture_HoloLensCamera_OnCameraInitialized" data-uid="Microsoft.MixedReality.PhotoCapture.HoloLensCamera.OnCameraInitialized">OnCameraInitialized</h4>
+  <div class="markdown level1 summary"><p>Callback to register for camera initialized events</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event OnCameraInitializedHandler OnCameraInitialized</code></pre>
+  </div>
+  <h5 class="eventType">Event Type</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.PhotoCapture.OnCameraInitializedHandler.html">OnCameraInitializedHandler</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="Microsoft_MixedReality_PhotoCapture_HoloLensCamera_OnCameraStarted" data-uid="Microsoft.MixedReality.PhotoCapture.HoloLensCamera.OnCameraStarted">OnCameraStarted</h4>
+  <div class="markdown level1 summary"><p>Callback to register for camera started events</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event OnCameraStartedHandler OnCameraStarted</code></pre>
+  </div>
+  <h5 class="eventType">Event Type</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.PhotoCapture.OnCameraStartedHandler.html">OnCameraStartedHandler</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="Microsoft_MixedReality_PhotoCapture_HoloLensCamera_OnFrameCaptured" data-uid="Microsoft.MixedReality.PhotoCapture.HoloLensCamera.OnFrameCaptured">OnFrameCaptured</h4>
+  <div class="markdown level1 summary"><p>Callback to register for frame captured events</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event OnFrameCapturedHandler OnFrameCaptured</code></pre>
+  </div>
+  <h5 class="eventType">Event Type</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.PhotoCapture.OnFrameCapturedHandler.html">OnFrameCapturedHandler</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable">System.IDisposable</a>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

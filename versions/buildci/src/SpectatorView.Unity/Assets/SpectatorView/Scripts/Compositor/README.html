@@ -1,0 +1,179 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Overview | MixedReality-SpectatorView Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Overview | MixedReality-SpectatorView Documentation ">
+    <meta name="generator" content="docfx 2.44.0.0">
+    
+    <link rel="shortcut icon" href="../../../../../../doc/images/favicon.ico">
+    <link rel="stylesheet" href="../../../../../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../../../../../styles/docfx.css">
+    <link rel="stylesheet" href="../../../../../../styles/main.css">
+    <meta property="docfx:navrel" content="../../../../../../toc.html">
+    <meta property="docfx:tocrel" content="../../../../../../toc.html">
+    
+    <meta property="docfx:rel" content="../../../../../../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../../../../../index.html">
+                <img id="logo" class="svg" src="../../../../../../doc/images/spectatorview-logo.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        <div class="article row grid">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="overview">Overview</h1>
+
+<p>SpectatorView renders holograms from Unity over a color frame from a capture card.  This uses the calibration data from the calibration app to render the holograms at the correct size and orientation. The Compositor window can save still images or videos to disk, and outputs video to the output port of supported capture cards. Output pictures and videos will be saved to &quot;My Documents\HologramCapture&quot;.</p>
+<h2 id="setup">Setup</h2>
+<h3 id="install-sdk-and-native-unity-plugins">Install SDK and native Unity plugins</h3>
+<p>Follow the instructions documented in <a href="../../../../../SpectatorView.Native/README.html">SpectatorView.Native</a> for installing the correct SDK for your capture card, and for building and installing the Unity plugins used by the SpectatorView compositor.</p>
+<h3 id="build-and-install-the-holographiccamera-app">Build and install the HolographicCamera App</h3>
+<p>The HolographicCamera app is a UWP application that runs on the HoloLens 2 attached to your video camera. This app reads calibration data stored on the HoloLens and communicates that data to the Unity compositor. This app also transmits the position and rotation of the camera to the Unity compositor. If you have gone through the calibration process described <a href="../../../../../../doc/SpectatorView.Setup.VideoCamera.html">here</a>, you may already have this application installed on your device.</p>
+<ol>
+<li>Open the <code>src/HolographicCamera.Unity</code> project in Unity</li>
+<li>Open the Build window and switch platforms to the Universal Windows Platform</li>
+<li>Build the Unity project to create a Visual Studio solution</li>
+<li>Open the generated Visual Studio solution.</li>
+<li>Change the Solution Configuration to Release and the Architecture to ARM.</li>
+<li>Deploy the application to the HoloLens 2 attached to your video camera.</li>
+</ol>
+<h3 id="copy-calibration-data-to-your-hololens-2">Copy calibration data to your HoloLens 2</h3>
+<p>Calibration data stores the camera intrinsic information for your video camera, and the camera extrinsic information that represents the positional and rotational offset between the HoloLens and the video camera. If you uploaded a CalibrationData.json file when calibrating the video camera rig, you can skip the steps below. However, filming won't be possible if a CalibrationData.json file isn't placed in the HoloLens 2's Pictures folder.</p>
+<ol>
+<li>Follow the steps <a href="../../../../../../doc/SpectatorView.Setup.VideoCamera.html">here</a> to produce a calibration file for your camera and HoloLens.</li>
+<li>Use the <a href="https://docs.microsoft.com/en-us/windows/uwp/debug-test-perf/device-portal-hololens">Device Portal</a> to connect to the HoloLens attached to your camera.</li>
+<li>On the File Explorer tab in the device portal, upload the calibration file to the Pictures library. The final file path should be &quot;User Folders\Pictures\CalibrationData.json&quot;.</li>
+</ol>
+<h2 id="running-the-compositor">Running the compositor</h2>
+<p>Follow the instructions at <a href="../../../../../../doc/SpectatorView.Setup.html">SpectatorView.Setup</a> to include SpectatorView support in your application. Once you have the HolographicCamera app installed and running and SpectatorView support enabled in your application and running, you are ready to run the compositor.</p>
+<h3 id="start-the-compositor">Start the Compositor</h3>
+<ol>
+<li>Open the <code>SpectatorViewCompositor</code> scene in your application's Unity project (with your build platform set to Universal Windows Platform).</li>
+<li>Open the Compositor Window from the Spectator View -&gt; Compositor menu.</li>
+<li>Press Play to run the scene.</li>
+</ol>
+<p>You should now see video output from your camera in the Compositor window. If you don't, here are some troubleshooting suggestions:</p>
+<ul>
+<li>Make sure the camera is turned on and that the lens cap is off.</li>
+<li>Make sure the camera is connected to the input port of the capture card.</li>
+<li>Try using software for your capture card (e.g. Blackmagic Media Express) to validate that camera input is coming into your computer.</li>
+</ul>
+<h3 id="connect-the-compositor-to-the-holographiccamera">Connect the compositor to the HolographicCamera</h3>
+<p>Connecting the compositor to the HolographicCamera app running on your camera's HoloLens will provide calibration and pose information for the camera to the compositor.</p>
+<ol>
+<li>Find the IP address for your HoloLens and enter it inside the first text area in the Holographic Camera box inside the Compositor window.</li>
+<li>Launch the HolographicCamera (SpectatorView.HolographicCamera) app on the camera's HoloLens.</li>
+<li>Click the &quot;Connect&quot; button inside the Compositor window's Holographic Camera box.</li>
+</ol>
+<p>You should now see the status change from &quot;Not connected&quot; to &quot;Connected to &lt;your HoloLens name&gt; (&lt;your HoloLens IP address&gt;)&quot;. You should also see the Calibration status change from &quot;Not loaded&quot; to &quot;Loaded&quot;.</p>
+<h3 id="locate-a-shared-spatial-coordinate-for-the-holographiccamera">Locate a shared spatial coordinate for the HolographicCamera</h3>
+<p>Shared spatial coordinates let the HoloLens on the camera and the HoloLens running your application refer to real-world coordinates in a coordinate space shared between both devices. See <a href="../../../SpatialAlignment/README.html">SpectatorView.SpatialAlignment</a> for more information about shared spatial coordinates.</p>
+<p>In Preview the Compositor window uses an ArUco marker detector to detect ArUco marker 0 at a printed size of 10cm by 10cm. In future releases, the Compositor window will allow you to choose which type of spatial coordinate sharing to use.</p>
+<ol>
+<li>Click the &quot;Located Shared Spatial Coordinate&quot; button inside the Holographic Camera box. This should cause the video camera light on your HoloLens to come on, and cause the HoloLens to start searching fo the ArUco marker.</li>
+<li>Aim the HoloLens at the ArUco marker you've printed out. Once the HoloLens detects the marker, the Compositor window's status should change from &quot;Locating shared spatial coordinate...&quot; to &quot;Located&quot;.</li>
+</ol>
+<h3 id="connect-the-compositor-to-your-application">Connect the compositor to your application</h3>
+<p>The steps for connecting the Compositor to your application are the same as for the HolographicCamera app. Once your application is connected to the compositor, you should start to see your application's content appear in the Unity editor through the <a href="../StateSynchronization/README.html">State Synchronization</a> system. Once the shared spatial coordinate is located for both the HolographicCamera and for your application, the content from your application should appear on top of the real-world video in the same location as it does in the application on your HoloLens.</p>
+<h2 id="options-and-configuration">Options and configuration</h2>
+<h3 id="recording">Recording</h3>
+<p>The <strong>Recording</strong> expander in the Compositor window can be used to start and stop recording or to take a still picture. Videos and pictures are saved in your Documents\HologramCapture directory. By default, audio from your computer's microphone will be recorded as part of the video.</p>
+<p>The <strong>Video output mode</strong> option allows you to choose between <strong>Normal</strong> mode, which records only the final composited video, or <strong>Split channels</strong>, which records a split view with the original video, the opaque hologram without background, the alpha mask for the holograms, and the final composited video.</p>
+<p>The compositor also outputs video to your capture card (for cards that support output). The output to your video card is always the final composited video.</p>
+<h3 id="settings">Settings</h3>
+<p>The <strong>Hologram Settings</strong> expander lets you configure the following options.</p>
+<p><strong>Video source</strong> - before you run the Compositor scene, you can choose which capture card should be used as the input video source. The source cannot be changed once you've started video playback.</p>
+<p><strong>Alpha</strong> - allows you to change the opacity of holograms as they're rendered on top of video. A value of 1 will make holograms completely opaque, while 0 will make holograms completely transparent.</p>
+<p><strong>Frame time adjustment</strong> - provides a way to manually adjust for the latency in the capture card and in the network traffic between the HolographicCamera app and the compositor. When you move the camera, if the holograms seem to lag behind or follow ahead of the real world, adjust this slider to correct for the latency.</p>
+<h3 id="compositor-stats">Compositor stats</h3>
+<p>When the compositor is running, the <strong>Compositor Stats</strong> expander shows you statistics about composition.</p>
+<p><strong>Framerate</strong> - this framerate box shows the minimum, maximum, and average framerates over the previous second. In order to maintain uninterrupted output of video at 60 frames a second, your scene must render 60 frames a second on average. If you consistently render under 60 frames a second, you may need to make performance tradeoffs in your scene (e.g. decreasing render quality) in order to record smooth video</p>
+<p><strong>Queued output frames</strong> - Shows how many already-rendered frames are queued for output to the capture card. This buffer is used to ensure that video frame output remains smooth over brief frame hitches in your scene. If your scene consistently runs under the target framerate or consistently experiences hitches, the video stream will eventually hitch once this buffer is depleted.</p>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Microsoft/MixedReality-SpectatorView/blob/master/src/SpectatorView.Unity/Assets/SpectatorView/Scripts/Compositor/README.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../../../../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../../../../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../../../../../styles/main.js"></script>
+  </body>
+</html>

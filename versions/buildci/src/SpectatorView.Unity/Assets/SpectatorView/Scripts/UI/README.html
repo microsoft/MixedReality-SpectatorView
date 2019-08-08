@@ -1,0 +1,136 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Custom IRecordingServiceVisuals | MixedReality-SpectatorView Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Custom IRecordingServiceVisuals | MixedReality-SpectatorView Documentation ">
+    <meta name="generator" content="docfx 2.44.0.0">
+    
+    <link rel="shortcut icon" href="../../../../../../doc/images/favicon.ico">
+    <link rel="stylesheet" href="../../../../../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../../../../../styles/docfx.css">
+    <link rel="stylesheet" href="../../../../../../styles/main.css">
+    <meta property="docfx:navrel" content="../../../../../../toc.html">
+    <meta property="docfx:tocrel" content="../../../../../../toc.html">
+    
+    <meta property="docfx:rel" content="../../../../../../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../../../../../index.html">
+                <img id="logo" class="svg" src="../../../../../../doc/images/spectatorview-logo.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        <div class="article row grid">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h2 id="custom-irecordingservicevisuals">Custom IRecordingServiceVisuals</h2>
+
+<p>Spectator View supports specifying a custom prefab for starting and stopping screen recording on mobile devices. To configure your own prefab, follow the steps below:</p>
+<ol>
+<li>Create a prefab containing an Unity component that implements <code>IRecordingServiceVisual</code>.</li>
+<li>Create a SpectatorViewSettings prefab by calling 'Spectator View' -&gt; 'Edit Settings' in the Unity Editor toolbar.</li>
+</ol>
+<p><img src="../../../../../../doc/images/SpectatorViewSettingsMenu.png" alt="Marker"></p>
+<ol start="3">
+<li>Specify your created prefab as the <code>Override Mobile Recording Service Visual</code> in the <code>MobileRecordingSettings</code> in your SpectatorViewSettings prefab.</li>
+</ol>
+<p><img src="../../../../../../doc/images/SettingsInspector.png" alt="Marker"></p>
+<p>When a scene containing the SpectatorView prefab starts, the <code>SpectatorView</code> MonoBehaviour will instantiate this custom prefab. It will then search for an <code>IRecordingServiceVisual</code> in the created game object, which is provided a reference to the <code>IRecordingService</code>. Your UI will be responsible for managing its own show and hide behavior.</p>
+<h2 id="custom-inetworkconfigurationvisuals">Custom INetworkConfigurationVisuals</h2>
+<p>Spectator View supports specifying a custom prefab for choosing an IP Address on mobile devices. To configure your own prefab, follow the steps below:</p>
+<ol>
+<li>Create a prefab containing a Unity component that implements <code>INetworkConfigurationVisual</code>.</li>
+<li>Create a SpectatorViewSettings prefab by calling 'Spectator View' -&gt; 'Edit Settings' in the Unity Editor toolbar.</li>
+</ol>
+<p><img src="../../../../../../doc/images/SpectatorViewSettingsMenu.png" alt="Marker"></p>
+<ol start="3">
+<li>Specify your created prefab as the <code>Override Mobile Network Configuration Visual</code> in the <code>NetworkConfigurationSettings</code> in your SpectatorViewSettings prefab.</li>
+</ol>
+<p><img src="../../../../../../doc/images/SettingsInspector.png" alt="Marker"></p>
+<p>When a scene containing the SpectatorView prefab starts, the <code>SpectatorView</code> MonoBehaviour will instantiate this custom prefab. Once your prefab fires a <code>NetworkConfigurationUpdated</code> event, the SpectatorView MonoBehaviour script will attempt to connect the <code>StateSynchronizationObserver</code> to the provided IP Address.</p>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Microsoft/MixedReality-SpectatorView/blob/master/src/SpectatorView.Unity/Assets/SpectatorView/Scripts/UI/README.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../../../../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../../../../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../../../../../styles/main.js"></script>
+  </body>
+</html>

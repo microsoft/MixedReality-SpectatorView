@@ -1,0 +1,906 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class SpatialCoordinateServiceBase&lt;TKey&gt;
+   | MixedReality-SpectatorView Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class SpatialCoordinateServiceBase&lt;TKey&gt;
+   | MixedReality-SpectatorView Documentation ">
+    <meta name="generator" content="docfx 2.44.0.0">
+    
+    <link rel="shortcut icon" href="../doc/images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../doc/images/spectatorview-logo.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Microsoft.MixedReality.SpatialAlignment.SpatialCoordinateServiceBase`1">
+  
+  
+  <h1 id="Microsoft_MixedReality_SpatialAlignment_SpatialCoordinateServiceBase_1" data-uid="Microsoft.MixedReality.SpatialAlignment.SpatialCoordinateServiceBase`1" class="text-break">Class SpatialCoordinateServiceBase&lt;TKey&gt;
+  </h1>
+  <div class="markdown level0 summary"><p>Helper base class for <a class="xref" href="Microsoft.MixedReality.SpatialAlignment.ISpatialCoordinateService.html">ISpatialCoordinateService</a> implementations.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><a class="xref" href="Microsoft.MixedReality.SpatialAlignment.DisposableBase.html">DisposableBase</a></div>
+    <div class="level2"><span class="xref">SpatialCoordinateServiceBase&lt;TKey&gt;</span></div>
+      <div class="level3"><a class="xref" href="Microsoft.MixedReality.SpatialAlignment.SpatialCoordinateServiceUnityBase-1.html">SpatialCoordinateServiceUnityBase&lt;TKey&gt;</a></div>
+  </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="Microsoft.MixedReality.SpatialAlignment.ISpatialCoordinateService.html">ISpatialCoordinateService</a></div>
+    <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.SpatialAlignment.DisposableBase.html#Microsoft_MixedReality_SpatialAlignment_DisposableBase_IsDisposed">DisposableBase.IsDisposed</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.SpatialAlignment.DisposableBase.html#Microsoft_MixedReality_SpatialAlignment_DisposableBase_ObjectName">DisposableBase.ObjectName</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.SpatialAlignment.DisposableBase.html#Microsoft_MixedReality_SpatialAlignment_DisposableBase_Dispose">DisposableBase.Dispose()</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.SpatialAlignment.DisposableBase.html#Microsoft_MixedReality_SpatialAlignment_DisposableBase_OnUnmanagedDispose">DisposableBase.OnUnmanagedDispose()</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.SpatialAlignment.DisposableBase.html#Microsoft_MixedReality_SpatialAlignment_DisposableBase_ThrowIfDisposed">DisposableBase.ThrowIfDisposed()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Microsoft.MixedReality.SpatialAlignment.html">Microsoft.MixedReality.SpatialAlignment</a></h6>
+  <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
+  <h5 id="Microsoft_MixedReality_SpatialAlignment_SpatialCoordinateServiceBase_1_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract class SpatialCoordinateServiceBase&lt;TKey&gt; : DisposableBase, ISpatialCoordinateService, IDisposable</code></pre>
+  </div>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TKey</span></td>
+        <td><p>They key for the <a class="xref" href="Microsoft.MixedReality.SpatialAlignment.ISpatialCoordinate.html">ISpatialCoordinate</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="fields">Fields
+  </h3>
+  
+  
+  <h4 id="Microsoft_MixedReality_SpatialAlignment_SpatialCoordinateServiceBase_1_disposedCTS" data-uid="Microsoft.MixedReality.SpatialAlignment.SpatialCoordinateServiceBase`1.disposedCTS">disposedCTS</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected readonly CancellationTokenSource disposedCTS</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">CancellationTokenSource</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="Microsoft_MixedReality_SpatialAlignment_SpatialCoordinateServiceBase_1_knownCoordinates" data-uid="Microsoft.MixedReality.SpatialAlignment.SpatialCoordinateServiceBase`1.knownCoordinates">knownCoordinates</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected readonly ConcurrentDictionary&lt;TKey, ISpatialCoordinate&gt; knownCoordinates</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">ConcurrentDictionary</span>&lt;TKey, <a class="xref" href="Microsoft.MixedReality.SpatialAlignment.ISpatialCoordinate.html">ISpatialCoordinate</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  
+  
+  <a id="Microsoft_MixedReality_SpatialAlignment_SpatialCoordinateServiceBase_1_IsTracking_" data-uid="Microsoft.MixedReality.SpatialAlignment.SpatialCoordinateServiceBase`1.IsTracking*"></a>
+  <h4 id="Microsoft_MixedReality_SpatialAlignment_SpatialCoordinateServiceBase_1_IsTracking" data-uid="Microsoft.MixedReality.SpatialAlignment.SpatialCoordinateServiceBase`1.IsTracking">IsTracking</h4>
+  <div class="markdown level1 summary"><p>Gets or sets whether this coordinate service should be discovering/tracking coordinates.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsTracking { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_SpatialAlignment_SpatialCoordinateServiceBase_1_KnownCoordinates_" data-uid="Microsoft.MixedReality.SpatialAlignment.SpatialCoordinateServiceBase`1.KnownCoordinates*"></a>
+  <h4 id="Microsoft_MixedReality_SpatialAlignment_SpatialCoordinateServiceBase_1_KnownCoordinates" data-uid="Microsoft.MixedReality.SpatialAlignment.SpatialCoordinateServiceBase`1.KnownCoordinates">KnownCoordinates</h4>
+  <div class="markdown level1 summary"><p>Gets a set of all known coordinates to this service.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IEnumerable&lt;ISpatialCoordinate&gt; KnownCoordinates { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="Microsoft.MixedReality.SpatialAlignment.ISpatialCoordinate.html">ISpatialCoordinate</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_SpatialAlignment_SpatialCoordinateServiceBase_1_SupportsDiscovery_" data-uid="Microsoft.MixedReality.SpatialAlignment.SpatialCoordinateServiceBase`1.SupportsDiscovery*"></a>
+  <h4 id="Microsoft_MixedReality_SpatialAlignment_SpatialCoordinateServiceBase_1_SupportsDiscovery" data-uid="Microsoft.MixedReality.SpatialAlignment.SpatialCoordinateServiceBase`1.SupportsDiscovery">SupportsDiscovery</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual bool SupportsDiscovery { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  
+  
+  <a id="Microsoft_MixedReality_SpatialAlignment_SpatialCoordinateServiceBase_1_OnDiscoverCoordinatesAsync_" data-uid="Microsoft.MixedReality.SpatialAlignment.SpatialCoordinateServiceBase`1.OnDiscoverCoordinatesAsync*"></a>
+  <h4 id="Microsoft_MixedReality_SpatialAlignment_SpatialCoordinateServiceBase_1_OnDiscoverCoordinatesAsync_CancellationToken__0___" data-uid="Microsoft.MixedReality.SpatialAlignment.SpatialCoordinateServiceBase`1.OnDiscoverCoordinatesAsync(CancellationToken,`0[])">OnDiscoverCoordinatesAsync(CancellationToken, TKey[])</h4>
+  <div class="markdown level1 summary"><p>Implement this method for the logic begin and end tracking (when <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a> is cancelled).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected abstract Task OnDiscoverCoordinatesAsync(CancellationToken cancellationToken, TKey[] idsToLocate = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">CancellationToken</span></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>TKey[]</td>
+        <td><span class="parametername">idsToLocate</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_SpatialAlignment_SpatialCoordinateServiceBase_1_OnManagedDispose_" data-uid="Microsoft.MixedReality.SpatialAlignment.SpatialCoordinateServiceBase`1.OnManagedDispose*"></a>
+  <h4 id="Microsoft_MixedReality_SpatialAlignment_SpatialCoordinateServiceBase_1_OnManagedDispose" data-uid="Microsoft.MixedReality.SpatialAlignment.SpatialCoordinateServiceBase`1.OnManagedDispose">OnManagedDispose()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override void OnManagedDispose()</code></pre>
+  </div>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Microsoft.MixedReality.SpatialAlignment.DisposableBase.html#Microsoft_MixedReality_SpatialAlignment_DisposableBase_OnManagedDispose">DisposableBase.OnManagedDispose()</a></div>
+  
+  
+  <a id="Microsoft_MixedReality_SpatialAlignment_SpatialCoordinateServiceBase_1_OnNewCoordinate_" data-uid="Microsoft.MixedReality.SpatialAlignment.SpatialCoordinateServiceBase`1.OnNewCoordinate*"></a>
+  <h4 id="Microsoft_MixedReality_SpatialAlignment_SpatialCoordinateServiceBase_1_OnNewCoordinate__0_Microsoft_MixedReality_SpatialAlignment_ISpatialCoordinate_" data-uid="Microsoft.MixedReality.SpatialAlignment.SpatialCoordinateServiceBase`1.OnNewCoordinate(`0,Microsoft.MixedReality.SpatialAlignment.ISpatialCoordinate)">OnNewCoordinate(TKey, ISpatialCoordinate)</h4>
+  <div class="markdown level1 summary"><p>Adds a coordinate to be tracked by this service.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void OnNewCoordinate(TKey id, ISpatialCoordinate spatialCoordinate)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TKey</span></td>
+        <td><span class="parametername">id</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.SpatialAlignment.ISpatialCoordinate.html">ISpatialCoordinate</a></td>
+        <td><span class="parametername">spatialCoordinate</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_SpatialAlignment_SpatialCoordinateServiceBase_1_OnRemoveCoordinate_" data-uid="Microsoft.MixedReality.SpatialAlignment.SpatialCoordinateServiceBase`1.OnRemoveCoordinate*"></a>
+  <h4 id="Microsoft_MixedReality_SpatialAlignment_SpatialCoordinateServiceBase_1_OnRemoveCoordinate__0_" data-uid="Microsoft.MixedReality.SpatialAlignment.SpatialCoordinateServiceBase`1.OnRemoveCoordinate(`0)">OnRemoveCoordinate(TKey)</h4>
+  <div class="markdown level1 summary"><p>Removes a tracked coordinate from this service.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void OnRemoveCoordinate(TKey id)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TKey</span></td>
+        <td><span class="parametername">id</span></td>
+        <td><p>The ide of the coordinate to remove.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Microsoft_MixedReality_SpatialAlignment_SpatialCoordinateServiceBase_1_OnRemoveCoordinate__0__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Will throw if coordinate was not tracked by this service, checking is possible throuhg <a class="xref" href="Microsoft.MixedReality.SpatialAlignment.SpatialCoordinateServiceBase-1.html#Microsoft_MixedReality_SpatialAlignment_SpatialCoordinateServiceBase_1_knownCoordinates">knownCoordinates</a> field.</p>
+</div>
+  
+  
+  <a id="Microsoft_MixedReality_SpatialAlignment_SpatialCoordinateServiceBase_1_TryCreateCoordinateAsync_" data-uid="Microsoft.MixedReality.SpatialAlignment.SpatialCoordinateServiceBase`1.TryCreateCoordinateAsync*"></a>
+  <h4 id="Microsoft_MixedReality_SpatialAlignment_SpatialCoordinateServiceBase_1_TryCreateCoordinateAsync_Vector3_Quaternion_CancellationToken_" data-uid="Microsoft.MixedReality.SpatialAlignment.SpatialCoordinateServiceBase`1.TryCreateCoordinateAsync(Vector3,Quaternion,CancellationToken)">TryCreateCoordinateAsync(Vector3, Quaternion, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Attempts to create a new coordinate with this service.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual Task&lt;ISpatialCoordinate&gt; TryCreateCoordinateAsync(Vector3 worldPosition, Quaternion worldRotation, CancellationToken cancellationToken)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td><span class="parametername">worldPosition</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">Quaternion</span></td>
+        <td><span class="parametername">worldRotation</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">CancellationToken</span></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span>&lt;<a class="xref" href="Microsoft.MixedReality.SpatialAlignment.ISpatialCoordinate.html">ISpatialCoordinate</a>&gt;</td>
+        <td><p>The coordinate if the coordinate was succesfully created, otherwise null.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_SpatialAlignment_SpatialCoordinateServiceBase_1_TryDeleteCoordinateAsync_" data-uid="Microsoft.MixedReality.SpatialAlignment.SpatialCoordinateServiceBase`1.TryDeleteCoordinateAsync*"></a>
+  <h4 id="Microsoft_MixedReality_SpatialAlignment_SpatialCoordinateServiceBase_1_TryDeleteCoordinateAsync__0_CancellationToken_" data-uid="Microsoft.MixedReality.SpatialAlignment.SpatialCoordinateServiceBase`1.TryDeleteCoordinateAsync(`0,CancellationToken)">TryDeleteCoordinateAsync(TKey, CancellationToken)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual Task&lt;bool&gt; TryDeleteCoordinateAsync(TKey key, CancellationToken cancellationToken)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TKey</span></td>
+        <td><span class="parametername">key</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">CancellationToken</span></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_SpatialAlignment_SpatialCoordinateServiceBase_1_TryDiscoverCoordinatesAsync_" data-uid="Microsoft.MixedReality.SpatialAlignment.SpatialCoordinateServiceBase`1.TryDiscoverCoordinatesAsync*"></a>
+  <h4 id="Microsoft_MixedReality_SpatialAlignment_SpatialCoordinateServiceBase_1_TryDiscoverCoordinatesAsync_CancellationToken__0___" data-uid="Microsoft.MixedReality.SpatialAlignment.SpatialCoordinateServiceBase`1.TryDiscoverCoordinatesAsync(CancellationToken,`0[])">TryDiscoverCoordinatesAsync(CancellationToken, TKey[])</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;bool&gt; TryDiscoverCoordinatesAsync(CancellationToken cancellationToken, params TKey[] ids)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">CancellationToken</span></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>TKey[]</td>
+        <td><span class="parametername">ids</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_SpatialAlignment_SpatialCoordinateServiceBase_1_TryGetKnownCoordinate_" data-uid="Microsoft.MixedReality.SpatialAlignment.SpatialCoordinateServiceBase`1.TryGetKnownCoordinate*"></a>
+  <h4 id="Microsoft_MixedReality_SpatialAlignment_SpatialCoordinateServiceBase_1_TryGetKnownCoordinate__0_Microsoft_MixedReality_SpatialAlignment_ISpatialCoordinate__" data-uid="Microsoft.MixedReality.SpatialAlignment.SpatialCoordinateServiceBase`1.TryGetKnownCoordinate(`0,Microsoft.MixedReality.SpatialAlignment.ISpatialCoordinate@)">TryGetKnownCoordinate(TKey, out ISpatialCoordinate)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool TryGetKnownCoordinate(TKey id, out ISpatialCoordinate spatialCoordinate)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TKey</span></td>
+        <td><span class="parametername">id</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.SpatialAlignment.ISpatialCoordinate.html">ISpatialCoordinate</a></td>
+        <td><span class="parametername">spatialCoordinate</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_SpatialAlignment_SpatialCoordinateServiceBase_1_TryParse_" data-uid="Microsoft.MixedReality.SpatialAlignment.SpatialCoordinateServiceBase`1.TryParse*"></a>
+  <h4 id="Microsoft_MixedReality_SpatialAlignment_SpatialCoordinateServiceBase_1_TryParse_System_String__0__" data-uid="Microsoft.MixedReality.SpatialAlignment.SpatialCoordinateServiceBase`1.TryParse(System.String,`0@)">TryParse(String, out TKey)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected abstract bool TryParse(string id, out TKey result)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">id</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">TKey</span></td>
+        <td><span class="parametername">result</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="events">Events
+  </h3>
+  
+  
+  <h4 id="Microsoft_MixedReality_SpatialAlignment_SpatialCoordinateServiceBase_1_CoordinatedDiscovered" data-uid="Microsoft.MixedReality.SpatialAlignment.SpatialCoordinateServiceBase`1.CoordinatedDiscovered">CoordinatedDiscovered</h4>
+  <div class="markdown level1 summary"><p>Triggered when a new coordinate is discovered or created with this service.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event Action&lt;ISpatialCoordinate&gt; CoordinatedDiscovered</code></pre>
+  </div>
+  <h5 class="eventType">Event Type</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.action-1">Action</a>&lt;<a class="xref" href="Microsoft.MixedReality.SpatialAlignment.ISpatialCoordinate.html">ISpatialCoordinate</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Microsoft_MixedReality_SpatialAlignment_SpatialCoordinateServiceBase_1_CoordinatedDiscovered_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>It may not be in the IsLocated state if created locally.</p>
+</div>
+  
+  
+  <h4 id="Microsoft_MixedReality_SpatialAlignment_SpatialCoordinateServiceBase_1_CoordinateRemoved" data-uid="Microsoft.MixedReality.SpatialAlignment.SpatialCoordinateServiceBase`1.CoordinateRemoved">CoordinateRemoved</h4>
+  <div class="markdown level1 summary"><p>Triggered when a new coordinate is removed from this service.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event Action&lt;ISpatialCoordinate&gt; CoordinateRemoved</code></pre>
+  </div>
+  <h5 class="eventType">Event Type</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.action-1">Action</a>&lt;<a class="xref" href="Microsoft.MixedReality.SpatialAlignment.ISpatialCoordinate.html">ISpatialCoordinate</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="eii">Explicit Interface Implementations
+  </h3>
+  
+  
+  <a id="Microsoft_MixedReality_SpatialAlignment_SpatialCoordinateServiceBase_1_Microsoft_MixedReality_SpatialAlignment_ISpatialCoordinateService_TryDeleteCoordinateAsync_" data-uid="Microsoft.MixedReality.SpatialAlignment.SpatialCoordinateServiceBase`1.Microsoft#MixedReality#SpatialAlignment#ISpatialCoordinateService#TryDeleteCoordinateAsync*"></a>
+  <h4 id="Microsoft_MixedReality_SpatialAlignment_SpatialCoordinateServiceBase_1_Microsoft_MixedReality_SpatialAlignment_ISpatialCoordinateService_TryDeleteCoordinateAsync_System_String_CancellationToken_" data-uid="Microsoft.MixedReality.SpatialAlignment.SpatialCoordinateServiceBase`1.Microsoft#MixedReality#SpatialAlignment#ISpatialCoordinateService#TryDeleteCoordinateAsync(System.String,CancellationToken)">ISpatialCoordinateService.TryDeleteCoordinateAsync(String, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Attempts to asynchronously delete a coordinate with this space given an Id.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Task&lt;bool&gt; ISpatialCoordinateService.TryDeleteCoordinateAsync(string id, CancellationToken cancellationToken)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">id</span></td>
+        <td><p>The id representing the coordinate.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">CancellationToken</span></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a>&gt;</td>
+        <td><p>True if the coordinate was succesfully deleted.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_SpatialAlignment_SpatialCoordinateServiceBase_1_Microsoft_MixedReality_SpatialAlignment_ISpatialCoordinateService_TryDiscoverCoordinatesAsync_" data-uid="Microsoft.MixedReality.SpatialAlignment.SpatialCoordinateServiceBase`1.Microsoft#MixedReality#SpatialAlignment#ISpatialCoordinateService#TryDiscoverCoordinatesAsync*"></a>
+  <h4 id="Microsoft_MixedReality_SpatialAlignment_SpatialCoordinateServiceBase_1_Microsoft_MixedReality_SpatialAlignment_ISpatialCoordinateService_TryDiscoverCoordinatesAsync_CancellationToken_System_String___" data-uid="Microsoft.MixedReality.SpatialAlignment.SpatialCoordinateServiceBase`1.Microsoft#MixedReality#SpatialAlignment#ISpatialCoordinateService#TryDiscoverCoordinatesAsync(CancellationToken,System.String[])">ISpatialCoordinateService.TryDiscoverCoordinatesAsync(CancellationToken, String[])</h4>
+  <div class="markdown level1 summary"><p>Begins search for coordinates, optionally priortizing a set of ids.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Task&lt;bool&gt; ISpatialCoordinateService.TryDiscoverCoordinatesAsync(CancellationToken cancellationToken, string[] idsToLocate)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">CancellationToken</span></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>The <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a> to be used for cancellation (stopping) of the discovery task.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>[]</td>
+        <td><span class="parametername">idsToLocate</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a>&gt;</td>
+        <td><p>The set of coordinates discovered during this session.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_SpatialAlignment_SpatialCoordinateServiceBase_1_Microsoft_MixedReality_SpatialAlignment_ISpatialCoordinateService_TryGetKnownCoordinate_" data-uid="Microsoft.MixedReality.SpatialAlignment.SpatialCoordinateServiceBase`1.Microsoft#MixedReality#SpatialAlignment#ISpatialCoordinateService#TryGetKnownCoordinate*"></a>
+  <h4 id="Microsoft_MixedReality_SpatialAlignment_SpatialCoordinateServiceBase_1_Microsoft_MixedReality_SpatialAlignment_ISpatialCoordinateService_TryGetKnownCoordinate_System_String_Microsoft_MixedReality_SpatialAlignment_ISpatialCoordinate__" data-uid="Microsoft.MixedReality.SpatialAlignment.SpatialCoordinateServiceBase`1.Microsoft#MixedReality#SpatialAlignment#ISpatialCoordinateService#TryGetKnownCoordinate(System.String,Microsoft.MixedReality.SpatialAlignment.ISpatialCoordinate@)">ISpatialCoordinateService.TryGetKnownCoordinate(String, out ISpatialCoordinate)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">bool ISpatialCoordinateService.TryGetKnownCoordinate(string id, out ISpatialCoordinate spatialCoordinate)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">id</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.SpatialAlignment.ISpatialCoordinate.html">ISpatialCoordinate</a></td>
+        <td><span class="parametername">spatialCoordinate</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Microsoft.MixedReality.SpatialAlignment.ISpatialCoordinateService.html">ISpatialCoordinateService</a>
+  </div>
+  <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable">System.IDisposable</a>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

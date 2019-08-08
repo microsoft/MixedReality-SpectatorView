@@ -1,0 +1,723 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class ComponentBroadcaster&lt;TComponentBroadcasterService, TChangeFlags&gt;
+   | MixedReality-SpectatorView Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class ComponentBroadcaster&lt;TComponentBroadcasterService, TChangeFlags&gt;
+   | MixedReality-SpectatorView Documentation ">
+    <meta name="generator" content="docfx 2.44.0.0">
+    
+    <link rel="shortcut icon" href="../doc/images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../doc/images/spectatorview-logo.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Microsoft.MixedReality.SpectatorView.ComponentBroadcaster`2">
+  
+  
+  <h1 id="Microsoft_MixedReality_SpectatorView_ComponentBroadcaster_2" data-uid="Microsoft.MixedReality.SpectatorView.ComponentBroadcaster`2" class="text-break">Class ComponentBroadcaster&lt;TComponentBroadcasterService, TChangeFlags&gt;
+  </h1>
+  <div class="markdown level0 summary"><p>Abstract class for sending component updates from the user device.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><span class="xref">ComponentBroadcaster&lt;TComponentBroadcasterService, TChangeFlags&gt;</span></div>
+      <div class="level2"><a class="xref" href="Microsoft.MixedReality.SpectatorView.DynamicGameObjectHierarchyBroadcaster-1.html">DynamicGameObjectHierarchyBroadcaster&lt;TComponentService&gt;</a></div>
+      <div class="level2"><a class="xref" href="Microsoft.MixedReality.SpectatorView.TransformBroadcaster.html">TransformBroadcaster</a></div>
+  </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="Microsoft.MixedReality.SpectatorView.IComponentBroadcaster.html">IComponentBroadcaster</a></div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Microsoft.MixedReality.SpectatorView.html">Microsoft.MixedReality.SpectatorView</a></h6>
+  <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
+  <h5 id="Microsoft_MixedReality_SpectatorView_ComponentBroadcaster_2_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract class ComponentBroadcaster&lt;TComponentBroadcasterService, TChangeFlags&gt; : MonoBehaviour, IComponentBroadcaster where TComponentBroadcasterService : Singleton&lt;TComponentBroadcasterService&gt;, IComponentBroadcasterService</code></pre>
+  </div>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TComponentBroadcasterService</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="parametername">TChangeFlags</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="fields">Fields
+  </h3>
+  
+  
+  <h4 id="Microsoft_MixedReality_SpectatorView_ComponentBroadcaster_2_transformBroadcaster" data-uid="Microsoft.MixedReality.SpectatorView.ComponentBroadcaster`2.transformBroadcaster">transformBroadcaster</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected TransformBroadcaster transformBroadcaster</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.SpectatorView.TransformBroadcaster.html">TransformBroadcaster</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  
+  
+  <a id="Microsoft_MixedReality_SpectatorView_ComponentBroadcaster_2_ComponentBroadcasterService_" data-uid="Microsoft.MixedReality.SpectatorView.ComponentBroadcaster`2.ComponentBroadcasterService*"></a>
+  <h4 id="Microsoft_MixedReality_SpectatorView_ComponentBroadcaster_2_ComponentBroadcasterService" data-uid="Microsoft.MixedReality.SpectatorView.ComponentBroadcaster`2.ComponentBroadcasterService">ComponentBroadcasterService</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TComponentBroadcasterService ComponentBroadcasterService { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TComponentBroadcasterService</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_SpectatorView_ComponentBroadcaster_2_TransformBroadcaster_" data-uid="Microsoft.MixedReality.SpectatorView.ComponentBroadcaster`2.TransformBroadcaster*"></a>
+  <h4 id="Microsoft_MixedReality_SpectatorView_ComponentBroadcaster_2_TransformBroadcaster" data-uid="Microsoft.MixedReality.SpectatorView.ComponentBroadcaster`2.TransformBroadcaster">TransformBroadcaster</h4>
+  <div class="markdown level1 summary"><p>The components transform broadcaster</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TransformBroadcaster TransformBroadcaster { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.SpectatorView.TransformBroadcaster.html">TransformBroadcaster</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_SpectatorView_ComponentBroadcaster_2_UpdateWhenDisabled_" data-uid="Microsoft.MixedReality.SpectatorView.ComponentBroadcaster`2.UpdateWhenDisabled*"></a>
+  <h4 id="Microsoft_MixedReality_SpectatorView_ComponentBroadcaster_2_UpdateWhenDisabled" data-uid="Microsoft.MixedReality.SpectatorView.ComponentBroadcaster`2.UpdateWhenDisabled">UpdateWhenDisabled</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual bool UpdateWhenDisabled { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  
+  
+  <a id="Microsoft_MixedReality_SpectatorView_ComponentBroadcaster_2_Awake_" data-uid="Microsoft.MixedReality.SpectatorView.ComponentBroadcaster`2.Awake*"></a>
+  <h4 id="Microsoft_MixedReality_SpectatorView_ComponentBroadcaster_2_Awake" data-uid="Microsoft.MixedReality.SpectatorView.ComponentBroadcaster`2.Awake">Awake()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void Awake()</code></pre>
+  </div>
+  
+  
+  <a id="Microsoft_MixedReality_SpectatorView_ComponentBroadcaster_2_BeginUpdatingFrame_" data-uid="Microsoft.MixedReality.SpectatorView.ComponentBroadcaster`2.BeginUpdatingFrame*"></a>
+  <h4 id="Microsoft_MixedReality_SpectatorView_ComponentBroadcaster_2_BeginUpdatingFrame_Microsoft_MixedReality_SpectatorView_SocketEndpointConnectionDelta_" data-uid="Microsoft.MixedReality.SpectatorView.ComponentBroadcaster`2.BeginUpdatingFrame(Microsoft.MixedReality.SpectatorView.SocketEndpointConnectionDelta)">BeginUpdatingFrame(SocketEndpointConnectionDelta)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void BeginUpdatingFrame(SocketEndpointConnectionDelta connectionDelta)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.SpectatorView.SocketEndpointConnectionDelta.html">SocketEndpointConnectionDelta</a></td>
+        <td><span class="parametername">connectionDelta</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_SpectatorView_ComponentBroadcaster_2_CalculateDeltaChanges_" data-uid="Microsoft.MixedReality.SpectatorView.ComponentBroadcaster`2.CalculateDeltaChanges*"></a>
+  <h4 id="Microsoft_MixedReality_SpectatorView_ComponentBroadcaster_2_CalculateDeltaChanges" data-uid="Microsoft.MixedReality.SpectatorView.ComponentBroadcaster`2.CalculateDeltaChanges">CalculateDeltaChanges()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected abstract TChangeFlags CalculateDeltaChanges()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TChangeFlags</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_SpectatorView_ComponentBroadcaster_2_EndUpdatingFrame_" data-uid="Microsoft.MixedReality.SpectatorView.ComponentBroadcaster`2.EndUpdatingFrame*"></a>
+  <h4 id="Microsoft_MixedReality_SpectatorView_ComponentBroadcaster_2_EndUpdatingFrame" data-uid="Microsoft.MixedReality.SpectatorView.ComponentBroadcaster`2.EndUpdatingFrame">EndUpdatingFrame()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void EndUpdatingFrame()</code></pre>
+  </div>
+  
+  
+  <a id="Microsoft_MixedReality_SpectatorView_ComponentBroadcaster_2_HasChanges_" data-uid="Microsoft.MixedReality.SpectatorView.ComponentBroadcaster`2.HasChanges*"></a>
+  <h4 id="Microsoft_MixedReality_SpectatorView_ComponentBroadcaster_2_HasChanges__1_" data-uid="Microsoft.MixedReality.SpectatorView.ComponentBroadcaster`2.HasChanges(`1)">HasChanges(TChangeFlags)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected abstract bool HasChanges(TChangeFlags changeFlags)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TChangeFlags</span></td>
+        <td><span class="parametername">changeFlags</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_SpectatorView_ComponentBroadcaster_2_OnDestroy_" data-uid="Microsoft.MixedReality.SpectatorView.ComponentBroadcaster`2.OnDestroy*"></a>
+  <h4 id="Microsoft_MixedReality_SpectatorView_ComponentBroadcaster_2_OnDestroy" data-uid="Microsoft.MixedReality.SpectatorView.ComponentBroadcaster`2.OnDestroy">OnDestroy()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void OnDestroy()</code></pre>
+  </div>
+  
+  
+  <a id="Microsoft_MixedReality_SpectatorView_ComponentBroadcaster_2_OnFrameCompleted_" data-uid="Microsoft.MixedReality.SpectatorView.ComponentBroadcaster`2.OnFrameCompleted*"></a>
+  <h4 id="Microsoft_MixedReality_SpectatorView_ComponentBroadcaster_2_OnFrameCompleted_Microsoft_MixedReality_SpectatorView_SocketEndpointConnectionDelta_" data-uid="Microsoft.MixedReality.SpectatorView.ComponentBroadcaster`2.OnFrameCompleted(Microsoft.MixedReality.SpectatorView.SocketEndpointConnectionDelta)">OnFrameCompleted(SocketEndpointConnectionDelta)</h4>
+  <div class="markdown level1 summary"><p>Call to signal the end of a frame.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void OnFrameCompleted(SocketEndpointConnectionDelta connectionDelta)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.SpectatorView.SocketEndpointConnectionDelta.html">SocketEndpointConnectionDelta</a></td>
+        <td><span class="parametername">connectionDelta</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_SpectatorView_ComponentBroadcaster_2_OnInitialized_" data-uid="Microsoft.MixedReality.SpectatorView.ComponentBroadcaster`2.OnInitialized*"></a>
+  <h4 id="Microsoft_MixedReality_SpectatorView_ComponentBroadcaster_2_OnInitialized" data-uid="Microsoft.MixedReality.SpectatorView.ComponentBroadcaster`2.OnInitialized">OnInitialized()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void OnInitialized()</code></pre>
+  </div>
+  
+  
+  <a id="Microsoft_MixedReality_SpectatorView_ComponentBroadcaster_2_ProcessNewConnections_" data-uid="Microsoft.MixedReality.SpectatorView.ComponentBroadcaster`2.ProcessNewConnections*"></a>
+  <h4 id="Microsoft_MixedReality_SpectatorView_ComponentBroadcaster_2_ProcessNewConnections_IEnumerable_Microsoft_MixedReality_SpectatorView_SocketEndpoint__" data-uid="Microsoft.MixedReality.SpectatorView.ComponentBroadcaster`2.ProcessNewConnections(IEnumerable{Microsoft.MixedReality.SpectatorView.SocketEndpoint})">ProcessNewConnections(IEnumerable&lt;SocketEndpoint&gt;)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void ProcessNewConnections(IEnumerable&lt;SocketEndpoint&gt; connectionsRequiringFullUpdate)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="Microsoft.MixedReality.SpectatorView.SocketEndpoint.html">SocketEndpoint</a>&gt;</td>
+        <td><span class="parametername">connectionsRequiringFullUpdate</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_SpectatorView_ComponentBroadcaster_2_ProcessNewConnections_" data-uid="Microsoft.MixedReality.SpectatorView.ComponentBroadcaster`2.ProcessNewConnections*"></a>
+  <h4 id="Microsoft_MixedReality_SpectatorView_ComponentBroadcaster_2_ProcessNewConnections_Microsoft_MixedReality_SpectatorView_SocketEndpointConnectionDelta_" data-uid="Microsoft.MixedReality.SpectatorView.ComponentBroadcaster`2.ProcessNewConnections(Microsoft.MixedReality.SpectatorView.SocketEndpointConnectionDelta)">ProcessNewConnections(SocketEndpointConnectionDelta)</h4>
+  <div class="markdown level1 summary"><p>Call to report the current state of network connections.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void ProcessNewConnections(SocketEndpointConnectionDelta connectionDelta)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.SpectatorView.SocketEndpointConnectionDelta.html">SocketEndpointConnectionDelta</a></td>
+        <td><span class="parametername">connectionDelta</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_SpectatorView_ComponentBroadcaster_2_RemoveDisconnectedEndpoints_" data-uid="Microsoft.MixedReality.SpectatorView.ComponentBroadcaster`2.RemoveDisconnectedEndpoints*"></a>
+  <h4 id="Microsoft_MixedReality_SpectatorView_ComponentBroadcaster_2_RemoveDisconnectedEndpoints_IEnumerable_Microsoft_MixedReality_SpectatorView_SocketEndpoint__" data-uid="Microsoft.MixedReality.SpectatorView.ComponentBroadcaster`2.RemoveDisconnectedEndpoints(IEnumerable{Microsoft.MixedReality.SpectatorView.SocketEndpoint})">RemoveDisconnectedEndpoints(IEnumerable&lt;SocketEndpoint&gt;)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void RemoveDisconnectedEndpoints(IEnumerable&lt;SocketEndpoint&gt; endpoints)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="Microsoft.MixedReality.SpectatorView.SocketEndpoint.html">SocketEndpoint</a>&gt;</td>
+        <td><span class="parametername">endpoints</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_SpectatorView_ComponentBroadcaster_2_ResetFrame_" data-uid="Microsoft.MixedReality.SpectatorView.ComponentBroadcaster`2.ResetFrame*"></a>
+  <h4 id="Microsoft_MixedReality_SpectatorView_ComponentBroadcaster_2_ResetFrame" data-uid="Microsoft.MixedReality.SpectatorView.ComponentBroadcaster`2.ResetFrame">ResetFrame()</h4>
+  <div class="markdown level1 summary"><p>Call to reset the frame.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void ResetFrame()</code></pre>
+  </div>
+  
+  
+  <a id="Microsoft_MixedReality_SpectatorView_ComponentBroadcaster_2_SendCompleteChanges_" data-uid="Microsoft.MixedReality.SpectatorView.ComponentBroadcaster`2.SendCompleteChanges*"></a>
+  <h4 id="Microsoft_MixedReality_SpectatorView_ComponentBroadcaster_2_SendCompleteChanges_IEnumerable_Microsoft_MixedReality_SpectatorView_SocketEndpoint__" data-uid="Microsoft.MixedReality.SpectatorView.ComponentBroadcaster`2.SendCompleteChanges(IEnumerable{Microsoft.MixedReality.SpectatorView.SocketEndpoint})">SendCompleteChanges(IEnumerable&lt;SocketEndpoint&gt;)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected abstract void SendCompleteChanges(IEnumerable&lt;SocketEndpoint&gt; endpoints)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="Microsoft.MixedReality.SpectatorView.SocketEndpoint.html">SocketEndpoint</a>&gt;</td>
+        <td><span class="parametername">endpoints</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_SpectatorView_ComponentBroadcaster_2_SendComponentCreation_" data-uid="Microsoft.MixedReality.SpectatorView.ComponentBroadcaster`2.SendComponentCreation*"></a>
+  <h4 id="Microsoft_MixedReality_SpectatorView_ComponentBroadcaster_2_SendComponentCreation_IEnumerable_Microsoft_MixedReality_SpectatorView_SocketEndpoint__" data-uid="Microsoft.MixedReality.SpectatorView.ComponentBroadcaster`2.SendComponentCreation(IEnumerable{Microsoft.MixedReality.SpectatorView.SocketEndpoint})">SendComponentCreation(IEnumerable&lt;SocketEndpoint&gt;)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void SendComponentCreation(IEnumerable&lt;SocketEndpoint&gt; newConnections)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="Microsoft.MixedReality.SpectatorView.SocketEndpoint.html">SocketEndpoint</a>&gt;</td>
+        <td><span class="parametername">newConnections</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_SpectatorView_ComponentBroadcaster_2_SendDeltaChanges_" data-uid="Microsoft.MixedReality.SpectatorView.ComponentBroadcaster`2.SendDeltaChanges*"></a>
+  <h4 id="Microsoft_MixedReality_SpectatorView_ComponentBroadcaster_2_SendDeltaChanges_IEnumerable_Microsoft_MixedReality_SpectatorView_SocketEndpoint___1_" data-uid="Microsoft.MixedReality.SpectatorView.ComponentBroadcaster`2.SendDeltaChanges(IEnumerable{Microsoft.MixedReality.SpectatorView.SocketEndpoint},`1)">SendDeltaChanges(IEnumerable&lt;SocketEndpoint&gt;, TChangeFlags)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected abstract void SendDeltaChanges(IEnumerable&lt;SocketEndpoint&gt; endpoints, TChangeFlags changeFlags)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="Microsoft.MixedReality.SpectatorView.SocketEndpoint.html">SocketEndpoint</a>&gt;</td>
+        <td><span class="parametername">endpoints</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">TChangeFlags</span></td>
+        <td><span class="parametername">changeFlags</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_SpectatorView_ComponentBroadcaster_2_ShouldSendChanges_" data-uid="Microsoft.MixedReality.SpectatorView.ComponentBroadcaster`2.ShouldSendChanges*"></a>
+  <h4 id="Microsoft_MixedReality_SpectatorView_ComponentBroadcaster_2_ShouldSendChanges_Microsoft_MixedReality_SpectatorView_SocketEndpoint_" data-uid="Microsoft.MixedReality.SpectatorView.ComponentBroadcaster`2.ShouldSendChanges(Microsoft.MixedReality.SpectatorView.SocketEndpoint)">ShouldSendChanges(SocketEndpoint)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual bool ShouldSendChanges(SocketEndpoint endpoint)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.SpectatorView.SocketEndpoint.html">SocketEndpoint</a></td>
+        <td><span class="parametername">endpoint</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_SpectatorView_ComponentBroadcaster_2_ShouldUpdateFrame_" data-uid="Microsoft.MixedReality.SpectatorView.ComponentBroadcaster`2.ShouldUpdateFrame*"></a>
+  <h4 id="Microsoft_MixedReality_SpectatorView_ComponentBroadcaster_2_ShouldUpdateFrame_Microsoft_MixedReality_SpectatorView_SocketEndpoint_" data-uid="Microsoft.MixedReality.SpectatorView.ComponentBroadcaster`2.ShouldUpdateFrame(Microsoft.MixedReality.SpectatorView.SocketEndpoint)">ShouldUpdateFrame(SocketEndpoint)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual bool ShouldUpdateFrame(SocketEndpoint endpoint)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.SpectatorView.SocketEndpoint.html">SocketEndpoint</a></td>
+        <td><span class="parametername">endpoint</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="eii">Explicit Interface Implementations
+  </h3>
+  
+  
+  <a id="Microsoft_MixedReality_SpectatorView_ComponentBroadcaster_2_Microsoft_MixedReality_SpectatorView_IComponentBroadcaster_ComponentBroadcasterService_" data-uid="Microsoft.MixedReality.SpectatorView.ComponentBroadcaster`2.Microsoft#MixedReality#SpectatorView#IComponentBroadcaster#ComponentBroadcasterService*"></a>
+  <h4 id="Microsoft_MixedReality_SpectatorView_ComponentBroadcaster_2_Microsoft_MixedReality_SpectatorView_IComponentBroadcaster_ComponentBroadcasterService" data-uid="Microsoft.MixedReality.SpectatorView.ComponentBroadcaster`2.Microsoft#MixedReality#SpectatorView#IComponentBroadcaster#ComponentBroadcasterService">IComponentBroadcaster.ComponentBroadcasterService</h4>
+  <div class="markdown level1 summary"><p>The associated component service.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IComponentBroadcasterService IComponentBroadcaster.ComponentBroadcasterService { get; }</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.SpectatorView.IComponentBroadcasterService.html">IComponentBroadcasterService</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Microsoft.MixedReality.SpectatorView.IComponentBroadcaster.html">IComponentBroadcaster</a>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

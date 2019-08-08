@@ -1,0 +1,328 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Spectator View Video Camera Setup | MixedReality-SpectatorView Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Spectator View Video Camera Setup | MixedReality-SpectatorView Documentation ">
+    <meta name="generator" content="docfx 2.44.0.0">
+    
+    <link rel="shortcut icon" href="../doc/images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="../toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../doc/images/spectatorview-logo.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        <div class="article row grid">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="spectator-view-video-camera-setup">Spectator View Video Camera Setup</h1>
+
+<h2 id="requirements">Requirements</h2>
+<blockquote>
+<p>Note: Video camera filming currently requires a HoloLens 2 for the camera rig. HoloLens 1 devices are not supported.</p>
+</blockquote>
+<ol>
+<li>HoloLens 2 (This device will be needed in addition to the device worn by the user)</li>
+<li>Windows PC</li>
+<li>Visual Studio 2017 installed on the PC</li>
+<li>Windows 10 SDK (10.0.18362.0)</li>
+<li>Unity installed on the PC</li>
+<li>A video camera that outputs 1080p video over SDI or HDMI</li>
+<li>Blackmagic Design or Elgato capture card</li>
+<li>HoloLens 2 Camera Mount (Coming soon...)</li>
+</ol>
+<h1 id="calibration">Calibration</h1>
+<p>Video camera filming relies on a physically mounted HoloLens 2 device generating position and orientation information for your video camera in the shared application space. This allows the Unity editor to understand where the video frame was filmed from in order to generate and composite Holograms into the feed. To get accurate tracking of your video camera in the physical world, you need to calculate the physical transform between the HoloLens 2 device and the video camera sensor. This is achieved through calibration.</p>
+<p>The below instructions assume that you have already gone through the repository setup instructions <a href="../README.html">here</a> to obtain and reference the Spectator View codebase.</p>
+<h2 id="setup">Setup</h2>
+<ol>
+<li>Build x64 Release versions of SpectatorView.Compositor.dll &amp; SpectatorView.Compositor.UnityPlugin.dll based on the instructions <a href="../src/SpectatorView.Native/README.html">here</a>.</li>
+<li>Build a x64 Release version of SpectatorView.OpenCV.dll based on the instructions <a href="../src/SpectatorView.Native/README.html">here</a>.</li>
+<li>Copy these Dlls to the SpectatorView.Unity project by running <code>tools/Scripts/CopyPluginsToUnity.bat</code>.</li>
+<li>Download the <a href="https://github.com/dorreneb/mixed-reality/releases">MixedReality QR Code Plugin</a> zip folder and extract its contents into the <code>external/MixedReality-QRCodePlugin</code> folder.</li>
+<li>Print the <a href="images/Chessboard.png">Chessboard</a> used to calculate video camera intrinsics and mount it to a solid surface.</li>
+</ol>
+<blockquote>
+<p>Note: This can be obtained by printing two copies of <code>doc/images/HalfChessboard.pdf</code> on 8.5x11 sheets of paper.</p>
+</blockquote>
+<p><img src="images/Chessboard.png" alt="Marker"></p>
+<ol start="6">
+<li>Print the <a href="images/CalibrationBoard.png">Calibration Board</a> used to calculate video camera extrinsics and mount it to a solid surface.</li>
+</ol>
+<blockquote>
+<p>Note: This can be obtained by printing all of the <code>CalibrationBoard*.pdf</code> files in the <code>doc/images</code> folder on 8.5x11 sheets of paper. If you choose to print your own board using <a href="images/CalibrationBoard.png">CalibrationBoard.png</a>, make sure that each QR Code is larger than 5cm in length.</p>
+</blockquote>
+<p><img src="images/CalibrationBoard.png" alt="Marker"></p>
+<p>This <a href="images/CalibrationBoard.png">Calibration Board</a> contains 18 QR Codes and ArUco markers pairs that are at known pixel distances from one another. With these marker pairs, calibration logic can use QR Code detection on the HoloLens 2 and ArUco detection in the editor to determine where ArUco markers in the video camera frame are in the physical world. <strong>When printing this board, markers need to be larger than 5cm in length. It's also important to keep these marker pairs on the same page when printing so that their pixel distances from one another are maintained. The orientation of these pairs relative to other pairs does not need to be maintained (meaning, each marker pair can get printed on its own sheet of paper, but both the QR Code and ArUco marker in a pair should be printed on the same page at the same relative distance that they are at in the board).</strong></p>
+<ol start="7">
+<li><p>On your HoloLens 2 device, disable sign in. This can be achieved by going to 'Settings -&gt; Sign-in options'. For 'Require sign-in', select 'Never'.</p>
+</li>
+<li><p>Setup the <a href="https://docs.microsoft.com/en-us/windows/uwp/debug-test-perf/device-portal-hololens">device portal</a> for your HoloLens 2 device. To see how to setup device portal, look <a href="https://docs.microsoft.com/en-us/windows/uwp/debug-test-perf/device-portal-hololens">here</a>.</p>
+</li>
+<li><p>Connect your HoloLens 2 to Wi-Fi and obtain its IP address. This can be done through the settings application on the device. Go to Settings -&gt; Network &amp; Internet -&gt; Wi-Fi -&gt; Hardware properties to obtain the device's IP address.</p>
+</li>
+<li><p>Deploy the HolographiCamera.Unity project to your HoloLens 2 device.</p>
+<ol>
+<li>Open the <code>src/HolographicCamera.Unity</code> project.</li>
+<li>Open the HolographicCamera Unity scene in the project.</li>
+<li>In the WSA Unity player settings, add the <strong>QRCODESTRACKER_BINARY_AVAILABLE</strong> preprocessor directive. (This is located via Build Settings -&gt; Player Settings -&gt; Other Settings -&gt; 'Scripting Defined Symbols</li>
+<li>Build and deploy this project to your HoloLens 2 device.</li>
+</ol>
+</li>
+<li><p>Test QR Code detection for the SpectatorView.HolographicCamera app deployed in step 7.</p>
+<ol>
+<li>Build and Deploy the SpectatorView.HolographicCamera app to your device (see step 7).</li>
+<li>Open the SpectatorView.Example.Unity project.</li>
+<li>Open the SpectatorView.ExtrinsicsCalibration Unity scene.</li>
+<li>Open the Calibration window in the Unity Editor. This can be found in the toolbar under 'Spectator View' -&gt; 'Calibration'.
+<img src="images/CalibrationToolbar.png" alt="Marker"></li>
+<li>Run the SpectatorView.ExtrinsicsCalibration Unity scene in the editor.</li>
+<li>Connect to your HoloLens 2 device by specifying its IP address in the Holographic Camera text field and pressing 'Connect'.</li>
+<li>Press 'Request Marker Data' to kick off QR Code detection.</li>
+<li>View your printed <a href="images/CalibrationBoard.png">Calibration Board</a> through the HoloLens 2 device and make sure that blue and green squares appear over the QR Codes and ArUco markers (This may require getting the HoloLens 2 extremely close to the calibration board. 5cm QR Codes need to be detected from a distance of 10cm).</li>
+</ol>
+</li>
+</ol>
+<blockquote>
+<p>Note: Don't skip this testing step. You will need to accept the webcam permission dialogue that is launched when first attempting QR Code detection with the newly installed SpectatorView.HolographicCamera application. Once the HoloLens 2 is attached to the video camera rig, it will be extremely difficult/impossible to accept these dialogues without dismantling your rig.</p>
+</blockquote>
+<ol start="12">
+<li><p>Attach your video camera to the PC capture card and ensure that the camera stream works.</p>
+<ol>
+<li>Attach your video camera by HDMI or SDI to the capture card hooked up to your PC.</li>
+<li>Turn on your video camera.</li>
+<li>Open the SpectatorView.Example.Unity project.</li>
+<li>Open the SpectatorViewCompositor Unity scene in the Unity Editor.</li>
+<li>Open the Compositor window in the Unity Editor. This can be found in the toolbar under 'Spectator View' -&gt; 'Compositor'.
+<img src="images/CompositorToolbar.png" alt="Marker"></li>
+<li>Run the SpectatorViewCompositor scene in the Unity Editor.</li>
+<li>You should see the Camera Feed appear in the Compositor window if everything has been configured correctly.</li>
+</ol>
+</li>
+<li><p>Attach your HoloLens 2 device to the video camera using the HoloLens 2 camera mount (Coming soon...)</p>
+</li>
+</ol>
+<h2 id="camera-intrinsics">Camera Intrinsics</h2>
+<p>Camera intrinsics quantify focal lengths, principal points and lens distortion information for your video camera. For video camera filming, camera intrinsics are used to calculate the Unity camera's projection matrix for the hologram feed. This then allows the hologram feed to be composited with the video camera feed. For more information on camera intrinsics, see <a href="https://en.wikipedia.org/wiki/Camera_resectioning">here</a>.</p>
+<blockquote>
+<p>Note: For best results, use a bright external light to illuminate your chessboard and calibration board. Set your lens's aperture to the smallest aperture (largest f-stop value) for which images still are exposed enough to see the marker pattern. Smaller apertures increase the depth of field and will allow for less focus blur when capturing images at different depths. <strong>Both during and after calibrating a video camera rig, you should avoid changing the video camera's lens zoom/focal length. Changing zoom/focal length will invalidate calibration data.</strong></p>
+</blockquote>
+<ol>
+<li>Open the SpectatorView.Example.Unity project.</li>
+<li>Open the Calibration window in the Unity Editor. This can be found in the toolbar under 'Spectator View' -&gt; 'Calibration'.</li>
+</ol>
+<p><img src="images/CalibrationToolbar.png" alt="Marker"></p>
+<ol start="3">
+<li>Open the SpectatorView.IntrinsicsCalibration Unity scene.</li>
+<li>Update the Editor Intrinsics Calibration serialized fields in the Unity Inspector. You will need to update the Chessboard Width, Chessboard Height and Chess Square Size values to reflect the Chessboard print that you obtained during setup.</li>
+</ol>
+<p><img src="images/CalibrationIntrinsicsInspector.png" alt="Marker"></p>
+<ol start="5">
+<li>Run the SpectatorView.IntrinsicsCalibration Unity scene in the Unity Editor.</li>
+</ol>
+<blockquote>
+<p>Note: EditorIntrinsicsCalibration does not currently delete obtained Chessboard images with each subsequent run of the SpectatorView.IntrinsicsCalibration Unity scene. If you are calibrating a new video camera or have changed the focal length of the video camera, you will want to manually delete the Calibration folder in your Documents folder prior to running this scene.</p>
+</blockquote>
+<ol start="6">
+<li>Begin taking photos of the Chessboard with your video camera through the Unity Editor. To capture a photo Either press 'Take Photo' in the calibration window or select the 'Game' window and press 'Space' on your keyboard.</li>
+</ol>
+<p><img src="images/CalibrationIntrinsics.png" alt="Marker"></p>
+<p>For each obtained image, EditorIntrinsicsCalibration will attempt to detect the chessboard. If the chessboard is found, it will be displayed in the detected chessboard image on the screen. The 'Usable Chessboard Images' count in the Calibration window will also be incremented.</p>
+<p><img src="images/DetectedChessboard.png" alt="Marker"></p>
+<ol start="7">
+<li>Continue obtaining images until you have obtained a sufficient number of chessboard feature points. Each image where the chessboard is detected will result in (Chessboard Width - 1) x (Chessboard Height - 1) feature points. You can obtain better calibration results by obtaining more chessboard feature points at different locations. You also want to have an even distribution of chessboard feature points throughout the video camera frame. The distribution of chessboard feature points can be observed based on Chessboard Heatmap and Chessboard Corners images that are also shown in the Unity scene. Examples of Chessboard Heatmap and Chessboard Corners with even distribution are shown below.</li>
+</ol>
+<p>Chessboard Heatmap
+<img src="images/ChessboardHeatmap.png" alt="Marker"></p>
+<p>Chessboard Corners
+<img src="images/ChessboardCorners.png" alt="Marker"></p>
+<ol start="8">
+<li>After obtaining enough Chessboard feature points, Press 'Calculate Camera Intrinsics' in the Calibration window or 'Enter' on your keyboard to calculate camera intrinsics.</li>
+</ol>
+<blockquote>
+<p>Note: Calculating camera intrinsics may take a while and take control of the UI thread for the Unity Editor.</p>
+</blockquote>
+<p><img src="images/CalibrationIntrinsicsSuccess.png" alt="Marker"></p>
+<ol start="9">
+<li>Locate the output CameraIntrinsics*.json file on your computer. This file, as well as the images used to calculate camera intrinsics should be located in a 'Calibration' folder within your 'Documents' folder.</li>
+</ol>
+<h2 id="camera-extrinsics">Camera Extrinsics</h2>
+<p>Camera extrinsics are used to calculate the physical transform from your HoloLens 2 device to the video camera. When filming with the video camera, the HoloLens 2's position and orientation is provided to the Unity Editor. This position and orientation can then be transformed using the camera extrinsics to understand where the video camera is in the scene. The process for obtaining camera extrinsics is explained below.</p>
+<ol>
+<li>Open the SpectatorView.Example.Unity project.</li>
+<li>Open the Calibration window in the Unity Editor. This can be found in the toolbar under 'Spectator View' -&gt; 'Calibration'.</li>
+</ol>
+<p><img src="images/CalibrationToolbar.png" alt="Marker"></p>
+<ol start="3">
+<li>Open the SpectatorView.ExtrinsicsCalibration Unity scene.</li>
+<li>Update the Editor Extrinsics Calibration serialized fields in the Unity Inspector. You will need to set the Camera Intrinsics Path to the CameraIntrinsics*.json file that you created in the previous Camera Intrinsics steps.</li>
+</ol>
+<p><img src="images/CalibrationExtrinsicsInspector.png" alt="Marker"></p>
+<ol start="5">
+<li>Run the SpectatorView.ExtrinsicsCalibration Unity scene in the Unity Editor.</li>
+</ol>
+<blockquote>
+<p>Note: EditorExtrinsicsCalibration does not currently delete Calibration board datasets with each subsequent run of the SpectatorView.ExtrinsicsCalibration Unity scene. You likely will get worse calibration results mixing old extrinsics datasets with new extrinsics datasets. Consider deleting HEADSET_DATA, DSLR_ARUCO and DSLR_ARUCO_DETECTED folders in the Calibration folder within your Documents folder before running SpectatorView.ExtrinsicsCalibration.</p>
+</blockquote>
+<ol start="6">
+<li>Launch the SpectatorView.HolographicCamera app on your HoloLens 2 device through the device portal.</li>
+<li>Specify your device's IP address in the Calibration window and press connect.</li>
+</ol>
+<p><img src="images/CalibrationExtrinsicsConnection.png" alt="Marker"></p>
+<ol start="8">
+<li><p>After connecting your device, press 'Request Marker Data' in the calibration window or press 'Space' on your keyboard when the Unity 'Game' window is in focus. This will kick off QR Code detection.</p>
+</li>
+<li><p>Take your HoloLens 2 and video camera rig and and detect all of the QR Codes on your printed Calibration Board. This may require getting the HoloLens 2 device close to the QR Codes. To determine whether all of the QR Codes have been detected, connect to your device through the device portal. Then, view the Mixed Reality Capture stream until green and blue squares have been placed over the QR Code and ArUco markers on the Calibration Board. This may require placing the HoloLens 2 device super close to the Calibration Board.</p>
+</li>
+</ol>
+<blockquote>
+<p>Note: QR Code detection requires that the QR Codes are larger than 5cm. If the QR Codes are smaller than 5cm in length, you will need to reprint a larger board.</p>
+</blockquote>
+<p>After detecting all of the markers, make sure the entire Calibration Board can be seen in the video camera stream. Then press 'Request Marker Data' or press the 'Space' key to obtain marker information from the HoloLens 2 device. The 'Usable marker datasets' count should be incremented. You can also see how many markers were detected in the last dataset relative to the minimum number of markers that are required for a dataset to be deemed usable.</p>
+<ol start="10">
+<li>After obtaining multiple marker datasets and Calibration Board images, press 'Calculate Camera Extrinsics' or the 'Enter' key when the Game window is in focus to calculate the camera extrinsics.</li>
+</ol>
+<p><img src="images/CalibrationExtrinsicsSuccessfulCalculation.png" alt="Marker"></p>
+<ol start="11">
+<li>Look in the Calibration window to see whether or not the calculation succeeded. If the calculation did succeed, 'Global Extrinsics' and 'Global HoloLens' game objects will have been placed in your Unity scene. The difference in position and orientation of these prefabs should equate to the physical transform between your HoloLens device and the video camera. It will be used in filming to understand where your video camera is in the physical world relative to the HoloLens.</li>
+</ol>
+<blockquote>
+<p>Note: The physical transform you observe may be wildly off based on the quality of calibration data you obtained. If these values don't seem correct, you should go through the 'Testing Calibration' process below before uploading your calibration data to your HoloLens device.</p>
+</blockquote>
+<p><img src="images/CalibrationGameObjects.png" alt="Marker"></p>
+<ol start="12">
+<li>If your physical transforms look good, you can choose to upload your calibration file to the device by pressing 'Upload Calibration Data'.</li>
+</ol>
+<blockquote>
+<p>Note: Uploading calibration data to your device will overwrite any previously existing calibration data on the device. CalibrationData.json is stored in the Pictures Library on the HoloLens 2 device and can be manually managed through Device Portal's File Explorer. DO NOT press 'Upload Calibration Data' if you already have valid calibration data on your device and do not want to overwrite it.</p>
+</blockquote>
+<p><img src="images/CalibrationExtrinsicsSuccessfulUpload.png" alt="Marker"></p>
+<ol start="13">
+<li>After uploading a CalibrationData.json file to your HoloLens 2 device's Picture Library, you have completed calibration and can begin filming. However, calibration can generate varying results. It's suggested to test your calibration to ensure it achieves the quality required for your filming needs. Multiple calibration attempts may be required to obtain adequate results.</li>
+</ol>
+<h2 id="testing-calibration">Testing Calibration</h2>
+<p>It may take multiple attempts at calibration to obtain sufficient results for video camera filming. To assess different calibration results, you can use the 'Calibration Test' window provided in the Spectator View codebase. Instructions for using this window are as follows:</p>
+<ol>
+<li>Print the following QR code at a size greater than 10cm.
+<img src="images/OriginQRCode.png" alt="Marker"></li>
+<li>Build and deploy the SpectatorView.HolographicCamera application to your HoloLens device.</li>
+<li>Open the SpectatorView.Example.Unity project.</li>
+<li>Open the Calibration Test window in the Unity Editor. This can be found in the toolbar under 'Spectator View' -&gt; 'Calibration Test'.</li>
+<li>Open the SpectatorViewCompositor unity scene in the Unity Editor.</li>
+<li>Run the SpectatorViewCompositor scene in the Unity Editor.
+<img src="images/CalibrationWindow.png" alt="Marker"></li>
+<li>Connect to your HoloLens device using the 'Calibration Test' window.</li>
+<li>Locate a shared spatial coordinate using the 'QR Code&quot; localization strategy.</li>
+<li>Once you have located the shared spatial coordinate, press 'Start Recording'.</li>
+<li>Begin filming the printed QR Code.</li>
+<li>After obtaining some footage of the QR Code, press 'Stop Recording'. This should populate the 'Recording index file location'.</li>
+<li>Specify the 'Calibration file' that you would like to use for testing.</li>
+<li>Measure the physical length of your printed QR Code, and set the 'Marker size (m)' field to this value (Note: this value should be in meters).</li>
+<li>Press 'Play' in the 'Calibration Test' window.</li>
+<li>A cube will be placed in the scene on top of your printed QR Code. The accuracy of this placement when moving around your video camera allows for a subjective assessment of whether or nto the calibration will suffice for your needs.
+<img src="images/CalibrationPlayback.png" alt="Marker"></li>
+</ol>
+<h2 id="uploading-calibration-data">Uploading Calibration Data</h2>
+<p>If you chose not to immediately upload your calibration data to your device or have tested multiple calibration data files, you can manually upload the one of your choosing by the following:</p>
+<ol>
+<li>Open the <a href="https://docs.microsoft.com/en-us/windows/mixed-reality/using-the-windows-device-portal">Device Portal</a> for your HoloLens 2 device.</li>
+<li>Navigate to your HoloLens 2 Device's File explorer in the Device Portal. This can be found by going to 'System' -&gt; 'File explorer'.</li>
+<li>Rename your chosen CalibrationData*.json file to CalibrationData.json.</li>
+<li>Upload this renamed CalibrationData.json file to the Pictures Library on your HoloLens device. This can be done by going to 'User Folders\Pictures'. Then you can upload the file.</li>
+</ol>
+<h1 id="filming">Filming</h1>
+<p>After you have calibrated your rig, you will be ready to film HoloLens experiences with your video camera. For more information on filming, see <a href="../src/SpectatorView.Unity/Assets/SpectatorView/Scripts/Compositor/README.html">here</a>.</p>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Microsoft/MixedReality-SpectatorView/blob/master/doc/SpectatorView.Setup.VideoCamera.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

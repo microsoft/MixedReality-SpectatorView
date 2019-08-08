@@ -1,0 +1,151 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Spectator View Architecture | MixedReality-SpectatorView Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Spectator View Architecture | MixedReality-SpectatorView Documentation ">
+    <meta name="generator" content="docfx 2.44.0.0">
+    
+    <link rel="shortcut icon" href="../doc/images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="../toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../doc/images/spectatorview-logo.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        <div class="article row grid">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="spectator-view-architecture">Spectator View Architecture</h1>
+
+<p><code>SpectatorView</code> is a multi-device experience that allows HoloLens applications to be viewed by additional devices at their own viewpoints. It offers functionality for unidirectional content synchronization (State Synchronization) and leverages spatial coordinates for scene alignment (Spatial Alignment). It can be used to enable a variety of different filming scenarios including prototype documentation and keynote demos.</p>
+<h2 id="supported-scenarios">Supported scenarios</h2>
+<ol>
+<li>Spectating with an Android or iOS device</li>
+<li>Spectating with a video camera rig</li>
+</ol>
+<h2 id="application-flow">Application Flow</h2>
+<h3 id="1-spectating-with-an-android-or-ios-device">1. Spectating with an Android or iOS device</h3>
+<ol>
+<li>The mobile device begins tracking its location in the world relative to its local application origin using ARCore\ARKit\ARFoundation.</li>
+<li>The mobile device connects directly to a socket open on the HoloLens device.</li>
+<li>The mobile device and HoloLens device both locate a <a href="../src/SpectatorView.Unity/Assets/SpatialAlignment/README.html">shared spatial coordinate</a> relative to their local application origins.</li>
+<li>The mobile device applies a transform to its camera based on the location of this spatial coordinate in the two local application spaces. After applying this transform, the perceived application origin on the mobile device is located in the same physical position as the local application origin on the HoloLens device.</li>
+<li>The HoloLens begins <a href="../src/SpectatorView.Unity/Assets/SpectatorView/Scripts/StateSynchronization/README.html">sending scene information</a> to the mobile device. The mobile device then updates its local application content to reflect what's being observed on the HoloLens device.</li>
+<li>The screen of the mobile device can then be <a href="../src/SpectatorView.Unity/Assets/SpectatorView/Scripts/ScreenRecording/README.html">recorded</a> to film the HoloLens experience.</li>
+</ol>
+<h3 id="2-spectating-with-a-video-camera-rig">2. Spectating with a video camera rig</h3>
+<ol>
+<li>A HoloLens is mounted to the video camera. <a href="SpectatorView.Setup.VideoCamera.html">Calibration</a> is then performed to calculate camera intrinsics (Properties such as lens focal length and principal points that are needed for compositing holograms into the video camera feed) and camera extrinsics (The transform of the video camera to the mounted HoloLens). This data is stored on this HoloLens mounted to the video camera.</li>
+<li>The PC obtains a video camera stream through a capture card.</li>
+<li>The PC connects to sockets open on both the user HoloLens and video camera rig HoloLens through the unity editor.</li>
+<li>The PC obtains camera intrinsic and extrinsic information from the DSLR mounted HoloLens and updates its unity camera to reflect these values.</li>
+<li>The PC instructs both HoloLenses to locate a <a href="../src/SpectatorView.Unity/Assets/SpatialAlignment/README.html">shared spatial coordinate</a>.</li>
+<li>The PC listens to pose updates from the DSLR mounted HoloLens. Using the camera extrinsics, pose updates and original shared coordinate location, the PC updates its unity camera to have its local application origin reflect the user HoloLens's application origin.</li>
+<li>The user HoloLens begins <a href="../src/SpectatorView.Unity/Assets/SpectatorView/Scripts/StateSynchronization/README.html">sending scene information</a> to the PC. The PC then updates its local application content to reflect what's being observed on the user's HoloLens device.</li>
+<li>The PC then <a href="../src/SpectatorView.Unity/Assets/SpectatorView/Scripts/ScreenRecording/README.html">composites</a> this application content into the video camera stream. This composited content can then be output via the capture card.</li>
+<li>The composited content can then be <a href="../src/SpectatorView.Unity/Assets/SpectatorView/Scripts/ScreenRecording/README.html">recorded</a> to images on the PC that can later be combined into a video.</li>
+</ol>
+<h3 id="spatial-alignment">Spatial alignment</h3>
+<p>For more information on spatial alignment, see <a href="../src/SpectatorView.Unity/Assets/SpatialAlignment/README.html">here</a>.</p>
+<h3 id="state-synchronization">State synchronization</h3>
+<p>For more information on state synchronization, see <a href="../src/SpectatorView.Unity/Assets/SpectatorView/Scripts/StateSynchronization/README.html">here</a>.</p>
+<h3 id="screen-recording">Screen Recording</h3>
+<p>For more information on compositing and recording, see <a href="../src/SpectatorView.Unity/Assets/SpectatorView/Scripts/ScreenRecording/README.html">here</a>.</p>
+<h3 id="video-camera-recording">Video Camera Recording</h3>
+<p>For more information on recording with a video camera, see <a href="../src/SpectatorView.Unity/Assets/SpectatorView/Scripts/Compositor/README.html">here</a>.</p>
+<h3 id="customizing-ui">Customizing UI</h3>
+<p>For more information on creating and customizing UI, see <a href="../src/SpectatorView.Unity/Assets/SpectatorView/Scripts/UI/README.html">here</a>.</p>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Microsoft/MixedReality-SpectatorView/blob/master/doc/SpectatorView.Architecture.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

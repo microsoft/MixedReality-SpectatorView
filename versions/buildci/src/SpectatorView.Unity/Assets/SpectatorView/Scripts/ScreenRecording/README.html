@@ -1,0 +1,129 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Recording Android and iOS experiences | MixedReality-SpectatorView Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Recording Android and iOS experiences | MixedReality-SpectatorView Documentation ">
+    <meta name="generator" content="docfx 2.44.0.0">
+    
+    <link rel="shortcut icon" href="../../../../../../doc/images/favicon.ico">
+    <link rel="stylesheet" href="../../../../../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../../../../../styles/docfx.css">
+    <link rel="stylesheet" href="../../../../../../styles/main.css">
+    <meta property="docfx:navrel" content="../../../../../../toc.html">
+    <meta property="docfx:tocrel" content="../../../../../../toc.html">
+    
+    <meta property="docfx:rel" content="../../../../../../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../../../../../index.html">
+                <img id="logo" class="svg" src="../../../../../../doc/images/spectatorview-logo.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        <div class="article row grid">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="recording-android-and-ios-experiences">Recording Android and iOS experiences</h1>
+
+<p>Spectator View supports filming HoloLens experiences with mobile devices. All mobile recording functionality is enabled through screen capture; however, the associated logic varies across platforms.</p>
+<ul>
+<li>On Android, a custom <code>ScreenRecorderActivity.java</code> has been defined and wrapped by the <code>AndroidRecordingService</code>.</li>
+<li>On iOS, the <code>iOSRecordingService</code> has been constructed based on Apple's <a href="https://developer.apple.com/documentation/replaykit">ReplayKit</a> component.</li>
+</ul>
+<blockquote>
+<p>Note: On Android, recorded content is always saved to a file; whereas on iOS, recorded content is saved to a temporary file that must be manually saved by the user.</p>
+</blockquote>
+<h2 id="application-flow">Application Flow</h2>
+<p>On start, the <code>SpectatorView</code> MonoBehaviour checks whether recording is enabled through <code>MobileRecordingSetting</code>'s &quot;Enable Mobile Recording Service&quot; flag. If said flag is enabled, the declared <code>IRecordingServiceVisual</code> prefab is created in the Unity scene. The <code>IRecordingServiceVisual</code> is then handed a reference to the <code>IRecordingService</code> associated with the current mobile platform. User interactions with the <code>IRecordingServiceVisual</code> can then use this reference to start and stop recording as well as open videos for viewing.</p>
+<h2 id="custom-irecordingservicevisuals">Custom IRecordingServiceVisuals</h2>
+<p>The recording service visual shown on mobile devices can be replaced by your own UI. For more information on how to change out the default Spectator View recording UI with your own custom content, see <a href="../UI/README.html">here</a>.</p>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="ios-screen-recording-fails-to-create-a-video">iOS screen recording fails to create a video</h3>
+<p>It happens infrequently, but ReplayKit can return true when attempting to start a recording even though it has failed. One known workaround is to restart your iOS devices and try again.</p>
+<p>To test whether or not your device is in this state, use the built in iOS screen recording functionality. Enable screen recording in the control center through Settings -&gt; Control Center -&gt; Customize Controls -&gt; Press the '+' next to Screen Recording. You can then start screen recording through the control center. If screen recording generates an error prompt stating that &quot;Screen recording stopped due to mediaservices failure&quot;, you have hit this failure state.</p>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Microsoft/MixedReality-SpectatorView/blob/master/src/SpectatorView.Unity/Assets/SpectatorView/Scripts/ScreenRecording/README.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../../../../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../../../../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../../../../../styles/main.js"></script>
+  </body>
+</html>

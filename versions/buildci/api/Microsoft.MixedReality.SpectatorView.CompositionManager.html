@@ -1,0 +1,602 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class CompositionManager
+   | MixedReality-SpectatorView Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class CompositionManager
+   | MixedReality-SpectatorView Documentation ">
+    <meta name="generator" content="docfx 2.44.0.0">
+    
+    <link rel="shortcut icon" href="../doc/images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../doc/images/spectatorview-logo.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Microsoft.MixedReality.SpectatorView.CompositionManager">
+  
+  
+  <h1 id="Microsoft_MixedReality_SpectatorView_CompositionManager" data-uid="Microsoft.MixedReality.SpectatorView.CompositionManager" class="text-break">Class CompositionManager
+  </h1>
+  <div class="markdown level0 summary"><p>Manages compositing real-world video and holograms together and creating an output
+video texture with recorded audio.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><span class="xref">CompositionManager</span></div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Microsoft.MixedReality.SpectatorView.html">Microsoft.MixedReality.SpectatorView</a></h6>
+  <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
+  <h5 id="Microsoft_MixedReality_SpectatorView_CompositionManager_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class CompositionManager : MonoBehaviour</code></pre>
+  </div>
+  <h3 id="fields">Fields
+  </h3>
+  
+  
+  <h4 id="Microsoft_MixedReality_SpectatorView_CompositionManager_AntiAliasing" data-uid="Microsoft.MixedReality.SpectatorView.CompositionManager.AntiAliasing">AntiAliasing</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the sampling level for antialiasing when supersampling is used.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public CompositionManager.AntiAliasingSamples AntiAliasing</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.SpectatorView.CompositionManager.AntiAliasingSamples.html">CompositionManager.AntiAliasingSamples</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="Microsoft_MixedReality_SpectatorView_CompositionManager_DefaultAlpha" data-uid="Microsoft.MixedReality.SpectatorView.CompositionManager.DefaultAlpha">DefaultAlpha</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the alpha value used for rendering holograms on top of video.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float DefaultAlpha</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="Microsoft_MixedReality_SpectatorView_CompositionManager_EnableMicrophoneAudio" data-uid="Microsoft.MixedReality.SpectatorView.CompositionManager.EnableMicrophoneAudio">EnableMicrophoneAudio</h4>
+  <div class="markdown level1 summary"><p>Gets or sets whether microphone audio should be recorded into the output video.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool EnableMicrophoneAudio</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="Microsoft_MixedReality_SpectatorView_CompositionManager_Filter" data-uid="Microsoft.MixedReality.SpectatorView.CompositionManager.Filter">Filter</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the filter mode for downsampling when supersampling is used.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public FilterMode Filter</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">FilterMode</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="Microsoft_MixedReality_SpectatorView_CompositionManager_SuperSampleLevel" data-uid="Microsoft.MixedReality.SpectatorView.CompositionManager.SuperSampleLevel">SuperSampleLevel</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the number of additional buffers to use for supersampling.
+Each additional buffer doubles the size of the rendered holograms before they're
+downsampled to the video resolution.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int SuperSampleLevel</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="Microsoft_MixedReality_SpectatorView_CompositionManager_TextureDepth" data-uid="Microsoft.MixedReality.SpectatorView.CompositionManager.TextureDepth">TextureDepth</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the texture depth used for the RenderTextures used during compositing.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public CompositionManager.Depth TextureDepth</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.SpectatorView.CompositionManager.Depth.html">CompositionManager.Depth</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  
+  
+  <a id="Microsoft_MixedReality_SpectatorView_CompositionManager_CaptureDevice_" data-uid="Microsoft.MixedReality.SpectatorView.CompositionManager.CaptureDevice*"></a>
+  <h4 id="Microsoft_MixedReality_SpectatorView_CompositionManager_CaptureDevice" data-uid="Microsoft.MixedReality.SpectatorView.CompositionManager.CaptureDevice">CaptureDevice</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the type of capture device to read video content from.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public FrameProviderDeviceType CaptureDevice { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.SpectatorView.FrameProviderDeviceType.html">FrameProviderDeviceType</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_SpectatorView_CompositionManager_CurrentCompositeFrame_" data-uid="Microsoft.MixedReality.SpectatorView.CompositionManager.CurrentCompositeFrame*"></a>
+  <h4 id="Microsoft_MixedReality_SpectatorView_CompositionManager_CurrentCompositeFrame" data-uid="Microsoft.MixedReality.SpectatorView.CompositionManager.CurrentCompositeFrame">CurrentCompositeFrame</h4>
+  <div class="markdown level1 summary"><p>Gets the index of the video frame currently being composited.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int CurrentCompositeFrame { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_SpectatorView_CompositionManager_FramerateStatistics_" data-uid="Microsoft.MixedReality.SpectatorView.CompositionManager.FramerateStatistics*"></a>
+  <h4 id="Microsoft_MixedReality_SpectatorView_CompositionManager_FramerateStatistics" data-uid="Microsoft.MixedReality.SpectatorView.CompositionManager.FramerateStatistics">FramerateStatistics</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Queue&lt;float&gt; FramerateStatistics { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Queue</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_SpectatorView_CompositionManager_IsVideoFrameProviderInitialized_" data-uid="Microsoft.MixedReality.SpectatorView.CompositionManager.IsVideoFrameProviderInitialized*"></a>
+  <h4 id="Microsoft_MixedReality_SpectatorView_CompositionManager_IsVideoFrameProviderInitialized" data-uid="Microsoft.MixedReality.SpectatorView.CompositionManager.IsVideoFrameProviderInitialized">IsVideoFrameProviderInitialized</h4>
+  <div class="markdown level1 summary"><p>Gets whether or not the video frame provider has finished initialization.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsVideoFrameProviderInitialized { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_SpectatorView_CompositionManager_TextureManager_" data-uid="Microsoft.MixedReality.SpectatorView.CompositionManager.TextureManager*"></a>
+  <h4 id="Microsoft_MixedReality_SpectatorView_CompositionManager_TextureManager" data-uid="Microsoft.MixedReality.SpectatorView.CompositionManager.TextureManager">TextureManager</h4>
+  <div class="markdown level1 summary"><p>Gets the texture manager used for compositing.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TextureManager TextureManager { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.SpectatorView.TextureManager.html">TextureManager</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_SpectatorView_CompositionManager_VideoRecordingLayout_" data-uid="Microsoft.MixedReality.SpectatorView.CompositionManager.VideoRecordingLayout*"></a>
+  <h4 id="Microsoft_MixedReality_SpectatorView_CompositionManager_VideoRecordingLayout" data-uid="Microsoft.MixedReality.SpectatorView.CompositionManager.VideoRecordingLayout">VideoRecordingLayout</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public VideoRecordingFrameLayout VideoRecordingLayout { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.SpectatorView.VideoRecordingFrameLayout.html">VideoRecordingFrameLayout</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_SpectatorView_CompositionManager_VideoTimestampToHolographicTimestampOffset_" data-uid="Microsoft.MixedReality.SpectatorView.CompositionManager.VideoTimestampToHolographicTimestampOffset*"></a>
+  <h4 id="Microsoft_MixedReality_SpectatorView_CompositionManager_VideoTimestampToHolographicTimestampOffset" data-uid="Microsoft.MixedReality.SpectatorView.CompositionManager.VideoTimestampToHolographicTimestampOffset">VideoTimestampToHolographicTimestampOffset</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the additional time offset in seconds to adjust holographic timestamps
+from the HoloLens to video timestamps from the compositor.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float VideoTimestampToHolographicTimestampOffset { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  
+  
+  <a id="Microsoft_MixedReality_SpectatorView_CompositionManager_AddCameraPose_" data-uid="Microsoft.MixedReality.SpectatorView.CompositionManager.AddCameraPose*"></a>
+  <h4 id="Microsoft_MixedReality_SpectatorView_CompositionManager_AddCameraPose_Vector3_Quaternion_System_Single_" data-uid="Microsoft.MixedReality.SpectatorView.CompositionManager.AddCameraPose(Vector3,Quaternion,System.Single)">AddCameraPose(Vector3, Quaternion, Single)</h4>
+  <div class="markdown level1 summary"><p>Adds a new camera pose with the time the camera was at when that pose was registered.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void AddCameraPose(Vector3 cameraPosition, Quaternion cameraRotation, float cameraTimestamp)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td><span class="parametername">cameraPosition</span></td>
+        <td><p>The position of the camera relative to the origin anchor.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">Quaternion</span></td>
+        <td><span class="parametername">cameraRotation</span></td>
+        <td><p>The rotation of the camera relative to the origin anchor.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td><span class="parametername">cameraTimestamp</span></td>
+        <td><p>The timestamp the pose was recorded at in the camera's time system.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_SpectatorView_CompositionManager_EnableHolographicCamera_" data-uid="Microsoft.MixedReality.SpectatorView.CompositionManager.EnableHolographicCamera*"></a>
+  <h4 id="Microsoft_MixedReality_SpectatorView_CompositionManager_EnableHolographicCamera_Transform_Microsoft_MixedReality_SpectatorView_ICalibrationData_" data-uid="Microsoft.MixedReality.SpectatorView.CompositionManager.EnableHolographicCamera(Transform,Microsoft.MixedReality.SpectatorView.ICalibrationData)">EnableHolographicCamera(Transform, ICalibrationData)</h4>
+  <div class="markdown level1 summary"><p>Enables the holographic camera rig for compositing. The hologram camera will be adjusted to match
+calibration data (its position and rotation will track the external camera, and its projection matrix
+will match the calibration information for the video camera used for compositing).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void EnableHolographicCamera(Transform parent, ICalibrationData calibrationData)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Transform</span></td>
+        <td><span class="parametername">parent</span></td>
+        <td><p>The parent transform that the holographic camera rig should be attached to.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.SpectatorView.ICalibrationData.html">ICalibrationData</a></td>
+        <td><span class="parametername">calibrationData</span></td>
+        <td><p>The calibration data used to set up the position, rotation, and
+projection matrix for the holographic camera.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_SpectatorView_CompositionManager_GetHologramTime_" data-uid="Microsoft.MixedReality.SpectatorView.CompositionManager.GetHologramTime*"></a>
+  <h4 id="Microsoft_MixedReality_SpectatorView_CompositionManager_GetHologramTime" data-uid="Microsoft.MixedReality.SpectatorView.CompositionManager.GetHologramTime">GetHologramTime()</h4>
+  <div class="markdown level1 summary"><p>Gets the timestamp of the hologram that will be composited for the current frame of the compositor.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float GetHologramTime()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td><p>The hologram timestamp corresponding to the current video frame, in Unity's timeline.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_SpectatorView_CompositionManager_OnPreCull_" data-uid="Microsoft.MixedReality.SpectatorView.CompositionManager.OnPreCull*"></a>
+  <h4 id="Microsoft_MixedReality_SpectatorView_CompositionManager_OnPreCull" data-uid="Microsoft.MixedReality.SpectatorView.CompositionManager.OnPreCull">OnPreCull()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void OnPreCull()</code></pre>
+  </div>
+  
+  
+  <a id="Microsoft_MixedReality_SpectatorView_CompositionManager_ResetOnNewCameraConnection_" data-uid="Microsoft.MixedReality.SpectatorView.CompositionManager.ResetOnNewCameraConnection*"></a>
+  <h4 id="Microsoft_MixedReality_SpectatorView_CompositionManager_ResetOnNewCameraConnection" data-uid="Microsoft.MixedReality.SpectatorView.CompositionManager.ResetOnNewCameraConnection">ResetOnNewCameraConnection()</h4>
+  <div class="markdown level1 summary"><p>Clears cached information about synchronized poses and time offsets.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void ResetOnNewCameraConnection()</code></pre>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
