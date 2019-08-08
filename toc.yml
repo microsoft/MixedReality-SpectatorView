@@ -1,0 +1,13 @@
+- name: Home
+  href: README.md
+- name: Architecture
+  href: doc/SpectatorView.Architecture.md
+- name: Samples
+  href: samples/README.md
+- name: Setup
+  href: doc/SpectatorView.Setup.md
+- name: Debugging
+  href: doc/SpectatorView.Debugging.md
+- name: API
+  href: doc/build/api/
+  topicHref: doc/build/api/Microsoft.MixedReality.SpectatorView.yml

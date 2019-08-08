@@ -51,10 +51,10 @@ namespace Microsoft.MixedReality.SpectatorView
 
         /// <summary>
         /// Runs a localization session on the specific <see cref="SpatialCoordinateSystemParticipant"/>'s connected peer, followed
-        /// by creating a persisted WorldAnchor-based <see cref="ISpatialCoordinate"/> based on the located coordinate.
+        /// by creating a persisted WorldAnchor-based <see cref="Microsoft.MixedReality.SpatialAlignment.ISpatialCoordinate"/> based on the located coordinate.
         /// </summary>
         /// <param name="participant">The participant to use to initiate the remote localization sessions.</param>
-        /// <param name="spatialLocalizerId">The ID of the <see cref="ISpatialLocalizer"/> to use
+        /// <param name="spatialLocalizerId">The ID of the <see cref="Microsoft.MixedReality.SpectatorView.ISpatialLocalizer"/> to use
         /// for discovering a spatial coordinate.</param>
         /// <param name="settings">The settings to pass to the remote localizer.</param>
         public async void RunRemoteLocalizationWithWorldAnchorPersistence(SpatialCoordinateSystemParticipant participant, Guid spatialLocalizerId, ISpatialLocalizationSettings settings)

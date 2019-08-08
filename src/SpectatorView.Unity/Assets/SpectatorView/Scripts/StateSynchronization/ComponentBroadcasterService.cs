@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.SpectatorView
     }
 
     /// <summary>
-    /// Component that syncs local content based on changes to a <see cref=IComponentBroadcaster"/>
+    /// Component that syncs local content based on changes to an <see cref="IComponentBroadcaster"/>
     /// </summary>
     public interface IComponentObserver
     {
@@ -63,7 +63,10 @@ namespace Microsoft.MixedReality.SpectatorView
             ComponentExtensions.EnsureComponent<ObserverType>(mirror);
         }
 
+        /// <summary>
         /// Ensures that the <see cref="IComponentObserver"/> type defined for the service is removed from the provided game object
+        /// </summary>
+        /// <param name="mirror"></param>
         public virtual void Destroy(GameObject mirror)
         {
             ObserverType comp = mirror.GetComponent<ObserverType>();

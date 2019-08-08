@@ -1,6 +1,6 @@
-# Overview
+# Spectator View Architecture
 
-[SpectatorView](../src/SpectatorView.Unity/Assets/SpectatorView/Scripts/SpectatorView.cs) is a multi-device experience that allows HoloLens applications to be viewed by additional devices at their own viewpoints. It offers functionality for unidirectional content synchronization (State Synchronization) and leverages spatial coordinates for scene alignment (Spatial Alignment). It can be used to enable a variety of different filming scenarios including prototype documentation and keynote demos.
+`SpectatorView` is a multi-device experience that allows HoloLens applications to be viewed by additional devices at their own viewpoints. It offers functionality for unidirectional content synchronization (State Synchronization) and leverages spatial coordinates for scene alignment (Spatial Alignment). It can be used to enable a variety of different filming scenarios including prototype documentation and keynote demos.
 
 ## Supported scenarios
 
@@ -20,7 +20,7 @@
 
 ### 2. Spectating with a video camera rig
 
-1. A HoloLens is mounted to the video camera. [Calibration](../src/SpectatorView.Unity/Assets/SpectatorView/Scripts/Calibration/README.md) is then performed to calculate camera intrinsics (Properties such as lens focal length and principal points that are needed for compositing holograms into the video camera feed) and camera extrinsics (The transform of the video camera to the mounted HoloLens). This data is stored on this HoloLens mounted to the video camera.
+1. A HoloLens is mounted to the video camera. [Calibration](SpectatorView.Setup.VideoCamera.md) is then performed to calculate camera intrinsics (Properties such as lens focal length and principal points that are needed for compositing holograms into the video camera feed) and camera extrinsics (The transform of the video camera to the mounted HoloLens). This data is stored on this HoloLens mounted to the video camera.
 2. The PC obtains a video camera stream through a capture card.
 3. The PC connects to sockets open on both the user HoloLens and video camera rig HoloLens through the unity editor.
 4. The PC obtains camera intrinsic and extrinsic information from the DSLR mounted HoloLens and updates its unity camera to reflect these values.

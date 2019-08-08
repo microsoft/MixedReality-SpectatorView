@@ -1,4 +1,6 @@
-# Requirements
+# Spectator View Video Camera Setup
+
+## Requirements
 
 > Note: Video camera filming currently requires a HoloLens 2 for the camera rig. HoloLens 1 devices are not supported.
 
@@ -22,17 +24,17 @@ The below instructions assume that you have already gone through the repository 
 
 1. Build x64 Release versions of SpectatorView.Compositor.dll & SpectatorView.Compositor.UnityPlugin.dll based on the instructions [here](../src/SpectatorView.Native/ReadME.md).
 2. Build a x64 Release version of SpectatorView.OpenCV.dll based on the instructions [here](../src/SpectatorView.Native/ReadME.md).
-3. Copy these Dlls to the SpectatorView.Unity project by running [CopyPluginsToUnity.bat](../tools/Scripts/CopyPluginsToUnity.bat).
-4. Download the [MixedReality QR Code Plugin](https://github.com/dorreneb/mixed-reality/releases) zip folder and extract its contents into the [MixedReality-QRCodePlugin folder](../external/MixedReality-QRCodePlugin).
+3. Copy these Dlls to the SpectatorView.Unity project by running `tools/Scripts/CopyPluginsToUnity.bat`.
+4. Download the [MixedReality QR Code Plugin](https://github.com/dorreneb/mixed-reality/releases) zip folder and extract its contents into the `external/MixedReality-QRCodePlugin` folder.
 5. Print the [Chessboard](images/Chessboard.png) used to calculate video camera intrinsics and mount it to a solid surface.
 
->Note: This can be obtained by printing two copies of [HalfChessboard.pdf](images/HalfChessboard.pdf) on 8.5x11 sheets of paper.
+>Note: This can be obtained by printing two copies of `doc/images/HalfChessboard.pdf` on 8.5x11 sheets of paper.
 
 ![Marker](images/Chessboard.png)
 
 6. Print the [Calibration Board](images/CalibrationBoard.png) used to calculate video camera extrinsics and mount it to a solid surface.
 
->Note: This can be obtained by printing all of the CalibrationBoard*.pdf files in the [images](images) folder on 8.5x11 sheets of paper. If you choose to print your own board using [CalibrationBoard.png](images/CalibrationBoard.png), make sure that each QR Code is larger than 5cm in length.
+>Note: This can be obtained by printing all of the `CalibrationBoard*.pdf` files in the `doc/images` folder on 8.5x11 sheets of paper. If you choose to print your own board using [CalibrationBoard.png](images/CalibrationBoard.png), make sure that each QR Code is larger than 5cm in length.
 
 ![Marker](images/CalibrationBoard.png)
 
@@ -44,7 +46,7 @@ This [Calibration Board](images/CalibrationBoard.png) contains 18 QR Codes and A
 
 9. Connect your HoloLens 2 to Wi-Fi and obtain its IP address. This can be done through the settings application on the device. Go to Settings -> Network & Internet -> Wi-Fi -> Hardware properties to obtain the device's IP address.
 10. Deploy the HolographiCamera.Unity project to your HoloLens 2 device.
-    1. Open the [HolographicCamera.Unity project](../src/HolographicCamera.Unity).
+    1. Open the `src/HolographicCamera.Unity` project.
     2. Open the HolographicCamera Unity scene in the project.
     3. In the WSA Unity player settings, add the **QRCODESTRACKER_BINARY_AVAILABLE** preprocessor directive. (This is located via Build Settings -> Player Settings -> Other Settings -> 'Scripting Defined Symbols
     4. Build and deploy this project to your HoloLens 2 device.

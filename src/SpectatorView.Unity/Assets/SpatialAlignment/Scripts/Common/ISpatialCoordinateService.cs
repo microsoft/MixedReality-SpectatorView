@@ -46,7 +46,7 @@ namespace Microsoft.MixedReality.SpatialAlignment
         /// <summary>
         /// Begins search for coordinates, optionally priortizing a set of ids.
         /// </summary>
-        /// <param name="cancellationToken">The <see cref="CancellationToken"/> to be used for cancellation (stopping) of the discovery task.</param>
+        /// <param name="cancellationToken">The <see cref="System.Threading.CancellationToken"/> to be used for cancellation (stopping) of the discovery task.</param>
         /// <param name="coordinateIds">The optional set to prioritize discovery of ids to.</param>
         /// <returns>The set of coordinates discovered during this session.</returns>
         Task<bool> TryDiscoverCoordinatesAsync(CancellationToken cancellationToken, params string[] idsToLocate);

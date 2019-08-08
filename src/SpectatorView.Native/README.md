@@ -1,6 +1,6 @@
 # SpectatorView.Native Dlls
 
-The following Dlls are built out of the [SpectatorView.Native.sln](SpectatorView.Native.sln).
+The following Dlls are built out of the `SpectatorView.Native.sln`.
 
 - **SpectatorView.Compositor.dll** is needed for DSLR camera calibration and DSLR camera spectating experiences.
 - **SpectatorView.Compositor.UnityPlugin.dll** is needed for DSLR camera calibartion and DSLR camera spectating experiences.
@@ -16,12 +16,12 @@ The instructions below show how to build all of the native DLLs required by Spec
 **DeckLink Capture Card**
 If you are using a Blackmagic design capture card, you will need to install the SDK and create a Visual Studio user macro for its location.
 
-- Download Blackmagic design's Desktop Video & Desktop Video SDK from here: <https://www.blackmagicdesign.com/support> - Search for Desktop Video & Desktop Video SDK in "Latest Downloads" (Note: **10.9.11** is the current version used in the SpectatorView.Compositor.dll. Newer versions may contain breaks.)
+- Download Blackmagic design's Desktop Video & Desktop Video SDK from [here](https://www.blackmagicdesign.com/support). Search for Desktop Video & Desktop Video SDK in "Latest Downloads" (Note: **10.9.11** is the current version used in the SpectatorView.Compositor.dll. Newer versions may contain breaks.)
 
     >Note: Desktop Video SDK 10.9.11 does not have a MIT license. License information is provided when downloading the sdk.
 
 - Extract the SDK anywhere on your computer.
-- Update the DeckLink_inc user macro in [dependencies.props](SpectatorView.Compositor/dependencies.props) with the corresponding path on your computer.
+- Update the DeckLink_inc user macro in `dependencies.props` with the corresponding path on your computer.
 - Restart Visual Studio
 
 **Elgato Capture Card**
@@ -30,15 +30,15 @@ If you are using an Elgato capture card, you will need to clone Elgato's [gameca
 - Open a Command Prompt in administrator mode
 - Navigate to a folder in which you would like to store your repositories (ex: c:\git)
 - git clone <https://github.com/elgatosf/gamecapture>
-- Update the Elgato_Filter user macro in [dependencies.props](SpectatorView.Compositor/dependencies.props) with the corresponding path on your computer.
+- Update the Elgato_Filter user macro in `dependencies.props` with the corresponding path on your computer.
 - Restart Visual Studio
 
 **OpenCV**
 
 >Note: SpectatorView.OpenCV.dll introduces dependencies on OpenCV. OpenCV does not have a MIT license. For more information on OpenCV's license, see [here](https://opencv.org/license/).
 
-- **DSLR camera calibration** requires a **Release x64** version of this binary built from the [**SpectatorView.OpenCV.Desktop**](SpectatorView.OpenCV/Desktop/SpectatorView.OpenCV.Desktop.vcxproj) visual studio project.
-- **ArUco Marker detection** on a HoloLens 1 device requires a **Release x86** version of this binary built from the [**SpectatorView.OpenCV.UWP**](SpectatorView.OpenCV/UWP/SpectatorView.OpenCV.UWP.vcxproj)
+- **DSLR camera calibration** requires a **Release x64** version of this binary built from the `SpectatorView.OpenCV.Desktop` visual studio project.
+- **ArUco Marker detection** on a HoloLens 1 device requires a **Release x86** version of this binary built from the `SpectatorView.OpenCV.UWP`.
 
 ###### 1. Install [Vcpkg](https://github.com/microsoft/vcpkg)
 
@@ -61,7 +61,7 @@ For ArUco marker detection, you will need to install a x86 uwp friendly version 
 ### 2. Build the plugins
 
 Building the SpectatorView.Native solution for each architecture will produce the correct required binaries for each platform. Note that not all binaries will build on every architecture.
-- Open [SpectatorView.Native.sln](SpectatorView.Native.sln) in Visual Studio.
+- Open `src/SpectatorView.Native/SpectatorView.Native.sln` in Visual Studio.
 - Build a **Release x64** version of the solution.
 - Build a **Release x86** version of the solution.
 - Build a **Release ARM** version of the solution.
@@ -83,5 +83,5 @@ If installing opencv with vcpkg succeeded, a few things could still occur that p
 
 ## 4. Adding compiled binaries to SpectatorView.Unity
 
-After compiling the above binaries, run [CopyPluginsToUnity.bat](../../tools/Scripts/CopyPluginsToUnity.bat) to add said binaries to the SpectatorView.Unity project. This script will also add .meta files for the binaries to the Unity project.
+After compiling the above binaries, run `tools/Scripts/CopyPluginsToUnity.bat` to add said binaries to the SpectatorView.Unity project. This script will also add .meta files for the binaries to the Unity project.
 >Note: The Unity editor does not currently dynamically unload binaries. Errors may occur when trying to copy binaries into your Unity project if the unity editor has loaded said binaries. If errors are encountered with this script, close your Unity editor and try again.

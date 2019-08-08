@@ -10,7 +10,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.SpectatorView
 {
     /// <summary>
-    /// A variant of marker based <see cref="ISpatialCoordinateService"/> implementation. This one tracks coordinates displayed on the screen of current mobile device.
+    /// A variant of marker based <see cref="Microsoft.MixedReality.SpatialAlignment.ISpatialCoordinateService"/> implementation. This one tracks coordinates displayed on the screen of current mobile device.
     /// The logic is that every time you start tracking a new coordinate is created and shown on the screen, after you stop tracking that coordinates location is no longer updated with the device.
     /// </summary>
     public class MarkerVisualCoordinateService : SpatialCoordinateServiceBase<int>
