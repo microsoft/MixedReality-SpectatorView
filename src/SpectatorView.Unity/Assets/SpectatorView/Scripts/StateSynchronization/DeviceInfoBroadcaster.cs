@@ -21,7 +21,7 @@ namespace Microsoft.MixedReality.SpectatorView
     {
         [SerializeField]
 #pragma warning disable 414 // The field is assigned but its value is never used
-        private TCPConnectionManager connectionManager = null;
+        private IConnectionManager connectionManager = null;
 #pragma warning restore 414
 
 #if UNITY_WSA
@@ -35,7 +35,7 @@ namespace Microsoft.MixedReality.SpectatorView
             connectionManager.OnConnected -= TcpConnectionManager_OnConnected;
         }
 
-        private void TcpConnectionManager_OnConnected(SocketEndpoint obj)
+        private void IConnectionManager_OnConnected(SocketEndpoint obj)
         {
             SendDeviceInfo();
         }

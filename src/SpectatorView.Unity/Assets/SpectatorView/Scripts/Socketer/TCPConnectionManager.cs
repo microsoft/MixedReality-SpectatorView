@@ -7,10 +7,26 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.SpectatorView
 {
+    public interface IConnectionManager
+    {
+        event Action<SocketEndpoint> OnConnected;
+        event Action<SocketEndpoint> OnDisconnected;
+        event Action<IncomingMessage> OnReceive;
+
+        bool HasConnections { get; }
+        bool IsConnecting { get; }
+        int OutputBytesQueued { get; }
+
+        void StartListening(int port);
+        void StopListening();
+        void ConnectTo(string serverAddress, int port);
+        void Broadcast(byte[] data);
+        void DisconnectAll();
+    }
     /// <summary>
     /// Helper class for setting up a TCP based network connection
     /// </summary>
-    public class TCPConnectionManager : MonoBehaviour
+    public class TCPConnectionManager : MonoBehaviour, IConnectionManager
     {
         /// <summary>
         /// Called when a client or server connection is established and the connection manager is using the TCP protocol.
@@ -107,7 +123,7 @@ namespace Microsoft.MixedReality.SpectatorView
         private void OnServerConnected(SocketerClient client, int sourceId, string clientAddress)
         {
             Debug.Log("Server connected to " + clientAddress);
-            SocketEndpoint socketEndpoint = new SocketEndpoint(client, timeoutInterval, clientAddress, sourceId);
+            SocketEndpoint socketEndpoint = new TCPSocketEndpoint(client, timeoutInterval, clientAddress, sourceId);
             serverConnections[sourceId] = socketEndpoint;
             socketEndpoint.QueueIncomingMessages(inputMessageQueue);
             newConnections.Enqueue(socketEndpoint);
@@ -127,7 +143,7 @@ namespace Microsoft.MixedReality.SpectatorView
         private void OnClientConnected(SocketerClient client, int sourceId, string hostAddress)
         {
             Debug.Log("Client connected to " + hostAddress);
-            SocketEndpoint socketEndpoint = new SocketEndpoint(client, timeoutInterval, hostAddress, sourceId);
+            SocketEndpoint socketEndpoint = new TCPSocketEndpoint(client, timeoutInterval, hostAddress, sourceId);
             clientConnection = socketEndpoint;
             socketEndpoint.QueueIncomingMessages(inputMessageQueue);
             newConnections.Enqueue(socketEndpoint);

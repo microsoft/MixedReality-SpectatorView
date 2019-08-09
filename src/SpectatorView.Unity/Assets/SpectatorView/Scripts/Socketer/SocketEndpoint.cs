@@ -7,7 +7,18 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.SpectatorView
 {
-    public sealed class SocketEndpoint
+    public interface SocketEndpoint
+    {
+        string Address { get; }
+        bool IsConnected { get; }
+        void Disconnect();
+        void CheckConnectionTimeout(DateTime currentTime);
+        void QueueIncomingMessages(ConcurrentQueue<IncomingMessage> incomingQueue);
+        void StopIncomingMessageQueue();
+        void Send(byte[] data);
+    }
+
+    public sealed class TCPSocketEndpoint : SocketEndpoint
     {
         private enum ConnectionState
         {
@@ -60,7 +71,7 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
-        public SocketEndpoint(SocketerClient socketerClient, TimeSpan timeoutInterval, string address, int sourceId = 0)
+        public TCPSocketEndpoint(SocketerClient socketerClient, TimeSpan timeoutInterval, string address, int sourceId = 0)
         {
             this.socketerClient = socketerClient;
             this.timeoutInterval = timeoutInterval;

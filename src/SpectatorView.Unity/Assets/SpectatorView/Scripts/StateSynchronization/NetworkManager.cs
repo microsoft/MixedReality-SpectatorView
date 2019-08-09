@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.SpectatorView
         private float lastReceivedUpdate;
 
         [SerializeField]
-        protected TCPConnectionManager connectionManager = null;
+        protected IConnectionManager connectionManager = null;
 
         private SocketEndpoint currentConnection;
 

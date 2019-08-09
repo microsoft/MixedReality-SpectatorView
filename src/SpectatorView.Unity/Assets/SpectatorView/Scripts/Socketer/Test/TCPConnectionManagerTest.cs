@@ -45,11 +45,11 @@ namespace Microsoft.MixedReality.SpectatorView
         protected float timeBetweenBroadcasts = 1.0f;
 
         /// <summary>
-        /// TCPConnectionManager to use for networking
+        /// IConnectionManager to use for networking
         /// </summary>
-        [Tooltip("TCPConnectionManager to use for networking")]
+        [Tooltip("IConnectionManager to use for networking")]
         [SerializeField]
-        protected TCPConnectionManager connectionManager;
+        protected IConnectionManager connectionManager;
 
         private float lastBroadcast = 0.0f;
         private bool broadcastSent = false;
@@ -91,7 +91,7 @@ namespace Microsoft.MixedReality.SpectatorView
             {
                 Debug.Log("Broadcasts sent and received, attempting to disconnect");
                 connectionManager.DisconnectAll();
-                Debug.Log("TCPConnectionManager has disconnected");
+                Debug.Log("IConnectionManager has disconnected");
             }
             else if ((Time.time - lastBroadcast) > timeBetweenBroadcasts)
             {
@@ -110,17 +110,17 @@ namespace Microsoft.MixedReality.SpectatorView
 
         private void OnNetConnected(SocketEndpoint obj)
         {
-            Debug.Log($"TCPConnectionManager Connected:{obj.ToString()}");
+            Debug.Log($"IConnectionManager Connected:{obj.ToString()}");
         }
 
         private void OnNetDisconnected(SocketEndpoint obj)
         {
-            Debug.Log($"TCPConnectionManager Disconnected:{obj.ToString()}");
+            Debug.Log($"IConnectionManager Disconnected:{obj.ToString()}");
         }
 
         private void OnNetReceived(IncomingMessage obj)
         {
-            Debug.Log($"TCPConnectionManager Received:{obj.ToString()}");
+            Debug.Log($"IConnectionManager Received:{obj.ToString()}");
             broadcastReceived = true;
         }
     }
