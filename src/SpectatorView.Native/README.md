@@ -53,6 +53,7 @@ If you are using an Elgato capture card, you will need to clone Elgato's [gameca
 
 For ArUco marker detection, you will need to install a x86 uwp friendly version of opencv. For DSLR camera calibration, you will need to install a x64 desktop friendly version of opencv.
 
+- .\vcpkg install protobuf:x86-windows
 - .\vcpkg install opencv[contrib]:x86-uwp --recurse
 - .\vcpkg install opencv[contrib]:x64-windows --recurse
 
