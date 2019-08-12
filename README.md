@@ -45,16 +45,6 @@ The MixedReality-SpectatorView repository uses Unity packages, git submodules an
 
 Depending on what release you are using the correct setup script may vary. Choose the appropriate script below based on the git branch that you have checked out in your clone of the MixedReality-SpectatorView repository.
 
-#### Setting up the `release/1.0.0-beta` branch
-
-If you are using the release/1.0.0-beta branch, You will need to run the following command:
-
-1. Run `'tools/Scripts/ResetSamples.bat'` as an administrator on a PC  (On Mac or Linux, you can run `'sh /tools/scripts/ResetSamples.sh'`). These scripts are located within your MixedReality-SpectatorView submodule.
-
-#### Setting up the `master` branch
-
-If you are using the master branch, you will need to run the following command:
-
 1. Run `'tools/Scripts/SetupRepository.bat'` as an administrator on your PC (On Mac or Linux, you can run `'sh /tools/scripts/SetupRepository.sh'`). These scripts are located within your MixedReality-SpectatorView submodule.
 
 ![Marker](doc/images/SetupRepo.png)
@@ -72,25 +62,6 @@ After obtaining a local clone of the MixedReality-SpectatorView repository and r
 >* **Project Assets directory:** c:\Your\Unity\Project\Assets
 >* **MixedReality-SpectatorView submodule directory:** c:\Your\Unity\Project\sv
 
-#### Using the `release/1.0.0-beta` branch
-
-1) Close any instances of Unity.
-2) Open an administrator command window.
-3) Run the following commands, updating the paths to reflect your local environment:
-
-4. `cd c:\Your\Unity\Project\Assets`
-5. `mklink /D "MixedReality-SpectatorView" "..\sv\src\SpectatorView.Unity\Assets"`
-6. `mklink /D "ARKit-Unity-Plugin" "..\sv\external\ARKit-Unity-Plugin"`
-7. `mklink /D "AzureSpatialAnchorsPlugin" "..\sv\external\Azure-Spatial-Anchors-Samples\Unity\Assets\AzureSpatialAnchorsPlugin"`
-8. `mklink /D "GoogleARCore" "..\sv\external\ARCore-Unity-SDK\Assets\GoogleARCore"`
-9. `mklink /D "MixedReality-QRCodePlugin" "..\sv\external\MixedReality-QRCodePlugin"`
-10. `mkdir AzureSpatialAnchors.Resources`
-11. `cd AzureSpatialAnchors.Resources`
-12. `mklink /D "android-logos" "..\sv\external\Azure-Spatial-Anchors-Samples\Unity\Assets\android-logos"`
-13. `mklink /D "logos" "..\sv\external\Azure-Spatial-Anchors-Samples\Unity\Assets\logos"`
-
-#### Using the `master` branch
-
 1. Close any instances of Unity.
 2. Open an administrator command window.
 3. Run `tools\Scripts\AddDependencies.bat "Assets" "sv"` (These paths are the relative paths to your project Assets folder and your MixedReality-SpectatorView submodule from the root directory of your repository).  This script is located within your MixedReality-SpectatorView submodule.
@@ -104,11 +75,10 @@ Now, when you reopen your project in Unity, folders should appear in your projec
 After adding the MixedReality-SpectatorView repository as a submodule, you can commit the symbolic linked directories and submodule meta files to your repository to share with your team. If a team member wants to then use this repository they should do the following:
 
 1. Clone the project repository.
-2. Run `tools\Scripts\FixSymbolicLinks.ps1` from the root directory of your project's repository.
+2. Run `tools\Scripts\SetupRepository.ps1` in the MixedReality-SpectatorView submodule.
+3. Run `tools\Scripts\FixSymbolicLinks.ps1` from the root directory of your project's repository.
 
 ![Marker](doc/images/FixSymbolicLinks.png)
-
-3. Run `tools\Scripts\SetupRepository.ps1` in the MixedReality-SpectatorView submodule.
 
 ### Basic Unity Setup
 
