@@ -69,3 +69,7 @@ UWP/
 *.privkey
 *.pfx
 *.pfx.meta
+
+# Avoid checking in build directories
+Assets/BuildTools.Unity
+Assets/BuildTools.Unity.meta
