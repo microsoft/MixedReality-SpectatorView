@@ -90,11 +90,11 @@ Below are quick instructions for adding Spectator View to your project:
 
 3. Add the `MixedReality.SpectatorView/SpectatorView/Prefabs/SpectatorView.prefab` to the primary scene that will run on your HoloLens device. This prefab contains the bulk of Spectator View code for synchronizing and aligning holograms across multiple devices.
 
-4. Choose a [Spatial Alignment Strategy](src/SpectatorView.Unity/Assets/SpatialAlignment/README.md### Detailed Breakdown of Spatial Alignment Strategies) that will allow multiple devices to view holograms in the same location in the physical world. There are different mechanisms for achieving alignment, such as [Azure Spatial Anchors](https://azure.microsoft.com/en-us/services/spatial-anchors/) and marker detector based approaches. Not all approaches work for all devices, so you will need to pick the strategy that best addresses your needs.
+4. Choose a [Spatial Alignment Strategy](src/SpectatorView.Unity/Assets/SpatialAlignment/README.md###Detailed Breakdown of Spatial Alignment Strategies) that will allow multiple devices to view holograms in the same location in the physical world. There are different mechanisms for achieving alignment, such as [Azure Spatial Anchors](https://azure.microsoft.com/en-us/services/spatial-anchors/) and marker detector based approaches. Not all approaches work for all devices, so you will need to pick the strategy that best addresses your needs.
 
-5. Add the [dependencies](doc/SpectatorView.Setup.md## Spatial Alignment Strategy Dependencies) required for your Spatial Alignment Strategy to your Unity project. This may involve updating git submodules, adding symbolic linked directories, and manually downloading and extracting zip files. With the end of this step, you will have all of the needed code from external projects included in your Unity project.
+5. Add the [dependencies](doc/SpectatorView.Setup.md##Spatial Alignment Strategy Dependencies) required for your Spatial Alignment Strategy to your Unity project. This may involve updating git submodules, adding symbolic linked directories, and manually downloading and extracting zip files. With the end of this step, you will have all of the needed code from external projects included in your Unity project.
 
-6. Update your Unity project and player settings based on the [requirements](doc/SpectatorView.Setup.md### Spatial Alignment Strategy Dependencies) of your Spatial Alignment Strategy. This often involves adding preprocessor directives to different platform player settings to enable code paths specific to your desired Spatial Alignment Strategy.
+6. Update your Unity project and player settings based on the [requirements](doc/SpectatorView.Setup.md###Spatial Alignment Strategy Dependencies) of your Spatial Alignment Strategy. This often involves adding preprocessor directives to different platform player settings to enable code paths specific to your desired Spatial Alignment Strategy.
 
 7. Generate and check-in Asset Caches to your project repository. These Asset Caches act as GameObject registries and will allow different devices running your application to understand what Unity GameObjects are being created, destroyed and updated throughout the application life cycle. To generate these asset caches, run [Spectator View -> Update All Asset Caches](doc/SpectatorView.Setup.md#### Before Building) in the Unity Editor toolbar.
 
@@ -102,7 +102,7 @@ Below are quick instructions for adding Spectator View to your project:
 
 9. Open the example spectating scene appropriate for your mobile device type. This should either be `SpectatorView.Android.unity` or `SpectatorView.iOS.unity`.
 
-10. Build & Deploy your spectating scene onto your mobile device. Platform specific build instructions can be found [here for Android](doc/SpectatorView.Setup.md### Android) and [here for iOS](doc/SpectatorView.Setup.md### iOS).
+10. Build & Deploy your spectating scene onto your mobile device. Platform specific build instructions can be found [here for Android](doc/SpectatorView.Setup.md### Android) and [here for iOS](doc/SpectatorView.Setup.md###iOS).
 
 ### Detailed Unity Setup
 For more information on setting up a Spectator View project, see the following pages:
