@@ -1,0 +1,25 @@
+# [Template] Compile MRTK inside Unity.
+
+parameters: 
+  Platform: 'UWP'  # UWP|Standalone|Android|iOS
+  Arch: 'ARM'  # x86|arm
+  ScriptingBackend: 'IL2CPP'  # IL2CPP|.NET|Mono2x
+  SceneList: '' # Path to the scene to build
+  Define: '' # [optional] Define variables, separated by semicolons
+  UnityArgs: '' # [optional] Additional args passed to Unity
+
+steps:
+- task: PowerShell@2
+  displayName: 'Build Unity Player'
+  inputs:
+    targetType: filePath
+    filePath: ./tools/ci/scripts/ci/buildUnityProjectPipeline.ps1
+    arguments: >
+      -ProjectPath: '${{ parameters.ProjectPath }}'
+      -ToolsAssetsPath: '${{ parameters.ToolsAssetsPath }}'
+      -Platform: '${{ parameters.Platform }}'
+      -Arch: '${{ parameters.Arch }}'
+      -ScriptingBackend: '${{ parameters.ScriptingBackend }}'
+      -SceneList: '${{ parameters.SceneList }}'
+      -Define: '${{ parameters.Define }}'
+      -UnityArgs: '${{ parameters.UnityArgs }}'

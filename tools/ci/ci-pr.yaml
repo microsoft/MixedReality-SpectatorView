@@ -1,0 +1,32 @@
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License. See LICENSE in the project root for license information.
+
+# MixedReality-SpectatorView build pipeline for pr validation
+
+# Trigger CI on push changes
+trigger: none
+
+# Do not trigger CI on PRs
+pr: none
+
+# Give a unique name to the build each time it runs
+name: ci-pr-$(SourceBranchName)-$(Date:yyyyMMdd)-$(Rev:r)
+
+variables:
+  UnityVersion: Unity2018.3.7f1
+
+jobs:
+- job: PRValidation
+  timeoutInMinutes: 90
+  pool:
+    name: On-Prem Unity
+    demands:
+    - Unity2018.3.7f1
+    - COG-UnityCache-WUS2-01
+    - SDK_18362 -equals TRUE
+  steps:
+  - template: templates/common.yml
+    parameters:
+      ProjectPath: './samples/SpectatorView.Example.Unity/'
+      ToolsAssetsPath: './tools/ci/src/BuildTools.Unity/Assets/'
+  - template: templates/end.yml

@@ -1,15 +1,6 @@
-. "$PSScriptRoot\SymbolicLinkHelpers.ps1"
+. "$PSScriptRoot\SetupRepositoryFunc.ps1"
 
-Set-Location (Split-Path $MyInvocation.MyCommand.Path)
-Write-Host "`n"
-
-ConfigureRepo
-
-# Ensure that submodules are initialized and cloned.
-Write-Output "Updating spectator view related submodules."
-git submodule update --init
-
-FixSymbolicLinks
+SetupRepository
 
 Write-Host "`n"
 Write-Host -NoNewLine 'Setup Completed. Press any key to continue...';
