@@ -39,7 +39,7 @@ bool ArUcoMarkerDetector::DetectMarkers(
     // ArUco detection with opencv does not support images with alpha channels
     // So, we convert the image to grayscale for processing
     cv::Mat grayImage;
-    cv::cvtColor(image, grayImage, CV_BGRA2GRAY);
+    cv::cvtColor(image, grayImage, cv::ColorConversionCodes::COLOR_BGRA2GRAY);
 
     std::vector<int> arUcoMarkerIds;
     std::vector<std::vector<cv::Point2f>> arUcoMarkers;
