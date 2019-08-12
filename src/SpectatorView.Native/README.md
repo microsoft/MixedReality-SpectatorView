@@ -37,7 +37,7 @@ If you are using an Elgato capture card, you will need to clone Elgato's [gameca
 
 >Note: SpectatorView.OpenCV.dll introduces dependencies on OpenCV. OpenCV does not have a MIT license. For more information on OpenCV's license, see [here](https://opencv.org/license/).
 
-- **DSLR camera calibration** requires a **Release x64** version of this binary built from the `SpectatorView.OpenCV.Desktop` visual studio project.
+- **Video camera calibration** requires a **Release x64** version of this binary built from the `SpectatorView.OpenCV.Desktop` visual studio project.
 - **ArUco Marker detection** on a HoloLens 1 device requires a **Release x86** version of this binary built from the `SpectatorView.OpenCV.UWP`.
 
 ###### 1. Install [Vcpkg](https://github.com/microsoft/vcpkg)
