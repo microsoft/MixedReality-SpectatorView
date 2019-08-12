@@ -58,7 +58,7 @@ jobs:
       )
     inputs:
       targetType: filePath
-      filePath: tools/Scripts/commitGeneratedDocs.ps1
+      filePath: tools/ci/scripts/commitGeneratedDocs.ps1
       arguments: '-SourceBranch $(Build.SourceBranch)'
       failOnStderr: false
     env:
