@@ -112,8 +112,9 @@ If you are building Azure Spatial Anchors on iOS, you will need to take some add
 
 1. Obtain your HoloLens's ip address from its windows settings menu via Settings -> Network & Internet -> Wi-Fi -> Hardware Properties.
 2. Add any of the preprocessor directives or Unity packages described above that you intend to use to your clone of the SpectatorView codebase.
-3. Open the `SpectatorView.HoloLens` scene in your Unity project.
-4. In the Unity editor, call 'Spectator View -> Update All Asset Caches' (This will be located in the Unity editor toolbar) to prepare content for state synchronization. Add the Generated.StateSynchronization.AssetCaches folder to your project's repository to share across development devices.
+3. If you would like to synchronize Text Mesh Pro UI, you will need to add the `STATESYNC_TEXTMESHPRO` preprocessor directive to the UWP, iOS and Android Player Settings (This is located via Build Settings -> Player Settings -> Other Settings -> 'Scripting Defined Symbols').
+4. Open the `SpectatorView.HoloLens` scene in your Unity project.
+5. In the Unity editor, call 'Spectator View -> Update All Asset Caches' (This will be located in the Unity editor toolbar) to prepare content for state synchronization. Add the Generated.StateSynchronization.AssetCaches folder to your project's repository to share across development devices.
 
 ![Marker](images/UpdateAllAssetCaches.png)
 
