@@ -102,7 +102,7 @@ Below are quick instructions for adding Spectator View to your project:
 
 9. Open the example spectating scene appropriate for your mobile device type. This should either be `SpectatorView.Android.unity` or `SpectatorView.iOS.unity`.
 
-10. Build & Deploy your spectating scene onto your mobile device. Platform specific build instructions can be found [here](doc/SpectatorView.Setup.md) for Android and iOS.
+10. Build & Deploy your spectating scene onto your mobile device. Be sure to include the `SpectatorView.Android.unity` or `SpectatorView.iOS.unity` scene in your build through the Build Settings. Platform specific build instructions can be found [here](doc/SpectatorView.Setup.md) for Android and iOS.
 
 ### Detailed Unity Setup
 For more information on setting up a Spectator View project, see the following pages:
