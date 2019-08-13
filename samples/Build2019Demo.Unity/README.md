@@ -64,4 +64,9 @@ The demo consists of a simple experience with a buttons panel and a slider, conf
 - **Plugins:** This folder contains parts of the ASA plugin that need to be in this location.
 
 ## Troubleshooting
-For up to date information on troubleshooting build issues, checkout the `Troubleshooting` section in our detailed setup steps [here](../../doc/SpectatorView.Setup.md).
+
+### __Issue:__ Reference Rewriter Errors related to System.Numeric.* types
+The MixedRealityToolkit-Unity project introduces some dependencies on System.Numerics.* types that can cause errors when building the UWP player. That going said, although these errors are generated during the build, they do not prevent the build from succeeding. Its suggested to ignore these errors when building the sample application for the time being.
+
+### __Additional Issues__
+For more information on troubleshooting other build issues, checkout the `Troubleshooting` section in our detailed setup steps [here](../../doc/SpectatorView.Setup.md).
