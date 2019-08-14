@@ -195,3 +195,17 @@ In some instances, contributors have experienced issues with android permissions
 
 ### __Issue:__ System.* types fail to resolve when first building a HoloLens visual studio solution generated from Unity
 When first opening a visual studio solution generated from Unity for the Spectator View codebase, the build may fail. Typically after this first failure, an `Opening repositories` step will run and output to the visual studio console. Reattempting the build after this step has ran typically results in the solution succeeding to compile.
+
+### __Issue:__ SetupRepository.sh did not work on Mac
+Depending on your local environment, you may need to declare the SetupRepository.sh script as executable by changing its access permissions/mode. To do this, run the following commands:
+- `cd tools/Scripts`
+- `chmod a+x *.sh`
+- `./SetupRepository.sh`
+
+### __Issue:__ Unity fails to open your SpectatorView project on Mac
+You may encounter issues when opening a Unity project based on read/write permissions for Project Packages. To fix this, you can run the following command in your Project's Packages folder (Note the below example is for the Build 2019 sample application):
+- MixedReality-SpectatorView/samples/Build2019Demo.Unity/Packages$ `sudo chmod a+rwx *`
+
+### __Issue:__ "Failed to change file flags" errors encountered when opening a Unity project on Mac
+In some instances, file permissions may generate errors when opening a spectator view Unity project. To fix this, you can try running the following command:
+- MixedReality-SpectatorView$ `sudo chmod a+rwx *`
