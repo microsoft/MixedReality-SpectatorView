@@ -628,7 +628,8 @@ PlayerSettings:
   webGLCompressionFormat: 1
   webGLLinkerTarget: 1
   webGLThreadsSupport: 0
-  scriptingDefineSymbols: {}
+  scriptingDefineSymbols:
+    14: QRCODESTRACKER_BINARY_AVAILABLE
   platformArchitecture:
     iOS: 1
   scriptingBackend:
