@@ -209,3 +209,8 @@ You may encounter issues when opening a Unity project based on read/write permis
 ### __Issue:__ "Failed to change file flags" errors encountered when opening a Unity project on Mac
 In some instances, file permissions may generate errors when opening a spectator view Unity project. To fix this, you can try running the following command:
 - MixedReality-SpectatorView$ `sudo chmod a+rwx *`
+
+### __Issue:__ Screen Recording UI won't appear on iOS device
+The ARKit Camera has an Enable Auto Focus feature that consumes touch input events, breaking Unity canvas interactions on iOS. This can cause the Screen Recording UI to fail to show. To fix this, uncheck the `Enable Auto Focus` option for ARKit's `UnityARCameraManager`:
+
+![Marker](images/iOSAutoFocus.png)
