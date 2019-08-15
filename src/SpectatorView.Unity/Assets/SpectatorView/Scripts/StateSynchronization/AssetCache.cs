@@ -141,15 +141,20 @@ namespace Microsoft.MixedReality.SpectatorView
                         scene = SceneManager.GetSceneByBuildIndex(i);
                         scenesToClose.Add(scene);
                     }
-                    var rootGameObjects = scene.GetRootGameObjects();
-                    foreach (T descendant in rootGameObjects.SelectMany(go => go.GetComponentsInChildren<T>(includeInactive: true)))
+
+                    if (scene.IsValid())
                     {
-                        yield return descendant;
+                        var rootGameObjects = scene.GetRootGameObjects();
+                        foreach (T descendant in rootGameObjects.SelectMany(go => go.GetComponentsInChildren<T>(includeInactive: true)))
+                        {
+                            yield return descendant;
+                        }
                     }
                 }
             }
 
-            if (!foundActiveScene)
+            if (!foundActiveScene &&
+                activeScene.IsValid())
             {
                 var rootGameObjects = activeScene.GetRootGameObjects();
                 foreach (T descendant in rootGameObjects.SelectMany(go => go.GetComponentsInChildren<T>(includeInactive: true)))
