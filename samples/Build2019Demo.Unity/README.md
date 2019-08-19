@@ -14,6 +14,10 @@ In order to run the demo, you will need at least two MR/AR capable devices. You 
 
 These instructions assume that a HoloLens 2 device will be used to host the shared experience and that an Android phone will be used to spectate the shared experience. For iOS, replace references to Android with iOS.
 
+#### Prepare your local codebase
+
+1. Run `tools/Scripts/SetupRepository.bat` (`tools/Scripts/SetupRepository.sh` on Mac) to setup your local version of the code base. This script will obtain the external dependencies required for building this project.
+
 #### Prepare your devices
 
 1. Connect your devices to the same WiFi network.
@@ -27,20 +31,23 @@ These instructions assume that a HoloLens 2 device will be used to host the shar
 3. Open the `Finished_Scene` sample scene.
 3. Open SpectatorView settings by going to the menu `SpectatorView > Edit Settings`. \
 ![SpectatorView Settings Menu](../../doc/images/SpectatorViewSettingsMenu.png)
-4. Replace `ENTER_ACCOUNT_ID` and `ENTER_ACCOUNT_KEY` with appropriate values. \
+4. Replace `ENTER_ACCOUNT_ID` and `ENTER_ACCOUNT_KEY` with your Account Id and Account Key obtained when setting up your Azure Spatial Anchors account. \
 ![Spectator View ASA Settings](../../doc/images/SpectatorViewSettingsASA.png)
 
 #### Build & Deploy
 
+##### HoloLens 2
 1. Build UWP Player containing `Demo/Scenes/Finished_Scene.unity` scene, and deploy this application to the HoloLens 2 device.
-2. Export Android Player containing `MixedReality-SpectatorView/SpectatorView/Scenes/SpectatorView.Android.unity` scene to an Android Studio solution.
-3. Open the Android Studio solution and change the main activity in the AndroidManifest.xml file to `Microsoft.MixedReality.SpectatorView.Unity.ScreenRecorderActivity`.
-9. Update the AndroidManifest.xml in Android Studio to contain `android.permission.CAMERA`, `android.permission.INTERNET`, `android.permission.RECORD_AUDIO` and `android.permission.WRITE_EXTERNAL_STORAGE` uses-permissions.
-4. Build the Android Studio solution and deploy this application to the spectating Android device.
-5. Launch the `SpectatorView.Build2019Demo` on the HoloLens 2, and wait for the experience to start.
-6. Launch the `SpectatorView.Build2019Demo` on the Android device and connect to the HoloLens device by specifying the HoloLens's IP Address.
+2. Launch the `SpectatorView.Build2019Demo` on the HoloLens 2, and wait for the experience to start.
 
-> Note 1: Building iOS version requires an special step after exporting the Unity project to xCode, see the [official instructions](https://docs.microsoft.com/en-us/azure/spatial-anchors/quickstarts/get-started-unity-ios#open-the-xcode-project).
+##### Android
+1. Export Android Player containing `MixedReality-SpectatorView/SpectatorView/Scenes/SpectatorView.Android.unity` scene to an Android Studio solution.
+2. Open the Android Studio solution and change the main activity in the AndroidManifest.xml file to `Microsoft.MixedReality.SpectatorView.Unity.ScreenRecorderActivity`.
+3. Update the AndroidManifest.xml in Android Studio to contain `android.permission.CAMERA`, `android.permission.INTERNET`, `android.permission.RECORD_AUDIO` and `android.permission.WRITE_EXTERNAL_STORAGE` uses-permissions.
+4. Build the Android Studio solution and deploy this application to the spectating Android device.
+5. Launch the `SpectatorView.Build2019Demo` on the Android device and connect to the HoloLens device by specifying the HoloLens's IP Address.
+
+> Note 1: Building iOS version requires an special step after exporting the Unity project to xCode, see the [official instructions](https://docs.microsoft.com/en-us/azure/spatial-anchors/quickstarts/get-started-unity-ios#open-the-xcode-project). You will need to use the `SpectatorView.iOS.unity` scene compared to the `SpectatorView.Android.unity`.
 
 > Note 2: Additional setup instructions for spectating with mobile devices can be found [here](../../doc/SpectatorView.Setup.md).
 
@@ -55,3 +62,11 @@ The demo consists of a simple experience with a buttons panel and a slider, conf
 - **MixedReality-SpectatorView:** Spectator View assets symlinked from `/src/SpectatorView.Unity/Assets`
 - **MixedRealityToolkit-Unity:** MixedRealityToolkit-Unity assets symlinked from the common submodule located at `/external/MixedRealityToolkit-Unity/Assets`
 - **Plugins:** This folder contains parts of the ASA plugin that need to be in this location.
+
+## Troubleshooting
+
+### __Issue:__ Reference Rewriter Errors related to System.Numeric.* types
+The MixedRealityToolkit-Unity project introduces some dependencies on System.Numerics.* types that can cause errors when building the UWP player. That going said, although these errors are generated during the build, they do not prevent the build from succeeding. Its suggested to ignore these errors when building the sample application for the time being.
+
+### __Additional Issues__
+For more information on troubleshooting other build issues, checkout the `Troubleshooting` section in our detailed setup steps [here](../../doc/SpectatorView.Setup.md).
