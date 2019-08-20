@@ -11,9 +11,19 @@ Documentation below highlights the process of setting up a Video Camera filming 
 3. Visual Studio 2017 installed on the PC
 4. Windows 10 SDK (10.0.18362.0)
 5. Unity installed on the PC
-6. A video camera that outputs 1080p video over SDI or HDMI
+6. A video camera that outputs 1080p video over SDI or HDMI (Capture cards supported below require HDMI, so you may also need a SDI to HDMI converter)
 7. Blackmagic Design Intensity Pro 4K or Elgato HD 60S (Capture Cards)
-8. HoloLens 2 Camera Mount (Coming soon...)
+8. 3D Printed or machined HoloLens 2 Camera Mount (see `doc/models/HoloLens2CameraMount/`)
+    - 4 - 8-32 x 1-1/4 inch screws (Attaches body.STL to mount.STL)
+    - 4 - 8-32 inch wing nuts (Attaches body.STL to mount.STL)
+    - 1 - 10-24 x 6 inch threaded rod (Attaches two components in body.STL)
+    - 2 - 10-24 inch wing nut (Attaches two components in body.STL)
+    - 1 - 1/4-20 x 6 inch threaded rod (Attaches mount.STL to the camera, you may need camera hot shoe mount instead depending on your video camera)
+    - 2 - 1/4-20 rod coupling nuts (Attaches mount.STL to the camera, you may need camera hot shoe mount instead depending on your video camera)
+    - 1 - 1/4 x 2 inch camera hot shoe mount (Attaches mount.STL to the camera, you may need threaded rod instead depending on your video camera)
+    - 1 - 1/4-20 inch hex nut (Attaches mount.STL to the camera, you may need threaded rod instead depending on your video camera)
+
+>Note: When assembling the HoloLens 2 Camera Mount, be careful with the clamp.STL component. Consider sanding the poles on body.STL to prevent the clamp.STL from getting stuck/breaking.
 
 # Calibration
 
