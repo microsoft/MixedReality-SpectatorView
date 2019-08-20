@@ -6,7 +6,7 @@
 | Input Resolution:        | 1920x1080 (1080p)                                              |
 | Output Resolution:       | 1920x1080 (1080p)                                              |
 | Recording Resolutions:   | 1920x1080 (1080p) Hologram Composited Frame, 4K Quadrant Frame (see note) |
-| Capture Cards:           | Blackmagic Design, Elgato                                      |
+| Capture Cards:           | Blackmagic Design Intensity Pro 4K, Elgato HD 60S                         |
 | Platform:                | PC                                                             |
 
 >Note: A 4K Quadrant Frame does not generate a 4K recording of the hologram composited feed. It actually contains four streams that are each 1920x1080: The unprocessed video camera feed, the hologram feed on a black background, the hologram alpha channel feed and the composited hologram feed.
@@ -104,3 +104,6 @@ When the compositor is running, the **Compositor Stats** expander shows you stat
 **Framerate** - this framerate box shows the minimum, maximum, and average framerates over the previous second. In order to maintain uninterrupted output of video at 60 frames a second, your scene must render 60 frames a second on average. If you consistently render under 60 frames a second, you may need to make performance tradeoffs in your scene (e.g. decreasing render quality) in order to record smooth video
 
 **Queued output frames** - Shows how many already-rendered frames are queued for output to the capture card. This buffer is used to ensure that video frame output remains smooth over brief frame hitches in your scene. If your scene consistently runs under the target framerate or consistently experiences hitches, the video stream will eventually hitch once this buffer is depleted.
+
+## Troubleshooting
+For up to date information on troubleshooting filming issues, see [here](../../../../../../doc/SpectatorView.Setup.VideoCamera.md).

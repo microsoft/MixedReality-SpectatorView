@@ -12,7 +12,7 @@ Documentation below highlights the process of setting up a Video Camera filming 
 4. Windows 10 SDK (10.0.18362.0)
 5. Unity installed on the PC
 6. A video camera that outputs 1080p video over SDI or HDMI
-7. Blackmagic Design or Elgato capture card
+7. Blackmagic Design Intensity Pro 4K or Elgato HD 60S (Capture Cards)
 8. HoloLens 2 Camera Mount (Coming soon...)
 
 # Calibration
@@ -202,3 +202,8 @@ If you chose not to immediately upload your calibration data to your device or h
 
 # Filming
 After you have calibrated your rig, you will be ready to film HoloLens experiences with your video camera. For more information on filming, see [here](../src/SpectatorView.Unity/Assets/SpectatorView/Scripts/Compositor/README.md).
+
+# Troubleshooting
+
+### __Issue:__ Elgato capture card failing to initialize
+The Elgato HD 60S capture card requires USB 3.0 to work correctly. If the capture card is plugged into your PC with a non USB 3.0 cord/port, it will still register in Device Manager. However, it will fail to initialize with the Compositor when filming your application. Typically, you can more easily troubleshoot issues with your elgato capture card not initializing correctly in elgato supported software. To find elgato supported software to test your HD 60S capture card, look [here](https://www.elgato.com/en/gaming/downloads).
