@@ -1,6 +1,17 @@
 # Overview
 
-SpectatorView renders holograms from Unity over a color frame from a capture card.  This uses the calibration data from the calibration app to render the holograms at the correct size and orientation. The Compositor window can save still images or videos to disk, and outputs video to the output port of supported capture cards. Output pictures and videos will be saved to "My Documents\HologramCapture\".
+| Supported Functionality  |                                                                |
+|:-------------------------|:--------------------------------------------------------------:|
+| Number of Video Cameras: | 1                                                              |
+| Input Resolution:        | 1920x1080 (1080p)                                              |
+| Output Resolution:       | 1920x1080 (1080p)                                              |
+| Recording Resolutions:   | 1920x1080 (1080p) Hologram Composited Frame, 4K Quadrant Frame (see note) |
+| Capture Cards:           | Blackmagic Design, Elgato                                      |
+| Platform:                | PC                                                             |
+
+>Note: A 4K Quadrant Frame does not generate a 4K recording of the hologram composited feed. It actually contains four streams that are each 1920x1080: The unprocessed video camera feed, the hologram feed on a black background, the hologram alpha channel feed and the composited hologram feed.
+
+Spectator View renders holograms from Unity over a color frame from a capture card.  This uses the calibration data from the calibration app to render the holograms at the correct size and orientation. The Compositor window can save still images or videos to disk, and outputs video to the output port of supported capture cards. Output pictures and videos will be saved to "My Documents\HologramCapture\".
 
 ## Setup
 

@@ -1,9 +1,10 @@
 # Spectator View Video Camera Setup
 
+Documentation below highlights the process of setting up a Video Camera filming experience. For more information on Spectator View Video Camera usage and supported functionality see [here](../src/SpectatorView.Unity/Assets/SpectatorView/Scripts/Compositor/README.md).
+
 ## Requirements
 
 > Note: Video camera filming currently requires a HoloLens 2 for the camera rig. HoloLens 1 devices are not supported.
-
 
 1. HoloLens 2 (This device will be needed in addition to the device worn by the user)
 2. Windows PC
