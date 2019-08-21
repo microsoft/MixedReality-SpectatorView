@@ -138,7 +138,7 @@ namespace Microsoft.MixedReality.SpectatorView
                 fontSizeMax = textMesh.fontSizeMax;
                 fontSizeMin = textMesh.fontSizeMin;
                 fontStyle = textMesh.fontStyle;
-                fontWeight = textMesh.fontWeight;
+                fontWeight = (int) textMesh.fontWeight;
                 horizontalMapping = textMesh.horizontalMapping;
                 ignoreRectMaskCulling = textMesh.ignoreRectMaskCulling;
                 ignoreVisibility = textMesh.ignoreVisibility;
@@ -258,7 +258,7 @@ namespace Microsoft.MixedReality.SpectatorView
                 fontSizeMax == other.fontSizeMax &&
                 fontSizeMin == other.fontSizeMin &&
                 fontStyle == other.fontStyle &&
-                fontWeight == other.fontWeight &&
+                fontWeight == (int) other.fontWeight &&
                 horizontalMapping == other.horizontalMapping &&
                 lineSpacing == other.lineSpacing &&
                 lineSpacingAdjustment == other.lineSpacingAdjustment &&
