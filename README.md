@@ -86,7 +86,7 @@ Below are quick instructions for adding Spectator View to your project:
 
 1. Ensure you have all of the [Software & Hardware](doc/SpectatorView.Setup.md) required for building and using Spectator View.
 
-2. Go through the [Getting Started](#Getting%20Started) steps above to obtain and reference the MixedReality-SpectatorView codebase in your project.
+2. Go through the `Getting Started` steps above to obtain and reference the MixedReality-SpectatorView codebase in your project.
 
 3. Add the `MixedReality.SpectatorView/SpectatorView/Prefabs/SpectatorView.prefab` to the primary scene that will run on your HoloLens device. This prefab contains the bulk of Spectator View code for synchronizing and aligning holograms across multiple devices.
 
