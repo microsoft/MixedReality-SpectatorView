@@ -9,7 +9,7 @@ steps:
     Platform: 'UWP'
     Arch: 'ARM'
     ScriptingBackend: 'IL2CPP'
-    SceneList: '${{ parameters.ProjectPath }}/Assets/MixedReality-SpectatorView/SpectatorView/Scenes/SpectatorView.HoloLens.unity'
+    SceneList: '${{ parameters.ProjectPath }}\Assets\MixedReality-SpectatorView\SpectatorView\Scenes\SpectatorView.HoloLens.unity'
     Define: ''
     UnityArgs: ''
 

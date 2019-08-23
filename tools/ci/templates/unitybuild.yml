@@ -13,7 +13,7 @@ steps:
   displayName: 'Build Unity Player'
   inputs:
     targetType: filePath
-    filePath: ./tools/ci/scripts/buildUnityProjectPipeline.ps1
+    filePath: .\tools\ci\scripts\buildUnityProjectPipeline.ps1
     arguments: >
       -ProjectPath: '${{ parameters.ProjectPath }}'
       -ToolsAssetsPath: '${{ parameters.ToolsAssetsPath }}'
