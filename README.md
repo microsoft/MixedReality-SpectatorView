@@ -26,9 +26,9 @@ Spectator View is an augmented reality product that enables viewing HoloLens exp
 8. Choose the appropriate branch that you would like to use for the MixedReality-SpectatorView submodule. By default, the submodule will be directed at master, which may not be the most stable branch for consumption. To change branches run the following commands:
 
     1. Change directories into the submodule.
-    2. Run `git fetch origin release/1.0.0-beta`
-    3. Run `git checkout release/1.0.0-beta`
-    4. Run `git branch` to make sure you are using the release/1.0.0-beta branch
+    2. Run `git fetch origin release/1.0.0`
+    3. Run `git checkout release/1.0.0`
+    4. Run `git branch` to make sure you are using the release/1.0.0 branch
 
 
 After running these git commands, you will have a local copy of the MixedReality-SpectatorView codebase. Next, you will need to follow the instructions in `Setup your local environment` to obtain external dependencies.
@@ -44,16 +44,6 @@ The MixedReality-SpectatorView repository uses Unity packages, git submodules an
 > Note: Not all submodules have the same MIT `LICENSE` as the MixedReality-SpectatorView repository. Submodules in this project currently include: [MixedRealityToolkit-Unity](https://github.com/microsoft/MixedRealityToolkit-Unity), [Azure-Spatial-Anchors-Samples](https://github.com/Azure/azure-spatial-anchors-samples) and [ARCore-Unity-SDK](https://github.com/google-ar/arcore-unity-sdk). You should view and accept the licenses in these projects before running the `tools/Scripts/SetupRepository.bat` script.
 
 Depending on what release you are using the correct setup script may vary. Choose the appropriate script below based on the git branch that you have checked out in your clone of the MixedReality-SpectatorView repository.
-
-#### Setting up the `release/1.0.0-beta` branch
-
-If you are using the release/1.0.0-beta branch, You will need to run the following command:
-
-1. Run `'tools/Scripts/ResetSamples.bat'` as an administrator on a PC  (On Mac or Linux, you can run `'sh /tools/scripts/ResetSamples.sh'`). These scripts are located within your MixedReality-SpectatorView submodule.
-
-#### Setting up the `master` branch
-
-If you are using the master branch, you will need to run the following command:
 
 1. Run `'tools/Scripts/SetupRepository.bat'` as an administrator on your PC (On Mac or Linux, you can run `'sh /tools/scripts/SetupRepository.sh'`). These scripts are located within your MixedReality-SpectatorView submodule.
 
@@ -72,25 +62,6 @@ After obtaining a local clone of the MixedReality-SpectatorView repository and r
 >* **Project Assets directory:** c:\Your\Unity\Project\Assets
 >* **MixedReality-SpectatorView submodule directory:** c:\Your\Unity\Project\sv
 
-#### Using the `release/1.0.0-beta` branch
-
-1) Close any instances of Unity.
-2) Open an administrator command window.
-3) Run the following commands, updating the paths to reflect your local environment:
-
-4. `cd c:\Your\Unity\Project\Assets`
-5. `mklink /D "MixedReality-SpectatorView" "..\sv\src\SpectatorView.Unity\Assets"`
-6. `mklink /D "ARKit-Unity-Plugin" "..\sv\external\ARKit-Unity-Plugin"`
-7. `mklink /D "AzureSpatialAnchorsPlugin" "..\sv\external\Azure-Spatial-Anchors-Samples\Unity\Assets\AzureSpatialAnchorsPlugin"`
-8. `mklink /D "GoogleARCore" "..\sv\external\ARCore-Unity-SDK\Assets\GoogleARCore"`
-9. `mklink /D "MixedReality-QRCodePlugin" "..\sv\external\MixedReality-QRCodePlugin"`
-10. `mkdir AzureSpatialAnchors.Resources`
-11. `cd AzureSpatialAnchors.Resources`
-12. `mklink /D "android-logos" "..\sv\external\Azure-Spatial-Anchors-Samples\Unity\Assets\android-logos"`
-13. `mklink /D "logos" "..\sv\external\Azure-Spatial-Anchors-Samples\Unity\Assets\logos"`
-
-#### Using the `master` branch
-
 1. Close any instances of Unity.
 2. Open an administrator command window.
 3. Run `tools\Scripts\AddDependencies.bat "Assets" "sv"` (These paths are the relative paths to your project Assets folder and your MixedReality-SpectatorView submodule from the root directory of your repository).  This script is located within your MixedReality-SpectatorView submodule.
@@ -104,35 +75,34 @@ Now, when you reopen your project in Unity, folders should appear in your projec
 After adding the MixedReality-SpectatorView repository as a submodule, you can commit the symbolic linked directories and submodule meta files to your repository to share with your team. If a team member wants to then use this repository they should do the following:
 
 1. Clone the project repository.
-2. Run `tools\Scripts\FixSymbolicLinks.ps1` from the root directory of your project's repository.
+2. Run `tools\Scripts\SetupRepository.ps1` in the MixedReality-SpectatorView submodule.
+3. Run `tools\Scripts\FixSymbolicLinks.ps1` from the root directory of your project's repository.
 
 ![Marker](doc/images/FixSymbolicLinks.png)
-
-3. Run `tools\Scripts\SetupRepository.ps1` in the MixedReality-SpectatorView submodule.
 
 ### Basic Unity Setup
 
 Below are quick instructions for adding Spectator View to your project:
 
-1. Ensure you have all of the [Software & Hardware](doc/SpectatorView.Setup.md##Software & Hardware Requirements) required for building and using Spectator View.
+1. Ensure you have all of the [Software & Hardware](doc/SpectatorView.Setup.md) required for building and using Spectator View.
 
-2. Go through the [Getting Started](#Getting Started) steps above to obtain and reference the MixedReality-SpectatorView codebase in your project.
+2. Go through the `Getting Started` steps above to obtain and reference the MixedReality-SpectatorView codebase in your project.
 
 3. Add the `MixedReality.SpectatorView/SpectatorView/Prefabs/SpectatorView.prefab` to the primary scene that will run on your HoloLens device. This prefab contains the bulk of Spectator View code for synchronizing and aligning holograms across multiple devices.
 
-4. Choose a [Spatial Alignment Strategy](src/SpectatorView.Unity/Assets/SpatialAlignment/README.md### Detailed Breakdown of Spatial Alignment Strategies) that will allow multiple devices to view holograms in the same location in the physical world. There are different mechanisms for achieving alignment, such as [Azure Spatial Anchors](https://azure.microsoft.com/en-us/services/spatial-anchors/) and marker detector based approaches. Not all approaches work for all devices, so you will need to pick the strategy that best addresses your needs.
+4. Choose a [Spatial Alignment Strategy](src/SpectatorView.Unity/Assets/SpatialAlignment/README.md) that will allow multiple devices to view holograms in the same location in the physical world. There are different mechanisms for achieving alignment, such as [Azure Spatial Anchors](https://azure.microsoft.com/en-us/services/spatial-anchors/) and marker detector based approaches. Not all approaches work for all devices, so you will need to pick the strategy that best addresses your needs.
 
-5. Add the [dependencies](doc/SpectatorView.Setup.md## Spatial Alignment Strategy Dependencies) required for your Spatial Alignment Strategy to your Unity project. This may involve updating git submodules, adding symbolic linked directories, and manually downloading and extracting zip files. With the end of this step, you will have all of the needed code from external projects included in your Unity project.
+5. Add the [dependencies](doc/SpectatorView.Setup.md) required for your Spatial Alignment Strategy to your Unity project. This may involve updating git submodules, adding symbolic linked directories, and manually downloading and extracting zip files. With the end of this step, you will have all of the needed code from external projects included in your Unity project.
 
-6. Update your Unity project and player settings based on the [requirements](doc/SpectatorView.Setup.md### Spatial Alignment Strategy Dependencies) of your Spatial Alignment Strategy. This often involves adding preprocessor directives to different platform player settings to enable code paths specific to your desired Spatial Alignment Strategy.
+6. Update your Unity project and player settings based on the [requirements](doc/SpectatorView.Setup.md) of your Spatial Alignment Strategy. This often involves adding preprocessor directives to different platform player settings to enable code paths specific to your desired Spatial Alignment Strategy.
 
-7. Generate and check-in Asset Caches to your project repository. These Asset Caches act as GameObject registries and will allow different devices running your application to understand what Unity GameObjects are being created, destroyed and updated throughout the application life cycle. To generate these asset caches, run [Spectator View -> Update All Asset Caches](doc/SpectatorView.Setup.md#### Before Building) in the Unity Editor toolbar.
+7. Generate and check-in Asset Caches to your project repository. These Asset Caches act as GameObject registries and will allow different devices running your application to understand what Unity GameObjects are being created, destroyed and updated throughout the application life cycle. To generate these asset caches, run [Spectator View -> Update All Asset Caches](doc/SpectatorView.Setup.md) in the Unity Editor toolbar.
 
 8. Build & Deploy your primary scene to the HoloLens device.
 
 9. Open the example spectating scene appropriate for your mobile device type. This should either be `SpectatorView.Android.unity` or `SpectatorView.iOS.unity`.
 
-10. Build & Deploy your spectating scene onto your mobile device. Platform specific build instructions can be found [here for Android](doc/SpectatorView.Setup.md### Android) and [here for iOS](doc/SpectatorView.Setup.md### iOS).
+10. Build & Deploy your spectating scene onto your mobile device. Be sure to include the `SpectatorView.Android.unity` or `SpectatorView.iOS.unity` scene in your build through the Build Settings. Platform specific build instructions can be found [here](doc/SpectatorView.Setup.md) for Android and iOS.
 
 ### Detailed Unity Setup
 For more information on setting up a Spectator View project, see the following pages:

@@ -159,8 +159,7 @@ PrefabInstance:
   m_SourcePrefab: {fileID: 100100000, guid: c10877f7cd5764de18d46d7b777d1faa, type: 3}
 --- !u!4 &97747991 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 4442908887562770, guid: c10877f7cd5764de18d46d7b777d1faa,
-    type: 3}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 97747990}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &810012884
@@ -233,6 +232,16 @@ PrefabInstance:
     - target: {fileID: 4941633254297953242, guid: aa311d939e452a045b897dcc7c9c36fb,
         type: 3}
       propertyPath: Role
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4941633254297953242, guid: aa311d939e452a045b897dcc7c9c36fb,
+        type: 3}
+      propertyPath: debugLogging
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4941633254297953242, guid: aa311d939e452a045b897dcc7c9c36fb,
+        type: 3}
+      propertyPath: hideDeveloperConsole
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8396631008393852441, guid: aa311d939e452a045b897dcc7c9c36fb,

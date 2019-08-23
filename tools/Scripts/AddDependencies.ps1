@@ -38,7 +38,8 @@ ElseIf ( -not $submodulePathValid -or -not $externalPathValid )
 }
 Else
 {
-    $pathDepth = ($Args[0].ToCharArray() | Where-Object {$_ -eq '/'} | Measure-Object).Count + 1
+	$pathDepth = ($Args[0].ToCharArray() | Where-Object {$_ -eq '/' -or $_ -eq '\'} | Measure-Object).Count + 1
+	Write-Host "Path Depth: $pathDepth"
     For ($i=0; $i -lt $pathDepth; $i++) 
     {
         $relativePath = $relativePath + "../"

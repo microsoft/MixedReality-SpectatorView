@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.using UnityEngine;
 
 using Microsoft.MixedReality.PhotoCapture;
+using Microsoft.MixedReality.SpatialAlignment;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -138,7 +139,7 @@ namespace Microsoft.MixedReality.SpectatorView
         }
 
         /// <inheritdoc/>
-        public async void StartDetecting()
+        public void StartDetecting()
         {
             enabled = true;
 
@@ -148,7 +149,7 @@ namespace Microsoft.MixedReality.SpectatorView
                 _detecting = true;
                 _markerObservations.Clear();
                 DebugLog("Starting ArUco marker detection");
-                await SetupCameraAsync();
+                SetupCameraAsync().FireAndForget();
             }
 #else
             Debug.LogError("Capturing is not supported on this platform");
@@ -156,14 +157,14 @@ namespace Microsoft.MixedReality.SpectatorView
         }
 
         /// <inheritdoc/>
-        public async void StopDetecting()
+        public void StopDetecting()
         {
             if (_detecting)
             {
                 _detecting = false;
 #if UNITY_WSA
                 DebugLog("Stopping ArUco marker detection");
-                await CleanUpCameraAsync();
+                CleanUpCameraAsync().FireAndForget();
 #else
                 Debug.LogError("Capturing is not supported on this platform");
 #endif

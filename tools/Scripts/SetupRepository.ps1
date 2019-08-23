@@ -1,9 +1,20 @@
+param(
+    [switch] $iOS
+)
+
 . "$PSScriptRoot\SymbolicLinkHelpers.ps1"
+. "$PSScriptRoot\ExternalDependencyHelpers.ps1"
 
 Set-Location (Split-Path $MyInvocation.MyCommand.Path)
 Write-Host "`n"
 
 ConfigureRepo
+DownloadQRCodePlugin
+
+If ($iOS)
+{
+    DownloadARKitPlugin
+}
 
 # Ensure that submodules are initialized and cloned.
 Write-Output "Updating spectator view related submodules."
