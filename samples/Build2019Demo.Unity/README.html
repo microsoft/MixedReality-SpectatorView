@@ -81,6 +81,10 @@
 </blockquote>
 <h3 id="instructions">Instructions</h3>
 <p>These instructions assume that a HoloLens 2 device will be used to host the shared experience and that an Android phone will be used to spectate the shared experience. For iOS, replace references to Android with iOS.</p>
+<h4 id="prepare-your-local-codebase">Prepare your local codebase</h4>
+<ol>
+<li>Run <code>tools/Scripts/SetupRepository.bat</code> (<code>tools/Scripts/SetupRepository.sh</code> on Mac) to setup your local version of the code base. This script will obtain the external dependencies required for building this project.</li>
+</ol>
 <h4 id="prepare-your-devices">Prepare your devices</h4>
 <ol>
 <li>Connect your devices to the same WiFi network.</li>
@@ -97,21 +101,25 @@
 <li>Open the <code>Finished_Scene</code> sample scene.</li>
 <li>Open SpectatorView settings by going to the menu <code>SpectatorView &gt; Edit Settings</code>. <br>
 <img src="../../doc/images/SpectatorViewSettingsMenu.png" alt="SpectatorView Settings Menu"></li>
-<li>Replace <code>ENTER_ACCOUNT_ID</code> and <code>ENTER_ACCOUNT_KEY</code> with appropriate values. <br>
+<li>Replace <code>ENTER_ACCOUNT_ID</code> and <code>ENTER_ACCOUNT_KEY</code> with your Account Id and Account Key obtained when setting up your Azure Spatial Anchors account. <br>
 <img src="../../doc/images/SpectatorViewSettingsASA.png" alt="Spectator View ASA Settings"></li>
 </ol>
 <h4 id="build--deploy">Build &amp; Deploy</h4>
+<h5 id="hololens-2">HoloLens 2</h5>
 <ol>
 <li>Build UWP Player containing <code>Demo/Scenes/Finished_Scene.unity</code> scene, and deploy this application to the HoloLens 2 device.</li>
+<li>Launch the <code>SpectatorView.Build2019Demo</code> on the HoloLens 2, and wait for the experience to start.</li>
+</ol>
+<h5 id="android">Android</h5>
+<ol>
 <li>Export Android Player containing <code>MixedReality-SpectatorView/SpectatorView/Scenes/SpectatorView.Android.unity</code> scene to an Android Studio solution.</li>
 <li>Open the Android Studio solution and change the main activity in the AndroidManifest.xml file to <code>Microsoft.MixedReality.SpectatorView.Unity.ScreenRecorderActivity</code>.</li>
 <li>Update the AndroidManifest.xml in Android Studio to contain <code>android.permission.CAMERA</code>, <code>android.permission.INTERNET</code>, <code>android.permission.RECORD_AUDIO</code> and <code>android.permission.WRITE_EXTERNAL_STORAGE</code> uses-permissions.</li>
 <li>Build the Android Studio solution and deploy this application to the spectating Android device.</li>
-<li>Launch the <code>SpectatorView.Build2019Demo</code> on the HoloLens 2, and wait for the experience to start.</li>
 <li>Launch the <code>SpectatorView.Build2019Demo</code> on the Android device and connect to the HoloLens device by specifying the HoloLens's IP Address.</li>
 </ol>
 <blockquote>
-<p>Note 1: Building iOS version requires an special step after exporting the Unity project to xCode, see the <a href="https://docs.microsoft.com/en-us/azure/spatial-anchors/quickstarts/get-started-unity-ios#open-the-xcode-project">official instructions</a>.</p>
+<p>Note 1: Building iOS version requires an special step after exporting the Unity project to xCode, see the <a href="https://docs.microsoft.com/en-us/azure/spatial-anchors/quickstarts/get-started-unity-ios#open-the-xcode-project">official instructions</a>. You will need to use the <code>SpectatorView.iOS.unity</code> scene compared to the <code>SpectatorView.Android.unity</code>.</p>
 </blockquote>
 <blockquote>
 <p>Note 2: Additional setup instructions for spectating with mobile devices can be found <a href="../../doc/SpectatorView.Setup.html">here</a>.</p>
@@ -127,6 +135,11 @@
 <li><strong>MixedRealityToolkit-Unity:</strong> MixedRealityToolkit-Unity assets symlinked from the common submodule located at <code>/external/MixedRealityToolkit-Unity/Assets</code></li>
 <li><strong>Plugins:</strong> This folder contains parts of the ASA plugin that need to be in this location.</li>
 </ul>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="issue-reference-rewriter-errors-related-to-systemnumeric-types"><strong>Issue:</strong> Reference Rewriter Errors related to System.Numeric.* types</h3>
+<p>The MixedRealityToolkit-Unity project introduces some dependencies on System.Numerics.* types that can cause errors when building the UWP player. That going said, although these errors are generated during the build, they do not prevent the build from succeeding. Its suggested to ignore these errors when building the sample application for the time being.</p>
+<h3 id="additional-issues"><strong>Additional Issues</strong></h3>
+<p>For more information on troubleshooting other build issues, checkout the <code>Troubleshooting</code> section in our detailed setup steps <a href="../../doc/SpectatorView.Setup.html">here</a>.</p>
 </article>
           </div>
           

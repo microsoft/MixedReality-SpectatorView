@@ -74,7 +74,10 @@
 
 <h3 id="pre-compilation">Pre-compilation</h3>
 <ol>
-<li>All of the assets in the unity project need to be assigned unique identifiers. This allows content in the user's application scene to be recreated/updated/destroyed dynamically in the spectator's application scene. This is done through calling <code>Spectator View -&gt; Update All Asset Caches</code> in the Unity toolbar prior to compiling the application.</li>
+<li><p>If you would like to synchronize Text Mesh Pro UI, you will need to add the <code>STATESYNC_TEXTMESHPRO</code> preprocessor directive to your UWP, Android and iOS Player settings (This is located via Build Settings -&gt; Player Settings -&gt; Other Settings -&gt; 'Scripting Defined Symbols').</p>
+</li>
+<li><p>All of the assets in the unity project need to be assigned unique identifiers. This allows content in the user's application scene to be recreated/updated/destroyed dynamically in the spectator's application scene. This is done through calling <code>Spectator View -&gt; Update All Asset Caches</code> in the Unity toolbar prior to compiling the application.</p>
+</li>
 </ol>
 <blockquote>
 <p>Note: Adding, updating and removing assets will require updating these asset caches as well as re-compiling each platform.</p>

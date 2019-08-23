@@ -72,7 +72,44 @@
             <article class="content wrap" id="_content" data-uid="">
 <h1 id="overview">Overview</h1>
 
-<p>SpectatorView renders holograms from Unity over a color frame from a capture card.  This uses the calibration data from the calibration app to render the holograms at the correct size and orientation. The Compositor window can save still images or videos to disk, and outputs video to the output port of supported capture cards. Output pictures and videos will be saved to &quot;My Documents\HologramCapture&quot;.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Supported Functionality</th>
+<th style="text-align: center;"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Number of Video Cameras:</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">Input Resolution:</td>
+<td style="text-align: center;">1920x1080 (1080p)</td>
+</tr>
+<tr>
+<td style="text-align: left;">Output Resolution:</td>
+<td style="text-align: center;">1920x1080 (1080p)</td>
+</tr>
+<tr>
+<td style="text-align: left;">Recording Resolutions:</td>
+<td style="text-align: center;">1920x1080 (1080p) Hologram Composited Frame, 4K Quadrant Frame (see note)</td>
+</tr>
+<tr>
+<td style="text-align: left;">Capture Cards:</td>
+<td style="text-align: center;">Blackmagic Design Intensity Pro 4K, Elgato HD 60S</td>
+</tr>
+<tr>
+<td style="text-align: left;">Platform:</td>
+<td style="text-align: center;">PC</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>Note: A 4K Quadrant Frame does not generate a 4K recording of the hologram composited feed. It actually contains four streams that are each 1920x1080: The unprocessed video camera feed, the hologram feed on a black background, the hologram alpha channel feed and the composited hologram feed.</p>
+</blockquote>
+<p>Spectator View renders holograms from Unity over a color frame from a capture card.  This uses the calibration data from the calibration app to render the holograms at the correct size and orientation. The Compositor window can save still images or videos to disk, and outputs video to the output port of supported capture cards. Output pictures and videos will be saved to &quot;My Documents\HologramCapture&quot;.</p>
 <h2 id="setup">Setup</h2>
 <h3 id="install-sdk-and-native-unity-plugins">Install SDK and native Unity plugins</h3>
 <p>Follow the instructions documented in <a href="../../../../../SpectatorView.Native/README.html">SpectatorView.Native</a> for installing the correct SDK for your capture card, and for building and installing the Unity plugins used by the SpectatorView compositor.</p>
@@ -138,6 +175,8 @@
 <p>When the compositor is running, the <strong>Compositor Stats</strong> expander shows you statistics about composition.</p>
 <p><strong>Framerate</strong> - this framerate box shows the minimum, maximum, and average framerates over the previous second. In order to maintain uninterrupted output of video at 60 frames a second, your scene must render 60 frames a second on average. If you consistently render under 60 frames a second, you may need to make performance tradeoffs in your scene (e.g. decreasing render quality) in order to record smooth video</p>
 <p><strong>Queued output frames</strong> - Shows how many already-rendered frames are queued for output to the capture card. This buffer is used to ensure that video frame output remains smooth over brief frame hitches in your scene. If your scene consistently runs under the target framerate or consistently experiences hitches, the video stream will eventually hitch once this buffer is depleted.</p>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<p>For up to date information on troubleshooting filming issues, see <a href="../../../../../../doc/SpectatorView.Setup.VideoCamera.html">here</a>.</p>
 </article>
           </div>
           

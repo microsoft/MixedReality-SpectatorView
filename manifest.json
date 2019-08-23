@@ -18,7 +18,7 @@
       "output": {
         ".html": {
           "relative_path": "README.html",
-          "hash": "c3E3nrZaOUoExf2xjrR/zA=="
+          "hash": "54Lqcw/kUo0W1yRrKZM7Ew=="
         }
       },
       "is_incremental": false,
@@ -54,7 +54,7 @@
       "output": {
         ".html": {
           "relative_path": "doc/SpectatorView.Setup.VideoCamera.html",
-          "hash": "/QMJUPpwcT7J9NUJgKMC9A=="
+          "hash": "4mnJcoHLHCc0y4g1urdTmg=="
         }
       },
       "is_incremental": false,
@@ -66,7 +66,7 @@
       "output": {
         ".html": {
           "relative_path": "doc/SpectatorView.Setup.html",
-          "hash": "HvEBRE8FzZ9Ozloy7HLHHQ=="
+          "hash": "q7VIg6DPwx06Z/jdDnK0QQ=="
         }
       },
       "is_incremental": false,
@@ -2652,6 +2652,17 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "doc/images/iOSAutoFocus.png",
+      "output": {
+        "resource": {
+          "relative_path": "doc/images/iOSAutoFocus.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "doc/images/iOSPlayerSettings.png",
       "output": {
         "resource": {
@@ -2689,7 +2700,7 @@
       "output": {
         ".html": {
           "relative_path": "samples/Build2019Demo.Unity/README.html",
-          "hash": "Iuwtxj7CQLWrrnsOn2e8eQ=="
+          "hash": "1ki4qGdCa87X8nv1seW9Ng=="
         }
       },
       "is_incremental": false,
@@ -2701,7 +2712,7 @@
       "output": {
         ".html": {
           "relative_path": "samples/README.html",
-          "hash": "SlQ1zvwR28QuD6hYn73qjw=="
+          "hash": "L44VoH3+pJjU2x9HBsHIqA=="
         }
       },
       "is_incremental": false,
@@ -2725,7 +2736,7 @@
       "output": {
         ".html": {
           "relative_path": "src/SpectatorView.Native/README.html",
-          "hash": "1mZyrZuQAnqn7wOsR+4tPg=="
+          "hash": "mg6lTRA5TUc8wUfkVMIw9w=="
         }
       },
       "is_incremental": false,
@@ -2737,7 +2748,7 @@
       "output": {
         ".html": {
           "relative_path": "src/SpectatorView.Unity/Assets/SpatialAlignment/README.html",
-          "hash": "Tnmd8SmuEmPYc3UqaMc8Bg=="
+          "hash": "V4Ku7wMqOsxekY4pFugOIA=="
         }
       },
       "is_incremental": false,
@@ -2749,7 +2760,7 @@
       "output": {
         ".html": {
           "relative_path": "src/SpectatorView.Unity/Assets/SpectatorView/Scripts/Compositor/README.html",
-          "hash": "DlexLL42hGlAC+V3dnTsgw=="
+          "hash": "HECfJ+OReG5Y7Ng/QrGIzQ=="
         }
       },
       "is_incremental": false,
@@ -2785,7 +2796,7 @@
       "output": {
         ".html": {
           "relative_path": "src/SpectatorView.Unity/Assets/SpectatorView/Scripts/StateSynchronization/README.html",
-          "hash": "AN0/rt649Tf+ocvWRD+MRw=="
+          "hash": "qUjTsFSiof7Gc2Fmhm+rdA=="
         }
       },
       "is_incremental": false,
@@ -2827,11 +2838,10 @@
         "full_build_reason_code": "ForceRebuild"
       },
       "processors": {
-        "TocDocumentProcessor": {
+        "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
-          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
-          "total_file_count": 0,
+          "total_file_count": 179,
           "skipped_file_count": 0
         },
         "ConceptualDocumentProcessor": {
@@ -2840,15 +2850,16 @@
           "total_file_count": 15,
           "skipped_file_count": 0
         },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 179,
-          "skipped_file_count": 0
-        },
         "ResourceDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
+          "skipped_file_count": 0
+        },
+        "TocDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
           "skipped_file_count": 0

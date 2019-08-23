@@ -94,7 +94,7 @@
 <li><strong><code>SpatialCoordinateSystemManager</code>:</strong> The singleton manager that manages the incoming/outgoing networking connections, their associated localization state and assigned <code>ISpatialCoordinates</code> to them.</li>
 <li><strong><code>ISpatialLocalizationSettings</code>:</strong> This component exposes the configuration settings for a specific type of SpatialLocalizer.
 <ul>
-<li>This class is added to a specially generated prefab in the consuming application, see [Spatial Alignment Dependencies](../../../../doc/SpectatorView.Setup.md## Spatial Alignment Strategy Dependencies) for detailed configuration instructions.</li>
+<li>This class is added to a specially generated prefab in the consuming application, see <a href="../../../../doc/SpectatorView.Setup.html">Spatial Alignment Dependencies</a> for detailed configuration instructions.</li>
 </ul>
 </li>
 <li><strong><code>SpatialCoordinateSystemParticipant</code>:</strong> Represents the localization state of a connected device, including the location and state of the connected device's shared spatial coordinate.</li>
@@ -117,7 +117,7 @@
 <li>Physical Marker localizers will search for some physical marker in the world</li>
 <li>Marker Visual localizer pairs will display a marker on the screen of a mobile device to be discovered by the other device.</li>
 </ul>
-<p>Some of these localization methods require settings, which are set through a <code>SpatialLocalizerInitializer</code>, two can be found on that prefab for the QR and ArUco visual localizers. Additional settings must be added manually by the consuming application onto <code>Generated.StateSynchronization.AssetCaches\Resources\SpectatorViewSettings.prefab</code> which is created by invoking the <code>Spectator View &gt; Edit Settings</code> menu item, see [Spatial Alignment Dependencies](../../../../doc/SpectatorView.Setup.md## Spatial Alignment Strategy Dependencies).</p>
+<p>Some of these localization methods require settings, which are set through a <code>SpatialLocalizerInitializer</code>, two can be found on that prefab for the QR and ArUco visual localizers. Additional settings must be added manually by the consuming application onto <code>Generated.StateSynchronization.AssetCaches\Resources\SpectatorViewSettings.prefab</code> which is created by invoking the <code>Spectator View &gt; Edit Settings</code> menu item, see <a href="../../../../doc/SpectatorView.Setup.html">Spatial Alignment Dependencies</a>.</p>
 <h3 id="selection-of-localization-method">Selection of Localization Method</h3>
 <p>When the application starts and <code>SpectatorView</code> is initialized, configured localizers are checked for whether they are supported in the current application on the current device and if they are, they are registered with <code>SpectatorView</code>. Afterwards, the process is as follows:</p>
 <ol>
