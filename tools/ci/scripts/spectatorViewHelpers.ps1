@@ -55,8 +55,9 @@ function DownloadARKitPlugin
 
 function SetupDependencies
 {
-  DownloadQRCodePlugin
-  DownloadARKitPlugin
+  # Uncomment after figuring out how to download file
+  #DownloadQRCodePlugin
+  #DownloadARKitPlugin
   SetupRepository
 }
 
