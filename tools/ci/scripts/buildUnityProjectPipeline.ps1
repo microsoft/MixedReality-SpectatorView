@@ -9,6 +9,10 @@ param(
     [string]$UnityArgs
 )
 
+$repoLocation = Get-Location
+$ProjectPath = "$repoLocation\$ProjectPath"
+$ToolsAssetsPath = "$repoLocation\$ToolsAssetsPath"
+
 . $PSScriptRoot\buildUnityProjectShared.ps1
 . $PSScriptRoot\spectatorViewHelpers.ps1
 
@@ -16,7 +20,7 @@ param(
 $Editor = Get-ChildItem ${Env:$(UnityVersion)} -Filter 'Unity.exe' -Recurse | Select-Object -First 1 -ExpandProperty FullName
 
 SetupDependencies
-SetupToolsPath -ProjectPath $ProjectPath -ToolsAssetsPath $ToolsAssetsPath
+SetupToolsPath -ProjectPath "$ProjectPath" -ToolsAssetsPath "$ToolsAssetsPath"
 $OutDirExt = ""
 
 if ($Platform -eq "Android" )

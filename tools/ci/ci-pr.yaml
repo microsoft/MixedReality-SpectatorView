@@ -25,8 +25,8 @@ jobs:
     - COG-UnityCache-WUS2-01
     - SDK_18362 -equals TRUE
   steps:
-  - template: templates/common.yml
+  - template: templates\common.yml
     parameters:
-      ProjectPath: '..\..\..\samples\SpectatorView.Example.Unity\'
-      ToolsAssetsPath: '..\..\..\tools\ci\src\BuildTools.Unity\Assets\'
+      ProjectPath: 'samples\SpectatorView.Example.Unity\'
+      ToolsAssetsPath: 'tools\ci\src\BuildTools.Unity\Assets\'
   - template: templates\end.yml
