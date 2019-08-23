@@ -1,14 +1,13 @@
-param
-(
-    $ProjectPath,
-    $ToolsAssetsPath,
-    $Platform,
-    $Arch,
-    $ScriptingBackend,
-    $SceneList,
-    $Define,
-    $UnityArgs
-)]
+param(
+    [string]$ProjectPath,
+    [string]$ToolsAssetsPath,
+    [string]$Platform,
+    [string]$Arch,
+    [string]$ScriptingBackend,
+    [string]$SceneList,
+    [string]$Define,
+    [string]$UnityArgs
+)
 
 . $PSScriptRoot\buildUnityProjectShared.ps1
 . $PSScriptRoot\spectatorViewHelpers.ps1
