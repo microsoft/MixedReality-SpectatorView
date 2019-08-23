@@ -13,6 +13,11 @@ $repoLocation = Get-Location
 $ProjectPath = "$repoLocation\$ProjectPath"
 $ToolsAssetsPath = "$repoLocation\$ToolsAssetsPath"
 
+Write-Host "Starting pipeline build..."
+Write-Host "Repo location: $repoLocation"
+Write-Host "Project Path: $ProjectPath"
+Write-Host "Tools Assets Path: $ToolsAssetsPath"
+
 . $PSScriptRoot\buildUnityProjectShared.ps1
 . $PSScriptRoot\spectatorViewHelpers.ps1
 
