@@ -27,6 +27,6 @@ jobs:
   steps:
   - template: templates/common.yml
     parameters:
-      ProjectPath: './samples/SpectatorView.Example.Unity/'
-      ToolsAssetsPath: './tools/ci/src/BuildTools.Unity/Assets/'
-  - template: templates/end.yml
+      ProjectPath: '..\..\samples\SpectatorView.Example.Unity\'
+      ToolsAssetsPath: '..\..\tools\ci\src\BuildTools.Unity\Assets\'
+  - template: templates\end.yml
