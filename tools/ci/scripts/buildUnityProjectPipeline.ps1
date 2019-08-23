@@ -1,6 +1,3 @@
-. $PSScriptRoot\buildUnityProjectShared.ps1
-. $PSScriptRoot\spectatorViewHelpers.ps1
-
 param
 (
     $ProjectPath,
@@ -11,7 +8,10 @@ param
     $SceneList,
     $Define,
     $UnityArgs
-)
+)]
+
+. $PSScriptRoot\buildUnityProjectShared.ps1
+. $PSScriptRoot\spectatorViewHelpers.ps1
 
 # Find unity.exe as Start-UnityEditor currently doesn't support arbitrary parameters
 $Editor = Get-ChildItem ${Env:$(UnityVersion)} -Filter 'Unity.exe' -Recurse | Select-Object -First 1 -ExpandProperty FullName
