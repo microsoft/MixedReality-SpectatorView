@@ -153,8 +153,8 @@ function SetupExternalDownloads
 {
   param
   (
-    [Parameter(Mandatory=$true)][ref]$Succeeded,
-    [switch]$Remote
+    [switch]$Remote,
+    [Parameter(Mandatory=$true)][ref]$Succeeded
   )
 
   $success = "False";

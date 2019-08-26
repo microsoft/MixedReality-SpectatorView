@@ -2,7 +2,7 @@
 
 steps:
 - task: PowerShell@2
-  displayName: 'Build Unity Player'
+  displayName: 'Build Native Dependencies'
   inputs:
     targetType: filePath
     filePath: .\tools\ci\scripts\buildNativeProjectPipeline.ps1

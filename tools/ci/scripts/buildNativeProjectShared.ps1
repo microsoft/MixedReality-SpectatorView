@@ -12,11 +12,11 @@ function SetupVSProjects
     $SetupSucceeded = "False"
     if ($Remote)
     {
-        SetupExternalDownloads -Succeeded $SetupSucceeded -Remote
+        SetupExternalDownloads -Succeeded ([ref]$SetupSucceeded) -Remote
     }
     else
     {
-        SetupExternalDownloads -Succeeded $SetupSucceeded
+        SetupExternalDownloads -Succeeded ([ref]$SetupSucceeded)
     }
 
 
