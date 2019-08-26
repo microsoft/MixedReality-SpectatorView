@@ -1,0 +1,10 @@
+# [Template] Compile MRTK inside Unity.
+
+steps:
+- task: PowerShell@2
+  displayName: 'Build Unity Player'
+  inputs:
+    targetType: filePath
+    filePath: .\tools\ci\scripts\buildNativeProjectPipeline.ps1
+    arguments: >
+      -ProjectPath: '${{ parameters.ProjectPath }}'
