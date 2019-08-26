@@ -23,6 +23,8 @@ function BuildOpenCV
   Set-Location "$PSScriptRoot\..\..\..\external\vcpkg"
   Write-Host "Updaing vcpkg submodule to master branch"
   git pull origin master
+  Write-Host "Preparing vcpkg"
+  & .\bootstrap-vcpkg.bat
   & .\vcpkg update
   & .\vcpkg upgrade --no-dry-run
 
@@ -34,8 +36,6 @@ function BuildOpenCV
 
   if (!(Test-Path "installed"))
   {
-    Write-Host "Preparing vcpkg"
-    & .\bootstrap-vcpkg.bat
     Write-Host "Setting vcpkg installs to be available to MSBuild"
     & .\vcpkg integrate install
     Write-Host "Building OpenCV dependencies"
