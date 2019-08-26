@@ -1,4 +1,5 @@
 . $PSScriptRoot\..\..\Scripts\SetupRepositoryFunc.ps1
+. $PSScriptRoot\..\..\Scripts\ExternalDependencyHelpers.ps1
 . $PSScriptRoot\genericHelpers.ps1
 
 function BuildOpenCV
@@ -146,4 +147,33 @@ function IncludeQRCodePlugin
    )
 
    IncludeUnityAssetsDirectory -Path "$ProjectPath\Assets\.MixedReality-QRCodePlugin"
+}
+
+function SetupExternalDownloads
+{
+  param
+  (
+    [Parameter(Mandatory=$true)][ref]$Succeeded
+  )
+
+  $success = "False";
+  if (Test-Path $PSScriptRoot\setupDependenciesInternal.ps1)
+  {
+    # This script set up dependencies for Blackmagic Design dependencies
+    # The behavior can be manually duplicated by populating an 'external\dependencies\BlackmagicDesign\Blackmagic DeckLink SDK 10.9.11' directory in your repo
+    . $PSScriptRoot\setupDependenciesInternal.ps1 -Succeeded ([ref]$success)
+    Write-Host "BlackmagicDesign dependencies found: $SetupSuceeded"
+  }
+  else
+  {
+    DownloadQRCodePlugin
+    DownloadARKitPlugin
+    $success = Test-Path "$PSScriptRoot\..\..\..\external\dependencies\BlackmagicDesign\Blackmagic DeckLink SDK 10.9.11"
+    Write-Host "BlackmagicDesign dependencies found: $SetupSucceeded"
+    if (!success)
+    {
+      Write-Host "Native build will fail based on a missing BlackmagicDesign dependency."
+      Write-Host "To fix this issue, obtain Blackmagic DeckLink SDK 10.9.11 and add it to a external\dependencies\BlackmagicDesign\Blackmagic DeckLink SDK 10.9.11 directory."
+    }
+  }
 }
