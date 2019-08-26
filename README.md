@@ -41,7 +41,7 @@ The MixedReality-SpectatorView repository uses Unity packages, git submodules an
 * The setup script will obtain and update all git submodules declared in the MixedReality-SpectatorView repository.
 * The setup script will fix any symbolic linked directories in the MixedReality-SpectatorView repository.
 
-> Note: Not all submodules have the same MIT `LICENSE` as the MixedReality-SpectatorView repository. Submodules in this project currently include: [MixedRealityToolkit-Unity](https://github.com/microsoft/MixedRealityToolkit-Unity), [Azure-Spatial-Anchors-Samples](https://github.com/Azure/azure-spatial-anchors-samples) and [ARCore-Unity-SDK](https://github.com/google-ar/arcore-unity-sdk). You should view and accept the licenses in these projects before running the `tools/Scripts/SetupRepository.bat` script.
+> Note: Some of the external repositories we reference through git submodules may not have the same MIT `LICENSE` as the MixedReality-SpectatorView repository. Submodules in this project currently include: [MixedRealityToolkit-Unity](https://github.com/microsoft/MixedRealityToolkit-Unity), [Azure-Spatial-Anchors-Samples](https://github.com/Azure/azure-spatial-anchors-samples) and [ARCore-Unity-SDK](https://github.com/google-ar/arcore-unity-sdk). You should review the license of each of those repositories. These repositories will be pulled down to your computer when you run `tools/Scripts/SetupRepository.bat` script, or any of the `git submodule` related commands directly.
 
 Depending on what release you are using the correct setup script may vary. Choose the appropriate script below based on the git branch that you have checked out in your clone of the MixedReality-SpectatorView repository.
 
