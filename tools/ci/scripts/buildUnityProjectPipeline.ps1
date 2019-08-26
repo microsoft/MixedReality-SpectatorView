@@ -24,7 +24,7 @@ Write-Host "Tools Assets Path: $ToolsAssetsPath"
 # Find unity.exe as Start-UnityEditor currently doesn't support arbitrary parameters
 $Editor = Get-ChildItem ${Env:$(UnityVersion)} -Filter 'Unity.exe' -Recurse | Select-Object -First 1 -ExpandProperty FullName
 
-SetupDependencies
+SetupRepository -NoDownloads
 SetupToolsPath -ProjectPath "$ProjectPath" -ToolsAssetsPath "$ToolsAssetsPath"
 $OutDirExt = ""
 

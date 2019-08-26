@@ -1,135 +1,69 @@
 . $PSScriptRoot\..\..\Scripts\SetupRepositoryFunc.ps1
-
-function SetupToolsPath
-{
-  param
-  (
-    $ProjectPath,
-    $ToolsAssetsPath
-  )
-
-  $projAssets = $ProjectPath + "\Assets"
-  $toolsPath = $projAssets + "\BuildTools.Unity"
-  If (!(Test-Path $toolsPath))
-  {
-    $tempLoc = Get-Location
-    Set-Location $projAssets
-    cmd /c mklink /D "BuildTools.Unity" $ToolsAssetsPath
-    Set-Location $tempLoc
-  }
-}
-
-function DownloadQRCodePlugin
-{
-  if (!(Test-Path "$PSScriptRoot\..\..\..\external\MixedReality-QRCodePlugin\release"))
-  {
-    $zipFile = "$PSScriptRoot\..\..\..\external\qrcodeplugin.zip"
-    $url = "https://github.com/dorreneb/mixed-reality/releases/download/1.1/release.zip"
-    $wc = New-Object System.Net.WebClient
-    Write-Host "Downloading QRCodePlugin zip file."
-    $wc.DownloadFile($url, $zipFile)
-    Expand-Archive -Path $zipFile -DestinationPath "$PSScriptRoot\..\..\..\external\MixedReality-QRCodePlugin" -Force
-  }
-  else
-  {
-    Write-Host "external/MixedReality-QRCodePlugin already populated in repo"
-  }
-}
-
-function DownloadARKitPlugin
-{
-  if (!(Test-Path "$PSScriptRoot\..\..\..\external\ARKit-Unity-Plugin\Unity-Technologies-unity-arkit-plugin-94e47eae5954"))
-  {
-    $zipFile = "$PSScriptRoot\..\..\..\external\unity-arkit-plugin.zip"
-    $url = "https://bitbucket.org/Unity-Technologies/unity-arkit-plugin/get/94e47eae5954.zip"
-    $wc = New-Object System.Net.WebClient
-    Write-Host "Downloading ARKit zip file."
-    $wc.DownloadFile($url, $zipFile)
-    Expand-Archive -Path $zipFile -DestinationPath "$PSScriptRoot\..\..\..\external\ARKit-Unity-Plugin" -Force
-  }
-  else
-  {
-    Write-Host "external/ARKit-Unity-Plugin already populated in repo."
-  }
-}
-
-function SetupDependencies
-{
-  # Uncomment after figuring out how to download file
-  #DownloadQRCodePlugin
-  #DownloadARKitPlugin
-  SetupRepository
-}
+. $PSScriptRoot\genericHelpers.ps1
 
 function BuildOpenCV
 {
+  param
+  (
+    [switch]$ForceRebuild,
+    [Parameter(Mandatory=$true)][ref]$Succeeded
+  )
+
   $origLoc = Get-Location
 
   if (!(Test-Path "$PSScriptRoot\..\..\..\external\vcpkg"))
   {
+    Write-Host "Creating vcpkg submodule"
     Set-Location $PSScriptRoot
     git submodule add https://github.com/microsoft/vcpkg.git "../../../external/vcpkg"
     Set-Location $origLoc
   }
 
   Set-Location "$PSScriptRoot\..\..\..\external\vcpkg"
-  if (!(Test-Path "installed"))
+  Write-Host "Updaing vcpkg submodule to master branch"
+  git pull origin master
+  & .\vcpkg update
+  & .\vcpkg upgrade --no-dry-run
+
+  if (($ForceRebuild) -And (Test-Path "installed"))
   {
+    Write-Host "Removing 'installed' directory to force rebuild"
     Remove-Item -Path "installed" -Force -Recurse
   }
 
-  git pull origin master
-  & .\bootstrap-vcpkg.bat
-  & .\vcpkg install protobuf:x86-windows
-  & .\vcpkg install opencv[contrib]:x86-uwp --recurse
-  & .\vcpkg install opencv[contrib]:x64-windows --recurse
-  Set-Location $origLoc
-}
-
-function CloneElgato
-{
-  $origLoc = Get-Location
-
-  if (!(Test-Path "$PSScriptRoot\..\..\..\external\gamecapture"))
+  if (!(Test-Path "installed"))
   {
-    Set-Location $PSScriptRoot
-    git submodule add https://github.com/elgatosf/gamecapture.git "../../../external/gamecapture"
-    Set-Location $origLoc
+    Write-Host "Preparing vcpkg"
+    & .\bootstrap-vcpkg.bat
+    Write-Host "Setting vcpkg installs to be available to MSBuild"
+    & .\vcpkg integrate install
+    Write-Host "Building OpenCV dependencies"
+    & .\vcpkg install protobuf:x86-windows --recurse
+    $86Dependencies = $?
+    Write-Host "Building OpenCV x86 UWP"
+    & .\vcpkg install opencv[contrib]:x86-uwp --recurse
+    $86UWP = $?
+    Write-Host "Building OpenCV x64 Windows"
+    & .\vcpkg install opencv[contrib]:x64-windows --recurse
+    $64Windows = $?
+
+    Write-Host "`n`nOpenCV Build Completed:"
+    Write-Host "x86 Dependencies Succeeded: $86Dependencies"
+    Write-Host "x86 UWP OpenCV Succeeded: $86UWP"
+    Write-Host "x86 Desktop OpenCV Succeeded: $64Windows"
+    $Succeeded.Value = $86Dependencies -And $86UWP -And $64Windows
+  }
+  else
+  {
+    $Succeeded.Value = "True"  
   }
 
-  Set-Location "$PSScriptRoot\..\..\..\external\gamecapture"
-  git pull origin master
   Set-Location $origLoc
 }
 
-function HideUnityAssetsDirectory
+function AddElgatoSubmodule
 {
-    param
-    (
-      $Path
-    )
-
-    if (Test-Path $Path)
-    {
-       $Leaf = Split-Path -Path $Path -Leaf
-       $NewLeaf = ".$Leaf"
-       Rename-Item -Path $Path -NewName $NewLeaf
-    }
-}
-
-function IncludeUnityAssetsDirectory
-{
-    param
-    (
-      $Path
-    )
-
-    if (Test-Path $Path)
-    {
-       $Leaf = Split-Path -Path $Path -Leaf
-       $NewLeaf = $Leaf.TrimStart(".")
-       Rename-Item -Path $Path -NewName $NewLeaf
-    }
+  AddSubmodule -Repo https://github.com/elgatosf/gamecapture.git -DirectoryName gamecapture -Branch master
 }
 
 function HideAndroidAssets

@@ -68,7 +68,7 @@ If (![string]::IsNullOrEmpty($Define))
    $extraArgs += " -define $Define"
 }
 
-$proc = Start-Process -FilePath "$editor" -ArgumentList "-projectPath $ProjectPath -executeMethod Microsoft.MixedReality.BuildTools.Unity.UnityPlayerBuildTools.StartCommandLineBuild -sceneList $SceneList -logFile $($logFile.FullName) -batchMode -$Arch -buildOutput $outDir $extraArgs -CacheServerIPAddress $UnityCacheServerAddress -logDirectory $logDirectory" -PassThru
+$proc = Start-Process -FilePath "$EditorPath" -ArgumentList "-projectPath $ProjectPath -executeMethod Microsoft.MixedReality.BuildTools.Unity.UnityPlayerBuildTools.StartCommandLineBuild -sceneList $SceneList -logFile $($logFile.FullName) -batchMode -$Arch -buildOutput $outDir $extraArgs -CacheServerIPAddress $UnityCacheServerAddress -logDirectory $logDirectory" -PassThru
 $ljob = Start-Job -ScriptBlock { param($log) Get-Content "$log" -Wait } -ArgumentList $logFile.FullName
    
 while (-not $proc.HasExited -and $ljob.HasMoreData)
@@ -148,7 +148,7 @@ If (![string]::IsNullOrEmpty($Define))
    $extraArgs += " -define $Define"
 }
 
-$proc = Start-Process -FilePath "$editor" -ArgumentList "-projectPath $ProjectPath -executeMethod Microsoft.MixedReality.BuildTools.Unity.UnityPlayerBuildTools.ConfirmEditorCompiles -sceneList $SceneList -logFile $($logFile.FullName) -batchMode -$Arch -buildOutput $outDir $extraArgs -CacheServerIPAddress $UnityCacheServerAddress -logDirectory $logDirectory" -PassThru
+$proc = Start-Process -FilePath "$EditorPath" -ArgumentList "-projectPath $ProjectPath -executeMethod Microsoft.MixedReality.BuildTools.Unity.UnityPlayerBuildTools.ConfirmEditorCompiles -sceneList $SceneList -logFile $($logFile.FullName) -batchMode -$Arch -buildOutput $outDir $extraArgs -CacheServerIPAddress $UnityCacheServerAddress -logDirectory $logDirectory" -PassThru
 $ljob = Start-Job -ScriptBlock { param($log) Get-Content "$log" -Wait } -ArgumentList $logFile.FullName
    
 while (-not $proc.HasExited -and $ljob.HasMoreData)
