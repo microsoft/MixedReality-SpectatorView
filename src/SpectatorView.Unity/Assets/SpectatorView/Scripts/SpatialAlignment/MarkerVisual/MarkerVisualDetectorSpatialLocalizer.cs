@@ -158,7 +158,12 @@ namespace Microsoft.MixedReality.SpectatorView
 
             private string DetermineCoordinateId(int maxSupportedMarkerId)
             {
-                DebugLog("GetMarkerId currently only supports marker id: 0, changes are needed to support multiple sessions in parallel.");
+                DebugLog("GetMarkerId currently returns 1 when possible to avoid conficts with the MarkerDetectorSpatialLocalizer that uses 0. Additional work is still required to enable assigning unique marker ids to different application participants.");
+                if (maxSupportedMarkerId > 0)
+                {
+                    return 1.ToString();
+                }
+
                 return 0.ToString();
             }
         }

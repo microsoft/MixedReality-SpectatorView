@@ -1,18 +1,29 @@
 # Spectator View Video Camera Setup
 
+Documentation below highlights the process of setting up a Video Camera filming experience. For more information on Spectator View Video Camera usage and supported functionality see [here](../src/SpectatorView.Unity/Assets/SpectatorView/Scripts/Compositor/README.md).
+
 ## Requirements
 
 > Note: Video camera filming currently requires a HoloLens 2 for the camera rig. HoloLens 1 devices are not supported.
-
 
 1. HoloLens 2 (This device will be needed in addition to the device worn by the user)
 2. Windows PC
 3. Visual Studio 2017 installed on the PC
 4. Windows 10 SDK (10.0.18362.0)
 5. Unity installed on the PC
-6. A video camera that outputs 1080p video over SDI or HDMI
-7. Blackmagic Design or Elgato capture card
-8. HoloLens 2 Camera Mount (Coming soon...)
+6. A video camera that outputs 1080p video over SDI or HDMI (Capture cards supported below require HDMI, so you may also need a SDI to HDMI converter)
+7. Blackmagic Design Intensity Pro 4K or Elgato HD 60S (Capture Cards)
+8. 3D Printed or machined HoloLens 2 Camera Mount (see `doc/models/HoloLens2CameraMount/`)
+    - 4 - 8-32 x 1-1/4 inch screws (Attaches body.STL to mount.STL)
+    - 4 - 8-32 inch wing nuts (Attaches body.STL to mount.STL)
+    - 1 - 10-24 x 6 inch threaded rod (Attaches two components in body.STL)
+    - 2 - 10-24 inch wing nut (Attaches two components in body.STL)
+    - 1 - 1/4-20 x 6 inch threaded rod (Attaches mount.STL to the camera, you may need camera hot shoe mount instead depending on your video camera)
+    - 2 - 1/4-20 rod coupling nuts (Attaches mount.STL to the camera, you may need camera hot shoe mount instead depending on your video camera)
+    - 1 - 1/4 x 2 inch camera hot shoe mount (Attaches mount.STL to the camera, you may need threaded rod instead depending on your video camera)
+    - 1 - 1/4-20 inch hex nut (Attaches mount.STL to the camera, you may need threaded rod instead depending on your video camera)
+
+>Note: When assembling the HoloLens 2 Camera Mount, be careful with the clamp.STL component. Consider sanding the poles on body.STL to prevent the clamp.STL from getting stuck/breaking.
 
 # Calibration
 
@@ -201,3 +212,8 @@ If you chose not to immediately upload your calibration data to your device or h
 
 # Filming
 After you have calibrated your rig, you will be ready to film HoloLens experiences with your video camera. For more information on filming, see [here](../src/SpectatorView.Unity/Assets/SpectatorView/Scripts/Compositor/README.md).
+
+# Troubleshooting
+
+### __Issue:__ Elgato capture card failing to initialize
+The Elgato HD 60S capture card requires USB 3.0 to work correctly. If the capture card is plugged into your PC with a non USB 3.0 cord/port, it will still register in Device Manager. However, it will fail to initialize with the Compositor when filming your application. Typically, you can more easily troubleshoot issues with your elgato capture card not initializing correctly in elgato supported software. To find elgato supported software to test your HD 60S capture card, look [here](https://www.elgato.com/en/gaming/downloads).

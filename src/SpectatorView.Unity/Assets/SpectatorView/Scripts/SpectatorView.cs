@@ -118,6 +118,10 @@ namespace Microsoft.MixedReality.SpectatorView
         [SerializeField]
         private bool debugLogging = false;
 
+        [Tooltip("Check to hide the on-device developer console every update.")]
+        [SerializeField]
+        private bool hideDeveloperConsole = false;
+
         private GameObject settingsGameObject;
 
 #if UNITY_ANDROID || UNITY_IOS
@@ -185,6 +189,15 @@ namespace Microsoft.MixedReality.SpectatorView
             }
 
             SetupRecordingService();
+        }
+
+        private void Update()
+        {
+            if (hideDeveloperConsole &&
+                Debug.developerConsoleVisible)
+            {
+                Debug.developerConsoleVisible = false;
+            }
         }
 
         private void OnDestroy()

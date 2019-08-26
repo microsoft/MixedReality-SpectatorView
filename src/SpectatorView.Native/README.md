@@ -37,7 +37,7 @@ If you are using an Elgato capture card, you will need to clone Elgato's [gameca
 
 >Note: SpectatorView.OpenCV.dll introduces dependencies on OpenCV. OpenCV does not have a MIT license. For more information on OpenCV's license, see [here](https://opencv.org/license/).
 
-- **DSLR camera calibration** requires a **Release x64** version of this binary built from the `SpectatorView.OpenCV.Desktop` visual studio project.
+- **Video camera calibration** requires a **Release x64** version of this binary built from the `SpectatorView.OpenCV.Desktop` visual studio project.
 - **ArUco Marker detection** on a HoloLens 1 device requires a **Release x86** version of this binary built from the `SpectatorView.OpenCV.UWP`.
 
 ###### 1. Install [Vcpkg](https://github.com/microsoft/vcpkg)
@@ -53,6 +53,7 @@ If you are using an Elgato capture card, you will need to clone Elgato's [gameca
 
 For ArUco marker detection, you will need to install a x86 uwp friendly version of opencv. For DSLR camera calibration, you will need to install a x64 desktop friendly version of opencv.
 
+- .\vcpkg install protobuf:x86-windows
 - .\vcpkg install opencv[contrib]:x86-uwp --recurse
 - .\vcpkg install opencv[contrib]:x64-windows --recurse
 
@@ -72,14 +73,14 @@ Building the SpectatorView.Native solution for each architecture will produce th
 #### Installing OpenCV Contrib for UWP failed
 
 When encountering issues with vcpkg, the most up to date information will be found in the [vcpkg project](https://github.com/microsoft/vcpkg). Searching for specific errors in the [vcpkg issues list](https://github.com/microsoft/vcpkg/issues) will be the quickest way to find potential workarounds.
->NOTE: When trying other vcpkgs commits, you may end up with a different version of opencv getting installed to your development machine. This will likely require updating the opencv lib dependencies as described below.
+>NOTE: When trying other vcpkg commits, you may end up with a different version of opencv getting installed to your development machine. This may require fixing code breaks for the SpectatorView.OpenCV.dll. If you are unable to resolve these issues yourself, please file an issue for the MixedReality-SpectatorView repository.
 
 #### OpenCV header/dll is not found
 
 If installing opencv with vcpkg succeeded, a few things could still occur that prevent SpectatorViewPlugin's from referencing the opencv libs/dlls correctly. Try the following:
 
 - Restart Visual Studio. If SpectatorViewPlugin.sln was opened in visual studio prior to installing the opencv for uwp components, visual studio may not have correctly resolved needed environment variables. Closing and reopening visual studio should result in these environment variable paths resolving correctly.
-- Ensure that the opencv lib dependencies declared in the SpectatorViewPlugin project have the correct version number. Vcpkg will periodically move to installing newer versions of opencv. If you right click on your SpectatorViewPlugin project in visual studio's solution explorer, you can then open the project properties dialogue. Look at Linker->Input to see what specific opencv libs are referenced by the project. For OpenCV 3.4.3, you will need to make sure that libs end in *343.lib*. Older versions of OpenCV, such as 3.4.1, have dlls ending in *341.lib*
+- Vcpkg will periodically update the version of OpenCV that it builds. This may require updates to the OpenCV associated code in the Spectator View codebase. The last verified version of OpenCV is 4.1.1. You can determine what version of OpenCV that you have obtained locally by running `dir /s opencv_*.dll` in your clone of the vcpkg repository. Dlls will have a trailing version number (for example opencv_aruco411.dll). If you encounter errors when trying to use newer versions of OpenCV, please file an issue against the MixedReality-SpectatorView repo. If you are using an older version of OpenCV, you may need to update your vcpkg repo to the most recent commit in its `master` branch and rerun the vcpkg install commands described above.
 
 ## 4. Adding compiled binaries to SpectatorView.Unity
 

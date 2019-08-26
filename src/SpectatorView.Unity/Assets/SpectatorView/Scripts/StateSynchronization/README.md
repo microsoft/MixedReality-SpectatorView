@@ -1,7 +1,9 @@
 # State synchronization
 
 ### Pre-compilation
-1) All of the assets in the unity project need to be assigned unique identifiers. This allows content in the user's application scene to be recreated/updated/destroyed dynamically in the spectator's application scene. This is done through calling `Spectator View -> Update All Asset Caches` in the Unity toolbar prior to compiling the application.
+1) If you would like to synchronize Text Mesh Pro UI, you will need to add the `STATESYNC_TEXTMESHPRO` preprocessor directive to your UWP, Android and iOS Player settings (This is located via Build Settings -> Player Settings -> Other Settings -> 'Scripting Defined Symbols').
+
+2) All of the assets in the unity project need to be assigned unique identifiers. This allows content in the user's application scene to be recreated/updated/destroyed dynamically in the spectator's application scene. This is done through calling `Spectator View -> Update All Asset Caches` in the Unity toolbar prior to compiling the application.
 
 > Note: Adding, updating and removing assets will require updating these asset caches as well as re-compiling each platform.
 

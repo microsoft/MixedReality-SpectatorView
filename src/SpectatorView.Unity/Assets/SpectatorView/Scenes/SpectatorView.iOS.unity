@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074, b: 0.35872698, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -184,6 +184,16 @@ PrefabInstance:
       propertyPath: Role
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4941633254297953242, guid: aa311d939e452a045b897dcc7c9c36fb,
+        type: 3}
+      propertyPath: debugLogging
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4941633254297953242, guid: aa311d939e452a045b897dcc7c9c36fb,
+        type: 3}
+      propertyPath: hideDeveloperConsole
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8396631008393852441, guid: aa311d939e452a045b897dcc7c9c36fb,
         type: 3}
       propertyPath: sharedCoordinateOrigin
@@ -273,6 +283,11 @@ PrefabInstance:
       propertyPath: m_ClearMaterial
       value: 
       objectReference: {fileID: 2100000, guid: f1d9352050a75486f878ab19fa578f16, type: 2}
+    - target: {fileID: 898838628580403981, guid: ef500abe56e2fdb4086db81263f1c873,
+        type: 3}
+      propertyPath: enableAutoFocus
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ef500abe56e2fdb4086db81263f1c873, type: 3}
 --- !u!4 &1494373462 stripped

@@ -20,6 +20,7 @@ To setup spectator view with a video camera, see [here](SpectatorView.Setup.Vide
 3. [Android Studio](https://developer.android.com/studio)
 4. Obtain [ARCore v1.7.0](https://github.com/google-ar/arcore-unity-sdk/releases/tag/v1.7.0) (Note: only v1.7.0 has been tested, use other versions at your own risk). This can be achieved by running the `tools/Scripts/SetupRepository.bat` script as an administrator or by manually copying assets content into a ARCore-Unity-SDK folder in the external directory.
 5. [Unity](https://unity3d.com/get-unity/download) installed on your development device with [Android build support](https://docs.unity3d.com/Manual/android-sdksetup.html). This module can be included when first installing Unity, or you can use [Unity Hub to add the module](https://docs.unity3d.com/Manual/GettingStartedAddingEditorComponents.html) after installing.
+6. If building with IL2CPP, a specific Android NDK may be required (Unity 2018.3.14f1 required r16b). Older NDK's can be found [here](https://developer.android.com/ndk/downloads/older_releases.html).
 
 >Note: ARCore does not share MixedReality-SpectatorView's MIT license. For more information on ARCore licensing, see [here](https://github.com/google-ar/arcore-unity-sdk/blob/master/LICENSE).
 
@@ -111,8 +112,9 @@ If you are building Azure Spatial Anchors on iOS, you will need to take some add
 
 1. Obtain your HoloLens's ip address from its windows settings menu via Settings -> Network & Internet -> Wi-Fi -> Hardware Properties.
 2. Add any of the preprocessor directives or Unity packages described above that you intend to use to your clone of the SpectatorView codebase.
-3. Open the `SpectatorView.HoloLens` scene in your Unity project.
-4. In the Unity editor, call 'Spectator View -> Update All Asset Caches' (This will be located in the Unity editor toolbar) to prepare content for state synchronization. Add the Generated.StateSynchronization.AssetCaches folder to your project's repository to share across development devices.
+3. If you would like to synchronize Text Mesh Pro UI, you will need to add the `STATESYNC_TEXTMESHPRO` preprocessor directive to the UWP, iOS and Android Player Settings (This is located via Build Settings -> Player Settings -> Other Settings -> 'Scripting Defined Symbols').
+4. Open the `SpectatorView.HoloLens` scene in your Unity project.
+5. In the Unity editor, call 'Spectator View -> Update All Asset Caches' (This will be located in the Unity editor toolbar) to prepare content for state synchronization. Add the Generated.StateSynchronization.AssetCaches folder to your project's repository to share across development devices.
 
 ![Marker](images/UpdateAllAssetCaches.png)
 
@@ -193,3 +195,22 @@ In some instances, contributors have experienced issues with android permissions
 
 ### __Issue:__ System.* types fail to resolve when first building a HoloLens visual studio solution generated from Unity
 When first opening a visual studio solution generated from Unity for the Spectator View codebase, the build may fail. Typically after this first failure, an `Opening repositories` step will run and output to the visual studio console. Reattempting the build after this step has ran typically results in the solution succeeding to compile.
+
+### __Issue:__ SetupRepository.sh did not work on Mac
+Depending on your local environment, you may need to declare the SetupRepository.sh script as executable by changing its access permissions/mode. To do this, run the following commands:
+- `cd tools/Scripts`
+- `chmod a+x *.sh`
+- `./SetupRepository.sh`
+
+### __Issue:__ Unity fails to open your SpectatorView project on Mac
+You may encounter issues when opening a Unity project based on read/write permissions for Project Packages. To fix this, you can run the following command in your Project's Packages folder (Note the below example is for the Build 2019 sample application):
+- MixedReality-SpectatorView/samples/Build2019Demo.Unity/Packages$ `sudo chmod a+rwx *`
+
+### __Issue:__ "Failed to change file flags" errors encountered when opening a Unity project on Mac
+In some instances, file permissions may generate errors when opening a spectator view Unity project. To fix this, you can try running the following command:
+- MixedReality-SpectatorView$ `sudo chmod a+rwx *`
+
+### __Issue:__ Screen Recording UI won't appear on iOS device
+The ARKit Camera has an Enable Auto Focus feature that consumes touch input events, breaking Unity canvas interactions on iOS. This can cause the Screen Recording UI to fail to show. To fix this, uncheck the `Enable Auto Focus` option for ARKit's `UnityARCameraManager`:
+
+![Marker](images/iOSAutoFocus.png)

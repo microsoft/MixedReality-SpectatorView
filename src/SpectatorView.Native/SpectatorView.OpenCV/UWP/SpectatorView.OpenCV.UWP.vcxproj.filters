@@ -10,17 +10,16 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="dllmain.cpp" />
-    <ClCompile Include="SpectatorViewPlugin.cpp" />
     <ClCompile Include="..\SharedFiles\ArUcoMarkerDetector.cpp">
       <Filter>Shared Files</Filter>
     </ClCompile>
     <ClCompile Include="..\SharedFiles\Calibration.cpp">
       <Filter>Shared Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\SharedFiles\SpectatorViewPlugin.cpp" />
+    <ClCompile Include="..\SharedFiles\dllmain.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="SpectatorViewPlugin.h" />
     <ClInclude Include="..\SharedFiles\ArUcoMarkerDetector.h">
       <Filter>Shared Files</Filter>
     </ClInclude>
@@ -30,5 +29,6 @@
     <ClInclude Include="..\SharedFiles\pch.h">
       <Filter>Shared Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\SharedFiles\SpectatorViewPlugin.h" />
   </ItemGroup>
 </Project>
