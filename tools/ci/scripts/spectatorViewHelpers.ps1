@@ -175,7 +175,7 @@ function SetupExternalDownloads
 
     $success = Test-Path "$PSScriptRoot\..\..\..\external\dependencies\BlackmagicDesign\Blackmagic DeckLink SDK 10.9.11"
     Write-Host "BlackmagicDesign dependencies found: $SetupSucceeded"
-    if (!success)
+    if (!$success)
     {
       Write-Host "Native build will fail based on a missing BlackmagicDesign dependency."
       Write-Host "To fix this issue, obtain Blackmagic DeckLink SDK 10.9.11 and add it to a external\dependencies\BlackmagicDesign\Blackmagic DeckLink SDK 10.9.11 directory."

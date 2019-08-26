@@ -19,7 +19,6 @@ function SetupVSProjects
         SetupExternalDownloads -Succeeded ([ref]$SetupSucceeded)
     }
 
-
     $OpenCVSucceeded = "False"
     if ($ForceRebuild)
     {
