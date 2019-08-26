@@ -2,7 +2,7 @@ param(
     [string]$ProjectPath
 )
 
-. $PSScriptRoot\spectatorViewHelpers.ps1
+. $PSScriptRoot\buildNativeProjectShared.ps1
 
 $SetupResult = "False"
 SetupVSProjects -ForceRebuild -Succeeded ([ref]$SetupResult)
