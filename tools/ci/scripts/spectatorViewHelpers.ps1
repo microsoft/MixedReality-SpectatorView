@@ -153,7 +153,8 @@ function SetupExternalDownloads
 {
   param
   (
-    [Parameter(Mandatory=$true)][ref]$Succeeded
+    [Parameter(Mandatory=$true)][ref]$Succeeded,
+    [switch]$Remote
   )
 
   $success = "False";
@@ -166,8 +167,12 @@ function SetupExternalDownloads
   }
   else
   {
-    DownloadQRCodePlugin
-    DownloadARKitPlugin
+    if (!$Remote)
+    {
+      DownloadQRCodePlugin
+      DownloadARKitPlugin
+    }
+
     $success = Test-Path "$PSScriptRoot\..\..\..\external\dependencies\BlackmagicDesign\Blackmagic DeckLink SDK 10.9.11"
     Write-Host "BlackmagicDesign dependencies found: $SetupSucceeded"
     if (!success)

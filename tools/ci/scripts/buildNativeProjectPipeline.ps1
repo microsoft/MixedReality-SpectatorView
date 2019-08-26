@@ -5,6 +5,6 @@ param(
 . $PSScriptRoot\buildNativeProjectShared.ps1
 
 $SetupResult = "False"
-SetupVSProjects -ForceRebuild -Succeeded ([ref]$SetupResult)
+SetupVSProjects -ForceRebuild -Remote -Succeeded ([ref]$SetupResult)
 Write-Host "Setup Suceeded: $SetupResult"
 exit $SetupResult

@@ -1,14 +1,24 @@
 . $PSScriptRoot\genericHelpers.ps1
+. $PSScriptRoot\spectatorViewHelpers.ps1
 
 function SetupVSProjects
 {
     param(
         [switch]$ForceRebuild,
+        [switch]$Remote,
         [Parameter(Mandatory=$false)][ref]$Succeeded
     )
 
-    $SetupSucceeded = "False"   
-    SetupExternalDownloads -Succeeded $SetupSucceeded
+    $SetupSucceeded = "False"
+    if ($Remote)
+    {
+        SetupExternalDownloads -Succeeded $SetupSucceeded -Remote
+    }
+    else
+    {
+        SetupExternalDownloads -Succeeded $SetupSucceeded
+    }
+
 
     $OpenCVSucceeded = "False"
     if ($ForceRebuild)
