@@ -1,6 +1,11 @@
 # [Template] Common build tasks shared between CI builds and PR validation.
 
 steps:
+# Build Native Plugins
+- template: nativesetup.yml
+  parameters:
+    ProjectPath: '${{ parameters.ProjectPath }}'
+
 # Build UWP ARM IL2CPP
 - template: unitybuild.yml
   parameters:
