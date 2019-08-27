@@ -10,7 +10,7 @@ steps:
       -DependencyRepo: '${{ parameters.DependencyRepo }}'
 
 - task: MSBuild@1
-  displayName: 'Building Native Plugins (ARM Release)'
+  displayName: 'Building Native Plugins ARM Release'
   inputs:
     solution: src\SpectatorView.Native\SpectatorView.Native.sln
     msbuildVersion: 15.0
@@ -20,7 +20,7 @@ steps:
   timeoutInMinutes: 20
 
 - task: MSBuild@1
-  displayName: 'Building Native Plugins (x86 Release)'
+  displayName: 'Building Native Plugins x86 Release'
   inputs:
     solution: src\SpectatorView.Native\SpectatorView.Native.sln
     msbuildVersion: 15.0
@@ -30,7 +30,7 @@ steps:
   timeoutInMinutes: 20
 
 - task: MSBuild@1
-  displayName: 'Building Native Plugins (x64 Release)'
+  displayName: 'Building Native Plugins x64 Release'
   inputs:
     solution: src\SpectatorView.Native\SpectatorView.Native.sln
     msbuildVersion: 15.0
@@ -40,7 +40,7 @@ steps:
   timeoutInMinutes: 20
 
 - task: PowerShell@2
-  displayName: 'Copying Native Plugins to SpectatorView.Unity'
+  displayName: 'Copying Native Plugins to SpectatorView Unity'
   inputs:
     targetType: filePath
     filePath: .\tools\scripts\CopyPluginsToUnity.ps1
