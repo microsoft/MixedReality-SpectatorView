@@ -16,7 +16,7 @@ variables:
   UnityVersion: Unity2018.3.7f1
 
 jobs:
-- job: PRValidation
+- job: BuildUnityComponents
   timeoutInMinutes: 90
   pool:
     name: On-Prem Unity

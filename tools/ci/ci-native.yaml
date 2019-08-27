@@ -16,7 +16,7 @@ variables:
   UnityVersion: Unity2018.3.7f1
 
 jobs:
-- job: Building Native Components
+- job: BuildNativeComponents
   timeoutInMinutes: 90
   pool:
     name: On-Prem Unity
