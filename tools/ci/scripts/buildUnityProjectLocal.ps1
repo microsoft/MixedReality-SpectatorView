@@ -3,7 +3,7 @@ param(
     [Parameter(Mandatory=$false)][ref]$Succeeded
 )
 
-. $PSScriptRoot\buildUnityProjectShared.ps1
+. $PSScriptRoot\genericHelpers.ps1
 . $PSScriptRoot\spectatorViewHelpers.ps1
 
 # NOTE - For this script to succeed, you need to have no preprocessor directives declared in the SpectatorView.Examples.Unity project prior to building.
@@ -30,7 +30,7 @@ SetupRepository
 # Make sure the tools are included in your local project
 SetupToolsPath -ProjectPath $projPath -ToolsAssetsPath $toolsAssets
 
-$result = "true"
+$result = $true
 Write-Host "`n`n############################ Android ############################"
 Write-Host "Running Android Builds"
 IncludeAndroidAssets -ProjectPath $projPath

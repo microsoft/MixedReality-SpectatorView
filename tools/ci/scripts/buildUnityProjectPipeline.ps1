@@ -6,7 +6,8 @@ param(
     [string]$ScriptingBackend,
     [string]$SceneList,
     [string]$Define,
-    [string]$UnityArgs
+    [string]$UnityArgs,
+    [string]$DependencyRepo
 )
 
 $repoLocation = Get-Location
@@ -18,16 +19,16 @@ Write-Host "Repo location: $repoLocation"
 Write-Host "Project Path: $ProjectPath"
 Write-Host "Tools Assets Path: $ToolsAssetsPath"
 
-. $PSScriptRoot\buildUnityProjectShared.ps1
+. $PSScriptRoot\genericHelpers.ps1
 . $PSScriptRoot\spectatorViewHelpers.ps1
 
 # Find unity.exe as Start-UnityEditor currently doesn't support arbitrary parameters
 $Editor = Get-ChildItem ${Env:$(UnityVersion)} -Filter 'Unity.exe' -Recurse | Select-Object -First 1 -ExpandProperty FullName
 
-$SetupSucceeded = "False"
-SetupExternalDownloads -Succeeded $SetupSucceeded
-
 SetupRepository -NoDownloads
+$SetupSucceeded = "False"
+SetupExternalDownloads -$DependencyRepo $DependencyRepo -Succeeded $SetupSucceeded
+
 SetupToolsPath -ProjectPath "$ProjectPath" -ToolsAssetsPath "$ToolsAssetsPath"
 $OutDirExt = ""
 

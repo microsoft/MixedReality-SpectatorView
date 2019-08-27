@@ -1,0 +1,99 @@
+# [Template] Common build tasks shared between CI builds and PR validation.
+
+steps:
+# Build UWP ARM IL2CPP
+- task: PowerShell@2
+  displayName: 'Build UWP Unity Player'
+  inputs:
+    targetType: filePath
+    filePath: .\tools\ci\scripts\buildUnityProjectPipeline.ps1
+    arguments: >
+      -ProjectPath: '${{ parameters.ProjectPath }}'
+      -ToolsAssetsPath: '${{ parameters.ToolsAssetsPath }}'
+      -Platform: 'UWP'
+      -Arch: 'ARM'
+      -ScriptingBackend: 'IL2CPP'
+      -SceneList: '${{ parameters.ProjectPath }}\Assets\MixedReality-SpectatorView\SpectatorView\Scenes\SpectatorView.HoloLens.unity'
+      -Define: ''
+      -UnityArgs: ''
+      -DependencyRepo: '${{ parameters.DependencyRepo }}'
+
+# # Build UWP ARM IL2CPP ASA QR
+# - task: PowerShell@2
+#   displayName: 'Build UWP Unity Player with ASA and QR Code dependencies'
+#   inputs:
+#     targetType: filePath
+#     filePath: .\tools\ci\scripts\buildUnityProjectPipeline.ps1
+#     arguments: >
+#       -ProjectPath: '${{ parameters.ProjectPath }}'
+#       -ToolsAssetsPath: '${{ parameters.ToolsAssetsPath }}'
+#       -Platform: 'UWP'
+#       -Arch: 'ARM'
+#       -ScriptingBackend: 'IL2CPP'
+#       -SceneList: '${{ parameters.ProjectPath }}\Assets\MixedReality-SpectatorView\SpectatorView\Scenes\SpectatorView.HoloLens.unity'
+#       -Define: 'SPATIALALIGNMENT_ASA;QRCODESTRACKER_BINARY_AVAILABLE'
+#       -UnityArgs: ''
+
+# # Build Android ARM IL2CPP
+# - task: PowerShell@2
+#   displayName: 'Build Android Unity Player'
+#   inputs:
+#     targetType: filePath
+#     filePath: .\tools\ci\scripts\buildUnityProjectPipeline.ps1
+#     arguments: >
+#       -ProjectPath: '${{ parameters.ProjectPath }}'
+#       -ToolsAssetsPath: '${{ parameters.ToolsAssetsPath }}'
+#       -Platform: 'Android'
+#       -Arch: 'ARM'
+#       -ScriptingBackend: 'IL2CPP'
+#       -SceneList: '${{ parameters.ProjectPath }}\Assets\MixedReality-SpectatorView\SpectatorView\Scenes\SpectatorView.Android.unity'
+#       -Define: ''
+#       -UnityArgs: ''
+
+# # Build Android ARM IL2CPP ASA
+# - task: PowerShell@2
+#   displayName: 'Build Android Unity Player with ASA'
+#   inputs:
+#     targetType: filePath
+#     filePath: .\tools\ci\scripts\buildUnityProjectPipeline.ps1
+#     arguments: >
+#       -ProjectPath: '${{ parameters.ProjectPath }}'
+#       -ToolsAssetsPath: '${{ parameters.ToolsAssetsPath }}'
+#       -Platform: 'Android'
+#       -Arch: 'ARM'
+#       -ScriptingBackend: 'IL2CPP'
+#       -SceneList: '${{ parameters.ProjectPath }}\Assets\MixedReality-SpectatorView\SpectatorView\Scenes\SpectatorView.Android.unity'
+#       -Define: 'SPATIALALIGNMENT_ASA'
+#       -UnityArgs: ''
+
+# # Build iOS ARM IL2CPP
+# - task: PowerShell@2
+#   displayName: 'Build iOS Unity Player'
+#   inputs:
+#     targetType: filePath
+#     filePath: .\tools\ci\scripts\buildUnityProjectPipeline.ps1
+#     arguments: >
+#       -ProjectPath: '${{ parameters.ProjectPath }}'
+#       -ToolsAssetsPath: '${{ parameters.ToolsAssetsPath }}'
+#       -Platform: 'iOS'
+#       -Arch: 'ARM'
+#       -ScriptingBackend: 'IL2CPP'
+#       -SceneList: '${{ parameters.ProjectPath }}\Assets\MixedReality-SpectatorView\SpectatorView\Scenes\SpectatorView.iOS.unity'
+#       -Define: ''
+#       -UnityArgs: ''
+
+# # Build iOS ARM IL2CPP ASA
+# - task: PowerShell@2
+#   displayName: 'Build iOS Unity Player with ASA'
+#   inputs:
+#     targetType: filePath
+#     filePath: .\tools\ci\scripts\buildUnityProjectPipeline.ps1
+#     arguments: >
+#       -ProjectPath: '${{ parameters.ProjectPath }}'
+#       -ToolsAssetsPath: '${{ parameters.ToolsAssetsPath }}'
+#       -Platform: 'iOS'
+#       -Arch: 'ARM'
+#       -ScriptingBackend: 'IL2CPP'
+#       -SceneList: '${{ parameters.ProjectPath }}\Assets\MixedReality-SpectatorView\SpectatorView\Scenes\SpectatorView.iOS.unity'
+#       -Define: 'SPATIALALIGNMENT_ASA'
+#       -UnityArgs: ''

@@ -2,6 +2,7 @@
 . $PSScriptRoot\..\..\Scripts\ExternalDependencyHelpers.ps1
 . $PSScriptRoot\genericHelpers.ps1
 
+
 function BuildOpenCV
 {
   param
@@ -15,19 +16,13 @@ function BuildOpenCV
   if (!(Test-Path "$PSScriptRoot\..\..\..\external\vcpkg"))
   {
     Write-Host "Creating vcpkg submodule"
-    Set-Location $PSScriptRoot
-    git submodule add --force https://github.com/microsoft/vcpkg.git "../../../external/vcpkg"
-    git submodule update --init --recurse
+    AddSubmodule -Repo https://github.com/microsoft/vcpkg.git -DirectoryName vcpkg -Branch master 
     Set-Location $origLoc
   }
 
   Set-Location "$PSScriptRoot\..\..\..\external\vcpkg"
   Write-Host "Updaing vcpkg submodule to master branch"
   git pull origin master
-  Write-Host "Preparing vcpkg"
-  & .\bootstrap-vcpkg.bat
-  & .\vcpkg update
-  & .\vcpkg upgrade --no-dry-run
 
   if (($ForceRebuild) -And (Test-Path "installed"))
   {
@@ -35,30 +30,60 @@ function BuildOpenCV
     Remove-Item -Path "installed" -Force -Recurse
   }
 
-  if (!(Test-Path "installed"))
+  if (!(Test-Path vcpkg.exe))
   {
-    Write-Host "Setting vcpkg installs to be available to MSBuild"
-    & .\vcpkg integrate install
+    Write-Host "Preparing vcpkg"
+    & .\bootstrap-vcpkg.bat
+  }
+
+  Write-Host "Setting vcpkg installs to be available to MSBuild"
+  & .\vcpkg integrate install
+  Write-Host "Updating vcpkg"
+  & .\vcpkg update
+  Write-Host "Upgrading vcpkg"
+  & .\vcpkg upgrade --no-dry-run
+
+  if (!(Test-Path "installed\x86-windows"))
+  {
     Write-Host "Building OpenCV dependencies"
     & .\vcpkg install protobuf:x86-windows --recurse
     $86Dependencies = $?
-    Write-Host "Building OpenCV x86 UWP"
-    & .\vcpkg install opencv[contrib]:x86-uwp --recurse
-    $86UWP = $?
-    Write-Host "Building OpenCV x64 Windows"
-    & .\vcpkg install opencv[contrib]:x64-windows --recurse
-    $64Windows = $?
-
-    Write-Host "`n`nOpenCV Build Completed:"
-    Write-Host "x86 Dependencies Succeeded: $86Dependencies"
-    Write-Host "x86 UWP OpenCV Succeeded: $86UWP"
-    Write-Host "x86 Desktop OpenCV Succeeded: $64Windows"
-    $Succeeded.Value = $86Dependencies -And $86UWP -And $64Windows
   }
   else
   {
-    $Succeeded.Value = "True"  
+    Write-Host "Found install directory for x86 protobuf windows, skipping build"
+    $86Dependencies = "True"
   }
+
+  if (!(Test-Path "installed\x86-uwp"))
+  {
+    Write-Host "Building OpenCV x86 UWP"
+    & .\vcpkg install opencv[contrib]:x86-uwp --recurse
+    $86UWP = $?
+  }
+  else
+  {
+    Write-Host "Found install directory for x86 OpenCV UWP, skipping build"
+    $86UWP = "True"
+  }
+
+  if (!(Test-Path "installed\x64-windows"))
+  {
+    Write-Host "Building OpenCV x64 Windows"
+    & .\vcpkg install opencv[contrib]:x64-windows --recurse
+    $64Windows = $?
+  }
+  else
+  {
+    Write-Host "Found install directory for x64 OpenCV windows, skipping build"
+    $64Windows = "True"
+  }
+
+  Write-Host "`n`nOpenCV Build Completed:"
+  Write-Host "x86 Dependencies Succeeded: $86Dependencies"
+  Write-Host "x86 UWP OpenCV Succeeded: $86UWP"
+  Write-Host "x86 Desktop OpenCV Succeeded: $64Windows"
+  $Succeeded.Value = ($86Dependencies -eq $true) -And ($86UWP -eq $true) -And ($64Windows -eq $true)
 
   Set-Location $origLoc
 }
@@ -154,32 +179,45 @@ function SetupExternalDownloads
 {
   param
   (
-    [switch]$Remote,
+    $DependencyRepo,
     [Parameter(Mandatory=$true)][ref]$Succeeded
   )
 
   $success = "False";
-  if (Test-Path $PSScriptRoot\setupDependenciesInternal.ps1)
+  if ($DependencyRepo)
   {
     # This script set up dependencies for Blackmagic Design dependencies
     # The behavior can be manually duplicated by populating an 'external\dependencies\BlackmagicDesign\Blackmagic DeckLink SDK 10.9.11' directory in your repo
-    . $PSScriptRoot\setupDependenciesInternal.ps1 -Succeeded ([ref]$success)
+    # and by populating the external\MixedReality-QRCodePlugin and external\ARKit-Unity-Plugin directories
+    SetupDependencyRepoBuildCI -DependencyRepo $DependencyRepo -Succeeded ([ref]$success)
     Write-Host "BlackmagicDesign dependencies found: $SetupSuceeded"
   }
   else
   {
-    if (!$Remote)
-    {
-      DownloadQRCodePlugin
-      DownloadARKitPlugin
-    }
-
+    DownloadQRCodePlugin
+    DownloadARKitPlugin
     $success = Test-Path "$PSScriptRoot\..\..\..\external\dependencies\BlackmagicDesign\Blackmagic DeckLink SDK 10.9.11"
     Write-Host "BlackmagicDesign dependencies found: $SetupSucceeded"
-    if (!$success)
+    if ($success -eq $false)
     {
       Write-Host "Native build will fail based on a missing BlackmagicDesign dependency."
-      Write-Host "To fix this issue, obtain Blackmagic DeckLink SDK 10.9.11 and add it to a external\dependencies\BlackmagicDesign\Blackmagic DeckLink SDK 10.9.11 directory."
+      Write-Host "To fix this issue, obtain Blackmagic DeckLink SDK 10.9.11 and add it to an 'external\dependencies\BlackmagicDesign\Blackmagic DeckLink SDK 10.9.11' directory."
     }
   }
+
+  $Succeeded.Value = $success
+}
+
+function SetupDependencyRepoBuildCI
+{
+  param(
+    $DependencyRepo,
+    [Parameter(Mandatory=$true)][ref]$Succeeded
+)
+
+  AddSubmodule -Repo $DependencyRepo -DirectoryName dependencies -Branch master
+  $Succeeded.Value = $?
+  Copy-Item -Path "$PSScriptRoot\..\..\..\external\dependencies\ARKit-Unity-Plugin\Unity-Technologies-unity-arkit-plugin-94e47eae5954\*" -Destination "$PSScriptRoot\..\..\..\external\ARKit-Unity-Plugin" -Force
+  Copy-Item -Path "$PSScriptRoot\..\..\..\external\dependencies\MixedReality-QRCodePlugin\*" -Destination "$PSScriptRoot\..\..\..\external\MixedReality-QRCodePlugin" -Force
+  Copy-Item -Path "$PSScriptRoot\dependencies.props" -Destination "$PSScriptRoot\..\..\..\src\SpectatorView.Native\SpectatorView.Compositor\dependencies.props" -Force
 }
