@@ -16,7 +16,8 @@ function BuildOpenCV
   {
     Write-Host "Creating vcpkg submodule"
     Set-Location $PSScriptRoot
-    git submodule add https://github.com/microsoft/vcpkg.git "../../../external/vcpkg"
+    git submodule add --force https://github.com/microsoft/vcpkg.git "../../../external/vcpkg"
+    git submodule update --init --recurse
     Set-Location $origLoc
   }
 
