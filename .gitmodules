@@ -14,9 +14,3 @@
 [submodule "external/gamecapture"]
 	path = external/gamecapture
 	url = https://github.com/elgatosf/gamecapture.git
-[submodule "external/vcpkg"]
-	path = external/vcpkg
-	url = https://github.com/microsoft/vcpkg.git
-[submodule "external/dependencies"]
-	path = external/dependencies
-	url = https://microsoft.visualstudio.com/DefaultCollection/Analog/_git/mixedreality.spectatorview.proto
