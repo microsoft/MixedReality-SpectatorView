@@ -10,7 +10,7 @@ trigger: none
 pr: none
 
 # Give a unique name to the build each time it runs
-name: ci-pr-$(SourceBranchName)-$(Date:yyyyMMdd)-$(Rev:r)
+name: ci-native-$(SourceBranchName)-$(Date:yyyyMMdd)-$(Rev:r)
 
 variables:
   UnityVersion: Unity2018.3.7f1
