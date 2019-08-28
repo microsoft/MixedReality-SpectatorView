@@ -5,6 +5,9 @@ using System.IO;
 
 #if STATESYNC_TEXTMESHPRO
 using TMPro;
+#if !(UNITY_2018_4_OR_NEWER)
+using FontWeight = System.Int32;
+#endif
 #else
 using System;
 #endif
