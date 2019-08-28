@@ -214,3 +214,6 @@ In some instances, file permissions may generate errors when opening a spectator
 The ARKit Camera has an Enable Auto Focus feature that consumes touch input events, breaking Unity canvas interactions on iOS. This can cause the Screen Recording UI to fail to show. To fix this, uncheck the `Enable Auto Focus` option for ARKit's `UnityARCameraManager`:
 
 ![Marker](images/iOSAutoFocus.png)
+
+### __Issue:__ Build errors occur when `STATESYNC_TEXTMESHPRO` is enabled
+In some instances, if your project does not use Unity 2018.3.14f1, you may encounter breaks in TextMeshPro state synchronization code. In most instances, you will need to make small, often type, fixes to get TextMeshPro synchronization correctly. For now, Spectator View supports Unity 2018.3.14f1 and the TextMeshPro code in the state synchronization code base will be built based off of the TextMeshPro packages shipped with Unity 2018.3.14f1.
