@@ -51,4 +51,12 @@ if ($Succeeded)
 {
     $Succeeded.Value = $success
 }
-exit $success
+
+if ($success -eq $true)
+{
+    exit 0;
+}
+else
+{
+    exit 1;
+}
