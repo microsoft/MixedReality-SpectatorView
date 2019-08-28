@@ -8,9 +8,9 @@ param(
 
 Write-Host "Setting up Blackmagic design dependencies"
 $BlackMagicResult = "False"
-if ($DependencyRepo)
+if ($NoDownloads)
 {
-    SetupExternalDownloads -DependencyRepo $DependencyRepo -Succeeded ([ref]$BlackMagicResult)
+    SetupExternalDownloads -NoDownloads -Succeeded ([ref]$BlackMagicResult)
 }
 else
 {

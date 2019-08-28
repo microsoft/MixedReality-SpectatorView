@@ -25,6 +25,14 @@ jobs:
     - COG-UnityCache-WUS2-01
     - SDK_18362 -equals TRUE
   steps:
+  - task: UniversalPackages@0
+    displayName: 'Download Native Dependencies'
+    inputs:
+      command: download
+      vstsFeed: $(DependencyFeed)
+      vstsFeedPackage: $(DependencyPackage)
+      vstsPackageVersion: $(DependencyVersion)
+      downloadDirectory: 'external\dependencies'
   - template: templates\buildunity.yml
     parameters:
       ProjectPath: 'samples\SpectatorView.Example.Unity\'

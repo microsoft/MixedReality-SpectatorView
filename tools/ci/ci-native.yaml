@@ -24,7 +24,7 @@ jobs:
     - SDK_18362 -equals TRUE
   steps:
   - task: UniversalPackages@0
-    displayName: 'Universal download'
+    displayName: 'Download Native Dependencies'
     inputs:
       command: download
       vstsFeed: $(DependencyFeed)
