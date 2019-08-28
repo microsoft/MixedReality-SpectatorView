@@ -101,7 +101,7 @@ namespace Microsoft.MixedReality.SpectatorView
                 TextMeshObserver.fontSizeMax = message.ReadSingle();
                 TextMeshObserver.fontSizeMin = message.ReadSingle();
                 TextMeshObserver.fontStyle = (FontStyles)message.ReadInt32();
-                TextMeshObserver.fontWeight = (FontWeight)message.ReadInt32();
+                TextMeshObserver.fontWeight = message.ReadInt32();
                 TextMeshObserver.horizontalMapping = (TextureMappingOptions)message.ReadByte();
                 TextMeshObserver.lineSpacing = message.ReadSingle();
                 TextMeshObserver.lineSpacingAdjustment = message.ReadSingle();
