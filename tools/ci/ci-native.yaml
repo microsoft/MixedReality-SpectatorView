@@ -1,7 +1,7 @@
 # Copyright (c) Microsoft Corporation. All rights reserved.
 # Licensed under the MIT License. See LICENSE in the project root for license information.
 
-# MixedReality-SpectatorView  build native content
+# MixedReality-SpectatorView build native content
 
 # Trigger CI on push changes
 trigger: none

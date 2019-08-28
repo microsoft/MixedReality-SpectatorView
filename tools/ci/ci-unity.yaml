@@ -37,5 +37,4 @@ jobs:
     parameters:
       ProjectPath: 'samples\SpectatorView.Example.Unity\'
       ToolsAssetsPath: 'tools\ci\src\BuildTools.Unity\Assets\'
-      DependencyRepo: $(DependencyRepo)
   - template: templates\end.yml

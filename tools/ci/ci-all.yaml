@@ -34,11 +34,8 @@ jobs:
       vstsPackageVersion: $(DependencyVersion)
       downloadDirectory: 'external\dependencies'
   - template: templates\buildnative.yml
-    parameters:
-      DependencyRepo: $(DependencyRepo)
   - template: templates\buildunity.yml
     parameters:
       ProjectPath: 'samples\SpectatorView.Example.Unity\'
       ToolsAssetsPath: 'tools\ci\src\BuildTools.Unity\Assets\'
-      DependencyRepo: $(DependencyRepo)
   - template: templates\end.yml

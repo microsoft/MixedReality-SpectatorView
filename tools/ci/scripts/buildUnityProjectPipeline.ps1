@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License. See LICENSE in the project root for license information.
+
 param(
     [string]$ProjectPath,
     [string]$ToolsAssetsPath,
@@ -6,8 +9,7 @@ param(
     [string]$ScriptingBackend,
     [string]$SceneList,
     [string]$Define,
-    [string]$UnityArgs,
-    [string]$DependencyRepo
+    [string]$UnityArgs
 )
 
 $repoLocation = Get-Location
@@ -27,7 +29,7 @@ $Editor = Get-ChildItem ${Env:$(UnityVersion)} -Filter 'Unity.exe' -Recurse | Se
 
 SetupRepository -NoDownloads
 $SetupSucceeded = "False"
-SetupExternalDownloads -$DependencyRepo $DependencyRepo -Succeeded $SetupSucceeded
+SetupExternalDownloads -NoDownloads -Succeeded $SetupSucceeded
 
 SetupToolsPath -ProjectPath "$ProjectPath" -ToolsAssetsPath "$ToolsAssetsPath"
 $OutDirExt = ""
