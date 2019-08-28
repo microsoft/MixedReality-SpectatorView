@@ -82,4 +82,11 @@ else
     BuildUnityProject -OutDirExt $OutDirExt -ProjectPath $ProjectPath -SceneList $SceneList -EditorPath $Editor -Platform $Platform -Arch $Arch -ScriptingBackend $ScriptingBackend -UnityArgs $UnityArgs -Define $Define -BuildArtifactStagingDirectory $(Build.ArtifactStagingDirectory) -UnityCacheServerAddress $(Unity.CacheServer.Address) -Succeeded ([ref]$Result)
 }
 
-exit $Result
+if ($Result -eq $true)
+{
+    exit 0
+}
+else
+{
+    exit 1
+}
