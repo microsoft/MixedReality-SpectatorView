@@ -179,25 +179,25 @@ function SetupExternalDownloads
 {
   param
   (
-    $DependencyRepo,
+    [switch]$NoDownloads,
     [Parameter(Mandatory=$true)][ref]$Succeeded
   )
 
   $success = "False";
-  if ($DependencyRepo)
+  if ($NoDownloads)
   {
     # This script set up dependencies for Blackmagic Design dependencies
     # The behavior can be manually duplicated by populating an 'external\dependencies\BlackmagicDesign\Blackmagic DeckLink SDK 10.9.11' directory in your repo
     # and by populating the external\MixedReality-QRCodePlugin and external\ARKit-Unity-Plugin directories
-    SetupDependencyRepoBuildCI -DependencyRepo $DependencyRepo -Succeeded ([ref]$success)
-    Write-Host "BlackmagicDesign dependencies found: $SetupSuceeded"
+    SetupDependencyRepoBuildCI -Succeeded ([ref]$success)
+    Write-Host "BlackmagicDesign dependencies found: $success"
   }
   else
   {
     DownloadQRCodePlugin
     DownloadARKitPlugin
     $success = Test-Path "$PSScriptRoot\..\..\..\external\dependencies\BlackmagicDesign\Blackmagic DeckLink SDK 10.9.11"
-    Write-Host "BlackmagicDesign dependencies found: $SetupSucceeded"
+    Write-Host "BlackmagicDesign dependencies found: $success"
     if ($success -eq $false)
     {
       Write-Host "Native build will fail based on a missing BlackmagicDesign dependency."
@@ -211,13 +211,11 @@ function SetupExternalDownloads
 function SetupDependencyRepoBuildCI
 {
   param(
-    $DependencyRepo,
     [Parameter(Mandatory=$true)][ref]$Succeeded
 )
 
-  AddSubmodule -Repo $DependencyRepo -DirectoryName dependencies -Branch master
-  $Succeeded.Value = $?
   Copy-Item -Path "$PSScriptRoot\..\..\..\external\dependencies\ARKit-Unity-Plugin\Unity-Technologies-unity-arkit-plugin-94e47eae5954\*" -Destination "$PSScriptRoot\..\..\..\external\ARKit-Unity-Plugin" -Force
   Copy-Item -Path "$PSScriptRoot\..\..\..\external\dependencies\MixedReality-QRCodePlugin\*" -Destination "$PSScriptRoot\..\..\..\external\MixedReality-QRCodePlugin" -Force
   Copy-Item -Path "$PSScriptRoot\dependencies.props" -Destination "$PSScriptRoot\..\..\..\src\SpectatorView.Native\SpectatorView.Compositor\dependencies.props" -Force
+  $Succeeded.Value = $?
 }

@@ -1,7 +1,6 @@
 param(
     $MSBuild,
     [switch]$ForceRebuild,
-    $DependencyRepo,
     [Parameter(Mandatory=$false)][ref]$Succeeded
 )
 
@@ -22,11 +21,11 @@ $CopyResult = "False"
 
 if ($ForceRebuild)
 {
-    . $PSScriptRoot\setupNativeProject.ps1 -ForceRebuild -DependencyRepo $DependencyRepo -Succeeded ([ref]$SetupResult)
+    . $PSScriptRoot\setupNativeProject.ps1 -ForceRebuild -Succeeded ([ref]$SetupResult)
 }
 else
 {
-    . $PSScriptRoot\setupNativeProject.ps1 -DependencyRepo $DependencyRepo -Succeeded ([ref]$SetupResult)
+    . $PSScriptRoot\setupNativeProject.ps1 -Succeeded ([ref]$SetupResult)
 }
 
 if ($SetupResult -eq $true)

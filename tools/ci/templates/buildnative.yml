@@ -7,7 +7,8 @@ steps:
     targetType: filePath
     filePath: .\tools\ci\scripts\setupNativeProject.ps1
     arguments: >
-      -DependencyRepo: '${{ parameters.DependencyRepo }}'
+      -ForceRebuild
+      -NoDownloads
 
 - task: MSBuild@1
   displayName: 'Building Native Plugins ARM Release'

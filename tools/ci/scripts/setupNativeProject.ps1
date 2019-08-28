@@ -1,6 +1,6 @@
 param(
     [switch]$ForceRebuild,
-    $DependencyRepo,
+    [switch]$NoDownloads,
     [Parameter(Mandatory=$false)][ref]$Succeeded
 )
 

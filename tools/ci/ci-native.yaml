@@ -23,6 +23,12 @@ jobs:
     demands:
     - SDK_18362 -equals TRUE
   steps:
+  - task: UniversalPackages@0
+    displayName: 'Universal download'
+    inputs:
+      command: download
+      vstsFeed: $(DependencyFeed)
+      vstsFeedPackage: $(DependencyPackage)
+      vstsPackageVersion: $(DependencyVersion)
+      downloadDirectory: 'external\dependencies'
   - template: templates\buildnative.yml
-    parameters:
-      DependencyRepo: $(DependencyRepo)
