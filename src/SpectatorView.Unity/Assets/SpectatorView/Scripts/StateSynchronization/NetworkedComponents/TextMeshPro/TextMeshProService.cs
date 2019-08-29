@@ -8,22 +8,13 @@ using TMPro;
 
 namespace Microsoft.MixedReality.SpectatorView
 {
-    internal class TextMeshProService : ComponentBroadcasterService<TextMeshProService, TextMeshProObserver>, IAssetCache
+    internal class TextMeshProService : ComponentBroadcasterService<TextMeshProService, TextMeshProObserver>, IAssetCacheUpdater
     {
         public static readonly ShortID ID = new ShortID("TMP");
 
         public override ShortID GetID() { return ID; }
 
 #if STATESYNC_TEXTMESHPRO
-        private TextMeshProFontAssetCache fontAssets;
-
-        protected override void Awake()
-        {
-            base.Awake();
-
-            fontAssets = TextMeshProFontAssetCache.LoadAssetCache<TextMeshProFontAssetCache>();
-        }
-
         private void Start()
         {
             StateSynchronizationSceneManager.Instance.RegisterService(this, new ComponentBroadcasterDefinition<TextMeshProBroadcaster>(typeof(TextMeshPro)));
@@ -31,12 +22,28 @@ namespace Microsoft.MixedReality.SpectatorView
 
         public Guid GetFontId(TMP_FontAsset font)
         {
-            return fontAssets?.GetAssetId(font) ?? Guid.Empty;
+            var fontAssets = TextMeshProFontAssetCache.Instance;
+            if (fontAssets == null)
+            {
+                return Guid.Empty;
+            }
+            else
+            {
+                return fontAssets.GetAssetId(font);
+            }
         }
 
         public TMP_FontAsset GetFont(Guid guid)
         {
-            return (TMP_FontAsset)fontAssets?.GetAsset(guid);
+            var fontAssets = TextMeshProFontAssetCache.Instance;
+            if (fontAssets == null)
+            {
+                return null;
+            }
+            else
+            {
+                return (TMP_FontAsset)fontAssets.GetAsset(guid);
+            }
         }
 #endif
 

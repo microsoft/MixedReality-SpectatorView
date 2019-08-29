@@ -12,11 +12,11 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
 {
     public static class StateSynchronizationMenuItems
     {
-        private static IEqualityComparer<IAssetCache> assetTypeComparer = new AssetCacheTypeEqualityComparer();
+        private static IEqualityComparer<IAssetCacheUpdater> assetTypeComparer = new AssetCacheTypeEqualityComparer();
 
-        private class AssetCacheTypeEqualityComparer : IEqualityComparer<IAssetCache>
+        private class AssetCacheTypeEqualityComparer : IEqualityComparer<IAssetCacheUpdater>
         {
-            public bool Equals(IAssetCache x, IAssetCache y)
+            public bool Equals(IAssetCacheUpdater x, IAssetCacheUpdater y)
             {
                 if (ReferenceEquals(x, y))
                 {
@@ -30,15 +30,15 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
                 return x.GetType().Equals(y.GetType());
             }
 
-            public int GetHashCode(IAssetCache obj)
+            public int GetHashCode(IAssetCacheUpdater obj)
             {
                 return obj.GetType().GetHashCode();
             }
         }
 
-        private static IEnumerable<IAssetCache> GetAllAssetCaches()
+        private static IEnumerable<IAssetCacheUpdater> GetAllAssetCaches()
         {
-            var assetCaches = AssetCache.EnumerateAllComponentsInScenesAndPrefabs<IAssetCache>();
+            var assetCaches = AssetCache.EnumerateAllComponentsInScenesAndPrefabs<IAssetCacheUpdater>();
             return assetCaches.Distinct(assetTypeComparer);
         }
 
@@ -47,7 +47,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
         {
             bool assetCacheFound = false;
 
-            foreach (IAssetCache assetCache in GetAllAssetCaches())
+            foreach (IAssetCacheUpdater assetCache in GetAllAssetCaches())
             {
                 Debug.Log($"Updating asset cache {assetCache.GetType().Name}...");
                 assetCache.UpdateAssetCache();
@@ -69,7 +69,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
         {
             bool assetCacheFound = false;
 
-            foreach (IAssetCache assetCache in GetAllAssetCaches())
+            foreach (IAssetCacheUpdater assetCache in GetAllAssetCaches())
             {
                 Debug.Log($"Clearing asset cache {assetCache.GetType().Name}...");
                 assetCache.ClearAssetCache();

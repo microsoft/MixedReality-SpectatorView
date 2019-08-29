@@ -13,14 +13,6 @@ namespace Microsoft.MixedReality.SpectatorView
 
         public override ShortID GetID() { return ID; }
 
-        private FontAssetCache fontAssets;
-
-        protected override void Awake()
-        {
-            base.Awake();
-
-            fontAssets = FontAssetCache.LoadAssetCache<FontAssetCache>();
-        }
 
         private void Start()
         {
@@ -29,12 +21,28 @@ namespace Microsoft.MixedReality.SpectatorView
 
         public Guid GetFontId(Font font)
         {
-            return fontAssets?.GetAssetId(font) ?? Guid.Empty;
+            var fontAssets = FontAssetCache.Instance;
+            if (fontAssets == null)
+            {
+                return Guid.Empty;
+            }
+            else
+            {
+                return fontAssets.GetAssetId(font);
+            }
         }
 
         public Font GetFont(Guid guid)
         {
-            return fontAssets?.GetAsset(guid);
+            var fontAssets = FontAssetCache.Instance;
+            if (fontAssets == null)
+            {
+                return null;
+            }
+            else
+            {
+                return fontAssets.GetAsset(guid);
+            }
         }
     }
 }

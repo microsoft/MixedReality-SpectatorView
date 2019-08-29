@@ -8,43 +8,21 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.SpectatorView
 {
-    internal class AssetService : Singleton<AssetService>, IAssetCache
+    internal class AssetService : Singleton<AssetService>, IAssetCacheUpdater
     {
-        private TextureAssetCache textureAssets;
-        private MeshAssetCache meshAssets;
-        private MaterialPropertyAssetCache materialPropertyAssets;
-
         private readonly Dictionary<ShortID, IAssetSerializer<Texture>> textureSerializers = new Dictionary<ShortID, IAssetSerializer<Texture>>();
-
-        protected override void Awake()
-        {
-            base.Awake();
-
-            textureAssets = LookupAssetCache<TextureAssetCache>();
-            meshAssets = LookupAssetCache<MeshAssetCache>();
-            materialPropertyAssets = LookupAssetCache<MaterialPropertyAssetCache>();
-
-            if (textureAssets != null)
-            {
-                textureSerializers.Add(textureAssets.GetID(), textureAssets);
-            }
-        }
-
-        private T LookupAssetCache<T>() where T : AssetCache
-        {
-            T toReturn = AssetCache.LoadAssetCache<T>();
-
-            if (toReturn == null)
-            {
-                Debug.LogWarning($"Could not find an asset cache of type: {typeof(T).Name}");
-            }
-
-            return toReturn;
-        }
 
         public IEnumerable<MaterialPropertyAsset> GetMaterialProperties(string shaderName)
         {
-            return materialPropertyAssets?.GetMaterialProperties(shaderName) ?? Array.Empty<MaterialPropertyAsset>();
+            var cache = MaterialPropertyAssetCache.Instance;
+            if (cache == null)
+            {
+                return Array.Empty<MaterialPropertyAsset>();
+            }
+            else
+            {
+                return cache.GetMaterialProperties(shaderName);
+            }
         }
 
         public void RegisterTextureSerializer(IAssetSerializer<Texture> textureSerializer)
@@ -60,6 +38,17 @@ namespace Microsoft.MixedReality.SpectatorView
                 {
                     writer.Write(serializerPair.Key.Value);
                     serializerPair.Value.Serialize(writer, texture);
+                    return true;
+                }
+            }
+
+            var textureAssets = TextureAssetCache.Instance;
+            if (textureAssets != null)
+            {
+                if (textureAssets.CanSerialize(texture))
+                {
+                    writer.Write(textureAssets.GetID().Value);
+                    textureAssets.Serialize(writer, texture);
                     return true;
                 }
             }
@@ -80,18 +69,42 @@ namespace Microsoft.MixedReality.SpectatorView
             }
             else
             {
-                texture = null;
-                return false;
+                var textureAssets = TextureAssetCache.Instance;
+                if (textureAssets != null && textureAssets.GetID() == shortID)
+                {
+                    texture = textureAssets.Deserialize(reader);
+                    return true;
+                }
+                else
+                {
+                    texture = null;
+                    return false;
+                }
             }
         }
 
         public Guid GetMeshId(Mesh mesh)
         {
-            return meshAssets?.GetAssetId(mesh) ?? Guid.Empty;
+            var meshAssets = MeshAssetCache.Instance;
+            if (meshAssets == null)
+            {
+                return Guid.Empty;
+            }
+            else
+            {
+                return meshAssets.GetAssetId(mesh);
+            }
         }
 
         public bool AttachMeshFilter(GameObject gameObject, Guid assetId)
         {
+            var meshAssets = MeshAssetCache.Instance;
+
+            if (meshAssets == null)
+            {
+                return false;
+            }
+
             ComponentExtensions.EnsureComponent<MeshRenderer>(gameObject);
 
             Mesh mesh = meshAssets.GetAsset(assetId);
@@ -107,6 +120,13 @@ namespace Microsoft.MixedReality.SpectatorView
 
         public bool AttachSkinnedMeshRenderer(GameObject gameObject, Guid assetId)
         {
+            var meshAssets = MeshAssetCache.Instance;
+
+            if (meshAssets == null)
+            {
+                return false;
+            }
+
             Mesh mesh = meshAssets.GetAsset(assetId);
             if (mesh != null)
             {
@@ -120,18 +140,18 @@ namespace Microsoft.MixedReality.SpectatorView
 
         public void UpdateAssetCache()
         {
-            AssetCache.GetOrCreateAssetCache<TextureAssetCache>().UpdateAssetCache();
-            AssetCache.GetOrCreateAssetCache<MeshAssetCache>().UpdateAssetCache();
-            AssetCache.GetOrCreateAssetCache<MaterialPropertyAssetCache>().UpdateAssetCache();
-            AssetCache.GetOrCreateAssetCache<CustomShaderPropertyAssetCache>().UpdateAssetCache();
+            TextureAssetCache.GetOrCreateAssetCache<TextureAssetCache>().UpdateAssetCache();
+            MeshAssetCache.GetOrCreateAssetCache<MeshAssetCache>().UpdateAssetCache();
+            MaterialPropertyAssetCache.GetOrCreateAssetCache<MaterialPropertyAssetCache>().UpdateAssetCache();
+            CustomShaderPropertyAssetCache.GetOrCreateAssetCache<CustomShaderPropertyAssetCache>().UpdateAssetCache();
         }
 
         public void ClearAssetCache()
         {
-            AssetCache.GetOrCreateAssetCache<TextureAssetCache>().ClearAssetCache();
-            AssetCache.GetOrCreateAssetCache<MeshAssetCache>().ClearAssetCache();
-            AssetCache.GetOrCreateAssetCache<MaterialPropertyAssetCache>().ClearAssetCache();
-            AssetCache.GetOrCreateAssetCache<CustomShaderPropertyAssetCache>().ClearAssetCache();
+            TextureAssetCache.GetOrCreateAssetCache<TextureAssetCache>().ClearAssetCache();
+            MeshAssetCache.GetOrCreateAssetCache<MeshAssetCache>().ClearAssetCache();
+            MaterialPropertyAssetCache.GetOrCreateAssetCache<MaterialPropertyAssetCache>().ClearAssetCache();
+            CustomShaderPropertyAssetCache.GetOrCreateAssetCache<CustomShaderPropertyAssetCache>().ClearAssetCache();
         }
     }
 }

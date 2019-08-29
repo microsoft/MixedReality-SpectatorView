@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.SpectatorView
 {
-    internal class CustomShaderPropertyAssetCache : AssetCache
+    internal class CustomShaderPropertyAssetCache : AssetCache<CustomShaderPropertyAssetCache>
     {
         [SerializeField]
         private GlobalMaterialPropertyAsset[] customGlobalShaderProperties = null;

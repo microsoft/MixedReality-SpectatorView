@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.SpectatorView
     internal class AudioClipAsset : AssetCacheEntry<AudioClip> { }
 
     [Serializable]
-    internal class AudioClipAssetCache : AssetCache<AudioClipAsset, AudioClip>
+    internal class AudioClipAssetCache : AssetCache<AudioClipAssetCache, AudioClipAsset, AudioClip>
     {
         protected override IEnumerable<AudioClip> EnumerateAllAssets()
         {

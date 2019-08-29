@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.SpectatorView
     {
         const string assetCacheDirectory = "Generated.StateSynchronization.AssetCaches";
 
-        public static TAssetCache LoadAssetCache<TAssetCache>()
+        protected static TAssetCache LoadAssetCache<TAssetCache>()
             where TAssetCache : AssetCache
         {
             return Resources.Load<TAssetCache>(typeof(TAssetCache).Name);
@@ -31,7 +31,7 @@ namespace Microsoft.MixedReality.SpectatorView
         public static void EnsureAssetDirectoryExists()
         {
 #if UNITY_EDITOR
-            if (!AssetDatabase.IsValidFolder( $"Assets/{assetCacheDirectory}"))
+            if (!AssetDatabase.IsValidFolder($"Assets/{assetCacheDirectory}"))
             {
                 AssetDatabase.CreateFolder("Assets", $"{assetCacheDirectory}");
             }
@@ -173,7 +173,38 @@ namespace Microsoft.MixedReality.SpectatorView
         }
     }
 
-    internal abstract class AssetCache<TAssetEntry, TAsset> : AssetCache, IAssetCache
+    internal abstract class AssetCache<TAssetCacheSingleton> : AssetCache where TAssetCacheSingleton : AssetCache<TAssetCacheSingleton>
+    {
+        private static TAssetCacheSingleton _Instance;
+
+        protected virtual void Awake()
+        {
+            _Instance = (TAssetCacheSingleton)this;
+        }
+
+        protected virtual void OnDestroy()
+        {
+            _Instance = null;
+        }
+
+        /// <summary>
+        /// Returns the global instance for the class
+        /// </summary>
+        public static TAssetCacheSingleton Instance
+        {
+            get
+            {
+                if (_Instance == null)
+                {
+                    _Instance = LoadAssetCache<TAssetCacheSingleton>();
+                }
+                return _Instance;
+            }
+        }
+    }
+
+    internal abstract class AssetCache<TAssetCache, TAssetEntry, TAsset> : AssetCache<TAssetCache>
+        where TAssetCache : AssetCache<TAssetCache>
         where TAssetEntry : AssetCacheEntry<TAsset>, new()
         where TAsset : UnityEngine.Object
     {

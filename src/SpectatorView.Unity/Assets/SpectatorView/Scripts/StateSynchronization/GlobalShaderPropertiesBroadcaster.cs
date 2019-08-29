@@ -13,16 +13,8 @@ namespace Microsoft.MixedReality.SpectatorView
     {
         private object[] previousValues;
         private List<GlobalMaterialPropertyAsset> changedProperties = new List<GlobalMaterialPropertyAsset>();
-        private CustomShaderPropertyAssetCache assetCache;
 
-        protected override void Awake()
-        {
-            base.Awake();
-
-            assetCache = AssetCache.LoadAssetCache<CustomShaderPropertyAssetCache>();
-        }
-
-        private void InitializeValues()
+        private void InitializeValues(CustomShaderPropertyAssetCache assetCache)
         {
             previousValues = new object[assetCache.CustomGlobalShaderProperties.Length];
             for (int i = 0; i < assetCache.CustomGlobalShaderProperties.Length; i++)
@@ -33,11 +25,13 @@ namespace Microsoft.MixedReality.SpectatorView
 
         public void OnFrameCompleted(SocketEndpointConnectionDelta connectionDelta)
         {
-            if (assetCache?.CustomGlobalShaderProperties != null)
+            var assetCache = CustomShaderPropertyAssetCache.Instance;
+
+            if (assetCache != null && assetCache.CustomGlobalShaderProperties != null)
             {
                 if (previousValues == null)
                 {
-                    InitializeValues();
+                    InitializeValues(assetCache);
                 }
 
                 if (connectionDelta.AddedConnections.Count > 0)

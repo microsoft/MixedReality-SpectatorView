@@ -8,20 +8,11 @@ using UnityEngine.UI;
 
 namespace Microsoft.MixedReality.SpectatorView
 {
-    internal class ImageService : ComponentBroadcasterService<ImageService, ImageObserver>, IAssetCache
+    internal class ImageService : ComponentBroadcasterService<ImageService, ImageObserver>, IAssetCacheUpdater
     {
         public static readonly ShortID ID = new ShortID("IMG");
 
         public override ShortID GetID() { return ID; }
-
-        private SpriteAssetCache spriteAssets;
-
-        protected override void Awake()
-        {
-            base.Awake();
-
-            spriteAssets = SpriteAssetCache.LoadAssetCache<SpriteAssetCache>();
-        }
 
         private void Start()
         {
@@ -32,18 +23,36 @@ namespace Microsoft.MixedReality.SpectatorView
         {
             ImageObserver comp = mirror.GetComponent<ImageObserver>();
             if (comp)
+            {
                 comp.LerpRead(message, lerpVal);
+            }
         }
 
 
         public Guid GetSpriteId(Sprite sprite)
         {
-            return spriteAssets?.GetAssetId(sprite) ?? Guid.Empty;
+            var spriteAssets = SpriteAssetCache.Instance;
+            if (spriteAssets == null)
+            {
+                return Guid.Empty;
+            }
+            else
+            {
+                return spriteAssets.GetAssetId(sprite);
+            }
         }
 
         public Sprite GetSprite(Guid guid)
         {
-            return spriteAssets?.GetAsset(guid);
+            var spriteAssets = SpriteAssetCache.Instance;
+            if (spriteAssets == null)
+            {
+                return null;
+            }
+            else
+            {
+                return spriteAssets.GetAsset(guid);
+            }
         }
 
         public void UpdateAssetCache()
