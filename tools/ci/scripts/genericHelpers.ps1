@@ -83,6 +83,9 @@ function BuildProject
     $VSSolution,
     $Configuration,
     $Platform,
+    $Includes,
+    $LibDirs,
+    $Libs,
     [Parameter(Mandatory=$true)][ref]$Succeeded
   )
 
@@ -93,7 +96,7 @@ function BuildProject
   $buildSuccess = "False"
   if ($cleanSuccess)
   {
-    & $MSBuild /t:Build /p:Configuration="$Configuration" /p:Platform="$Platform" $VSSolution
+    & $MSBuild /t:Build $Arguments /p:Configuration="$Configuration" /p:Platform="$Platform" /p:AdditionalIncludeDirectories="$Includes" /p:AdditionalLibraryDirectories="$LibDirs" /p:AdditionalDependencies="$Libs" $VSSolution
     $buildSuccess = $?
   }
 

@@ -4,6 +4,12 @@
 # [Template] Compile Native Components
 
 steps:
+- task: NuGetCommand@2
+  displayName: 'Restoring NuGet Packages for Native Solution'
+  inputs:
+    command: 'restore'
+    restoreSolution: 'src\SpectatorView.Native\SpectatorView.Native.sln'
+
 - task: PowerShell@2
   displayName: 'Building Native Dependencies'
   inputs:

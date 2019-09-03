@@ -61,30 +61,34 @@
     <ClCompile>
       <PrecompiledHeader>Create</PrecompiledHeader>
       <CompileAsWinRT>false</CompileAsWinRT>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <!-- Keep $(PropertyGroup) values for Build CI -->
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeaderFile>..\SharedFiles\pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
       <GenerateWindowsMetadata>false</GenerateWindowsMetadata>
-      <!--<AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opencv_aruco411d.lib;opencv_core411d.lib;opencv_calib3d411d.lib;opencv_features2d411d.lib;opencv_flann411d.lib;opencv_highgui411d.lib;opencv_imgcodecs411d.lib;opencv_ml411d.lib;%(AdditionalDependencies)</AdditionalDependencies>-->
+      <!-- Keep $(PropertyGroup) values for Build CI -->
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);$(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>%(AdditionalDependencies);$(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <PrecompiledHeader>Create</PrecompiledHeader>
       <CompileAsWinRT>false</CompileAsWinRT>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <!-- Keep $(PropertyGroup) values for Build CI -->
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeaderFile>..\SharedFiles\pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
       <GenerateWindowsMetadata>false</GenerateWindowsMetadata>
-      <!--<AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opencv_aruco411.lib;opencv_core411.lib;opencv_calib3d411.lib;opencv_features2d411.lib;opencv_flann411.lib;opencv_highgui411.lib;opencv_imgcodecs411.lib;opencv_ml411.lib;%(AdditionalDependencies)</AdditionalDependencies>-->
+      <!-- Keep $(PropertyGroup) values for Build CI -->
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);$(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>%(AdditionalDependencies);$(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
