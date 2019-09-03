@@ -10,14 +10,14 @@ steps:
     command: 'restore'
     restoreSolution: 'src\SpectatorView.Native\SpectatorView.Native.sln'
 
-# - task: PowerShell@2
-#   displayName: 'Building Native Dependencies'
-#   inputs:
-#     targetType: filePath
-#     filePath: .\tools\ci\scripts\setupNativeProject.ps1
-#     arguments: >
-#       -ForceRebuild
-#       -NoDownloads
+- task: PowerShell@2
+  displayName: 'Building Native Dependencies'
+  inputs:
+    targetType: filePath
+    filePath: .\tools\ci\scripts\setupNativeProject.ps1
+    arguments: >
+      -ForceRebuild
+      -NoDownloads
 
 - task: MSBuild@1
   displayName: 'Building Native Plugins ARM Release'
@@ -37,7 +37,7 @@ steps:
     msbuildArchitecture: x64
     platform: x86
     configuration: Release
-    msbuildArguments: /p:AdditionalIncludeDirectories="external\vcpkg\installed\x86-uwp\include" /p:AdditionalLibraryDirectories="external\vcpkg\installed\x86-uwp\lib" /p:AdditionalDependencies="external\vcpkg\installed\x86-uwp\lib\*.lib"
+    msbuildArguments: /p:AdditionalIncludeDirectories="..\..\..\..\external\vcpkg\installed\x86-uwp\include" /p:AdditionalLibraryDirectories="..\..\..\..\external\vcpkg\installed\x86-uwp\lib" /p:AdditionalDependencies="..\..\..\..\external\vcpkg\installed\x86-uwp\lib\*.lib"
   timeoutInMinutes: 20
 
 - task: MSBuild@1
@@ -48,7 +48,7 @@ steps:
     msbuildArchitecture: x64
     platform: x64
     configuration: Release
-    msbuildArguments: /p:AdditionalIncludeDirectories="external\vcpkg\installed\x64-windows\include" /p:AdditionalLibraryDirectories="external\vcpkg\installed\x64-windows\lib" /p:AdditionalDependencies="external\vcpkg\installed\x64-windows\lib\*.lib"
+    msbuildArguments: /p:AdditionalIncludeDirectories="..\..\..\..\external\vcpkg\installed\x64-windows\include" /p:AdditionalLibraryDirectories="..\..\..\..\external\vcpkg\installed\x64-windows\lib" /p:AdditionalDependencies="..\..\..\..\external\vcpkg\installed\x64-windows\lib\*.lib"
   timeoutInMinutes: 20
 
 - task: PowerShell@2
