@@ -4,5 +4,8 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/MixedReality-SpectatorView/SpectatorView.Editor/Scenes/SpectatorViewCompositor.unity
+    guid: 4b7532bb75e238f49b6f062cf8a58d9e
   m_configObjects: {}
