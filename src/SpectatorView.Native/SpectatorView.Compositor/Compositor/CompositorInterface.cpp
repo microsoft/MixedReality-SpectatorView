@@ -159,7 +159,7 @@ bool CompositorInterface::InitializeVideoEncoder(ID3D11Device* device)
     return videoEncoder1080p->Initialize(device) && videoEncoder4K->Initialize(device);
 }
 
-void CompositorInterface::StartRecording(VideoRecordingFrameLayout frameLayout)
+void CompositorInterface::StartRecording(VideoRecordingFrameLayout frameLayout, LPWSTR lpFilePath, int lpFilePathLength)
 {
     if (frameLayout == VideoRecordingFrameLayout::Composite)
     {
@@ -180,6 +180,11 @@ void CompositorInterface::StartRecording(VideoRecordingFrameLayout frameLayout)
     audioRecordingStartTime = -1.0;
 
     std::wstring videoPath = DirectoryHelper::FindUniqueFileName(outputPath, L"Video", L".mp4", videoIndex);
+	if (videoPath.size() <= lpFilePathLength)
+	{
+		memcpy(lpFilePath, videoPath.data(), lpFilePathLength);
+	}
+
     activeVideoEncoder->StartRecording(videoPath.c_str(), ENCODE_AUDIO);
 }
 
@@ -196,6 +201,11 @@ void CompositorInterface::StopRecording()
 
 void CompositorInterface::RecordFrameAsync(BYTE* videoFrame, LONGLONG frameTime, int numFrames)
 {
+#if _DEBUG
+	std::wstring debugString = L"RecordFrameAsync called, frameTime:" + std::to_wstring(frameTime) + L", numFrames:" + std::to_wstring(numFrames) + L"\n";
+	OutputDebugString(debugString.data());
+#endif
+
     if (frameProvider == nullptr || activeVideoEncoder == nullptr)
     {
         return;

@@ -64,6 +64,7 @@ void VideoEncoder::StartRecording(LPCWSTR videoPath, bool encodeAudio)
 
     if (isRecording)
     {
+		OutputDebugString(L"StartRecording called when device was already recording.\n");
         return;
     }
 
@@ -177,10 +178,18 @@ void VideoEncoder::StartRecording(LPCWSTR videoPath, bool encodeAudio)
 void VideoEncoder::WriteAudio(byte* buffer, int bufferSize, LONGLONG timestamp)
 {
     std::shared_lock<std::shared_mutex> lock(videoStateLock);
+#if _DEBUG
+	{
+		std::wstring debugString = L"Writing Audio, Timestamp:" + std::to_wstring(timestamp) + L"\n";
+		OutputDebugString(debugString.data());
+	}
+#endif
 
 #if ENCODE_AUDIO
     if (!isRecording || startTime == INVALID_TIMESTAMP || timestamp < startTime)
     {
+		std::wstring debugString = L"WriteAudio call failed: StartTime:" + std::to_wstring(startTime) + L", Timestamp:" + std::to_wstring(timestamp) + L"\n";
+		OutputDebugString(debugString.data());
         return;
     }
 
@@ -193,6 +202,10 @@ void VideoEncoder::WriteAudio(byte* buffer, int bufferSize, LONGLONG timestamp)
     if (prevAudioTime != INVALID_TIMESTAMP)
     {
         duration = sampleTime - prevAudioTime;
+#if _DEBUG 
+		std::wstring debugString = L"Updated write audio duration:" + std::to_wstring(duration) + L", SampleTime:" + std::to_wstring(sampleTime) + L", PrevAudioTime:" + std::to_wstring(prevAudioTime) + L"\n";
+		OutputDebugString(debugString.data());
+#endif
     }
 
     // Copy frame to a temporary buffer and process on a background thread.
@@ -253,21 +266,42 @@ void VideoEncoder::WriteAudio(byte* buffer, int bufferSize, LONGLONG timestamp)
 void VideoEncoder::WriteVideo(byte* buffer, LONGLONG timestamp, LONGLONG duration)
 {
     std::shared_lock<std::shared_mutex> lock(videoStateLock);
+#if _DEBUG
+	{
+		std::wstring debugString = L"Writing Video, Timestamp:" + std::to_wstring(timestamp) + L"\n";
+		OutputDebugString(debugString.data());
+	}
+#endif
 
     if (!isRecording)
     {
+		OutputDebugString(L"Video not recorded, encoder not currently recording");
         return;
     }
 
-    if(startTime == INVALID_TIMESTAMP)
-        startTime = timestamp;
+	if (startTime == INVALID_TIMESTAMP)
+	{
+		startTime = timestamp;
+#if _DEBUG 
+		std::wstring debugString = L"Start time set, Timestamp:" + std::to_wstring(timestamp) + L", StartTime:" + std::to_wstring(startTime) + L"\n";
+		OutputDebugString(debugString.data());
+#endif
+	}
     else if (timestamp < startTime)
     {
+#if _DEBUG 
+		std::wstring debugString = L"Video not recorded, Timestamp less than start time. Timestamp:" + std::to_wstring(timestamp) + L", StartTime:" + std::to_wstring(startTime) + L"\n";
+		OutputDebugString(debugString.data());
+#endif
         return;
     }
 
     if (timestamp == prevVideoTime)
     {
+#if _DEBUG 
+		std::wstring debugString = L"Video not recorded, Timestamp equals prevVideoTime. Timestamp:" + std::to_wstring(timestamp) + L", StartTime:" + std::to_wstring(prevVideoTime) + L"\n";
+		OutputDebugString(debugString.data());
+#endif
         return;
     }
     
@@ -276,10 +310,14 @@ void VideoEncoder::WriteVideo(byte* buffer, LONGLONG timestamp, LONGLONG duratio
 
     LONGLONG sampleTime = sampleTimeNow - sampleTimeStart;
 
-/*    if (prevVideoTime != INVALID_TIMESTAMP)
+    if (prevVideoTime != INVALID_TIMESTAMP)
     {
         duration = sampleTime - prevVideoTime;
-    }*/
+#if _DEBUG 
+		std::wstring debugString = L"Updated write video duration:" + std::to_wstring(duration) + L", SampleTime:" + std::to_wstring(sampleTime) + L", PrevVideoTime:" + std::to_wstring(prevVideoTime) + L"\n";
+		OutputDebugString(debugString.data());
+#endif
+    }
 
     // Copy frame to a temporary buffer and process on a background thread.
 #if HARDWARE_ENCODE_VIDEO
@@ -394,6 +432,7 @@ void VideoEncoder::StopRecording()
         {
             videoQueue.pop();
         }
+		OutputDebugString(L"Cleared video queue\n");
 
         {
             std::lock_guard<std::mutex> lk(completion_mutex);
@@ -408,6 +447,7 @@ void VideoEncoder::StopRecording()
         {
             audioQueue.pop();
         }
+		OutputDebugString(L"Cleared audio queue\n");
 
         {
             std::lock_guard<std::mutex> lk(completion_mutex);
@@ -417,13 +457,16 @@ void VideoEncoder::StopRecording()
     });
 
     completion_lock_check.wait(completion_lock, [&] {return doneCleaningVideoTasks && doneCleaningAudioTasks; });
+	OutputDebugString(L"Completed clearing audio/video queues\n");
 
     if (videoStreamIndex != NULL)
     {
+		OutputDebugString(L"Flushing video stream\n");
         sinkWriter->Flush(videoStreamIndex);
     }
     if (audioStreamIndex != NULL)
     {
+		OutputDebugString(L"Flushing audio stream\n");
         sinkWriter->Flush(audioStreamIndex);
     }
 
@@ -438,6 +481,10 @@ void VideoEncoder::QueueVideoFrame(byte* buffer, LONGLONG timestamp, LONGLONG du
     if (acceptQueuedFrames)
     {
         videoQueue.push(VideoInput(buffer, timestamp, duration));
+#if _DEBUG
+		std::wstring debugString = L"Pushed Video Input, Timestamp:" + std::to_wstring(timestamp) + L"\n";
+		OutputDebugString(debugString.data());
+#endif
     }
 }
 
@@ -448,6 +495,10 @@ void VideoEncoder::QueueAudioFrame(byte* buffer, int bufferSize, LONGLONG timest
     if (acceptQueuedFrames)
     {
         audioQueue.push(AudioInput(buffer, bufferSize, timestamp));
+#if _DEBUG
+		std::wstring debugString = L"Pushed Audio Input, Timestamp:" + std::to_wstring(timestamp) + L"\n";
+		OutputDebugString(debugString.data());
+#endif
     }
 }
 

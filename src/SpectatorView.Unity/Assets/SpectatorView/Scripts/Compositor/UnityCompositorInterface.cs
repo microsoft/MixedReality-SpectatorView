@@ -71,8 +71,8 @@ namespace Microsoft.MixedReality.SpectatorView
         [DllImport(CompositorPluginDll, CharSet = CharSet.Unicode)]
         public static extern void TakeRawPicture(string path);
 
-        [DllImport(CompositorPluginDll)]
-        public static extern void StartRecording(int frameLayout);
+        [DllImport(CompositorPluginDll, CharSet = CharSet.Unicode)]
+        public static extern void StartRecording(int frameLayout, string filePath, int filePathLength);
 
         [DllImport(CompositorPluginDll)]
         public static extern void StopRecording();

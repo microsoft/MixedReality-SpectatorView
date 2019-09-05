@@ -170,9 +170,13 @@ void UpdateVideoRecordingFrame()
         ci->RecordFrameAsync(videoBytes[videoBufferIndex], queuedVideoFrameTime, queuedVideoFrameCount);
     }
 
-
     if (lastVideoFrame >= 0 && lastRecordedVideoFrame != lastVideoFrame)
     {
+#if _DEBUG
+		std::wstring debugString = L"Preparing texture fetch, lastVideoFrame:" + std::to_wstring(lastVideoFrame) + L", lastRecordedVideoFrame: " + std::to_wstring(lastRecordedVideoFrame) + L"\n";
+		OutputDebugString(debugString.data());
+#endif
+
         queuedVideoFrameCount = ci->compositeFrameIndex - lastVideoFrame;
         if (queuedVideoFrameCount <= 0)
             queuedVideoFrameCount = lastVideoFrame - lastRecordedVideoFrame;
@@ -388,15 +392,16 @@ UNITYDLL void TakeRawPicture(LPCWSTR lpFilePath)
     rawPicturePath = lpFilePath;
 }
 
-UNITYDLL void StartRecording(VideoRecordingFrameLayout frameLayout)
+UNITYDLL void StartRecording(VideoRecordingFrameLayout frameLayout, LPWSTR lpFilePath, int lpFilePathLength)
 {
     if (videoInitialized && ci != nullptr)
     {
         lastVideoFrame = -1;
+		lastRecordedVideoFrame = -1;
         AllocateVideoBuffers(frameLayout);
         VideoTextureBuffer.ReleaseTextures();
         VideoTextureBuffer.Reset();
-        ci->StartRecording(frameLayout);
+        ci->StartRecording(frameLayout, lpFilePath, lpFilePathLength);
         isRecording = true;
     }
 }

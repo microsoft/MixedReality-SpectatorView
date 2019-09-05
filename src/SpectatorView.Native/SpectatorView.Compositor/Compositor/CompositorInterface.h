@@ -60,7 +60,7 @@ public:
     DLLEXPORT void TakePicture(ID3D11Device* device, int width, int height, int bpp, BYTE* bytes);
 
     DLLEXPORT bool InitializeVideoEncoder(ID3D11Device* device);
-    DLLEXPORT void StartRecording(VideoRecordingFrameLayout frameLayout);
+    DLLEXPORT void StartRecording(VideoRecordingFrameLayout frameLayout, LPWSTR lpFilePath, int lpFilePathLength);
     DLLEXPORT void StopRecording();
     DLLEXPORT void RecordFrameAsync(BYTE* videoFrame, LONGLONG frameTime, int numFrames);
     DLLEXPORT void RecordAudioFrameAsync(BYTE* audioFrame, int audioSize, double audioTime);

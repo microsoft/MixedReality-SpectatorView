@@ -612,10 +612,12 @@ namespace Microsoft.MixedReality.SpectatorView
             return UnityCompositorInterface.IsRecording();
         }
 
-        public void StartRecording()
+        public string StartRecording()
         {
             TextureManager.InitializeVideoRecordingTextures();
-            UnityCompositorInterface.StartRecording((int)VideoRecordingLayout);
+            string filePath = new string(' ', 1024);
+            UnityCompositorInterface.StartRecording((int)VideoRecordingLayout, filePath, filePath.Length);
+            return ReduceFilePath(filePath);
         }
 
         public void StopRecording()
@@ -637,6 +639,13 @@ namespace Microsoft.MixedReality.SpectatorView
                 UnityCompositorInterface.SetAudioData(outBytes, outBytes.Length, audioStartTime);
                 audioMemoryStream = null;
             }
+        }
+        
+        private string ReduceFilePath(string filePath)
+        {
+            const string mp4Ext = ".mp4";
+            filePath = filePath.Trim().Replace("\\\\", "\\");
+            return filePath.Substring(0, filePath.LastIndexOf(mp4Ext) + mp4Ext.Length);
         }
 #endif
     }
