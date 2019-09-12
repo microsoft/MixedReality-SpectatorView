@@ -1,3 +1,4 @@
+# TODO - create config file that contains these properties
 $MSBuild = "C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\MSBuild\15.0\Bin\amd64\MSBuild.exe"
 $UnityPath = "C:\Program Files\Unity\Hub\Editor\2018.3.14f1\Editor\Unity.exe"
 

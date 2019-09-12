@@ -17,12 +17,12 @@ elseif (!$MSBuild)
 
 if (!(Get-Command "nuget"))
 {
-    Write-Error "NuGet.exe does not seem to be isntalleda as a command on this computer."
+    Write-Error "NuGet.exe does not seem to be installed as a command on this computer."
     exit 1;
 }
 
-. $PSScriptRoot\genericHelpers.ps1
-. $PSScriptRoot\spectatorViewHelpers.ps1
+Import-Module $PSScriptRoot\genericHelpers.psm1
+Import-Module $PSScriptRoot\spectatorViewHelpers.psm1
 
 $SetupResult = "False"
 $ARMResult = "False"

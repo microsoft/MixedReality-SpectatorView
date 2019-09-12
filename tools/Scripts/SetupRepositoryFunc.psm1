@@ -1,6 +1,5 @@
-. "$PSScriptRoot\SymbolicLinkHelpers.ps1"
-. "$PSScriptRoot\ExternalDependencyHelpers.ps1"
-
+Import-Module "$PSScriptRoot\SymbolicLinkHelpers.psm1"
+Import-Module "$PSScriptRoot\ExternalDependencyHelpers.psm1"
 
 function SetupRepository
 {

@@ -3,7 +3,7 @@ param(
     [switch] $NoDownloads
 )
 
-. "$PSScriptRoot\SetupRepositoryFunc.ps1"
+Import-Module "$PSScriptRoot\SetupRepositoryFunc.psm1"
 
 if ($NoDownloads)
 {

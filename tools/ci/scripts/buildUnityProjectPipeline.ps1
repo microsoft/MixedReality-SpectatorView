@@ -21,8 +21,8 @@ Write-Host "Repo location: $repoLocation"
 Write-Host "Project Path: $ProjectPath"
 Write-Host "Tools Assets Path: $ToolsAssetsPath"
 
-. $PSScriptRoot\genericHelpers.ps1
-. $PSScriptRoot\spectatorViewHelpers.ps1
+Import-Module $PSScriptRoot\genericHelpers.psm1
+Import-Module $PSScriptRoot\spectatorViewHelpers.psm1
 
 # Find unity.exe as Start-UnityEditor currently doesn't support arbitrary parameters
 $Editor = Get-ChildItem ${Env:$(UnityVersion)} -Filter 'Unity.exe' -Recurse | Select-Object -First 1 -ExpandProperty FullName

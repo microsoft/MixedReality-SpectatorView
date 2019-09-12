@@ -3,8 +3,8 @@ param(
     [Parameter(Mandatory=$false)][ref]$Succeeded
 )
 
-. $PSScriptRoot\genericHelpers.ps1
-. $PSScriptRoot\spectatorViewHelpers.ps1
+Import-Module $PSScriptRoot\genericHelpers.psm1
+Import-Module $PSScriptRoot\spectatorViewHelpers.psm1
 
 # NOTE - For this script to succeed, you need to have no preprocessor directives declared in the SpectatorView.Examples.Unity project prior to building.
 # The below logic will configure things correctly, but builds will fail if user defined preprocessor directives conflict with files included in the project when launching to build.

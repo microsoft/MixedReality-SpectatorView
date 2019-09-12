@@ -7,7 +7,7 @@ param(
     [Parameter(Mandatory=$false)][ref]$Succeeded
 )
 
-. $PSScriptRoot\spectatorViewHelpers.ps1
+Import-Module $PSScriptRoot\spectatorViewHelpers.psm1
 
 Write-Host "Setting up Blackmagic design dependencies"
 $BlackMagicResult = "False"

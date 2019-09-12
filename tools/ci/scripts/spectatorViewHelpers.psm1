@@ -1,9 +1,9 @@
 # Copyright (c) Microsoft Corporation. All rights reserved.
 # Licensed under the MIT License. See LICENSE in the project root for license information.
 
-. $PSScriptRoot\..\..\Scripts\SetupRepositoryFunc.ps1
-. $PSScriptRoot\..\..\Scripts\ExternalDependencyHelpers.ps1
-. $PSScriptRoot\genericHelpers.ps1
+Import-Module $PSScriptRoot\..\..\Scripts\SetupRepositoryFunc.psm1
+Import-Module $PSScriptRoot\..\..\Scripts\ExternalDependencyHelpers.psm1
+Import-Module $PSScriptRoot\genericHelpers.psm1
 
 function BuildOpenCV
 {
