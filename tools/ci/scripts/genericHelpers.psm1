@@ -213,7 +213,7 @@ Else
 
    # Changing this variable will break reporting scripts
    $Succeeded.Value = ($proc.ExitCode -eq 0)
-   Write-Host "`n`nBuild Succeeded: $(Succeeded.Value)`n`n"
+   Write-Host "`n`Method Succeeded: $Succeeded.Value`n`n"
 }
 
 function BuildUnityProject
