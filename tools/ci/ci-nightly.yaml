@@ -1,10 +1,15 @@
 # Copyright (c) Microsoft Corporation. All rights reserved.
 # Licensed under the MIT License. See LICENSE in the project root for license information.
 
-# MixedReality-SpectatorView build native content
+# MixedReality-SpectatorView nightly build
 
-# Scheduled run, always run to monitor churn in external dependencies
-schedules:
+# Give a unique name to the build each time it runs
+name: ci-nightly-$(SourceBranchName)-$(Date:yyyyMMdd)-$(Rev:r)
+
+variables:
+  UnityVersion: Unity2018.3.7f1
+
+# Trigger CI on nightly schedule
 - cron: "0 0 * * *"
   displayName: Daily Midnight Build
   branches:
@@ -12,17 +17,11 @@ schedules:
     - master
   always: true
 
-# Trigger CI on push changes
+# Do not trigger CI on pushed changes
 trigger: none
 
 # Do not trigger CI on PRs
 pr: none
-
-# Give a unique name to the build each time it runs
-name: ci-nightly-$(SourceBranchName)-$(Date:yyyyMMdd)-$(Rev:r)
-
-variables:
-  UnityVersion: Unity2018.3.7f1
 
 jobs:
 - job: BuildNativeComponents
