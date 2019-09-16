@@ -1,0 +1,69 @@
+# [Template] Common build tasks shared between CI builds and PR validation.
+
+steps:
+# Build Native Plugins
+- template: nativesetup.yml
+  parameters:
+    ProjectPath: '${{ parameters.ProjectPath }}'
+
+# Build UWP ARM IL2CPP
+- template: unitybuild.yml
+  parameters:
+    ProjectPath: '${{ parameters.ProjectPath }}'
+    ToolsAssetsPath: '${{ parameters.ToolsAssetsPath }}'
+    Platform: 'UWP'
+    Arch: 'ARM'
+    ScriptingBackend: 'IL2CPP'
+    SceneList: '${{ parameters.ProjectPath }}\Assets\MixedReality-SpectatorView\SpectatorView\Scenes\SpectatorView.HoloLens.unity'
+    Define: ''
+    UnityArgs: ''
+
+# Build UWP ARM IL2CPP ASA QR
+- template: unitybuild.yml
+  parameters:
+    Platform: 'UWP'
+    Arch: 'ARM'
+    ScriptingBackend: 'IL2CPP'
+    SceneList: '${{ parameters.ProjectPath }}/Assets/MixedReality-SpectatorView/SpectatorView/Scenes/SpectatorView.HoloLens.unity'
+    Define: 'SPATIALALIGNMENT_ASA;QRCODESTRACKER_BINARY_AVAILABLE'
+    UnityArgs: ''
+
+# Build Android ARM IL2CPP
+- template: unitybuild.yml
+  parameters:
+    Platform: 'Android'
+    Arch: 'ARM'
+    ScriptingBackend: 'IL2CPP'
+    SceneList: '${{ parameters.ProjectPath }}/Assets/MixedReality-SpectatorView/SpectatorView/Scenes/SpectatorView.Android.unity'
+    Define: ''
+    UnityArgs: ''
+
+# Build Android ARM IL2CPP ASA
+- template: unitybuild.yml
+  parameters:
+    Platform: 'Android'
+    Arch: 'ARM'
+    ScriptingBackend: 'IL2CPP'
+    SceneList: '${{ parameters.ProjectPath }}/Assets/MixedReality-SpectatorView/SpectatorView/Scenes/SpectatorView.Android.unity'
+    Define: 'SPATIALALIGNMENT_ASA'
+    UnityArgs: ''
+
+# Build iOS ARM IL2CPP
+- template: unitybuild.yml
+  parameters:
+    Platform: 'iOS'
+    Arch: 'ARM'
+    ScriptingBackend: 'IL2CPP'
+    SceneList: '${{ parameters.ProjectPath }}/Assets/MixedReality-SpectatorView/SpectatorView/Scenes/SpectatorView.iOS.unity'
+    Define: ''
+    UnityArgs: ''
+
+# Build iOS ARM IL2CPP ASA
+- template: unitybuild.yml
+  parameters:
+    Platform: 'iOS'
+    Arch: 'ARM'
+    ScriptingBackend: 'IL2CPP'
+    SceneList: '${{ parameters.ProjectPath }}/Assets/MixedReality-SpectatorView/SpectatorView/Scenes/SpectatorView.iOS.unity'
+    Define: 'SPATIALALIGNMENT_ASA'
+    UnityArgs: ''

@@ -1,27 +1,26 @@
 param(
-    [switch] $iOS
+    [switch] $iOS,
+    [switch] $NoDownloads
 )
 
-. "$PSScriptRoot\SymbolicLinkHelpers.ps1"
-. "$PSScriptRoot\ExternalDependencyHelpers.ps1"
+Import-Module "$PSScriptRoot\SetupRepositoryFunc.psm1"
 
-Set-Location (Split-Path $MyInvocation.MyCommand.Path)
-Write-Host "`n"
-
-ConfigureRepo
-DownloadQRCodePlugin
-
-If ($iOS)
+if ($NoDownloads)
 {
-    DownloadARKitPlugin
+    Write-Host "Running setup with no downloads"
+    SetupRepository -NoDownloads
 }
-
-# Ensure that submodules are initialized and cloned.
-Write-Output "Updating spectator view related submodules."
-git submodule update --init
-
-FixSymbolicLinks
-
+elseif ($iOS)
+{
+    Write-Host "Running setup with iOS dependencies"
+    SetupRepository -iOS
+}
+else
+{
+    Write-Host "Running default repo setup"
+    SetupRepository
+}
+ 
 Write-Host "`n"
 Write-Host -NoNewLine 'Setup Completed. Press any key to continue...';
 $null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown');
