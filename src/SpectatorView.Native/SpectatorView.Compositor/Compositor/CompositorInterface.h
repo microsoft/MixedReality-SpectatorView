@@ -28,7 +28,6 @@ private:
     VideoEncoder* activeVideoEncoder = nullptr;
 
     int videoIndex = -1;
-    LONGLONG videoRecordingStartTime;
     double audioRecordingStartTime;
     int photoIndex = -1;
 

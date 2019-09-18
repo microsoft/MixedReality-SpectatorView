@@ -176,7 +176,6 @@ void CompositorInterface::StartRecording(VideoRecordingFrameLayout frameLayout, 
     }
 
     videoIndex++;
-    videoRecordingStartTime = compositeFrameIndex * GetColorDuration();
     audioRecordingStartTime = -1.0;
 
     std::wstring videoPath = DirectoryHelper::FindUniqueFileName(outputPath, L"Video", L".mp4", videoIndex);
@@ -220,6 +219,11 @@ void CompositorInterface::RecordFrameAsync(BYTE* videoFrame, LONGLONG frameTime,
 
 void CompositorInterface::RecordAudioFrameAsync(BYTE* audioFrame, int audioSize, double audioTime)
 {
+#if _DEBUG
+	std::wstring debugString = L"RecordAudioFrameAsync called, audioTime:" + std::to_wstring(audioTime) + L", audioSize:" + std::to_wstring(audioSize) + L"\n";
+	OutputDebugString(debugString.data());
+#endif
+
     if (activeVideoEncoder == nullptr)
     {
         return;
@@ -228,7 +232,7 @@ void CompositorInterface::RecordAudioFrameAsync(BYTE* audioFrame, int audioSize,
     if (audioRecordingStartTime < 0)
         audioRecordingStartTime = audioTime;
 
-    LONGLONG frameTime = videoRecordingStartTime + (LONGLONG)((audioTime - audioRecordingStartTime) * QPC_MULTIPLIER);
+    LONGLONG frameTime = (LONGLONG)((audioTime - audioRecordingStartTime) * QPC_MULTIPLIER);
 
     activeVideoEncoder->QueueAudioFrame(audioFrame, audioSize, frameTime);
 }

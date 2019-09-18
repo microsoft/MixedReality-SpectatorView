@@ -77,8 +77,8 @@ void VideoEncoder::StartRecording(LPCWSTR videoPath, bool encodeAudio)
     HRESULT hr = E_PENDING;
 
     sinkWriter = NULL;
-    videoStreamIndex = NULL;
-    audioStreamIndex = NULL;
+    videoStreamIndex = MAXDWORD;
+    audioStreamIndex = MAXDWORD;
 
     IMFMediaType*    pVideoTypeOut = NULL;
     IMFMediaType*    pVideoTypeIn = NULL;
@@ -239,9 +239,16 @@ void VideoEncoder::WriteAudio(byte* buffer, int bufferSize, LONGLONG timestamp)
             pAudioBuffer->Unlock();
         }
 
+
+#if _DEBUG
+		{
+			std::wstring debugString = L"Writing Audio Sample, SampleTime:" + std::to_wstring(sampleTime) + L", SampleDuration:" + std::to_wstring(duration) + L", BufferLength:" + std::to_wstring(cbAudioBuffer) + L"\n";
+			OutputDebugString(debugString.data());
+		}
+#endif
+
         if (SUCCEEDED(hr)) { hr = MFCreateSample(&pAudioSample); }
-        LONGLONG t = sampleTime;
-        if (SUCCEEDED(hr)) { hr = pAudioSample->SetSampleTime(t); }
+        if (SUCCEEDED(hr)) { hr = pAudioSample->SetSampleTime(sampleTime); }
         if (SUCCEEDED(hr)) { hr = pAudioSample->SetSampleDuration(duration); }
         if (SUCCEEDED(hr)) { hr = pAudioBuffer->SetCurrentLength(cbAudioBuffer); }
         if (SUCCEEDED(hr)) { hr = pAudioSample->AddBuffer(pAudioBuffer); }
@@ -378,6 +385,13 @@ void VideoEncoder::WriteVideo(byte* buffer, LONGLONG timestamp, LONGLONG duratio
             pVideoBuffer->Unlock();
         }
 
+#if _DEBUG
+		{
+			std::wstring debugString = L"Writing Video Sample, SampleTime:" + std::to_wstring(sampleTime) + L", SampleDuration:" + std::to_wstring(duration) + L", BufferLength:" + std::to_wstring(cbBuffer) + L"\n";
+			OutputDebugString(debugString.data());
+		}
+#endif
+
         // Set the data length of the buffer.
         if (SUCCEEDED(hr)) { hr = pVideoBuffer->SetCurrentLength(cbBuffer); }
 
@@ -430,7 +444,7 @@ void VideoEncoder::StopRecording()
     {
         while (!videoQueue.empty())
         {
-            videoQueue.pop();
+			videoQueue.pop();
         }
 		OutputDebugString(L"Cleared video queue\n");
 
@@ -459,12 +473,12 @@ void VideoEncoder::StopRecording()
     completion_lock_check.wait(completion_lock, [&] {return doneCleaningVideoTasks && doneCleaningAudioTasks; });
 	OutputDebugString(L"Completed clearing audio/video queues\n");
 
-    if (videoStreamIndex != NULL)
+    if (videoStreamIndex != MAXDWORD)
     {
 		OutputDebugString(L"Flushing video stream\n");
         sinkWriter->Flush(videoStreamIndex);
     }
-    if (audioStreamIndex != NULL)
+    if (audioStreamIndex != MAXDWORD)
     {
 		OutputDebugString(L"Flushing audio stream\n");
         sinkWriter->Flush(audioStreamIndex);

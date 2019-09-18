@@ -173,15 +173,28 @@ void UpdateVideoRecordingFrame()
     if (lastVideoFrame >= 0 && lastRecordedVideoFrame != lastVideoFrame)
     {
 #if _DEBUG
-		std::wstring debugString = L"Preparing texture fetch, lastVideoFrame:" + std::to_wstring(lastVideoFrame) + L", lastRecordedVideoFrame: " + std::to_wstring(lastRecordedVideoFrame) + L"\n";
+		std::wstring debugString = L"Updating the video recording texture, compositeFrameIndex: " + std::to_wstring(ci->compositeFrameIndex) + L", lastVideoFrame:" + std::to_wstring(lastVideoFrame) + L", lastRecordedVideoFrame: " + std::to_wstring(lastRecordedVideoFrame) + L"\n";
 		OutputDebugString(debugString.data());
 #endif
 
         queuedVideoFrameCount = ci->compositeFrameIndex - lastVideoFrame;
-        if (queuedVideoFrameCount <= 0)
-            queuedVideoFrameCount = lastVideoFrame - lastRecordedVideoFrame;
-        if (queuedVideoFrameCount <= 0)
-            queuedVideoFrameCount = 1;
+		if (queuedVideoFrameCount <= 0)
+		{
+#if _DEBUG
+			debugString = L"compositeFrameIndex less than lastVideoFrame, updating queuedVideoFrameCount to be difference between lastVideoFrame and lastRecordedVideoFrame\n";
+			OutputDebugString(debugString.data());
+#endif
+			queuedVideoFrameCount = lastVideoFrame - lastRecordedVideoFrame;
+		}
+
+		if (queuedVideoFrameCount <= 0)
+		{
+#if _DEBUG
+			debugString = L"lastVideoFrame less than lastRecordedVideoFrame, setting queuedVideoFrameCount to one\n";
+			OutputDebugString(debugString.data());
+#endif
+			queuedVideoFrameCount = 1;
+		}
 
         lastRecordedVideoFrame = lastVideoFrame;
         queuedVideoFrameTime = lastVideoFrame * ci->GetColorDuration();
