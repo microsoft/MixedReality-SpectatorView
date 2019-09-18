@@ -1,3 +1,7 @@
+param(
+    [switch] $DebugCompositor
+)
+
 $RootDirectory = Join-Path -Path $PSScriptRoot -ChildPath "\..\..\src\SpectatorView.Native"
 $MetaFiles = Join-Path -Path $RootDirectory -ChildPath "UnityMetaFiles"
 
@@ -13,12 +17,18 @@ New-Item -ItemType Directory -Force -Path $WSAARMDirectory | Out-Null
 
 $OpenCVVersion = "" #A version may or may not exist depending on the build
 
-$CompositorDlls = @( "$RootDirectory\x64\Release\SpectatorView.Compositor.dll",
-                     "$RootDirectory\x64\Release\SpectatorView.Compositor.pdb",
-		     "$RootDirectory\x64\Release\SpectatorView.Compositor.UnityPlugin.dll",
-		     "$RootDirectory\x64\Release\SpectatorView.Compositor.UnityPlugin.pdb")
+$CompositorFlavor = "Release"
+if ($DebugCompositor)
+{
+  $CompositorFlavor = "Debug"
+}
 
-Write-Host "Copying DSLR compositor dlls to $DesktopDirectory"
+$CompositorDlls = @( "$RootDirectory\x64\$CompositorFlavor\SpectatorView.Compositor.dll",
+                     "$RootDirectory\x64\$CompositorFlavor\SpectatorView.Compositor.pdb",
+		     "$RootDirectory\x64\$CompositorFlavor\SpectatorView.Compositor.UnityPlugin.dll",
+		     "$RootDirectory\x64\$CompositorFlavor\SpectatorView.Compositor.UnityPlugin.pdb")
+
+Write-Host "Copying DSLR compositor $CompositorFlavor dlls to $DesktopDirectory"
 foreach ($Dll in $CompositorDlls)
 {
   if (!(Test-Path $Dll)) {
