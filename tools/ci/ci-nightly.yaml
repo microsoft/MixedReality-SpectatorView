@@ -1,0 +1,43 @@
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License. See LICENSE in the project root for license information.
+
+# MixedReality-SpectatorView nightly build
+
+# Give a unique name to the build each time it runs
+name: ci-nightly-$(SourceBranchName)-$(Date:yyyyMMdd)-$(Rev:r)
+
+variables:
+  UnityVersion: Unity2018.3.7f1
+
+# Trigger CI on nightly schedule
+schedules:
+- cron: "0 0 * * *"
+  displayName: Daily Midnight Build
+  branches:
+    include:
+    - master
+  always: true
+
+# Do not trigger CI on pushed changes
+trigger: none
+
+# Do not trigger CI on PRs
+pr: none
+
+jobs:
+- job: BuildNativeComponents
+  timeoutInMinutes: 90
+  pool:
+    name: On-Prem Unity
+    demands:
+    - SDK_18362 -equals TRUE
+  steps:
+  - task: UniversalPackages@0
+    displayName: 'Download Native Dependencies'
+    inputs:
+      command: download
+      vstsFeed: $(DependencyFeed)
+      vstsFeedPackage: $(DependencyPackage)
+      vstsPackageVersion: $(DependencyVersion)
+      downloadDirectory: 'external\dependencies'
+  - template: templates\buildnative.yml

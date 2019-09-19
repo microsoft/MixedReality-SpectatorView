@@ -11,7 +11,7 @@ New-Item -ItemType Directory -Force -Path $DesktopDirectory | Out-Null
 New-Item -ItemType Directory -Force -Path $WSAx86Directory | Out-Null
 New-Item -ItemType Directory -Force -Path $WSAARMDirectory | Out-Null
 
-$OpenCVVersion = "343"
+$OpenCVVersion = "" #A version may or may not exist depending on the build
 
 $CompositorDlls = @( "$RootDirectory\x64\Release\SpectatorView.Compositor.dll",
                      "$RootDirectory\x64\Release\SpectatorView.Compositor.pdb",

@@ -1,16 +1,26 @@
-. "$PSScriptRoot\SymbolicLinkHelpers.ps1"
+param(
+    [switch] $iOS,
+    [switch] $NoDownloads
+)
 
-Set-Location (Split-Path $MyInvocation.MyCommand.Path)
-Write-Host "`n"
+Import-Module "$PSScriptRoot\SetupRepositoryFunc.psm1"
 
-ConfigureRepo
-
-# Ensure that submodules are initialized and cloned.
-Write-Output "Updating spectator view related submodules."
-git submodule update --init
-
-FixSymbolicLinks
-
+if ($NoDownloads)
+{
+    Write-Host "Running setup with no downloads"
+    SetupRepository -NoDownloads
+}
+elseif ($iOS)
+{
+    Write-Host "Running setup with iOS dependencies"
+    SetupRepository -iOS
+}
+else
+{
+    Write-Host "Running default repo setup"
+    SetupRepository
+}
+ 
 Write-Host "`n"
 Write-Host -NoNewLine 'Setup Completed. Press any key to continue...';
 $null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown');

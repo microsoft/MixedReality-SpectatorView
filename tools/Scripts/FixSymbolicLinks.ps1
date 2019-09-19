@@ -1,4 +1,4 @@
-. "$PSScriptRoot\SymbolicLinkHelpers.ps1"
+Import-Module "$PSScriptRoot\SymbolicLinkHelpers.psm1"
 
 ConfigureRepo
 
