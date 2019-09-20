@@ -1,4 +1,7 @@
-﻿namespace Microsoft.MixedReality.SpectatorView
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+
+namespace Microsoft.MixedReality.SpectatorView
 {
     /// <summary>
     /// Enumerates tracking states for AR/VR Devices.
