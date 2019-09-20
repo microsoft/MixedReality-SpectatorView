@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 namespace Microsoft.MixedReality.SpectatorView
 {
-    public class DeviceTrackingStateVisual : MobileOverlayVisualChild
+    public class DeviceTrackingStateVisual : MonoBehaviour
     {
         [Tooltip("Text that displays the AR/VR Device tracking state.")]
         [SerializeField]
