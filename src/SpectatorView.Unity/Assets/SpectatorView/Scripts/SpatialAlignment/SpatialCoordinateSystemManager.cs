@@ -7,6 +7,7 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Microsoft.MixedReality.SpectatorView
 {
@@ -50,6 +51,55 @@ namespace Microsoft.MixedReality.SpectatorView
         private Dictionary<SocketEndpoint, SpatialCoordinateSystemParticipant> participants = new Dictionary<SocketEndpoint, SpatialCoordinateSystemParticipant>();
         private HashSet<INetworkManager> networkManagers = new HashSet<INetworkManager>();
         private ISpatialLocalizationSession currentLocalizationSession = null;
+
+        /// <summary>
+        /// Current Tracking state for the AR/VR Device associated with the application.
+        /// </summary>
+        public TrackingState TrackingState
+        {
+            get
+            {
+                if (!lookedForTrackingObservers)
+                {
+                    List<GameObject> roots = new List<GameObject>();
+                    SceneManager.GetActiveScene().GetRootGameObjects(roots);
+
+                    var observers = new List<ITrackingObserver>();
+                    foreach (var root in roots)
+                    {
+                        var tempObservers = root.GetComponentsInChildren<ITrackingObserver>();
+                        if (tempObservers != null)
+                        {
+                            foreach (var observer in tempObservers)
+                            {
+                                observers.Add(observer);
+                            }
+                        }
+                    }
+
+                    if (observers.Count == 0)
+                    {
+                        Debug.LogWarning("No ITrackingObservers found in the scene.");
+                    }
+                    else if (observers.Count > 1)
+                    {
+                        Debug.LogWarning("Multiple ITrackingObservers found in the scene.");
+                    }
+
+                    trackingObserver = (observers != null) && (observers.Count) > 0 ? observers[0] : null;
+                    lookedForTrackingObservers = true;
+                }
+
+                if (trackingObserver == null)
+                {
+                    return TrackingState.Unknown;
+                }
+
+                return trackingObserver.TrackingState;
+            }
+        }
+        private ITrackingObserver trackingObserver = null;
+        private bool lookedForTrackingObservers = false;
 
         public IReadOnlyCollection<ISpatialLocalizer> Localizers
         {
