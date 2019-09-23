@@ -125,14 +125,18 @@ If you are building Azure Spatial Anchors on iOS, you will need to take some add
 1. Make sure your Unity project contains the asset caches that were created in the 'Before building' steps.
 2. Open the project scene that you intend to use with SpectatorView.
 3. Add the `SpectatorView` prefab to the scene.
-4. Setup your scene to synchronize content. You can either have all content synchronized by checking 'Automatically Broadcast All Game Objects' in BroadcasterSettings located in your SpectatorViewSettings prefab. Or, you can manually add GameObjectHierarchyBroadcaster components to all parent game objects in the scene that you want synchronized.
+4. Add the `HoloLensTrackingObserver` MonoBehaviour to your HoloLens Camera.
+
+![Marker](images/HoloLensTrackingObserver.png)
+
+5. Setup your scene to synchronize content. You can either have all content synchronized by checking 'Automatically Broadcast All Game Objects' in BroadcasterSettings located in your SpectatorViewSettings prefab. Or, you can manually add GameObjectHierarchyBroadcaster components to all parent game objects in the scene that you want synchronized.
 
 ![Marker](images/SpectatorViewSettingsMenu.png)
 
 ![Marker](images/BroadcastAll.png)
 
-5. Press the 'HoloLens' button on the `Platform Switcher` attached to Spectator View in the Unity inspector (This should configure the correct build settings and app capabilities).
-6. Build and deploy the application to your HoloLens device.
+6. Press the 'HoloLens' button on the `Platform Switcher` attached to Spectator View in the Unity inspector (This should configure the correct build settings and app capabilities).
+7. Build and deploy the application to your HoloLens device.
 
 ### Android
 
@@ -155,6 +159,8 @@ If you are building Azure Spatial Anchors on iOS, you will need to take some add
 
 10. Build and deploy the application through Android Studio to your desired device. If it is a new Android development device, you may need to enable developer options and debugging. For information on setting up your Android device for debugging, see [here](https://developer.android.com/studio/debug/dev-options).
 
+> Note: **If you choose to use your own scene for Android, add the `ARCoreTrackingObserver` MonoBehaviour to your Unity Scene.**
+
 ### iOS
 
 > Note: Building iOS applications requires a mac.
@@ -166,6 +172,8 @@ If you are building Azure Spatial Anchors on iOS, you will need to take some add
 5. Export the iOS project to a XCode solution. Be sure to include the SpectatorView.iOS scene. If SpectatorView.iOS scene does not exist in your list of scenes to choose from in the build settings, open the scene in the Unity editor. Then reopen the build settings and press 'Add Open Scenes'.
 6. Configure the [signing certificate](https://developer.apple.com/support/code-signing/) for your Unity generated project in XCode to reflect your developer account.
 7. Build and deploy the application through XCode to your desired device (See the below steps if using ASA).
+
+> Note: **If you choose to use your own scene for iOS, add the `ARKitTrackingObserver` MonoBehaviour to your Unity Scene.**
 
 #### iOS with Azure Spatial Anchors
 1. In the terminal, navigate to your xcode project folder.
