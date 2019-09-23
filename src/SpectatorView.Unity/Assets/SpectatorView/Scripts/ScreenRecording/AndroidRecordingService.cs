@@ -130,6 +130,10 @@ namespace Microsoft.MixedReality.SpectatorView
         /// <inheritdoc />
         public bool IsRecordingAvailable()
         {
+#if UNITY_EDITOR
+            return true;
+#endif
+
             // With the AndroidRecordingService once a recording has been performed, it's always available.
             if (_isRecordingAvailable)
             {
@@ -156,6 +160,7 @@ namespace Microsoft.MixedReality.SpectatorView
         /// <inheritdoc />
         public void ShowRecording()
         {
+#if !UNITY_EDITOR
             try
             {
                 using (var screenRecorderActivity = GetScreenRecorderActivity())
@@ -167,6 +172,7 @@ namespace Microsoft.MixedReality.SpectatorView
             {
                 Debug.LogError("Failed to show recording for AndroidRecordingService: " + e.ToString());
             }
+#endif
         }
 
         /// <summary>

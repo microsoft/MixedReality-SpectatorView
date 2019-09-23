@@ -10,7 +10,9 @@ namespace Microsoft.MixedReality.SpectatorView
     /// </summary>
     public class ARKitTrackingObserver : MonoBehaviour, ITrackingObserver
     {
+#pragma warning disable 414
         private TrackingState trackingState = TrackingState.Unknown;
+#pragma warning restore 414
 
 #if UNITY_IOS
         private void Start()

@@ -198,7 +198,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Role: 0
   userIpAddress: 127.0.0.1
-  defaultMobileNetworkConfigurationVisualPrefab: {fileID: 9128832365225436076, guid: e14699ad6aa64ed459c4ecba1c9f6001,
+  defaultMobileNetworkConfigurationVisualPrefab: {fileID: 5997078630048438623, guid: cbdca089afceb004090ad48d7e385eba,
     type: 3}
   stateSynchronizationSceneManager: {fileID: 4715176406495730955}
   stateSynchronizationBroadcaster: {fileID: 4941633254549859856}
@@ -206,7 +206,7 @@ MonoBehaviour:
   defaultSpatialLocalizationInitializers:
   - {fileID: 5317805835895109800}
   - {fileID: 7339675784917655566}
-  defaultMobileRecordingServiceVisualPrefab: {fileID: 3991847289853751625, guid: 9771d3a665ea3184f9c3731093a51da4,
+  defaultMobileRecordingServiceVisualPrefab: {fileID: 3896832437802547649, guid: 9771d3a665ea3184f9c3731093a51da4,
     type: 3}
   userDebugVisualPrefab: {fileID: 1958541147728546, guid: f115aa95a7b0e49498ffb20f0b5278d0,
     type: 3}
@@ -215,6 +215,7 @@ MonoBehaviour:
     type: 3}
   spectatorDebugVisualScale: 0.02
   debugLogging: 0
+  hideDeveloperConsole: 0
 --- !u!1 &4941633254374932144
 GameObject:
   m_ObjectHideFlags: 0

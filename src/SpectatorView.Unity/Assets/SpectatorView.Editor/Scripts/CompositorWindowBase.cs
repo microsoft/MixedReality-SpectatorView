@@ -30,6 +30,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
 
         protected const string notConnectedMessage = "Not connected";
         private const string trackingLostStatusMessage = "Tracking lost";
+        private const string unknownTrackingStatusMessage = "Unknown Tracking state";
         private const string trackingStalledStatusMessage = "No tracking update in over a second";
         private const string locatingSharedSpatialCoordinate = "Locating shared spatial coordinate...";
         private const string notLocatedSharedSpatialCoordinate = "Not located";
@@ -75,7 +76,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
                     deviceInfo.NetworkManager != null &&
                     deviceInfo.NetworkManager.IsConnected &&
                     spatialCoordinateSystemParticipant != null &&
-                    spatialCoordinateSystemParticipant.PeerDeviceHasTracking &&
+                    spatialCoordinateSystemParticipant.PeerDeviceTrackingState != TrackingState.LostTracking &&
                     spatialCoordinateSystemParticipant.PeerSpatialCoordinateIsLocated &&
                     !spatialCoordinateSystemParticipant.PeerIsLocatingSpatialCoordinate &&
                     !deviceInfo.IsTrackingStalled &&
@@ -97,7 +98,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
                 {
                     sharedSpatialCoordinateStatusMessage = notConnectedMessage;
                 }
-                else if (!spatialCoordinateSystemParticipant.PeerDeviceHasTracking)
+                else if (spatialCoordinateSystemParticipant.PeerDeviceTrackingState == TrackingState.LostTracking)
                 {
                     sharedSpatialCoordinateStatusMessage = trackingLostStatusMessage;
                 }
@@ -112,6 +113,10 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
                 else if (!spatialCoordinateSystemParticipant.PeerSpatialCoordinateIsLocated)
                 {
                     sharedSpatialCoordinateStatusMessage = notLocatedSharedSpatialCoordinate;
+                }
+                else if (spatialCoordinateSystemParticipant.PeerDeviceTrackingState == TrackingState.Unknown)
+                {
+                    sharedSpatialCoordinateStatusMessage = unknownTrackingStatusMessage;
                 }
                 else
                 {
