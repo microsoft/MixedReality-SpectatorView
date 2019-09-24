@@ -30,10 +30,37 @@ namespace Microsoft.MixedReality.SpectatorView
         [SerializeField]
         protected float _markerSize = 0.03f; // meters
 
+        /// <summary>
+        /// Device tracking error overlay visual
+        /// </summary>
+        [Tooltip("Device tracking error overlay visual")]
+        [SerializeField]
+        private GameObject _errorOverlay = null;
+
         private float _additionalScaleFactor = 1.0f;
-        private float _paddingScaling =  200.0f / (200.0f - (2.0f * 24.0f)); // sv*.png images have 24 pixels of padding
+        private float _paddingScaling = 200.0f / (200.0f - (2.0f * 24.0f)); // sv*.png images have 24 pixels of padding
         private const string _textureFileName = "sv*";
         private const int _maxMarkerId = 19;
+        private TrackingState _cachedTrackingState = TrackingState.Unknown;
+
+        private void Update()
+        {
+            if (_errorOverlay != null &&
+                _content.activeSelf &&
+                SpatialCoordinateSystemManager.IsInitialized &&
+                SpatialCoordinateSystemManager.Instance.TrackingState != _cachedTrackingState)
+            {
+                _cachedTrackingState = SpatialCoordinateSystemManager.Instance.TrackingState;
+                if (_cachedTrackingState == TrackingState.Tracking)
+                {
+                    _errorOverlay.SetActive(false);
+                }
+                else
+                {
+                    _errorOverlay.SetActive(true);
+                }
+            }
+        }
 
         /// <inheritdoc />
         public void ShowMarker(int id)
@@ -84,6 +111,7 @@ namespace Microsoft.MixedReality.SpectatorView
             }
 
             _content.SetActive(false);
+            _errorOverlay.SetActive(false);
         }
 
         /// <inheritdoc />
