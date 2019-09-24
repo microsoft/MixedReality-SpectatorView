@@ -29,6 +29,9 @@ namespace Microsoft.MixedReality.SpatialAlignment
         protected CloudSpatialAnchorSession session;
         private int requestsForSessionStart = 0;
 
+        private const string simulatedCoordinateIdPrefix = "SIMULATED:";
+        private readonly int simulatedMarkerDetectionDelay = 5000; // Wait 5 seconds before stating a marker was detected.
+
         public SpatialAnchorsCoordinateService(SpatialAnchorsConfiguration spatialAnchorsConfiguration)
         {
             this.spatialAnchorsConfiguration = spatialAnchorsConfiguration;
@@ -43,8 +46,6 @@ namespace Microsoft.MixedReality.SpatialAlignment
             session?.Stop();
             session?.Dispose();
             session = null;
-
-
         }
 
         /// <summary>
@@ -91,6 +92,15 @@ namespace Microsoft.MixedReality.SpatialAlignment
         /// <inheritdoc/>
         public override async Task<bool> TryDeleteCoordinateAsync(string id, CancellationToken cancellationToken)
         {
+#if UNITY_EDITOR
+            return await TryDeleteCoordinateEditorAsync(id, cancellationToken);
+#else
+            return await TryDeleteCoordinateImplAsync(id, cancellationToken);
+#endif
+        }
+
+        private async Task<bool> TryDeleteCoordinateImplAsync(string id, CancellationToken cancellationToken)
+        {
             ThrowIfDisposed();
 
             await EnsureInitializedAsync().Unless(cancellationToken);
@@ -120,6 +130,11 @@ namespace Microsoft.MixedReality.SpatialAlignment
             }
         }
 
+        private async Task<bool> TryDeleteCoordinateEditorAsync(string id, CancellationToken cancellationToken)
+        {
+            return await Task.FromResult(true);
+        }
+
         /// <summary>
         /// Creates a <see cref="GameObject"/> representing the anchor based on provided <see cref="AnchorLocatedEventArgs"/>.
         /// </summary>
@@ -136,6 +151,15 @@ namespace Microsoft.MixedReality.SpatialAlignment
 
         /// <inheritdoc/>
         protected override async Task OnDiscoverCoordinatesAsync(CancellationToken cancellationToken, string[] idsToLocate = null)
+        {
+#if UNITY_EDITOR
+            await OnDiscoverCoordinatesEditorAsync(cancellationToken, idsToLocate);
+#else
+            await OnDiscoverCoordinatesImplAsync(cancellationToken, idsToLocate);
+#endif
+        }
+
+        private async Task OnDiscoverCoordinatesImplAsync(CancellationToken cancellationToken, string[] idsToLocate = null)
         {
             await EnsureInitializedAsync().Unless(cancellationToken);
             RequestSessionStart();
@@ -210,6 +234,20 @@ namespace Microsoft.MixedReality.SpatialAlignment
             }
         }
 
+        private async Task OnDiscoverCoordinatesEditorAsync(CancellationToken cancellationToken, string[] idsToLocate = null)
+        {
+            if (idsToLocate == null ||
+                idsToLocate.Length != 1)
+            {
+                Debug.LogError("SpatialAnchorsCoordinateService only supports simulation for one coordinate currently, localization failed.");
+                return;
+            }
+
+            ISpatialCoordinate simulatedCoordinate = new SimulatedSpatialCoordinate<string>(idsToLocate[0], Vector3.zero, Quaternion.identity);
+            OnNewCoordinate(simulatedCoordinate.Id, simulatedCoordinate);
+            await Task.CompletedTask;
+        }
+
         /// <summary>
         /// Simple helper method to spawn anchor <see cref="GameObject"/> provided position and rotation.
         /// </summary>
@@ -228,6 +266,15 @@ namespace Microsoft.MixedReality.SpatialAlignment
 
         /// <inheritdoc/>
         protected override async Task<ISpatialCoordinate> TryCreateCoordinateAsync(Vector3 worldPosition, Quaternion worldRotation, CancellationToken cancellationToken)
+        {
+#if UNITY_EDITOR
+            return await TryCreateCoordinateEditorAsync(worldPosition, worldRotation, cancellationToken);
+#else
+            return await TryCreateCoordinateImplAsync(worldPosition, worldRotation, cancellationToken);
+#endif
+        }
+
+        private async Task<ISpatialCoordinate> TryCreateCoordinateImplAsync(Vector3 worldPosition, Quaternion worldRotation, CancellationToken cancellationToken)
         {
             await EnsureInitializedAsync().Unless(cancellationToken);
 
@@ -270,6 +317,14 @@ namespace Microsoft.MixedReality.SpatialAlignment
             {
                 ReleaseSessionStartRequest();
             }
+        }
+
+        private async Task<ISpatialCoordinate> TryCreateCoordinateEditorAsync(Vector3 worldPosition, Quaternion worldRotation, CancellationToken cancellationToken)
+        {
+            ISpatialCoordinate simulatedCoordinate = new SimulatedSpatialCoordinate<string>($"{simulatedCoordinateIdPrefix}{Guid.NewGuid().ToString()}", worldPosition, worldRotation);
+            Debug.Log("Created artificial coordinate for debugging in the editor, waiting five seconds to fire creation event.");
+            await Task.Delay(simulatedMarkerDetectionDelay, cancellationToken).IgnoreCancellation();
+            return await Task.FromResult(simulatedCoordinate);
         }
 
         /// <inheritdoc/>
