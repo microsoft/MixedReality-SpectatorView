@@ -2,8 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
-using System.Collections;
-using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.SpectatorView
@@ -16,6 +15,18 @@ namespace Microsoft.MixedReality.SpectatorView
         /// </summary>
         public abstract Guid PeerSpatialLocalizerId { get; }
 
-        public abstract void RunLocalization(SpatialCoordinateSystemParticipant participant);
+        /// <summary>
+        /// Call to attempt localization with for provided participant.
+        /// </summary>
+        /// <param name="participant">participant to localize with</param>
+        /// <returns>True if localization succeeded, otherwise false</returns>
+        public abstract Task<bool> TryRunLocalizationAsync(SpatialCoordinateSystemParticipant participant);
+
+        /// <summary>
+        /// Call to attempt relocalization with for provided participant.
+        /// </summary>
+        /// <param name="participant">participant to localize with</param>
+        /// <returns>True if relocalization succeeded, otherwise false</returns>
+        public abstract Task<bool> TryResetLocalizationAsync(SpatialCoordinateSystemParticipant participant);
     }
 }

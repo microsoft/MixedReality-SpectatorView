@@ -59,19 +59,23 @@ namespace Microsoft.MixedReality.SpectatorView
         /// <inheritdoc />
         public override bool TryCreateLocalizationSession(IPeerConnection peerConnection, WorldAnchorSpatialLocalizationSettings settings, out ISpatialLocalizationSession session)
         {
-            session = new LocalizationSession(this, settings);
+            session = new LocalizationSession(this, settings, peerConnection);
             return true;
         }
 
         private class LocalizationSession : DisposableBase, ISpatialLocalizationSession
         {
+            public IPeerConnection Peer => peerConnection;
+
             private readonly WorldAnchorSpatialLocalizer localizer;
             private readonly WorldAnchorSpatialLocalizationSettings settings;
+            private readonly IPeerConnection peerConnection;
 
-            public LocalizationSession(WorldAnchorSpatialLocalizer localizer, WorldAnchorSpatialLocalizationSettings settings)
+            public LocalizationSession(WorldAnchorSpatialLocalizer localizer, WorldAnchorSpatialLocalizationSettings settings, IPeerConnection peerConnection)
             {
                 this.localizer = localizer;
                 this.settings = settings;
+                this.peerConnection = peerConnection;
             }
 
             public async Task<ISpatialCoordinate> LocalizeAsync(CancellationToken cancellationToken)

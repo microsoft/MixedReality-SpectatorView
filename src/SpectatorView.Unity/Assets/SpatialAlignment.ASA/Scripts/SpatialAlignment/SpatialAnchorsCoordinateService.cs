@@ -95,7 +95,15 @@ namespace Microsoft.MixedReality.SpatialAlignment
 #if UNITY_EDITOR
             return await TryDeleteCoordinateEditorAsync(id, cancellationToken);
 #else
-            return await TryDeleteCoordinateImplAsync(id, cancellationToken);
+            if (id != null &&
+                id.StartsWith(simulatedCoordinateIdPrefix))
+            {
+                return await TryDeleteCoordinateEditorAsync(id, cancellationToken);
+            }
+            else
+            {
+                return await TryDeleteCoordinateImplAsync(id, cancellationToken);
+            }
 #endif
         }
 
@@ -155,7 +163,16 @@ namespace Microsoft.MixedReality.SpatialAlignment
 #if UNITY_EDITOR
             await OnDiscoverCoordinatesEditorAsync(cancellationToken, idsToLocate);
 #else
-            await OnDiscoverCoordinatesImplAsync(cancellationToken, idsToLocate);
+            if (idsToLocate != null &&
+                idsToLocate.Length > 0 &&
+                idsToLocate[0].StartsWith(simulatedCoordinateIdPrefix))
+            {
+                await OnDiscoverCoordinatesEditorAsync(cancellationToken, idsToLocate);
+            }
+            else
+            {
+                await OnDiscoverCoordinatesImplAsync(cancellationToken, idsToLocate);
+            }
 #endif
         }
 

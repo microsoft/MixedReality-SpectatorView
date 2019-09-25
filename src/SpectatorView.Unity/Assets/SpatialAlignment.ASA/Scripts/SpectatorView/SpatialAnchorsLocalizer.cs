@@ -92,6 +92,8 @@ namespace Microsoft.MixedReality.SpectatorView
 
         private class SpatialCoordinateLocalizationSession : DisposableBase, ISpatialLocalizationSession
         {
+            public IPeerConnection Peer => peerConnection;
+
             private readonly IPeerConnection peerConnection;
             private readonly SpatialAnchorsCoordinateService coordinateService;
             private readonly SpatialAnchorsConfiguration configuration;
