@@ -52,7 +52,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
         private readonly IMarkerDetector markerDetector;
         private readonly bool debugLogging;
-        private readonly TimeSpan simulatedMarkerDetectionDelay; // Wait 5 seconds before stating a marker was detected.
+        private readonly TimeSpan simulatedMarkerDetectionDelay = TimeSpan.FromSeconds(5); // Wait 5 seconds before stating a marker was detected.
 
         public MarkerDetectorCoordinateService(IMarkerDetector markerDetector, bool debugLogging)
         {
