@@ -15,7 +15,7 @@ namespace Microsoft.MixedReality.SpectatorView
 {
     internal abstract class AssetCache : ScriptableObject
     {
-        const string assetCacheDirectory = "Generated.StateSynchronization.AssetCaches";
+        public const string assetCacheDirectory = "Generated.StateSynchronization.AssetCaches";
 
         protected static TAssetCache LoadAssetCache<TAssetCache>()
             where TAssetCache : AssetCache
@@ -56,6 +56,10 @@ namespace Microsoft.MixedReality.SpectatorView
                 EnsureAssetDirectoryExists();
 
                 AssetDatabase.CreateAsset(asset, assetPathAndName);
+
+                var importer = AssetImporter.GetAtPath(assetPathAndName);
+                importer.assetBundleName = "SpectatorView";
+                importer.SaveAndReimport();
             }
             return asset;
 #else

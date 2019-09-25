@@ -12,6 +12,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
 {
     public static class StateSynchronizationMenuItems
     {
+        private const string ResourcesDirectoryName = "Resources";
         private static IEqualityComparer<IAssetCacheUpdater> assetTypeComparer = new AssetCacheTypeEqualityComparer();
 
         private class AssetCacheTypeEqualityComparer : IEqualityComparer<IAssetCacheUpdater>
@@ -84,6 +85,51 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
 
             AssetDatabase.SaveAssets();
             Debug.Log("Asset caches cleared.");
+        }
+
+        [MenuItem("Spectator View/Generate Asset Bundles", priority = 102)]
+        public static void GenerateAssetBundles()
+        {
+            string iOSDirectory = Application.dataPath + $"/{AssetCache.assetCacheDirectory}/iOS/{ResourcesDirectoryName}";
+            string androidDirectory = Application.dataPath + $"/{AssetCache.assetCacheDirectory}/Android/{ResourcesDirectoryName}";
+            string wsaDirectory = Application.dataPath + $"/{AssetCache.assetCacheDirectory}/WSA/{ResourcesDirectoryName}";
+
+            Debug.Log(iOSDirectory);
+
+            Directory.CreateDirectory(iOSDirectory.Replace('/', Path.DirectorySeparatorChar));
+            Directory.CreateDirectory(androidDirectory.Replace('/', Path.DirectorySeparatorChar));
+            Directory.CreateDirectory(wsaDirectory.Replace('/', Path.DirectorySeparatorChar));
+
+            List<string> builtDirectories = new List<string>();
+
+#if UNITY_EDITOR_OSX
+            EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.iOS, BuildTarget.iOS);
+            BuildPipeline.BuildAssetBundles(iOSDirectory, BuildAssetBundleOptions.None, BuildTarget.iOS);
+            builtDirectories.Add(iOSDirectory);
+#elif UNITY_EDITOR_WIN
+            EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.Android, BuildTarget.Android);
+            BuildPipeline.BuildAssetBundles(androidDirectory, BuildAssetBundleOptions.None, BuildTarget.Android);
+
+            EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.WSA, BuildTarget.WSAPlayer);
+            BuildPipeline.BuildAssetBundles(wsaDirectory, BuildAssetBundleOptions.None, BuildTarget.WSAPlayer);
+
+            builtDirectories.Add(androidDirectory);
+            builtDirectories.Add(wsaDirectory);
+#endif
+
+            foreach (var directory in builtDirectories)
+            {
+                string assetPath = $"{directory}/spectatorview".Replace('/', Path.DirectorySeparatorChar);
+                string resourcePath = $"{directory}/{ResourcesDirectoryName}".Replace('/', Path.DirectorySeparatorChar);
+
+                File.Delete(resourcePath);
+                File.Delete($"{resourcePath}.manifest");
+                File.Delete($"{assetPath}.bytes");
+                File.Delete($"{assetPath}.manifest.bytes");
+
+                File.Move(assetPath, $"{assetPath}.bytes");
+                File.Move($"{assetPath}.manifest", $"{assetPath}.manifest.bytes");
+            }
         }
 
         [MenuItem("Spectator View/Edit Global Performance Parameters", priority = 200)]
