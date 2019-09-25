@@ -90,11 +90,9 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
         [MenuItem("Spectator View/Generate Asset Bundles", priority = 102)]
         public static void GenerateAssetBundles()
         {
-            string iOSDirectory = Application.dataPath + $"/{AssetCache.assetCacheDirectory}/iOS/{ResourcesDirectoryName}";
-            string androidDirectory = Application.dataPath + $"/{AssetCache.assetCacheDirectory}/Android/{ResourcesDirectoryName}";
-            string wsaDirectory = Application.dataPath + $"/{AssetCache.assetCacheDirectory}/WSA/{ResourcesDirectoryName}";
-
-            Debug.Log(iOSDirectory);
+            string iOSDirectory = Application.dataPath + $"/{AssetCache.assetCacheDirectory}/{ResourcesDirectoryName}/{nameof(AssetBundlePlatform.iOS)}";
+            string androidDirectory = Application.dataPath + $"/{AssetCache.assetCacheDirectory}/{ResourcesDirectoryName}/{nameof(AssetBundlePlatform.Android)}";
+            string wsaDirectory = Application.dataPath + $"/{AssetCache.assetCacheDirectory}/{ResourcesDirectoryName}/{nameof(AssetBundlePlatform.WSA)}";
 
             Directory.CreateDirectory(iOSDirectory.Replace('/', Path.DirectorySeparatorChar));
             Directory.CreateDirectory(androidDirectory.Replace('/', Path.DirectorySeparatorChar));

@@ -15,6 +15,11 @@ namespace Microsoft.MixedReality.SpectatorView
         public const string SyncCommand = "SYNC";
         public const string CameraCommand = "Camera";
         public const string PerfCommand = "Perf";
+        public const string AssetBundleRequestInfoCommand = "RequestAssetBundleInfo";
+        public const string AssetBundleReportInfoCommand = "ReportAssetBundleInfo";
+        public const string AssetBundleRequestDownloadCommand = "RequestAssetBundleDownload";
+        public const string AssetBundleReportDownloadCommand = "ReportAssetBundleDownload";
+        public const string AssetLoadCompletedCommand = "AssetLoadCompleted";
 
         /// <summary>
         /// Check to enable debug logging.
@@ -63,6 +68,8 @@ namespace Microsoft.MixedReality.SpectatorView
             RegisterCommandHandler(SyncCommand, HandleSyncCommand);
             RegisterCommandHandler(CameraCommand, HandleCameraCommand);
             RegisterCommandHandler(PerfCommand, HandlePerfCommand);
+            RegisterCommandHandler(AssetBundleReportInfoCommand, HandleAssetBundleInfoCommand);
+            RegisterCommandHandler(AssetBundleReportDownloadCommand, HandleAssetBundleDownloadCommand);
         }
 
         protected void Update()
@@ -92,6 +99,9 @@ namespace Microsoft.MixedReality.SpectatorView
             }
 
             hologramSynchronizer.Reset(endpoint);
+            ResetAssetCaches();
+
+            SendAssetBundleInfoRequest(endpoint);
         }
 
         public void HandleCameraCommand(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
@@ -121,6 +131,35 @@ namespace Microsoft.MixedReality.SpectatorView
             {
                 averageTimePerFeature[i] = reader.ReadSingle();
             }
+        }
+
+        private void HandleAssetBundleInfoCommand(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
+        {
+            bool hasAssetBundle = reader.ReadBoolean();
+            if (hasAssetBundle)
+            {
+                SendAssetBundleDownloadRequest(endpoint);
+            }
+            else
+            {
+                SendAssetsLoaded(endpoint);
+            }
+        }
+
+        private void HandleAssetBundleDownloadCommand(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
+        {
+            int length = reader.ReadInt32();
+            byte[] rawAssetBundle;
+            if (length > 0)
+            {
+                rawAssetBundle = reader.ReadBytes(length);
+                Debug.Log("Loading asset bundle");
+                AssetBundle bundle = AssetBundle.LoadFromMemory(rawAssetBundle);
+                Debug.Log("Asset bundle load completed");
+                bundle.LoadAllAssets();
+            }
+
+            SendAssetsLoaded(endpoint);
         }
 
         internal int PerformanceFeatureCount
@@ -158,6 +197,49 @@ namespace Microsoft.MixedReality.SpectatorView
                 writer.Flush();
 
                 return stream.ToArray();
+            }
+        }
+
+        private void SendAssetBundleInfoRequest(SocketEndpoint endpoint)
+        {
+            using (MemoryStream stream = new MemoryStream())
+            using (BinaryWriter writer = new BinaryWriter(stream))
+            {
+                writer.Write(AssetBundleRequestInfoCommand);
+                writer.Write((byte)AssetBundlePlatformInfo.Current);
+
+                endpoint.Send(stream.ToArray());
+            }
+        }
+
+        private void SendAssetBundleDownloadRequest(SocketEndpoint endpoint)
+        {
+            using (MemoryStream stream = new MemoryStream())
+            using (BinaryWriter writer = new BinaryWriter(stream))
+            {
+                writer.Write(AssetBundleRequestDownloadCommand);
+                writer.Write((byte)AssetBundlePlatformInfo.Current);
+
+                endpoint.Send(stream.ToArray());
+            }
+        }
+
+        private void SendAssetsLoaded(SocketEndpoint endpoint)
+        {
+            using (MemoryStream stream = new MemoryStream())
+            using (BinaryWriter writer = new BinaryWriter(stream))
+            {
+                writer.Write(AssetLoadCompletedCommand);
+
+                endpoint.Send(stream.ToArray());
+            }
+        }
+
+        private void ResetAssetCaches()
+        {
+            foreach (AssetCache cache in FindObjectsOfType<AssetCache>())
+            {
+                Destroy(cache);
             }
         }
     }

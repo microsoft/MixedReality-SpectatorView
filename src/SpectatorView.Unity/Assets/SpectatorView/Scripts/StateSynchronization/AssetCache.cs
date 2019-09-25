@@ -183,6 +183,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
         protected virtual void Awake()
         {
+            Debug.Log("Asset awake for " + this.GetType().Name);
             _Instance = (TAssetCacheSingleton)this;
         }
 

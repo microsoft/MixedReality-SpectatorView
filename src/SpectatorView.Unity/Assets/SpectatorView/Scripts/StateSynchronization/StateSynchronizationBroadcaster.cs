@@ -33,12 +33,17 @@ namespace Microsoft.MixedReality.SpectatorView
         
         protected override int RemotePort => Port;
 
+        public event Action<SocketEndpoint> ConnectedAndReady;
+
         protected override void Awake()
         {
             DebugLog($"Awoken!");
             base.Awake();
 
             RegisterCommandHandler(StateSynchronizationObserver.SyncCommand, HandleSyncCommand);
+            RegisterCommandHandler(StateSynchronizationObserver.AssetBundleRequestInfoCommand, HandleAssetBundleRequestInfo);
+            RegisterCommandHandler(StateSynchronizationObserver.AssetBundleRequestDownloadCommand, HandleAssetBundleRequestDownload);
+            RegisterCommandHandler(StateSynchronizationObserver.AssetLoadCompletedCommand, HandleAssetLoadCompleted);
 
             // Ensure that runInBackground is set to true so that the app continues to send network
             // messages even if it loses focus
@@ -89,7 +94,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
         protected override void OnDisconnected(SocketEndpoint endpoint)
         {
-            DebugLog($"Broadcaster received disconnect from {endpoint.Address}"); ;
+            DebugLog($"Broadcaster received disconnect from {endpoint.Address}");
             base.OnDisconnected(endpoint);
         }
 
@@ -200,6 +205,53 @@ namespace Microsoft.MixedReality.SpectatorView
         {
             reader.ReadSingle(); // float time
             StateSynchronizationSceneManager.Instance.ReceiveMessage(endpoint, reader);
+        }
+
+
+        private void HandleAssetBundleRequestInfo(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
+        {
+            AssetBundlePlatform platform = (AssetBundlePlatform)reader.ReadByte();
+            TextAsset asset = Resources.Load<TextAsset>($"{platform.ToString()}/spectatorview");
+            bool hasAsset = asset != null;
+
+            using (MemoryStream stream = new MemoryStream())
+            using (BinaryWriter writer = new BinaryWriter(stream))
+            {
+                writer.Write(StateSynchronizationObserver.AssetBundleReportInfoCommand);
+                writer.Write(hasAsset);
+
+                endpoint.Send(stream.ToArray());
+            }
+        }
+
+        private void HandleAssetBundleRequestDownload(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
+        {
+            AssetBundlePlatform platform = (AssetBundlePlatform)reader.ReadByte();
+            TextAsset asset = Resources.Load<TextAsset>($"{platform.ToString()}/spectatorview");
+            bool hasAsset = asset != null;
+
+            using (MemoryStream stream = new MemoryStream())
+            using (BinaryWriter writer = new BinaryWriter(stream))
+            {
+                writer.Write(StateSynchronizationObserver.AssetBundleReportDownloadCommand);
+                if (hasAsset)
+                {
+                    writer.Write(asset.bytes.Length);
+                    writer.Write(asset.bytes);
+                }
+                else
+                {
+                    writer.Write(0);
+                }
+
+                endpoint.Send(stream.ToArray());
+            }
+        }
+
+        private void HandleAssetLoadCompleted(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
+        {
+            // Notify everyone the connection is actually ready
+            ConnectedAndReady?.Invoke(endpoint);
         }
     }
 }
