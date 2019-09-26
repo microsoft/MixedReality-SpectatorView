@@ -45,6 +45,7 @@ namespace Microsoft.MixedReality.SpatialAlignment
                 }
                 catch (Exception ex)
                 {
+                    Debug.LogError($"Exception throw initializing SpatialAnchorAndroidCoordinateService: {ex.ToString()}");
                     taskCompletionSource.SetException(ex);
                 }
             });

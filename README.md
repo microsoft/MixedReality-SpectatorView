@@ -64,7 +64,7 @@ After obtaining a local clone of the MixedReality-SpectatorView repository and r
 
 1. Close any instances of Unity.
 2. Open an administrator command window.
-3. Run `tools\Scripts\AddDependencies.bat "Assets" "sv"` (These paths are the relative paths to your project Assets folder and your MixedReality-SpectatorView submodule from the root directory of your repository).  This script is located within your MixedReality-SpectatorView submodule.
+3. Run `tools\Scripts\AddDependencies.bat -AssetPath "Assets" -SVPath "sv"` (These paths are the relative paths to your project Assets folder and your MixedReality-SpectatorView submodule from the root directory of your repository).  This script is located within your MixedReality-SpectatorView submodule.
 
 Now, when you reopen your project in Unity, folders should appear in your project's Assets folder.
 
