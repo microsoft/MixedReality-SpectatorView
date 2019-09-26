@@ -18,6 +18,8 @@ namespace Microsoft.MixedReality.SpectatorView
             {
 #if UNITY_WSA && !UNITY_EDITOR
                 return Windows.ApplicationModel.Package.Current.Id.Architecture == Windows.System.ProcessorArchitecture.X86;
+#elif UNITY_EDITOR
+                return true;
 #else
                 return false;
 #endif
