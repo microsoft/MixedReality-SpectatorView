@@ -19,7 +19,7 @@ namespace Microsoft.MixedReality.SpectatorView
         {
             get
             {
-#if UNITY_ANDROID || UNITY_IOS
+#if UNITY_ANDROID || UNITY_IOS || UNITY_EDITOR
                 return true;
 #else
                 return false;
