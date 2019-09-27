@@ -176,6 +176,8 @@ bool CompositorInterface::StartRecording(VideoRecordingFrameLayout frameLayout, 
         return false;
     }
 
+	audioRecordingStartTime = -1.0;
+
 	std::wstring desiredFileName(lpcDesiredFileName);
 	std::wstring extension(L".mp4");
 	if (!DirectoryHelper::TestFileExtension(desiredFileName, extension))
@@ -184,7 +186,6 @@ bool CompositorInterface::StartRecording(VideoRecordingFrameLayout frameLayout, 
 	}
 
 	std::wstring videoPath = DirectoryHelper::FindUniqueFileName(desiredFileName, extension);
-	audioRecordingStartTime = -1.0;
     activeVideoEncoder->StartRecording(videoPath.c_str(), ENCODE_AUDIO);
 
 	memcpy_s(lpFileName, inputFileNameLength * _WCHAR_T_SIZE, videoPath.c_str(), videoPath.size() * _WCHAR_T_SIZE);
