@@ -10,7 +10,6 @@ namespace Microsoft.MixedReality.SpectatorView.Tests
     public class CompositionManagerTests : CompositorTestsBase
     {
         const double recordTimeInSeconds = 5.0;
-        const double videoLengthVariability = 2.0;
         const int compositeVideoWidth = 1920;
         const int compositeVideoHeight = 1080;
         const int quadVideoWidth = compositeVideoWidth * 2;
@@ -40,7 +39,9 @@ namespace Microsoft.MixedReality.SpectatorView.Tests
 
             float startTime = Time.time;
 
-            string videoFilePath = CompositionManager.StartRecording();
+            bool startedRecording = CompositionManager.TryStartRecording(out var videoFilePath);
+            Assert.IsTrue(startedRecording, "Starting recording succeeded.");
+
             Debug.Log($"Recording file: {videoFilePath}");
             filesToDelete.Add(videoFilePath);
             while (Time.time - startTime < recordTimeInSeconds)
@@ -50,7 +51,7 @@ namespace Microsoft.MixedReality.SpectatorView.Tests
             CompositionManager.StopRecording();
             yield return null;
 
-            yield return AssertVideoFileParams(videoFilePath, recordTimeInSeconds, compositeVideoWidth, compositeVideoHeight);
+            yield return AssertVideoFileParams(videoFilePath, compositeVideoWidth, compositeVideoHeight);
         }
 
         [UnityTest]
@@ -63,7 +64,9 @@ namespace Microsoft.MixedReality.SpectatorView.Tests
                 float startTime = Time.time;
 
                 Debug.Log($"Recording Composite Video: {n}");
-                string videoFilePath = CompositionManager.StartRecording();
+                bool startedRecording = CompositionManager.TryStartRecording(out var videoFilePath);
+                Assert.IsTrue(startedRecording, "Starting recording succeeded.");
+
                 Debug.Log($"Recording file: {videoFilePath}");
                 filesToDelete.Add(videoFilePath);
                 while (Time.time - startTime < recordTimeInSeconds)
@@ -73,7 +76,7 @@ namespace Microsoft.MixedReality.SpectatorView.Tests
                 CompositionManager.StopRecording();
                 yield return null;
 
-                yield return AssertVideoFileParams(videoFilePath, recordTimeInSeconds, compositeVideoWidth, compositeVideoHeight);
+                yield return AssertVideoFileParams(videoFilePath, compositeVideoWidth, compositeVideoHeight);
             }
         }
 
@@ -84,7 +87,9 @@ namespace Microsoft.MixedReality.SpectatorView.Tests
 
             float startTime = Time.time;
 
-            string videoFilePath = CompositionManager.StartRecording();
+            bool startedRecording = CompositionManager.TryStartRecording(out var videoFilePath);
+            Assert.IsTrue(startedRecording, "Starting recording succeeded.");
+
             Debug.Log($"Recording file: {videoFilePath}");
             filesToDelete.Add(videoFilePath);
             while (Time.time - startTime < recordTimeInSeconds)
@@ -94,7 +99,7 @@ namespace Microsoft.MixedReality.SpectatorView.Tests
             CompositionManager.StopRecording();
             yield return null;
 
-            yield return AssertVideoFileParams(videoFilePath, recordTimeInSeconds, quadVideoWidth, quadVideoHeight);
+            yield return AssertVideoFileParams(videoFilePath, quadVideoWidth, quadVideoHeight);
         }
 
         [UnityTest]
@@ -107,7 +112,9 @@ namespace Microsoft.MixedReality.SpectatorView.Tests
                 float startTime = Time.time;
 
                 Debug.Log($"Recording Quad Video: {n}");
-                string videoFilePath = CompositionManager.StartRecording();
+                bool startedRecording = CompositionManager.TryStartRecording(out var videoFilePath);
+                Assert.IsTrue(startedRecording, "Starting recording succeeded.");
+
                 Debug.Log($"Recording file: {videoFilePath}");
                 filesToDelete.Add(videoFilePath);
                 while (Time.time - startTime < recordTimeInSeconds)
@@ -117,12 +124,12 @@ namespace Microsoft.MixedReality.SpectatorView.Tests
                 CompositionManager.StopRecording();
                 yield return null;
 
-                yield return AssertVideoFileParams(videoFilePath, recordTimeInSeconds, quadVideoWidth, quadVideoHeight);
+                yield return AssertVideoFileParams(videoFilePath, quadVideoWidth, quadVideoHeight);
             }
 
         }
 
-        private IEnumerator AssertVideoFileParams(string filePath, double videoLengthInSeconds, int width, int height)
+        private IEnumerator AssertVideoFileParams(string filePath, int width, int height)
         {
             VideoPlayer player = CompositionManager.gameObject.AddComponent<VideoPlayer>();
             Assert.NotNull(player, "Player is not null.");
@@ -144,10 +151,6 @@ namespace Microsoft.MixedReality.SpectatorView.Tests
             }
 
             Debug.Log($"Asserting Video File Params, File:{player.url}, Length:{player.length}, Width:{player.width}, Height:{player.height}");
-            Assert.IsTrue(
-                (player.length > videoLengthInSeconds - videoLengthVariability) &&
-                (player.length < videoLengthInSeconds + videoLengthVariability),
-                $"Video length was within expected range: ({videoLengthInSeconds - videoLengthVariability},{videoLengthInSeconds + videoLengthVariability}), actual:{player.length}");
             Assert.IsTrue(
                 (player.width == width) &&
                 (player.height == height),

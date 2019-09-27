@@ -446,7 +446,9 @@ void VideoEncoder::StopRecording()
         {
 			videoQueue.pop();
         }
+#if _DEBUG
 		OutputDebugString(L"Cleared video queue\n");
+#endif
 
         {
             std::lock_guard<std::mutex> lk(completion_mutex);
@@ -461,7 +463,9 @@ void VideoEncoder::StopRecording()
         {
             audioQueue.pop();
         }
+#if _DEBUG
 		OutputDebugString(L"Cleared audio queue\n");
+#endif
 
         {
             std::lock_guard<std::mutex> lk(completion_mutex);

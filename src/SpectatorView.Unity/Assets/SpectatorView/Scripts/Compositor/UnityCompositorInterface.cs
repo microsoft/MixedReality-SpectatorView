@@ -3,6 +3,7 @@
 
 using System;
 using System.Runtime.InteropServices;
+using System.Text;
 
 namespace Microsoft.MixedReality.SpectatorView
 {
@@ -72,7 +73,7 @@ namespace Microsoft.MixedReality.SpectatorView
         public static extern void TakeRawPicture(string path);
 
         [DllImport(CompositorPluginDll, CharSet = CharSet.Unicode)]
-        public static extern void StartRecording(int frameLayout, string filePath, int filePathLength);
+        public static extern bool StartRecording(int frameLayout, string desiredFileName, int desiredFileNameLength, int inputFileNameLength, StringBuilder fileName, int[] fileNameLength);
 
         [DllImport(CompositorPluginDll)]
         public static extern void StopRecording();

@@ -17,7 +17,9 @@ public:
     static void MoveFiles(std::wstring srcPath, std::wstring destPath);
     static BOOL FileExists(std::wstring path);
     static std::wstring FindUniqueFileName(const std::wstring path, std::wstring fileName, std::wstring extension, int& startingIndex);
+	static std::wstring FindUniqueFileName(const std::wstring filePath, const std::wstring extension);
     static int NumFiles(std::wstring root, std::wstring extension);
     static void DeleteFiles(std::wstring root, std::wstring extension);
+	static BOOL TestFileExtension(std::wstring& file, std::wstring& ext);
 };
 

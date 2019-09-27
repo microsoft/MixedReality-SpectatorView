@@ -57,6 +57,26 @@ std::wstring DirectoryHelper::FindUniqueFileName(const std::wstring path, std::w
     return tempPath;
 }
 
+std::wstring DirectoryHelper::FindUniqueFileName(const std::wstring filePath, const std::wstring extension)
+{
+	if (!FileExists(filePath))
+	{
+		return filePath;
+	}
+
+	int index = 1;
+	std::wstring filePathWithoutExtension = filePath.substr(0, filePath.size() - extension.size());
+	std::wstring tempPath = filePathWithoutExtension + L"_" + std::to_wstring(index) + extension;
+
+	while (FileExists(tempPath))
+	{
+		index++;
+		tempPath = filePathWithoutExtension + L"_" + std::to_wstring(index) + extension;
+	}
+
+	return tempPath;
+}
+
 // Get the number of files with the given extension in the input directory.
 int DirectoryHelper::NumFiles(std::wstring root, std::wstring extension)
 {
@@ -99,4 +119,17 @@ void DirectoryHelper::DeleteFiles(std::wstring root, std::wstring extension)
 
         FindClose(hFind);
     }
+}
+
+BOOL DirectoryHelper::TestFileExtension(std::wstring& file, std::wstring& ext)
+{
+	int lstr = file.length();
+	int lext = ext.length();
+
+	if (lstr < lext)
+	{
+		return 0;
+	}
+
+	return file.compare(lstr - lext, lext, ext) == 0;
 }

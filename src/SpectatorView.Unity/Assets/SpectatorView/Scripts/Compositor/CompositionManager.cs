@@ -4,6 +4,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.SpectatorView
@@ -612,12 +613,30 @@ namespace Microsoft.MixedReality.SpectatorView
             return UnityCompositorInterface.IsRecording();
         }
 
-        public string StartRecording()
+        public bool TryStartRecording(out string fileName)
         {
+            fileName = string.Empty;
             TextureManager.InitializeVideoRecordingTextures();
-            string filePath = new string(' ', 1024);
-            UnityCompositorInterface.StartRecording((int)VideoRecordingLayout, filePath, filePath.Length);
-            return ReduceFilePath(filePath);
+            StringBuilder builder = new StringBuilder(1024);
+            string documentDirectory = System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments);
+            string outputDirectory = $"{documentDirectory}\\HologramCapture";
+            if (!Directory.Exists(outputDirectory))
+            {
+                Directory.CreateDirectory(outputDirectory);
+            }
+
+            string desiredFileName = $"{outputDirectory}\\Video.mp4";
+            int[] fileNameLength = new int[1];
+            bool startedRecording = UnityCompositorInterface.StartRecording((int)VideoRecordingLayout, desiredFileName, desiredFileName.Length, builder.Capacity, builder, fileNameLength);
+            if (!startedRecording)
+            {
+                Debug.LogError($"CompositionManager failed to start recording: {desiredFileName}");
+                return false;
+            }
+
+            fileName = builder.ToString().Substring(0, fileNameLength[0]);
+            Debug.Log($"Started recording file: {fileName}");
+            return true;
         }
 
         public void StopRecording()
@@ -639,13 +658,6 @@ namespace Microsoft.MixedReality.SpectatorView
                 UnityCompositorInterface.SetAudioData(outBytes, outBytes.Length, audioStartTime);
                 audioMemoryStream = null;
             }
-        }
-        
-        private string ReduceFilePath(string filePath)
-        {
-            const string mp4Ext = ".mp4";
-            filePath = filePath.Trim().Replace("\\\\", "\\");
-            return filePath.Substring(0, filePath.LastIndexOf(mp4Ext) + mp4Ext.Length);
         }
 #endif
     }

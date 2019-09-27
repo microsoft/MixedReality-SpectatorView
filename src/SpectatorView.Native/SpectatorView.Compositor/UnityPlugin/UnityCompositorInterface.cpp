@@ -405,7 +405,7 @@ UNITYDLL void TakeRawPicture(LPCWSTR lpFilePath)
     rawPicturePath = lpFilePath;
 }
 
-UNITYDLL void StartRecording(VideoRecordingFrameLayout frameLayout, LPWSTR lpFilePath, int lpFilePathLength)
+UNITYDLL bool StartRecording(VideoRecordingFrameLayout frameLayout, LPCWSTR lpcDesiredFileName, const int desiredFileNameLength, const int inputFileNameLength, LPWSTR lpFileName, int* fileNameLength)
 {
     if (videoInitialized && ci != nullptr)
     {
@@ -414,9 +414,11 @@ UNITYDLL void StartRecording(VideoRecordingFrameLayout frameLayout, LPWSTR lpFil
         AllocateVideoBuffers(frameLayout);
         VideoTextureBuffer.ReleaseTextures();
         VideoTextureBuffer.Reset();
-        ci->StartRecording(frameLayout, lpFilePath, lpFilePathLength);
-        isRecording = true;
+		isRecording = ci->StartRecording(frameLayout, lpcDesiredFileName, desiredFileNameLength, inputFileNameLength, lpFileName, fileNameLength);
+		return isRecording;
     }
+
+	return false;
 }
 
 UNITYDLL void StopRecording()

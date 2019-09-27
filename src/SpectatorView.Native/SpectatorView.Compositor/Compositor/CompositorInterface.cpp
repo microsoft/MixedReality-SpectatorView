@@ -159,8 +159,9 @@ bool CompositorInterface::InitializeVideoEncoder(ID3D11Device* device)
     return videoEncoder1080p->Initialize(device) && videoEncoder4K->Initialize(device);
 }
 
-void CompositorInterface::StartRecording(VideoRecordingFrameLayout frameLayout, LPWSTR lpFilePath, int lpFilePathLength)
+bool CompositorInterface::StartRecording(VideoRecordingFrameLayout frameLayout, LPCWSTR lpcDesiredFileName, const int desiredFileNameLength, const int inputFileNameLength, LPWSTR lpFileName, int* fileNameLength)
 {
+	*fileNameLength = 0;
     if (frameLayout == VideoRecordingFrameLayout::Composite)
     {
         activeVideoEncoder = videoEncoder1080p;
@@ -172,19 +173,23 @@ void CompositorInterface::StartRecording(VideoRecordingFrameLayout frameLayout, 
 
     if (activeVideoEncoder == nullptr)
     {
-        return;
+        return false;
     }
 
-    videoIndex++;
-    audioRecordingStartTime = -1.0;
-
-    std::wstring videoPath = DirectoryHelper::FindUniqueFileName(outputPath, L"Video", L".mp4", videoIndex);
-	if (videoPath.size() <= lpFilePathLength)
+	std::wstring desiredFileName(lpcDesiredFileName);
+	std::wstring extension(L".mp4");
+	if (!DirectoryHelper::TestFileExtension(desiredFileName, extension))
 	{
-		memcpy(lpFilePath, videoPath.data(), lpFilePathLength);
+		return false;
 	}
 
+	std::wstring videoPath = DirectoryHelper::FindUniqueFileName(desiredFileName, extension);
+	audioRecordingStartTime = -1.0;
     activeVideoEncoder->StartRecording(videoPath.c_str(), ENCODE_AUDIO);
+
+	memcpy_s(lpFileName, inputFileNameLength * _WCHAR_T_SIZE, videoPath.c_str(), videoPath.size() * _WCHAR_T_SIZE);
+	*fileNameLength = videoPath.size();
+	return true;
 }
 
 void CompositorInterface::StopRecording()
