@@ -27,8 +27,8 @@ private:
     VideoEncoder* videoEncoder4K = nullptr;
     VideoEncoder* activeVideoEncoder = nullptr;
 
-    int videoIndex = -1;
-    double audioRecordingStartTime;
+	LONGLONG videoRecordingStartTime = INVALID_TIMESTAMP;
+	LONGLONG audioRecordingStartTime = INVALID_TIMESTAMP;
     int photoIndex = -1;
 
     std::wstring outputPath, channelPath;
@@ -59,10 +59,14 @@ public:
     DLLEXPORT void TakePicture(ID3D11Device* device, int width, int height, int bpp, BYTE* bytes);
 
     DLLEXPORT bool InitializeVideoEncoder(ID3D11Device* device);
-    DLLEXPORT void StartRecording(VideoRecordingFrameLayout frameLayout, LPWSTR lpFilePath, int lpFilePathLength);
+    DLLEXPORT bool StartRecording(VideoRecordingFrameLayout frameLayout, LPCWSTR lpcDesiredFileName, const int desiredFileNameLength, const int inputFileNameLength, LPWSTR lpFileName, int* fileNameLength);
     DLLEXPORT void StopRecording();
-    DLLEXPORT void RecordFrameAsync(BYTE* videoFrame, LONGLONG frameTime, int numFrames);
-    DLLEXPORT void RecordAudioFrameAsync(BYTE* audioFrame, int audioSize, double audioTime);
+    
+	// frameTime is in hundred nano seconds
+	DLLEXPORT void RecordFrameAsync(BYTE* videoFrame, LONGLONG frameTime, int numFrames);
+
+	// audioTime is in hundrend nano seconds
+    DLLEXPORT void RecordAudioFrameAsync(BYTE* audioFrame, LONGLONG audioTime, int audioSize);
 
     DLLEXPORT void SetAlpha(float newAlpha)
     {

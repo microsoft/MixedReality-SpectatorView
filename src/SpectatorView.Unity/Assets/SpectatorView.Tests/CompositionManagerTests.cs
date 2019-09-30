@@ -10,11 +10,11 @@ namespace Microsoft.MixedReality.SpectatorView.Tests
     public class CompositionManagerTests : CompositorTestsBase
     {
         const double recordTimeInSeconds = 5.0;
-        const double videoLengthVariability = 2.0;
         const int compositeVideoWidth = 1920;
         const int compositeVideoHeight = 1080;
         const int quadVideoWidth = compositeVideoWidth * 2;
         const int quadVideoHeight = compositeVideoHeight * 2;
+        const double recordTimeAcceptableErrorInSeconds = 1.3;
         const int numVideos = 3;
 
         [UnityTest]
@@ -40,7 +40,9 @@ namespace Microsoft.MixedReality.SpectatorView.Tests
 
             float startTime = Time.time;
 
-            string videoFilePath = CompositionManager.StartRecording();
+            bool startedRecording = CompositionManager.TryStartRecording(out var videoFilePath);
+            Assert.IsTrue(startedRecording, "Starting recording succeeded.");
+
             Debug.Log($"Recording file: {videoFilePath}");
             filesToDelete.Add(videoFilePath);
             while (Time.time - startTime < recordTimeInSeconds)
@@ -50,7 +52,7 @@ namespace Microsoft.MixedReality.SpectatorView.Tests
             CompositionManager.StopRecording();
             yield return null;
 
-            yield return AssertVideoFileParams(videoFilePath, recordTimeInSeconds, compositeVideoWidth, compositeVideoHeight);
+            yield return AssertVideoFileParams(videoFilePath, compositeVideoWidth, compositeVideoHeight, recordTimeInSeconds);
         }
 
         [UnityTest]
@@ -63,7 +65,9 @@ namespace Microsoft.MixedReality.SpectatorView.Tests
                 float startTime = Time.time;
 
                 Debug.Log($"Recording Composite Video: {n}");
-                string videoFilePath = CompositionManager.StartRecording();
+                bool startedRecording = CompositionManager.TryStartRecording(out var videoFilePath);
+                Assert.IsTrue(startedRecording, "Starting recording succeeded.");
+
                 Debug.Log($"Recording file: {videoFilePath}");
                 filesToDelete.Add(videoFilePath);
                 while (Time.time - startTime < recordTimeInSeconds)
@@ -73,7 +77,7 @@ namespace Microsoft.MixedReality.SpectatorView.Tests
                 CompositionManager.StopRecording();
                 yield return null;
 
-                yield return AssertVideoFileParams(videoFilePath, recordTimeInSeconds, compositeVideoWidth, compositeVideoHeight);
+                yield return AssertVideoFileParams(videoFilePath, compositeVideoWidth, compositeVideoHeight, recordTimeInSeconds);
             }
         }
 
@@ -84,7 +88,9 @@ namespace Microsoft.MixedReality.SpectatorView.Tests
 
             float startTime = Time.time;
 
-            string videoFilePath = CompositionManager.StartRecording();
+            bool startedRecording = CompositionManager.TryStartRecording(out var videoFilePath);
+            Assert.IsTrue(startedRecording, "Starting recording succeeded.");
+
             Debug.Log($"Recording file: {videoFilePath}");
             filesToDelete.Add(videoFilePath);
             while (Time.time - startTime < recordTimeInSeconds)
@@ -94,7 +100,7 @@ namespace Microsoft.MixedReality.SpectatorView.Tests
             CompositionManager.StopRecording();
             yield return null;
 
-            yield return AssertVideoFileParams(videoFilePath, recordTimeInSeconds, quadVideoWidth, quadVideoHeight);
+            yield return AssertVideoFileParams(videoFilePath, quadVideoWidth, quadVideoHeight, recordTimeInSeconds);
         }
 
         [UnityTest]
@@ -107,7 +113,9 @@ namespace Microsoft.MixedReality.SpectatorView.Tests
                 float startTime = Time.time;
 
                 Debug.Log($"Recording Quad Video: {n}");
-                string videoFilePath = CompositionManager.StartRecording();
+                bool startedRecording = CompositionManager.TryStartRecording(out var videoFilePath);
+                Assert.IsTrue(startedRecording, "Starting recording succeeded.");
+
                 Debug.Log($"Recording file: {videoFilePath}");
                 filesToDelete.Add(videoFilePath);
                 while (Time.time - startTime < recordTimeInSeconds)
@@ -117,12 +125,12 @@ namespace Microsoft.MixedReality.SpectatorView.Tests
                 CompositionManager.StopRecording();
                 yield return null;
 
-                yield return AssertVideoFileParams(videoFilePath, recordTimeInSeconds, quadVideoWidth, quadVideoHeight);
+                yield return AssertVideoFileParams(videoFilePath, quadVideoWidth, quadVideoHeight, recordTimeInSeconds);
             }
 
         }
 
-        private IEnumerator AssertVideoFileParams(string filePath, double videoLengthInSeconds, int width, int height)
+        private IEnumerator AssertVideoFileParams(string filePath, int width, int height, double expectedDuration)
         {
             VideoPlayer player = CompositionManager.gameObject.AddComponent<VideoPlayer>();
             Assert.NotNull(player, "Player is not null.");
@@ -144,10 +152,12 @@ namespace Microsoft.MixedReality.SpectatorView.Tests
             }
 
             Debug.Log($"Asserting Video File Params, File:{player.url}, Length:{player.length}, Width:{player.width}, Height:{player.height}");
+            double minTime = expectedDuration - recordTimeAcceptableErrorInSeconds;
+            double maxTime = expectedDuration + recordTimeAcceptableErrorInSeconds;
             Assert.IsTrue(
-                (player.length > videoLengthInSeconds - videoLengthVariability) &&
-                (player.length < videoLengthInSeconds + videoLengthVariability),
-                $"Video length was within expected range: ({videoLengthInSeconds - videoLengthVariability},{videoLengthInSeconds + videoLengthVariability}), actual:{player.length}");
+                (player.length > minTime) &&
+                (player.length < maxTime),
+                $"Video length expected value:({minTime},{maxTime}), actual:{player.length}");
             Assert.IsTrue(
                 (player.width == width) &&
                 (player.height == height),

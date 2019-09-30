@@ -159,8 +159,9 @@ bool CompositorInterface::InitializeVideoEncoder(ID3D11Device* device)
     return videoEncoder1080p->Initialize(device) && videoEncoder4K->Initialize(device);
 }
 
-void CompositorInterface::StartRecording(VideoRecordingFrameLayout frameLayout, LPWSTR lpFilePath, int lpFilePathLength)
+bool CompositorInterface::StartRecording(VideoRecordingFrameLayout frameLayout, LPCWSTR lpcDesiredFileName, const int desiredFileNameLength, const int inputFileNameLength, LPWSTR lpFileName, int* fileNameLength)
 {
+	*fileNameLength = 0;
     if (frameLayout == VideoRecordingFrameLayout::Composite)
     {
         activeVideoEncoder = videoEncoder1080p;
@@ -172,19 +173,25 @@ void CompositorInterface::StartRecording(VideoRecordingFrameLayout frameLayout, 
 
     if (activeVideoEncoder == nullptr)
     {
-        return;
+        return false;
     }
 
-    videoIndex++;
-    audioRecordingStartTime = -1.0;
+	videoRecordingStartTime = INVALID_TIMESTAMP;
+	audioRecordingStartTime = INVALID_TIMESTAMP;
 
-    std::wstring videoPath = DirectoryHelper::FindUniqueFileName(outputPath, L"Video", L".mp4", videoIndex);
-	if (videoPath.size() <= lpFilePathLength)
+	std::wstring desiredFileName(lpcDesiredFileName);
+	std::wstring extension(L".mp4");
+	if (!DirectoryHelper::TestFileExtension(desiredFileName, extension))
 	{
-		memcpy(lpFilePath, videoPath.data(), lpFilePathLength);
+		return false;
 	}
 
+	std::wstring videoPath = DirectoryHelper::FindUniqueFileName(desiredFileName, extension);
     activeVideoEncoder->StartRecording(videoPath.c_str(), ENCODE_AUDIO);
+
+	memcpy_s(lpFileName, inputFileNameLength * _WCHAR_T_SIZE, videoPath.c_str(), videoPath.size() * _WCHAR_T_SIZE);
+	*fileNameLength = videoPath.size();
+	return true;
 }
 
 void CompositorInterface::StopRecording()
@@ -214,27 +221,50 @@ void CompositorInterface::RecordFrameAsync(BYTE* videoFrame, LONGLONG frameTime,
     else if (numFrames > 5) 
         numFrames = 5;
 
-    activeVideoEncoder->QueueVideoFrame(videoFrame, frameTime, numFrames * frameProvider->GetDurationHNS());
+	if (videoRecordingStartTime == INVALID_TIMESTAMP)
+	{
+		videoRecordingStartTime = frameTime;
+#if _DEBUG
+		std::wstring debugString = L"Setting video recording start time: videoRecordingStartTime:" + std::to_wstring(videoRecordingStartTime) + L"\n";
+		OutputDebugString(debugString.data());
+#endif
+	}
+
+	LONGLONG sampleTime = frameTime - videoRecordingStartTime;
+
+    activeVideoEncoder->QueueVideoFrame(videoFrame, sampleTime, numFrames * frameProvider->GetDurationHNS());
 }
 
-void CompositorInterface::RecordAudioFrameAsync(BYTE* audioFrame, int audioSize, double audioTime)
+void CompositorInterface::RecordAudioFrameAsync(BYTE* audioFrame, LONGLONG audioTime, int audioSize)
 {
 #if _DEBUG
 	std::wstring debugString = L"RecordAudioFrameAsync called, audioTime:" + std::to_wstring(audioTime) + L", audioSize:" + std::to_wstring(audioSize) + L"\n";
 	OutputDebugString(debugString.data());
 #endif
 
-    if (activeVideoEncoder == nullptr)
+    if (activeVideoEncoder == nullptr ||
+		videoRecordingStartTime == INVALID_TIMESTAMP)
     {
+#if _DEBUG
+		std::wstring debugString = L"RecordAudioFrameAsync dropped, audioTime:" + std::to_wstring(audioTime) + L", videoRecordingStartTime:" + std::to_wstring(videoRecordingStartTime) + L"\n";
+		OutputDebugString(debugString.data());
+#endif
         return;
     }
 
-    if (audioRecordingStartTime < 0)
-        audioRecordingStartTime = audioTime;
+	if (audioRecordingStartTime == INVALID_TIMESTAMP)
+	{
+		LONGLONG audioVideoOffsetTime = videoRecordingStartTime - audioTime;
+		audioRecordingStartTime = audioTime;
+#if _DEBUG
+		std::wstring debugString = L"Audio and Video Frame Offset:" + std::to_wstring(audioVideoOffsetTime) + L", audioRecordingStartTime:" + std::to_wstring(audioRecordingStartTime) + L", videoRecordingStartTime:" + std::to_wstring(videoRecordingStartTime) + L"\n";
+		OutputDebugString(debugString.data());
+#endif
+	}
 
-    LONGLONG frameTime = (LONGLONG)((audioTime - audioRecordingStartTime) * QPC_MULTIPLIER);
+	LONGLONG sampleTime = audioTime - audioRecordingStartTime;
 
-    activeVideoEncoder->QueueAudioFrame(audioFrame, audioSize, frameTime);
+    activeVideoEncoder->QueueAudioFrame(audioFrame, audioSize, sampleTime);
 }
 
 bool CompositorInterface::OutputYUV()
