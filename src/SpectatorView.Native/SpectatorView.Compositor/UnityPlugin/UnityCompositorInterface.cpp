@@ -388,7 +388,8 @@ UNITYDLL void SetAudioData(BYTE* audioData, int audioSize, double audioTime)
 #if ENCODE_AUDIO
     if (ci != nullptr)
     {
-        ci->RecordAudioFrameAsync(audioData, audioSize, audioTime);
+		LONGLONG audioTimeHNS = audioTime * QPC_MULTIPLIER;
+        ci->RecordAudioFrameAsync(audioData, audioTimeHNS, audioSize);
     }
 #endif    
 }
