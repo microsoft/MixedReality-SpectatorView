@@ -14,6 +14,7 @@ namespace Microsoft.MixedReality.SpectatorView.Tests
         const int compositeVideoHeight = 1080;
         const int quadVideoWidth = compositeVideoWidth * 2;
         const int quadVideoHeight = compositeVideoHeight * 2;
+        const double recordTimeAcceptableErrorInSeconds = 1.3;
         const int numVideos = 3;
 
         [UnityTest]
@@ -51,7 +52,7 @@ namespace Microsoft.MixedReality.SpectatorView.Tests
             CompositionManager.StopRecording();
             yield return null;
 
-            yield return AssertVideoFileParams(videoFilePath, compositeVideoWidth, compositeVideoHeight);
+            yield return AssertVideoFileParams(videoFilePath, compositeVideoWidth, compositeVideoHeight, recordTimeInSeconds);
         }
 
         [UnityTest]
@@ -76,7 +77,7 @@ namespace Microsoft.MixedReality.SpectatorView.Tests
                 CompositionManager.StopRecording();
                 yield return null;
 
-                yield return AssertVideoFileParams(videoFilePath, compositeVideoWidth, compositeVideoHeight);
+                yield return AssertVideoFileParams(videoFilePath, compositeVideoWidth, compositeVideoHeight, recordTimeInSeconds);
             }
         }
 
@@ -99,7 +100,7 @@ namespace Microsoft.MixedReality.SpectatorView.Tests
             CompositionManager.StopRecording();
             yield return null;
 
-            yield return AssertVideoFileParams(videoFilePath, quadVideoWidth, quadVideoHeight);
+            yield return AssertVideoFileParams(videoFilePath, quadVideoWidth, quadVideoHeight, recordTimeInSeconds);
         }
 
         [UnityTest]
@@ -124,12 +125,12 @@ namespace Microsoft.MixedReality.SpectatorView.Tests
                 CompositionManager.StopRecording();
                 yield return null;
 
-                yield return AssertVideoFileParams(videoFilePath, quadVideoWidth, quadVideoHeight);
+                yield return AssertVideoFileParams(videoFilePath, quadVideoWidth, quadVideoHeight, recordTimeInSeconds);
             }
 
         }
 
-        private IEnumerator AssertVideoFileParams(string filePath, int width, int height)
+        private IEnumerator AssertVideoFileParams(string filePath, int width, int height, double expectedDuration)
         {
             VideoPlayer player = CompositionManager.gameObject.AddComponent<VideoPlayer>();
             Assert.NotNull(player, "Player is not null.");
@@ -151,6 +152,12 @@ namespace Microsoft.MixedReality.SpectatorView.Tests
             }
 
             Debug.Log($"Asserting Video File Params, File:{player.url}, Length:{player.length}, Width:{player.width}, Height:{player.height}");
+            double minTime = expectedDuration - recordTimeAcceptableErrorInSeconds;
+            double maxTime = expectedDuration + recordTimeAcceptableErrorInSeconds;
+            Assert.IsTrue(
+                (player.length > minTime) &&
+                (player.length < maxTime),
+                $"Video length expected value:({minTime},{maxTime}), actual:{player.length}");
             Assert.IsTrue(
                 (player.width == width) &&
                 (player.height == height),

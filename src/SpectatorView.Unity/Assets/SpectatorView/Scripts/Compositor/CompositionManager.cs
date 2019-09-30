@@ -579,7 +579,7 @@ namespace Microsoft.MixedReality.SpectatorView
             {
                 audioMemoryStream = new MemoryStream();
                 audioStreamWriter = new BinaryWriter(audioMemoryStream);
-                audioStartTime = AudioSettings.dspTime;
+                audioStartTime = AudioSettings.dspTime; // Audio time in seconds, more accurate than Time.time
                 numCachedAudioFrames = 0;
             }
 

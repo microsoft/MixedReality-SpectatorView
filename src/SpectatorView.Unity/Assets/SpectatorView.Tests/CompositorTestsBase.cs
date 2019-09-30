@@ -24,14 +24,12 @@ namespace Microsoft.MixedReality.SpectatorView.Tests
         private CompositionManager compositionManager;
         private string originalSceneName;
         protected List<string> filesToDelete = new List<string>();
-        protected GameObject helperGameObject;
 
         [SetUp]
         public void SetUp()
         {
             originalSceneName = SceneManager.GetActiveScene().name;
             SceneManager.LoadScene("SpectatorViewCompositor");
-            helperGameObject = new GameObject("HelperGameObject");
         }
 
         [TearDown]
