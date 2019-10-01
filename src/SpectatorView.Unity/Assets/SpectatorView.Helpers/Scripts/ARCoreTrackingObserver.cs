@@ -8,10 +8,10 @@ namespace Microsoft.MixedReality.SpectatorView
     /// <summary>
     /// MonoBehaviour that reports tracking information for an ARCore device.
     /// </summary>
-    public class ARCoreTrackingObserver : MonoBehaviour, ITrackingObserver
+    public class ARCoreTrackingObserver : TrackingObserver
     {
         /// <inheritdoc/>
-        public TrackingState TrackingState
+        public override TrackingState TrackingState
         {
             get
             {

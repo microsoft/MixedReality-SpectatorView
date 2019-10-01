@@ -8,10 +8,10 @@ namespace Microsoft.MixedReality.SpectatorView
     /// <summary>
     /// MonoBehaviour that reports tracking information for a HoloLens device.
     /// </summary>
-    public class HoloLensTrackingObserver : MonoBehaviour, ITrackingObserver
+    public class HoloLensTrackingObserver : TrackingObserver
     {
         /// <inheritdoc/>
-        public TrackingState TrackingState
+        public override TrackingState TrackingState
         {
             get
             {

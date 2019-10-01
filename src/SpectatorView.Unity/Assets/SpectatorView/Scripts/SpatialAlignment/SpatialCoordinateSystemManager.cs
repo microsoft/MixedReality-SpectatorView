@@ -64,29 +64,17 @@ namespace Microsoft.MixedReality.SpectatorView
                     List<GameObject> roots = new List<GameObject>();
                     SceneManager.GetActiveScene().GetRootGameObjects(roots);
 
-                    var observers = new List<ITrackingObserver>();
-                    foreach (var root in roots)
-                    {
-                        var tempObservers = root.GetComponentsInChildren<ITrackingObserver>();
-                        if (tempObservers != null)
-                        {
-                            foreach (var observer in tempObservers)
-                            {
-                                observers.Add(observer);
-                            }
-                        }
-                    }
-
-                    if (observers.Count == 0)
+                    var observers = FindObjectsOfType<TrackingObserver>();
+                    if (observers.Length == 0)
                     {
                         Debug.LogWarning("No ITrackingObservers found in the scene.");
                     }
-                    else if (observers.Count > 1)
+                    else if (observers.Length > 1)
                     {
                         Debug.LogWarning("Multiple ITrackingObservers found in the scene.");
                     }
 
-                    trackingObserver = (observers != null) && (observers.Count) > 0 ? observers[0] : null;
+                    trackingObserver = (observers != null) && (observers.Length) > 0 ? observers[0] : null;
                     lookedForTrackingObservers = true;
                 }
 
