@@ -6,7 +6,6 @@
 
 #include "codecapi.h"
 
-
 VideoEncoder::VideoEncoder(UINT frameWidth, UINT frameHeight, UINT frameStride, UINT fps,
     UINT32 audioSampleRate, UINT32 audioChannels, UINT32 audioBPS, UINT32 videoBitrate, UINT32 videoMpegLevel) :
     frameWidth(frameWidth),
@@ -69,10 +68,9 @@ void VideoEncoder::StartRecording(LPCWSTR videoPath, bool encodeAudio)
     }
 
     // Reset previous times to get valid data for this recording.
+	startTime = INVALID_TIMESTAMP;
     prevVideoTime = INVALID_TIMESTAMP;
     prevAudioTime = INVALID_TIMESTAMP;
-
-    startTime = INVALID_TIMESTAMP;
 
     HRESULT hr = E_PENDING;
 
@@ -186,12 +184,28 @@ void VideoEncoder::WriteAudio(byte* buffer, int bufferSize, LONGLONG timestamp)
 #endif
 
 #if ENCODE_AUDIO
-    if (!isRecording || startTime == INVALID_TIMESTAMP || timestamp < startTime)
+    if (!isRecording)
     {
 		std::wstring debugString = L"WriteAudio call failed: StartTime:" + std::to_wstring(startTime) + L", Timestamp:" + std::to_wstring(timestamp) + L"\n";
 		OutputDebugString(debugString.data());
         return;
     }
+	else if (startTime == INVALID_TIMESTAMP)
+	{
+		startTime = timestamp;
+#if _DEBUG 
+		std::wstring debugString = L"Start time set from audio, Timestamp:" + std::to_wstring(timestamp) + L", StartTime:" + std::to_wstring(startTime) + L"\n";
+		OutputDebugString(debugString.data());
+#endif
+	}
+	else if (timestamp < startTime)
+	{
+#if _DEBUG 
+		std::wstring debugString = L"Audio not recorded, Timestamp less than start time. Timestamp:" + std::to_wstring(timestamp) + L", StartTime:" + std::to_wstring(startTime) + L"\n";
+		OutputDebugString(debugString.data());
+#endif
+		return;
+	}
 
     LONGLONG sampleTimeNow = timestamp;
     LONGLONG sampleTimeStart = startTime;
@@ -290,7 +304,7 @@ void VideoEncoder::WriteVideo(byte* buffer, LONGLONG timestamp, LONGLONG duratio
 	{
 		startTime = timestamp;
 #if _DEBUG 
-		std::wstring debugString = L"Start time set, Timestamp:" + std::to_wstring(timestamp) + L", StartTime:" + std::to_wstring(startTime) + L"\n";
+		std::wstring debugString = L"Start time set from video, Timestamp:" + std::to_wstring(timestamp) + L", StartTime:" + std::to_wstring(startTime) + L"\n";
 		OutputDebugString(debugString.data());
 #endif
 	}
@@ -481,11 +495,13 @@ void VideoEncoder::StopRecording()
     {
 		OutputDebugString(L"Flushing video stream\n");
         sinkWriter->Flush(videoStreamIndex);
+		videoStreamIndex = MAXDWORD;
     }
     if (audioStreamIndex != MAXDWORD)
     {
 		OutputDebugString(L"Flushing audio stream\n");
         sinkWriter->Flush(audioStreamIndex);
+		audioStreamIndex = MAXDWORD;
     }
 
     sinkWriter->Finalize();

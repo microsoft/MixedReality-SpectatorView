@@ -124,8 +124,6 @@ int CompositorInterface::GetNumQueuedOutputFrames()
     return 0;
 }
 
-
-
 void CompositorInterface::SetCompositeFrameIndex(int index)
 {
     compositeFrameIndex = index;
@@ -162,22 +160,6 @@ bool CompositorInterface::InitializeVideoEncoder(ID3D11Device* device)
 bool CompositorInterface::StartRecording(VideoRecordingFrameLayout frameLayout, LPCWSTR lpcDesiredFileName, const int desiredFileNameLength, const int inputFileNameLength, LPWSTR lpFileName, int* fileNameLength)
 {
 	*fileNameLength = 0;
-    if (frameLayout == VideoRecordingFrameLayout::Composite)
-    {
-        activeVideoEncoder = videoEncoder1080p;
-    }
-    else
-    {
-        activeVideoEncoder = videoEncoder4K;
-    }
-
-    if (activeVideoEncoder == nullptr)
-    {
-        return false;
-    }
-
-	videoRecordingStartTime = INVALID_TIMESTAMP;
-	audioRecordingStartTime = INVALID_TIMESTAMP;
 
 	std::wstring desiredFileName(lpcDesiredFileName);
 	std::wstring extension(L".mp4");
@@ -187,7 +169,26 @@ bool CompositorInterface::StartRecording(VideoRecordingFrameLayout frameLayout, 
 	}
 
 	std::wstring videoPath = DirectoryHelper::FindUniqueFileName(desiredFileName, extension);
-    activeVideoEncoder->StartRecording(videoPath.c_str(), ENCODE_AUDIO);
+
+	std::shared_lock<std::shared_mutex> lock(encoderLock);
+	videoRecordingStartTime = INVALID_TIMESTAMP;
+	audioRecordingStartTime = INVALID_TIMESTAMP;
+
+	if (frameLayout == VideoRecordingFrameLayout::Composite)
+	{
+		activeVideoEncoder = videoEncoder1080p;
+	}
+	else
+	{
+		activeVideoEncoder = videoEncoder4K;
+	}
+
+	if (activeVideoEncoder == nullptr)
+	{
+		return false;
+	}
+
+	activeVideoEncoder->StartRecording(videoPath.c_str(), ENCODE_AUDIO);
 
 	memcpy_s(lpFileName, inputFileNameLength * _WCHAR_T_SIZE, videoPath.c_str(), videoPath.size() * _WCHAR_T_SIZE);
 	*fileNameLength = videoPath.size();
@@ -196,6 +197,7 @@ bool CompositorInterface::StartRecording(VideoRecordingFrameLayout frameLayout, 
 
 void CompositorInterface::StopRecording()
 {
+	std::shared_lock<std::shared_mutex> lock(encoderLock);
     if (activeVideoEncoder == nullptr)
     {
         return;
@@ -212,6 +214,7 @@ void CompositorInterface::RecordFrameAsync(BYTE* videoFrame, LONGLONG frameTime,
 	OutputDebugString(debugString.data());
 #endif
 
+	std::shared_lock<std::shared_mutex> lock(encoderLock);
     if (frameProvider == nullptr || activeVideoEncoder == nullptr)
     {
         return;

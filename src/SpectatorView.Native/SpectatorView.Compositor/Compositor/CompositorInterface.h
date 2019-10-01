@@ -36,6 +36,7 @@ private:
     ID3D11Device* _device;
 
     LONGLONG stubVideoTime = 0;
+	std::shared_mutex encoderLock;
 
 public:
     DLLEXPORT CompositorInterface();
