@@ -27,8 +27,6 @@ private:
     VideoEncoder* videoEncoder4K = nullptr;
     VideoEncoder* activeVideoEncoder = nullptr;
 
-	LONGLONG videoRecordingStartTime = INVALID_TIMESTAMP;
-	LONGLONG audioRecordingStartTime = INVALID_TIMESTAMP;
     int photoIndex = -1;
 
     std::wstring outputPath, channelPath;
@@ -36,6 +34,8 @@ private:
     ID3D11Device* _device;
 
     LONGLONG stubVideoTime = 0;
+
+	// Audio write calls may occur off the main thread so we need to lock around encoder access.
 	std::shared_mutex encoderLock;
 
 public:

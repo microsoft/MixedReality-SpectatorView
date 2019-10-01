@@ -171,9 +171,6 @@ bool CompositorInterface::StartRecording(VideoRecordingFrameLayout frameLayout, 
 	std::wstring videoPath = DirectoryHelper::FindUniqueFileName(desiredFileName, extension);
 
 	std::shared_lock<std::shared_mutex> lock(encoderLock);
-	videoRecordingStartTime = INVALID_TIMESTAMP;
-	audioRecordingStartTime = INVALID_TIMESTAMP;
-
 	if (frameLayout == VideoRecordingFrameLayout::Composite)
 	{
 		activeVideoEncoder = videoEncoder1080p;
@@ -217,6 +214,7 @@ void CompositorInterface::RecordFrameAsync(BYTE* videoFrame, LONGLONG frameTime,
 	std::shared_lock<std::shared_mutex> lock(encoderLock);
     if (frameProvider == nullptr || activeVideoEncoder == nullptr)
     {
+		OutputDebugString(L"RecordFrameAsync dropped, no active frame provider or encoder\n");
         return;
     }
     if (numFrames < 1) 
@@ -224,17 +222,10 @@ void CompositorInterface::RecordFrameAsync(BYTE* videoFrame, LONGLONG frameTime,
     else if (numFrames > 5) 
         numFrames = 5;
 
-	if (videoRecordingStartTime == INVALID_TIMESTAMP)
-	{
-		videoRecordingStartTime = frameTime;
-#if _DEBUG
-		std::wstring debugString = L"Setting video recording start time: videoRecordingStartTime:" + std::to_wstring(videoRecordingStartTime) + L"\n";
-		OutputDebugString(debugString.data());
-#endif
-	}
-
-	LONGLONG sampleTime = frameTime - videoRecordingStartTime;
-
+	// The encoder will update sample times internally based on the first seen sample time when recording.
+	// The encoder, however, does assume that audio and video samples will be based on the same source time.
+	// Providing audio and video samples with different starting times will cause issues in the generated video file.
+	LONGLONG sampleTime = frameTime;
     activeVideoEncoder->QueueVideoFrame(videoFrame, sampleTime, numFrames * frameProvider->GetDurationHNS());
 }
 
@@ -246,28 +237,18 @@ void CompositorInterface::RecordAudioFrameAsync(BYTE* audioFrame, LONGLONG audio
 #endif
 
 	std::shared_lock<std::shared_mutex> lock(encoderLock);
-    if (activeVideoEncoder == nullptr ||
-		videoRecordingStartTime == INVALID_TIMESTAMP)
+    if (activeVideoEncoder == nullptr)
     {
 #if _DEBUG
-		std::wstring debugString = L"RecordAudioFrameAsync dropped, audioTime:" + std::to_wstring(audioTime) + L", videoRecordingStartTime:" + std::to_wstring(videoRecordingStartTime) + L"\n";
-		OutputDebugString(debugString.data());
+		OutputDebugString(L"RecordAudioFrameAsync dropped, no active encoder\n");
 #endif
         return;
     }
 
-	if (audioRecordingStartTime == INVALID_TIMESTAMP)
-	{
-		LONGLONG audioVideoOffsetTime = videoRecordingStartTime - audioTime;
-		audioRecordingStartTime = audioTime;
-#if _DEBUG
-		std::wstring debugString = L"Audio and Video Frame Offset:" + std::to_wstring(audioVideoOffsetTime) + L", audioRecordingStartTime:" + std::to_wstring(audioRecordingStartTime) + L", videoRecordingStartTime:" + std::to_wstring(videoRecordingStartTime) + L"\n";
-		OutputDebugString(debugString.data());
-#endif
-	}
-
-	LONGLONG sampleTime = audioTime - audioRecordingStartTime;
-
+	// The encoder will update sample times internally based on the first seen sample time when recording.
+	// The encoder, however, does assume that audio and video samples will be based on the same source time.
+	// Providing audio and video samples with different starting times will cause issues in the generated video file.
+	LONGLONG sampleTime = audioTime;
     activeVideoEncoder->QueueAudioFrame(audioFrame, audioSize, sampleTime);
 }
 
