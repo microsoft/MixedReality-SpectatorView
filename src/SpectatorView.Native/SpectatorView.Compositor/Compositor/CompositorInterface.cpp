@@ -245,6 +245,7 @@ void CompositorInterface::RecordAudioFrameAsync(BYTE* audioFrame, LONGLONG audio
 	OutputDebugString(debugString.data());
 #endif
 
+	std::shared_lock<std::shared_mutex> lock(encoderLock);
     if (activeVideoEncoder == nullptr ||
 		videoRecordingStartTime == INVALID_TIMESTAMP)
     {
