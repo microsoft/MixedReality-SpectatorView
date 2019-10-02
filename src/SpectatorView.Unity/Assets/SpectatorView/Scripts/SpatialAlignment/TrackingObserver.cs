@@ -11,5 +11,21 @@ namespace Microsoft.MixedReality.SpectatorView
     {
         /// <inheritdoc/>
         public virtual TrackingState TrackingState => throw new NotImplementedException();
+
+        public void Start()
+        {
+            if (SpatialCoordinateSystemManager.IsInitialized)
+            {
+                SpatialCoordinateSystemManager.Instance.RegisterTrackingObserver(this);
+            }
+        }
+
+        public void OnDestroy()
+        {
+            if (SpatialCoordinateSystemManager.IsInitialized)
+            {
+                SpatialCoordinateSystemManager.Instance.UnregisterTrackingObserver(this);
+            }
+        }
     }
 }
