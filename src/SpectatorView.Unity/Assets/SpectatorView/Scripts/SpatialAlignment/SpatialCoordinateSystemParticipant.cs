@@ -149,7 +149,7 @@ namespace Microsoft.MixedReality.SpectatorView
             {
                 message.Write(SpatialCoordinateSystemManager.CoordinateStateMessageHeader);
                 var trackingState = SpatialCoordinateSystemManager.Instance.TrackingState;
-                message.Write((int)trackingState);
+                message.Write((byte)trackingState);
                 message.Write(Coordinate != null && (Coordinate.State == LocatedState.Tracking || Coordinate.State == LocatedState.Resolved));
                 message.Write(IsLocatingSpatialCoordinate);
 
@@ -192,7 +192,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
         internal void ReadCoordinateStateMessage(BinaryReader reader)
         {
-            PeerDeviceTrackingState = (TrackingState) reader.ReadInt32();
+            PeerDeviceTrackingState = (TrackingState) reader.ReadByte();
             PeerSpatialCoordinateIsLocated = reader.ReadBoolean();
             PeerIsLocatingSpatialCoordinate = reader.ReadBoolean();
             PeerSpatialCoordinateWorldPosition = reader.ReadVector3();

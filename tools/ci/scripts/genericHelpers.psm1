@@ -35,7 +35,7 @@ function AddSubmodule
   if (!(Test-Path "$PSScriptRoot\..\..\..\external\$DirectoryName"))
   {
     Set-Location $PSScriptRoot
-    git submodule add $Repo "../../../external/$DirectoryName"
+    git submodule add --force $Repo "../../../external/$DirectoryName"
     git submodule update --init --recursive
     Set-Location $origLoc
   }

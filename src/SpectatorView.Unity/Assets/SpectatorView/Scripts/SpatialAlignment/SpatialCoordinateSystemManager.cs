@@ -51,6 +51,7 @@ namespace Microsoft.MixedReality.SpectatorView
         private Dictionary<SocketEndpoint, SpatialCoordinateSystemParticipant> participants = new Dictionary<SocketEndpoint, SpatialCoordinateSystemParticipant>();
         private HashSet<INetworkManager> networkManagers = new HashSet<INetworkManager>();
         private ISpatialLocalizationSession currentLocalizationSession = null;
+        private ITrackingObserver trackingObserver = null;
 
         /// <summary>
         /// Current Tracking state for the AR/VR Device associated with the application.
@@ -59,37 +60,6 @@ namespace Microsoft.MixedReality.SpectatorView
         {
             get
             {
-                if (!lookedForTrackingObservers)
-                {
-                    List<GameObject> roots = new List<GameObject>();
-                    SceneManager.GetActiveScene().GetRootGameObjects(roots);
-
-                    var observers = new List<ITrackingObserver>();
-                    foreach (var root in roots)
-                    {
-                        var tempObservers = root.GetComponentsInChildren<ITrackingObserver>();
-                        if (tempObservers != null)
-                        {
-                            foreach (var observer in tempObservers)
-                            {
-                                observers.Add(observer);
-                            }
-                        }
-                    }
-
-                    if (observers.Count == 0)
-                    {
-                        Debug.LogWarning("No ITrackingObservers found in the scene.");
-                    }
-                    else if (observers.Count > 1)
-                    {
-                        Debug.LogWarning("Multiple ITrackingObservers found in the scene.");
-                    }
-
-                    trackingObserver = (observers != null) && (observers.Count) > 0 ? observers[0] : null;
-                    lookedForTrackingObservers = true;
-                }
-
                 if (trackingObserver == null)
                 {
                     return TrackingState.Unknown;
@@ -98,8 +68,6 @@ namespace Microsoft.MixedReality.SpectatorView
                 return trackingObserver.TrackingState;
             }
         }
-        private ITrackingObserver trackingObserver = null;
-        private bool lookedForTrackingObservers = false;
 
         /// <summary>
         /// True if all local and peer coordinates known to the device have been found in the shared experience space.
@@ -172,6 +140,36 @@ namespace Microsoft.MixedReality.SpectatorView
             }
 
             UnregisterEvents(networkManager);
+        }
+
+        /// <summary>
+        /// Call to register an ITrackingObserver to use for determining tracking state.
+        /// </summary>
+        /// <param name="trackingObserver">Tracking observer used to determine tracking state.</param>
+        public void RegisterTrackingObserver(ITrackingObserver trackingObserver)
+        {
+            if (this.trackingObserver != null)
+            {
+                Debug.LogError("Multiple tracking observers registered for the application.");
+            }
+
+            this.trackingObserver = trackingObserver;
+        }
+
+        /// <summary>
+        /// Call to unregister an ITrackingObserver to use for determining tracking state.
+        /// </summary>
+        /// <param name="trackingObserver">Tracking observer used to determine tracking state.</param>
+        public void UnregisterTrackingObserver(ITrackingObserver trackingObserver)
+        {
+            if (this.trackingObserver != trackingObserver)
+            {
+                Debug.LogWarning("Attempted to unregister tracking observer that wasn't registered.");
+            }
+            else
+            {
+                this.trackingObserver = null;
+            }
         }
 
         public Task<bool> RunRemoteLocalizationAsync(SocketEndpoint socketEndpoint, Guid spatialLocalizerID, ISpatialLocalizationSettings settings)

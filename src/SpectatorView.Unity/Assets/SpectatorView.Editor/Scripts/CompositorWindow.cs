@@ -171,7 +171,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
                     {
                         if (GUILayout.Button("Start Recording"))
                         {
-                            compositionManager.StartRecording();
+                            compositionManager.TryStartRecording(out var fileName);
                         }
                     }
                     else

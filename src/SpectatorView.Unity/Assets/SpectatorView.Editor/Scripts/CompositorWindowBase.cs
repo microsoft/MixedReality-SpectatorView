@@ -30,7 +30,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
 
         protected const string notConnectedMessage = "Not connected";
         private const string trackingLostStatusMessage = "Tracking lost";
-        private const string unknownTrackingStatusMessage = "Unknown Tracking state";
+        private const string unknownTrackingStatusMessage = "Unknown tracking state";
         private const string trackingStalledStatusMessage = "No tracking update in over a second";
         private const string locatingSharedSpatialCoordinate = "Locating shared spatial coordinate...";
         private const string notLocatedSharedSpatialCoordinate = "Not located";
@@ -76,7 +76,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
                     deviceInfo.NetworkManager != null &&
                     deviceInfo.NetworkManager.IsConnected &&
                     spatialCoordinateSystemParticipant != null &&
-                    spatialCoordinateSystemParticipant.PeerDeviceTrackingState != TrackingState.LostTracking &&
+                    spatialCoordinateSystemParticipant.PeerDeviceTrackingState == TrackingState.Tracking &&
                     spatialCoordinateSystemParticipant.PeerSpatialCoordinateIsLocated &&
                     !spatialCoordinateSystemParticipant.PeerIsLocatingSpatialCoordinate &&
                     !deviceInfo.IsTrackingStalled &&

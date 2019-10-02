@@ -77,6 +77,25 @@ namespace Microsoft.MixedReality.SpectatorView
         [SerializeField]
         private SpatialLocalizationInitializer[] defaultSpatialLocalizationInitializers = null;
 
+        [Header("Device Tracking")]
+        [Tooltip("Prefab used to create a HoloLens device tracking observer.")]
+        [SerializeField]
+#pragma warning disable 414 // The field is assigned but its value is never used
+        private GameObject holoLensDeviceTrackingObserverPrefab = null;
+#pragma warning restore 414
+
+        [Tooltip("Prefab used to create a Android device tracking observer.")]
+        [SerializeField]
+#pragma warning disable 414 // The field is assigned but its value is never used
+        private GameObject androidDeviceTrackingObserverPrefab = null;
+#pragma warning restore 414
+
+        [Tooltip("Prefab used to create an iOS device tracking observer.")]
+        [SerializeField]
+#pragma warning disable 414 // The field is assigned but its value is never used
+        private GameObject iOSDeviceTrackingObserverPrefab = null;
+#pragma warning restore 414
+
         [Header("Recording")]
         /// <summary>
         /// Prefab for creating a mobile recording service visual.
@@ -145,6 +164,8 @@ namespace Microsoft.MixedReality.SpectatorView
             {
                 settingsGameObject = Instantiate(settings, null);
             }
+
+            CreateDeviceTrackingObserver();
 
             if (stateSynchronizationSceneManager == null ||
                 stateSynchronizationBroadcaster == null ||
@@ -470,6 +491,17 @@ namespace Microsoft.MixedReality.SpectatorView
             }
 
             return await Task.FromResult(false);
+        }
+
+        private void CreateDeviceTrackingObserver()
+        {
+#if UNITY_WSA
+            Instantiate(holoLensDeviceTrackingObserverPrefab, transform);
+#elif UNITY_ANDROID
+            Instantiate(androidDeviceTrackingObserverPrefab, transform);
+#elif UNITY_IOS
+            Instantiate(iOSDeviceTrackingObserverPrefab, transform);
+#endif
         }
     }
 }

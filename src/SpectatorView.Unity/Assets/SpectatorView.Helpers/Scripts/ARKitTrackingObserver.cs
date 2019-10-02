@@ -8,16 +8,23 @@ namespace Microsoft.MixedReality.SpectatorView
     /// <summary>
     /// MonoBehaviour that reports tracking information for an ARKit device.
     /// </summary>
-    public class ARKitTrackingObserver : MonoBehaviour, ITrackingObserver
+    public class ARKitTrackingObserver : TrackingObserver
     {
 #pragma warning disable 414
         private TrackingState trackingState = TrackingState.Unknown;
 #pragma warning restore 414
 
 #if UNITY_IOS
-        private void Start()
+        protected override void Start()
         {
+            base.Start();
             UnityEngine.XR.iOS.UnityARSessionNativeInterface.ARSessionTrackingChangedEvent += OnTrackingChangedEvent;
+        }
+
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+            UnityEngine.XR.iOS.UnityARSessionNativeInterface.ARSessionTrackingChangedEvent -= OnTrackingChangedEvent;
         }
 
         private void OnTrackingChangedEvent(UnityEngine.XR.iOS.UnityARCamera camera)
@@ -31,6 +38,7 @@ namespace Microsoft.MixedReality.SpectatorView
                     trackingState = TrackingState.LostTracking;
                     break;
                 case UnityEngine.XR.iOS.ARTrackingState.ARTrackingStateNotAvailable:
+                default:
                     trackingState = TrackingState.Unknown;
                     break;
             }
@@ -38,7 +46,7 @@ namespace Microsoft.MixedReality.SpectatorView
 #endif
 
         /// <inheritdoc/>
-        public TrackingState TrackingState
+        public override TrackingState TrackingState
         {
             get
             {

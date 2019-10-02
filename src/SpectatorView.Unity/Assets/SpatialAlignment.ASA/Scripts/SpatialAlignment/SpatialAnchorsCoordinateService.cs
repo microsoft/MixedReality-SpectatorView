@@ -30,7 +30,7 @@ namespace Microsoft.MixedReality.SpatialAlignment
         private int requestsForSessionStart = 0;
 
         private const string simulatedCoordinateIdPrefix = "SIMULATED:";
-        private readonly int simulatedMarkerDetectionDelay = 5000; // Wait 5 seconds before stating a marker was detected.
+        private readonly TimeSpan simulatedCoordinateDetectionDelay = TimeSpan.FromSeconds(5); // Wait 5 seconds before stating a marker was detected.
 
         public SpatialAnchorsCoordinateService(SpatialAnchorsConfiguration spatialAnchorsConfiguration)
         {
@@ -138,9 +138,9 @@ namespace Microsoft.MixedReality.SpatialAlignment
             }
         }
 
-        private async Task<bool> TryDeleteCoordinateEditorAsync(string id, CancellationToken cancellationToken)
+        private Task<bool> TryDeleteCoordinateEditorAsync(string id, CancellationToken cancellationToken)
         {
-            return await Task.FromResult(true);
+            return Task.FromResult(true);
         }
 
         /// <summary>
@@ -340,7 +340,7 @@ namespace Microsoft.MixedReality.SpatialAlignment
         {
             ISpatialCoordinate simulatedCoordinate = new SimulatedSpatialCoordinate<string>($"{simulatedCoordinateIdPrefix}{Guid.NewGuid().ToString()}", worldPosition, worldRotation);
             Debug.Log("Created artificial coordinate for debugging in the editor, waiting five seconds to fire creation event.");
-            await Task.Delay(simulatedMarkerDetectionDelay, cancellationToken).IgnoreCancellation();
+            await Task.Delay(simulatedCoordinateDetectionDelay, cancellationToken).IgnoreCancellation();
             return await Task.FromResult(simulatedCoordinate);
         }
 
