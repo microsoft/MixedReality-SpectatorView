@@ -16,7 +16,9 @@ namespace Microsoft.MixedReality.SpectatorView
         private readonly string _fileNameExt = ".mp4";
         private bool _initialized = false;
         private bool _recording = false;
+#pragma warning disable 414 // The field is assigned but its value is never used
         private bool _isRecordingAvailable = false;
+#pragma warning restore 414
 
         /// <inheritdoc />
         public void Dispose()
@@ -130,6 +132,10 @@ namespace Microsoft.MixedReality.SpectatorView
         /// <inheritdoc />
         public bool IsRecordingAvailable()
         {
+#if UNITY_EDITOR
+            return true;
+#else
+
             // With the AndroidRecordingService once a recording has been performed, it's always available.
             if (_isRecordingAvailable)
             {
@@ -151,11 +157,13 @@ namespace Microsoft.MixedReality.SpectatorView
             }
 
             return false;
+#endif
         }
 
         /// <inheritdoc />
         public void ShowRecording()
         {
+#if !UNITY_EDITOR
             try
             {
                 using (var screenRecorderActivity = GetScreenRecorderActivity())
@@ -167,6 +175,7 @@ namespace Microsoft.MixedReality.SpectatorView
             {
                 Debug.LogError("Failed to show recording for AndroidRecordingService: " + e.ToString());
             }
+#endif
         }
 
         /// <summary>

@@ -7,6 +7,7 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Microsoft.MixedReality.SpectatorView
 {
@@ -50,6 +51,23 @@ namespace Microsoft.MixedReality.SpectatorView
         private Dictionary<SocketEndpoint, SpatialCoordinateSystemParticipant> participants = new Dictionary<SocketEndpoint, SpatialCoordinateSystemParticipant>();
         private HashSet<INetworkManager> networkManagers = new HashSet<INetworkManager>();
         private ISpatialLocalizationSession currentLocalizationSession = null;
+        private ITrackingObserver trackingObserver = null;
+
+        /// <summary>
+        /// Current Tracking state for the AR/VR Device associated with the application.
+        /// </summary>
+        public TrackingState TrackingState
+        {
+            get
+            {
+                if (trackingObserver == null)
+                {
+                    return TrackingState.Unknown;
+                }
+
+                return trackingObserver.TrackingState;
+            }
+        }
 
         public IReadOnlyCollection<ISpatialLocalizer> Localizers
         {
@@ -99,6 +117,36 @@ namespace Microsoft.MixedReality.SpectatorView
             }
 
             UnregisterEvents(networkManager);
+        }
+
+        /// <summary>
+        /// Call to register an ITrackingObserver to use for determining tracking state.
+        /// </summary>
+        /// <param name="trackingObserver">Tracking observer used to determine tracking state.</param>
+        public void RegisterTrackingObserver(ITrackingObserver trackingObserver)
+        {
+            if (this.trackingObserver != null)
+            {
+                Debug.LogError("Multiple tracking observers registered for the application.");
+            }
+
+            this.trackingObserver = trackingObserver;
+        }
+
+        /// <summary>
+        /// Call to unregister an ITrackingObserver to use for determining tracking state.
+        /// </summary>
+        /// <param name="trackingObserver">Tracking observer used to determine tracking state.</param>
+        public void UnregisterTrackingObserver(ITrackingObserver trackingObserver)
+        {
+            if (this.trackingObserver != trackingObserver)
+            {
+                Debug.LogWarning("Attempted to unregister tracking observer that wasn't registered.");
+            }
+            else
+            {
+                this.trackingObserver = null;
+            }
         }
 
         public Task<bool> RunRemoteLocalizationAsync(SocketEndpoint socketEndpoint, Guid spatialLocalizerID, ISpatialLocalizationSettings settings)

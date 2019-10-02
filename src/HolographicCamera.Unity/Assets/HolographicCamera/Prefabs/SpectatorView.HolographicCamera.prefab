@@ -62,8 +62,9 @@ GameObject:
   - component: {fileID: 8302803404821102770}
   - component: {fileID: 8302803404821102769}
   - component: {fileID: 8302803404821102773}
+  - component: {fileID: 1651317827380616387}
   m_Layer: 0
-  m_Name: Spectator View - Holographic Camera
+  m_Name: SpectatorView.HolographicCamera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -148,6 +149,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   connectionManager: {fileID: 8302803404821102783}
+--- !u!114 &1651317827380616387
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8302803404821102781}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7cc6ba678927dd74589c283eed6da9a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &7292773196090474427
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -155,11 +168,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8302803404821102782}
     m_Modifications:
-    - target: {fileID: 2053685663436622530, guid: 7f5fdf2d931ebfc44a472a374ccc191e,
-        type: 3}
-      propertyPath: m_Name
-      value: SpectatorView.SpatialCoordinateLocalizers
-      objectReference: {fileID: 0}
     - target: {fileID: 5795882921077350206, guid: 7f5fdf2d931ebfc44a472a374ccc191e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -214,6 +222,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2053685663436622530, guid: 7f5fdf2d931ebfc44a472a374ccc191e,
+        type: 3}
+      propertyPath: m_Name
+      value: SpectatorView.SpatialCoordinateLocalizers
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7f5fdf2d931ebfc44a472a374ccc191e, type: 3}
