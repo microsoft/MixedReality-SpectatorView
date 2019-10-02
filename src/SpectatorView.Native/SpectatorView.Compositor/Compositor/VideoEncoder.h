@@ -83,8 +83,8 @@ private:
     };
 
     IMFSinkWriter* sinkWriter;
-    DWORD videoStreamIndex;
-    DWORD audioStreamIndex;
+    DWORD videoStreamIndex = MAXDWORD;
+    DWORD audioStreamIndex = MAXDWORD;
 
     bool isRecording = false;
     bool acceptQueuedFrames = false;

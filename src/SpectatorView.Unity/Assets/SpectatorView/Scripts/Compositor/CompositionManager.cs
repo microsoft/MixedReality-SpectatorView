@@ -4,6 +4,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.SpectatorView
@@ -65,6 +66,11 @@ namespace Microsoft.MixedReality.SpectatorView
         [Tooltip("Enables or disables recording microphone audio when recording videos.")]
         public bool EnableMicrophoneAudio = true;
 
+        /// <summary>
+        /// Check to enable debug logging.
+        /// </summary>
+        [SerializeField]
+        private bool debugLogging = false;
 
         private float videoTimestampToHolographicTimestampOffset = -10.0f;
         private int captureDeviceIndex = -1;
@@ -556,7 +562,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
         private void ResetCompositor()
         {
-            Debug.Log("Stopping the video composition system.");
+            DebugLog("Stopping the video composition system.");
             UnityCompositorInterface.Reset();
 
             UnityCompositorInterface.StopFrameProvider();
@@ -566,6 +572,7 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
+        // This function is not/not always called on the main thread.
         private void OnAudioFilterRead(float[] data, int channels)
         {
             if (!UnityCompositorInterface.IsRecording())
@@ -578,7 +585,10 @@ namespace Microsoft.MixedReality.SpectatorView
             {
                 audioMemoryStream = new MemoryStream();
                 audioStreamWriter = new BinaryWriter(audioMemoryStream);
-                audioStartTime = AudioSettings.dspTime;
+                double audioSettingsTime = AudioSettings.dspTime; // Audio time in seconds, more accurate than Time.time
+                double captureFrameTime = UnityCompositorInterface.GetCaptureFrameIndex() * UnityCompositorInterface.GetColorDuration() / 10000000.0; // Capture Frame Time in seconds
+                DebugLog($"Obtained Audio Sample, AudioSettingsTime:{audioSettingsTime}, CaptureFrameTime:{captureFrameTime}");
+                audioStartTime = captureFrameTime;
                 numCachedAudioFrames = 0;
             }
 
@@ -598,6 +608,10 @@ namespace Microsoft.MixedReality.SpectatorView
                 audioStreamWriter.Flush();
                 byte[] outBytes = audioMemoryStream.ToArray();
                 audioMemoryStream = null;
+
+                // The Unity compositor assumes that the audioStartTime will be in capture frame sample time.
+                // Above we default to capture frame time compared to AudioSettings.dspTime.
+                // Any interpolation between these two time sources needs to be done in the editor before handing sample time values to the compositor.
                 UnityCompositorInterface.SetAudioData(outBytes, outBytes.Length, audioStartTime);
             }
         }
@@ -612,10 +626,30 @@ namespace Microsoft.MixedReality.SpectatorView
             return UnityCompositorInterface.IsRecording();
         }
 
-        public void StartRecording()
+        public bool TryStartRecording(out string fileName)
         {
+            fileName = string.Empty;
             TextureManager.InitializeVideoRecordingTextures();
-            UnityCompositorInterface.StartRecording((int)VideoRecordingLayout);
+            StringBuilder builder = new StringBuilder(1024);
+            string documentDirectory = System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments);
+            string outputDirectory = $"{documentDirectory}\\HologramCapture";
+            if (!Directory.Exists(outputDirectory))
+            {
+                Directory.CreateDirectory(outputDirectory);
+            }
+
+            string desiredFileName = $"{outputDirectory}\\Video.mp4";
+            int[] fileNameLength = new int[1];
+            bool startedRecording = UnityCompositorInterface.StartRecording((int)VideoRecordingLayout, desiredFileName, desiredFileName.Length, builder.Capacity, builder, fileNameLength);
+            if (!startedRecording)
+            {
+                Debug.LogError($"CompositionManager failed to start recording: {desiredFileName}");
+                return false;
+            }
+
+            fileName = builder.ToString().Substring(0, fileNameLength[0]);
+            DebugLog($"Started recording file: {fileName}");
+            return true;
         }
 
         public void StopRecording()
@@ -636,6 +670,14 @@ namespace Microsoft.MixedReality.SpectatorView
                 byte[] outBytes = audioMemoryStream.ToArray();
                 UnityCompositorInterface.SetAudioData(outBytes, outBytes.Length, audioStartTime);
                 audioMemoryStream = null;
+            }
+        }
+
+        private void DebugLog(string message)
+        {
+            if (debugLogging)
+            {
+                Debug.Log($"CompositionManager: {message}");
             }
         }
 #endif
