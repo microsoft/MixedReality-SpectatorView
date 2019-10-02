@@ -106,7 +106,7 @@ Spatial alignment based on marker visuals and marker detection allows spectator 
 
 8. The SpatialCoordinate locations found on both devices are then shared with one another, which allows for the scene to be aligned.
 
-> Note: For the best results when detecting marker visuals, mobile devices displaying marker visuals should have their camera uncovered, viewing the world. Mobile devices will indicate to the user when they lose tracking. But, if a mobile device has lost tracking when its marker is detected, a less accurate transform will be used for spatial alignment.
+> Note: For the best results when detecting marker visuals, mobile devices displaying marker visuals should have their camera uncovered, viewing the world. Mobile devices will indicate to the user when they lose tracking. If a mobile device has lost tracking when its marker is detected, a less accurate transform will be used for spatial alignment.
 
 ### Physical Marker Detection  (QR Codes and ArUco Markers)
 
