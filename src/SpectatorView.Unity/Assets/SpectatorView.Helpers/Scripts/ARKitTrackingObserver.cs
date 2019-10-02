@@ -15,13 +15,15 @@ namespace Microsoft.MixedReality.SpectatorView
 #pragma warning restore 414
 
 #if UNITY_IOS
-        private void Start()
+        protected override void Start()
         {
+            base.Start();
             UnityEngine.XR.iOS.UnityARSessionNativeInterface.ARSessionTrackingChangedEvent += OnTrackingChangedEvent;
         }
 
-        private void OnDestroy()
+        protected override void OnDestroy()
         {
+            base.OnDestroy();
             UnityEngine.XR.iOS.UnityARSessionNativeInterface.ARSessionTrackingChangedEvent -= OnTrackingChangedEvent;
         }
 
@@ -36,6 +38,7 @@ namespace Microsoft.MixedReality.SpectatorView
                     trackingState = TrackingState.LostTracking;
                     break;
                 case UnityEngine.XR.iOS.ARTrackingState.ARTrackingStateNotAvailable:
+                default:
                     trackingState = TrackingState.Unknown;
                     break;
             }
