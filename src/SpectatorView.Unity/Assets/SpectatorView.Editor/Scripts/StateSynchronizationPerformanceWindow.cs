@@ -4,6 +4,7 @@
 using UnityEngine;
 using UnityEditor;
 using System.ComponentModel;
+using System.Collections.Generic;
 
 namespace Microsoft.MixedReality.SpectatorView.Editor
 {
@@ -44,8 +45,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
 
                 if (!EditorApplication.isPlaying)
                 {
-                    var observer = FindObjectOfType<StateSynchronizationObserver>();
-                    if (observer == null)
+                    if (StateSynchronizationObserver.Instance == null)
                     {
                         RenderTitle("StateSynchronizationObserver was not detected in the current scene. Open the SpectatorViewCompositor scene.", Color.red);
                     }
@@ -89,13 +89,13 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
             }
             else
             {
-                RenderTitle("Performance information", Color.green);
+                RenderTitle("HoloLens application performance information", Color.green);
                 scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
-                byte index = 0;
-                foreach (var time in StateSynchronizationObserver.Instance.AverageTimePerFeature)
+                IReadOnlyList<double> times = StateSynchronizationObserver.Instance.AverageTimePerFeature;
+                for (int i = 0; i < times.Count; i++)
                 {
-                    GUILayout.Label($"Feature {(StateSynchronizationPerformanceFeature)index}:{time.ToString("G4")}");
-                    index++;
+                    double time = times[i];
+                    GUILayout.Label($"Feature {(StateSynchronizationPerformanceFeature)i}:{time.ToString("G4")}");
                 }
                 EditorGUILayout.EndScrollView();
             }
