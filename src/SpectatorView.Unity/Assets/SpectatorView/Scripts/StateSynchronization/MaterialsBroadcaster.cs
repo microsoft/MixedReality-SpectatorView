@@ -102,7 +102,7 @@ namespace Microsoft.MixedReality.SpectatorView
                                     previousValues[i][propertyAccessor.propertyName] = newValue;
                                     SendMaterialPropertyChange(endpoints, usedRenderer, i, propertyAccessor, writeHeader);
 
-                                    if (performanceParameters.EnableVerbosePerformanceReporting)
+                                    if (performanceParameters.EnableDiagnosticPerformanceReporting)
                                     {
                                         // TODO - call out what typically changes
                                         StateSynchronizationPerformanceMonitor.Instance.FlagMaterialPropertyUpdated(propertyAccessor.propertyName, cachedMaterials[i].name, cachedMaterials[i].shader.name);
@@ -164,8 +164,7 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
-
-        public void SendMaterialPropertyChange(IEnumerable<SocketEndpoint> endpoints, Renderer renderer, int materialIndex, MaterialPropertyAsset propertyAccessor, Action<BinaryWriter> writeHeader)
+        protected void SendMaterialPropertyChange(IEnumerable<SocketEndpoint> endpoints, Renderer renderer, int materialIndex, MaterialPropertyAsset propertyAccessor, Action<BinaryWriter> writeHeader)
         {
             using (MemoryStream memoryStream = new MemoryStream())
             using (BinaryWriter message = new BinaryWriter(memoryStream))
