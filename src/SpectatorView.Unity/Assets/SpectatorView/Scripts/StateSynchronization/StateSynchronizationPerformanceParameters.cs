@@ -32,6 +32,12 @@ namespace Microsoft.MixedReality.SpectatorView
             public PollingFrequency updateFrequency = PollingFrequency.UpdateContinuously;
         }
 
+        public bool EnableDiagnosticPerformanceReporting => enableDiagnosticPerformanceReporting;
+
+        [SerializeField]
+        [Tooltip("Check to enable diagnostic performance reporting. Note, this should be enabled for profiling but not for an end application. It will change all properties below to UpdateContinuously for reporting purposes.")]
+        protected bool enableDiagnosticPerformanceReporting = false;
+
         [SerializeField]
         [Tooltip("Controls how frequently each GameObject checks for attached components that have a related ComponentBroadcaster.")]
         protected PollingFrequency checkForComponentBroadcasters = PollingFrequency.UpdateContinuously;
@@ -87,22 +93,26 @@ namespace Microsoft.MixedReality.SpectatorView
 
         public PollingFrequency CheckForComponentBroadcasters
         {
-            get { return GetInheritedProperty(p => p.checkForComponentBroadcasters, PollingFrequency.InheritFromParent, PollingFrequency.UpdateContinuously); }
+            get { return EnableDiagnosticPerformanceReporting ? PollingFrequency.UpdateContinuously :
+                    GetInheritedProperty(p => p.checkForComponentBroadcasters, PollingFrequency.InheritFromParent, PollingFrequency.UpdateContinuously); }
         }
 
         public PollingFrequency ShaderKeywords
         {
-            get { return GetInheritedProperty(p => p.shaderKeywords, PollingFrequency.InheritFromParent, PollingFrequency.UpdateContinuously); }
+            get { return EnableDiagnosticPerformanceReporting ? PollingFrequency.UpdateContinuously :
+                    GetInheritedProperty(p => p.shaderKeywords, PollingFrequency.InheritFromParent, PollingFrequency.UpdateContinuously); }
         }
 
         public PollingFrequency RenderQueue
         {
-            get { return GetInheritedProperty(p => p.renderQueue, PollingFrequency.InheritFromParent, PollingFrequency.UpdateContinuously); }
+            get { return EnableDiagnosticPerformanceReporting ? PollingFrequency.UpdateContinuously :
+                    GetInheritedProperty(p => p.renderQueue, PollingFrequency.InheritFromParent, PollingFrequency.UpdateContinuously); }
         }
 
         public FeatureInclusionType MaterialPropertyBlocks
         {
-            get { return GetInheritedProperty(p => p.materialPropertyBlocks, FeatureInclusionType.InheritFromParent, FeatureInclusionType.SynchronizeFeature); }
+            get { return EnableDiagnosticPerformanceReporting ? FeatureInclusionType.SynchronizeFeature :
+                    GetInheritedProperty(p => p.materialPropertyBlocks, FeatureInclusionType.InheritFromParent, FeatureInclusionType.SynchronizeFeature); }
         }
 
         public bool ShouldUpdateMaterialProperty(MaterialPropertyAsset materialProperty)

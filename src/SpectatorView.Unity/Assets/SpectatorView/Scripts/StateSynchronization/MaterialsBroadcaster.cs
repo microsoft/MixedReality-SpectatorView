@@ -101,6 +101,12 @@ namespace Microsoft.MixedReality.SpectatorView
                                 {
                                     previousValues[i][propertyAccessor.propertyName] = newValue;
                                     SendMaterialPropertyChange(endpoints, usedRenderer, i, propertyAccessor, writeHeader);
+
+                                    if (performanceParameters.EnableVerbosePerformanceReporting)
+                                    {
+                                        // TODO - call out what typically changes
+                                        StateSynchronizationPerformanceMonitor.Instance.FlagMaterialPropertyUpdated(propertyAccessor.propertyName, cachedMaterials[i].name, cachedMaterials[i].shader.name);
+                                    }
                                 }
                             }
                         }

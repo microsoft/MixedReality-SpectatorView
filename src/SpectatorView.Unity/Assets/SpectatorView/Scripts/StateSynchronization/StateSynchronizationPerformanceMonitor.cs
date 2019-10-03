@@ -49,6 +49,11 @@ namespace Microsoft.MixedReality.SpectatorView
             return new TimeScope(stopwatches[(byte)feature]);
         }
 
+        public void FlagMaterialPropertyUpdated(string materialName, string shaderName, string propertyName)
+        {
+
+        }
+
         public void WriteMessage(BinaryWriter message)
         {
             for (int i = 0; i < currentPeriod && i < PeriodsToAverageOver - 1; i++)
