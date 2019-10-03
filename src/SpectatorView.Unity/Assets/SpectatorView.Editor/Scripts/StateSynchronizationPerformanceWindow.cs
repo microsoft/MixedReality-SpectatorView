@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
     {
         private static readonly string appIPAddressKey = $"{nameof(StateSynchronizationPerformanceWindow)}.{nameof(appIPAddress)}";
         private string appIPAddress;
-        private const int globalSettingsButtonWidth = 180;
+        private const int globalSettingsButtonWidth = 220;
         private Vector2 scrollPosition;
 
         [MenuItem("Spectator View/Performance", false, 3)]
@@ -37,7 +37,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
         {
             EditorGUILayout.BeginVertical();
             {
-                if (GUILayout.Button(new GUIContent("Open settings prefab", "Opens the prefab that defines global performance settings."), GUILayout.Width(globalSettingsButtonWidth)))
+                if (GUILayout.Button(new GUIContent("Open performance settings prefab", "Opens the prefab that defines global performance settings."), GUILayout.Width(globalSettingsButtonWidth)))
                 {
                     StateSynchronizationMenuItems.EditGlobalPerformanceParameters();
                 }
