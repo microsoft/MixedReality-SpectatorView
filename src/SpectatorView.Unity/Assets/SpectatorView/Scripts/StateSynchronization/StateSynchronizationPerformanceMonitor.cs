@@ -13,12 +13,13 @@ namespace Microsoft.MixedReality.SpectatorView
         GameObjectComponentCheck = 0x0,
         MaterialPropertyUpdate = 0x1,
         MaterialPropertyBlockUpdate = 0x2,
+        Count = 0x3
     }
 
     internal class StateSynchronizationPerformanceMonitor : Singleton<StateSynchronizationPerformanceMonitor>
     {
         private const int PeriodsToAverageOver = 5;
-        private const int FeatureCount = 3;
+        private const int FeatureCount = (int)StateSynchronizationPerformanceFeature.Count;
         private Stopwatch[] stopwatches;
         private float[][] previousSpentTimes;
         private float[][] previousActualTimes;

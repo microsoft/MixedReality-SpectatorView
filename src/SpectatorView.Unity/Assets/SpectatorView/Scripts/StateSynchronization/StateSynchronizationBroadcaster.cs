@@ -187,8 +187,7 @@ namespace Microsoft.MixedReality.SpectatorView
                 using (MemoryStream memoryStream = new MemoryStream())
                 using (BinaryWriter message = new BinaryWriter(memoryStream))
                 {
-                    message.Write("Perf");
-
+                    message.Write(StateSynchronizationObserver.PerfCommand);
                     StateSynchronizationPerformanceMonitor.Instance.WriteMessage(message);
                     message.Flush();
                     connectionManager.Broadcast(memoryStream.ToArray());
