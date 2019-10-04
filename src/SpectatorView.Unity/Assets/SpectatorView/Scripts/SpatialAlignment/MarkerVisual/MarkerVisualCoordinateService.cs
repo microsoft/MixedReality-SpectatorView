@@ -99,7 +99,9 @@ namespace Microsoft.MixedReality.SpectatorView
 
             DebugLog($"Waiting for cancellation token: CanBeCanceled:{cancellationToken.CanBeCanceled}, IsCancellationRequested:{cancellationToken.IsCancellationRequested}");
             await Task.WhenAny(Task.Delay(-1, cancellationToken));
-            markerCoordinate.WorldToCoordinate =  cameraTransform.localToWorldMatrix * cameraToMarker;
+
+            // Use the local position and local rotation to avoid using camera parent transforms.
+            markerCoordinate.WorldToCoordinate = Matrix4x4.TRS(cameraTransform.localPosition, cameraTransform.localRotation, Vector3.one) * cameraToMarker;
 
             DebugLog($"Hiding marker");
             markerCoordinate.HideMarker();

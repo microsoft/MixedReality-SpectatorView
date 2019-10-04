@@ -23,20 +23,24 @@ namespace Microsoft.MixedReality.SpectatorView
 
         public override bool TryCreateLocalizationSession(IPeerConnection peerConnection, MarkerDetectorLocalizationSettings settings, out ISpatialLocalizationSession session)
         {
-            session = new LocalizationSession(this, settings);
+            session = new LocalizationSession(this, settings, peerConnection);
             return true;
         }
 
         private class LocalizationSession : DisposableBase, ISpatialLocalizationSession
         {
+            public IPeerConnection Peer => peerConnection;
+
             private readonly MarkerDetectorSpatialLocalizer localizer;
             private readonly MarkerDetectorLocalizationSettings settings;
+            private readonly IPeerConnection peerConnection;
             private readonly MarkerDetectorCoordinateService coordinateService;
 
-            public LocalizationSession(MarkerDetectorSpatialLocalizer localizer, MarkerDetectorLocalizationSettings settings)
+            public LocalizationSession(MarkerDetectorSpatialLocalizer localizer, MarkerDetectorLocalizationSettings settings, IPeerConnection peerConnection)
             {
                 this.localizer = localizer;
                 this.settings = settings;
+                this.peerConnection = peerConnection;
 
                 this.localizer.markerDetector.SetMarkerSize(settings.MarkerSize);
                 this.coordinateService = new MarkerDetectorCoordinateService(this.localizer.markerDetector, this.localizer.debugLogging);

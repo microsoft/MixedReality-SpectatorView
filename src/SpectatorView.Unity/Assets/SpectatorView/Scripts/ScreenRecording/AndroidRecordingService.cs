@@ -16,6 +16,7 @@ namespace Microsoft.MixedReality.SpectatorView
         private readonly string _fileNameExt = ".mp4";
         private bool _initialized = false;
         private bool _recording = false;
+
 #pragma warning disable 414 // The field is assigned but its value is never used
         private bool _isRecordingAvailable = false;
 #pragma warning restore 414
