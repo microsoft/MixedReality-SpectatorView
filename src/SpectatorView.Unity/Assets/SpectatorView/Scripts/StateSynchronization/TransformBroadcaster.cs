@@ -134,6 +134,7 @@ namespace Microsoft.MixedReality.SpectatorView
             {
                 if (!isCachedPerformanceParametersValid)
                 {
+                    // TODO - think more about whether this is a valid look up process
                     cachedPerformanceParameters = GetComponentInParent<StateSynchronizationPerformanceParameters>();
                     if (cachedPerformanceParameters == null && DefaultStateSynchronizationPerformanceParameters.IsInitialized && DefaultStateSynchronizationPerformanceParameters.Instance != null)
                     {

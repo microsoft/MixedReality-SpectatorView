@@ -32,11 +32,7 @@ namespace Microsoft.MixedReality.SpectatorView
             public PollingFrequency updateFrequency = PollingFrequency.UpdateContinuously;
         }
 
-        public bool EnableDiagnosticPerformanceReporting => enableDiagnosticPerformanceReporting;
-
-        [SerializeField]
-        [Tooltip("Check to enable diagnostic performance reporting. Note, this should be enabled for profiling but not for an end application. It will change all properties below to UpdateContinuously for reporting purposes.")]
-        protected bool enableDiagnosticPerformanceReporting = false;
+        public bool EnableDiagnosticPerformanceReporting = false;
 
         [SerializeField]
         [Tooltip("Controls how frequently each GameObject checks for attached components that have a related ComponentBroadcaster.")]
@@ -93,8 +89,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
         public PollingFrequency CheckForComponentBroadcasters
         {
-            get { return EnableDiagnosticPerformanceReporting ? PollingFrequency.UpdateContinuously :
-                    GetInheritedProperty(p => p.checkForComponentBroadcasters, PollingFrequency.InheritFromParent, PollingFrequency.UpdateContinuously); }
+            get { return GetInheritedProperty(p => p.checkForComponentBroadcasters, PollingFrequency.InheritFromParent, PollingFrequency.UpdateContinuously); }
         }
 
         public PollingFrequency ShaderKeywords
@@ -152,6 +147,16 @@ namespace Microsoft.MixedReality.SpectatorView
         protected virtual void Awake()
         {
             UpdateParentParameters();
+        }
+
+        protected virtual void Start()
+        {
+            StateSynchronizationPerformanceMonitor.Instance.RegisterPerformanceParameters(this);
+        }
+
+        protected virtual void OnDestroy()
+        {
+            StateSynchronizationPerformanceMonitor.Instance.UnregisterPerformanceParameters(this);
         }
 
         private void OnTransformParentChanged()

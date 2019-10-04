@@ -15,6 +15,7 @@ namespace Microsoft.MixedReality.SpectatorView
         public const string SyncCommand = "SYNC";
         public const string CameraCommand = "Camera";
         public const string PerfCommand = "Perf";
+        public const string PerfDiagnosticModeEnabledCommand = "PERFDIAG";
 
         /// <summary>
         /// Check to enable debug logging.
@@ -34,6 +35,8 @@ namespace Microsoft.MixedReality.SpectatorView
         private const float heartbeatTimeInterval = 0.1f;
         private float timeSinceLastHeartbeat = 0.0f;
         private HologramSynchronizer hologramSynchronizer = new HologramSynchronizer();
+        private IReadOnlyList<string> updatedPropertyDetails;
+        private bool performanceDiagnosticModeEnabled;
 
         private static readonly byte[] heartbeatMessage = GenerateHeartbeatMessage();
 
@@ -110,16 +113,28 @@ namespace Microsoft.MixedReality.SpectatorView
 
         public void HandlePerfCommand(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
         {
-            int featureCount = reader.ReadInt32();
-
-            if (averageTimePerFeature == null)
+            if (!StateSynchronizationPerformanceMonitor.TryReadMessage(reader, out performanceDiagnosticModeEnabled, out int featureCount, ref averageTimePerFeature, out updatedPropertyDetails))
             {
-                averageTimePerFeature = new double[featureCount];
+                Debug.LogError("Issues reading perf command message, Device and Editor may be running different versions of code base.");
             }
+        }
 
-            for (int i = 0; i < featureCount; i++)
+        public void SetPerformanceDiagnosticMode(bool enabled)
+        {
+            if (connectionManager != null &&
+                connectionManager.HasConnections)
             {
-                averageTimePerFeature[i] = reader.ReadSingle();
+                byte[] message;
+                using (MemoryStream stream = new MemoryStream())
+                using (BinaryWriter writer = new BinaryWriter(stream))
+                {
+                    writer.Write(PerfDiagnosticModeEnabledCommand);
+                    writer.Write(enabled);
+                    writer.Flush();
+                    message = stream.ToArray();
+                }
+
+                connectionManager.Broadcast(message);
             }
         }
 
@@ -132,6 +147,9 @@ namespace Microsoft.MixedReality.SpectatorView
         {
             get { return averageTimePerFeature; }
         }
+
+        internal IReadOnlyList<string> UpdatedPropertyDetails => updatedPropertyDetails;
+        internal bool PerformanceDiagnosticModeEnabled => performanceDiagnosticModeEnabled;
 
         private void CheckAndSendHeartbeat()
         {

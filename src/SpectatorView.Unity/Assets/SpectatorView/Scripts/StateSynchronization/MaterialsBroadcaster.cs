@@ -104,8 +104,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
                                     if (performanceParameters.EnableDiagnosticPerformanceReporting)
                                     {
-                                        // TODO - call out what typically changes
-                                        StateSynchronizationPerformanceMonitor.Instance.FlagMaterialPropertyUpdated(propertyAccessor.propertyName, cachedMaterials[i].name, cachedMaterials[i].shader.name);
+                                        StateSynchronizationPerformanceMonitor.Instance.FlagMaterialPropertyUpdated(cachedMaterials[i].name, cachedMaterials[i].shader.name, propertyAccessor.propertyName);
                                     }
                                 }
                             }

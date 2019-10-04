@@ -39,17 +39,18 @@ namespace Microsoft.MixedReality.SpectatorView
             base.Awake();
 
             RegisterCommandHandler(StateSynchronizationObserver.SyncCommand, HandleSyncCommand);
+            RegisterCommandHandler(StateSynchronizationObserver.PerfDiagnosticModeEnabledCommand, HandlePerfDiagnosticModeEnabledRequest);
 
             // Ensure that runInBackground is set to true so that the app continues to send network
             // messages even if it loses focus
             Application.runInBackground = true;
         }
-
         protected override void OnDestroy()
         {
             base.OnDestroy();
 
             UnregisterCommandHandler(StateSynchronizationObserver.SyncCommand, HandleSyncCommand);
+            UnregisterCommandHandler(StateSynchronizationObserver.PerfDiagnosticModeEnabledCommand, HandlePerfDiagnosticModeEnabledRequest);
         }
 
         protected override void Start()
@@ -200,5 +201,15 @@ namespace Microsoft.MixedReality.SpectatorView
             reader.ReadSingle(); // float time
             StateSynchronizationSceneManager.Instance.ReceiveMessage(endpoint, reader);
         }
+
+        private void HandlePerfDiagnosticModeEnabledRequest(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
+        {
+            bool enabled = reader.ReadBoolean();
+            if (StateSynchronizationPerformanceMonitor.Instance != null)
+            {
+                StateSynchronizationPerformanceMonitor.Instance.SetDiagnosticMode(enabled);
+            }
+        }
+
     }
 }

@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using UnityEngine;
@@ -24,6 +25,8 @@ namespace Microsoft.MixedReality.SpectatorView
         private float[][] previousSpentTimes;
         private float[][] previousActualTimes;
         private int currentPeriod = 0;
+        private Dictionary<string, int> propertyUpdateCount = new Dictionary<string, int>();
+        private StateSynchronizationPerformanceParameters performanceParameters = null;
 
         protected override void Awake()
         {
@@ -44,6 +47,27 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
+        public void RegisterPerformanceParameters(StateSynchronizationPerformanceParameters parameters)
+        {
+            if (performanceParameters != null)
+            {
+                UnityEngine.Debug.LogWarning("Multiple StateSynchronizationPerformanceParameters attempted to register with the StateSynchronizationPerformanceMonitor.");
+            }
+
+            performanceParameters = parameters;
+        }
+
+        public void UnregisterPerformanceParameters(StateSynchronizationPerformanceParameters parameters)
+        {
+            if (parameters != null)
+            {
+                UnityEngine.Debug.LogWarning("Attempted to unregister performance parameters that weren't being used.");
+                return;
+            }
+
+            performanceParameters = null;
+        }
+
         public IDisposable MeasureScope(StateSynchronizationPerformanceFeature feature)
         {
             return new TimeScope(stopwatches[(byte)feature]);
@@ -51,11 +75,26 @@ namespace Microsoft.MixedReality.SpectatorView
 
         public void FlagMaterialPropertyUpdated(string materialName, string shaderName, string propertyName)
         {
+            string key = $"{materialName}.{shaderName}.{propertyName}";
+            if (!propertyUpdateCount.ContainsKey(key))
+            {
+                propertyUpdateCount.Add(key, 0);
+            }
 
+            propertyUpdateCount[key]++;
         }
 
         public void WriteMessage(BinaryWriter message)
         {
+            if (performanceParameters != null)
+            {
+                message.Write(performanceParameters.EnableDiagnosticPerformanceReporting);
+            }
+            else
+            {
+                message.Write(false);
+            }
+
             for (int i = 0; i < currentPeriod && i < PeriodsToAverageOver - 1; i++)
             {
                 for (int j = 0; j < FeatureCount; j++)
@@ -89,6 +128,53 @@ namespace Microsoft.MixedReality.SpectatorView
                 {
                     message.Write(0.0f);
                 }
+            }
+
+            message.Write(propertyUpdateCount.Count);
+            foreach(var propertyUpdateCountPair in propertyUpdateCount)
+            {
+                message.Write($"{propertyUpdateCountPair.Key}:{propertyUpdateCountPair.Value}");
+            }
+            propertyUpdateCount.Clear();
+        }
+
+        public static bool TryReadMessage(BinaryReader reader, out bool diagnosticModeEnabled, out int featureCount, ref double[] averageTimePerFeature, out IReadOnlyList<string> updatedPropertyDetails)
+        {
+            diagnosticModeEnabled = reader.ReadBoolean();
+            featureCount = reader.ReadInt32();
+
+            if (averageTimePerFeature == null ||
+                averageTimePerFeature.Length != featureCount)
+            {
+                averageTimePerFeature = new double[featureCount];
+            }
+
+            for (int i = 0; i < featureCount; i++)
+            {
+                averageTimePerFeature[i] = reader.ReadSingle();
+            }
+
+            updatedPropertyDetails = null;
+            int updatedPropertyDetailCount = reader.ReadInt32();
+            if (updatedPropertyDetailCount != 0)
+            {
+                List<string> detailsList = new List<string>();
+                for (int i = 0; i < updatedPropertyDetailCount; i++)
+                {
+                    detailsList.Add(reader.ReadString());
+                }
+
+                updatedPropertyDetails = detailsList;
+            }
+
+            return true;
+        }
+
+        public void SetDiagnosticMode(bool enabled)
+        {
+            if (performanceParameters != null)
+            {
+                performanceParameters.EnableDiagnosticPerformanceReporting = enabled;
             }
         }
 
