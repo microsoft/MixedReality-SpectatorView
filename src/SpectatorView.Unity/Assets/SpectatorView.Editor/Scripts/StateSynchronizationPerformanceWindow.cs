@@ -90,13 +90,39 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
             else
             {
                 RenderTitle("HoloLens application performance information", Color.green);
+
+                GUILayout.BeginHorizontal();
+                if (GUILayout.Button(new GUIContent("Enable Diagnostic Mode", "Turns on performance diagnostic mode for the attached HoloLens.")))
+                {
+                    StateSynchronizationObserver.Instance.SetPerformanceDiagnosticMode(true);
+                }
+                if (GUILayout.Button(new GUIContent("Disable Diagnostic Mode", "Turns off performance diagnostic mode for the attached HoloLens.")))
+                {
+                    StateSynchronizationObserver.Instance.SetPerformanceDiagnosticMode(false);
+                }
+                GUILayout.EndHorizontal();
+
                 scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
+                GUILayout.Label($"Performance Diagnostic Mode Enabled:{StateSynchronizationObserver.Instance.PerformanceDiagnosticModeEnabled}");
                 IReadOnlyList<double> times = StateSynchronizationObserver.Instance.AverageTimePerFeature;
                 for (int i = 0; i < times.Count; i++)
                 {
                     double time = times[i];
                     GUILayout.Label($"Feature {(StateSynchronizationPerformanceFeature)i}:{time.ToString("G4")}");
                 }
+
+                IReadOnlyList<string> updatedProperties = StateSynchronizationObserver.Instance.UpdatedPropertyDetails;
+                if (updatedProperties != null &&
+                    updatedProperties.Count > 0)
+                {
+                    RenderTitle("Diagnostic Details", Color.green);
+                    GUILayout.Label("Updated Material Properties:");
+                    foreach (var updatedProperty in updatedProperties)
+                    {
+                        GUILayout.Label(updatedProperty);
+                    }
+                }
+
                 EditorGUILayout.EndScrollView();
             }
         }
