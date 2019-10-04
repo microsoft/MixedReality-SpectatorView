@@ -157,7 +157,13 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
                         EditorGUILayout.BeginVertical("Box", GUILayout.MinHeight(250.0f));
                         {
                             var cameraDevice = GetHolographicCameraDevice();
-                            HolographicCameraNetworkConnectionGUI(HolographicCameraDeviceTypeLabel, cameraDevice, GetSpatialCoordinateSystemParticipant(cameraDevice), showCalibrationStatus: false, ref holographicCameraIPAddress);
+                            HolographicCameraNetworkConnectionGUI(
+                                HolographicCameraDeviceTypeLabel,
+                                cameraDevice,
+                                GetSpatialCoordinateSystemParticipant(cameraDevice),
+                                showCalibrationStatus: false,
+                                showSpatialLocalization: true,
+                                ref holographicCameraIPAddress);
 
                             GUILayout.FlexibleSpace();
 

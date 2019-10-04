@@ -62,7 +62,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
             PlayerPrefs.Save();
         }
 
-        protected void HolographicCameraNetworkConnectionGUI(string deviceTypeLabel, DeviceInfoObserver deviceInfo, SpatialCoordinateSystemParticipant spatialCoordinateSystemParticipant, bool showCalibrationStatus, ref string ipAddressField)
+        protected void HolographicCameraNetworkConnectionGUI(string deviceTypeLabel, DeviceInfoObserver deviceInfo, SpatialCoordinateSystemParticipant spatialCoordinateSystemParticipant, bool showCalibrationStatus, bool showSpatialLocalization, ref string ipAddressField)
         {
             GUIStyle boldLabelStyle = new GUIStyle(GUI.skin.label);
             boldLabelStyle.fontStyle = FontStyle.Bold;
@@ -123,8 +123,11 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
                     sharedSpatialCoordinateStatusMessage = locatedSharedSpatialCoordinateMessage;
                 }
 
-                GUILayout.Label("Shared spatial coordinate status", boldLabelStyle);
-                GUILayout.Label(sharedSpatialCoordinateStatusMessage);
+                if (showSpatialLocalization)
+                {
+                    GUILayout.Label("Shared spatial coordinate status", boldLabelStyle);
+                    GUILayout.Label(sharedSpatialCoordinateStatusMessage);
+                }
 
                 string calibrationStatusMessage;
                 if (compositionManager != null && compositionManager.IsCalibrationDataLoaded)
@@ -149,13 +152,16 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
                     GUILayout.Label(string.Empty);
                 }
 
-                EditorGUILayout.Space();
+                if (showSpatialLocalization)
+                {
+                    EditorGUILayout.Space();
 
-                GUILayout.Label("Spatial Alignment", boldLabelStyle);
+                    GUILayout.Label("Spatial Alignment", boldLabelStyle);
 
-                GUILayout.Space(4);
+                    GUILayout.Space(4);
 
-                SpatialLocalizationGUI(deviceTypeLabel, spatialCoordinateSystemParticipant);
+                    SpatialLocalizationGUI(deviceTypeLabel, spatialCoordinateSystemParticipant);
+                }
 
                 GUI.enabled = true;
             }
