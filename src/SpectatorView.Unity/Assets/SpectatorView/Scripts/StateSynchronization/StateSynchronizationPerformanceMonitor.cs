@@ -42,6 +42,7 @@ namespace Microsoft.MixedReality.SpectatorView
         private int currentPeriod = 0;
         private Dictionary<string, int> propertyUpdateCount = new Dictionary<string, int>();
         private StateSynchronizationPerformanceParameters performanceParameters = null;
+        private int materialsUpdatedCount = 0;
 
         protected override void Awake()
         {
@@ -90,6 +91,11 @@ namespace Microsoft.MixedReality.SpectatorView
 
         public void FlagMaterialPropertyUpdated(string materialName, string shaderName, string propertyName)
         {
+            if (!performanceParameters.EnableDiagnosticPerformanceReporting)
+            {
+                return;
+            }
+
             string key = $"{materialName}.{shaderName}.{propertyName}";
             if (!propertyUpdateCount.ContainsKey(key))
             {
@@ -97,6 +103,16 @@ namespace Microsoft.MixedReality.SpectatorView
             }
 
             propertyUpdateCount[key]++;
+        }
+
+        public void FlagMaterialsUpdated()
+        {
+            if (!performanceParameters.EnableDiagnosticPerformanceReporting)
+            {
+                return;
+            }
+
+            materialsUpdatedCount++;
         }
 
         public void WriteMessage(BinaryWriter message)
@@ -151,9 +167,12 @@ namespace Microsoft.MixedReality.SpectatorView
                 message.Write($"{propertyUpdateCountPair.Key}:{propertyUpdateCountPair.Value}");
             }
             propertyUpdateCount.Clear();
+
+            message.Write(materialsUpdatedCount);
+            materialsUpdatedCount = 0;
         }
 
-        public static bool TryReadMessage(BinaryReader reader, out bool diagnosticModeEnabled, out int featureCount, ref double[] averageTimePerFeature, out IReadOnlyList<string> updatedPropertyDetails)
+        public static bool TryReadMessage(BinaryReader reader, out bool diagnosticModeEnabled, out int featureCount, ref double[] averageTimePerFeature, out IReadOnlyList<string> updatedPropertyDetails, out int materialUpdates)
         {
             diagnosticModeEnabled = reader.ReadBoolean();
             featureCount = reader.ReadInt32();
@@ -181,6 +200,8 @@ namespace Microsoft.MixedReality.SpectatorView
 
                 updatedPropertyDetails = detailsList;
             }
+
+            materialUpdates = reader.ReadInt32();
 
             return true;
         }

@@ -27,6 +27,8 @@ namespace Microsoft.MixedReality.SpectatorView
                 areMaterialsDifferent = true;
 
                 ClearPreviousValuesCache();
+
+                StateSynchronizationPerformanceMonitor.Instance.FlagMaterialsUpdated();
             }
             else
             {
@@ -117,10 +119,7 @@ namespace Microsoft.MixedReality.SpectatorView
                                     previousValues[i][propertyAccessor.propertyName] = newValue;
                                     SendMaterialPropertyChange(endpoints, usedRenderer, i, propertyAccessor, writeHeader);
 
-                                    if (performanceParameters.EnableDiagnosticPerformanceReporting)
-                                    {
-                                        StateSynchronizationPerformanceMonitor.Instance.FlagMaterialPropertyUpdated(cachedMaterials[i].name, cachedMaterials[i].shader.name, propertyAccessor.propertyName);
-                                    }
+                                    StateSynchronizationPerformanceMonitor.Instance.FlagMaterialPropertyUpdated(cachedMaterials[i].name, cachedMaterials[i].shader.name, propertyAccessor.propertyName);
                                 }
                             }
                         }

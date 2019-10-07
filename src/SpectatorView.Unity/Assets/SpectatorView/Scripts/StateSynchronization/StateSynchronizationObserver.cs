@@ -37,6 +37,7 @@ namespace Microsoft.MixedReality.SpectatorView
         private HologramSynchronizer hologramSynchronizer = new HologramSynchronizer();
         private IReadOnlyList<string> updatedPropertyDetails;
         private bool performanceDiagnosticModeEnabled;
+        private int materialUpdateCount = 0;
 
         private static readonly byte[] heartbeatMessage = GenerateHeartbeatMessage();
 
@@ -113,7 +114,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
         public void HandlePerfCommand(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
         {
-            if (!StateSynchronizationPerformanceMonitor.TryReadMessage(reader, out performanceDiagnosticModeEnabled, out int featureCount, ref averageTimePerFeature, out updatedPropertyDetails))
+            if (!StateSynchronizationPerformanceMonitor.TryReadMessage(reader, out performanceDiagnosticModeEnabled, out int featureCount, ref averageTimePerFeature, out updatedPropertyDetails, out materialUpdateCount))
             {
                 Debug.LogError("Issues reading perf command message, Device and Editor may be running different versions of code base.");
             }
@@ -150,6 +151,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
         internal IReadOnlyList<string> UpdatedPropertyDetails => updatedPropertyDetails;
         internal bool PerformanceDiagnosticModeEnabled => performanceDiagnosticModeEnabled;
+        internal int MaterialUpdateCount => materialUpdateCount;
 
         private void CheckAndSendHeartbeat()
         {
