@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -54,6 +55,7 @@ namespace Microsoft.MixedReality.SpectatorView
         private readonly List<SocketEndpoint> filteredEndpointsNeedingCompleteChanges = new List<SocketEndpoint>();
         private readonly List<SocketEndpoint> filteredEndpointsNeedingDeltaChanges = new List<SocketEndpoint>();
         private readonly List<SocketEndpoint> filteredEndpointsNotNeedingDeltaChanges = new List<SocketEndpoint>();
+        private IDisposable perfMonitoringInstance = null;
 
         /// <inheritdoc />
         public TransformBroadcaster TransformBroadcaster
@@ -82,6 +84,8 @@ namespace Microsoft.MixedReality.SpectatorView
 
         /// <inheritdoc />
         protected virtual bool UpdateWhenDisabled => false;
+
+        internal virtual StateSynchronizationPerformanceFeature PerformanceFeature => StateSynchronizationPerformanceFeature.Unknown;
 
         /// <inheritdoc />
         public void ResetFrame()
@@ -278,9 +282,23 @@ namespace Microsoft.MixedReality.SpectatorView
             return this.enabled;
         }
 
-        protected virtual void BeginUpdatingFrame(SocketEndpointConnectionDelta connectionDelta) {}
+        protected virtual void BeginUpdatingFrame(SocketEndpointConnectionDelta connectionDelta)
+        {
+            if (PerformanceFeature != StateSynchronizationPerformanceFeature.Count &&
+                StateSynchronizationPerformanceMonitor.Instance != null)
+            {
+                perfMonitoringInstance = StateSynchronizationPerformanceMonitor.Instance.MeasureScope(PerformanceFeature);
+            }
+        }
 
-        protected virtual void EndUpdatingFrame() {}
+        protected virtual void EndUpdatingFrame()
+        {
+            if (perfMonitoringInstance != null)
+            {
+                perfMonitoringInstance.Dispose();
+                perfMonitoringInstance = null;
+            }
+        }
 
         protected abstract void SendCompleteChanges(IEnumerable<SocketEndpoint> endpoints);
 

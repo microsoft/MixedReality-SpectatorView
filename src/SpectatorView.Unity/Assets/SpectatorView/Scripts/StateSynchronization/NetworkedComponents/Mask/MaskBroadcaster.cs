@@ -17,6 +17,8 @@ namespace Microsoft.MixedReality.SpectatorView
             Properties = 0x1,
         }
 
+        internal override StateSynchronizationPerformanceFeature PerformanceFeature => StateSynchronizationPerformanceFeature.MaskBroadcasterUpdate;
+
         private Mask maskBroadcaster;
         private MaskProperties previousValues;
 

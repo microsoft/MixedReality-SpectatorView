@@ -21,6 +21,8 @@ namespace Microsoft.MixedReality.SpectatorView
             Properties = 0x8
         }
 
+        internal override StateSynchronizationPerformanceFeature PerformanceFeature => StateSynchronizationPerformanceFeature.AudioSourceBroadcasterUpdate;
+
         private AudioSource audioSource;
         private bool previousIsPlaying;
         private float previousVolume;

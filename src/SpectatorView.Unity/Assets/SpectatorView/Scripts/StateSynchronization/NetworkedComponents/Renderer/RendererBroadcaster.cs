@@ -19,6 +19,8 @@ namespace Microsoft.MixedReality.SpectatorView
             public const byte MaterialProperty = 0x4;
         }
 
+        internal override StateSynchronizationPerformanceFeature PerformanceFeature => StateSynchronizationPerformanceFeature.RendererBroadcasterUpdate;
+
         private bool previousEnabled;
         private MaterialsBroadcaster MaterialsBroadcaster = new MaterialsBroadcaster();
 

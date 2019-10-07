@@ -21,6 +21,8 @@ namespace Microsoft.MixedReality.SpectatorView
         private RectMask2D rectMask2D;
         private bool previousEnabled;
 
+        internal override StateSynchronizationPerformanceFeature PerformanceFeature => StateSynchronizationPerformanceFeature.RectMask2DBroadcasterUpdate;
+
         protected override void Awake()
         {
             base.Awake();

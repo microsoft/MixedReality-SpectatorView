@@ -9,18 +9,33 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.SpectatorView
 {
-    internal enum StateSynchronizationPerformanceFeature : byte
+    internal enum StateSynchronizationPerformanceFeature : short
     {
-        GameObjectComponentCheck = 0x0,
-        MaterialPropertyUpdate = 0x1,
-        MaterialPropertyBlockUpdate = 0x2,
-        Count = 0x3
+        GameObjectComponentCheck = 0,
+        MaterialPropertyUpdate = 1,
+        MaterialPropertyBlockUpdate = 2,
+        TransformBroadcasterUpdate = 3,
+        DynamicGameObjectHierarchyBroadcasterUpdate = 4,
+        TextBroadcasterUpdate = 5,
+        RectMask2DBroadcasterUpdate = 6,
+        MaskBroadcasterUpdate = 7,
+        LightBroadcasterUpdate = 8,
+        ImageBroadcasterUpdate = 9,
+        CanvasRendererBroadcasterUpdate = 10,
+        CanvasGroupBroadcasterUpdate = 11,
+        CanvasBroadcasterUpdate = 12,
+        CameraBroadcasterUpdate = 13,
+        AudioSourceBroadcasterUpdate = 14,
+        RendererBroadcasterUpdate = 15,
+        TextMeshProBaseUpdate = 16,
+        Unknown = 17,
+        Count = 18
     }
 
     internal class StateSynchronizationPerformanceMonitor : Singleton<StateSynchronizationPerformanceMonitor>
     {
         private const int PeriodsToAverageOver = 5;
-        private const int FeatureCount = (int)StateSynchronizationPerformanceFeature.Count;
+        private const int FeatureCount = (int)StateSynchronizationPerformanceFeature.Unknown;
         private Stopwatch[] stopwatches;
         private float[][] previousSpentTimes;
         private float[][] previousActualTimes;

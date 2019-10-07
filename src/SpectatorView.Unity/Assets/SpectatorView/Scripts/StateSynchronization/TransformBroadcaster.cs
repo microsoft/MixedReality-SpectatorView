@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -38,6 +39,8 @@ namespace Microsoft.MixedReality.SpectatorView
         private bool needsComponentCheck = true;
         private bool isIdInitialized = false;
         private bool? isHidden;
+
+        internal override StateSynchronizationPerformanceFeature PerformanceFeature => StateSynchronizationPerformanceFeature.TransformBroadcasterUpdate;
 
         /// <summary>
         /// Gets a cached version of the Transform associated with this Component.
@@ -134,7 +137,7 @@ namespace Microsoft.MixedReality.SpectatorView
             {
                 if (!isCachedPerformanceParametersValid)
                 {
-                    // TODO - think more about whether this is a valid look up process
+                    // TODO - think more about whether this is the best look up process/location
                     cachedPerformanceParameters = GetComponentInParent<StateSynchronizationPerformanceParameters>();
                     if (cachedPerformanceParameters == null && DefaultStateSynchronizationPerformanceParameters.IsInitialized && DefaultStateSynchronizationPerformanceParameters.Instance != null)
                     {
@@ -312,6 +315,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
         protected override void BeginUpdatingFrame(SocketEndpointConnectionDelta connectionDelta)
         {
+            base.BeginUpdatingFrame(connectionDelta);
             // Messages for hierarchies need to be sent from root to leaf to ensure
             // that Canvas construction on the other end happens in the correct order.
             CachedParentTransform?.OnFrameCompleted(connectionDelta);
@@ -319,6 +323,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
         protected override void EndUpdatingFrame()
         {
+            base.EndUpdatingFrame();
             UpdateComponentBroadcasters();
         }
 
