@@ -60,6 +60,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
         private static GameObject emptyParametersGameObject;
         private StateSynchronizationPerformanceParameters parentParameters;
+        private HashSet<string> declaredSupportedShaders;
         private Dictionary<MaterialPropertyKey, MaterialPropertyPollingFrequency> pollingFrequencyByMaterialProperty;
 
         private IDictionary<MaterialPropertyKey, MaterialPropertyPollingFrequency> PollingFrequencyByMaterialProperty
@@ -69,6 +70,27 @@ namespace Microsoft.MixedReality.SpectatorView
                 return pollingFrequencyByMaterialProperty ?? (pollingFrequencyByMaterialProperty = (materialPropertyOverrides ?? Array.Empty<MaterialPropertyPollingFrequency>()).ToDictionary(p => new MaterialPropertyKey(p.shaderName, p.propertyName)));
             }
         }
+
+        private HashSet<string> DeclaredSupportedShaders
+        {
+            get
+            {
+                if (declaredSupportedShaders == null)
+                {
+                    declaredSupportedShaders = new HashSet<string>();
+                    if (materialPropertyOverrides != null)
+                    {
+                        foreach (var materialPropertyOverride in materialPropertyOverrides)
+                        {
+                            declaredSupportedShaders.Add(materialPropertyOverride.shaderName);
+                        }
+                    }
+                }
+
+                return declaredSupportedShaders;
+            }
+        }
+          
 
         private T GetInheritedProperty<T>(Func<StateSynchronizationPerformanceParameters, T> getter, T inhertedValue, T defaultValue)
         {
@@ -142,6 +164,16 @@ namespace Microsoft.MixedReality.SpectatorView
 
                 return materialProperties == PollingFrequency.UpdateContinuously;
             }
+        }
+
+        public bool IsShaderSupported(string shader)
+        {
+            if (ShaderKeywords == PollingFrequency.UpdateContinuously)
+            {
+                return true;
+            }
+
+            return DeclaredSupportedShaders.Contains(shader);
         }
 
         protected virtual void Awake()
