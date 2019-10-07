@@ -10,7 +10,7 @@ namespace Microsoft.MixedReality.SpectatorView
     public class ChangeColor : MonoBehaviour
     {
         [SerializeField]
-        private Material material;
+        private Material material = null;
 
         void Update()
         {
