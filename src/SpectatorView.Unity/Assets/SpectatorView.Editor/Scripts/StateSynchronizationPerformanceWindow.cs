@@ -15,6 +15,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
         private string appIPAddress;
         private const int globalSettingsButtonWidth = 220;
         private Vector2 scrollPosition;
+        private const int defaultSpacing = 10;
 
         [MenuItem("Spectator View/Performance", false, 3)]
         public static void ShowCalibrationRecordingWindow()
@@ -122,6 +123,9 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
                         GUILayout.Label(updatedProperty);
                     }
                 }
+
+                GUILayout.Space(defaultSpacing);
+                GUILayout.Label($"Material Update Count:{StateSynchronizationObserver.Instance.MaterialUpdateCount}");
 
                 EditorGUILayout.EndScrollView();
             }
