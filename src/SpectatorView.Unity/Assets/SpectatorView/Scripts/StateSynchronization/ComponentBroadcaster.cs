@@ -46,15 +46,9 @@ namespace Microsoft.MixedReality.SpectatorView
     public abstract class ComponentBroadcaster<TComponentBroadcasterService, TChangeFlags> : MonoBehaviour, IComponentBroadcaster where TComponentBroadcasterService : Singleton<TComponentBroadcasterService>, IComponentBroadcasterService
     {
         protected TransformBroadcaster transformBroadcaster;
-        private readonly HashSet<SocketEndpoint> fullyInitializedEndpoints = new HashSet<SocketEndpoint>();
         private List<SocketEndpoint> endpointsNeedingComponentCreation;
         private bool isUpdatedThisFrame;
         private bool isInitialized;
-        private readonly List<SocketEndpoint> endpointsNeedingCompleteChanges = new List<SocketEndpoint>();
-        private readonly List<SocketEndpoint> endpointsNeedingDeltaChanges = new List<SocketEndpoint>();
-        private readonly List<SocketEndpoint> filteredEndpointsNeedingCompleteChanges = new List<SocketEndpoint>();
-        private readonly List<SocketEndpoint> filteredEndpointsNeedingDeltaChanges = new List<SocketEndpoint>();
-        private readonly List<SocketEndpoint> filteredEndpointsNotNeedingDeltaChanges = new List<SocketEndpoint>();
         private IDisposable perfMonitoringInstance = null;
 
         /// <inheritdoc />
@@ -137,95 +131,45 @@ namespace Microsoft.MixedReality.SpectatorView
                     {
                         EnsureComponentInitialized();
 
-                        using (StateSynchronizationPerformanceMonitor.Instance.MeasureEventDuration(PerformanceComponentName, "FrameEndpointLogic"))
+                        if (TransformBroadcaster != null)
                         {
-                            endpointsNeedingCompleteChanges.Clear();
-                            endpointsNeedingDeltaChanges.Clear();
+                            TransformBroadcaster.ProcessConnectionDelta(connectionDelta, out var endpointsNeedingCompleteChanges, out var filteredEndpointsNeedingDeltaChanges, out var filteredEndpointsNeedingCompleteChanges);
 
-                            filteredEndpointsNeedingCompleteChanges.Clear();
-                            filteredEndpointsNeedingDeltaChanges.Clear();
-                            filteredEndpointsNotNeedingDeltaChanges.Clear();
-
-                            foreach (SocketEndpoint endpoint in connectionDelta.AddedConnections)
+                            if (endpointsNeedingCompleteChanges != null &&
+                                endpointsNeedingCompleteChanges.Any())
                             {
-                                endpointsNeedingCompleteChanges.Add(endpoint);
-                                if (ShouldSendChanges(endpoint))
+                                SendComponentCreation(endpointsNeedingCompleteChanges);
+                            }
+
+                            if (filteredEndpointsNeedingDeltaChanges != null &&
+                                filteredEndpointsNeedingDeltaChanges.Any())
+                            {
+                                TChangeFlags changeFlags = CalculateDeltaChanges();
+                                if (HasChanges(changeFlags) && filteredEndpointsNeedingDeltaChanges.Any())
                                 {
-                                    filteredEndpointsNeedingCompleteChanges.Add(endpoint);
+                                    SendDeltaChanges(filteredEndpointsNeedingDeltaChanges, changeFlags);
                                 }
                             }
 
-                            foreach (SocketEndpoint endpoint in connectionDelta.ContinuedConnections)
+                            if (filteredEndpointsNeedingCompleteChanges != null &&
+                                filteredEndpointsNeedingCompleteChanges.Any())
                             {
-                                if (fullyInitializedEndpoints.Contains(endpoint))
-                                {
-                                    endpointsNeedingDeltaChanges.Add(endpoint);
-                                    if (ShouldSendChanges(endpoint))
-                                    {
-                                        filteredEndpointsNeedingDeltaChanges.Add(endpoint);
-                                    }
-                                    else
-                                    {
-                                        filteredEndpointsNotNeedingDeltaChanges.Add(endpoint);
-                                    }
-                                }
-                                else
-                                {
-                                    endpointsNeedingCompleteChanges.Add(endpoint);
-
-                                    if (ShouldSendChanges(endpoint))
-                                    {
-                                        filteredEndpointsNeedingCompleteChanges.Add(endpoint);
-                                    }
-                                }
+                                SendCompleteChanges(filteredEndpointsNeedingCompleteChanges);
                             }
-                        }
 
-                        SendComponentCreation(endpointsNeedingCompleteChanges);
-
-                        TChangeFlags changeFlags = CalculateDeltaChanges();
-                        if (HasChanges(changeFlags) && filteredEndpointsNeedingDeltaChanges.Any())
-                        {
-                            SendDeltaChanges(filteredEndpointsNeedingDeltaChanges, changeFlags);
-                        }
-
-                        if (filteredEndpointsNeedingCompleteChanges.Count > 0)
-                        {
-                            SendCompleteChanges(filteredEndpointsNeedingCompleteChanges);
-
-                            foreach (SocketEndpoint endpoint in filteredEndpointsNeedingCompleteChanges)
+                            if (connectionDelta.RemovedConnections != null &&
+                                connectionDelta.RemovedConnections.Any())
                             {
-                                fullyInitializedEndpoints.Add(endpoint);
+                                RemoveDisconnectedEndpoints(connectionDelta.RemovedConnections);
                             }
-                        }
-
-                        using (StateSynchronizationPerformanceMonitor.Instance.MeasureEventDuration(PerformanceComponentName, "FrameEndpointLogic"))
-                        {
-                            foreach (SocketEndpoint endpoint in endpointsNeedingDeltaChanges)
-                            {
-                                if (!ShouldSendChanges(endpoint))
-                                {
-                                    fullyInitializedEndpoints.Remove(endpoint);
-                                }
-                            }
-                            UpdateRemovedConnections(connectionDelta);
                         }
 
                         EndUpdatingFrame();
                     }
-                }
-            }
-        }
-
-        private void UpdateRemovedConnections(SocketEndpointConnectionDelta connectionDelta)
-        {
-            if (connectionDelta.RemovedConnections.Count > 0)
-            {
-                RemoveDisconnectedEndpoints(connectionDelta.RemovedConnections);
-
-                foreach (SocketEndpoint endpoint in connectionDelta.RemovedConnections)
-                {
-                    fullyInitializedEndpoints.Remove(endpoint);
+                    else
+                    {
+                        StateSynchronizationPerformanceMonitor.Instance.IncrementEventCount(PerformanceComponentName, "NullTransformBroadcaster");
+                    }
                 }
             }
         }

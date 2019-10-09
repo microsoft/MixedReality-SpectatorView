@@ -32,6 +32,7 @@ namespace Microsoft.MixedReality.SpectatorView
         private TransformBroadcaster cachedParentTransform;
         private bool isCachedParentTransformValid;
         private bool isCachedPerformanceParametersValid;
+        private SocketEndpointConnectionDelta cachedConnectionDelta;
 
         private StateSynchronizationPerformanceParameters cachedPerformanceParameters = null;
         private RectTransformBroadcaster rectCache = null;
@@ -42,6 +43,12 @@ namespace Microsoft.MixedReality.SpectatorView
 
         private bool isParentTransformReportingFlagValid = false;
         private bool cachedParentTransformReportingFlag = false;
+
+        private readonly HashSet<SocketEndpoint> fullyInitializedEndpoints = new HashSet<SocketEndpoint>();
+        private readonly List<SocketEndpoint> endpointsNeedingCompleteChanges = new List<SocketEndpoint>();
+        private readonly List<SocketEndpoint> endpointsNeedingDeltaChanges = new List<SocketEndpoint>();
+        private readonly List<SocketEndpoint> filteredEndpointsNeedingCompleteChanges = new List<SocketEndpoint>();
+        private readonly List<SocketEndpoint> filteredEndpointsNeedingDeltaChanges = new List<SocketEndpoint>();
 
         public override string PerformanceComponentName => "TransformBroadcaster";
 
@@ -184,6 +191,12 @@ namespace Microsoft.MixedReality.SpectatorView
         /// <returns>True if the provided endpoint should receive a transform update, otherwise false</returns>
         public bool ShouldSendTransformInHierarchy(SocketEndpoint endpoint)
         {
+            if (isParentTransformReportingFlagValid)
+            {
+                StateSynchronizationPerformanceMonitor.Instance.IncrementEventCount(PerformanceComponentName, "ShouldSendTransformInHierarchy.UsedCache");
+                return cachedParentTransformReportingFlag;
+            }
+
             if (BlockedConnections.Contains(endpoint))
             {
                 StateSynchronizationPerformanceMonitor.Instance.IncrementEventCount(PerformanceComponentName, "BlockedConnection");
@@ -195,12 +208,7 @@ namespace Microsoft.MixedReality.SpectatorView
                 return false;
             }
 
-            if (isParentTransformReportingFlagValid)
-            {
-                StateSynchronizationPerformanceMonitor.Instance.IncrementEventCount(PerformanceComponentName, "ShouldSendTransformInHierarchy.UsedCache");
-                return cachedParentTransformReportingFlag;
-            }
-            else if (CachedParentTransform != null)
+            if (CachedParentTransform != null)
             {
                 cachedParentTransformReportingFlag = CachedParentTransform.ShouldSendTransformInHierarchy(endpoint);
                 isParentTransformReportingFlagValid = true;
@@ -339,13 +347,6 @@ namespace Microsoft.MixedReality.SpectatorView
         {
             base.EndUpdatingFrame();
             UpdateComponentBroadcasters();
-
-            for (int i = 0; i < CachedTransform.childCount; i++)
-            {
-                var childTransformBroadcaster = CachedTransform.GetChild(i).gameObject.GetComponent<TransformBroadcaster>();
-                childTransformBroadcaster.cachedParentTransformReportingFlag = 
-                childTransformBroadcaster.isParentTransformReportingFlagValid = true;
-            }
         }
 
         protected override bool HasChanges(TransformBroadcasterChangeType changeFlags)
@@ -557,6 +558,84 @@ namespace Microsoft.MixedReality.SpectatorView
                 else
                 {
                     return this.CachedGameObject.activeSelf;
+                }
+            }
+        }
+
+        public void ProcessConnectionDelta(SocketEndpointConnectionDelta connectionDelta, out IReadOnlyList<SocketEndpoint> needingCompleteChanges, out IReadOnlyList<SocketEndpoint> filteredNeedingDeltaChanged, out IReadOnlyList<SocketEndpoint> filteredNeedingCompleteChanges)
+        {
+            if (cachedConnectionDelta == connectionDelta)
+            {
+                needingCompleteChanges = endpointsNeedingCompleteChanges;
+                filteredNeedingDeltaChanged = filteredEndpointsNeedingDeltaChanges;
+                filteredNeedingCompleteChanges = filteredEndpointsNeedingCompleteChanges;
+            }
+            else
+            {
+                needingCompleteChanges = null;
+                filteredNeedingDeltaChanged = null;
+                filteredNeedingCompleteChanges = null;
+
+                using (StateSynchronizationPerformanceMonitor.Instance.MeasureEventDuration(PerformanceComponentName, "FrameEndpointLogic"))
+                {
+                    endpointsNeedingCompleteChanges.Clear();
+                    endpointsNeedingDeltaChanges.Clear();
+
+                    filteredEndpointsNeedingCompleteChanges.Clear();
+                    filteredEndpointsNeedingDeltaChanges.Clear();
+
+                    foreach (SocketEndpoint endpoint in connectionDelta.AddedConnections)
+                    {
+                        endpointsNeedingCompleteChanges.Add(endpoint);
+                        if (ShouldSendChanges(endpoint))
+                        {
+                            filteredEndpointsNeedingCompleteChanges.Add(endpoint);
+                        }
+                    }
+
+                    foreach (SocketEndpoint endpoint in connectionDelta.ContinuedConnections)
+                    {
+                        if (fullyInitializedEndpoints.Contains(endpoint))
+                        {
+                            endpointsNeedingDeltaChanges.Add(endpoint);
+                            if (ShouldSendChanges(endpoint))
+                            {
+                                filteredEndpointsNeedingDeltaChanges.Add(endpoint);
+                            }
+                        }
+                        else
+                        {
+                            endpointsNeedingCompleteChanges.Add(endpoint);
+                            if (ShouldSendChanges(endpoint))
+                            {
+                                filteredEndpointsNeedingCompleteChanges.Add(endpoint);
+                            }
+                        }
+                    }
+
+                    if (filteredEndpointsNeedingCompleteChanges.Count > 0)
+                    {
+                        foreach (SocketEndpoint endpoint in filteredEndpointsNeedingCompleteChanges)
+                        {
+                            fullyInitializedEndpoints.Add(endpoint);
+                        }
+                    }
+
+                    foreach (SocketEndpoint endpoint in endpointsNeedingDeltaChanges)
+                    {
+                        if (!ShouldSendChanges(endpoint))
+                        {
+                            fullyInitializedEndpoints.Remove(endpoint);
+                        }
+                    }
+
+                    if (connectionDelta.RemovedConnections.Count > 0)
+                    {
+                        foreach (SocketEndpoint endpoint in connectionDelta.RemovedConnections)
+                        {
+                            fullyInitializedEndpoints.Remove(endpoint);
+                        }
+                    }
                 }
             }
         }
