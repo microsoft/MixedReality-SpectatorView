@@ -212,7 +212,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
                         if (material.shader.name != shaderName)
                         {
-                            Shader shader = Shader.Find(shaderName);
+                            Shader shader = MaterialPropertyAssetCache.Instance.GetShader(shaderName);
                             if (shader == null)
                             {
                                 Debug.Log("Couldn't find shader with name " + shaderName);
@@ -223,7 +223,7 @@ namespace Microsoft.MixedReality.SpectatorView
                     }
                     else
                     {
-                        Shader shader = Shader.Find(shaderName);
+                        Shader shader = MaterialPropertyAssetCache.Instance.GetShader(shaderName);
                         if (shader == null)
                         {
                             Debug.Log("Couldn't find shader with name " + shaderName);

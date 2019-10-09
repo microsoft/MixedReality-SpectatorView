@@ -70,6 +70,11 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
+        public Shader GetShader(string shaderName)
+        {
+            return MaterialPropertiesByShaderName[shaderName].Select(asset => asset.Shader).FirstOrDefault();
+        }
+
         public override void UpdateAssetCache()
         {
 #if UNITY_EDITOR

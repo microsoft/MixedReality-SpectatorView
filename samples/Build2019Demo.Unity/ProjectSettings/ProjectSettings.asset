@@ -649,7 +649,7 @@ PlayerSettings:
   metroCertificatePassword: 
   metroCertificateSubject: Microsoft
   metroCertificateIssuer: Microsoft
-  metroCertificateNotAfter: 001caf55cf50d601
+  metroCertificateNotAfter: 80b7cd7cd796d601
   metroApplicationDescription: Demo of SpectatorView show and //BUILD 2019
   wsaImages: {}
   metroTileShortName: SpectatorView.Build2019Demo

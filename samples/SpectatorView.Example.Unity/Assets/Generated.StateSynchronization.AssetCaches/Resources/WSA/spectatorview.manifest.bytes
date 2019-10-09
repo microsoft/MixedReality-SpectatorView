@@ -1,0 +1,54 @@
+ManifestFileVersion: 0
+CRC: 1508732492
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 25fdabe5d67a5243221530764a846269
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 58bdf853c2157d1746ad21868d48cfd5
+HashAppended: 0
+ClassTypes:
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: 8c3ebe20a2865194789ed6f19de37cb9, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 77c3807439fa309418deb5642ad05293, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 84cc09c48c2e00a4baeb265a59a895cf, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: a86ff8b58c7348e4eb1d8dc3a07a2f93, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 625624261b85e0d44aa89661d75fbd46, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 93de580ac7303fa43b2629ad89e36082, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 53c123ab49fdc47469535cccd517e6d3, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 57f6b15d8a719d94f9bcf7b7cd63e7d3, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: c29111bdcab2ead418210130d901092a, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+- Class: 128
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+Assets:
+- Assets/Generated.StateSynchronization.AssetCaches/Resources/MeshAssetCache.asset
+- Assets/Generated.StateSynchronization.AssetCaches/Resources/AudioClipAssetCache.asset
+- Assets/Generated.StateSynchronization.AssetCaches/Resources/TextMeshProFontAssetCache.asset
+- Assets/Generated.StateSynchronization.AssetCaches/Resources/FontAssetCache.asset
+- Assets/Generated.StateSynchronization.AssetCaches/Resources/CustomShaderPropertyAssetCache.asset
+- Assets/Generated.StateSynchronization.AssetCaches/Resources/TextureAssetCache.asset
+- Assets/Generated.StateSynchronization.AssetCaches/Resources/MaterialPropertyAssetCache.asset
+- Assets/Generated.StateSynchronization.AssetCaches/Resources/AudioMixerGroupAssetCache.asset
+- Assets/Generated.StateSynchronization.AssetCaches/Resources/SpriteAssetCache.asset
+Dependencies: []
