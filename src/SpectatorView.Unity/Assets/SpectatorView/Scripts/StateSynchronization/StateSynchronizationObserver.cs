@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -31,13 +32,12 @@ namespace Microsoft.MixedReality.SpectatorView
         [SerializeField]
         protected int port = 7410;
 
-        private double[] averageTimePerFeature;
         private const float heartbeatTimeInterval = 0.1f;
         private float timeSinceLastHeartbeat = 0.0f;
         private HologramSynchronizer hologramSynchronizer = new HologramSynchronizer();
-        private IReadOnlyList<string> updatedPropertyDetails;
-        private bool performanceDiagnosticModeEnabled;
-        private int materialUpdateCount = 0;
+        private bool performanceMonitoringModeEnabled;
+        private List<Tuple<string, double>> eventDurations = null;
+        private List<Tuple<string, int>> eventCounts = null;
 
         private static readonly byte[] heartbeatMessage = GenerateHeartbeatMessage();
 
@@ -114,13 +114,10 @@ namespace Microsoft.MixedReality.SpectatorView
 
         public void HandlePerfCommand(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
         {
-            if (!StateSynchronizationPerformanceMonitor.TryReadMessage(reader, out performanceDiagnosticModeEnabled, out int featureCount, ref averageTimePerFeature, out updatedPropertyDetails, out materialUpdateCount))
-            {
-                Debug.LogError("Issues reading perf command message, Device and Editor may be running different versions of code base.");
-            }
+            StateSynchronizationPerformanceMonitor.ReadMessage(reader, out performanceMonitoringModeEnabled, out eventDurations, out eventCounts);
         }
 
-        public void SetPerformanceDiagnosticMode(bool enabled)
+        public void SetPerformanceMonitoringMode(bool enabled)
         {
             if (connectionManager != null &&
                 connectionManager.HasConnections)
@@ -139,19 +136,9 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
-        internal int PerformanceFeatureCount
-        {
-            get { return averageTimePerFeature?.Length ?? 0; }
-        }
-
-        internal IReadOnlyList<double> AverageTimePerFeature
-        {
-            get { return averageTimePerFeature; }
-        }
-
-        internal IReadOnlyList<string> UpdatedPropertyDetails => updatedPropertyDetails;
-        internal bool PerformanceDiagnosticModeEnabled => performanceDiagnosticModeEnabled;
-        internal int MaterialUpdateCount => materialUpdateCount;
+        internal bool PerformanceMonitoringModeEnabled => performanceMonitoringModeEnabled;
+        internal IReadOnlyList<Tuple<string, double>> PerformanceEventDurations => eventDurations;
+        internal IReadOnlyList<Tuple<string, int>> PerformanceEventCounts => eventCounts;
 
         private void CheckAndSendHeartbeat()
         {

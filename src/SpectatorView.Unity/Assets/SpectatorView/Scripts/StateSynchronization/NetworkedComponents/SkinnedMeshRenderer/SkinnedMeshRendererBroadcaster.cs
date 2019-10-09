@@ -16,6 +16,8 @@ namespace Microsoft.MixedReality.SpectatorView
             public const byte Mesh = 0x10;
         }
 
+        public override string PerformanceComponentName => "SkinnedMeshRendererBroadcaster";
+
         public bool BonesReady { get; private set;}
 
         public Guid NetworkAssetId

@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.SpectatorView
             Properties = 0x1,
         }
 
-        internal override StateSynchronizationPerformanceFeature PerformanceFeature => StateSynchronizationPerformanceFeature.CameraBroadcasterUpdate;
+        public override string PerformanceComponentName => "CameraBroadcaster";
 
         private Camera cameraBroadcaster;
         private CameraProperties previousProperties;

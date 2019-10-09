@@ -84,51 +84,43 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
                 showSpatialLocalization: false,
                 ref appIPAddress);
 
-            if (StateSynchronizationObserver.Instance.PerformanceFeatureCount == 0)
+            RenderTitle("HoloLens application performance information", Color.green);
+
+            GUILayout.BeginHorizontal();
+            if (GUILayout.Button(new GUIContent("Enable Performance Monitoring", "Turns on performance monitoring mode for the attached HoloLens.")))
             {
-                RenderTitle("Waiting for performance information...", Color.yellow);
+                StateSynchronizationObserver.Instance.SetPerformanceMonitoringMode(true);
             }
-            else
+            if (GUILayout.Button(new GUIContent("Disable Performance Monitoring", "Turns off performance diagnostic mode for the attached HoloLens.")))
             {
-                RenderTitle("HoloLens application performance information", Color.green);
+                StateSynchronizationObserver.Instance.SetPerformanceMonitoringMode(false);
+            }
+            GUILayout.EndHorizontal();
 
-                GUILayout.BeginHorizontal();
-                if (GUILayout.Button(new GUIContent("Enable Diagnostic Mode", "Turns on performance diagnostic mode for the attached HoloLens.")))
+            scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
+            GUILayout.Label($"Performance Diagnostic Mode Enabled:{StateSynchronizationObserver.Instance.PerformanceMonitoringModeEnabled}");
+            if (StateSynchronizationObserver.Instance.PerformanceMonitoringModeEnabled)
+            {
+                if (StateSynchronizationObserver.Instance.PerformanceEventDurations != null)
                 {
-                    StateSynchronizationObserver.Instance.SetPerformanceDiagnosticMode(true);
-                }
-                if (GUILayout.Button(new GUIContent("Disable Diagnostic Mode", "Turns off performance diagnostic mode for the attached HoloLens.")))
-                {
-                    StateSynchronizationObserver.Instance.SetPerformanceDiagnosticMode(false);
-                }
-                GUILayout.EndHorizontal();
-
-                scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
-                GUILayout.Label($"Performance Diagnostic Mode Enabled:{StateSynchronizationObserver.Instance.PerformanceDiagnosticModeEnabled}");
-                IReadOnlyList<double> times = StateSynchronizationObserver.Instance.AverageTimePerFeature;
-                for (int i = 0; i < times.Count; i++)
-                {
-                    double time = times[i];
-                    GUILayout.Label($"Feature {(StateSynchronizationPerformanceFeature)i}:{time.ToString("G4")}");
-                }
-
-                IReadOnlyList<string> updatedProperties = StateSynchronizationObserver.Instance.UpdatedPropertyDetails;
-                if (updatedProperties != null &&
-                    updatedProperties.Count > 0)
-                {
-                    RenderTitle("Diagnostic Details", Color.green);
-                    GUILayout.Label("Updated Material Properties:");
-                    foreach (var updatedProperty in updatedProperties)
+                    RenderTitle("Event Durations", Color.green);
+                    foreach (var duration in StateSynchronizationObserver.Instance.PerformanceEventDurations)
                     {
-                        GUILayout.Label(updatedProperty);
+                        GUILayout.Label($"{duration.Item1}:{duration.Item2}");
                     }
                 }
 
-                GUILayout.Space(defaultSpacing);
-                GUILayout.Label($"Material Update Count:{StateSynchronizationObserver.Instance.MaterialUpdateCount}");
-
-                EditorGUILayout.EndScrollView();
+                if (StateSynchronizationObserver.Instance.PerformanceEventCounts != null)
+                {
+                    GUILayout.Space(defaultSpacing);
+                    RenderTitle("Event Counts", Color.green);
+                    foreach (var count in StateSynchronizationObserver.Instance.PerformanceEventCounts)
+                    {
+                        GUILayout.Label($"{count.Item1}:{count.Item2}");
+                    }
+                }
             }
+            EditorGUILayout.EndScrollView();
         }
     }
 }

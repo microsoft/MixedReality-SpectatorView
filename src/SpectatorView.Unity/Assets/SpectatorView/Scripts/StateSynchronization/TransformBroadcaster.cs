@@ -40,7 +40,7 @@ namespace Microsoft.MixedReality.SpectatorView
         private bool isIdInitialized = false;
         private bool? isHidden;
 
-        internal override StateSynchronizationPerformanceFeature PerformanceFeature => StateSynchronizationPerformanceFeature.TransformBroadcasterUpdate;
+        public override string PerformanceComponentName => "TransformBroadcaster";
 
         /// <summary>
         /// Gets a cached version of the Transform associated with this Component.
@@ -184,6 +184,7 @@ namespace Microsoft.MixedReality.SpectatorView
         {
             if (BlockedConnections.Contains(endpoint))
             {
+                StateSynchronizationPerformanceMonitor.Instance.IncrementEventCount(PerformanceComponentName, "BlockedConnection");
                 return false;
             }
 
@@ -497,7 +498,7 @@ namespace Microsoft.MixedReality.SpectatorView
             if ((StateSynchronizationPerformanceParameters.CheckForComponentBroadcasters == StateSynchronizationPerformanceParameters.PollingFrequency.UpdateOnceOnStart && needsComponentCheck) ||
                 StateSynchronizationPerformanceParameters.CheckForComponentBroadcasters == StateSynchronizationPerformanceParameters.PollingFrequency.UpdateContinuously)
             {
-                using (StateSynchronizationPerformanceMonitor.Instance.MeasureScope(StateSynchronizationPerformanceFeature.GameObjectComponentCheck))
+                using (StateSynchronizationPerformanceMonitor.Instance.MeasureEventDuration(PerformanceComponentName, "GameObjectComponentCheck"))
                 {
                     bool anyChangesDetected = false;
                     foreach (ComponentBroadcasterDefinition componentDefinition in StateSynchronizationSceneManager.Instance.ComponentBroadcasterDefinitions)

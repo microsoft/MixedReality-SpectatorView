@@ -85,7 +85,7 @@ namespace Microsoft.MixedReality.SpectatorView
         /// <inheritdoc />
         protected virtual bool UpdateWhenDisabled => false;
 
-        internal virtual StateSynchronizationPerformanceFeature PerformanceFeature => StateSynchronizationPerformanceFeature.Unknown;
+        public virtual string PerformanceComponentName => string.Empty;
 
         /// <inheritdoc />
         public void ResetFrame()
@@ -137,43 +137,46 @@ namespace Microsoft.MixedReality.SpectatorView
                     {
                         EnsureComponentInitialized();
 
-                        endpointsNeedingCompleteChanges.Clear();
-                        endpointsNeedingDeltaChanges.Clear();
-
-                        filteredEndpointsNeedingCompleteChanges.Clear();
-                        filteredEndpointsNeedingDeltaChanges.Clear();
-                        filteredEndpointsNotNeedingDeltaChanges.Clear();
-
-                        foreach (SocketEndpoint endpoint in connectionDelta.AddedConnections)
+                        using (StateSynchronizationPerformanceMonitor.Instance.MeasureEventDuration(PerformanceComponentName, "FrameEndpointLogic"))
                         {
-                            endpointsNeedingCompleteChanges.Add(endpoint);
-                            if (ShouldSendChanges(endpoint))
-                            {
-                                filteredEndpointsNeedingCompleteChanges.Add(endpoint);
-                            }
-                        }
+                            endpointsNeedingCompleteChanges.Clear();
+                            endpointsNeedingDeltaChanges.Clear();
 
-                        foreach (SocketEndpoint endpoint in connectionDelta.ContinuedConnections)
-                        {
-                            if (fullyInitializedEndpoints.Contains(endpoint))
-                            {
-                                endpointsNeedingDeltaChanges.Add(endpoint);
-                                if (ShouldSendChanges(endpoint))
-                                {
-                                    filteredEndpointsNeedingDeltaChanges.Add(endpoint);
-                                }
-                                else
-                                {
-                                    filteredEndpointsNotNeedingDeltaChanges.Add(endpoint);
-                                }
-                            }
-                            else
+                            filteredEndpointsNeedingCompleteChanges.Clear();
+                            filteredEndpointsNeedingDeltaChanges.Clear();
+                            filteredEndpointsNotNeedingDeltaChanges.Clear();
+
+                            foreach (SocketEndpoint endpoint in connectionDelta.AddedConnections)
                             {
                                 endpointsNeedingCompleteChanges.Add(endpoint);
-
                                 if (ShouldSendChanges(endpoint))
                                 {
                                     filteredEndpointsNeedingCompleteChanges.Add(endpoint);
+                                }
+                            }
+
+                            foreach (SocketEndpoint endpoint in connectionDelta.ContinuedConnections)
+                            {
+                                if (fullyInitializedEndpoints.Contains(endpoint))
+                                {
+                                    endpointsNeedingDeltaChanges.Add(endpoint);
+                                    if (ShouldSendChanges(endpoint))
+                                    {
+                                        filteredEndpointsNeedingDeltaChanges.Add(endpoint);
+                                    }
+                                    else
+                                    {
+                                        filteredEndpointsNotNeedingDeltaChanges.Add(endpoint);
+                                    }
+                                }
+                                else
+                                {
+                                    endpointsNeedingCompleteChanges.Add(endpoint);
+
+                                    if (ShouldSendChanges(endpoint))
+                                    {
+                                        filteredEndpointsNeedingCompleteChanges.Add(endpoint);
+                                    }
                                 }
                             }
                         }
@@ -196,14 +199,17 @@ namespace Microsoft.MixedReality.SpectatorView
                             }
                         }
 
-                        foreach (SocketEndpoint endpoint in endpointsNeedingDeltaChanges)
+                        using (StateSynchronizationPerformanceMonitor.Instance.MeasureEventDuration(PerformanceComponentName, "FrameEndpointLogic"))
                         {
-                            if (!ShouldSendChanges(endpoint))
+                            foreach (SocketEndpoint endpoint in endpointsNeedingDeltaChanges)
                             {
-                                fullyInitializedEndpoints.Remove(endpoint);
+                                if (!ShouldSendChanges(endpoint))
+                                {
+                                    fullyInitializedEndpoints.Remove(endpoint);
+                                }
                             }
+                            UpdateRemovedConnections(connectionDelta);
                         }
-                        UpdateRemovedConnections(connectionDelta);
 
                         EndUpdatingFrame();
                     }
@@ -284,10 +290,10 @@ namespace Microsoft.MixedReality.SpectatorView
 
         protected virtual void BeginUpdatingFrame(SocketEndpointConnectionDelta connectionDelta)
         {
-            if (PerformanceFeature != StateSynchronizationPerformanceFeature.Count &&
+            if (PerformanceComponentName != string.Empty &&
                 StateSynchronizationPerformanceMonitor.Instance != null)
             {
-                perfMonitoringInstance = StateSynchronizationPerformanceMonitor.Instance.MeasureScope(PerformanceFeature);
+                perfMonitoringInstance = StateSynchronizationPerformanceMonitor.Instance.MeasureEventDuration(PerformanceComponentName, "FrameUpdateDuration");
             }
         }
 

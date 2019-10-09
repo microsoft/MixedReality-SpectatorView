@@ -24,7 +24,7 @@ namespace Microsoft.MixedReality.SpectatorView
             MaterialProperty = 0x4
         }
 
-        internal override StateSynchronizationPerformanceFeature PerformanceFeature => StateSynchronizationPerformanceFeature.ImageBroadcasterUpdate;
+        public override string PerformanceComponentName => "ImageBroadcaster";
 
         protected override void Awake()
         {

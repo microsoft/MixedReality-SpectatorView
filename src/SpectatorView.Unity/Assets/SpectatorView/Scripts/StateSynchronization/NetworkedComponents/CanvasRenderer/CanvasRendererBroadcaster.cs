@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.SpectatorView
             Properties = 0x1,
         }
 
-        internal override StateSynchronizationPerformanceFeature PerformanceFeature => StateSynchronizationPerformanceFeature.CanvasRendererBroadcasterUpdate;
+        public override string PerformanceComponentName => "CanvasRendererBroadcaster";
 
         private CanvasRenderer canvasRendererBroadcaster;
         private CanvasRendererProperties previousValues;

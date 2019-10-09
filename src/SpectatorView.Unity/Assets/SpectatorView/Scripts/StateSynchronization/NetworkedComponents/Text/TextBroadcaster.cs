@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.SpectatorView
         private TextProperties previousFontAndPlacement;
         private MaterialsBroadcaster MaterialsBroadcaster = new MaterialsBroadcaster();
 
-        internal override StateSynchronizationPerformanceFeature PerformanceFeature => StateSynchronizationPerformanceFeature.TextBroadcasterUpdate;
+        public override string PerformanceComponentName => "TextBroadcaster";
 
         [Flags]
         public enum ChangeType : byte

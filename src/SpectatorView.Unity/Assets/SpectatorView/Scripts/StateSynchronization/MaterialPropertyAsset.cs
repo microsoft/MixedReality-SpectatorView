@@ -20,6 +20,7 @@ namespace Microsoft.MixedReality.SpectatorView
         private int? propertyId;
         private Dictionary<Material, Dictionary<int, object>> materialProperties = new Dictionary<Material, Dictionary<int, object>>();
         private float cachedTime;
+        private string performanceComponentName = "MaterialPropertyAsset";
 
         public Shader Shader
         {
@@ -50,70 +51,74 @@ namespace Microsoft.MixedReality.SpectatorView
 
         public object GetValue(Renderer renderer, Material material)
         {
-            if (cachedTime != Time.time)
-            {
-                ResetCachedData();
-            }
-
-            cachedTime = Time.time;
-
-            MaterialPropertyBlock.PropertyData data;
-            if (renderer != null && renderer.TryGetPropertyBlockData(out data) && data.HasValue(PropertyID, propertyType))
-            {
-                switch (propertyType)
-                {
-                    case MaterialPropertyType.Color:
-                        return data.GetColor(PropertyID);
-                    case MaterialPropertyType.Float:
-                    case MaterialPropertyType.Range:
-                        return data.GetFloat(PropertyID);
-                    case MaterialPropertyType.Texture:
-                        return data.GetTexture(PropertyID);
-                    case MaterialPropertyType.Vector:
-                        return data.GetVector(PropertyID);
-                    case MaterialPropertyType.Matrix:
-                        return data.GetMatrix(PropertyID);
-                }
-            }
-
-            if (!materialProperties.TryGetValue(material, out var dictionary))
-            {
-                dictionary = new Dictionary<int, object>();
-                materialProperties.Add(material, dictionary);
-            }
-
             object output = null;
-            if (!dictionary.TryGetValue(PropertyID, out output))
+            using (StateSynchronizationPerformanceMonitor.Instance.MeasureEventDuration(performanceComponentName, "GetValue"))
             {
-                switch (propertyType)
+
+                if (cachedTime != Time.time)
                 {
-                    case MaterialPropertyType.Color:
-                        output = material.GetColor(PropertyID);
-                        break;
-                    case MaterialPropertyType.Float:
-                    case MaterialPropertyType.Range:
-                        output = material.GetFloat(PropertyID);
-                        break;
-                    case MaterialPropertyType.Texture:
-                        output = material.GetTexture(PropertyID);
-                        break;
-                    case MaterialPropertyType.Vector:
-                        output = material.GetVector(PropertyID);
-                        break;
-                    case MaterialPropertyType.Matrix:
-                        output = material.GetMatrix(PropertyID);
-                        break;
-                    case MaterialPropertyType.RenderQueue:
-                        output = material.renderQueue;
-                        break;
-                    case MaterialPropertyType.ShaderKeywords:
-                        output = material.shaderKeywords;
-                        break;
-                    default:
-                        throw new NotImplementedException();
+                    ResetCachedData();
                 }
 
-                dictionary.Add(PropertyID, output);
+                cachedTime = Time.time;
+
+                MaterialPropertyBlock.PropertyData data;
+                if (renderer != null && renderer.TryGetPropertyBlockData(out data) && data.HasValue(PropertyID, propertyType))
+                {
+                    switch (propertyType)
+                    {
+                        case MaterialPropertyType.Color:
+                            return data.GetColor(PropertyID);
+                        case MaterialPropertyType.Float:
+                        case MaterialPropertyType.Range:
+                            return data.GetFloat(PropertyID);
+                        case MaterialPropertyType.Texture:
+                            return data.GetTexture(PropertyID);
+                        case MaterialPropertyType.Vector:
+                            return data.GetVector(PropertyID);
+                        case MaterialPropertyType.Matrix:
+                            return data.GetMatrix(PropertyID);
+                    }
+                }
+
+                if (!materialProperties.TryGetValue(material, out var dictionary))
+                {
+                    dictionary = new Dictionary<int, object>();
+                    materialProperties.Add(material, dictionary);
+                }
+
+                if (!dictionary.TryGetValue(PropertyID, out output))
+                {
+                    switch (propertyType)
+                    {
+                        case MaterialPropertyType.Color:
+                            output = material.GetColor(PropertyID);
+                            break;
+                        case MaterialPropertyType.Float:
+                        case MaterialPropertyType.Range:
+                            output = material.GetFloat(PropertyID);
+                            break;
+                        case MaterialPropertyType.Texture:
+                            output = material.GetTexture(PropertyID);
+                            break;
+                        case MaterialPropertyType.Vector:
+                            output = material.GetVector(PropertyID);
+                            break;
+                        case MaterialPropertyType.Matrix:
+                            output = material.GetMatrix(PropertyID);
+                            break;
+                        case MaterialPropertyType.RenderQueue:
+                            output = material.renderQueue;
+                            break;
+                        case MaterialPropertyType.ShaderKeywords:
+                            output = material.shaderKeywords;
+                            break;
+                        default:
+                            throw new NotImplementedException();
+                    }
+
+                    dictionary.Add(PropertyID, output);
+                }
             }
 
             return output;

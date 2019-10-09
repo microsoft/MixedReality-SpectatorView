@@ -5,62 +5,24 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.SpectatorView
 {
-    internal enum StateSynchronizationPerformanceFeature : short
-    {
-        GameObjectComponentCheck = 0,
-        MaterialPropertyUpdate = 1,
-        MaterialPropertyBlockUpdate = 2,
-        TransformBroadcasterUpdate = 3,
-        DynamicGameObjectHierarchyBroadcasterUpdate = 4,
-        TextBroadcasterUpdate = 5,
-        RectMask2DBroadcasterUpdate = 6,
-        MaskBroadcasterUpdate = 7,
-        LightBroadcasterUpdate = 8,
-        ImageBroadcasterUpdate = 9,
-        CanvasRendererBroadcasterUpdate = 10,
-        CanvasGroupBroadcasterUpdate = 11,
-        CanvasBroadcasterUpdate = 12,
-        CameraBroadcasterUpdate = 13,
-        AudioSourceBroadcasterUpdate = 14,
-        RendererBroadcasterUpdate = 15,
-        TextMeshProBaseUpdate = 16,
-        Unknown = 17,
-        Count = 18
-    }
-
     internal class StateSynchronizationPerformanceMonitor : Singleton<StateSynchronizationPerformanceMonitor>
     {
         private const int PeriodsToAverageOver = 5;
-        private const int FeatureCount = (int)StateSynchronizationPerformanceFeature.Unknown;
-        private Stopwatch[] stopwatches;
-        private float[][] previousSpentTimes;
-        private float[][] previousActualTimes;
         private int currentPeriod = 0;
-        private Dictionary<string, int> propertyUpdateCount = new Dictionary<string, int>();
         private StateSynchronizationPerformanceParameters performanceParameters = null;
-        private int materialsUpdatedCount = 0;
+        private Dictionary<string, Dictionary<string, Stopwatch>> eventStopWatches = new Dictionary<string, Dictionary<string, Stopwatch>>();
+        private Dictionary<string, Dictionary<string, int>> eventCounts = new Dictionary<string, Dictionary<string, int>>();
+
+        public StateSynchronizationPerformanceParameters PerformanceParameters => performanceParameters;
 
         protected override void Awake()
         {
             base.Awake();
-
-            stopwatches = new Stopwatch[FeatureCount];
-            previousSpentTimes = new float[PeriodsToAverageOver][];
-            previousActualTimes = new float[PeriodsToAverageOver][];
-            for (int i = 0; i < FeatureCount; i++)
-            {
-                stopwatches[i] = new Stopwatch();
-            }
-
-            for (int i = 0; i < PeriodsToAverageOver; i++)
-            {
-                previousSpentTimes[i] = new float[FeatureCount];
-                previousActualTimes[i] = new float[FeatureCount];
-            }
         }
 
         public void RegisterPerformanceParameters(StateSynchronizationPerformanceParameters parameters)
@@ -84,133 +46,142 @@ namespace Microsoft.MixedReality.SpectatorView
             performanceParameters = null;
         }
 
-        public IDisposable MeasureScope(StateSynchronizationPerformanceFeature feature)
+        public IDisposable MeasureEventDuration(string componentName, string eventName)
         {
-            return new TimeScope(stopwatches[(byte)feature]);
+            if (performanceParameters != null &&
+                !performanceParameters.EnablePerformanceReporting)
+            {
+                return null;
+            }
+
+            if (!eventStopWatches.TryGetValue(componentName, out var dictionary))
+            {
+                dictionary = new Dictionary<string, Stopwatch>();
+                eventStopWatches.Add(componentName, dictionary);
+            }
+
+            if (!dictionary.TryGetValue(eventName, out var stopwatch))
+            {
+                stopwatch = new Stopwatch();
+                dictionary.Add(eventName, stopwatch);
+            }
+
+            return new TimeScope(stopwatch);
         }
 
-        public void FlagMaterialPropertyUpdated(string materialName, string shaderName, string propertyName)
+        public void IncrementEventCount(string componentName, string eventName)
         {
-            if (!performanceParameters.EnableDiagnosticPerformanceReporting)
+            if (performanceParameters != null &&
+                !performanceParameters.EnablePerformanceReporting)
             {
                 return;
             }
 
-            string key = $"{materialName}.{shaderName}.{propertyName}";
-            if (!propertyUpdateCount.ContainsKey(key))
+            if (!eventCounts.TryGetValue(componentName, out var dictionary))
             {
-                propertyUpdateCount.Add(key, 0);
+                dictionary = new Dictionary<string, int>();
+                eventCounts.Add(componentName, dictionary);
             }
 
-            propertyUpdateCount[key]++;
-        }
-
-        public void FlagMaterialsUpdated()
-        {
-            if (!performanceParameters.EnableDiagnosticPerformanceReporting)
+            if (!dictionary.ContainsKey(eventName))
             {
-                return;
+                dictionary.Add(eventName, 1);
             }
-
-            materialsUpdatedCount++;
+            else
+            {
+                dictionary[eventName]++;
+            }
         }
 
         public void WriteMessage(BinaryWriter message)
         {
-            if (performanceParameters != null)
+            if (performanceParameters != null &&
+                performanceParameters.EnablePerformanceReporting)
             {
-                message.Write(performanceParameters.EnableDiagnosticPerformanceReporting);
+                message.Write(true);
             }
             else
             {
                 message.Write(false);
+                return;
             }
 
-            for (int i = 0; i < currentPeriod && i < PeriodsToAverageOver - 1; i++)
+            List<Tuple<string, double>> durations = new List<Tuple<string, double>>();
+            foreach(var componentPair in eventStopWatches)
             {
-                for (int j = 0; j < FeatureCount; j++)
+                foreach(var eventPair in componentPair.Value)
                 {
-                    previousSpentTimes[i + 1][j] = previousSpentTimes[i][j];
-                    previousActualTimes[i + 1][j] = previousActualTimes[i][j];
-                }
-            }
-            currentPeriod++;
-            for (int i = 0; i < FeatureCount; i++)
-            {
-                previousSpentTimes[0][i] = (float)stopwatches[i].Elapsed.TotalMilliseconds;
-                previousActualTimes[0][i] = Time.time;
-            }
-
-            if (currentPeriod > 1)
-            {
-                int targetPeriodSlot = Math.Min(currentPeriod, PeriodsToAverageOver - 1);
-                message.Write(FeatureCount);
-                for (int i = 0; i < FeatureCount; i++)
-                {
-                    float spentTimeDelta = previousSpentTimes[0][i] - previousSpentTimes[targetPeriodSlot][i];
-                    float actualTimeDelta = previousActualTimes[0][i] - previousActualTimes[targetPeriodSlot][i];
-                    message.Write(spentTimeDelta / actualTimeDelta);
-                }
-            }
-            else
-            {
-                message.Write(FeatureCount);
-                for (int i = 0; i < FeatureCount; i++)
-                {
-                    message.Write(0.0f);
+                    durations.Add(new Tuple<string, double>($"{componentPair.Key}.{eventPair.Key}", eventPair.Value.Elapsed.TotalMilliseconds));
+                    eventPair.Value.Reset();
                 }
             }
 
-            message.Write(propertyUpdateCount.Count);
-            foreach(var propertyUpdateCountPair in propertyUpdateCount)
+            message.Write(durations.Count);
+            foreach(var duration in durations)
             {
-                message.Write($"{propertyUpdateCountPair.Key}:{propertyUpdateCountPair.Value}");
+                message.Write(duration.Item1);
+                message.Write(duration.Item2);
             }
-            propertyUpdateCount.Clear();
 
-            message.Write(materialsUpdatedCount);
-            materialsUpdatedCount = 0;
+            List<Tuple<string, int>> counts = new List<Tuple<string, int>>();
+            foreach(var componentPair in eventCounts.ToList())
+            {
+                foreach(var eventPair in componentPair.Value.ToList())
+                {
+                    counts.Add(new Tuple<string, int>($"{componentPair.Key}.{eventPair.Key}", eventPair.Value));
+                    eventCounts[componentPair.Key][eventPair.Key] = 0;
+                }
+            }
+
+            message.Write(counts.Count);
+            foreach(var count in counts)
+            {
+                message.Write(count.Item1);
+                message.Write(count.Item2);
+            }
         }
 
-        public static bool TryReadMessage(BinaryReader reader, out bool diagnosticModeEnabled, out int featureCount, ref double[] averageTimePerFeature, out IReadOnlyList<string> updatedPropertyDetails, out int materialUpdates)
+        public static void ReadMessage(BinaryReader reader, out bool performanceMonitoringEnabled, out List<Tuple<string, double>> durations, out List<Tuple<string, int>> counts)
         {
-            diagnosticModeEnabled = reader.ReadBoolean();
-            featureCount = reader.ReadInt32();
+            performanceMonitoringEnabled = reader.ReadBoolean();
+            durations = null;
+            counts = null;
 
-            if (averageTimePerFeature == null ||
-                averageTimePerFeature.Length != featureCount)
+            if (!performanceMonitoringEnabled)
             {
-                averageTimePerFeature = new double[featureCount];
+                return;
             }
 
-            for (int i = 0; i < featureCount; i++)
+            int durationsCount = reader.ReadInt32();
+            if (durationsCount > 0)
             {
-                averageTimePerFeature[i] = reader.ReadSingle();
-            }
-
-            updatedPropertyDetails = null;
-            int updatedPropertyDetailCount = reader.ReadInt32();
-            if (updatedPropertyDetailCount != 0)
-            {
-                List<string> detailsList = new List<string>();
-                for (int i = 0; i < updatedPropertyDetailCount; i++)
+                durations = new List<Tuple<string, double>>();
+                for (int i = 0; i < durationsCount; i++)
                 {
-                    detailsList.Add(reader.ReadString());
+                    string eventName = reader.ReadString();
+                    double eventDuration = reader.ReadDouble();
+                    durations.Add(new Tuple<string, double>(eventName, eventDuration));
                 }
-
-                updatedPropertyDetails = detailsList;
             }
 
-            materialUpdates = reader.ReadInt32();
-
-            return true;
+            int countsCount = reader.ReadInt32();
+            if (countsCount > 0)
+            {
+                counts = new List<Tuple<string, int>>();
+                for (int i = 0; i < countsCount; i++)
+                {
+                    string eventName = reader.ReadString();
+                    int eventCount = reader.ReadInt32();
+                    counts.Add(new Tuple<string, int>(eventName, eventCount));
+                }
+            }
         }
 
         public void SetDiagnosticMode(bool enabled)
         {
             if (performanceParameters != null)
             {
-                performanceParameters.EnableDiagnosticPerformanceReporting = enabled;
+                performanceParameters.EnablePerformanceReporting = enabled;
             }
         }
 

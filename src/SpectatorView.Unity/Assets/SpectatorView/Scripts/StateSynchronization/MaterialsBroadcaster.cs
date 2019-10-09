@@ -14,6 +14,7 @@ namespace Microsoft.MixedReality.SpectatorView
         private Material[] cachedMaterials;
         private List<Dictionary<string, object>> previousValues = new List<Dictionary<string, object>>();
         private MaterialPropertyAsset[][] cachedMaterialPropertyAccessors;
+        private readonly string performanceComponentName = nameof(MaterialsBroadcaster);
 
         /// <summary>
         /// Asking for the sharedMaterial or sharedMaterials is expensive, so ensure this is only requested once per frame.
@@ -28,7 +29,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
                 ClearPreviousValuesCache();
 
-                StateSynchronizationPerformanceMonitor.Instance.FlagMaterialsUpdated();
+                StateSynchronizationPerformanceMonitor.Instance.IncrementEventCount(performanceComponentName, "MaterialsChanged");
             }
             else
             {
@@ -81,6 +82,7 @@ namespace Microsoft.MixedReality.SpectatorView
                 {
                     cachedMaterialPropertyAccessors[materialIndex] = Array.Empty<MaterialPropertyAsset>();
                 }
+                StateSynchronizationPerformanceMonitor.Instance.IncrementEventCount(performanceComponentName, "MaterialPropertyAccessorsCreated");
             }
 
             return cachedMaterialPropertyAccessors[materialIndex];
@@ -92,7 +94,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
             if (renderer != null && performanceParameters.MaterialPropertyBlocks == StateSynchronizationPerformanceParameters.FeatureInclusionType.SynchronizeFeature)
             {
-                using (StateSynchronizationPerformanceMonitor.Instance.MeasureScope(StateSynchronizationPerformanceFeature.MaterialPropertyBlockUpdate))
+                using (StateSynchronizationPerformanceMonitor.Instance.MeasureEventDuration(performanceComponentName, "MaterialPropertyBlockUpdate"))
                 {
                     renderer.UpdateCachedPropertyBlock();
                 }
@@ -102,7 +104,7 @@ namespace Microsoft.MixedReality.SpectatorView
         public void SendMaterialPropertyChanges(IEnumerable<SocketEndpoint> endpoints, Renderer renderer, StateSynchronizationPerformanceParameters performanceParameters, Action<BinaryWriter> writeHeader, Func<MaterialPropertyAsset, bool> shouldSynchronizeMaterialProperty)
         {
             Renderer usedRenderer = performanceParameters.MaterialPropertyBlocks == StateSynchronizationPerformanceParameters.FeatureInclusionType.SynchronizeFeature ? renderer : null;
-            using (StateSynchronizationPerformanceMonitor.Instance.MeasureScope(StateSynchronizationPerformanceFeature.MaterialPropertyUpdate))
+            using (StateSynchronizationPerformanceMonitor.Instance.MeasureEventDuration(performanceComponentName, "SendMaterialPropertyChanges"))
             {
                 for (int i = 0; i < cachedMaterials.Length; i++)
                 {
@@ -119,7 +121,7 @@ namespace Microsoft.MixedReality.SpectatorView
                                     previousValues[i][propertyAccessor.propertyName] = newValue;
                                     SendMaterialPropertyChange(endpoints, usedRenderer, i, propertyAccessor, writeHeader);
 
-                                    StateSynchronizationPerformanceMonitor.Instance.FlagMaterialPropertyUpdated(cachedMaterials[i].name, cachedMaterials[i].shader.name, propertyAccessor.propertyName);
+                                    StateSynchronizationPerformanceMonitor.Instance.IncrementEventCount(performanceComponentName, $"{cachedMaterials[i].name}.{cachedMaterials[i].shader.name}.{propertyAccessor.propertyName}");
                                 }
                             }
                         }
@@ -146,7 +148,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
         public void SendMaterials(BinaryWriter message, Renderer renderer, Func<MaterialPropertyAsset, bool> shouldSynchronizeMaterialProperty)
         {
-            using (StateSynchronizationPerformanceMonitor.Instance.MeasureScope(StateSynchronizationPerformanceFeature.MaterialPropertyUpdate))
+            using (StateSynchronizationPerformanceMonitor.Instance.MeasureEventDuration(performanceComponentName, "SendMaterials"))
             {
                 Material[] materials = cachedMaterials;
                 int materialCount = materials?.Length ?? 0;

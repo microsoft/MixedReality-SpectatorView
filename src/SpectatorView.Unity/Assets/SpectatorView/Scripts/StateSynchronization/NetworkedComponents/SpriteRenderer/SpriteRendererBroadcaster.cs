@@ -11,6 +11,8 @@ namespace Microsoft.MixedReality.SpectatorView
         private Sprite previousSprite;
         private SpriteRendererProperties previousData;
 
+        public override string PerformanceComponentName => "SpriteRendererBroadcaster";
+
         public static class SpriteRendererChangeType
         {
             public const byte Sprite = 0x8;
