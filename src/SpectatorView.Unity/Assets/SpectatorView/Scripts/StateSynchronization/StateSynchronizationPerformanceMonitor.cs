@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.SpectatorView
 {
-    internal class StateSynchronizationPerformanceMonitor : Singleton<StateSynchronizationPerformanceMonitor>
+    public class StateSynchronizationPerformanceMonitor : Singleton<StateSynchronizationPerformanceMonitor>
     {
         private const int PeriodsToAverageOver = 5;
         private int currentPeriod = 0;
@@ -18,14 +18,14 @@ namespace Microsoft.MixedReality.SpectatorView
         private Dictionary<string, Dictionary<string, Stopwatch>> eventStopWatches = new Dictionary<string, Dictionary<string, Stopwatch>>();
         private Dictionary<string, Dictionary<string, int>> eventCounts = new Dictionary<string, Dictionary<string, int>>();
 
-        public StateSynchronizationPerformanceParameters PerformanceParameters => performanceParameters;
+        internal StateSynchronizationPerformanceParameters PerformanceParameters => performanceParameters;
 
         protected override void Awake()
         {
             base.Awake();
         }
 
-        public void RegisterPerformanceParameters(StateSynchronizationPerformanceParameters parameters)
+        internal void RegisterPerformanceParameters(StateSynchronizationPerformanceParameters parameters)
         {
             if (performanceParameters != null)
             {
@@ -35,7 +35,7 @@ namespace Microsoft.MixedReality.SpectatorView
             performanceParameters = parameters;
         }
 
-        public void UnregisterPerformanceParameters(StateSynchronizationPerformanceParameters parameters)
+        internal void UnregisterPerformanceParameters(StateSynchronizationPerformanceParameters parameters)
         {
             if (parameters != null)
             {

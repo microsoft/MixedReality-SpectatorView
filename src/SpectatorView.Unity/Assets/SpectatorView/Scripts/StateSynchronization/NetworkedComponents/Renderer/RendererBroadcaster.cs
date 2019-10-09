@@ -65,7 +65,10 @@ namespace Microsoft.MixedReality.SpectatorView
                 changeType |= ChangeType.Materials;
             }
 
-            if (!HasFlag(changeType, ChangeType.Materials))
+            if (!HasFlag(changeType, ChangeType.Materials) &&
+                (StateSynchronizationPerformanceMonitor.Instance.PerformanceParameters.RenderQueue == StateSynchronizationPerformanceParameters.PollingFrequency.UpdateContinuously ||
+                StateSynchronizationPerformanceMonitor.Instance.PerformanceParameters.ShaderKeywords == StateSynchronizationPerformanceParameters.PollingFrequency.UpdateContinuously ||
+                StateSynchronizationPerformanceMonitor.Instance.PerformanceParameters.MaterialProperties == StateSynchronizationPerformanceParameters.PollingFrequency.UpdateContinuously))
             {
                 changeType |= ChangeType.MaterialProperty;
             }

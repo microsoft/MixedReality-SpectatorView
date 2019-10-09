@@ -40,6 +40,9 @@ namespace Microsoft.MixedReality.SpectatorView
         private bool isIdInitialized = false;
         private bool? isHidden;
 
+        private bool isParentTransformReportingFlagValid = false;
+        private bool cachedParentTransformReportingFlag = false;
+
         public override string PerformanceComponentName => "TransformBroadcaster";
 
         /// <summary>
@@ -137,7 +140,6 @@ namespace Microsoft.MixedReality.SpectatorView
             {
                 if (!isCachedPerformanceParametersValid)
                 {
-                    // TODO - think more about whether this is the best look up process/location
                     cachedPerformanceParameters = GetComponentInParent<StateSynchronizationPerformanceParameters>();
                     if (cachedPerformanceParameters == null && DefaultStateSynchronizationPerformanceParameters.IsInitialized && DefaultStateSynchronizationPerformanceParameters.Instance != null)
                     {
@@ -193,9 +195,17 @@ namespace Microsoft.MixedReality.SpectatorView
                 return false;
             }
 
-            if (CachedParentTransform != null)
+            if (isParentTransformReportingFlagValid)
             {
-                return CachedParentTransform.ShouldSendTransformInHierarchy(endpoint);
+                StateSynchronizationPerformanceMonitor.Instance.IncrementEventCount(PerformanceComponentName, "ShouldSendTransformInHierarchy.UsedCache");
+                return cachedParentTransformReportingFlag;
+            }
+            else if (CachedParentTransform != null)
+            {
+                cachedParentTransformReportingFlag = CachedParentTransform.ShouldSendTransformInHierarchy(endpoint);
+                isParentTransformReportingFlagValid = true;
+                StateSynchronizationPerformanceMonitor.Instance.IncrementEventCount(PerformanceComponentName, "ShouldSendTransformInHierarchy.LookupParent");
+                return cachedParentTransformReportingFlag;
             }
             else
             {
@@ -316,6 +326,9 @@ namespace Microsoft.MixedReality.SpectatorView
 
         protected override void BeginUpdatingFrame(SocketEndpointConnectionDelta connectionDelta)
         {
+            // Reset any cached values around parent transform reporting
+            isParentTransformReportingFlagValid = false;
+
             base.BeginUpdatingFrame(connectionDelta);
             // Messages for hierarchies need to be sent from root to leaf to ensure
             // that Canvas construction on the other end happens in the correct order.
@@ -326,6 +339,13 @@ namespace Microsoft.MixedReality.SpectatorView
         {
             base.EndUpdatingFrame();
             UpdateComponentBroadcasters();
+
+            for (int i = 0; i < CachedTransform.childCount; i++)
+            {
+                var childTransformBroadcaster = CachedTransform.GetChild(i).gameObject.GetComponent<TransformBroadcaster>();
+                childTransformBroadcaster.cachedParentTransformReportingFlag = 
+                childTransformBroadcaster.isParentTransformReportingFlagValid = true;
+            }
         }
 
         protected override bool HasChanges(TransformBroadcasterChangeType changeFlags)
