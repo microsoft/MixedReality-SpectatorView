@@ -41,7 +41,7 @@ namespace Microsoft.MixedReality.SpectatorView
     /// <summary>
     /// Used to persist asset information
     /// </summary>
-    public interface IAssetCache
+    public interface IAssetCacheUpdater
     {
         void UpdateAssetCache();
         void ClearAssetCache();

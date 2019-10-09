@@ -6,20 +6,11 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.SpectatorView
 {
-    internal class TextMeshService : ComponentBroadcasterService<TextMeshService, TextMeshObserver>, IAssetCache
+    internal class TextMeshService : ComponentBroadcasterService<TextMeshService, TextMeshObserver>, IAssetCacheUpdater
     {
         public static readonly ShortID ID = new ShortID("TXT");
 
         public override ShortID GetID() { return ID; }
-
-        private FontAssetCache fontAssets;
-
-        protected override void Awake()
-        {
-            base.Awake();
-
-            fontAssets = FontAssetCache.LoadAssetCache<FontAssetCache>();
-        }
 
         private void Start()
         {
@@ -28,12 +19,28 @@ namespace Microsoft.MixedReality.SpectatorView
 
         public Guid GetFontId(Font font)
         {
-            return fontAssets?.GetAssetId(font) ?? Guid.Empty;
+            var fontAssets = FontAssetCache.Instance;
+            if (fontAssets == null)
+            {
+                return Guid.Empty;
+            }
+            else
+            {
+                return fontAssets.GetAssetId(font);
+            }
         }
 
         public Font GetFont(Guid guid)
         {
-            return fontAssets?.GetAsset(guid);
+            var fontAssets = FontAssetCache.Instance;
+            if (fontAssets == null)
+            {
+                return null;
+            }
+            else
+            {
+                return fontAssets.GetAsset(guid);
+            }
         }
 
         public void UpdateAssetCache()

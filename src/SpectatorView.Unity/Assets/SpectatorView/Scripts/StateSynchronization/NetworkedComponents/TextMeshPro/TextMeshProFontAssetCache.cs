@@ -10,7 +10,7 @@ namespace Microsoft.MixedReality.SpectatorView
     [Serializable]
     internal class TextMeshProFontAsset : AssetCacheEntry<ScriptableObject> { }
 
-    internal class TextMeshProFontAssetCache : AssetCache<TextMeshProFontAsset, ScriptableObject>
+    internal class TextMeshProFontAssetCache : AssetCache<TextMeshProFontAssetCache, TextMeshProFontAsset, ScriptableObject>
     {
         private static bool IsAssetFileExtension(string fileExtension)
         {

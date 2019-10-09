@@ -14,26 +14,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   assets:
   - AssetId:
-      m_storage: 7b79034a-0f7d-4880-a4c6-7e2f4fe99c2c
+      m_storage: 0dd21619-d0ea-4f91-87f9-0d208a64fa61
     Asset: {fileID: 11400000, guid: 8f25585131267564cab5bbdafd36a94f, type: 2}
   - AssetId:
-      m_storage: 36963a34-9dc0-4b81-92ab-610fad5189b0
+      m_storage: 158dac00-74df-4ed7-8c39-13ad5da0f35a
     Asset: {fileID: 11400000, guid: f137eba12ee10834cb19632437cfdb2e, type: 2}
   - AssetId:
-      m_storage: bfc38baf-b5b5-4ffd-ab82-1cf632c24557
+      m_storage: 48a317a5-8183-4ccc-aa17-4615808fd367
     Asset: {fileID: 11400000, guid: fc8fa6e10f9c7fa4fa49a53ec702237e, type: 2}
   - AssetId:
-      m_storage: 9ef89c69-19d3-46ab-87bd-58433eb95f6a
+      m_storage: e0b39d61-362e-4ca5-97df-2cd3fc14336c
     Asset: {fileID: 11400000, guid: d94d0d64ec3545b408d5621e7d27cf96, type: 2}
   - AssetId:
-      m_storage: e7507801-9b23-4f45-b160-77f0389c6fa9
+      m_storage: b47c946e-054e-4dc3-8ee0-7970b3c9c546
     Asset: {fileID: 11400000, guid: 6a84f857bec7e7345843ae29404c57ce, type: 2}
   - AssetId:
-      m_storage: b38ba3db-5d7f-41a5-b0b6-d50d337052fa
-    Asset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  - AssetId:
-      m_storage: fb1d2c62-69d2-4815-a4dd-dfbe222bacf5
+      m_storage: 5bb956e0-50ef-49c7-9dfb-016017b7c0ec
     Asset: {fileID: 11400000, guid: afc8299d5d5bbd440a0616c8ecbc7217, type: 2}
   - AssetId:
-      m_storage: 20701068-95f1-4c1b-b34b-e01c50eed681
+      m_storage: 382d06c8-f5f2-4df5-8748-04ae26a4eeaa
     Asset: {fileID: 11400000, guid: cf40b52fb3478de4ea4adf277e3b75ef, type: 2}

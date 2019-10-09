@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.SpectatorView
     [Serializable]
     internal class FontAsset : AssetCacheEntry<Font> { }
 
-    internal class FontAssetCache : AssetCache<FontAsset, Font>
+    internal class FontAssetCache : AssetCache<FontAssetCache, FontAsset, Font>
     {
         protected override IEnumerable<Font> EnumerateAllAssets()
         {

@@ -12,7 +12,7 @@ using UnityEditor;
 
 namespace Microsoft.MixedReality.SpectatorView
 {
-    internal class MaterialPropertyAssetCache : AssetCache
+    internal class MaterialPropertyAssetCache : AssetCache<MaterialPropertyAssetCache>
     {
         [SerializeField]
         private MaterialPropertyAsset[] materialPropertyAssets = null;
@@ -43,7 +43,7 @@ namespace Microsoft.MixedReality.SpectatorView
             {
                 if (customInstanceShaderProperties == null)
                 {
-                    customInstanceShaderProperties = AssetCache.LoadAssetCache<CustomShaderPropertyAssetCache>()?.CustomInstanceShaderProperties ?? Array.Empty<MaterialPropertyAsset>();
+                    customInstanceShaderProperties = CustomShaderPropertyAssetCache.LoadAssetCache<CustomShaderPropertyAssetCache>()?.CustomInstanceShaderProperties ?? Array.Empty<MaterialPropertyAsset>();
                 }
                 return customInstanceShaderProperties;
             }
@@ -68,6 +68,11 @@ namespace Microsoft.MixedReality.SpectatorView
             {
                 return customMaterialPropertiesByShaderName ?? (customMaterialPropertiesByShaderName = CustomInstanceShaderProperties.ToLookup(m => m.ShaderName));
             }
+        }
+
+        public Shader GetShader(string shaderName)
+        {
+            return MaterialPropertiesByShaderName[shaderName].Select(asset => asset.Shader).FirstOrDefault();
         }
 
         public override void UpdateAssetCache()

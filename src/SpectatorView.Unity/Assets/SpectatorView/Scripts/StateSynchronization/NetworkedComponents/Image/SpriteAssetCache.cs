@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.SpectatorView
     [Serializable]
     internal class SpriteAsset : AssetCacheEntry<Sprite> { }
 
-    internal class SpriteAssetCache : AssetCache<SpriteAsset, Sprite>
+    internal class SpriteAssetCache : AssetCache<SpriteAssetCache, SpriteAsset, Sprite>
     {
         protected override IEnumerable<Sprite> EnumerateAllAssets()
         {

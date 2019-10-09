@@ -11,7 +11,7 @@ using UnityEditor;
 
 namespace Microsoft.MixedReality.SpectatorView
 {
-    internal class AudioSourceService : ComponentBroadcasterService<AudioSourceService, AudioSourceObserver>, IAssetCache
+    internal class AudioSourceService : ComponentBroadcasterService<AudioSourceService, AudioSourceObserver>, IAssetCacheUpdater
     {
         public static readonly ShortID ID = new ShortID("AUD");
 
@@ -20,15 +20,9 @@ namespace Microsoft.MixedReality.SpectatorView
         private const int DSPBufferSize = 1024;
         private const AudioSpeakerMode SpeakerMode = AudioSpeakerMode.Stereo;
 
-        private AudioClipAssetCache audioClipAssets;
-        private AudioMixerGroupAssetCache audioMixerGroupAssets;
-
         protected override void Awake()
         {
             base.Awake();
-
-            audioClipAssets = AudioClipAssetCache.LoadAssetCache<AudioClipAssetCache>();
-            audioMixerGroupAssets = AudioMixerGroupAssetCache.LoadAssetCache<AudioMixerGroupAssetCache>();
         }
 
         private void Start()
@@ -38,22 +32,55 @@ namespace Microsoft.MixedReality.SpectatorView
 
         public Guid GetAudioClipId(AudioClip clip)
         {
-            return audioClipAssets?.GetAssetId(clip) ?? Guid.Empty;
+            var audioClipAssets = AudioClipAssetCache.Instance;
+            if (audioClipAssets == null)
+            {
+                return Guid.Empty;
+            }
+            else
+            {
+                return audioClipAssets.GetAssetId(clip);
+            }
         }
 
         public AudioClip GetAudioClip(Guid assetId)
         {
-            return audioClipAssets?.GetAsset(assetId);
+            var audioClipAssets = AudioClipAssetCache.Instance;
+
+            if (audioClipAssets == null)
+            {
+                return null;
+            }
+            else
+            {
+                return audioClipAssets.GetAsset(assetId);
+            }
         }
 
         public Guid GetAudioMixerGroupId(AudioMixerGroup group)
         {
-            return audioMixerGroupAssets?.GetAssetId(group) ?? Guid.Empty;
+            var audioMixerGroups = AudioMixerGroupAssetCache.Instance;
+            if (audioMixerGroups == null)
+            {
+                return Guid.Empty;
+            }
+            else
+            {
+                return audioMixerGroups.GetAssetId(group);
+            }
         }
 
         public AudioMixerGroup GetAudioMixerGroup(Guid assetId)
         {
-            return audioMixerGroupAssets?.GetAsset(assetId);
+            var audioMixerGroups = AudioMixerGroupAssetCache.Instance;
+            if (audioMixerGroups == null)
+            {
+                return null;
+            }
+            else
+            {
+                return audioMixerGroups.GetAsset(assetId);
+            }
         }
 
         public void UpdateAssetCache()
