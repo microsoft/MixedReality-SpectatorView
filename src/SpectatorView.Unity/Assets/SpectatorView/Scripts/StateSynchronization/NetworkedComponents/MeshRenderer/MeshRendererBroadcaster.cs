@@ -50,5 +50,13 @@ namespace Microsoft.MixedReality.SpectatorView
                 return base.ShouldSendChanges(endpoint);
             }
         }
+
+        protected override byte CalculateDeltaChanges()
+        {
+            using (StateSynchronizationPerformanceMonitor.Instance.MeasureEventDuration(PerformanceComponentName, "CalculateDeltaChanges"))
+            {
+                return base.CalculateDeltaChanges();
+            }
+        }
     }
 }

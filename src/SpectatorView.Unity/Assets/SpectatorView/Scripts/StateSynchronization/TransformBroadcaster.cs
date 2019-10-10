@@ -32,7 +32,6 @@ namespace Microsoft.MixedReality.SpectatorView
         private TransformBroadcaster cachedParentTransform;
         private bool isCachedParentTransformValid;
         private bool isCachedPerformanceParametersValid;
-        private SocketEndpointConnectionDelta cachedConnectionDelta;
 
         private StateSynchronizationPerformanceParameters cachedPerformanceParameters = null;
         private RectTransformBroadcaster rectCache = null;
@@ -44,6 +43,7 @@ namespace Microsoft.MixedReality.SpectatorView
         private bool isParentTransformReportingFlagValid = false;
         private bool cachedParentTransformReportingFlag = false;
 
+        private bool shouldProcessConnectionDelta = false;
         private readonly HashSet<SocketEndpoint> fullyInitializedEndpoints = new HashSet<SocketEndpoint>();
         private readonly List<SocketEndpoint> endpointsNeedingCompleteChanges = new List<SocketEndpoint>();
         private readonly List<SocketEndpoint> endpointsNeedingDeltaChanges = new List<SocketEndpoint>();
@@ -334,6 +334,9 @@ namespace Microsoft.MixedReality.SpectatorView
 
         protected override void BeginUpdatingFrame(SocketEndpointConnectionDelta connectionDelta)
         {
+            // Reset any endpoint connection logic for the fraeme
+            shouldProcessConnectionDelta = true;
+
             // Reset any cached values around parent transform reporting
             isParentTransformReportingFlagValid = false;
 
@@ -564,19 +567,11 @@ namespace Microsoft.MixedReality.SpectatorView
 
         public void ProcessConnectionDelta(SocketEndpointConnectionDelta connectionDelta, out IReadOnlyList<SocketEndpoint> needingCompleteChanges, out IReadOnlyList<SocketEndpoint> filteredNeedingDeltaChanged, out IReadOnlyList<SocketEndpoint> filteredNeedingCompleteChanges)
         {
-            if (cachedConnectionDelta == connectionDelta)
+            if (shouldProcessConnectionDelta)
             {
-                needingCompleteChanges = endpointsNeedingCompleteChanges;
-                filteredNeedingDeltaChanged = filteredEndpointsNeedingDeltaChanges;
-                filteredNeedingCompleteChanges = filteredEndpointsNeedingCompleteChanges;
-            }
-            else
-            {
-                needingCompleteChanges = null;
-                filteredNeedingDeltaChanged = null;
-                filteredNeedingCompleteChanges = null;
-
-                using (StateSynchronizationPerformanceMonitor.Instance.MeasureEventDuration(PerformanceComponentName, "FrameEndpointLogic"))
+                shouldProcessConnectionDelta = false;
+                StateSynchronizationPerformanceMonitor.Instance.IncrementEventCount(PerformanceComponentName, "ProcessConnectionDelta.UpdatedCache");
+                using (StateSynchronizationPerformanceMonitor.Instance.MeasureEventDuration(PerformanceComponentName, "EndpointAssessment"))
                 {
                     endpointsNeedingCompleteChanges.Clear();
                     endpointsNeedingDeltaChanges.Clear();
@@ -638,6 +633,14 @@ namespace Microsoft.MixedReality.SpectatorView
                     }
                 }
             }
+            else
+            {
+                StateSynchronizationPerformanceMonitor.Instance.IncrementEventCount(PerformanceComponentName, "ProcessConnectionDelta.UsedCache");
+            }
+
+            needingCompleteChanges = endpointsNeedingCompleteChanges;
+            filteredNeedingDeltaChanged = filteredEndpointsNeedingDeltaChanges;
+            filteredNeedingCompleteChanges = filteredEndpointsNeedingCompleteChanges;
         }
 
         private void GetLocalPose(out Vector3 localPosition, out Quaternion localRotation, out Vector3 localScale)

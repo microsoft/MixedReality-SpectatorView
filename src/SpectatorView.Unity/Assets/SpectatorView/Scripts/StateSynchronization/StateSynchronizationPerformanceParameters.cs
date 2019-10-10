@@ -62,6 +62,12 @@ namespace Microsoft.MixedReality.SpectatorView
         private Dictionary<MaterialPropertyKey, MaterialPropertyPollingFrequency> pollingFrequencyByMaterialProperty;
         private readonly string performanceComponentName = "StateSynchronizationPerformanceParameters";
 
+        private PollingFrequency? cachedCheckForComponentBroadcasters = null;
+        private PollingFrequency? cachedShaderKeywords = null;
+        private PollingFrequency? cachedRenderQueue = null;
+        private PollingFrequency? cachedMaterialProperties = null;
+        private FeatureInclusionType? cachedMaterialPropertyBlocks = null;
+
         public bool EnablePerformanceReporting
         {
             get { return enablePerformanceReporting; }
@@ -98,46 +104,69 @@ namespace Microsoft.MixedReality.SpectatorView
         }
           
 
-        private T GetInheritedProperty<T>(Func<StateSynchronizationPerformanceParameters, T> getter, T inhertedValue, T defaultValue)
+        private T GetInheritedProperty<T>(Func<StateSynchronizationPerformanceParameters, T> getter, T defaultValue)
         {
-            StateSynchronizationPerformanceParameters parameters = this;
-            while (parameters != null)
+            using (StateSynchronizationPerformanceMonitor.Instance.MeasureEventDuration(performanceComponentName, "GetInheritedProperty"))
             {
-                T pollingFrequency = getter(parameters);
-                if (!Equals(pollingFrequency, PollingFrequency.InheritFromParent))
+                StateSynchronizationPerformanceParameters parameters = this;
+                while (parameters != null)
                 {
-                    return pollingFrequency;
+                    T pollingFrequency = getter(parameters);
+                    if (!Equals(pollingFrequency, PollingFrequency.InheritFromParent))
+                    {
+                        return pollingFrequency;
+                    }
+
+                    parameters = parameters.parentParameters;
                 }
 
-                parameters = parameters.parentParameters;
+                return defaultValue;
+            }
+        }
+
+        private PollingFrequency GetInheritedProperty(ref PollingFrequency? cachedValue, Func<StateSynchronizationPerformanceParameters, PollingFrequency> getter, PollingFrequency defaultValue)
+        {
+            if (cachedValue == null)
+            {
+                cachedValue = GetInheritedProperty(getter, defaultValue);
             }
 
-            return defaultValue;
+            return cachedValue.Value;
+        }
+
+        private FeatureInclusionType GetInheritedProperty(ref FeatureInclusionType? cachedValue, Func<StateSynchronizationPerformanceParameters, FeatureInclusionType> getter, FeatureInclusionType defaultValue)
+        {
+            if (cachedValue == null)
+            {
+                cachedValue = GetInheritedProperty(getter, defaultValue);
+            }
+
+            return cachedValue.Value;
         }
 
         public PollingFrequency CheckForComponentBroadcasters
         {
-            get { return GetInheritedProperty(p => p.checkForComponentBroadcasters, PollingFrequency.InheritFromParent, PollingFrequency.UpdateContinuously); }
+            get { return GetInheritedProperty(ref cachedCheckForComponentBroadcasters, p => p.checkForComponentBroadcasters, PollingFrequency.UpdateContinuously); }
         }
 
         public PollingFrequency ShaderKeywords
         {
-            get { return GetInheritedProperty(p => p.shaderKeywords, PollingFrequency.InheritFromParent, PollingFrequency.UpdateContinuously); }
+            get { return GetInheritedProperty(ref cachedShaderKeywords, p => p.shaderKeywords, PollingFrequency.UpdateContinuously); }
         }
 
         public PollingFrequency RenderQueue
         {
-            get { return GetInheritedProperty(p => p.renderQueue, PollingFrequency.InheritFromParent, PollingFrequency.UpdateContinuously); }
+            get { return GetInheritedProperty(ref cachedRenderQueue, p => p.renderQueue, PollingFrequency.UpdateContinuously); }
         }
 
         public PollingFrequency MaterialProperties
         {
-            get { return GetInheritedProperty(p => p.materialProperties, PollingFrequency.InheritFromParent, PollingFrequency.UpdateContinuously); }
+            get { return GetInheritedProperty(ref cachedMaterialProperties, p => p.materialProperties, PollingFrequency.UpdateContinuously); }
         }
 
         public FeatureInclusionType MaterialPropertyBlocks
         {
-            get { return GetInheritedProperty(p => p.materialPropertyBlocks, FeatureInclusionType.InheritFromParent, FeatureInclusionType.SynchronizeFeature); }
+            get { return GetInheritedProperty(ref cachedMaterialPropertyBlocks, p => p.materialPropertyBlocks, FeatureInclusionType.SynchronizeFeature); }
         }
 
         public bool ShouldUpdateMaterialProperty(MaterialPropertyAsset materialProperty)
@@ -210,6 +239,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
         private void UpdateParentParameters()
         {
+            StateSynchronizationPerformanceMonitor.Instance.IncrementEventCount(performanceComponentName, "UpdateParentParameters");
             if (GetComponent<DefaultStateSynchronizationPerformanceParameters>() != null)
             {
                 parentParameters = null;
@@ -229,9 +259,15 @@ namespace Microsoft.MixedReality.SpectatorView
                     }
                 }
             }
+
+            cachedCheckForComponentBroadcasters = null;
+            cachedShaderKeywords = null;
+            cachedRenderQueue = null;
+            cachedMaterialProperties = null;
+            cachedMaterialPropertyBlocks = null;
         }
 
-        public static StateSynchronizationPerformanceParameters CreateEmpty()
+    public static StateSynchronizationPerformanceParameters CreateEmpty()
         {
             if (emptyParametersGameObject == null)
             {

@@ -133,7 +133,13 @@ namespace Microsoft.MixedReality.SpectatorView
 
                         if (TransformBroadcaster != null)
                         {
-                            TransformBroadcaster.ProcessConnectionDelta(connectionDelta, out var endpointsNeedingCompleteChanges, out var filteredEndpointsNeedingDeltaChanges, out var filteredEndpointsNeedingCompleteChanges);
+                            IReadOnlyList<SocketEndpoint> endpointsNeedingCompleteChanges;
+                            IReadOnlyList<SocketEndpoint> filteredEndpointsNeedingDeltaChanges;
+                            IReadOnlyList<SocketEndpoint> filteredEndpointsNeedingCompleteChanges;
+                            using (StateSynchronizationPerformanceMonitor.Instance.MeasureEventDuration(PerformanceComponentName, "ProcessConnectionDelta"))
+                            {
+                                TransformBroadcaster.ProcessConnectionDelta(connectionDelta, out endpointsNeedingCompleteChanges, out filteredEndpointsNeedingDeltaChanges, out filteredEndpointsNeedingCompleteChanges);
+                            }
 
                             if (endpointsNeedingCompleteChanges != null &&
                                 endpointsNeedingCompleteChanges.Any())
@@ -145,7 +151,7 @@ namespace Microsoft.MixedReality.SpectatorView
                                 filteredEndpointsNeedingDeltaChanges.Any())
                             {
                                 TChangeFlags changeFlags = CalculateDeltaChanges();
-                                if (HasChanges(changeFlags) && filteredEndpointsNeedingDeltaChanges.Any())
+                                if (HasChanges(changeFlags))
                                 {
                                     SendDeltaChanges(filteredEndpointsNeedingDeltaChanges, changeFlags);
                                 }
@@ -163,12 +169,12 @@ namespace Microsoft.MixedReality.SpectatorView
                                 RemoveDisconnectedEndpoints(connectionDelta.RemovedConnections);
                             }
                         }
+                        else
+                        {
+                            StateSynchronizationPerformanceMonitor.Instance.IncrementEventCount(PerformanceComponentName, "NullTransformBroadcaster");
+                        }
 
                         EndUpdatingFrame();
-                    }
-                    else
-                    {
-                        StateSynchronizationPerformanceMonitor.Instance.IncrementEventCount(PerformanceComponentName, "NullTransformBroadcaster");
                     }
                 }
             }
