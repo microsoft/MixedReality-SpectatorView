@@ -48,7 +48,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
                 {
                     if (StateSynchronizationObserver.Instance == null)
                     {
-                        RenderTitle("StateSynchronizationObserver was not detected in the current scene. Open the SpectatorViewCompositor scene.", Color.red);
+                        RenderTitle("StateSynchronizationObserver was not detected in the current scene. Open the SpectatorViewPerformance scene.", Color.red);
                     }
                     else
                     {
@@ -106,7 +106,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
                     RenderTitle("Event Durations (ms)", Color.green);
                     foreach (var duration in StateSynchronizationObserver.Instance.PerformanceEventDurations)
                     {
-                        GUILayout.Label($"{duration.Item1}:{duration.Item2}");
+                        GUILayout.Label($"{duration.Item1}:{duration.Item2.ToString("G4")}");
                     }
                 }
 
