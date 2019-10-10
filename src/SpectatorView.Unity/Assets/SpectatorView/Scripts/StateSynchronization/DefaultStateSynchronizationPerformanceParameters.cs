@@ -30,9 +30,8 @@ namespace Microsoft.MixedReality.SpectatorView
             _Instance = this;
         }
 
-        protected override void OnDestroy()
+        protected virtual void OnDestroy()
         {
-            base.OnDestroy();
             _Instance = null;
         }
 

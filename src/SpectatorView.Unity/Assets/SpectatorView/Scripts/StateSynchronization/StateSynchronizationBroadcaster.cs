@@ -39,7 +39,7 @@ namespace Microsoft.MixedReality.SpectatorView
             base.Awake();
 
             RegisterCommandHandler(StateSynchronizationObserver.SyncCommand, HandleSyncCommand);
-            RegisterCommandHandler(StateSynchronizationObserver.PerfDiagnosticModeEnabledCommand, HandlePerfDiagnosticModeEnabledRequest);
+            RegisterCommandHandler(StateSynchronizationObserver.PerfDiagnosticModeEnabledCommand, HandlePerfMonitoringModeEnableRequest);
 
             // Ensure that runInBackground is set to true so that the app continues to send network
             // messages even if it loses focus
@@ -50,7 +50,7 @@ namespace Microsoft.MixedReality.SpectatorView
             base.OnDestroy();
 
             UnregisterCommandHandler(StateSynchronizationObserver.SyncCommand, HandleSyncCommand);
-            UnregisterCommandHandler(StateSynchronizationObserver.PerfDiagnosticModeEnabledCommand, HandlePerfDiagnosticModeEnabledRequest);
+            UnregisterCommandHandler(StateSynchronizationObserver.PerfDiagnosticModeEnabledCommand, HandlePerfMonitoringModeEnableRequest);
         }
 
         protected override void Start()
@@ -202,7 +202,7 @@ namespace Microsoft.MixedReality.SpectatorView
             StateSynchronizationSceneManager.Instance.ReceiveMessage(endpoint, reader);
         }
 
-        private void HandlePerfDiagnosticModeEnabledRequest(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
+        private void HandlePerfMonitoringModeEnableRequest(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
         {
             bool enabled = reader.ReadBoolean();
             if (StateSynchronizationPerformanceMonitor.Instance != null)

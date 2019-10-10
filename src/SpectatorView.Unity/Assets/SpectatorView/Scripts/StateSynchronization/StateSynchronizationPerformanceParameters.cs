@@ -68,12 +68,12 @@ namespace Microsoft.MixedReality.SpectatorView
         private PollingFrequency? cachedMaterialProperties = null;
         private FeatureInclusionType? cachedMaterialPropertyBlocks = null;
 
-        public bool EnablePerformanceReporting
+        public static bool EnablePerformanceReporting
         {
             get { return enablePerformanceReporting; }
             set { enablePerformanceReporting = value; }
         }
-        private bool enablePerformanceReporting = false;
+        private static bool enablePerformanceReporting = false;
 
         private IDictionary<MaterialPropertyKey, MaterialPropertyPollingFrequency> PollingFrequencyByMaterialProperty
         {
@@ -220,16 +220,6 @@ namespace Microsoft.MixedReality.SpectatorView
         protected virtual void Awake()
         {
             UpdateParentParameters();
-        }
-
-        protected virtual void Start()
-        {
-            StateSynchronizationPerformanceMonitor.Instance.RegisterPerformanceParameters(this);
-        }
-
-        protected virtual void OnDestroy()
-        {
-            StateSynchronizationPerformanceMonitor.Instance.UnregisterPerformanceParameters(this);
         }
 
         private void OnTransformParentChanged()

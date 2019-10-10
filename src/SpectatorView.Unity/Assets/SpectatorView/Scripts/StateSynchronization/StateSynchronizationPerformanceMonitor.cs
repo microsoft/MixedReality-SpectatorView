@@ -14,42 +14,17 @@ namespace Microsoft.MixedReality.SpectatorView
     {
         private const int PeriodsToAverageOver = 5;
         private int currentPeriod = 0;
-        private StateSynchronizationPerformanceParameters performanceParameters = null;
         private Dictionary<string, Dictionary<string, Stopwatch>> eventStopWatches = new Dictionary<string, Dictionary<string, Stopwatch>>();
         private Dictionary<string, Dictionary<string, int>> eventCounts = new Dictionary<string, Dictionary<string, int>>();
-
-        internal StateSynchronizationPerformanceParameters PerformanceParameters => performanceParameters;
 
         protected override void Awake()
         {
             base.Awake();
         }
 
-        internal void RegisterPerformanceParameters(StateSynchronizationPerformanceParameters parameters)
-        {
-            if (performanceParameters != null)
-            {
-                UnityEngine.Debug.LogWarning("Multiple StateSynchronizationPerformanceParameters attempted to register with the StateSynchronizationPerformanceMonitor.");
-            }
-
-            performanceParameters = parameters;
-        }
-
-        internal void UnregisterPerformanceParameters(StateSynchronizationPerformanceParameters parameters)
-        {
-            if (parameters != null)
-            {
-                UnityEngine.Debug.LogWarning("Attempted to unregister performance parameters that weren't being used.");
-                return;
-            }
-
-            performanceParameters = null;
-        }
-
         public IDisposable MeasureEventDuration(string componentName, string eventName)
         {
-            if (performanceParameters != null &&
-                !performanceParameters.EnablePerformanceReporting)
+            if (!StateSynchronizationPerformanceParameters.EnablePerformanceReporting)
             {
                 return null;
             }
@@ -71,8 +46,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
         public void IncrementEventCount(string componentName, string eventName)
         {
-            if (performanceParameters != null &&
-                !performanceParameters.EnablePerformanceReporting)
+            if (!StateSynchronizationPerformanceParameters.EnablePerformanceReporting)
             {
                 return;
             }
@@ -95,8 +69,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
         public void WriteMessage(BinaryWriter message)
         {
-            if (performanceParameters != null &&
-                performanceParameters.EnablePerformanceReporting)
+            if (StateSynchronizationPerformanceParameters.EnablePerformanceReporting)
             {
                 message.Write(true);
             }
@@ -179,10 +152,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
         public void SetDiagnosticMode(bool enabled)
         {
-            if (performanceParameters != null)
-            {
-                performanceParameters.EnablePerformanceReporting = enabled;
-            }
+            StateSynchronizationPerformanceParameters.EnablePerformanceReporting = enabled;
         }
 
         private struct TimeScope : IDisposable
