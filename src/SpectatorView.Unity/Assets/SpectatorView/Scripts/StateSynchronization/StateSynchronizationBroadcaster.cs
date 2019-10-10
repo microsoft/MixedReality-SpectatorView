@@ -210,6 +210,7 @@ namespace Microsoft.MixedReality.SpectatorView
         private void HandleAssetBundleRequestInfo(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
         {
             AssetBundlePlatform platform = (AssetBundlePlatform)reader.ReadByte();
+            DebugLog($"Received asset bundle info request for platform {platform}");
             TextAsset asset = Resources.Load<TextAsset>($"{platform.ToString()}/spectatorview");
             bool hasAsset = asset != null;
 
@@ -249,6 +250,8 @@ namespace Microsoft.MixedReality.SpectatorView
 
         private void HandleAssetLoadCompleted(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
         {
+            DebugLog("Asset loading is complete, sending the ConnectedAndReady event");
+
             // Notify everyone the connection is actually ready
             ConnectedAndReady?.Invoke(endpoint);
         }
