@@ -98,7 +98,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
             GUILayout.EndHorizontal();
 
             scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
-            GUILayout.Label($"Performance Diagnostic Mode Enabled:{StateSynchronizationObserver.Instance.PerformanceMonitoringModeEnabled}");
+            GUILayout.Label($"Performance Monitoring Enabled:{StateSynchronizationObserver.Instance.PerformanceMonitoringModeEnabled}");
             if (StateSynchronizationObserver.Instance.PerformanceMonitoringModeEnabled)
             {
                 if (StateSynchronizationObserver.Instance.PerformanceEventDurations != null)
