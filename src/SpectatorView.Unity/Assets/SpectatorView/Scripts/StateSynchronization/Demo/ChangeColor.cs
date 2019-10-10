@@ -12,9 +12,6 @@ namespace Microsoft.MixedReality.SpectatorView
         [SerializeField]
         private Material material = null;
 
-        private const float secondsBetweenTransparentToggle = 1.0f;
-        private float lastTransparentToggle = 0;
-
         void Update()
         {
             float r = (1.0f + Mathf.Sin(Time.time)) / 2.0f;
