@@ -36,6 +36,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
         private Dictionary<ShortID, IComponentBroadcasterService> componentBroadcasterServices = new Dictionary<ShortID, IComponentBroadcasterService>();
 
+        private readonly HashSet<SocketEndpoint> pendingConnections = new HashSet<SocketEndpoint>();
         private readonly List<SocketEndpoint> addedConnections = new List<SocketEndpoint>();
         private readonly List<SocketEndpoint> removedConnections = new List<SocketEndpoint>();
         private readonly List<SocketEndpoint> continuedConnections = new List<SocketEndpoint>();
@@ -117,7 +118,8 @@ namespace Microsoft.MixedReality.SpectatorView
         {
             if (StateSynchronizationBroadcaster.IsInitialized)
             {
-                StateSynchronizationBroadcaster.Instance.ConnectedAndReady += OnClientConnected;
+                StateSynchronizationBroadcaster.Instance.Connected += OnClientConnected;
+                StateSynchronizationBroadcaster.Instance.ConnectedAndReady += OnClientConnectedAndReady;
                 StateSynchronizationBroadcaster.Instance.Disconnected += OnClientDisconnected;
             }
 
@@ -126,11 +128,18 @@ namespace Microsoft.MixedReality.SpectatorView
 
         private void OnClientConnected(SocketEndpoint endpoint)
         {
+            pendingConnections.Add(endpoint);
+        }
+
+        private void OnClientConnectedAndReady(SocketEndpoint endpoint)
+        {
+            pendingConnections.Remove(endpoint);
             addedConnections.Add(endpoint);
         }
 
         private void OnClientDisconnected(SocketEndpoint endpoint)
         {
+            pendingConnections.Remove(endpoint);
             removedConnections.Add(endpoint);
         }
 
@@ -460,7 +469,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
         private void CheckForFinalDisconnect()
         {
-            if (continuedConnections.Count == 0 && BroadcasterComponents.Count > 0)
+            if (continuedConnections.Count == 0 && pendingConnections.Count == 0 && BroadcasterComponents.Count > 0)
             {
                 foreach (MonoBehaviour component in BroadcasterComponents.OfType<MonoBehaviour>())
                 {
