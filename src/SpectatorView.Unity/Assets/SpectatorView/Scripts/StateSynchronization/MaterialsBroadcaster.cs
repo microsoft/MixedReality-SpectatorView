@@ -15,7 +15,7 @@ namespace Microsoft.MixedReality.SpectatorView
         private List<Dictionary<string, object>> previousValues = new List<Dictionary<string, object>>();
         private MaterialPropertyAsset[][] cachedMaterialPropertyAccessors;
         private readonly string performanceComponentName = nameof(MaterialsBroadcaster);
-
+   
         /// <summary>
         /// Asking for the sharedMaterial or sharedMaterials is expensive, so ensure this is only requested once per frame.
         /// </summary>

@@ -184,6 +184,17 @@ namespace Microsoft.MixedReality.SpectatorView
             get;
         } = new HashSet<SocketEndpoint>();
 
+        public override void ResetFrame()
+        {
+            base.ResetFrame();
+
+            // Reset any endpoint connection logic for the fraeme
+            shouldProcessConnectionDelta = true;
+
+            // Reset any cached values around parent transform reporting
+            isParentTransformReportingFlagValid = false;
+        }
+
         /// <summary>
         /// Returns true if the provided endpoint should receive a transform update, otherwise false
         /// </summary>
@@ -334,12 +345,6 @@ namespace Microsoft.MixedReality.SpectatorView
 
         protected override void BeginUpdatingFrame(SocketEndpointConnectionDelta connectionDelta)
         {
-            // Reset any endpoint connection logic for the fraeme
-            shouldProcessConnectionDelta = true;
-
-            // Reset any cached values around parent transform reporting
-            isParentTransformReportingFlagValid = false;
-
             base.BeginUpdatingFrame(connectionDelta);
             // Messages for hierarchies need to be sent from root to leaf to ensure
             // that Canvas construction on the other end happens in the correct order.

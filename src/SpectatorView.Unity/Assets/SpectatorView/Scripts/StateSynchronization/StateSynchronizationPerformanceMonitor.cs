@@ -12,8 +12,6 @@ namespace Microsoft.MixedReality.SpectatorView
 {
     public class StateSynchronizationPerformanceMonitor : Singleton<StateSynchronizationPerformanceMonitor>
     {
-        private const int PeriodsToAverageOver = 5;
-        private int currentPeriod = 0;
         private Dictionary<string, Dictionary<string, Stopwatch>> eventStopWatches = new Dictionary<string, Dictionary<string, Stopwatch>>();
         private Dictionary<string, Dictionary<string, int>> eventCounts = new Dictionary<string, Dictionary<string, int>>();
 
@@ -67,7 +65,7 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
-        public void WriteMessage(BinaryWriter message)
+        public void WriteMessage(BinaryWriter message, double timespanInSeconds)
         {
             if (StateSynchronizationPerformanceParameters.EnablePerformanceReporting)
             {
@@ -79,12 +77,13 @@ namespace Microsoft.MixedReality.SpectatorView
                 return;
             }
 
+            double timeInMilliseconds = 1000 * timespanInSeconds;
             List<Tuple<string, double>> durations = new List<Tuple<string, double>>();
             foreach(var componentPair in eventStopWatches)
             {
                 foreach(var eventPair in componentPair.Value)
                 {
-                    durations.Add(new Tuple<string, double>($"{componentPair.Key}.{eventPair.Key}", eventPair.Value.Elapsed.TotalMilliseconds));
+                    durations.Add(new Tuple<string, double>($"{componentPair.Key}.{eventPair.Key}", eventPair.Value.Elapsed.TotalMilliseconds / timeInMilliseconds));
                     eventPair.Value.Reset();
                 }
             }

@@ -82,7 +82,7 @@ namespace Microsoft.MixedReality.SpectatorView
         public virtual string PerformanceComponentName => string.Empty;
 
         /// <inheritdoc />
-        public void ResetFrame()
+        public virtual void ResetFrame()
         {
             isUpdatedThisFrame = false;
         }
@@ -142,13 +142,13 @@ namespace Microsoft.MixedReality.SpectatorView
                             }
 
                             if (endpointsNeedingCompleteChanges != null &&
-                                endpointsNeedingCompleteChanges.Any())
+                                endpointsNeedingCompleteChanges.Count > 0)
                             {
                                 SendComponentCreation(endpointsNeedingCompleteChanges);
                             }
 
                             if (filteredEndpointsNeedingDeltaChanges != null &&
-                                filteredEndpointsNeedingDeltaChanges.Any())
+                                filteredEndpointsNeedingDeltaChanges.Count > 0)
                             {
                                 TChangeFlags changeFlags = CalculateDeltaChanges();
                                 if (HasChanges(changeFlags))
@@ -158,13 +158,13 @@ namespace Microsoft.MixedReality.SpectatorView
                             }
 
                             if (filteredEndpointsNeedingCompleteChanges != null &&
-                                filteredEndpointsNeedingCompleteChanges.Any())
+                                filteredEndpointsNeedingCompleteChanges.Count > 0)
                             {
                                 SendCompleteChanges(filteredEndpointsNeedingCompleteChanges);
                             }
 
                             if (connectionDelta.RemovedConnections != null &&
-                                connectionDelta.RemovedConnections.Any())
+                                connectionDelta.RemovedConnections.Count > 0)
                             {
                                 RemoveDisconnectedEndpoints(connectionDelta.RemovedConnections);
                             }
