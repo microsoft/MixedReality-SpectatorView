@@ -50,6 +50,13 @@ namespace Microsoft.MixedReality.SpectatorView
         private GameObject defaultMobileNetworkConfigurationVisualPrefab = null;
 #pragma warning restore 414
 
+        /// <summary>
+        /// Uncheck to reshow the network configuration visual prefab on network disconnect. If kept checked a network reconnect will be attempted indefinitely.
+        /// </summary>
+        [Tooltip("Uncheck to reshow the network configuration visual prefab on network disconnect. If checked, a network reconnect will be attempted indefinitely after setting up the initial network configuration.")]
+        [SerializeField]
+        private bool automaticallyAttemptNetworkReconnects = false;
+
         [Header("State Synchronization")]
         /// <summary>
         /// StateSynchronizationSceneManager MonoBehaviour
@@ -199,21 +206,37 @@ namespace Microsoft.MixedReality.SpectatorView
                         // When running as a spectator, automatic localization should be initiated if it's configured.
                         SpatialCoordinateSystemManager.Instance.ParticipantConnected += OnParticipantConnected;
 
-                        if (!ShouldUseNetworkConfigurationVisual())
-                        {
-                            DebugLog("Not using a network configuration visual, beginning state synchronization as an observer.");
-                            RunStateSynchronizationAsObserver();
-                        }
-                        else
-                        {
-                            DebugLog("Using a network configuration visual. State synchronization will be delayed until a connection is started by the user.");
-                            SetupNetworkConfigurationVisual();
-                        }
+                        SetupSpectatorNetworkConnection();
                     }
                     break;
             }
 
             SetupRecordingService();
+        }
+
+        private void SetupSpectatorNetworkConnection()
+        {
+            if (!ShouldUseNetworkConfigurationVisual())
+            {
+                DebugLog("Not using a network configuration visual, beginning state synchronization as an observer.");
+                RunStateSynchronizationAsObserver();
+            }
+            else
+            {
+                DebugLog("Using a network configuration visual. State synchronization will be delayed until a connection is started by the user.");
+                SetupNetworkConfigurationVisual();
+            }
+        }
+
+        private void OnSpectatorNetworkDisconnect(SocketEndpoint endoint)
+        {
+            if (stateSynchronizationObserver != null)
+            {
+                stateSynchronizationObserver.Disconnected -= OnSpectatorNetworkDisconnect;
+            }
+
+            DebugLog("Observed network disconnect for spectator, rerunning spectator view network connection setup logic.");
+            SetupSpectatorNetworkConnection();
         }
 
         private void Update()
@@ -240,7 +263,10 @@ namespace Microsoft.MixedReality.SpectatorView
             }
 #endif
 
-            SpatialCoordinateSystemManager.Instance.ParticipantConnected -= OnParticipantConnected;
+            if (this.Role == Role.Spectator)
+            {
+                SpatialCoordinateSystemManager.Instance.ParticipantConnected -= OnParticipantConnected;
+            }
         }
 
         private void RunStateSynchronizationAsBroadcaster()
@@ -259,6 +285,16 @@ namespace Microsoft.MixedReality.SpectatorView
 
             // The StateSynchronizationSceneManager needs to be enabled after the broadcaster/observer
             stateSynchronizationSceneManager.gameObject.SetActive(true);
+
+            if (!automaticallyAttemptNetworkReconnects)
+            {
+                // Listen for disconnects in order to reshow the network configuration visual
+                stateSynchronizationObserver.Disconnected += OnSpectatorNetworkDisconnect;
+
+                // Tell the StateSynchronizationObserver to prevent attempting reconnects
+                DebugLog("Disabling attempts to reconnect on disconnect.");
+                stateSynchronizationObserver.AttemptReconnectWhenClient = false;
+            }
 
             // Make sure the StateSynchronizationSceneManager is enabled prior to connecting the observer
             stateSynchronizationObserver.ConnectTo(userIpAddress);
@@ -356,7 +392,6 @@ namespace Microsoft.MixedReality.SpectatorView
             this.userIpAddress = ipAddress;
             if (networkConfigurationVisual != null)
             {
-                networkConfigurationVisual.NetworkConfigurationUpdated -= OnNetworkConfigurationUpdated;
                 networkConfigurationVisual.Hide();
             }
 
@@ -385,7 +420,7 @@ namespace Microsoft.MixedReality.SpectatorView
         {
             if (debugLogging)
             {
-                UnityEngine.Debug.Log($"SpatialLocalizationInitializationSettings: {message}");
+                UnityEngine.Debug.Log($"SpectatorView: {message}");
             }
         }
 

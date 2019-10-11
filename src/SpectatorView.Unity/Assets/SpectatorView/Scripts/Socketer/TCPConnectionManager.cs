@@ -24,6 +24,10 @@ namespace Microsoft.MixedReality.SpectatorView
         /// Called when a data payload is received
         /// </summary>
         public event Action<IncomingMessage> OnReceive;
+        /// <summary>
+        /// If true, socket clients will attempt to reconnect when disconnected.
+        /// </summary>
+        public bool AttemptReconnectWhenClient = true;
 
         private readonly TimeSpan timeoutInterval = TimeSpan.Zero;
         private readonly ConcurrentQueue<SocketEndpoint> newConnections = new ConcurrentQueue<SocketEndpoint>();
@@ -128,6 +132,12 @@ namespace Microsoft.MixedReality.SpectatorView
         {
             Debug.Log("Client connected to " + hostAddress);
             SocketEndpoint socketEndpoint = new SocketEndpoint(client, timeoutInterval, hostAddress, sourceId);
+
+            if (!AttemptReconnectWhenClient)
+            {
+                socketEndpoint.StopConnectionAttempts();
+            }
+
             clientConnection = socketEndpoint;
             socketEndpoint.QueueIncomingMessages(inputMessageQueue);
             newConnections.Enqueue(socketEndpoint);
