@@ -39,6 +39,7 @@ namespace Microsoft.MixedReality.SpectatorView
         private const float heartbeatTimeInterval = 0.1f;
         private float timeSinceLastHeartbeat = 0.0f;
         private HologramSynchronizer hologramSynchronizer = new HologramSynchronizer();
+        private AssetBundle currentAssetBundle;
 
         private static readonly byte[] heartbeatMessage = GenerateHeartbeatMessage();
 
@@ -138,10 +139,12 @@ namespace Microsoft.MixedReality.SpectatorView
             bool hasAssetBundle = reader.ReadBoolean();
             if (hasAssetBundle)
             {
+                DebugLog($"We determined that there is an asset bundle for this platform");
                 SendAssetBundleDownloadRequest(endpoint);
             }
             else
             {
+                DebugLog($"We determined that there is NOT an asset bundle for this platform");
                 SendAssetsLoaded(endpoint);
             }
         }
@@ -154,9 +157,9 @@ namespace Microsoft.MixedReality.SpectatorView
             {
                 rawAssetBundle = reader.ReadBytes(length);
                 Debug.Log("Loading asset bundle");
-                AssetBundle bundle = AssetBundle.LoadFromMemory(rawAssetBundle);
+                currentAssetBundle = AssetBundle.LoadFromMemory(rawAssetBundle);
                 Debug.Log("Asset bundle load completed");
-                bundle.LoadAllAssets();
+                currentAssetBundle.LoadAllAssets();
             }
 
             SendAssetsLoaded(endpoint);
@@ -202,6 +205,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
         private void SendAssetBundleInfoRequest(SocketEndpoint endpoint)
         {
+            DebugLog($"Sending a request for asset bundle info for {AssetBundlePlatformInfo.Current}");
             using (MemoryStream stream = new MemoryStream())
             using (BinaryWriter writer = new BinaryWriter(stream))
             {
@@ -240,6 +244,12 @@ namespace Microsoft.MixedReality.SpectatorView
             foreach (AssetCache cache in FindObjectsOfType<AssetCache>())
             {
                 Destroy(cache);
+            }
+
+            if (currentAssetBundle != null)
+            {
+                currentAssetBundle.Unload(unloadAllLoadedObjects: true);
+                currentAssetBundle = null;
             }
         }
     }
