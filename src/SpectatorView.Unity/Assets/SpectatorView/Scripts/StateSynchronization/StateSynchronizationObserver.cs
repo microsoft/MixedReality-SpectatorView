@@ -35,9 +35,7 @@ namespace Microsoft.MixedReality.SpectatorView
         private const float heartbeatTimeInterval = 0.1f;
         private float timeSinceLastHeartbeat = 0.0f;
         private HologramSynchronizer hologramSynchronizer = new HologramSynchronizer();
-        private bool performanceMonitoringModeEnabled;
-        private List<Tuple<string, double>> eventDurations = null;
-        private List<Tuple<string, int>> eventCounts = null;
+       private StateSynchronizationPerformanceMonitor.ParsedMessage lastPerfMessage = new StateSynchronizationPerformanceMonitor.ParsedMessage(false, null, null);
 
         private static readonly byte[] heartbeatMessage = GenerateHeartbeatMessage();
 
@@ -114,7 +112,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
         public void HandlePerfCommand(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
         {
-            StateSynchronizationPerformanceMonitor.ReadMessage(reader, out performanceMonitoringModeEnabled, out eventDurations, out eventCounts);
+            StateSynchronizationPerformanceMonitor.ReadMessage(reader, out lastPerfMessage);
         }
 
         public void SetPerformanceMonitoringMode(bool enabled)
@@ -136,9 +134,9 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
-        internal bool PerformanceMonitoringModeEnabled => performanceMonitoringModeEnabled;
-        internal IReadOnlyList<Tuple<string, double>> PerformanceEventDurations => eventDurations;
-        internal IReadOnlyList<Tuple<string, int>> PerformanceEventCounts => eventCounts;
+        internal bool PerformanceMonitoringModeEnabled => lastPerfMessage.PerformanceMonitoringEnabled;
+        internal IReadOnlyList<Tuple<string, double>> PerformanceEventDurations => lastPerfMessage.EventDurations;
+        internal IReadOnlyList<Tuple<string, int>> PerformanceEventCounts => lastPerfMessage.EventCounts;
 
         private void CheckAndSendHeartbeat()
         {

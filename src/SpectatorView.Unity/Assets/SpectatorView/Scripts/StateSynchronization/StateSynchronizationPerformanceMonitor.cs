@@ -24,6 +24,20 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         };
 
+        public struct ParsedMessage
+        {
+            public bool PerformanceMonitoringEnabled;
+            public List<Tuple<string, double>> EventDurations;
+            public List<Tuple<string, int>> EventCounts;
+
+            public ParsedMessage(bool performanceMonitoringEnabled, List<Tuple<string, double>> eventDurations, List<Tuple<string, int>> eventCounts)
+            {
+                this.PerformanceMonitoringEnabled = performanceMonitoringEnabled;
+                this.EventDurations = eventDurations;
+                this.EventCounts = eventCounts;
+            }
+        };
+
         private Dictionary<StopWatchKey, Stopwatch> eventStopWatches = new Dictionary<StopWatchKey, Stopwatch>();
         private Dictionary<StopWatchKey, int> eventCounts = new Dictionary<StopWatchKey, int>();
 
@@ -109,14 +123,15 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
-        public static void ReadMessage(BinaryReader reader, out bool performanceMonitoringEnabled, out List<Tuple<string, double>> durations, out List<Tuple<string, int>> counts)
+        public static void ReadMessage(BinaryReader reader, out ParsedMessage message)
         {
-            performanceMonitoringEnabled = reader.ReadBoolean();
-            durations = null;
-            counts = null;
+            bool performanceMonitoringEnabled = reader.ReadBoolean();
+            List<Tuple<string, double>> durations = null;
+            List<Tuple<string, int>> counts = null;
 
             if (!performanceMonitoringEnabled)
             {
+                message = new ParsedMessage(performanceMonitoringEnabled, durations, counts);
                 return;
             }
 
@@ -143,6 +158,8 @@ namespace Microsoft.MixedReality.SpectatorView
                     counts.Add(new Tuple<string, int>(eventName, eventCount));
                 }
             }
+
+            message = new ParsedMessage(performanceMonitoringEnabled, durations, counts);
         }
 
         public void SetDiagnosticMode(bool enabled)
