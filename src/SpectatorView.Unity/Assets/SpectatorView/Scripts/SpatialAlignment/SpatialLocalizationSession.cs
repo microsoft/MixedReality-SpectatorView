@@ -33,7 +33,9 @@ namespace Microsoft.MixedReality.SpectatorView
         /// <inheritdoc />
         public void Cancel()
         {
-            if (defaultCTS.Token.CanBeCanceled)
+            if (!this.IsDisposed &&
+                defaultCTS != null &&
+                defaultCTS.Token.CanBeCanceled)
             {
                 defaultCTS.Cancel();
             }
