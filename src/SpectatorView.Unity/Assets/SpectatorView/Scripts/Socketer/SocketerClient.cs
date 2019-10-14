@@ -564,7 +564,7 @@ namespace Microsoft.MixedReality.SpectatorView
             private bool threadShouldRun;
             // If a connection fails, wait this many ms
             private const int timeoutMS = 500;
-            private bool attemptConnection = true;
+            private volatile bool attemptConnection = true;
 
             internal class ConnectionEventArgs : EventArgs
             {
