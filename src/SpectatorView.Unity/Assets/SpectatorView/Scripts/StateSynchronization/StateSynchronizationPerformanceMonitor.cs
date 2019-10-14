@@ -12,8 +12,20 @@ namespace Microsoft.MixedReality.SpectatorView
 {
     public class StateSynchronizationPerformanceMonitor : Singleton<StateSynchronizationPerformanceMonitor>
     {
-        private Dictionary<string, Dictionary<string, Stopwatch>> eventStopWatches = new Dictionary<string, Dictionary<string, Stopwatch>>();
-        private Dictionary<string, Dictionary<string, int>> eventCounts = new Dictionary<string, Dictionary<string, int>>();
+        private struct StopWatchKey
+        {
+            public string ComponentName;
+            public string EventName;
+
+            public StopWatchKey(string componentName, string eventName)
+            {
+                this.ComponentName = componentName;
+                this.EventName = eventName;
+            }
+        };
+
+        private Dictionary<StopWatchKey, Stopwatch> eventStopWatches = new Dictionary<StopWatchKey, Stopwatch>();
+        private Dictionary<StopWatchKey, int> eventCounts = new Dictionary<StopWatchKey, int>();
 
         protected override void Awake()
         {
@@ -27,16 +39,11 @@ namespace Microsoft.MixedReality.SpectatorView
                 return null;
             }
 
-            if (!eventStopWatches.TryGetValue(componentName, out var dictionary))
-            {
-                dictionary = new Dictionary<string, Stopwatch>();
-                eventStopWatches.Add(componentName, dictionary);
-            }
-
-            if (!dictionary.TryGetValue(eventName, out var stopwatch))
+            var key = new StopWatchKey(componentName, eventName);
+            if (!eventStopWatches.TryGetValue(key, out var stopwatch))
             {
                 stopwatch = new Stopwatch();
-                dictionary.Add(eventName, stopwatch);
+                eventStopWatches.Add(key, stopwatch);
             }
 
             return new TimeScope(stopwatch);
@@ -49,19 +56,14 @@ namespace Microsoft.MixedReality.SpectatorView
                 return;
             }
 
-            if (!eventCounts.TryGetValue(componentName, out var dictionary))
+            var key = new StopWatchKey(componentName, eventName);
+            if (!eventCounts.ContainsKey(key))
             {
-                dictionary = new Dictionary<string, int>();
-                eventCounts.Add(componentName, dictionary);
-            }
-
-            if (!dictionary.ContainsKey(eventName))
-            {
-                dictionary.Add(eventName, 1);
+                eventCounts.Add(key, 1);
             }
             else
             {
-                dictionary[eventName]++;
+                eventCounts[key]++;
             }
         }
 
@@ -79,13 +81,10 @@ namespace Microsoft.MixedReality.SpectatorView
 
             double timeInMilliseconds = 1000 * timespanInSeconds;
             List<Tuple<string, double>> durations = new List<Tuple<string, double>>();
-            foreach(var componentPair in eventStopWatches)
+            foreach(var pair in eventStopWatches)
             {
-                foreach(var eventPair in componentPair.Value)
-                {
-                    durations.Add(new Tuple<string, double>($"{componentPair.Key}.{eventPair.Key}", eventPair.Value.Elapsed.TotalMilliseconds / timeInMilliseconds));
-                    eventPair.Value.Reset();
-                }
+                durations.Add(new Tuple<string, double>($"{pair.Key.ComponentName}.{pair.Key.EventName}", pair.Value.Elapsed.TotalMilliseconds / timeInMilliseconds));
+                pair.Value.Reset();
             }
 
             message.Write(durations.Count);
@@ -96,13 +95,10 @@ namespace Microsoft.MixedReality.SpectatorView
             }
 
             List<Tuple<string, int>> counts = new List<Tuple<string, int>>();
-            foreach(var componentPair in eventCounts.ToList())
+            foreach (var pair in eventCounts.ToList())
             {
-                foreach(var eventPair in componentPair.Value.ToList())
-                {
-                    counts.Add(new Tuple<string, int>($"{componentPair.Key}.{eventPair.Key}", eventPair.Value));
-                    eventCounts[componentPair.Key][eventPair.Key] = 0;
-                }
+                counts.Add(new Tuple<string, int>($"{pair.Key.ComponentName}.{pair.Key.EventName}", pair.Value));
+                eventCounts[pair.Key] = 0;
             }
 
             message.Write(counts.Count);

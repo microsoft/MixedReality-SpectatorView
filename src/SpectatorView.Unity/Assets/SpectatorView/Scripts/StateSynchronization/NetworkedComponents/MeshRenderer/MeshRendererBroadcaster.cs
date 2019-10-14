@@ -9,8 +9,6 @@ namespace Microsoft.MixedReality.SpectatorView
     internal abstract class MeshRendererBroadcaster<TComponentService> : RendererBroadcaster<MeshRenderer, TComponentService>
         where TComponentService : Singleton<TComponentService>, IComponentBroadcasterService
     {
-        public override string PerformanceComponentName => "MeshRendererBroadcaster";
-
         protected override byte InitialChangeType
         {
             get

@@ -20,8 +20,6 @@ namespace Microsoft.MixedReality.SpectatorView
             Properties = 0x1,
         }
 
-        public override string PerformanceComponentName => "LightBroadcaster";
-
         private Light lightBroadcaster;
         private LightProperties previousProperties;
 

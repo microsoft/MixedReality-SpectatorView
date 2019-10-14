@@ -19,8 +19,6 @@ namespace Microsoft.MixedReality.SpectatorView
             public const byte MaterialProperty = 0x4;
         }
 
-        public override string PerformanceComponentName => "RendererBroadcaster";
-
         private bool previousEnabled;
         private MaterialsBroadcaster MaterialsBroadcaster = new MaterialsBroadcaster();
 

@@ -21,8 +21,6 @@ namespace Microsoft.MixedReality.SpectatorView
         private RectMask2D rectMask2D;
         private bool previousEnabled;
 
-        public override string PerformanceComponentName => "RectMask2DBroadcaster";
-
         protected override void Awake()
         {
             base.Awake();

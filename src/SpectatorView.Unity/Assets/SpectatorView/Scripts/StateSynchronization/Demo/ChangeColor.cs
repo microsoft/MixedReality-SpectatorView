@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.SpectatorView
 {
-    public class ChangeColor : MonoBehaviour
+    internal class ChangeColor : MonoBehaviour
     {
         [SerializeField]
         private Material material = null;

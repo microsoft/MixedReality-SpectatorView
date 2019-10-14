@@ -34,8 +34,6 @@ namespace Microsoft.MixedReality.SpectatorView
             public const byte ObserverHierarchyBound = 0x3;
         }
 
-        public override string PerformanceComponentName => "DynamicGameObjectHierarchyBroadcaster";
-
         /// <summary>
         /// Gets or sets the locally-created dynamic GameObject hierarchy root.
         /// </summary>

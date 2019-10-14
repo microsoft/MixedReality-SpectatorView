@@ -79,7 +79,7 @@ namespace Microsoft.MixedReality.SpectatorView
         /// <inheritdoc />
         protected virtual bool UpdateWhenDisabled => false;
 
-        public virtual string PerformanceComponentName => string.Empty;
+        public string PerformanceComponentName => this.GetType().Name;
 
         /// <inheritdoc />
         public virtual void ResetFrame()
@@ -131,47 +131,40 @@ namespace Microsoft.MixedReality.SpectatorView
                     {
                         EnsureComponentInitialized();
 
-                        if (TransformBroadcaster != null)
+                        IReadOnlyList<SocketEndpoint> endpointsNeedingCompleteChanges;
+                        IReadOnlyList<SocketEndpoint> filteredEndpointsNeedingDeltaChanges;
+                        IReadOnlyList<SocketEndpoint> filteredEndpointsNeedingCompleteChanges;
+                        using (StateSynchronizationPerformanceMonitor.Instance.MeasureEventDuration(PerformanceComponentName, "ProcessConnectionDelta"))
                         {
-                            IReadOnlyList<SocketEndpoint> endpointsNeedingCompleteChanges;
-                            IReadOnlyList<SocketEndpoint> filteredEndpointsNeedingDeltaChanges;
-                            IReadOnlyList<SocketEndpoint> filteredEndpointsNeedingCompleteChanges;
-                            using (StateSynchronizationPerformanceMonitor.Instance.MeasureEventDuration(PerformanceComponentName, "ProcessConnectionDelta"))
-                            {
-                                TransformBroadcaster.ProcessConnectionDelta(connectionDelta, out endpointsNeedingCompleteChanges, out filteredEndpointsNeedingDeltaChanges, out filteredEndpointsNeedingCompleteChanges);
-                            }
+                            TransformBroadcaster.ProcessConnectionDelta(connectionDelta, out endpointsNeedingCompleteChanges, out filteredEndpointsNeedingDeltaChanges, out filteredEndpointsNeedingCompleteChanges);
+                        }
 
-                            if (endpointsNeedingCompleteChanges != null &&
-                                endpointsNeedingCompleteChanges.Count > 0)
-                            {
-                                SendComponentCreation(endpointsNeedingCompleteChanges);
-                            }
+                        if (endpointsNeedingCompleteChanges != null &&
+                            endpointsNeedingCompleteChanges.Count > 0)
+                        {
+                            SendComponentCreation(endpointsNeedingCompleteChanges);
+                        }
 
-                            if (filteredEndpointsNeedingDeltaChanges != null &&
-                                filteredEndpointsNeedingDeltaChanges.Count > 0)
+                        if (filteredEndpointsNeedingDeltaChanges != null &&
+                            filteredEndpointsNeedingDeltaChanges.Count > 0)
+                        {
+                            TChangeFlags changeFlags = CalculateDeltaChanges();
+                            if (HasChanges(changeFlags))
                             {
-                                TChangeFlags changeFlags = CalculateDeltaChanges();
-                                if (HasChanges(changeFlags))
-                                {
-                                    SendDeltaChanges(filteredEndpointsNeedingDeltaChanges, changeFlags);
-                                }
-                            }
-
-                            if (filteredEndpointsNeedingCompleteChanges != null &&
-                                filteredEndpointsNeedingCompleteChanges.Count > 0)
-                            {
-                                SendCompleteChanges(filteredEndpointsNeedingCompleteChanges);
-                            }
-
-                            if (connectionDelta.RemovedConnections != null &&
-                                connectionDelta.RemovedConnections.Count > 0)
-                            {
-                                RemoveDisconnectedEndpoints(connectionDelta.RemovedConnections);
+                                SendDeltaChanges(filteredEndpointsNeedingDeltaChanges, changeFlags);
                             }
                         }
-                        else
+
+                        if (filteredEndpointsNeedingCompleteChanges != null &&
+                            filteredEndpointsNeedingCompleteChanges.Count > 0)
                         {
-                            StateSynchronizationPerformanceMonitor.Instance.IncrementEventCount(PerformanceComponentName, "NullTransformBroadcaster");
+                            SendCompleteChanges(filteredEndpointsNeedingCompleteChanges);
+                        }
+
+                        if (connectionDelta.RemovedConnections != null &&
+                            connectionDelta.RemovedConnections.Count > 0)
+                        {
+                            RemoveDisconnectedEndpoints(connectionDelta.RemovedConnections);
                         }
 
                         EndUpdatingFrame();

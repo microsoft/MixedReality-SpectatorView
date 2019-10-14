@@ -18,8 +18,6 @@ namespace Microsoft.MixedReality.SpectatorView
             Properties = 0x2,
         }
 
-        public override string PerformanceComponentName => "CanvasBroadcaster";
-
         private Canvas canvas;
         private bool previousEnabled;
         private CanvasProperties previousProperties;

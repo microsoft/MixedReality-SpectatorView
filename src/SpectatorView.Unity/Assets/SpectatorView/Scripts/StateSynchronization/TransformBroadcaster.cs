@@ -50,8 +50,6 @@ namespace Microsoft.MixedReality.SpectatorView
         private readonly List<SocketEndpoint> filteredEndpointsNeedingCompleteChanges = new List<SocketEndpoint>();
         private readonly List<SocketEndpoint> filteredEndpointsNeedingDeltaChanges = new List<SocketEndpoint>();
 
-        public override string PerformanceComponentName => "TransformBroadcaster";
-
         /// <summary>
         /// Gets a cached version of the Transform associated with this Component.
         /// This field is cached due to its frequent access. Calling Component.transform

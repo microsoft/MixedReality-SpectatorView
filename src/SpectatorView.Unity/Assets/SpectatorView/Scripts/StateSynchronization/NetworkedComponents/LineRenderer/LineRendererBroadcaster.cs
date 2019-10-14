@@ -14,8 +14,6 @@ namespace Microsoft.MixedReality.SpectatorView
             public const byte DynamicProperties = 0x10;
         }
 
-        public override string PerformanceComponentName => "LineRendererBroadcaster";
-
         private LineRendererDynamicData previousData = new LineRendererDynamicData();
 
         protected override byte InitialChangeType

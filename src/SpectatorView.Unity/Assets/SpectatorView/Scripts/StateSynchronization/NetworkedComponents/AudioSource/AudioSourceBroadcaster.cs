@@ -21,8 +21,6 @@ namespace Microsoft.MixedReality.SpectatorView
             Properties = 0x8
         }
 
-        public override string PerformanceComponentName => "AudioSourceBroadcaster";
-
         private AudioSource audioSource;
         private bool previousIsPlaying;
         private float previousVolume;

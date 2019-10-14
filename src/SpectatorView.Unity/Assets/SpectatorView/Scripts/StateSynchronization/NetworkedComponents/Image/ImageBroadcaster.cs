@@ -24,8 +24,6 @@ namespace Microsoft.MixedReality.SpectatorView
             MaterialProperty = 0x4
         }
 
-        public override string PerformanceComponentName => "ImageBroadcaster";
-
         protected override void Awake()
         {
             base.Awake();
