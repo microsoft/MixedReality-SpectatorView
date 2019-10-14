@@ -27,16 +27,17 @@ namespace Microsoft.MixedReality.SpectatorView
             return true;
         }
 
-        private class LocalizationSession : DisposableBase, ISpatialLocalizationSession
+        private class LocalizationSession : SpatialLocalizationSession
         {
-            public IPeerConnection Peer => peerConnection;
+            /// <inheritdoc />
+            public override IPeerConnection Peer => peerConnection;
 
             private readonly MarkerDetectorSpatialLocalizer localizer;
             private readonly MarkerDetectorLocalizationSettings settings;
             private readonly IPeerConnection peerConnection;
             private readonly MarkerDetectorCoordinateService coordinateService;
 
-            public LocalizationSession(MarkerDetectorSpatialLocalizer localizer, MarkerDetectorLocalizationSettings settings, IPeerConnection peerConnection)
+            public LocalizationSession(MarkerDetectorSpatialLocalizer localizer, MarkerDetectorLocalizationSettings settings, IPeerConnection peerConnection) : base()
             {
                 this.localizer = localizer;
                 this.settings = settings;
@@ -46,26 +47,34 @@ namespace Microsoft.MixedReality.SpectatorView
                 this.coordinateService = new MarkerDetectorCoordinateService(this.localizer.markerDetector, this.localizer.debugLogging);
             }
 
-            public async Task<ISpatialCoordinate> LocalizeAsync(CancellationToken cancellationToken)
+            /// <inheritdoc />
+            public override async Task<ISpatialCoordinate> LocalizeAsync(CancellationToken cancellationToken)
             {
                 localizer.DebugLog("Getting host coordinate");
 
-                await coordinateService.TryDiscoverCoordinatesAsync(cancellationToken, new int[] { settings.MarkerID });
-
-                if (!coordinateService.TryGetKnownCoordinate(settings.MarkerID, out ISpatialCoordinate spatialCoordinate))
+                ISpatialCoordinate spatialCoordinate = null;
+                using (var cancellableCTS = CancellationTokenSource.CreateLinkedTokenSource(defaultCTS.Token, cancellationToken))
                 {
-                    Debug.LogError("Unexpected failure to discover a marker coordinate");
+                    await coordinateService.TryDiscoverCoordinatesAsync(cancellationToken, new int[] { settings.MarkerID });
+
+                    if (!coordinateService.TryGetKnownCoordinate(settings.MarkerID, out spatialCoordinate))
+                    {
+                        Debug.LogError("Unexpected failure to discover a marker coordinate");
+                    }
                 }
 
                 return spatialCoordinate;
             }
 
-            public void OnDataReceived(BinaryReader reader)
+            /// <inheritdoc />
+            public override void OnDataReceived(BinaryReader reader)
             {
             }
 
+            /// <inheritdoc />
             protected override void OnManagedDispose()
             {
+                base.OnManagedDispose();
                 this.coordinateService.Dispose();
             }
         }
