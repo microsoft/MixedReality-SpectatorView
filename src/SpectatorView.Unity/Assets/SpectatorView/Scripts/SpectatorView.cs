@@ -389,6 +389,8 @@ namespace Microsoft.MixedReality.SpectatorView
         private void OnNetworkConfigurationUpdated(object sender, string ipAddress)
         {
 #if UNITY_ANDROID || UNITY_IOS
+            DebugLog($"OnNetworkConfigurationUpdated: ipAddress:{ipAddress}");
+
             this.userIpAddress = ipAddress;
             if (networkConfigurationVisual != null)
             {

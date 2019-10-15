@@ -324,6 +324,11 @@ namespace Microsoft.MixedReality.SpatialAlignment
                     await session.CreateAnchorAsync(cloudSpatialAnchor);
                     return new SpatialAnchorsCoordinate(cloudSpatialAnchor, spawnedAnchorObject);
                 }
+                catch(TaskCanceledException)
+                {
+                    Debug.Log("Create coordinate was cancelled.");
+                    UnityEngine.Object.Destroy(spawnedAnchorObject);
+                }
                 catch
                 {
                     UnityEngine.Object.Destroy(spawnedAnchorObject);
@@ -334,6 +339,8 @@ namespace Microsoft.MixedReality.SpatialAlignment
             {
                 ReleaseSessionStartRequest();
             }
+
+            return null;
         }
 
         private async Task<ISpatialCoordinate> TryCreateCoordinateEditorAsync(Vector3 worldPosition, Quaternion worldRotation, CancellationToken cancellationToken)

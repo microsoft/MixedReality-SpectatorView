@@ -168,7 +168,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
             public override void OnDataReceived(BinaryReader reader)
             {
-                coordinateIdentifierTaskSource.SetResult(reader.ReadString());
+                coordinateIdentifierTaskSource.TrySetResult(reader.ReadString());
             }
         }
 #endif

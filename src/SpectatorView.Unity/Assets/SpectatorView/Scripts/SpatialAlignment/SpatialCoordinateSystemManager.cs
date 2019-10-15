@@ -48,7 +48,7 @@ namespace Microsoft.MixedReality.SpectatorView
         private const string LocalizationCompleteCommand = "LOCALIZEDONE";
         private readonly Dictionary<Guid, ISpatialLocalizer> localizers = new Dictionary<Guid, ISpatialLocalizer>();
         private readonly Dictionary<SocketEndpoint, TaskCompletionSource<bool>> remoteLocalizationSessions = new Dictionary<SocketEndpoint, TaskCompletionSource<bool>>();
-        private Dictionary<SocketEndpoint, SpatialCoordinateSystemParticipant> participants = new Dictionary<SocketEndpoint, SpatialCoordinateSystemParticipant>();
+        private Dictionary<string, SpatialCoordinateSystemParticipant> participants = new Dictionary<string, SpatialCoordinateSystemParticipant>();
         private HashSet<INetworkManager> networkManagers = new HashSet<INetworkManager>();
         private ISpatialLocalizationSession currentLocalizationSession = null;
         private ITrackingObserver trackingObserver = null;
@@ -201,7 +201,7 @@ namespace Microsoft.MixedReality.SpectatorView
         public Task<bool> LocalizeAsync(SocketEndpoint socketEndpoint, Guid spatialLocalizerID, ISpatialLocalizationSettings settings)
         {
             DebugLog("LocalizeAsync");
-            if (!participants.TryGetValue(socketEndpoint, out SpatialCoordinateSystemParticipant participant))
+            if (!participants.TryGetValue(socketEndpoint.Address, out SpatialCoordinateSystemParticipant participant))
             {
                 Debug.LogError($"Could not find a SpatialCoordinateSystemParticipant for SocketEndpoint {socketEndpoint.Address}");
                 return Task.FromResult(false);
@@ -249,16 +249,17 @@ namespace Microsoft.MixedReality.SpectatorView
 
         private void OnConnected(SocketEndpoint endpoint)
         {
-            if (participants.ContainsKey(endpoint))
+            if (participants.TryGetValue(endpoint.Address, out var existingParticipant))
             {
-                Debug.LogWarning("SpatialCoordinateSystemParticipant connected that already existed");
+                DebugLog("SpatialCoordinateSystemParticipant connected that already existed, updating endpoint");
+                existingParticipant.SocketEndpoint = endpoint;
                 return;
             }
 
             DebugLog($"Creating new SpatialCoordinateSystemParticipant, IPAddress: {endpoint.Address}, DebugLogging: {debugLogging}");
 
             SpatialCoordinateSystemParticipant participant = new SpatialCoordinateSystemParticipant(endpoint, debugVisual, debugVisualScale);
-            participants[endpoint] = participant;
+            participants[endpoint.Address] = participant;
             participant.ShowDebugVisuals = showDebugVisuals;
             participant.SendSupportedLocalizersMessage(endpoint, localizers.Keys);
 
@@ -275,7 +276,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
         private void OnDisconnected(SocketEndpoint endpoint)
         {
-            if (participants.TryGetValue(endpoint, out var participant))
+            if (participants.TryGetValue(endpoint.Address, out var participant))
             {
                 if (currentLocalizationSession != null &&
                     currentLocalizationSession.Peer == participant)
@@ -284,7 +285,7 @@ namespace Microsoft.MixedReality.SpectatorView
                 }
 
                 participant.Dispose();
-                participants.Remove(endpoint);
+                participants.Remove(endpoint.Address);
 
                 ParticipantDisconnected?.Invoke(participant);
             }
@@ -294,9 +295,9 @@ namespace Microsoft.MixedReality.SpectatorView
 
         private void OnCoordinateStateReceived(SocketEndpoint socketEndpoint, string command, BinaryReader reader, int remainingDataSize)
         {
-            if (!participants.TryGetValue(socketEndpoint, out SpatialCoordinateSystemParticipant participant))
+            if (!participants.TryGetValue(socketEndpoint.Address, out SpatialCoordinateSystemParticipant participant))
             {
-                Debug.LogError($"Failed to find a SpatialCoordinateSystemParticipant for an attached SocketEndpoint");
+                Debug.LogWarning($"Failed to find a SpatialCoordinateSystemParticipant for an attached SocketEndpoint");
                 return;
             }
 
@@ -305,9 +306,9 @@ namespace Microsoft.MixedReality.SpectatorView
 
         private void OnSupportedLocalizersMessageReceived(SocketEndpoint socketEndpoint, string command, BinaryReader reader, int remainingDataSize)
         {
-            if (!participants.TryGetValue(socketEndpoint, out SpatialCoordinateSystemParticipant participant))
+            if (!participants.TryGetValue(socketEndpoint.Address, out SpatialCoordinateSystemParticipant participant))
             {
-                Debug.LogError($"Failed to find a SpatialCoordinateSystemParticipant for an attached SocketEndpoint");
+                Debug.LogWarning($"Failed to find a SpatialCoordinateSystemParticipant for an attached SocketEndpoint");
                 return;
             }
 
@@ -332,7 +333,7 @@ namespace Microsoft.MixedReality.SpectatorView
         private async void OnLocalizeMessageReceived(SocketEndpoint socketEndpoint, string command, BinaryReader reader, int remainingDataSize)
         {
             DebugLog("LocalizeMessageReceived");
-            if (!participants.TryGetValue(socketEndpoint, out SpatialCoordinateSystemParticipant participant))
+            if (!participants.TryGetValue(socketEndpoint.Address, out SpatialCoordinateSystemParticipant participant))
             {
                 Debug.LogError($"Could not find a SpatialCoordinateSystemParticipant for SocketEndpoint {socketEndpoint.Address}");
                 SendLocalizationCompleteCommand(socketEndpoint, localizationSuccessful: false);
@@ -484,7 +485,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
         public bool TryGetSpatialCoordinateSystemParticipant(SocketEndpoint connectedEndpoint, out SpatialCoordinateSystemParticipant participant)
         {
-            return participants.TryGetValue(connectedEndpoint, out participant);
+            return participants.TryGetValue(connectedEndpoint.Address, out participant);
         }
     }
 }

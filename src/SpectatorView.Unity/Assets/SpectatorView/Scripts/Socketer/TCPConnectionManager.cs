@@ -101,6 +101,15 @@ namespace Microsoft.MixedReality.SpectatorView
         /// <param name="port">port to use for communication</param>
         public void ConnectTo(string serverAddress, int port)
         {
+            if (client != null)
+            {
+                Debug.LogFormat($"Disconnecting existing client {client.Host}:{client.Port}");
+                client.Stop();
+                client.Connected -= OnClientConnected;
+                client.Disconnected -= OnClientDisconnected;
+                client = null;
+            }
+
             Debug.LogFormat($"Connecting to {serverAddress}:{port}");
             client = SocketerClient.CreateSender(SocketerClient.Protocol.TCP, serverAddress, port);
             client.Connected += OnClientConnected;
@@ -151,6 +160,20 @@ namespace Microsoft.MixedReality.SpectatorView
                 clientConnection.StopIncomingMessageQueue();
                 oldConnections.Enqueue(clientConnection);
                 clientConnection = null;
+            }
+
+            if (!AttemptReconnectWhenClient)
+            {
+                Debug.Log("Stopping subscriptions to disconnected client");
+                client.Stop();
+                client.Connected -= OnClientConnected;
+                client.Disconnected -= OnClientDisconnected;
+
+                if (this.client == client)
+                {
+                    Debug.Log("Clearing client cache");
+                    this.client = null;
+                }
             }
         }
 
