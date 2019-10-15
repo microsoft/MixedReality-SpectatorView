@@ -386,7 +386,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
         private async Task<bool> RunLocalizationSessionAsync(ISpatialLocalizer localizer, ISpatialLocalizationSettings settings, SpatialCoordinateSystemParticipant participant)
         {
-            // TODO - this isn't thread safe
+            // TODO - this functionality should be revamped for thread safety.
             if (currentLocalizationSession != null)
             {
                 if (participant == currentLocalizationSession.Peer)

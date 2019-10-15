@@ -100,7 +100,7 @@ namespace Microsoft.MixedReality.SpectatorView
             private readonly SpatialAnchorsLocalizer localizer;
             private readonly TaskCompletionSource<string> coordinateIdentifierTaskSource;
 
-            public SpatialCoordinateLocalizationSession(SpatialAnchorsLocalizer localizer, SpatialAnchorsCoordinateService coordinateService, SpatialAnchorsConfiguration configuration, IPeerConnection peerConnection)
+            public SpatialCoordinateLocalizationSession(SpatialAnchorsLocalizer localizer, SpatialAnchorsCoordinateService coordinateService, SpatialAnchorsConfiguration configuration, IPeerConnection peerConnection) : base()
             {
                 this.localizer = localizer;
                 this.coordinateService = coordinateService;
@@ -125,11 +125,17 @@ namespace Microsoft.MixedReality.SpectatorView
                     {
                         localizer.DebugLog("User getting initialized coordinate");
                         coordinateToReturn = await coordinateService.TryCreateCoordinateAsync(localizer.anchorPosition, Quaternion.Euler(localizer.anchorRotation), cancellableCTS.Token);
-
-                        localizer.DebugLog($"Sending coordinate id: {coordinateToReturn.Id}");
-                        peerConnection.SendData(writer => writer.Write(coordinateToReturn.Id));
-
-                        localizer.DebugLog("Message sent.");
+                        if (coordinateToReturn != null)
+                        {                           
+                            localizer.DebugLog($"Sending coordinate id: {coordinateToReturn.Id}");
+                            peerConnection.SendData(writer => writer.Write(coordinateToReturn.Id));
+                            localizer.DebugLog("Message sent.");
+                        }
+                        else
+                        {
+                            Debug.LogError("Coordinate discovery returned null coordinate");
+                            return null;
+                        }
                     }
                     else
                     {
