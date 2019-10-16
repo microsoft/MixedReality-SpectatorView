@@ -118,15 +118,23 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
             foreach (var directory in builtDirectories)
             {
                 string assetPath = $"{directory}/spectatorview".Replace('/', Path.DirectorySeparatorChar);
-                string resourcePath = $"{directory}/{ResourcesDirectoryName}".Replace('/', Path.DirectorySeparatorChar);
+                string resourcePath = $"{directory}/{Path.GetFileName(directory)}".Replace('/', Path.DirectorySeparatorChar);
 
                 File.Delete(resourcePath);
                 File.Delete($"{resourcePath}.manifest");
+
                 File.Delete($"{assetPath}.bytes");
                 File.Delete($"{assetPath}.manifest.bytes");
 
-                File.Move(assetPath, $"{assetPath}.bytes");
-                File.Move($"{assetPath}.manifest", $"{assetPath}.manifest.bytes");
+                if (File.Exists(assetPath))
+                {
+                    File.Move(assetPath, $"{assetPath}.bytes");
+                    File.Move($"{assetPath}.manifest", $"{assetPath}.manifest.bytes");
+                }
+                else
+                {
+                    Debug.LogError($"Expected that asset bundle {assetPath} was generated, but it does not exist");
+                }
             }
         }
 
