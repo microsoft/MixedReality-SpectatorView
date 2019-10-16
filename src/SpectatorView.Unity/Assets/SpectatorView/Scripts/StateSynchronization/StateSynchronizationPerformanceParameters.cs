@@ -83,27 +83,6 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
-        private HashSet<string> DeclaredSupportedShaders
-        {
-            get
-            {
-                if (declaredSupportedShaders == null)
-                {
-                    declaredSupportedShaders = new HashSet<string>();
-                    if (materialPropertyOverrides != null)
-                    {
-                        foreach (var materialPropertyOverride in materialPropertyOverrides)
-                        {
-                            declaredSupportedShaders.Add(materialPropertyOverride.shaderName);
-                        }
-                    }
-                }
-
-                return declaredSupportedShaders;
-            }
-        }
-          
-
         private T GetInheritedProperty<T>(Func<StateSynchronizationPerformanceParameters, T> getter, T defaultValue)
         {
             using (StateSynchronizationPerformanceMonitor.Instance.MeasureEventDuration(performanceComponentName, "GetInheritedProperty"))
@@ -205,16 +184,6 @@ namespace Microsoft.MixedReality.SpectatorView
 
             // Stop the timer before calling parent function
             return parentParameters.ShouldUpdateMaterialProperty(materialProperty);
-        }
-
-        public bool IsShaderSupported(string shader)
-        {
-            if (ShaderKeywords == PollingFrequency.UpdateContinuously)
-            {
-                return true;
-            }
-
-            return DeclaredSupportedShaders.Contains(shader);
         }
 
         protected virtual void Awake()

@@ -57,8 +57,7 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
-
-        private MaterialPropertyAsset[] GetCachedMaterialSynchronizedProperties(int materialIndex, Material[] materials, StateSynchronizationPerformanceParameters perfParameters)
+        private MaterialPropertyAsset[] GetCachedMaterialProperties(int materialIndex, Material[] materials)
         {
             if (cachedMaterialPropertyAccessors == null)
             {
@@ -66,23 +65,7 @@ namespace Microsoft.MixedReality.SpectatorView
             }
             if (cachedMaterialPropertyAccessors[materialIndex] == null)
             {
-                if (perfParameters.IsShaderSupported(materials[materialIndex].shader.name))
-                {
-                    List<MaterialPropertyAsset> propertiesList = new List<MaterialPropertyAsset>();
-                    foreach (var property in AssetService.Instance.GetMaterialProperties(materials[materialIndex].shader.name))
-                    {
-                        if (perfParameters.ShouldUpdateMaterialProperty(property))
-                        {
-                            propertiesList.Add(property);
-                        }
-                    }
-                    cachedMaterialPropertyAccessors[materialIndex] = propertiesList.ToArray();
-                }
-                else
-                {
-                    cachedMaterialPropertyAccessors[materialIndex] = Array.Empty<MaterialPropertyAsset>();
-                }
-                StateSynchronizationPerformanceMonitor.Instance.IncrementEventCount(performanceComponentName, "MaterialPropertyAccessorsCreated");
+                cachedMaterialPropertyAccessors[materialIndex] = AssetService.Instance.GetMaterialProperties(materials[materialIndex].shader.name).ToArray();
             }
 
             return cachedMaterialPropertyAccessors[materialIndex];
@@ -110,7 +93,7 @@ namespace Microsoft.MixedReality.SpectatorView
                 {
                     if (cachedMaterials[i] != null)
                     {
-                        foreach (MaterialPropertyAsset propertyAccessor in GetCachedMaterialSynchronizedProperties(i, cachedMaterials, performanceParameters))
+                        foreach (MaterialPropertyAsset propertyAccessor in GetCachedMaterialProperties(i, cachedMaterials))
                         {
                             if (shouldSynchronizeMaterialProperty(propertyAccessor))
                             {
