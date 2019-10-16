@@ -58,7 +58,6 @@ namespace Microsoft.MixedReality.SpectatorView
 
         private static GameObject emptyParametersGameObject;
         private StateSynchronizationPerformanceParameters parentParameters;
-        private HashSet<string> declaredSupportedShaders;
         private Dictionary<MaterialPropertyKey, MaterialPropertyPollingFrequency> pollingFrequencyByMaterialProperty;
         private readonly string performanceComponentName = "StateSynchronizationPerformanceParameters";
 
@@ -75,6 +74,10 @@ namespace Microsoft.MixedReality.SpectatorView
         }
         private static bool enablePerformanceReporting = false;
 
+        /// <summary>
+        /// Returns true if custom material property polling frequencies are defined for this instance of StateSynchronizationPerformanceParameters
+        /// </summary>
+        public bool HasCustomMateriaPropertyPollingFrequencies => (PollingFrequencyByMaterialProperty.Count > 0);
         private IDictionary<MaterialPropertyKey, MaterialPropertyPollingFrequency> PollingFrequencyByMaterialProperty
         {
             get

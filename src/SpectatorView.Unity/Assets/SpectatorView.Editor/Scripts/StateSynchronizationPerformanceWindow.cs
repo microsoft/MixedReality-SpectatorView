@@ -113,7 +113,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
                 if (StateSynchronizationObserver.Instance.PerformanceEventCounts != null)
                 {
                     GUILayout.Space(defaultSpacing);
-                    RenderTitle("Event Counts", Color.green);
+                    RenderTitle("Event Counts (per frame)", Color.green);
                     foreach (var count in StateSynchronizationObserver.Instance.PerformanceEventCounts)
                     {
                         GUILayout.Label($"{count.Item1}:{count.Item2}");

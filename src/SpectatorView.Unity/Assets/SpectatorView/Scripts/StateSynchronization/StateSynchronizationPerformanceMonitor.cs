@@ -81,7 +81,7 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
-        public void WriteMessage(BinaryWriter message, double averageFrameDurationInSeconds)
+        public void WriteMessage(BinaryWriter message, int numFrames)
         {
             if (StateSynchronizationPerformanceParameters.EnablePerformanceReporting)
             {
@@ -93,11 +93,11 @@ namespace Microsoft.MixedReality.SpectatorView
                 return;
             }
 
-            double timeInMilliseconds = 1000 * averageFrameDurationInSeconds;
+            double numFramesScale = (numFrames == 0) ? 1.0 : 1.0 / numFrames;
             List<Tuple<string, double>> durations = new List<Tuple<string, double>>();
             foreach(var pair in eventStopWatches)
             {
-                durations.Add(new Tuple<string, double>($"{pair.Key.ComponentName}.{pair.Key.EventName}", pair.Value.Elapsed.TotalMilliseconds / timeInMilliseconds));
+                durations.Add(new Tuple<string, double>($"{pair.Key.ComponentName}.{pair.Key.EventName}", pair.Value.Elapsed.TotalMilliseconds * numFramesScale));
                 pair.Value.Reset();
             }
 
@@ -111,7 +111,7 @@ namespace Microsoft.MixedReality.SpectatorView
             List<Tuple<string, int>> counts = new List<Tuple<string, int>>();
             foreach (var pair in eventCounts.ToList())
             {
-                counts.Add(new Tuple<string, int>($"{pair.Key.ComponentName}.{pair.Key.EventName}", pair.Value));
+                counts.Add(new Tuple<string, int>($"{pair.Key.ComponentName}.{pair.Key.EventName}", (int)(pair.Value * numFramesScale)));
                 eventCounts[pair.Key] = 0;
             }
 

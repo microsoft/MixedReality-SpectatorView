@@ -73,7 +73,8 @@ namespace Microsoft.MixedReality.SpectatorView
 
         private bool ShouldAssessAnyPropertyAccessors(StateSynchronizationPerformanceParameters performanceParameters)
         {
-            return !(performanceParameters.ShaderKeywords == StateSynchronizationPerformanceParameters.PollingFrequency.UpdateOnceOnStart &&
+            return !(!performanceParameters.HasCustomMateriaPropertyPollingFrequencies &&
+                performanceParameters.ShaderKeywords == StateSynchronizationPerformanceParameters.PollingFrequency.UpdateOnceOnStart &&
                 performanceParameters.MaterialProperties == StateSynchronizationPerformanceParameters.PollingFrequency.UpdateOnceOnStart);
         }
 

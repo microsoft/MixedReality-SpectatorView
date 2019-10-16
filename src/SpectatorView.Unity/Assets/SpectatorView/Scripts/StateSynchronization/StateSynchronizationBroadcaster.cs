@@ -182,25 +182,21 @@ namespace Microsoft.MixedReality.SpectatorView
 
             //Perf
             timeUntilNextPerfUpdate -= Time.deltaTime;
+            numFrames++;
             if (timeUntilNextPerfUpdate < 0)
             {
-                float durationInSeconds = PerfUpdateTimeSeconds - timeUntilNextPerfUpdate;
-                numFrames = (numFrames == 0) ? 1 : numFrames;
-                float averageFrameLength = durationInSeconds / numFrames;
-                timeUntilNextPerfUpdate = PerfUpdateTimeSeconds;
-
                 using (MemoryStream memoryStream = new MemoryStream())
                 using (BinaryWriter message = new BinaryWriter(memoryStream))
                 {
                     message.Write(StateSynchronizationObserver.PerfCommand);
-                    StateSynchronizationPerformanceMonitor.Instance.WriteMessage(message, durationInSeconds);
+                    StateSynchronizationPerformanceMonitor.Instance.WriteMessage(message, numFrames);
                     message.Flush();
                     connectionManager.Broadcast(memoryStream.ToArray());
                 }
 
+                timeUntilNextPerfUpdate = PerfUpdateTimeSeconds;
                 numFrames = 0;
             }
-            numFrames++;
         }
 
         public void HandleSyncCommand(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)

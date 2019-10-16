@@ -417,6 +417,7 @@ namespace Microsoft.MixedReality.SpectatorView
                     }
                     else
                     {
+                        StateSynchronizationPerformanceMonitor.Instance.IncrementEventCount("StateSynchronizationSceneManager", "FrameSkipped");
                         framesToSkipForBuffering--;
 
                         int bytesQueued = StateSynchronizationBroadcaster.Instance.OutputBytesQueued;
