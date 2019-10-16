@@ -123,7 +123,7 @@ If you are building Azure Spatial Anchors on iOS, you will need to take some add
 ### HoloLens 2 & HoloLens
 
 1. Make sure your Unity project contains the asset caches that were created in the 'Before building' steps.
-2. Open the project scene that you intend to use with SpectatorView.
+2. Open the project scene that you intend to use with SpectatorView. (**Note:** For spectating with a HoloLens device, use `SpectatorView.HoloLens.Spectator` scene.)
 3. Add the `SpectatorView` prefab to the scene.
 4. Setup your scene to synchronize content. You can either have all content synchronized by checking 'Automatically Broadcast All Game Objects' in BroadcasterSettings located in your SpectatorViewSettings prefab. Or, you can manually add GameObjectHierarchyBroadcaster components to all parent game objects in the scene that you want synchronized.
 
@@ -177,7 +177,8 @@ If you are building Azure Spatial Anchors on iOS, you will need to take some add
 
 If you would like to try out an example before setting up your own application to work with spectator view, run `tools/Scripts/SetupRepository.bat` as an administrator. Then, open the `samples/SpectatorView.Example.Unity` project. You can then build and deploy the following scenes:
 
-* HoloLens: `SpectatorView.HoloLens`
+* HoloLens Host: `SpectatorView.HoloLens`
+* HoloLens Spectator: `SpectatorView.HoloLens.Spectator`
 * Android: `SpectatorView.Android`
 * iOS: `SpectatorView.iOS`
 
