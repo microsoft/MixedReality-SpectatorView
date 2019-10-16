@@ -340,80 +340,92 @@ namespace Microsoft.MixedReality.SpectatorView
             {
                 yield return new WaitForEndOfFrame();
 
-                if (framesToSkipForBuffering == 0)
+                using (StateSynchronizationPerformanceMonitor.Instance.MeasureEventDuration("StateSynchronizationSceneManager", "RunEndOfFrameUpdates"))
                 {
-                    if (StateSynchronizationBroadcaster.IsInitialized && StateSynchronizationBroadcaster.Instance != null)
+                    if (framesToSkipForBuffering == 0)
                     {
-                        int bytesQueued = StateSynchronizationBroadcaster.Instance.OutputBytesQueued;
-                        if (bytesQueued > MaximumQueuedByteCount)
+                        if (StateSynchronizationBroadcaster.IsInitialized && StateSynchronizationBroadcaster.Instance != null)
                         {
-                            framesToSkipForBuffering = frameSkippingStride;
+                            int bytesQueued = StateSynchronizationBroadcaster.Instance.OutputBytesQueued;
+                            if (bytesQueued > MaximumQueuedByteCount)
+                            {
+                                framesToSkipForBuffering = frameSkippingStride;
 
-                            // We are about to render a frame but the buffer is too full, so we're going to skip more frames.
-                            // Count this frame as a vote to increase the number of frames we skip each time this happens.
-                            UpdateFrameSkippingVotes(1);
+                                // We are about to render a frame but the buffer is too full, so we're going to skip more frames.
+                                // Count this frame as a vote to increase the number of frames we skip each time this happens.
+                                UpdateFrameSkippingVotes(1);
+                            }
+                            else if (frameSkippingStride > 1)
+                            {
+                                // We would be skipping more than one frame, but we just finished a frame without an expanded buffer.
+                                // Count this frame as a vote to decrease the number of frames we skip each time this happens.
+                                UpdateFrameSkippingVotes(-1);
+                            }
+
+                            StateSynchronizationBroadcaster.Instance.OnFrameCompleted();
                         }
-                        else if (frameSkippingStride > 1)
+
+                        SocketEndpointConnectionDelta connectionDelta = GetFrameConnectionDelta();
+
+                        // Any GameObjects destroyed since last update should be culled first before attempting to update
+                        // components
+                        UpdateDestroyedComponents(connectionDelta);
+
+                        using (StateSynchronizationPerformanceMonitor.Instance.MeasureEventDuration("StateSynchronizationSceneManager", "ResetFrame"))
                         {
-                            // We would be skipping more than one frame, but we just finished a frame without an expanded buffer.
+                            for (int i = broadcasterComponents.Count - 1; i >= 0; i--)
+                            {
+                                broadcasterComponents[i].ResetFrame();
+                            }
+                        }
+
+                        if (connectionDelta.HasConnections)
+                        {
+                            if (GlobalShaderPropertiesBroadcaster.IsInitialized && GlobalShaderPropertiesBroadcaster.Instance != null)
+                            {
+                                GlobalShaderPropertiesBroadcaster.Instance.OnFrameCompleted(connectionDelta);
+                            }
+
+                            using (StateSynchronizationPerformanceMonitor.Instance.MeasureEventDuration("StateSynchronizationSceneManager", "ProcessNewConnections"))
+                            {
+                                for (int i = 0; i < broadcasterComponents.Count; i++)
+                                {
+                                    if (!IsComponentDestroyed(broadcasterComponents[i]))
+                                    {
+                                        broadcasterComponents[i].ProcessNewConnections(connectionDelta);
+                                    }
+                                }
+                            }
+
+                            using (StateSynchronizationPerformanceMonitor.Instance.MeasureEventDuration("StateSynchronizationSceneManager", "OnFrameCompleted"))
+                            {
+                                for (int i = 0; i < broadcasterComponents.Count; i++)
+                                {
+                                    if (!IsComponentDestroyed(broadcasterComponents[i]))
+                                    {
+                                        broadcasterComponents[i].OnFrameCompleted(connectionDelta);
+                                    }
+                                }
+                            }
+                        }
+
+                        // Any components detected as removed should be destroyed and removed this frame.
+                        UpdateDestroyedComponents(connectionDelta);
+
+                        ApplyFrameConnectionDelta();
+                        CheckForFinalDisconnect();
+                    }
+                    else
+                    {
+                        framesToSkipForBuffering--;
+
+                        int bytesQueued = StateSynchronizationBroadcaster.Instance.OutputBytesQueued;
+                        if (bytesQueued <= MaximumQueuedByteCount)
+                        {
+                            // We're about to skip a frame but the buffer is currently under the capacity threshold for skipping.
                             // Count this frame as a vote to decrease the number of frames we skip each time this happens.
                             UpdateFrameSkippingVotes(-1);
                         }
-
-                        StateSynchronizationBroadcaster.Instance.OnFrameCompleted();
-                    }
-
-                    SocketEndpointConnectionDelta connectionDelta = GetFrameConnectionDelta();
-
-                    // Any GameObjects destroyed since last update should be culled first before attempting to update
-                    // components
-                    UpdateDestroyedComponents(connectionDelta);
-
-                    for (int i = broadcasterComponents.Count - 1; i >= 0; i--)
-                    {
-                        broadcasterComponents[i].ResetFrame();
-                    }
-
-                    if (connectionDelta.HasConnections)
-                    {
-                        if (GlobalShaderPropertiesBroadcaster.IsInitialized && GlobalShaderPropertiesBroadcaster.Instance != null)
-                        {
-                            GlobalShaderPropertiesBroadcaster.Instance.OnFrameCompleted(connectionDelta);
-                        }
-
-                        for (int i = 0; i < broadcasterComponents.Count; i++)
-                        {
-                            if (!IsComponentDestroyed(broadcasterComponents[i]))
-                            {
-                                broadcasterComponents[i].ProcessNewConnections(connectionDelta);
-                            }
-                        }
-
-                        for (int i = 0; i < broadcasterComponents.Count; i++)
-                        {
-                            if (!IsComponentDestroyed(broadcasterComponents[i]))
-                            {
-                                broadcasterComponents[i].OnFrameCompleted(connectionDelta);
-                            }
-                        }
-                    }
-
-                    // Any components detected as removed should be destroyed and removed this frame.
-                    UpdateDestroyedComponents(connectionDelta);
-
-                    ApplyFrameConnectionDelta();
-                    CheckForFinalDisconnect();
-                }
-                else
-                {
-                    framesToSkipForBuffering--;
-
-                    int bytesQueued = StateSynchronizationBroadcaster.Instance.OutputBytesQueued;
-                    if (bytesQueued <= MaximumQueuedByteCount)
-                    {
-                        // We're about to skip a frame but the buffer is currently under the capacity threshold for skipping.
-                        // Count this frame as a vote to decrease the number of frames we skip each time this happens.
-                        UpdateFrameSkippingVotes(-1);
                     }
                 }
             }
@@ -421,12 +433,15 @@ namespace Microsoft.MixedReality.SpectatorView
 
         private void UpdateDestroyedComponents(SocketEndpointConnectionDelta connectionDelta)
         {
-            for (int i = broadcasterComponents.Count - 1; i >= 0; i--)
+            using (StateSynchronizationPerformanceMonitor.Instance.MeasureEventDuration("StateSynchronizationSceneManager", "UpdateDestroyedComponents"))
             {
-                if (IsComponentDestroyed(broadcasterComponents[i]))
+                for (int i = broadcasterComponents.Count - 1; i >= 0; i--)
                 {
-                    SendComponentDestruction(connectionDelta.ContinuedConnections, broadcasterComponents[i]);
-                    broadcasterComponents.RemoveAt(i);
+                    if (IsComponentDestroyed(broadcasterComponents[i]))
+                    {
+                        SendComponentDestruction(connectionDelta.ContinuedConnections, broadcasterComponents[i]);
+                        broadcasterComponents.RemoveAt(i);
+                    }
                 }
             }
         }

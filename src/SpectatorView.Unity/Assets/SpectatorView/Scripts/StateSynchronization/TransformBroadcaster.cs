@@ -368,70 +368,73 @@ namespace Microsoft.MixedReality.SpectatorView
         protected override TransformBroadcasterChangeType CalculateDeltaChanges()
         {
             TransformBroadcasterChangeType changeType = 0;
-            short newParentId = ParentId;
-            Vector3 newPosition;
-            Quaternion newRotation;
-            Vector3 newScale;
-            int newLayer = Layer;
-            GetLocalPose(out newPosition, out newRotation, out newScale);
-            bool newIsActive = SynchronizedIsActive;
-
-            if (previousIsActive != newIsActive)
+            using (StateSynchronizationPerformanceMonitor.Instance.MeasureEventDuration(PerformanceComponentName, "CalculateDeltaChanges"))
             {
-                previousIsActive = newIsActive;
-                changeType |= TransformBroadcasterChangeType.IsActive;
-            }
+                short newParentId = ParentId;
+                Vector3 newPosition;
+                Quaternion newRotation;
+                Vector3 newScale;
+                int newLayer = Layer;
+                GetLocalPose(out newPosition, out newRotation, out newScale);
+                bool newIsActive = SynchronizedIsActive;
 
-            // If this component is not active and enabled in the hierarchy, we only need
-            // to synchronize the isActive state. This is a performance win for large dynamic hierarchies, which don't
-            // need to keep the other Transform-related properties in sync.
-            if (isActiveAndEnabled)
-            {
-                if (previousName != CachedName)
+                if (previousIsActive != newIsActive)
                 {
-                    previousName = CachedName;
-                    changeType |= TransformBroadcasterChangeType.Name;
-                }
-                if (previousLayer != newLayer)
-                {
-                    previousLayer = newLayer;
-                    changeType |= TransformBroadcasterChangeType.Layer;
-                }
-                if (previousParentId != newParentId)
-                {
-                    previousParentId = newParentId;
-                    changeType |= TransformBroadcasterChangeType.Parent;
-                }
-                if (previousPosition != newPosition)
-                {
-                    previousPosition = newPosition;
-                    changeType |= TransformBroadcasterChangeType.Position;
-                }
-                if (previousRotation != newRotation)
-                {
-                    previousRotation = newRotation;
-                    changeType |= TransformBroadcasterChangeType.Rotation;
-                }
-                if (previousScale != newScale)
-                {
-                    previousScale = newScale;
-                    changeType |= TransformBroadcasterChangeType.Scale;
+                    previousIsActive = newIsActive;
+                    changeType |= TransformBroadcasterChangeType.IsActive;
                 }
 
+                // If this component is not active and enabled in the hierarchy, we only need
+                // to synchronize the isActive state. This is a performance win for large dynamic hierarchies, which don't
+                // need to keep the other Transform-related properties in sync.
+                if (isActiveAndEnabled)
+                {
+                    if (previousName != CachedName)
+                    {
+                        previousName = CachedName;
+                        changeType |= TransformBroadcasterChangeType.Name;
+                    }
+                    if (previousLayer != newLayer)
+                    {
+                        previousLayer = newLayer;
+                        changeType |= TransformBroadcasterChangeType.Layer;
+                    }
+                    if (previousParentId != newParentId)
+                    {
+                        previousParentId = newParentId;
+                        changeType |= TransformBroadcasterChangeType.Parent;
+                    }
+                    if (previousPosition != newPosition)
+                    {
+                        previousPosition = newPosition;
+                        changeType |= TransformBroadcasterChangeType.Position;
+                    }
+                    if (previousRotation != newRotation)
+                    {
+                        previousRotation = newRotation;
+                        changeType |= TransformBroadcasterChangeType.Rotation;
+                    }
+                    if (previousScale != newScale)
+                    {
+                        previousScale = newScale;
+                        changeType |= TransformBroadcasterChangeType.Scale;
+                    }
 
-                RectTransform rectTrans = CachedRectTransform;
-                if (rectTrans && rectCache == null)
-                {
-                    rectCache = new RectTransformBroadcaster();
-                }
-                else if (rectTrans == null && rectCache != null)
-                {
-                    rectCache = null;
-                }
 
-                if (rectCache != null && rectCache.UpdateChange(rectTrans))
-                {
-                    changeType |= TransformBroadcasterChangeType.RectTransform;
+                    RectTransform rectTrans = CachedRectTransform;
+                    if (rectTrans && rectCache == null)
+                    {
+                        rectCache = new RectTransformBroadcaster();
+                    }
+                    else if (rectTrans == null && rectCache != null)
+                    {
+                        rectCache = null;
+                    }
+
+                    if (rectCache != null && rectCache.UpdateChange(rectTrans))
+                    {
+                        changeType |= TransformBroadcasterChangeType.RectTransform;
+                    }
                 }
             }
 
@@ -459,6 +462,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
         protected override void SendDeltaChanges(IEnumerable<SocketEndpoint> endpoints, TransformBroadcasterChangeType changeFlags)
         {
+            using (StateSynchronizationPerformanceMonitor.Instance.MeasureEventDuration(PerformanceComponentName, "SendDeltaChanges"))
             using (MemoryStream memoryStream = new MemoryStream())
             using (BinaryWriter message = new BinaryWriter(memoryStream))
             {
