@@ -71,6 +71,12 @@ namespace Microsoft.MixedReality.SpectatorView
             return cachedMaterialPropertyAccessors[materialIndex];
         }
 
+        private bool ShouldAssessAnyPropertyAccessors(StateSynchronizationPerformanceParameters performanceParameters)
+        {
+            return !(performanceParameters.ShaderKeywords == StateSynchronizationPerformanceParameters.PollingFrequency.UpdateOnceOnStart &&
+                performanceParameters.MaterialProperties == StateSynchronizationPerformanceParameters.PollingFrequency.UpdateOnceOnStart);
+        }
+
         public void UpdateMaterials(Renderer renderer, StateSynchronizationPerformanceParameters performanceParameters, Material[] materials, out bool areMaterialsDifferent)
         {
             UpdateCachedMaterials(materials, out areMaterialsDifferent);
@@ -91,7 +97,8 @@ namespace Microsoft.MixedReality.SpectatorView
             {
                 for (int i = 0; i < cachedMaterials.Length; i++)
                 {
-                    if (cachedMaterials[i] != null)
+                    if (cachedMaterials[i] != null &&
+                        ShouldAssessAnyPropertyAccessors(performanceParameters))
                     {
                         foreach (MaterialPropertyAsset propertyAccessor in GetCachedMaterialProperties(i, cachedMaterials))
                         {

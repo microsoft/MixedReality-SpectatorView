@@ -20,7 +20,7 @@ State Synchronization comes at a computational cost to your HoloLens application
 
 ![Marker](../../../../../../doc/images/SpectatorViewHidden.png)
 
-3) You can also edit how frequently some content is assessed for changes. To do this, open your Global performance parameters:
+3) You can also edit how frequently some content is assessed for changes. There are a couple of ways to do this, but the first method is to edit your global performance parameters:
 
 ![Marker](../../../../../../doc/images/EditSynchronizationSettings.png)
 
@@ -35,6 +35,8 @@ In addition to changing polling frequencies, you can also enable/disable another
 * **Material Property Blocks** - Enables/disables using material property blocks. Material property blocks can be used when you have different properties for the same shared material for different GameObjects. If you aren't using material property blocks, you will not need to enable this functionality.
 
 ![Marker](../../../../../../doc/images/GlobalPerformanceSettings.png)
+
+4) You can also define custom StateSynchronizationPerformanceParameters components for specific GameObjects/portions of your scene. Custom StateSynchronizationPerformanceParameters override the global performance settings for the GameObject that they are attached to, as well as for all child GameObjects. This can allow for finer tuning/tagging specific content in the scene to have different performance parameters for synchronizing.
 
 ### Performance Monitoring
 Spectator View provides some functionality for performance monitoring/assessing where the largest state synchronization bottlenecks are in your scene. To begin performance monitoring, open the `SpectatorViewPerformance` scene. Enter playmode, and then connect to the HoloLens device running your application through the performance window. Content in the editor scene will be updated to contain the content synchronized by your HoloLens device. By pressing `Enable Performance Monitoring`, your HoloLens will start reporting different content synchronization event durations (Note: this impacts performance, so turn off performance monitoring after assessing the biggest bottlenecks).
