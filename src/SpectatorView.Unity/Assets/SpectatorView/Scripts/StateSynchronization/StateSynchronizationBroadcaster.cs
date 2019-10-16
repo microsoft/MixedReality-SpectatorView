@@ -28,6 +28,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
         private const float PerfUpdateTimeSeconds = 1.0f;
         private float timeUntilNextPerfUpdate = PerfUpdateTimeSeconds;
+        private int numFrames = 0;
 
         private GameObject dontDestroyOnLoadGameObject;
         
@@ -184,6 +185,8 @@ namespace Microsoft.MixedReality.SpectatorView
             if (timeUntilNextPerfUpdate < 0)
             {
                 float durationInSeconds = PerfUpdateTimeSeconds - timeUntilNextPerfUpdate;
+                numFrames = (numFrames == 0) ? 1 : numFrames;
+                float averageFrameLength = durationInSeconds / numFrames;
                 timeUntilNextPerfUpdate = PerfUpdateTimeSeconds;
 
                 using (MemoryStream memoryStream = new MemoryStream())
@@ -194,7 +197,10 @@ namespace Microsoft.MixedReality.SpectatorView
                     message.Flush();
                     connectionManager.Broadcast(memoryStream.ToArray());
                 }
+
+                numFrames = 0;
             }
+            numFrames++;
         }
 
         public void HandleSyncCommand(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)

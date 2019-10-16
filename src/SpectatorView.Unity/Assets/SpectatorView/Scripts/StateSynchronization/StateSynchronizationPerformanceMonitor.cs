@@ -81,7 +81,7 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
-        public void WriteMessage(BinaryWriter message, double timespanInSeconds)
+        public void WriteMessage(BinaryWriter message, double averageFrameDurationInSeconds)
         {
             if (StateSynchronizationPerformanceParameters.EnablePerformanceReporting)
             {
@@ -93,7 +93,7 @@ namespace Microsoft.MixedReality.SpectatorView
                 return;
             }
 
-            double timeInMilliseconds = 1000 * timespanInSeconds;
+            double timeInMilliseconds = 1000 * averageFrameDurationInSeconds;
             List<Tuple<string, double>> durations = new List<Tuple<string, double>>();
             foreach(var pair in eventStopWatches)
             {

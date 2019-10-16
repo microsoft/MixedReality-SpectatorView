@@ -103,7 +103,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
             {
                 if (StateSynchronizationObserver.Instance.PerformanceEventDurations != null)
                 {
-                    RenderTitle("Event Durations (ms)", Color.green);
+                    RenderTitle("Event Durations (ms per frame)", Color.green);
                     foreach (var duration in StateSynchronizationObserver.Instance.PerformanceEventDurations)
                     {
                         GUILayout.Label($"{duration.Item1}:{duration.Item2.ToString("G4")}");
