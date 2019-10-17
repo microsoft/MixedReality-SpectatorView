@@ -84,7 +84,7 @@ namespace Microsoft.MixedReality.SpectatorView
             {
                 if (!defaultCTS.Token.CanBeCanceled)
                 {
-                    Debug.LogError("Session is invalid. No localiation performed.");
+                    Debug.LogError("Session is invalid. No localization performed.");
                     return null;
                 }
 
