@@ -103,11 +103,20 @@ namespace Microsoft.MixedReality.SpectatorView
         {
             if (client != null)
             {
-                Debug.LogFormat($"Disconnecting existing client {client.Host}:{client.Port}");
-                client.Stop();
-                client.Connected -= OnClientConnected;
-                client.Disconnected -= OnClientDisconnected;
-                client = null;
+                if (client.Host == serverAddress &&
+                    client.Port == port)
+                {
+                    Debug.Log($"Client already created: {client.Host}:{client.Port}");
+                    return;
+                }
+                else
+                {
+                    Debug.Log($"Disconnecting existing client {client.Host}:{client.Port}");
+                    client.Stop();
+                    client.Connected -= OnClientConnected;
+                    client.Disconnected -= OnClientDisconnected;
+                    client = null;
+                }
             }
 
             Debug.LogFormat($"Connecting to {serverAddress}:{port}");
