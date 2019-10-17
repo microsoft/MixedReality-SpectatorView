@@ -340,7 +340,7 @@ namespace Microsoft.MixedReality.SpectatorView
             {
                 yield return new WaitForEndOfFrame();
 
-                using (StateSynchronizationPerformanceMonitor.Instance.MeasureEventDuration("StateSynchronizationSceneManager", "RunEndOfFrameUpdates"))
+                using (StateSynchronizationPerformanceMonitor.Instance.MeasureEventDuration(nameof(StateSynchronizationSceneManager), nameof(RunEndOfFrameUpdates)))
                 {
                     if (framesToSkipForBuffering == 0)
                     {
@@ -371,7 +371,7 @@ namespace Microsoft.MixedReality.SpectatorView
                         // components
                         UpdateDestroyedComponents(connectionDelta);
 
-                        using (StateSynchronizationPerformanceMonitor.Instance.MeasureEventDuration("StateSynchronizationSceneManager", "ResetFrame"))
+                        using (StateSynchronizationPerformanceMonitor.Instance.MeasureEventDuration(nameof(StateSynchronizationSceneManager), "ResetFrame"))
                         {
                             for (int i = broadcasterComponents.Count - 1; i >= 0; i--)
                             {
@@ -386,7 +386,7 @@ namespace Microsoft.MixedReality.SpectatorView
                                 GlobalShaderPropertiesBroadcaster.Instance.OnFrameCompleted(connectionDelta);
                             }
 
-                            using (StateSynchronizationPerformanceMonitor.Instance.MeasureEventDuration("StateSynchronizationSceneManager", "ProcessNewConnections"))
+                            using (StateSynchronizationPerformanceMonitor.Instance.MeasureEventDuration(nameof(StateSynchronizationSceneManager), "ProcessNewConnections"))
                             {
                                 for (int i = 0; i < broadcasterComponents.Count; i++)
                                 {
@@ -397,7 +397,7 @@ namespace Microsoft.MixedReality.SpectatorView
                                 }
                             }
 
-                            using (StateSynchronizationPerformanceMonitor.Instance.MeasureEventDuration("StateSynchronizationSceneManager", "OnFrameCompleted"))
+                            using (StateSynchronizationPerformanceMonitor.Instance.MeasureEventDuration(nameof(StateSynchronizationSceneManager), "OnFrameCompleted"))
                             {
                                 for (int i = 0; i < broadcasterComponents.Count; i++)
                                 {
@@ -417,7 +417,7 @@ namespace Microsoft.MixedReality.SpectatorView
                     }
                     else
                     {
-                        StateSynchronizationPerformanceMonitor.Instance.IncrementEventCount("StateSynchronizationSceneManager", "FrameSkipped");
+                        StateSynchronizationPerformanceMonitor.Instance.IncrementEventCount(nameof(StateSynchronizationSceneManager), "FrameSkipped");
                         framesToSkipForBuffering--;
 
                         int bytesQueued = StateSynchronizationBroadcaster.Instance.OutputBytesQueued;
@@ -434,7 +434,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
         private void UpdateDestroyedComponents(SocketEndpointConnectionDelta connectionDelta)
         {
-            using (StateSynchronizationPerformanceMonitor.Instance.MeasureEventDuration("StateSynchronizationSceneManager", "UpdateDestroyedComponents"))
+            using (StateSynchronizationPerformanceMonitor.Instance.MeasureEventDuration(nameof(StateSynchronizationSceneManager), nameof(UpdateDestroyedComponents)))
             {
                 for (int i = broadcasterComponents.Count - 1; i >= 0; i--)
                 {
