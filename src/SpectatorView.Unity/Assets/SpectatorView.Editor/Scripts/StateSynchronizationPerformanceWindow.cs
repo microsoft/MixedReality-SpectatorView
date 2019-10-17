@@ -15,6 +15,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
         private string appIPAddress;
         private const int globalSettingsButtonWidth = 220;
         private Vector2 scrollPosition;
+        private const int defaultSpacing = 10;
 
         [MenuItem("Spectator View/Performance", false, 3)]
         public static void ShowCalibrationRecordingWindow()
@@ -47,7 +48,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
                 {
                     if (StateSynchronizationObserver.Instance == null)
                     {
-                        RenderTitle("StateSynchronizationObserver was not detected in the current scene. Open the SpectatorViewCompositor scene.", Color.red);
+                        RenderTitle("StateSynchronizationObserver was not detected in the current scene. Open the SpectatorViewPerformance scene.", Color.red);
                     }
                     else
                     {
@@ -83,22 +84,43 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
                 showSpatialLocalization: false,
                 ref appIPAddress);
 
-            if (StateSynchronizationObserver.Instance.PerformanceFeatureCount == 0)
+            RenderTitle("HoloLens application performance information", Color.green);
+
+            GUILayout.BeginHorizontal();
+            if (GUILayout.Button(new GUIContent("Enable Performance Monitoring", "Turns on performance monitoring mode for the attached HoloLens.")))
             {
-                RenderTitle("Waiting for performance information...", Color.yellow);
+                StateSynchronizationObserver.Instance.SetPerformanceMonitoringMode(true);
             }
-            else
+            if (GUILayout.Button(new GUIContent("Disable Performance Monitoring", "Turns off performance diagnostic mode for the attached HoloLens.")))
             {
-                RenderTitle("HoloLens application performance information", Color.green);
-                scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
-                IReadOnlyList<double> times = StateSynchronizationObserver.Instance.AverageTimePerFeature;
-                for (int i = 0; i < times.Count; i++)
+                StateSynchronizationObserver.Instance.SetPerformanceMonitoringMode(false);
+            }
+            GUILayout.EndHorizontal();
+
+            scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
+            GUILayout.Label($"Performance Monitoring Enabled:{StateSynchronizationObserver.Instance.PerformanceMonitoringModeEnabled}");
+            if (StateSynchronizationObserver.Instance.PerformanceMonitoringModeEnabled)
+            {
+                if (StateSynchronizationObserver.Instance.PerformanceEventDurations != null)
                 {
-                    double time = times[i];
-                    GUILayout.Label($"Feature {(StateSynchronizationPerformanceFeature)i}:{time.ToString("G4")}");
+                    RenderTitle("Event Durations (ms per frame)", Color.green);
+                    foreach (var duration in StateSynchronizationObserver.Instance.PerformanceEventDurations)
+                    {
+                        GUILayout.Label($"{duration.Item1}:{duration.Item2.ToString("G4")}");
+                    }
                 }
-                EditorGUILayout.EndScrollView();
+
+                if (StateSynchronizationObserver.Instance.PerformanceEventCounts != null)
+                {
+                    GUILayout.Space(defaultSpacing);
+                    RenderTitle("Event Counts (per frame)", Color.green);
+                    foreach (var count in StateSynchronizationObserver.Instance.PerformanceEventCounts)
+                    {
+                        GUILayout.Label($"{count.Item1}:{count.Item2}");
+                    }
+                }
             }
+            EditorGUILayout.EndScrollView();
         }
     }
 }

@@ -14,7 +14,8 @@ namespace Microsoft.MixedReality.SpectatorView
         private Material[] cachedMaterials;
         private List<Dictionary<string, object>> previousValues = new List<Dictionary<string, object>>();
         private MaterialPropertyAsset[][] cachedMaterialPropertyAccessors;
-
+        private readonly string performanceComponentName = nameof(MaterialsBroadcaster);
+   
         /// <summary>
         /// Asking for the sharedMaterial or sharedMaterials is expensive, so ensure this is only requested once per frame.
         /// </summary>
@@ -27,6 +28,8 @@ namespace Microsoft.MixedReality.SpectatorView
                 areMaterialsDifferent = true;
 
                 ClearPreviousValuesCache();
+
+                StateSynchronizationPerformanceMonitor.Instance.IncrementEventCount(performanceComponentName, "MaterialsChanged");
             }
             else
             {
@@ -54,7 +57,6 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
-
         private MaterialPropertyAsset[] GetCachedMaterialProperties(int materialIndex, Material[] materials)
         {
             if (cachedMaterialPropertyAccessors == null)
@@ -69,13 +71,20 @@ namespace Microsoft.MixedReality.SpectatorView
             return cachedMaterialPropertyAccessors[materialIndex];
         }
 
+        private bool ShouldAssessAnyPropertyAccessors(StateSynchronizationPerformanceParameters performanceParameters)
+        {
+            return performanceParameters.HasCustomMateriaPropertyPollingFrequencies ||
+                performanceParameters.ShaderKeywords != StateSynchronizationPerformanceParameters.PollingFrequency.UpdateOnceOnStart ||
+                performanceParameters.MaterialProperties != StateSynchronizationPerformanceParameters.PollingFrequency.UpdateOnceOnStart;
+        }
+
         public void UpdateMaterials(Renderer renderer, StateSynchronizationPerformanceParameters performanceParameters, Material[] materials, out bool areMaterialsDifferent)
         {
             UpdateCachedMaterials(materials, out areMaterialsDifferent);
 
             if (renderer != null && performanceParameters.MaterialPropertyBlocks == StateSynchronizationPerformanceParameters.FeatureInclusionType.SynchronizeFeature)
             {
-                using (StateSynchronizationPerformanceMonitor.Instance.MeasureScope(StateSynchronizationPerformanceFeature.MaterialPropertyBlockUpdate))
+                using (StateSynchronizationPerformanceMonitor.Instance.MeasureEventDuration(performanceComponentName, "MaterialPropertyBlockUpdate"))
                 {
                     renderer.UpdateCachedPropertyBlock();
                 }
@@ -85,15 +94,16 @@ namespace Microsoft.MixedReality.SpectatorView
         public void SendMaterialPropertyChanges(IEnumerable<SocketEndpoint> endpoints, Renderer renderer, StateSynchronizationPerformanceParameters performanceParameters, Action<BinaryWriter> writeHeader, Func<MaterialPropertyAsset, bool> shouldSynchronizeMaterialProperty)
         {
             Renderer usedRenderer = performanceParameters.MaterialPropertyBlocks == StateSynchronizationPerformanceParameters.FeatureInclusionType.SynchronizeFeature ? renderer : null;
-            using (StateSynchronizationPerformanceMonitor.Instance.MeasureScope(StateSynchronizationPerformanceFeature.MaterialPropertyUpdate))
+            using (StateSynchronizationPerformanceMonitor.Instance.MeasureEventDuration(performanceComponentName, "SendMaterialPropertyChanges"))
             {
                 for (int i = 0; i < cachedMaterials.Length; i++)
                 {
-                    if (cachedMaterials[i] != null)
+                    if (cachedMaterials[i] != null &&
+                        ShouldAssessAnyPropertyAccessors(performanceParameters))
                     {
                         foreach (MaterialPropertyAsset propertyAccessor in GetCachedMaterialProperties(i, cachedMaterials))
                         {
-                            if (shouldSynchronizeMaterialProperty(propertyAccessor) && performanceParameters.ShouldUpdateMaterialProperty(propertyAccessor))
+                            if (shouldSynchronizeMaterialProperty(propertyAccessor))
                             {
                                 object newValue = propertyAccessor.GetValue(usedRenderer, cachedMaterials[i]);
                                 object oldValue;
@@ -101,6 +111,8 @@ namespace Microsoft.MixedReality.SpectatorView
                                 {
                                     previousValues[i][propertyAccessor.propertyName] = newValue;
                                     SendMaterialPropertyChange(endpoints, usedRenderer, i, propertyAccessor, writeHeader);
+
+                                    StateSynchronizationPerformanceMonitor.Instance.IncrementEventCount(performanceComponentName, $"{cachedMaterials[i].name}.{cachedMaterials[i].shader.name}.{propertyAccessor.propertyName}");
                                 }
                             }
                         }
@@ -127,7 +139,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
         public void SendMaterials(BinaryWriter message, Renderer renderer, Func<MaterialPropertyAsset, bool> shouldSynchronizeMaterialProperty)
         {
-            using (StateSynchronizationPerformanceMonitor.Instance.MeasureScope(StateSynchronizationPerformanceFeature.MaterialPropertyUpdate))
+            using (StateSynchronizationPerformanceMonitor.Instance.MeasureEventDuration(performanceComponentName, "SendMaterials"))
             {
                 Material[] materials = cachedMaterials;
                 int materialCount = materials?.Length ?? 0;
@@ -158,8 +170,7 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
-
-        public void SendMaterialPropertyChange(IEnumerable<SocketEndpoint> endpoints, Renderer renderer, int materialIndex, MaterialPropertyAsset propertyAccessor, Action<BinaryWriter> writeHeader)
+        protected void SendMaterialPropertyChange(IEnumerable<SocketEndpoint> endpoints, Renderer renderer, int materialIndex, MaterialPropertyAsset propertyAccessor, Action<BinaryWriter> writeHeader)
         {
             using (MemoryStream memoryStream = new MemoryStream())
             using (BinaryWriter message = new BinaryWriter(memoryStream))

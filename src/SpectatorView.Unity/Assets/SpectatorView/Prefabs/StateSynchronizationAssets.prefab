@@ -29,8 +29,8 @@ GameObject:
   - component: {fileID: 3487521567490933810}
   - component: {fileID: 3487521567490933811}
   - component: {fileID: 3487521567490933808}
-  - component: {fileID: 3487521567490933967}
   - component: {fileID: 5370918206105573797}
+  - component: {fileID: 4028490738034712250}
   m_Layer: 0
   m_Name: StateSynchronizationAssets
   m_TagString: Untagged
@@ -292,18 +292,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea8966d9bbe6eda469c0c206d7f054bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &3487521567490933967
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3487521567490933809}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa64e43c5d4d26d4eade391bc1f935ae, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &5370918206105573797
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -314,5 +302,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 17279b8784438744aa088057a8b4abc4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4028490738034712250
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3487521567490933809}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa64e43c5d4d26d4eade391bc1f935ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
