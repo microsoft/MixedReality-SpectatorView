@@ -12,4 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53c123ab49fdc47469535cccd517e6d3, type: 3}
   m_Name: AudioClipAssetCache
   m_EditorClassIdentifier: 
-  assets: []
+  assets:
+  - AssetId:
+      m_storage: b8b0ae9d-ae02-4a8c-9882-035a946e0da4
+    Asset: {fileID: 8300000, guid: 269b9f0fa8c930b4ea7ae2bf7b250820, type: 3}

@@ -159,10 +159,6 @@ MonoBehaviour:
     propertyType: 2
   - shader: {fileID: 4800000, guid: b0afe19eb5a14bd4a804a6dcae920c15, type: 3}
     shaderName: SV/RGBToYUV
-    propertyName: _RGBTex
-    propertyType: 4
-  - shader: {fileID: 4800000, guid: b0afe19eb5a14bd4a804a6dcae920c15, type: 3}
-    shaderName: SV/RGBToYUV
     propertyName: _Width
     propertyType: 2
   - shader: {fileID: 4800000, guid: b0afe19eb5a14bd4a804a6dcae920c15, type: 3}
@@ -203,10 +199,6 @@ MonoBehaviour:
     propertyType: 2
   - shader: {fileID: 4800000, guid: eea5640f3b88bc740b064fb8e21f7084, type: 3}
     shaderName: SV/YUVToRGB
-    propertyName: _YUVTex
-    propertyType: 4
-  - shader: {fileID: 4800000, guid: eea5640f3b88bc740b064fb8e21f7084, type: 3}
-    shaderName: SV/YUVToRGB
     propertyName: _Width
     propertyType: 2
   - shader: {fileID: 4800000, guid: eea5640f3b88bc740b064fb8e21f7084, type: 3}
@@ -217,10 +209,6 @@ MonoBehaviour:
     shaderName: SV/YUVToRGB
     propertyName: _AlphaScale
     propertyType: 2
-  - shader: {fileID: 4800000, guid: bd694db3311e85043ade9f089995566b, type: 3}
-    shaderName: SV/RGBToNV12
-    propertyName: _RGBTex
-    propertyType: 4
   - shader: {fileID: 4800000, guid: bd694db3311e85043ade9f089995566b, type: 3}
     shaderName: SV/RGBToNV12
     propertyName: _Width
@@ -239,13 +227,53 @@ MonoBehaviour:
     propertyType: 4
   - shader: {fileID: 4800000, guid: d205647913a7f2247a941d09358bc180, type: 3}
     shaderName: SV/BGRToRGB
-    propertyName: _FlipTex
-    propertyType: 4
-  - shader: {fileID: 4800000, guid: d205647913a7f2247a941d09358bc180, type: 3}
-    shaderName: SV/BGRToRGB
     propertyName: _AlphaScale
     propertyType: 2
   - shader: {fileID: 4800000, guid: d205647913a7f2247a941d09358bc180, type: 3}
     shaderName: SV/BGRToRGB
     propertyName: _YFlip
     propertyType: 2
+  - shader: {fileID: 4800000, guid: b0afe19eb5a14bd4a804a6dcae920c15, type: 3}
+    shaderName: SV/RGBToYUV
+    propertyName: _MainTex
+    propertyType: 4
+  - shader: {fileID: 4800000, guid: 0fa9e48777047104bb4bb8290d6be951, type: 3}
+    shaderName: SV/AlphaBlend
+    propertyName: _BackTex
+    propertyType: 4
+  - shader: {fileID: 4800000, guid: 0fa9e48777047104bb4bb8290d6be951, type: 3}
+    shaderName: SV/AlphaBlend
+    propertyName: _MainTex
+    propertyType: 4
+  - shader: {fileID: 4800000, guid: 0fa9e48777047104bb4bb8290d6be951, type: 3}
+    shaderName: SV/AlphaBlend
+    propertyName: _Alpha
+    propertyType: 2
+  - shader: {fileID: 4800000, guid: 941c5282fb189a4488e0e77278feab21, type: 3}
+    shaderName: SV/QuadView
+    propertyName: _MainTex
+    propertyType: 4
+  - shader: {fileID: 4800000, guid: 941c5282fb189a4488e0e77278feab21, type: 3}
+    shaderName: SV/QuadView
+    propertyName: _HologramTex
+    propertyType: 4
+  - shader: {fileID: 4800000, guid: 941c5282fb189a4488e0e77278feab21, type: 3}
+    shaderName: SV/QuadView
+    propertyName: _HologramAlphaTex
+    propertyType: 4
+  - shader: {fileID: 4800000, guid: 941c5282fb189a4488e0e77278feab21, type: 3}
+    shaderName: SV/QuadView
+    propertyName: _CompositeTex
+    propertyType: 4
+  - shader: {fileID: 4800000, guid: eea5640f3b88bc740b064fb8e21f7084, type: 3}
+    shaderName: SV/YUVToRGB
+    propertyName: _MainTex
+    propertyType: 4
+  - shader: {fileID: 4800000, guid: bd694db3311e85043ade9f089995566b, type: 3}
+    shaderName: SV/RGBToNV12
+    propertyName: _MainTex
+    propertyType: 4
+  - shader: {fileID: 4800000, guid: d205647913a7f2247a941d09358bc180, type: 3}
+    shaderName: SV/BGRToRGB
+    propertyName: _MainTex
+    propertyType: 4
