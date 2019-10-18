@@ -1,0 +1,13 @@
+﻿# Visual Studio scratch
+/.vs/
+/obj/
+
+# Unity scratch
+/Library/
+/Logs/
+/Temp/
+/*.csproj
+/*.sln
+
+# Build output
+/Builds/
