@@ -17,6 +17,7 @@ namespace Microsoft.MixedReality.SpatialAlignment
     internal class SpatialAnchorsAndroidCoordinateService : SpatialAnchorsCoordinateService
     {
         private long lastFrameProcessedTimeStamp;
+        private static bool initialized = false;
 
         /// <summary>
         /// Instantiates a new <see cref="SpatialAnchorsAndroidCoordinateService"/>.
@@ -30,16 +31,31 @@ namespace Microsoft.MixedReality.SpatialAlignment
         /// <inheritdoc/>
         protected override Task OnInitializeAsync()
         {
+            if (initialized)
+            {
+                Debug.Log("SpatialAnchorsAndroidCoordinateService: session already initialized");
+                return Task.CompletedTask;
+            }
+
             TaskCompletionSource<object> taskCompletionSource = new TaskCompletionSource<object>();
 
             UnityAndroidHelper.Instance.DispatchUiThread(unityActivity =>
             {
+                if (initialized)
+                {
+                    Debug.Log("SpatialAnchorsAndroidCoordinateService: session already initialized");
+                    taskCompletionSource.SetResult(null);
+                    return;
+                }
+
                 try
                 {
                     // We should only run the java initialization once
                     using (AndroidJavaClass cloudServices = new AndroidJavaClass("com.microsoft.CloudServices"))
                     {
                         cloudServices.CallStatic("initialize", unityActivity);
+                        Debug.Log("SpatialAnchorsAndroidCoordinateService: session successfully initialized");
+                        initialized = true;
                         taskCompletionSource.SetResult(null);
                     }
                 }

@@ -400,6 +400,8 @@ namespace Microsoft.MixedReality.SpectatorView
         private void OnNetworkConfigurationUpdated(object sender, string ipAddress)
         {
 #if UNITY_ANDROID || UNITY_IOS
+            DebugLog($"OnNetworkConfigurationUpdated: ipAddress:{ipAddress}");
+
             this.userIpAddress = ipAddress;
             if (networkConfigurationVisual != null)
             {
@@ -479,22 +481,28 @@ namespace Microsoft.MixedReality.SpectatorView
                 supportedLocalizers != null)
             {
                 DebugLog($"Received a set of {peerSupportedLocalizers.Count} supported localizers");
-                DebugLog($"Using prioritized initializers list from spectator view settings: {SpatialLocalizationInitializationSettings.IsInitialized && SpatialLocalizationInitializationSettings.Instance.PrioritizedInitializers != null}");
 
+                var initializers = new List<SpatialLocalizationInitializer>();
                 if (SpatialLocalizationInitializationSettings.IsInitialized &&
-                    await TryRunLocalizationWithInitializerAsync(SpatialLocalizationInitializationSettings.Instance.PrioritizedInitializers, supportedLocalizers, participant))
+                    SpatialLocalizationInitializationSettings.Instance.PrioritizedInitializers != null)
                 {
-                    // Succeeded at using a custom localizer specified by the app.
-                    return true;
+                    DebugLog($"Found prioritized spatial localization initializers list in spectator view settings");
+                    foreach(var initializer in SpatialLocalizationInitializationSettings.Instance.PrioritizedInitializers)
+                    {
+                        initializers.Add(initializer);
+                    }
                 }
 
-                if (await TryRunLocalizationWithInitializerAsync(defaultSpatialLocalizationInitializers, supportedLocalizers, participant))
+                if (defaultSpatialLocalizationInitializers != null)
                 {
-                    // Succeeded at using one of the default localizers from the prefab.
-                    return true;
+                    DebugLog($"Found default spatial localization initializers list for spectator view settings");
+                    foreach (var initializer in defaultSpatialLocalizationInitializers)
+                    {
+                        initializers.Add(initializer);
+                    }
                 }
 
-                Debug.LogWarning($"None of the configured LocalizationInitializers were supported by the connected participant, localization will not be started");
+                return await TryRunLocalizationWithInitializerAsync(initializers, supportedLocalizers, participant);
             }
             else
             {
@@ -506,12 +514,12 @@ namespace Microsoft.MixedReality.SpectatorView
 
         private async Task<bool> TryRunLocalizationWithInitializerAsync(IList<SpatialLocalizationInitializer> initializers, ISet<Guid> supportedLocalizers, SpatialCoordinateSystemParticipant participant)
         {
-            DebugLog($"TryRunLocalizationWithInitializerAsync");
-
-            if (initializers == null)
+            if (initializers == null || supportedLocalizers == null)
             {
+                Debug.LogWarning("Did not find a supported localizer/initializer combination.");
                 return false;
             }
+            DebugLog($"TryRunLocalizationWithInitializerAsync, initializers:{initializers.Count}, supportedLocalizers:{supportedLocalizers.Count}");
 
             for (int i = 0; i < initializers.Count; i++)
             {

@@ -63,47 +63,62 @@ namespace Microsoft.MixedReality.SpectatorView
             return true;
         }
 
-        private class LocalizationSession : DisposableBase, ISpatialLocalizationSession
+        private class LocalizationSession : SpatialLocalizationSession
         {
-            public IPeerConnection Peer => peerConnection;
+            /// <inheritdoc />
+            public override IPeerConnection Peer => peerConnection;
 
             private readonly WorldAnchorSpatialLocalizer localizer;
             private readonly WorldAnchorSpatialLocalizationSettings settings;
             private readonly IPeerConnection peerConnection;
 
-            public LocalizationSession(WorldAnchorSpatialLocalizer localizer, WorldAnchorSpatialLocalizationSettings settings, IPeerConnection peerConnection)
+            public LocalizationSession(WorldAnchorSpatialLocalizer localizer, WorldAnchorSpatialLocalizationSettings settings, IPeerConnection peerConnection) : base()
             {
                 this.localizer = localizer;
                 this.settings = settings;
                 this.peerConnection = peerConnection;
             }
 
-            public async Task<ISpatialCoordinate> LocalizeAsync(CancellationToken cancellationToken)
+            /// <inheritdoc />
+            public override async Task<ISpatialCoordinate> LocalizeAsync(CancellationToken cancellationToken)
             {
-                WorldAnchorCoordinateService coordinateService = await localizer.coordinateServiceTask.Unless(cancellationToken);
-                if (cancellationToken.IsCancellationRequested)
+                if (!defaultCTS.Token.CanBeCanceled)
                 {
+                    Debug.LogError("Session is invalid. No localization performed.");
                     return null;
                 }
 
-                if (settings.Mode == WorldAnchorLocalizationMode.LocateExistingAnchor)
+                ISpatialCoordinate spatialCoordinate = null;
+                using (var cancellableCTS = CancellationTokenSource.CreateLinkedTokenSource(defaultCTS.Token, cancellationToken))
                 {
-                    if (coordinateService.TryGetKnownCoordinate(settings.AnchorId, out ISpatialCoordinate coordinate))
-                    {
-                        return coordinate;
-                    }
-                    else
+                    WorldAnchorCoordinateService coordinateService = await localizer.coordinateServiceTask.Unless(cancellationToken);
+                    if (cancellationToken.IsCancellationRequested)
                     {
                         return null;
                     }
+
+                    if (settings.Mode == WorldAnchorLocalizationMode.LocateExistingAnchor)
+                    {
+                        if (coordinateService.TryGetKnownCoordinate(settings.AnchorId, out ISpatialCoordinate coordinate))
+                        {
+                            return coordinate;
+                        }
+                        else
+                        {
+                            return null;
+                        }
+                    }
+                    else
+                    {
+                        spatialCoordinate = await coordinateService.CreateCoordinateAsync(settings.AnchorId, settings.AnchorPosition, settings.AnchorRotation, cancellationToken);
+                    }
                 }
-                else
-                {
-                    return await coordinateService.CreateCoordinateAsync(settings.AnchorId, settings.AnchorPosition, settings.AnchorRotation, cancellationToken);
-                }
+
+                return await Task.FromResult(spatialCoordinate);
             }
 
-            public void OnDataReceived(BinaryReader reader)
+            /// <inheritdoc />
+            public override void OnDataReceived(BinaryReader reader)
             {
             }
         }

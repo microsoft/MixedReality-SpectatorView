@@ -90,9 +90,9 @@ namespace Microsoft.MixedReality.SpectatorView
             Updated?.Invoke();
         }
 
-        private class SpatialCoordinateLocalizationSession : DisposableBase, ISpatialLocalizationSession
+        private class SpatialCoordinateLocalizationSession : SpatialLocalizationSession
         {
-            public IPeerConnection Peer => peerConnection;
+            public override IPeerConnection Peer => peerConnection;
 
             private readonly IPeerConnection peerConnection;
             private readonly SpatialAnchorsCoordinateService coordinateService;
@@ -100,7 +100,7 @@ namespace Microsoft.MixedReality.SpectatorView
             private readonly SpatialAnchorsLocalizer localizer;
             private readonly TaskCompletionSource<string> coordinateIdentifierTaskSource;
 
-            public SpatialCoordinateLocalizationSession(SpatialAnchorsLocalizer localizer, SpatialAnchorsCoordinateService coordinateService, SpatialAnchorsConfiguration configuration, IPeerConnection peerConnection)
+            public SpatialCoordinateLocalizationSession(SpatialAnchorsLocalizer localizer, SpatialAnchorsCoordinateService coordinateService, SpatialAnchorsConfiguration configuration, IPeerConnection peerConnection) : base()
             {
                 this.localizer = localizer;
                 this.coordinateService = coordinateService;
@@ -116,38 +116,47 @@ namespace Microsoft.MixedReality.SpectatorView
                 coordinateService.FrameUpdate();
             }
 
-            public async Task<ISpatialCoordinate> LocalizeAsync(CancellationToken cancellationToken)
+            public override async Task<ISpatialCoordinate> LocalizeAsync(CancellationToken cancellationToken)
             {
                 ISpatialCoordinate coordinateToReturn = null;
-                if (configuration.IsCoordinateCreator)
+                using (var cancellableCTS = CancellationTokenSource.CreateLinkedTokenSource(defaultCTS.Token, cancellationToken))
                 {
-                    localizer.DebugLog("User getting initialized coordinate");
-                    coordinateToReturn = await coordinateService.TryCreateCoordinateAsync(localizer.anchorPosition, Quaternion.Euler(localizer.anchorRotation), cancellationToken);
-
-                    localizer.DebugLog($"Sending coordinate id: {coordinateToReturn.Id}");
-                    peerConnection.SendData(writer => writer.Write(coordinateToReturn.Id));
-
-                    localizer.DebugLog("Message sent.");
-                }
-                else
-                {
-                    localizer.DebugLog("Non-host waiting for coord id to be sent over");
-                    string coordinateIdentifier = await coordinateIdentifierTaskSource.Task.Unless(cancellationToken);
-
-                    if (!cancellationToken.IsCancellationRequested)
+                    if (configuration.IsCoordinateCreator)
                     {
-                        localizer.DebugLog($"Coordinate id: {coordinateIdentifier}, starting discovery.");
-                        if (await coordinateService.TryDiscoverCoordinatesAsync(cancellationToken, coordinateIdentifier))
-                        {
-                            localizer.DebugLog("Discovery complete, retrieving reference to ISpatialCoordinate");
-                            if (!coordinateService.TryGetKnownCoordinate(coordinateIdentifier, out coordinateToReturn))
-                            {
-                                Debug.LogError("We discovered, but for some reason failed to get coordinate from service.");
-                            }
+                        localizer.DebugLog("User getting initialized coordinate");
+                        coordinateToReturn = await coordinateService.TryCreateCoordinateAsync(localizer.anchorPosition, Quaternion.Euler(localizer.anchorRotation), cancellableCTS.Token);
+                        if (coordinateToReturn != null)
+                        {                           
+                            localizer.DebugLog($"Sending coordinate id: {coordinateToReturn.Id}");
+                            peerConnection.SendData(writer => writer.Write(coordinateToReturn.Id));
+                            localizer.DebugLog("Message sent.");
                         }
                         else
                         {
-                            Debug.LogError("Failed to discover spatial coordinate.");
+                            Debug.LogError("Coordinate discovery returned null coordinate");
+                            return null;
+                        }
+                    }
+                    else
+                    {
+                        localizer.DebugLog("Non-host waiting for coord id to be sent over");
+                        string coordinateIdentifier = await coordinateIdentifierTaskSource.Task.Unless(cancellableCTS.Token);
+
+                        if (!cancellableCTS.Token.IsCancellationRequested)
+                        {
+                            localizer.DebugLog($"Coordinate id: {coordinateIdentifier}, starting discovery.");
+                            if (await coordinateService.TryDiscoverCoordinatesAsync(cancellableCTS.Token, coordinateIdentifier))
+                            {
+                                localizer.DebugLog("Discovery complete, retrieving reference to ISpatialCoordinate");
+                                if (!coordinateService.TryGetKnownCoordinate(coordinateIdentifier, out coordinateToReturn))
+                                {
+                                    Debug.LogError("We discovered, but for some reason failed to get coordinate from service.");
+                                }
+                            }
+                            else
+                            {
+                                Debug.LogError("Failed to discover spatial coordinate.");
+                            }
                         }
                     }
                 }
@@ -163,9 +172,9 @@ namespace Microsoft.MixedReality.SpectatorView
                 localizer.Updated -= OnUpdated;
             }
 
-            public void OnDataReceived(BinaryReader reader)
+            public override void OnDataReceived(BinaryReader reader)
             {
-                coordinateIdentifierTaskSource.SetResult(reader.ReadString());
+                coordinateIdentifierTaskSource.TrySetResult(reader.ReadString());
             }
         }
 #endif

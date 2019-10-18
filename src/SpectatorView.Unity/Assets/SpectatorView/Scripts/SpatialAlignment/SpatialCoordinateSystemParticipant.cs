@@ -27,7 +27,7 @@ namespace Microsoft.MixedReality.SpectatorView
         private bool showDebugVisuals;
         private readonly TaskCompletionSource<ISet<Guid>> peerSupportedLocalizersTaskSource = new TaskCompletionSource<ISet<Guid>>();
 
-        public SocketEndpoint SocketEndpoint { get; }
+        public SocketEndpoint SocketEndpoint { get; set; }
 
         public SpatialCoordinateSystemParticipant(SocketEndpoint endpoint, GameObject debugVisualPrefab, float debugVisualScale)
         {
