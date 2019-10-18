@@ -165,19 +165,17 @@ namespace Microsoft.MixedReality.SpectatorView
         public void OnFrameCompleted()
         {
             //Camera update
+            using (MemoryStream memoryStream = new MemoryStream())
+            using (BinaryWriter message = new BinaryWriter(memoryStream))
             {
-                using (MemoryStream memoryStream = new MemoryStream())
-                using (BinaryWriter message = new BinaryWriter(memoryStream))
-                {
-                    message.Write(StateSynchronizationObserver.CameraCommand);
-                    Transform camTrans = Camera.main.transform;
-                    message.Write(Time.time);
-                    message.Write(camTrans.position);
-                    message.Write(camTrans.rotation);
-                    message.Flush();
+                message.Write(StateSynchronizationObserver.CameraCommand);
+                Transform camTrans = Camera.main?.transform ?? null;
+                message.Write(Time.time);
+                message.Write(camTrans != null ? camTrans.position : Vector3.zero);
+                message.Write(camTrans != null ? camTrans.rotation : Quaternion.identity);
+                message.Flush();
 
-                    connectionManager.Broadcast(memoryStream.ToArray());
-                }
+                connectionManager.Broadcast(memoryStream.ToArray());
             }
 
             //Perf

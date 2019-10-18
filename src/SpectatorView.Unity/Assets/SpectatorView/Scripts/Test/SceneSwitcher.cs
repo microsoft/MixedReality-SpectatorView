@@ -56,12 +56,8 @@ namespace Microsoft.MixedReality.SpectatorView
             if (timeUntilNextSceneTransition < 0)
             {
                 string nextSceneName = scenes[currentSceneIndex];
-                try
-                {
-                    SceneManager.LoadScene(nextSceneName);
-                }
-                catch { }
-
+                Debug.Log($"Loading new scene: {nextSceneName}");
+                SceneManager.LoadScene(nextSceneName, LoadSceneMode.Single);
                 currentSceneIndex++;
                 currentSceneIndex = currentSceneIndex >= scenes.Length ? 0 : currentSceneIndex;
                 timeUntilNextSceneTransition = sceneDurationInSeconds;
