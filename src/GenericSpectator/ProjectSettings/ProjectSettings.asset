@@ -728,7 +728,10 @@ PlayerSettings:
   webGLLinkerTarget: 1
   webGLThreadsSupport: 0
   scriptingDefineSymbols:
-    14: QRCODESTRACKER_BINARY_AVAILABLE
+    1: STATESYNC_TEXTMESHPRO
+    4: STATESYNC_TEXTMESHPRO
+    7: STATESYNC_TEXTMESHPRO
+    14: STATESYNC_TEXTMESHPRO;QRCODESTRACKER_BINARY_AVAILABLE
   platformArchitecture:
     iOS: 1
   scriptingBackend:
