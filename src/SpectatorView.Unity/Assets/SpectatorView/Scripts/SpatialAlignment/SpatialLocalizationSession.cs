@@ -10,7 +10,8 @@ namespace Microsoft.MixedReality.SpectatorView
 {
     public abstract class SpatialLocalizationSession : DisposableBase, ISpatialLocalizationSession
     {
-        protected readonly CancellationTokenSource defaultCTS = null;
+        private readonly CancellationTokenSource defaultCTS = null;
+        protected readonly CancellationToken defaultCancellationToken;
 
         /// <inheritdoc />
         public abstract IPeerConnection Peer { get; }
@@ -18,7 +19,8 @@ namespace Microsoft.MixedReality.SpectatorView
         /// <inheritdoc />
         public SpatialLocalizationSession()
         {
-            this.defaultCTS = new CancellationTokenSource();
+            defaultCTS = new CancellationTokenSource();
+            defaultCancellationToken = defaultCTS.Token;
         }
 
         /// <inheritdoc />

@@ -182,9 +182,9 @@ namespace Microsoft.MixedReality.SpatialAlignment
         /// <param name="task">The task to await.</param>
         /// <param name="cancellationToken">The cancellation token to stop awaiting.</param>
         /// <returns>The task that can be awaited unless the cancellation token is triggered.</returns>
-        public static Task Unless(this Task task, CancellationToken cancellationToken)
+        public static async Task Unless(this Task task, CancellationToken cancellationToken)
         {
-            return Task.WhenAny(task, cancellationToken.AsTask());
+            await (await Task.WhenAny(task, cancellationToken.AsTask()));
         }
 
         /// <summary>
@@ -195,9 +195,16 @@ namespace Microsoft.MixedReality.SpatialAlignment
         /// <param name="task">The task to await.</param>
         /// <param name="cancellationToken">The cancellation token to stop awaiting.</param>
         /// <returns>The task that can be awaited unless the cancellation token is triggered.</returns>
-        public async static Task<T> Unless<T>(this Task<T> task, CancellationToken cancellationToken)
+        public static async Task<T> Unless<T>(this Task<T> task, CancellationToken cancellationToken)
         {
-            return (await Task.WhenAny(task, cancellationToken.AsTask())) is Task<T> result ? result.Result : default(T);
+            Task returnedTask = await Task.WhenAny(task, cancellationToken.AsTask());
+            if (returnedTask is Task<T> taskWithResult)
+            {
+                return await taskWithResult;
+            }
+
+            await returnedTask;
+            return default;
         }
 
         /// <summary>

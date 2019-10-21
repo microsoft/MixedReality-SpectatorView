@@ -205,7 +205,7 @@ namespace Microsoft.MixedReality.SpectatorView
             if (remoteLocalizationSessions.TryGetValue(socketEndpoint, out var currentCompletionSource))
             {
                 DebugLog("Canceling existing remote localization session: {socketEndpoint.Address}");
-                currentCompletionSource.TrySetResult(false);
+                currentCompletionSource.TrySetCanceled();
                 remoteLocalizationSessions.Remove(socketEndpoint);
             }
 
@@ -472,6 +472,10 @@ namespace Microsoft.MixedReality.SpectatorView
                                 Debug.LogWarning("Localization session completed but was no longer assigned to the associated participant");
                             }
                         }
+                    }
+                    catch (OperationCanceledException)
+                    {
+                        DebugLog("Localization operation cancelled.");
                     }
                     catch (Exception e)
                     {

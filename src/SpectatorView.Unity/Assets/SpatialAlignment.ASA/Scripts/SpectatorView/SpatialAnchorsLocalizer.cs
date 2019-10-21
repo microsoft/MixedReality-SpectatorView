@@ -92,6 +92,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
         private class SpatialCoordinateLocalizationSession : SpatialLocalizationSession
         {
+            /// <inheritdoc/>
             public override IPeerConnection Peer => peerConnection;
 
             private readonly IPeerConnection peerConnection;
@@ -116,10 +117,11 @@ namespace Microsoft.MixedReality.SpectatorView
                 coordinateService.FrameUpdate();
             }
 
+            /// <inheritdoc/>
             public override async Task<ISpatialCoordinate> LocalizeAsync(CancellationToken cancellationToken)
             {
                 ISpatialCoordinate coordinateToReturn = null;
-                using (var cancellableCTS = CancellationTokenSource.CreateLinkedTokenSource(defaultCTS.Token, cancellationToken))
+                using (var cancellableCTS = CancellationTokenSource.CreateLinkedTokenSource(defaultCancellationToken, cancellationToken))
                 {
                     if (configuration.IsCoordinateCreator)
                     {
@@ -164,6 +166,7 @@ namespace Microsoft.MixedReality.SpectatorView
                 return coordinateToReturn;
             }
 
+            /// <inheritdoc/>
             protected override void OnManagedDispose()
             {
                 base.OnManagedDispose();
@@ -172,6 +175,7 @@ namespace Microsoft.MixedReality.SpectatorView
                 localizer.Updated -= OnUpdated;
             }
 
+            /// <inheritdoc/>
             public override void OnDataReceived(BinaryReader reader)
             {
                 coordinateIdentifierTaskSource.TrySetResult(reader.ReadString());

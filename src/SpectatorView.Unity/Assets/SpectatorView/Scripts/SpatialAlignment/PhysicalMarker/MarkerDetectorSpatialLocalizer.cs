@@ -53,7 +53,7 @@ namespace Microsoft.MixedReality.SpectatorView
                 localizer.DebugLog("Getting host coordinate");
 
                 ISpatialCoordinate spatialCoordinate = null;
-                using (var cancellableCTS = CancellationTokenSource.CreateLinkedTokenSource(defaultCTS.Token, cancellationToken))
+                using (var cancellableCTS = CancellationTokenSource.CreateLinkedTokenSource(defaultCancellationToken, cancellationToken))
                 {
                     await coordinateService.TryDiscoverCoordinatesAsync(cancellationToken, new int[] { settings.MarkerID });
 

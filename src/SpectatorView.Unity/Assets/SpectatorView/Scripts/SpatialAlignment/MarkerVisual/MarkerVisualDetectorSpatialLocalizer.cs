@@ -79,14 +79,14 @@ namespace Microsoft.MixedReality.SpectatorView
             /// <inheritdoc />
             public override async Task<ISpatialCoordinate> LocalizeAsync(CancellationToken cancellationToken)
             {
-                if (!defaultCTS.Token.CanBeCanceled)
+                if (!defaultCancellationToken.CanBeCanceled)
                 {
                     Debug.LogError("Session is invalid. No localization performed.");
                     return null;
                 }
 
                 DebugLog($"Waiting for marker visual, CanBeCanceled:{cancellationToken.CanBeCanceled}, IsCancellationRequested:{cancellationToken.IsCancellationRequested}");
-                using (var cancellableCTS = CancellationTokenSource.CreateLinkedTokenSource(defaultCTS.Token, cancellationToken))
+                using (var cancellableCTS = CancellationTokenSource.CreateLinkedTokenSource(defaultCancellationToken, cancellationToken))
                 {
                     await Task.WhenAny(coordinateAssigned.Task, Task.Delay(-1, cancellableCTS.Token));
                     if (string.IsNullOrEmpty(coordinateId))
