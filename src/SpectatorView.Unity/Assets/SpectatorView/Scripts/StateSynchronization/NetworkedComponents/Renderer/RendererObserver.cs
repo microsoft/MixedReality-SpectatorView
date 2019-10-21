@@ -19,16 +19,16 @@ namespace Microsoft.MixedReality.SpectatorView
         {
         }
 
-        public override void Read(SocketEndpoint sendingEndpoint, BinaryReader message)
+        public override void Read(INetworkConnection connection, BinaryReader message)
         {
             byte changeType = message.ReadByte();
 
             EnsureRenderer(message, changeType);
 
-            Read(sendingEndpoint, message, changeType);
+            Read(connection, message, changeType);
         }
 
-        protected virtual void Read(SocketEndpoint sendingEndpoint, BinaryReader message, byte changeType)
+        protected virtual void Read(INetworkConnection connection, BinaryReader message, byte changeType)
         {
             if (RendererBroadcaster<TRenderer, TComponentService>.HasFlag(changeType, RendererBroadcaster<TRenderer, TComponentService>.ChangeType.Enabled) && Renderer)
             {

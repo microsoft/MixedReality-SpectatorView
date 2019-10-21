@@ -18,7 +18,7 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
-        protected override void Read(SocketEndpoint sendingEndpoint, BinaryReader message, byte changeType)
+        protected override void Read(INetworkConnection connection, BinaryReader message, byte changeType)
         {
             if (TextMeshBroadcaster.HasFlag(changeType, TextMeshBroadcaster.TextMeshChangeType.Text))
             {
@@ -44,7 +44,7 @@ namespace Microsoft.MixedReality.SpectatorView
                 }
             }
 
-            base.Read(sendingEndpoint, message, changeType);
+            base.Read(connection, message, changeType);
         }
     }
 }

@@ -301,7 +301,7 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
-        private void OnCalibrationDataReceived(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
+        private void OnCalibrationDataReceived(INetworkConnection connection, string command, BinaryReader reader, int remainingDataSize)
         {
             Debug.Log("Received calibration data payload.");
             HeadsetCalibrationData headsetCalibrationData;
@@ -311,7 +311,7 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
-        private void OnCalibrationResultReceived(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
+        private void OnCalibrationResultReceived(INetworkConnection connection, string command, BinaryReader reader, int remainingDataSize)
         {
             uploadSucceeded = reader.ReadBoolean();
             uploadResultMessage = reader.ReadString();

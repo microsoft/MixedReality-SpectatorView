@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -38,6 +39,16 @@ namespace Microsoft.MixedReality.SpectatorView
         private bool needsComponentCheck = true;
         private bool isIdInitialized = false;
         private bool? isHidden;
+
+        private bool isParentTransformReportingFlagValid = false;
+        private bool cachedParentTransformReportingFlag = false;
+
+        private bool shouldProcessConnectionDelta = false;
+        private readonly HashSet<INetworkConnection> fullyInitializedEndpoints = new HashSet<INetworkConnection>();
+        private readonly List<INetworkConnection> connectionsNeedingCompleteChanges = new List<INetworkConnection>();
+        private readonly List<INetworkConnection> connectionsNeedingDeltaChanges = new List<INetworkConnection>();
+        private readonly List<INetworkConnection> filteredEndpointsNeedingCompleteChanges = new List<INetworkConnection>();
+        private readonly List<INetworkConnection> filteredEndpointsNeedingDeltaChanges = new List<INetworkConnection>();
 
         /// <summary>
         /// Gets a cached version of the Transform associated with this Component.
@@ -164,22 +175,40 @@ namespace Microsoft.MixedReality.SpectatorView
         }
 
         /// <summary>
-        /// SocketEndpoint connections that are currently blocked
+        /// INetworkConnection connections that are currently blocked
         /// </summary>
-        public ISet<SocketEndpoint> BlockedConnections
+        public ISet<INetworkConnection> BlockedConnections
         {
             get;
-        } = new HashSet<SocketEndpoint>();
+        } = new HashSet<INetworkConnection>();
+
+        public override void ResetFrame()
+        {
+            base.ResetFrame();
+
+            // Reset any connection logic for the frame
+            shouldProcessConnectionDelta = true;
+
+            // Reset any cached values around parent transform reporting
+            isParentTransformReportingFlagValid = false;
+        }
 
         /// <summary>
-        /// Returns true if the provided endpoint should receive a transform update, otherwise false
+        /// Returns true if the provided connection should receive a transform update, otherwise false
         /// </summary>
-        /// <param name="endpoint">network connection to potentially send transform update</param>
-        /// <returns>True if the provided endpoint should receive a transform update, otherwise false</returns>
-        public bool ShouldSendTransformInHierarchy(SocketEndpoint endpoint)
+        /// <param name="connection">network connection to potentially send transform update</param>
+        /// <returns>True if the provided connection should receive a transform update, otherwise false</returns>
+        public bool ShouldSendTransformInHierarchy(INetworkConnection connection)
         {
-            if (BlockedConnections.Contains(endpoint))
+            if (isParentTransformReportingFlagValid)
             {
+                StateSynchronizationPerformanceMonitor.Instance.IncrementEventCount(PerformanceComponentName, "ShouldSendTransformInHierarchy.UsedCache");
+                return cachedParentTransformReportingFlag;
+            }
+
+            if (BlockedConnections.Contains(connection))
+            {
+                StateSynchronizationPerformanceMonitor.Instance.IncrementEventCount(PerformanceComponentName, "BlockedConnection");
                 return false;
             }
 
@@ -190,7 +219,10 @@ namespace Microsoft.MixedReality.SpectatorView
 
             if (CachedParentTransform != null)
             {
-                return CachedParentTransform.ShouldSendTransformInHierarchy(endpoint);
+                cachedParentTransformReportingFlag = CachedParentTransform.ShouldSendTransformInHierarchy(connection);
+                isParentTransformReportingFlagValid = true;
+                StateSynchronizationPerformanceMonitor.Instance.IncrementEventCount(PerformanceComponentName, "ShouldSendTransformInHierarchy.LookupParent");
+                return cachedParentTransformReportingFlag;
             }
             else
             {
@@ -304,13 +336,14 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
-        protected override bool ShouldUpdateFrame(SocketEndpoint endpoint)
+        protected override bool ShouldUpdateFrame(INetworkConnection connection)
         {
-            return base.ShouldUpdateFrame(endpoint) && ShouldSendTransformInHierarchy(endpoint);
+            return base.ShouldUpdateFrame(connection) && ShouldSendTransformInHierarchy(connection);
         }
 
-        protected override void BeginUpdatingFrame(SocketEndpointConnectionDelta connectionDelta)
+        protected override void BeginUpdatingFrame(NetworkConnectionDelta connectionDelta)
         {
+            base.BeginUpdatingFrame(connectionDelta);
             // Messages for hierarchies need to be sent from root to leaf to ensure
             // that Canvas construction on the other end happens in the correct order.
             CachedParentTransform?.OnFrameCompleted(connectionDelta);
@@ -318,6 +351,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
         protected override void EndUpdatingFrame()
         {
+            base.EndUpdatingFrame();
             UpdateComponentBroadcasters();
         }
 
@@ -326,7 +360,7 @@ namespace Microsoft.MixedReality.SpectatorView
             return changeFlags != 0;
         }
 
-        protected override void SendComponentCreation(IEnumerable<SocketEndpoint> newConnections)
+        protected override void SendComponentCreation(IEnumerable<INetworkConnection> newConnections)
         {
             // Don't send component creations for transforms
         }
@@ -334,77 +368,80 @@ namespace Microsoft.MixedReality.SpectatorView
         protected override TransformBroadcasterChangeType CalculateDeltaChanges()
         {
             TransformBroadcasterChangeType changeType = 0;
-            short newParentId = ParentId;
-            Vector3 newPosition;
-            Quaternion newRotation;
-            Vector3 newScale;
-            int newLayer = Layer;
-            GetLocalPose(out newPosition, out newRotation, out newScale);
-            bool newIsActive = SynchronizedIsActive;
-
-            if (previousIsActive != newIsActive)
+            using (StateSynchronizationPerformanceMonitor.Instance.MeasureEventDuration(PerformanceComponentName, "CalculateDeltaChanges"))
             {
-                previousIsActive = newIsActive;
-                changeType |= TransformBroadcasterChangeType.IsActive;
-            }
+                short newParentId = ParentId;
+                Vector3 newPosition;
+                Quaternion newRotation;
+                Vector3 newScale;
+                int newLayer = Layer;
+                GetLocalPose(out newPosition, out newRotation, out newScale);
+                bool newIsActive = SynchronizedIsActive;
 
-            // If this component is not active and enabled in the hierarchy, we only need
-            // to synchronize the isActive state. This is a performance win for large dynamic hierarchies, which don't
-            // need to keep the other Transform-related properties in sync.
-            if (isActiveAndEnabled)
-            {
-                if (previousName != CachedName)
+                if (previousIsActive != newIsActive)
                 {
-                    previousName = CachedName;
-                    changeType |= TransformBroadcasterChangeType.Name;
-                }
-                if (previousLayer != newLayer)
-                {
-                    previousLayer = newLayer;
-                    changeType |= TransformBroadcasterChangeType.Layer;
-                }
-                if (previousParentId != newParentId)
-                {
-                    previousParentId = newParentId;
-                    changeType |= TransformBroadcasterChangeType.Parent;
-                }
-                if (previousPosition != newPosition)
-                {
-                    previousPosition = newPosition;
-                    changeType |= TransformBroadcasterChangeType.Position;
-                }
-                if (previousRotation != newRotation)
-                {
-                    previousRotation = newRotation;
-                    changeType |= TransformBroadcasterChangeType.Rotation;
-                }
-                if (previousScale != newScale)
-                {
-                    previousScale = newScale;
-                    changeType |= TransformBroadcasterChangeType.Scale;
+                    previousIsActive = newIsActive;
+                    changeType |= TransformBroadcasterChangeType.IsActive;
                 }
 
+                // If this component is not active and enabled in the hierarchy, we only need
+                // to synchronize the isActive state. This is a performance win for large dynamic hierarchies, which don't
+                // need to keep the other Transform-related properties in sync.
+                if (isActiveAndEnabled)
+                {
+                    if (previousName != CachedName)
+                    {
+                        previousName = CachedName;
+                        changeType |= TransformBroadcasterChangeType.Name;
+                    }
+                    if (previousLayer != newLayer)
+                    {
+                        previousLayer = newLayer;
+                        changeType |= TransformBroadcasterChangeType.Layer;
+                    }
+                    if (previousParentId != newParentId)
+                    {
+                        previousParentId = newParentId;
+                        changeType |= TransformBroadcasterChangeType.Parent;
+                    }
+                    if (previousPosition != newPosition)
+                    {
+                        previousPosition = newPosition;
+                        changeType |= TransformBroadcasterChangeType.Position;
+                    }
+                    if (previousRotation != newRotation)
+                    {
+                        previousRotation = newRotation;
+                        changeType |= TransformBroadcasterChangeType.Rotation;
+                    }
+                    if (previousScale != newScale)
+                    {
+                        previousScale = newScale;
+                        changeType |= TransformBroadcasterChangeType.Scale;
+                    }
 
-                RectTransform rectTrans = CachedRectTransform;
-                if (rectTrans && rectCache == null)
-                {
-                    rectCache = new RectTransformBroadcaster();
-                }
-                else if (rectTrans == null && rectCache != null)
-                {
-                    rectCache = null;
-                }
 
-                if (rectCache != null && rectCache.UpdateChange(rectTrans))
-                {
-                    changeType |= TransformBroadcasterChangeType.RectTransform;
+                    RectTransform rectTrans = CachedRectTransform;
+                    if (rectTrans && rectCache == null)
+                    {
+                        rectCache = new RectTransformBroadcaster();
+                    }
+                    else if (rectTrans == null && rectCache != null)
+                    {
+                        rectCache = null;
+                    }
+
+                    if (rectCache != null && rectCache.UpdateChange(rectTrans))
+                    {
+                        changeType |= TransformBroadcasterChangeType.RectTransform;
+                    }
                 }
             }
 
             return changeType;
         }
 
-        protected override void SendCompleteChanges(IEnumerable<SocketEndpoint> endpoints)
+        protected override void SendCompleteChanges(IEnumerable<INetworkConnection> connections)
         {
             TransformBroadcasterChangeType changeType =
                 TransformBroadcasterChangeType.IsActive |
@@ -420,11 +457,12 @@ namespace Microsoft.MixedReality.SpectatorView
                 changeType |= TransformBroadcasterChangeType.RectTransform;
             }
 
-            SendDeltaChanges(endpoints, changeType);
+            SendDeltaChanges(connections, changeType);
         }
 
-        protected override void SendDeltaChanges(IEnumerable<SocketEndpoint> endpoints, TransformBroadcasterChangeType changeFlags)
+        protected override void SendDeltaChanges(IEnumerable<INetworkConnection> connections, TransformBroadcasterChangeType changeFlags)
         {
+            using (StateSynchronizationPerformanceMonitor.Instance.MeasureEventDuration(PerformanceComponentName, "SendDeltaChanges"))
             using (MemoryStream memoryStream = new MemoryStream())
             using (BinaryWriter message = new BinaryWriter(memoryStream))
             {
@@ -469,7 +507,7 @@ namespace Microsoft.MixedReality.SpectatorView
                 }
 
                 message.Flush();
-                StateSynchronizationSceneManager.Instance.Send(endpoints, memoryStream.ToArray());
+                StateSynchronizationSceneManager.Instance.Send(connections, memoryStream.ToArray());
             }
         }
 
@@ -491,7 +529,7 @@ namespace Microsoft.MixedReality.SpectatorView
             if ((StateSynchronizationPerformanceParameters.CheckForComponentBroadcasters == StateSynchronizationPerformanceParameters.PollingFrequency.UpdateOnceOnStart && needsComponentCheck) ||
                 StateSynchronizationPerformanceParameters.CheckForComponentBroadcasters == StateSynchronizationPerformanceParameters.PollingFrequency.UpdateContinuously)
             {
-                using (StateSynchronizationPerformanceMonitor.Instance.MeasureScope(StateSynchronizationPerformanceFeature.GameObjectComponentCheck))
+                using (StateSynchronizationPerformanceMonitor.Instance.MeasureEventDuration(PerformanceComponentName, "GameObjectComponentCheck"))
                 {
                     bool anyChangesDetected = false;
                     foreach (ComponentBroadcasterDefinition componentDefinition in StateSynchronizationSceneManager.Instance.ComponentBroadcasterDefinitions)
@@ -532,6 +570,84 @@ namespace Microsoft.MixedReality.SpectatorView
                     return this.CachedGameObject.activeSelf;
                 }
             }
+        }
+
+        public void ProcessConnectionDelta(NetworkConnectionDelta connectionDelta, out IReadOnlyList<INetworkConnection> needingCompleteChanges, out IReadOnlyList<INetworkConnection> filteredNeedingDeltaChanged, out IReadOnlyList<INetworkConnection> filteredNeedingCompleteChanges)
+        {
+            if (shouldProcessConnectionDelta)
+            {
+                shouldProcessConnectionDelta = false;
+                StateSynchronizationPerformanceMonitor.Instance.IncrementEventCount(PerformanceComponentName, "ProcessConnectionDelta.UpdatedCache");
+                using (StateSynchronizationPerformanceMonitor.Instance.MeasureEventDuration(PerformanceComponentName, "EndpointAssessment"))
+                {
+                    connectionsNeedingCompleteChanges.Clear();
+                    connectionsNeedingDeltaChanges.Clear();
+
+                    filteredEndpointsNeedingCompleteChanges.Clear();
+                    filteredEndpointsNeedingDeltaChanges.Clear();
+
+                    foreach (INetworkConnection connection in connectionDelta.AddedConnections)
+                    {
+                        connectionsNeedingCompleteChanges.Add(connection);
+                        if (ShouldSendChanges(connection))
+                        {
+                            filteredEndpointsNeedingCompleteChanges.Add(connection);
+                        }
+                    }
+
+                    foreach (INetworkConnection connection in connectionDelta.ContinuedConnections)
+                    {
+                        if (fullyInitializedEndpoints.Contains(connection))
+                        {
+                            connectionsNeedingDeltaChanges.Add(connection);
+                            if (ShouldSendChanges(connection))
+                            {
+                                filteredEndpointsNeedingDeltaChanges.Add(connection);
+                            }
+                        }
+                        else
+                        {
+                            connectionsNeedingCompleteChanges.Add(connection);
+                            if (ShouldSendChanges(connection))
+                            {
+                                filteredEndpointsNeedingCompleteChanges.Add(connection);
+                            }
+                        }
+                    }
+
+                    if (filteredEndpointsNeedingCompleteChanges.Count > 0)
+                    {
+                        foreach (INetworkConnection connection in filteredEndpointsNeedingCompleteChanges)
+                        {
+                            fullyInitializedEndpoints.Add(connection);
+                        }
+                    }
+
+                    foreach (INetworkConnection connection in connectionsNeedingDeltaChanges)
+                    {
+                        if (!ShouldSendChanges(connection))
+                        {
+                            fullyInitializedEndpoints.Remove(connection);
+                        }
+                    }
+
+                    if (connectionDelta.RemovedConnections.Count > 0)
+                    {
+                        foreach (INetworkConnection connection in connectionDelta.RemovedConnections)
+                        {
+                            fullyInitializedEndpoints.Remove(connection);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                StateSynchronizationPerformanceMonitor.Instance.IncrementEventCount(PerformanceComponentName, "ProcessConnectionDelta.UsedCache");
+            }
+
+            needingCompleteChanges = connectionsNeedingCompleteChanges;
+            filteredNeedingDeltaChanged = filteredEndpointsNeedingDeltaChanges;
+            filteredNeedingCompleteChanges = filteredEndpointsNeedingCompleteChanges;
         }
 
         private void GetLocalPose(out Vector3 localPosition, out Quaternion localRotation, out Vector3 localScale)

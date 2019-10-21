@@ -14,7 +14,7 @@ namespace Microsoft.MixedReality.SpectatorView
         [SerializeField]
         protected IConnectionManager connectionManager = null;
 
-        private SocketEndpoint currentConnection;
+        private INetworkConnection currentConnection;
 
         /// <inheritdoc />
         public string ConnectedIPAddress => currentConnection?.Address;
@@ -140,21 +140,21 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
-        protected virtual void OnConnected(SocketEndpoint endpoint)
+        protected virtual void OnConnected(INetworkConnection connection)
         {
-            currentConnection = endpoint;
+            currentConnection = connection;
 
-            NotifyConnected(endpoint);
+            NotifyConnected(connection);
         }
 
-        protected virtual void OnDisconnected(SocketEndpoint endpoint)
+        protected virtual void OnDisconnected(INetworkConnection connection)
         {
-            if (currentConnection == endpoint)
+            if (currentConnection == connection)
             {
                 currentConnection = null;
             }
 
-            NotifyDisconnected(endpoint);
+            NotifyDisconnected(connection);
         }
 
         protected void OnReceive(IncomingMessage data)
@@ -166,7 +166,7 @@ namespace Microsoft.MixedReality.SpectatorView
             {
                 string command = reader.ReadString();
 
-                NotifyCommand(data.Endpoint, command, reader, data.Size - (int)stream.Position);
+                NotifyCommand(data.Connection, command, reader, data.Size - (int)stream.Position);
             }
         }
     }

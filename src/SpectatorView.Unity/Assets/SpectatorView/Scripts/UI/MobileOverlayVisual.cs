@@ -57,7 +57,7 @@ namespace Microsoft.MixedReality.SpectatorView
         private float _lastTouchTime = 0;
         private bool _touching = false;
         private bool _uiToggledForTouch = false;
-        private bool _showingUI = false;
+        private bool _showingUI = true;
         private bool _uiNeedsUpdate = false;
 
         private void OnValidate()
@@ -92,11 +92,19 @@ namespace Microsoft.MixedReality.SpectatorView
                     _overlayChildren.Add(overlayChild);
                 }
             }
+
+            // Default to showing when created.
+            foreach (var child in _overlayChildren)
+            {
+                child.Show();
+            }
+            _showingUI = true;
         }
 
         private void Update()
         {
-            if (Input.touchCount > 0)
+            if (Input.touchCount > 0 ||
+                Input.GetMouseButton(0))
             {
                 if (!_touching)
                 {

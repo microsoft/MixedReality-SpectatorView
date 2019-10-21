@@ -87,7 +87,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
         }
 
         [MenuItem("Spectator View/Edit Global Performance Parameters", priority = 200)]
-        private static void EditGlobalPerformanceParameters()
+        internal static void EditGlobalPerformanceParameters()
         {
             GameObject prefab = Resources.Load<GameObject>(StateSynchronizationSceneManager.DefaultStateSynchronizationPerformanceParametersPrefabName);
             if (prefab == null)

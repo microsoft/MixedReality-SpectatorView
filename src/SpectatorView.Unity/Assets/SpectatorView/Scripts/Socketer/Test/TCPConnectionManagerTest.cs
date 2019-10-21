@@ -108,12 +108,12 @@ namespace Microsoft.MixedReality.SpectatorView
             connectionManager.DisconnectAll();
         }
 
-        private void OnNetConnected(SocketEndpoint obj)
+        private void OnNetConnected(INetworkConnection obj)
         {
             Debug.Log($"IConnectionManager Connected:{obj.ToString()}");
         }
 
-        private void OnNetDisconnected(SocketEndpoint obj)
+        private void OnNetDisconnected(INetworkConnection obj)
         {
             Debug.Log($"IConnectionManager Disconnected:{obj.ToString()}");
         }

@@ -77,6 +77,8 @@ In Preview the Compositor window uses an ArUco marker detector to detect ArUco m
 
 The steps for connecting the Compositor to your application are the same as for the HolographicCamera app. Once your application is connected to the compositor, you should start to see your application's content appear in the Unity editor through the [State Synchronization](../StateSynchronization/README.md) system. Once the shared spatial coordinate is located for both the HolographicCamera and for your application, the content from your application should appear on top of the real-world video in the same location as it does in the application on your HoloLens.
 
+> Note: If you consistently see an `Unknown Tracking state` message in the compositor window for your connected HoloLens, you may need to add a `HoloLensTrackingObserver` to your Unity scene.
+
 ## Options and configuration
 
 ### Recording

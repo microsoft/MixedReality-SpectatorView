@@ -9,8 +9,8 @@ namespace Microsoft.MixedReality.SpectatorView
 {
     public interface IConnectionManager
     {
-        event Action<SocketEndpoint> OnConnected;
-        event Action<SocketEndpoint> OnDisconnected;
+        event Action<INetworkConnection> OnConnected;
+        event Action<INetworkConnection> OnDisconnected;
         event Action<IncomingMessage> OnReceive;
 
         bool HasConnections { get; }
@@ -29,24 +29,31 @@ namespace Microsoft.MixedReality.SpectatorView
     public class TCPConnectionManager : MonoBehaviour, IConnectionManager
     {
         /// <summary>
+        /// If true, socket clients will attempt to reconnect when disconnected.
+        /// </summary>
+        [Tooltip("If true, socket clients will attempt to reconnect when disconnected.")]
+        [SerializeField]
+        public bool AttemptReconnectWhenClient = false;
+
+        /// <summary>
         /// Called when a client or server connection is established and the connection manager is using the TCP protocol.
         /// </summary>
-        public event Action<SocketEndpoint> OnConnected;
+        public event Action<INetworkConnection> OnConnected;
         /// <summary>
         /// Called when a client or server connection is disconnected and the connection manager is using the TCP protocol.
         /// </summary>
-        public event Action<SocketEndpoint> OnDisconnected;
+        public event Action<INetworkConnection> OnDisconnected;
         /// <summary>
         /// Called when a data payload is received
         /// </summary>
         public event Action<IncomingMessage> OnReceive;
 
         private readonly TimeSpan timeoutInterval = TimeSpan.Zero;
-        private readonly ConcurrentQueue<SocketEndpoint> newConnections = new ConcurrentQueue<SocketEndpoint>();
-        private readonly ConcurrentQueue<SocketEndpoint> oldConnections = new ConcurrentQueue<SocketEndpoint>();
-        private readonly ConcurrentDictionary<int, SocketEndpoint> serverConnections = new ConcurrentDictionary<int, SocketEndpoint>();
+        private readonly ConcurrentQueue<TCPSocketEndpoint> newConnections = new ConcurrentQueue<TCPSocketEndpoint>();
+        private readonly ConcurrentQueue<TCPSocketEndpoint> oldConnections = new ConcurrentQueue<TCPSocketEndpoint>();
+        private readonly ConcurrentDictionary<int, TCPSocketEndpoint> serverConnections = new ConcurrentDictionary<int, TCPSocketEndpoint>();
         private readonly ConcurrentQueue<IncomingMessage> inputMessageQueue = new ConcurrentQueue<IncomingMessage>();
-        private SocketEndpoint clientConnection;
+        private TCPSocketEndpoint clientConnection;
         private SocketerClient client;
 
         private SocketerClient server;
@@ -123,7 +130,7 @@ namespace Microsoft.MixedReality.SpectatorView
         private void OnServerConnected(SocketerClient client, int sourceId, string clientAddress)
         {
             Debug.Log("Server connected to " + clientAddress);
-            SocketEndpoint socketEndpoint = new TCPSocketEndpoint(client, timeoutInterval, clientAddress, sourceId);
+            TCPSocketEndpoint socketEndpoint = new TCPSocketEndpoint(client, timeoutInterval, clientAddress, sourceId);
             serverConnections[sourceId] = socketEndpoint;
             socketEndpoint.QueueIncomingMessages(inputMessageQueue);
             newConnections.Enqueue(socketEndpoint);
@@ -131,7 +138,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
         protected virtual void OnServerDisconnected(SocketerClient client, int sourceId, string clientAddress)
         {
-            SocketEndpoint socketEndpoint;
+            TCPSocketEndpoint socketEndpoint;
             if (serverConnections.TryRemove(sourceId, out socketEndpoint))
             {
                 Debug.Log("Server disconnected from " + clientAddress);
@@ -143,7 +150,13 @@ namespace Microsoft.MixedReality.SpectatorView
         private void OnClientConnected(SocketerClient client, int sourceId, string hostAddress)
         {
             Debug.Log("Client connected to " + hostAddress);
-            SocketEndpoint socketEndpoint = new TCPSocketEndpoint(client, timeoutInterval, hostAddress, sourceId);
+            TCPSocketEndpoint socketEndpoint = new TCPSocketEndpoint(client, timeoutInterval, hostAddress, sourceId);
+
+            if (!AttemptReconnectWhenClient)
+            {
+                socketEndpoint.StopConnectionAttempts();
+            }
+
             clientConnection = socketEndpoint;
             socketEndpoint.QueueIncomingMessages(inputMessageQueue);
             newConnections.Enqueue(socketEndpoint);
@@ -168,12 +181,12 @@ namespace Microsoft.MixedReality.SpectatorView
                 clientConnection.CheckConnectionTimeout(utcNow);
             }
 
-            foreach (SocketEndpoint endpoint in serverConnections.Values)
+            foreach (INetworkConnection endpoint in serverConnections.Values)
             {
                 endpoint.CheckConnectionTimeout(utcNow);
             }
 
-            SocketEndpoint connection;
+            TCPSocketEndpoint connection;
             while (newConnections.TryDequeue(out connection))
             {
                 OnConnected?.Invoke(connection);
@@ -199,7 +212,7 @@ namespace Microsoft.MixedReality.SpectatorView
         /// <param name="data">data to send</param>
         public void Broadcast(byte[] data)
         {
-            foreach (SocketEndpoint endpoint in serverConnections.Values)
+            foreach (TCPSocketEndpoint endpoint in serverConnections.Values)
             {
                 endpoint.Send(data);
             }
@@ -230,7 +243,7 @@ namespace Microsoft.MixedReality.SpectatorView
                 clientConnection = null;
             }
 
-            foreach (SocketEndpoint endpoint in serverConnections.Values)
+            foreach (TCPSocketEndpoint endpoint in serverConnections.Values)
             {
                 endpoint.Disconnect();
             }

@@ -6,9 +6,9 @@ using System.IO;
 
 namespace Microsoft.MixedReality.SpectatorView
 {
-    public delegate void ConnectedEventHandler(SocketEndpoint endpoint);
-    public delegate void DisconnectedEventHandler(SocketEndpoint endoint);
-    public delegate void CommandHandler(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize);
+    public delegate void ConnectedEventHandler(INetworkConnection connection);
+    public delegate void DisconnectedEventHandler(INetworkConnection connection);
+    public delegate void CommandHandler(INetworkConnection connection, string command, BinaryReader reader, int remainingDataSize);
 
     public interface ICommandRegistry
     {

@@ -28,6 +28,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
         private const float PerfUpdateTimeSeconds = 1.0f;
         private float timeUntilNextPerfUpdate = PerfUpdateTimeSeconds;
+        private int numFrames = 0;
 
         private GameObject dontDestroyOnLoadGameObject;
         
@@ -39,17 +40,18 @@ namespace Microsoft.MixedReality.SpectatorView
             base.Awake();
 
             RegisterCommandHandler(StateSynchronizationObserver.SyncCommand, HandleSyncCommand);
+            RegisterCommandHandler(StateSynchronizationObserver.PerfDiagnosticModeEnabledCommand, HandlePerfMonitoringModeEnableRequest);
 
             // Ensure that runInBackground is set to true so that the app continues to send network
             // messages even if it loses focus
             Application.runInBackground = true;
         }
-
         protected override void OnDestroy()
         {
             base.OnDestroy();
 
             UnregisterCommandHandler(StateSynchronizationObserver.SyncCommand, HandleSyncCommand);
+            UnregisterCommandHandler(StateSynchronizationObserver.PerfDiagnosticModeEnabledCommand, HandlePerfMonitoringModeEnableRequest);
         }
 
         protected override void Start()
@@ -81,16 +83,16 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
-        protected override void OnConnected(SocketEndpoint endpoint)
+        protected override void OnConnected(INetworkConnection connection)
         {
-            DebugLog($"Broadcaster received connection from {endpoint.Address}.");
-            base.OnConnected(endpoint);
+            DebugLog($"Broadcaster received connection from {connection.Address}.");
+            base.OnConnected(connection);
         }
 
-        protected override void OnDisconnected(SocketEndpoint endpoint)
+        protected override void OnDisconnected(INetworkConnection connection)
         {
-            DebugLog($"Broadcaster received disconnect from {endpoint.Address}"); ;
-            base.OnDisconnected(endpoint);
+            DebugLog($"Broadcaster received disconnect from {connection.Address}"); ;
+            base.OnDisconnected(connection);
         }
 
         /// <summary>
@@ -180,26 +182,37 @@ namespace Microsoft.MixedReality.SpectatorView
 
             //Perf
             timeUntilNextPerfUpdate -= Time.deltaTime;
+            numFrames++;
             if (timeUntilNextPerfUpdate < 0)
             {
-                timeUntilNextPerfUpdate = PerfUpdateTimeSeconds;
-
                 using (MemoryStream memoryStream = new MemoryStream())
                 using (BinaryWriter message = new BinaryWriter(memoryStream))
                 {
-                    message.Write("Perf");
-
-                    StateSynchronizationPerformanceMonitor.Instance.WriteMessage(message);
+                    message.Write(StateSynchronizationObserver.PerfCommand);
+                    StateSynchronizationPerformanceMonitor.Instance.WriteMessage(message, numFrames);
                     message.Flush();
                     connectionManager.Broadcast(memoryStream.ToArray());
                 }
+
+                timeUntilNextPerfUpdate = PerfUpdateTimeSeconds;
+                numFrames = 0;
             }
         }
 
-        public void HandleSyncCommand(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
+        public void HandleSyncCommand(INetworkConnection connection, string command, BinaryReader reader, int remainingDataSize)
         {
             reader.ReadSingle(); // float time
-            StateSynchronizationSceneManager.Instance.ReceiveMessage(endpoint, reader);
+            StateSynchronizationSceneManager.Instance.ReceiveMessage(connection, reader);
         }
+
+        private void HandlePerfMonitoringModeEnableRequest(INetworkConnection connection, string command, BinaryReader reader, int remainingDataSize)
+        {
+            bool enabled = reader.ReadBoolean();
+            if (StateSynchronizationPerformanceMonitor.Instance != null)
+            {
+                StateSynchronizationPerformanceMonitor.Instance.SetDiagnosticMode(enabled);
+            }
+        }
+
     }
 }

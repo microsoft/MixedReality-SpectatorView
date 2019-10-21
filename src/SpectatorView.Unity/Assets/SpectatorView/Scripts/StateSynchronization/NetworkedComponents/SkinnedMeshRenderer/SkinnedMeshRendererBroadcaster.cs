@@ -36,24 +36,24 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
-        protected override void SendCompleteChanges(IEnumerable<SocketEndpoint> endpoints)
+        protected override void SendCompleteChanges(IEnumerable<INetworkConnection> connections)
         {
-            base.SendCompleteChanges(endpoints);
+            base.SendCompleteChanges(connections);
 
-            TrySendBones(endpoints);
+            TrySendBones(connections);
         }
 
-        protected override void SendDeltaChanges(IEnumerable<SocketEndpoint> endpoints, byte changeFlags)
+        protected override void SendDeltaChanges(IEnumerable<INetworkConnection> connections, byte changeFlags)
         {
-            base.SendDeltaChanges(endpoints, changeFlags);
+            base.SendDeltaChanges(connections, changeFlags);
 
             if (!BonesReady)
             {
-                TrySendBones(endpoints);
+                TrySendBones(connections);
             }
         }
 
-        private bool TrySendBones(IEnumerable<SocketEndpoint> endpoints)
+        private bool TrySendBones(IEnumerable<INetworkConnection> connections)
         {
             BonesReady = false;
             Transform[] bones = Renderer.bones;
@@ -66,7 +66,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
             }
             BonesReady = true;
-            SendDeltaChanges(endpoints, SkinnedMeshRendererChangeType.Bones);
+            SendDeltaChanges(connections, SkinnedMeshRendererChangeType.Bones);
             return true;
         }
 

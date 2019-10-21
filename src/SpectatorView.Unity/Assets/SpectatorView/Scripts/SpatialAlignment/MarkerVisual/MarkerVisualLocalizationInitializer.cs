@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.SpectatorView
@@ -54,13 +55,29 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
-        public override void RunLocalization(SpatialCoordinateSystemParticipant participant)
+        /// <inheritdoc />
+        public override async Task<bool> TryRunLocalizationAsync(SpatialCoordinateSystemParticipant participant)
         {
-            DebugLog($"Marker-based localization started for: {participant?.SocketEndpoint?.Address ?? "IPAddress unknown"} with marker type {markerType}");
+            return await TryRunLocalizationImplAsync(participant);
+        }
+
+        /// <inheritdoc />
+        public override async Task<bool> TryResetLocalizationAsync(SpatialCoordinateSystemParticipant participant)
+        {
+            return await TryRunLocalizationImplAsync(participant);
+        }
+
+        private async Task<bool> TryRunLocalizationImplAsync(SpatialCoordinateSystemParticipant participant)
+        {
+            DebugLog($"Marker-based localization started for: {participant?.NetworkConnection?.Address ?? "IPAddress unknown"} with marker type {markerType}");
 
             // Note: We need to send the remote localization message prior to starting marker visual localization. The MarkerVisualSpatialLocalizer won't return until localization has completed.
-            SpatialCoordinateSystemManager.Instance.RunRemoteLocalizationAsync(participant.SocketEndpoint, PeerSpatialLocalizerId, new MarkerVisualDetectorLocalizationSettings());
-            SpatialCoordinateSystemManager.Instance.LocalizeAsync(participant.SocketEndpoint, LocalSpatialLocalizerId, new MarkerVisualLocalizationSettings());
+            Task<bool> remoteTask = SpatialCoordinateSystemManager.Instance.RunRemoteLocalizationAsync(participant.NetworkConnection, PeerSpatialLocalizerId, new MarkerVisualDetectorLocalizationSettings());
+            Task<bool> localTask = SpatialCoordinateSystemManager.Instance.LocalizeAsync(participant.NetworkConnection, LocalSpatialLocalizerId, new MarkerVisualLocalizationSettings());
+            await Task.WhenAll(remoteTask, localTask);
+            bool localSuccess = await localTask;
+            bool remoteSuccess = await remoteTask;
+            return localSuccess && remoteSuccess;
         }
 
         private void DebugLog(string message)

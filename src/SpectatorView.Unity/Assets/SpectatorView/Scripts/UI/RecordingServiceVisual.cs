@@ -42,11 +42,25 @@ namespace Microsoft.MixedReality.SpectatorView
         protected Image _startRecordingImage;
 
         /// <summary>
+        /// Background image enabled on recording button when not recording
+        /// </summary>
+        [Tooltip("Background image enabled on recording button when not recording")]
+        [SerializeField]
+        protected Image _startRecordingBackgroundImage;
+
+        /// <summary>
         /// Image enabled on recording button when recording
         /// </summary>
         [Tooltip("Image enabled on recording button when recording")]
         [SerializeField]
         protected Image _stopRecordingImage;
+
+        /// <summary>
+        /// Background image enabled on recording button when recording
+        /// </summary>
+        [Tooltip("Background image enabled on recording button when recording")]
+        [SerializeField]
+        protected Image _stopRecordingBackgroundImage;
 
         /// <summary>
         /// Button used to view last recorded video
@@ -56,11 +70,11 @@ namespace Microsoft.MixedReality.SpectatorView
         protected Button _previewButton;
 
         /// <summary>
-        /// Image shown when counting down to start recording
+        /// Game object shown when counting down to start recording
         /// </summary>
-        [Tooltip("Image shown when counting down to start recording")]
+        [Tooltip("Game object shown when counting down to start recording")]
         [SerializeField]
-        protected Image _countdownImage;
+        protected GameObject _countdownParent;
 
         /// <summary>
         /// Text updated to contain current countdown value when starting recording
@@ -89,6 +103,16 @@ namespace Microsoft.MixedReality.SpectatorView
         public void SetRecordingService(IRecordingService recordingService)
         {
             _recordingService = recordingService;
+        }
+
+        protected void Start()
+        {
+            if (_countdownParent != null)
+            {
+                _countdownParent.SetActive(false);
+            }
+
+            Show();
         }
 
         protected void Update()
@@ -144,6 +168,10 @@ namespace Microsoft.MixedReality.SpectatorView
             {
                 StopRecording();
             }
+            else if (state == RecordingState.Initializing)
+            {
+                StopInitializing();
+            }
         }
 
         private void StartRecording()
@@ -158,10 +186,17 @@ namespace Microsoft.MixedReality.SpectatorView
 
         private void StopRecording()
         {
-            // Note: There is currently no support for stopping a recording during initialization
-
             Debug.Log("Stopping recording");
             _recordingService.StopRecording();
+            _recordingService.Dispose();
+            state = RecordingState.Ready;
+            _updateRecordingUI = true;
+            _readyToRecord = false;
+        }
+
+        private void StopInitializing()
+        {
+            Debug.Log("Stopping initializing");
             _recordingService.Dispose();
             state = RecordingState.Ready;
             _updateRecordingUI = true;
@@ -193,22 +228,32 @@ namespace Microsoft.MixedReality.SpectatorView
         {
             _updateRecordingUI = false;
 
+            var startImageActive = (state == RecordingState.Ready);
             if (_startRecordingImage != null)
             {
-                var startImageActive = (state == RecordingState.Ready);
                 _startRecordingImage.gameObject.SetActive(startImageActive);
             }
 
+            if (_startRecordingBackgroundImage != null)
+            {
+                _startRecordingBackgroundImage.gameObject.SetActive(startImageActive);
+            }
+
+            var stopImageActive = (state == RecordingState.Initializing) || (state == RecordingState.Recording);
             if (_stopRecordingImage != null)
             {
-                var stopImageActive = (state == RecordingState.Initializing) || (state == RecordingState.Recording);
                 _stopRecordingImage.gameObject.SetActive(stopImageActive);
             }
 
-            if (_countdownImage != null)
+            if (_stopRecordingBackgroundImage != null)
+            {
+                _stopRecordingBackgroundImage.gameObject.SetActive(stopImageActive);
+            }
+
+            if (_countdownParent != null)
             {
                 var countdownActive = (state == RecordingState.Initializing) && (!_readyToRecord);
-                _countdownImage.gameObject.SetActive(countdownActive);
+                _countdownParent.gameObject.SetActive(countdownActive);
 
                 if (countdownActive)
                 {

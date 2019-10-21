@@ -37,7 +37,7 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
-        private void OnConnected(SocketEndpoint endpoint)
+        private void OnConnected(INetworkConnection connection)
         {
             if (TransformBroadcaster != null)
             {

@@ -9,7 +9,7 @@ namespace Microsoft.MixedReality.SpectatorView
 {
     internal class RectMask2DObserver : ComponentObserver<RectMask2D>
     {
-        public override void Read(SocketEndpoint sendingEndpoint, BinaryReader message)
+        public override void Read(INetworkConnection connection, BinaryReader message)
         {
             RectMask2DBroadcaster.ChangeType changeType = (RectMask2DBroadcaster.ChangeType)message.ReadByte();
 

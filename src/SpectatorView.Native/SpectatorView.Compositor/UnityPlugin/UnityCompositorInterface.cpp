@@ -170,14 +170,31 @@ void UpdateVideoRecordingFrame()
         ci->RecordFrameAsync(videoBytes[videoBufferIndex], queuedVideoFrameTime, queuedVideoFrameCount);
     }
 
-
     if (lastVideoFrame >= 0 && lastRecordedVideoFrame != lastVideoFrame)
     {
+#if _DEBUG
+		std::wstring debugString = L"Updating the video recording texture, compositeFrameIndex: " + std::to_wstring(ci->compositeFrameIndex) + L", lastVideoFrame:" + std::to_wstring(lastVideoFrame) + L", lastRecordedVideoFrame: " + std::to_wstring(lastRecordedVideoFrame) + L"\n";
+		OutputDebugString(debugString.data());
+#endif
+
         queuedVideoFrameCount = ci->compositeFrameIndex - lastVideoFrame;
-        if (queuedVideoFrameCount <= 0)
-            queuedVideoFrameCount = lastVideoFrame - lastRecordedVideoFrame;
-        if (queuedVideoFrameCount <= 0)
-            queuedVideoFrameCount = 1;
+		if (queuedVideoFrameCount <= 0)
+		{
+#if _DEBUG
+			debugString = L"compositeFrameIndex less than lastVideoFrame, updating queuedVideoFrameCount to be difference between lastVideoFrame and lastRecordedVideoFrame\n";
+			OutputDebugString(debugString.data());
+#endif
+			queuedVideoFrameCount = lastVideoFrame - lastRecordedVideoFrame;
+		}
+
+		if (queuedVideoFrameCount <= 0)
+		{
+#if _DEBUG
+			debugString = L"lastVideoFrame less than lastRecordedVideoFrame, setting queuedVideoFrameCount to one\n";
+			OutputDebugString(debugString.data());
+#endif
+			queuedVideoFrameCount = 1;
+		}
 
         lastRecordedVideoFrame = lastVideoFrame;
         queuedVideoFrameTime = lastVideoFrame * ci->GetColorDuration();
@@ -371,7 +388,8 @@ UNITYDLL void SetAudioData(BYTE* audioData, int audioSize, double audioTime)
 #if ENCODE_AUDIO
     if (ci != nullptr)
     {
-        ci->RecordAudioFrameAsync(audioData, audioSize, audioTime);
+		LONGLONG audioTimeHNS = audioTime * QPC_MULTIPLIER;
+        ci->RecordAudioFrameAsync(audioData, audioTimeHNS, audioSize);
     }
 #endif    
 }
@@ -388,17 +406,20 @@ UNITYDLL void TakeRawPicture(LPCWSTR lpFilePath)
     rawPicturePath = lpFilePath;
 }
 
-UNITYDLL void StartRecording(VideoRecordingFrameLayout frameLayout)
+UNITYDLL bool StartRecording(VideoRecordingFrameLayout frameLayout, LPCWSTR lpcDesiredFileName, const int desiredFileNameLength, const int inputFileNameLength, LPWSTR lpFileName, int* fileNameLength)
 {
     if (videoInitialized && ci != nullptr)
     {
         lastVideoFrame = -1;
+		lastRecordedVideoFrame = -1;
         AllocateVideoBuffers(frameLayout);
         VideoTextureBuffer.ReleaseTextures();
         VideoTextureBuffer.Reset();
-        ci->StartRecording(frameLayout);
-        isRecording = true;
+		isRecording = ci->StartRecording(frameLayout, lpcDesiredFileName, desiredFileNameLength, inputFileNameLength, lpFileName, fileNameLength);
+		return isRecording;
     }
+
+	return false;
 }
 
 UNITYDLL void StopRecording()

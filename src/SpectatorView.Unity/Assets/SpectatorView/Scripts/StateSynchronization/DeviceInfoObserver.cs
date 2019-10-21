@@ -18,7 +18,7 @@ namespace Microsoft.MixedReality.SpectatorView
         public const string StatusCommand = "Status";
 
         private INetworkManager networkManager;
-        private SocketEndpoint connectedEndpoint;
+        private INetworkConnection networkConnection;
         private string deviceName;
         private string deviceIPAddress;
 
@@ -28,9 +28,9 @@ namespace Microsoft.MixedReality.SpectatorView
         public INetworkManager NetworkManager => networkManager;
 
         /// <summary>
-        /// Gets the SocketEndpoint for the currently-connected device.
+        /// Gets the INetworkConnection for the currently-connected device.
         /// </summary>
-        public SocketEndpoint ConnectedEndpoint => connectedEndpoint;
+        public INetworkConnection NetworkConnection => networkConnection;
 
         /// <summary>
         /// Gets the name of the device.
@@ -65,20 +65,20 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
-        private void OnConnected(SocketEndpoint endpoint)
+        private void OnConnected(INetworkConnection connection)
         {
-            connectedEndpoint = endpoint;
+            networkConnection = connection;
         }
 
-        private void OnDisconnected(SocketEndpoint endpoint)
+        private void OnDisconnected(INetworkConnection connection)
         {
-            if (connectedEndpoint == endpoint)
+            if (networkConnection == connection)
             {
-                connectedEndpoint = null;
+                networkConnection = null;
             }
         }
 
-        private void HandleDeviceInfoCommand(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
+        private void HandleDeviceInfoCommand(INetworkConnection connection, string command, BinaryReader reader, int remainingDataSize)
         {
             deviceName = reader.ReadString();
             deviceIPAddress = reader.ReadString();

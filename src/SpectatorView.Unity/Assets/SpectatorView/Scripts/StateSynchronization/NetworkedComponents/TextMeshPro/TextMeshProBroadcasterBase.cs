@@ -15,6 +15,7 @@ namespace Microsoft.MixedReality.SpectatorView
     internal abstract class TextMeshProBroadcasterBase<TComponentService> : ComponentBroadcaster<TComponentService, TextMeshProBroadcasterChangeType>
         where TComponentService : Singleton<TComponentService>, IComponentBroadcasterService
     {
+
 #if STATESYNC_TEXTMESHPRO
 
         private TMP_Text textMesh;
@@ -56,12 +57,12 @@ namespace Microsoft.MixedReality.SpectatorView
             return change;
         }
 
-        protected override void SendCompleteChanges(IEnumerable<SocketEndpoint> endpoints)
+        protected override void SendCompleteChanges(IEnumerable<INetworkConnection> connections)
         {
             SendDeltaChanges(endpoints, TextMeshProBroadcasterChangeType.FontAndPlacement | TextMeshProBroadcasterChangeType.Text);
         }
 
-        protected override void SendDeltaChanges(IEnumerable<SocketEndpoint> endpoints, TextMeshProBroadcasterChangeType changeFlags)
+        protected override void SendDeltaChanges(IEnumerable<INetworkConnection> connections, TextMeshProBroadcasterChangeType changeFlags)
         {
             using (MemoryStream memoryStream = new MemoryStream())
             using (BinaryWriter message = new BinaryWriter(memoryStream))
@@ -350,12 +351,12 @@ namespace Microsoft.MixedReality.SpectatorView
             throw new NotImplementedException();
         }
 
-        protected override void SendCompleteChanges(IEnumerable<SocketEndpoint> endpoints)
+        protected override void SendCompleteChanges(IEnumerable<INetworkConnection> connections)
         {
             throw new NotImplementedException();
         }
 
-        protected override void SendDeltaChanges(IEnumerable<SocketEndpoint> endpoints, TextMeshProBroadcasterChangeType changeFlags)
+        protected override void SendDeltaChanges(IEnumerable<INetworkConnection> connections, TextMeshProBroadcasterChangeType changeFlags)
         {
             throw new NotImplementedException();
         }

@@ -40,9 +40,9 @@ namespace Microsoft.MixedReality.SpectatorView
             RegisterCommandHandler(CalibrationDataCommand, HandleCalibrationDataCommand);
         }
 
-        protected override void OnConnected(SocketEndpoint endpoint)
+        protected override void OnConnected(INetworkConnection connection)
         {
-            base.OnConnected(endpoint);
+            base.OnConnected(connection);
 
             compositionManager.ResetOnNewCameraConnection();
         }
@@ -50,17 +50,17 @@ namespace Microsoft.MixedReality.SpectatorView
         private void Update()
         {
             if (appDeviceObserver != null &&
-                appDeviceObserver.ConnectedEndpoint != null &&
+                appDeviceObserver.NetworkConnection != null &&
                 sharedSpatialCoordinateProxy != null &&
                 SpatialCoordinateSystemManager.IsInitialized &&
-                SpatialCoordinateSystemManager.Instance.TryGetSpatialCoordinateSystemParticipant(appDeviceObserver.ConnectedEndpoint, out SpatialCoordinateSystemParticipant participant))
+                SpatialCoordinateSystemManager.Instance.TryGetSpatialCoordinateSystemParticipant(appDeviceObserver.NetworkConnection, out SpatialCoordinateSystemParticipant participant))
             {
                 sharedSpatialCoordinateProxy.transform.position = participant.PeerSpatialCoordinateWorldPosition;
                 sharedSpatialCoordinateProxy.transform.rotation = participant.PeerSpatialCoordinateWorldRotation;
             }
         }
 
-        private void HandleCameraCommand(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
+        private void HandleCameraCommand(INetworkConnection connection, string command, BinaryReader reader, int remainingDataSize)
         {
             float timestamp = reader.ReadSingle();
             Vector3 cameraPosition = reader.ReadVector3();
@@ -69,7 +69,7 @@ namespace Microsoft.MixedReality.SpectatorView
             compositionManager.AddCameraPose(cameraPosition, cameraRotation, timestamp);
         }
 
-        private void HandleCalibrationDataCommand(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
+        private void HandleCalibrationDataCommand(INetworkConnection connection, string command, BinaryReader reader, int remainingDataSize)
         {
             int calibrationDataPayloadLength = reader.ReadInt32();
             byte[] calibrationDataPayload = reader.ReadBytes(calibrationDataPayloadLength);
@@ -82,9 +82,9 @@ namespace Microsoft.MixedReality.SpectatorView
                     sharedSpatialCoordinateProxy = new GameObject("App HMD Shared Spatial Coordinate");
                     sharedSpatialCoordinateProxy.transform.SetParent(transform, worldPositionStays: true);
                     if (appDeviceObserver != null &&
-                        appDeviceObserver.ConnectedEndpoint != null &&
+                        appDeviceObserver.NetworkConnection != null &&
                         SpatialCoordinateSystemManager.IsInitialized &&
-                        SpatialCoordinateSystemManager.Instance.TryGetSpatialCoordinateSystemParticipant(appDeviceObserver.ConnectedEndpoint, out SpatialCoordinateSystemParticipant participant))
+                        SpatialCoordinateSystemManager.Instance.TryGetSpatialCoordinateSystemParticipant(appDeviceObserver.NetworkConnection, out SpatialCoordinateSystemParticipant participant))
                     {
                         sharedSpatialCoordinateProxy.transform.position = participant.PeerSpatialCoordinateWorldPosition;
                         sharedSpatialCoordinateProxy.transform.rotation = participant.PeerSpatialCoordinateWorldRotation;

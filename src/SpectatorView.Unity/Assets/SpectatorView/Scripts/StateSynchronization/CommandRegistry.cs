@@ -17,24 +17,24 @@ namespace Microsoft.MixedReality.SpectatorView
         public event ConnectedEventHandler Connected;
         public event DisconnectedEventHandler Disconnected;
 
-        protected void NotifyConnected(SocketEndpoint socketEndpoint)
+        protected void NotifyConnected(INetworkConnection connection)
         {
-            Connected?.Invoke(socketEndpoint);
+            Connected?.Invoke(connection);
         }
 
-        protected void NotifyDisconnected(SocketEndpoint socketEndpoint)
+        protected void NotifyDisconnected(INetworkConnection connection)
         {
-            Disconnected?.Invoke(socketEndpoint);
+            Disconnected?.Invoke(connection);
         }
 
-        protected void NotifyCommand(SocketEndpoint socketEndpoint, string command, BinaryReader message, int remainingDataSize)
+        protected void NotifyCommand(INetworkConnection connection, string command, BinaryReader message, int remainingDataSize)
         {
             lock (lockObject)
             {
                 CommandHandler commandHandler = null;
                 if (commandHandlers.TryGetValue(command, out commandHandler))
                 {
-                    commandHandler(socketEndpoint, command, message, remainingDataSize);
+                    commandHandler(connection, command, message, remainingDataSize);
                 }
             }
         }

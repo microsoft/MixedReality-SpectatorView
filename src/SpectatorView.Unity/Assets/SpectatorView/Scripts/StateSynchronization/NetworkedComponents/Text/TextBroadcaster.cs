@@ -74,12 +74,12 @@ namespace Microsoft.MixedReality.SpectatorView
             return change;
         }
 
-        protected override void SendCompleteChanges(IEnumerable<SocketEndpoint> endpoints)
+        protected override void SendCompleteChanges(IEnumerable<INetworkConnection> connections)
         {
-            SendDeltaChanges(endpoints, ChangeType.FontAndPlacement | ChangeType.Text | ChangeType.Materials);
+            SendDeltaChanges(connections, ChangeType.FontAndPlacement | ChangeType.Text | ChangeType.Materials);
         }
 
-        protected override void SendDeltaChanges(IEnumerable<SocketEndpoint> endpoints, ChangeType changeFlags)
+        protected override void SendDeltaChanges(IEnumerable<INetworkConnection> connections, ChangeType changeFlags)
         {
             if (changeFlags != ChangeType.MaterialProperty)
             {
@@ -111,13 +111,13 @@ namespace Microsoft.MixedReality.SpectatorView
                     }
 
                     message.Flush();
-                    StateSynchronizationSceneManager.Instance.Send(endpoints, memoryStream.ToArray());
+                    StateSynchronizationSceneManager.Instance.Send(connections, memoryStream.ToArray());
                 }
             }
 
             if (HasFlag(changeFlags, ChangeType.MaterialProperty))
             {
-                MaterialsBroadcaster.SendMaterialPropertyChanges(endpoints, null, TransformBroadcaster.PerformanceParameters, message =>
+                MaterialsBroadcaster.SendMaterialPropertyChanges(connections, null, TransformBroadcaster.PerformanceParameters, message =>
                 {
                     TextService.Instance.WriteHeader(message, this);
                     message.Write((byte)ChangeType.MaterialProperty);

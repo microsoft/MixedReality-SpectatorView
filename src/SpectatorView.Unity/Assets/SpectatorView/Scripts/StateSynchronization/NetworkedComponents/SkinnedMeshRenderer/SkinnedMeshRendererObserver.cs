@@ -25,9 +25,9 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
-        protected override void Read(SocketEndpoint sendingEndpoint, BinaryReader message, byte changeType)
+        protected override void Read(INetworkConnection connection, BinaryReader message, byte changeType)
         {
-            base.Read(sendingEndpoint, message, changeType);
+            base.Read(connection, message, changeType);
 
             if (SkinnedMeshRendererBroadcaster.HasFlag(changeType, SkinnedMeshRendererBroadcaster.SkinnedMeshRendererChangeType.Bones) && Renderer != null)
             {

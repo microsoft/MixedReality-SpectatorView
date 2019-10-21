@@ -27,15 +27,15 @@ namespace Microsoft.MixedReality.SpectatorView
 #if UNITY_WSA
         private void Awake()
         {
-            connectionManager.OnConnected += TcpConnectionManager_OnConnected;
+            connectionManager.OnConnected += IConnectionManager_OnConnected;
         }
 
         private void OnDestroy()
         {
-            connectionManager.OnConnected -= TcpConnectionManager_OnConnected;
+            connectionManager.OnConnected -= IConnectionManager_OnConnected;
         }
 
-        private void IConnectionManager_OnConnected(SocketEndpoint obj)
+        private void IConnectionManager_OnConnected(INetworkConnection obj)
         {
             SendDeviceInfo();
         }

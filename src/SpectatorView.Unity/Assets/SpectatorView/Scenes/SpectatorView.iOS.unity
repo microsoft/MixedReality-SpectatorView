@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311912, g: 0.3807398, b: 0.3587271, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -208,6 +208,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1855549804}
     m_Modifications:
+    - target: {fileID: 898838627460868331, guid: ef500abe56e2fdb4086db81263f1c873,
+        type: 3}
+      propertyPath: m_ClearMaterial
+      value: 
+      objectReference: {fileID: 2100000, guid: f1d9352050a75486f878ab19fa578f16, type: 2}
+    - target: {fileID: 898838628580403981, guid: ef500abe56e2fdb4086db81263f1c873,
+        type: 3}
+      propertyPath: enableAutoFocus
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 781304974931139531, guid: ef500abe56e2fdb4086db81263f1c873,
         type: 3}
       propertyPath: m_Name
@@ -277,16 +287,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_camera
       value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 898838627460868331, guid: ef500abe56e2fdb4086db81263f1c873,
-        type: 3}
-      propertyPath: m_ClearMaterial
-      value: 
-      objectReference: {fileID: 2100000, guid: f1d9352050a75486f878ab19fa578f16, type: 2}
-    - target: {fileID: 898838628580403981, guid: ef500abe56e2fdb4086db81263f1c873,
-        type: 3}
-      propertyPath: enableAutoFocus
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ef500abe56e2fdb4086db81263f1c873, type: 3}

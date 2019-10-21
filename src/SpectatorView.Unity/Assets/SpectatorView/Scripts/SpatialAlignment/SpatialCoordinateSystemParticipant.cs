@@ -27,13 +27,13 @@ namespace Microsoft.MixedReality.SpectatorView
         private bool showDebugVisuals;
         private readonly TaskCompletionSource<ISet<Guid>> peerSupportedLocalizersTaskSource = new TaskCompletionSource<ISet<Guid>>();
 
-        public SocketEndpoint SocketEndpoint { get; }
+        public INetworkConnection NetworkConnection { get; }
 
-        public SpatialCoordinateSystemParticipant(SocketEndpoint endpoint, GameObject debugVisualPrefab, float debugVisualScale)
+        public SpatialCoordinateSystemParticipant(INetworkConnection connection, GameObject debugVisualPrefab, float debugVisualScale)
         {
             this.debugVisualPrefab = debugVisualPrefab;
             this.debugVisualScale = debugVisualScale;
-            SocketEndpoint = endpoint;
+            NetworkConnection = connection;
         }
 
         public ISpatialCoordinate Coordinate
@@ -92,7 +92,7 @@ namespace Microsoft.MixedReality.SpectatorView
         /// <summary>
         /// Gets the last-reported tracking status of the peer device.
         /// </summary>
-        public bool PeerDeviceHasTracking { get; internal set; }
+        public TrackingState PeerDeviceTrackingState { get; internal set; }
 
         /// <summary>
         /// Gets the last-reported status of whether or not the peer's spatial coordinate is located and tracking.
@@ -121,7 +121,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
         public void EnsureStateChangesAreBroadcast()
         {
-            if (SocketEndpoint != null && SocketEndpoint.IsConnected)
+            if (NetworkConnection != null && NetworkConnection.IsConnected)
             {
                 SendCoordinateStateMessage();
             }
@@ -148,15 +148,8 @@ namespace Microsoft.MixedReality.SpectatorView
             using (BinaryWriter message = new BinaryWriter(stream))
             {
                 message.Write(SpatialCoordinateSystemManager.CoordinateStateMessageHeader);
-#if UNITY_WSA
-                bool isTracking = UnityEngine.XR.WSA.WorldManager.state == UnityEngine.XR.WSA.PositionalLocatorState.Active;
-#else
-                // For Android, this should refer to GoogleARCore.Session.Status == GoogleARCore.SessionStatus.Tracking, but that requires
-                // an eventual dependency between SpectatorView and GoogleARCore. For now, always report that tracking is enabled
-                // for other platforms.
-                bool isTracking = true;
-#endif
-                message.Write(isTracking);
+                var trackingState = SpatialCoordinateSystemManager.Instance.TrackingState;
+                message.Write((byte)trackingState);
                 message.Write(Coordinate != null && (Coordinate.State == LocatedState.Tracking || Coordinate.State == LocatedState.Resolved));
                 message.Write(IsLocatingSpatialCoordinate);
 
@@ -175,7 +168,7 @@ namespace Microsoft.MixedReality.SpectatorView
                 if (previousCoordinateStatusMessage == null || !previousCoordinateStatusMessage.SequenceEqual(newCoordinateStatusMessage))
                 {
                     previousCoordinateStatusMessage = newCoordinateStatusMessage;
-                    SocketEndpoint.Send(newCoordinateStatusMessage);
+                    NetworkConnection.Send(newCoordinateStatusMessage);
                 }
             }
         }
@@ -188,7 +181,7 @@ namespace Microsoft.MixedReality.SpectatorView
                 writer.Write(LocalizationDataExchangeCommand);
                 writeCallback(writer);
 
-                SocketEndpoint.Send(stream.ToArray());
+                NetworkConnection.Send(stream.ToArray());
             }
         }
 
@@ -199,14 +192,14 @@ namespace Microsoft.MixedReality.SpectatorView
 
         internal void ReadCoordinateStateMessage(BinaryReader reader)
         {
-            PeerDeviceHasTracking = reader.ReadBoolean();
+            PeerDeviceTrackingState = (TrackingState) reader.ReadByte();
             PeerSpatialCoordinateIsLocated = reader.ReadBoolean();
             PeerIsLocatingSpatialCoordinate = reader.ReadBoolean();
             PeerSpatialCoordinateWorldPosition = reader.ReadVector3();
             PeerSpatialCoordinateWorldRotation = reader.ReadQuaternion();
         }
 
-        internal void SendSupportedLocalizersMessage(SocketEndpoint endpoint, ICollection<Guid> supportedLocalizers)
+        internal void SendSupportedLocalizersMessage(INetworkConnection connection, ICollection<Guid> supportedLocalizers)
         {
             using (MemoryStream stream = new MemoryStream())
             using (BinaryWriter writer = new BinaryWriter(stream))
@@ -218,7 +211,7 @@ namespace Microsoft.MixedReality.SpectatorView
                     writer.Write(supportedLocalizer);
                 }
 
-                endpoint.Send(stream.ToArray());
+                connection.Send(stream.ToArray());
             }
         }
 
