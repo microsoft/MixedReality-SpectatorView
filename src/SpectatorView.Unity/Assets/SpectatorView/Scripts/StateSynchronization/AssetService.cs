@@ -108,7 +108,7 @@ namespace Microsoft.MixedReality.SpectatorView
             ComponentExtensions.EnsureComponent<MeshRenderer>(gameObject);
 
             Mesh mesh = meshAssets.GetAsset(assetId);
-            if (mesh != null)
+            if ((mesh != null) || (assetId == Guid.Empty))
             {
                 MeshFilter filter = ComponentExtensions.EnsureComponent<MeshFilter>(gameObject);
                 filter.sharedMesh = mesh;
