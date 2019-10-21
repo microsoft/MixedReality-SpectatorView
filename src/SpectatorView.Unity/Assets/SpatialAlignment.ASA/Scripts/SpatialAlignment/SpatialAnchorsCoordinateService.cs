@@ -334,8 +334,6 @@ namespace Microsoft.MixedReality.SpatialAlignment
             {
                 ReleaseSessionStartRequest();
             }
-
-            return null;
         }
 
         private async Task<ISpatialCoordinate> TryCreateCoordinateEditorAsync(Vector3 worldPosition, Quaternion worldRotation, CancellationToken cancellationToken)

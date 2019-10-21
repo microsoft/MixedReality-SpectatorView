@@ -52,7 +52,7 @@ namespace Microsoft.MixedReality.SpectatorView
         private HashSet<INetworkManager> networkManagers = new HashSet<INetworkManager>();
         private ITrackingObserver trackingObserver = null;
 
-        private object localizationLock = new object();
+        private readonly object localizationLock = new object();
         private LocalizationSessionDetails currentLocalizationSession = null;
 
         private class LocalizationSessionDetails
