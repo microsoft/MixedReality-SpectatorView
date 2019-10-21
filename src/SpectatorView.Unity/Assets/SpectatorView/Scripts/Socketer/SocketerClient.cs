@@ -1333,7 +1333,24 @@ namespace Microsoft.MixedReality.SpectatorView
                 int pos = 0;
                 while (pos < count)
                 {
-                    int res = socket.Receive(buffer, offset + pos, count - pos, SocketFlags.None);
+                    int res;
+
+#if UNITY_EDITOR
+                    /// As of Unity 2018.3.14f1, there seems to be timing bug that <see cref="Socket.Receive"/>
+                    /// ocasionally gets stuck blocking and doesn't pull data out of the network stream, even
+                    /// though data is available. To work around that in Editor, we're switching to
+                    /// <see cref="Socket.BeginReceive"/>, but because there was a previously discovered bug
+                    /// in that API particularly when building IL2CPP for iOS, we're keeping this change only
+                    /// for Editor for now.
+
+                    var asyncResult = socket.BeginReceive(buffer, offset + pos, count - pos, SocketFlags.None, callback: null, state: null);
+
+                    asyncResult.AsyncWaitHandle.WaitOne();
+                    res = socket.EndReceive(asyncResult);
+#else
+                    res = socket.Receive(buffer, offset + pos, count - pos, SocketFlags.None);
+#endif
+
                     if (res <= 0)
                     {
                         throw new Exception("Socket receive failed: no more data");
