@@ -1,7 +1,7 @@
-﻿using System.Collections;
-// Copyright (c) Microsoft Corporation.
+﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -23,6 +23,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
         private float timeUntilNextSceneTransition = 0.0f;
         private int currentSceneIndex = 0;
+        private string lastLoadedScene = string.Empty;
 
         void Awake()
         {
@@ -57,10 +58,18 @@ namespace Microsoft.MixedReality.SpectatorView
             {
                 string nextSceneName = scenes[currentSceneIndex];
                 Debug.Log($"Loading new scene: {nextSceneName}");
-                SceneManager.LoadScene(nextSceneName, LoadSceneMode.Single);
+                SceneManager.LoadScene(nextSceneName, LoadSceneMode.Additive);
+
+                if (lastLoadedScene != string.Empty)
+                {
+                    Debug.Log($"Unloading scene: {lastLoadedScene}");
+                    SceneManager.UnloadSceneAsync(lastLoadedScene);
+                }
+
                 currentSceneIndex++;
                 currentSceneIndex = currentSceneIndex >= scenes.Length ? 0 : currentSceneIndex;
                 timeUntilNextSceneTransition = sceneDurationInSeconds;
+                lastLoadedScene = nextSceneName;
             }
         }
     }
