@@ -302,11 +302,8 @@ namespace Microsoft.MixedReality.SpectatorView
 
         private void OnDisconnected(SocketEndpoint endpoint)
         {
-            if (participants.TryGetValue(endpoint, out var participant) &&
-                participant.SocketEndpoint == endpoint)
+            if (participants.TryGetValue(endpoint, out var participant))
             {
-                // If multiple connections are attempted changing endpoints, multiple disconnects should exist.
-                // We should only tear down this functionality when the disconnect comes from the used endpoint compared to the IPAddress.
                 TryCleanupExistingLocalizationSession(participant);
                 participant.Dispose();
                 participants.Remove(endpoint);
