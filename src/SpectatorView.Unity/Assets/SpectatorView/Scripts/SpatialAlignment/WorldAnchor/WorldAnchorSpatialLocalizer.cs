@@ -116,11 +116,6 @@ namespace Microsoft.MixedReality.SpectatorView
 
                 return await Task.FromResult(spatialCoordinate);
             }
-
-            /// <inheritdoc />
-            public override void OnDataReceived(BinaryReader reader)
-            {
-            }
         }
     }
 }

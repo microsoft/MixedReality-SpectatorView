@@ -67,11 +67,6 @@ namespace Microsoft.MixedReality.SpectatorView
             }
 
             /// <inheritdoc />
-            public override void OnDataReceived(BinaryReader reader)
-            {
-            }
-
-            /// <inheritdoc />
             protected override void OnManagedDispose()
             {
                 base.OnManagedDispose();

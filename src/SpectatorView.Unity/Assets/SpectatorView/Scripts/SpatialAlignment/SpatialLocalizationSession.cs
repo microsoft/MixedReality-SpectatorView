@@ -44,6 +44,6 @@ namespace Microsoft.MixedReality.SpectatorView
         }
 
         /// <inheritdoc />
-        public abstract void OnDataReceived(BinaryReader reader);
+        public virtual void OnDataReceived(BinaryReader reader) { }
     }
 }
