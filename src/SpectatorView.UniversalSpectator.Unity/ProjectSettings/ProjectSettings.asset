@@ -13,7 +13,7 @@ PlayerSettings:
   useOnDemandResources: 0
   accelerometerFrequency: 60
   companyName: Microsoft
-  productName: SpectatorView.GenericSpectator
+  productName: SpectatorView.UniversalSpectator.Unity
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0.13725491, g: 0.12156863, b: 0.1254902, a: 1}
@@ -153,8 +153,8 @@ PlayerSettings:
   androidSupportedAspectRatio: 1
   androidMaxAspectRatio: 2.1
   applicationIdentifier:
-    Android: com.Microsoft.MixedReality.SpectatorView.GenericSpectator
-    iOS: com.Microsoft.MixedReality.SpectatorView.GenericSpectator
+    Android: com.Microsoft.MixedReality.SpectatorView.UniversalSpectator.Unity
+    iOS: com.Microsoft.MixedReality.SpectatorView.UniversalSpectator.Unity
   buildNumber: {}
   AndroidBundleVersionCode: 1
   AndroidMinSdkVersion: 24
@@ -746,7 +746,7 @@ PlayerSettings:
     Android: 6
   m_RenderingPath: 1
   m_MobileRenderingPath: 1
-  metroPackageName: SpectatorView.GenericSpectator
+  metroPackageName: SpectatorView.UniversalSpectator.Unity
   metroPackageVersion: 1.0.0.0
   metroCertificatePath: Assets/WSATestCertificate.pfx
   metroCertificatePassword: 
@@ -756,7 +756,7 @@ PlayerSettings:
   metroApplicationDescription: Mixed-reality spectator view for third person perspective
     viewing of mixed-reality applications
   wsaImages: {}
-  metroTileShortName: SpectatorView.GenericSpectator
+  metroTileShortName: UniversalSpectator.Unity
   metroTileShowName: 0
   metroMediumTileShowName: 0
   metroLargeTileShowName: 0
