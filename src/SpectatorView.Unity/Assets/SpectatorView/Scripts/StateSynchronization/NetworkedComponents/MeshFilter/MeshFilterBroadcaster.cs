@@ -38,7 +38,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
             meshFilter = GetComponent<MeshFilter>();
             assetId = AssetService.Instance.GetMeshId(meshFilter.sharedMesh);
-            if ((meshFilter.sharedMesh != null) && (assetId == Guid.Empty))
+            if (assetId == Guid.Empty)
             {
                 Debug.LogError("Could not find the Mesh asset for GameObject " + this.gameObject.name + ". Check the NetworkAssetCache and ensure that you're not modifying the mesh by accessing the MeshFilter.mesh property", this.gameObject);
             }
