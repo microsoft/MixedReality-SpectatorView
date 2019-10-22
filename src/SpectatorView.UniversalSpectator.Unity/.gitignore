@@ -1,0 +1,17 @@
+﻿# Visual Studio scratch
+/.vs/
+/obj/
+
+# Unity scratch
+/Library/
+/Logs/
+/Temp/
+/*.csproj
+/*.sln
+
+# Build output
+/Builds/
+
+# Conditional (sometimes hidden) folder metafiles
+/Assets/ARKit-Unity-Plugin.meta
+/Assets/GoogleARCore.meta
