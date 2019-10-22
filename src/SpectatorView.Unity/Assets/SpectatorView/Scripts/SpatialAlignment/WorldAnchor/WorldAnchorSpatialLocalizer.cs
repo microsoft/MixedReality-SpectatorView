@@ -82,14 +82,14 @@ namespace Microsoft.MixedReality.SpectatorView
             /// <inheritdoc />
             public override async Task<ISpatialCoordinate> LocalizeAsync(CancellationToken cancellationToken)
             {
-                if (!defaultCTS.Token.CanBeCanceled)
+                if (!defaultCancellationToken.CanBeCanceled)
                 {
                     Debug.LogError("Session is invalid. No localization performed.");
                     return null;
                 }
 
                 ISpatialCoordinate spatialCoordinate = null;
-                using (var cancellableCTS = CancellationTokenSource.CreateLinkedTokenSource(defaultCTS.Token, cancellationToken))
+                using (var cancellableCTS = CancellationTokenSource.CreateLinkedTokenSource(defaultCancellationToken, cancellationToken))
                 {
                     WorldAnchorCoordinateService coordinateService = await localizer.coordinateServiceTask.Unless(cancellationToken);
                     if (cancellationToken.IsCancellationRequested)
@@ -115,11 +115,6 @@ namespace Microsoft.MixedReality.SpectatorView
                 }
 
                 return await Task.FromResult(spatialCoordinate);
-            }
-
-            /// <inheritdoc />
-            public override void OnDataReceived(BinaryReader reader)
-            {
             }
         }
     }

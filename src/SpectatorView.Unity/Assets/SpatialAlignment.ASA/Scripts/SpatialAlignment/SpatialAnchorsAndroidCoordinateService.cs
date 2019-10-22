@@ -17,7 +17,8 @@ namespace Microsoft.MixedReality.SpatialAlignment
     internal class SpatialAnchorsAndroidCoordinateService : SpatialAnchorsCoordinateService
     {
         private long lastFrameProcessedTimeStamp;
-        private static bool initialized = false;
+        private static object initializeLock = new object();
+        private static TaskCompletionSource<object> initializeCompletionSource = null;
 
         /// <summary>
         /// Instantiates a new <see cref="SpatialAnchorsAndroidCoordinateService"/>.
@@ -31,23 +32,19 @@ namespace Microsoft.MixedReality.SpatialAlignment
         /// <inheritdoc/>
         protected override Task OnInitializeAsync()
         {
-            if (initialized)
+            lock (initializeLock)
             {
-                Debug.Log("SpatialAnchorsAndroidCoordinateService: session already initialized");
-                return Task.CompletedTask;
-            }
+                if (initializeCompletionSource != null)
+                {
+                    Debug.Log("SpatialAnchorsAndroidCoordinateService: initializeCompletionSource already initialized");
+                    return initializeCompletionSource.Task;
+                }
 
-            TaskCompletionSource<object> taskCompletionSource = new TaskCompletionSource<object>();
+                initializeCompletionSource = new TaskCompletionSource<object>();
+            }
 
             UnityAndroidHelper.Instance.DispatchUiThread(unityActivity =>
             {
-                if (initialized)
-                {
-                    Debug.Log("SpatialAnchorsAndroidCoordinateService: session already initialized");
-                    taskCompletionSource.SetResult(null);
-                    return;
-                }
-
                 try
                 {
                     // We should only run the java initialization once
@@ -55,18 +52,17 @@ namespace Microsoft.MixedReality.SpatialAlignment
                     {
                         cloudServices.CallStatic("initialize", unityActivity);
                         Debug.Log("SpatialAnchorsAndroidCoordinateService: session successfully initialized");
-                        initialized = true;
-                        taskCompletionSource.SetResult(null);
+                        initializeCompletionSource.SetResult(null);
                     }
                 }
                 catch (Exception ex)
                 {
                     Debug.LogError($"Exception throw initializing SpatialAnchorAndroidCoordinateService: {ex.ToString()}");
-                    taskCompletionSource.SetException(ex);
+                    initializeCompletionSource.SetException(ex);
                 }
             });
 
-            return taskCompletionSource.Task;
+            return initializeCompletionSource.Task;
         }
 
         /// <inheritdoc/>

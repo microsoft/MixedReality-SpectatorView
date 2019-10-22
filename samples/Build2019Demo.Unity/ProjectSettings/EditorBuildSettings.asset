@@ -12,8 +12,8 @@ EditorBuildSettings:
     path: Assets/MixedReality-SpectatorView/SpectatorView/Scenes/SpectatorView.Android.unity
     guid: 8c5e2534a4ad5f64dbb50a1bad484ef2
   - enabled: 0
-    path: Assets/MixedReality-SpectatorView/SpectatorView/Scenes/SpectatorView.HoloLens.unity
-    guid: aaaef5009f203534696f812a2010313e
+    path: Assets/MixedReality-SpectatorView/SpectatorView/Scenes/SpectatorView.HoloLens.Spectator.unity
+    guid: a988fc3dd08b60f4980fda8946f8015f
   - enabled: 0
     path: Assets/MixedReality-SpectatorView/SpectatorView/Scenes/SpectatorView.iOS.unity
     guid: f8cc70d0d868b754ab89047eb4a6317b

@@ -123,7 +123,7 @@ namespace Microsoft.MixedReality.SpectatorView
                 DebugLog($"Localizing, CanBeCanceled:{cancellationToken.CanBeCanceled}, IsCancellationRequested:{cancellationToken.IsCancellationRequested}");
 
                 ISpatialCoordinate coordinate = null;
-                using (var cancellableCTS = CancellationTokenSource.CreateLinkedTokenSource(defaultCTS.Token, cancellationToken))
+                using (var cancellableCTS = CancellationTokenSource.CreateLinkedTokenSource(defaultCancellationToken, cancellationToken))
                 {
                     if (!TrySendMarkerVisualDiscoveryMessage())
                     {
