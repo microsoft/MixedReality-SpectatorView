@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 1164873481
+CRC: 3540202560
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 578fad5cb647ca4357136a59786d8070
+    Hash: 94540add540fdccdd91d2fe008dd2210
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 38e514df4927cf060dd42bef3ba8d180
+    Hash: cbf5003a09e70257b90f1ba730fb5830
 HashAppended: 0
 ClassTypes:
 - Class: 21
@@ -36,6 +36,8 @@ ClassTypes:
 - Class: 114
   Script: {fileID: 11500000, guid: 53c123ab49fdc47469535cccd517e6d3, type: 3}
 - Class: 114
+  Script: {fileID: 11500000, guid: 57f6b15d8a719d94f9bcf7b7cd63e7d3, type: 3}
+- Class: 114
   Script: {fileID: 11500000, guid: c29111bdcab2ead418210130d901092a, type: 3}
 - Class: 115
   Script: {instanceID: 0}
@@ -46,6 +48,7 @@ ClassTypes:
 Assets:
 - Assets/Generated.StateSynchronization.AssetCaches/Resources/AudioClipAssetCache.asset
 - Assets/Generated.StateSynchronization.AssetCaches/Resources/FontAssetCache.asset
+- Assets/Generated.StateSynchronization.AssetCaches/Resources/CustomShaderPropertyAssetCache.asset
 - Assets/Generated.StateSynchronization.AssetCaches/Resources/MaterialPropertyAssetCache.asset
 - Assets/Generated.StateSynchronization.AssetCaches/Resources/AudioMixerGroupAssetCache.asset
 - Assets/Generated.StateSynchronization.AssetCaches/Resources/TextureAssetCache.asset
