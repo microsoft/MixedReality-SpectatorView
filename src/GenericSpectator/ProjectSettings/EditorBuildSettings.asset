@@ -6,6 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/SpectatorView.GenericObserver.unity
+    path: Assets/Scenes/Main.unity
     guid: aef7b8d122b7aed48afda50e77ecaac5
   m_configObjects: {}
