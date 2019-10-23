@@ -273,9 +273,9 @@ namespace Microsoft.MixedReality.SpectatorView
                 recordingVisualPrefab = MobileRecordingSettings.Instance.OverrideMobileRecordingServicePrefab;
             }
 
-            if (MobileRecordingSettings.IsInitialized && 
-                MobileRecordingSettings.Instance.EnableMobileRecordingService &&
-                recordingVisualPrefab != null)
+            bool enableMobileRecordingService = (!MobileRecordingSettings.IsInitialized) || MobileRecordingSettings.Instance.EnableMobileRecordingService;
+
+            if (enableMobileRecordingService && (recordingVisualPrefab != null))
             {
                 mobileRecordingServiceVisual = Instantiate(recordingVisualPrefab);
 
