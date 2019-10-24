@@ -133,7 +133,7 @@ If you are building Azure Spatial Anchors on iOS, you will need to take some add
 
 ![Marker](images/BroadcastAll.png)
 
-5. Press the 'HoloLens' button on the `Platform Switcher` attached to Spectator View in the Unity inspector (This should configure the correct build settings and app capabilities).
+5. Press the 'HoloLens' button on the `Platform Switcher` attached to `Spectator View` in the Unity inspector (This should configure the correct build settings and app capabilities).
 6. Build and deploy the application to your HoloLens device.
 
 ### Android
@@ -141,7 +141,10 @@ If you are building Azure Spatial Anchors on iOS, you will need to take some add
 1. Make sure your Unity project contains the asset caches that were created in the 'Before building' steps.
 2. Make sure that you have a reference to ARCore v1.7.0 in your project. This can be achieved by running the `tools/Scripts/SetupRepository.bat` script as an administrator or by downloading and importing the package from [ARCore v1.7.0](https://github.com/google-ar/arcore-unity-sdk/releases/tag/v1.7.0).
 3. Open the `SpectatorView.Android` Unity scene.
-4. Press the 'Android' button on the `Platform Switcher` attached to Spectator View in the Unity inspector (This should configure the correct build settings, app capabilities, and make sure you have a valid Android manifest file).
+4. Press the 'Android' button on the `Platform Switcher` attached to `Spectator View` in the Unity inspector (This should configure the correct build settings, app capabilities, and make sure you have a valid Android manifest file).
+
+> Note: If you need to customize your Android manifest, you can make changes to `Assets/Plugins/Android/AndroidManifest.xml` before you build, or you can use the 'Export Project' build option in Unity and then edit `src/main/AndroidManifest.xml` in your Android Studio project.
+
 5. Make sure to declare the SpectatorView.Android scene as the scene included. If SpectatorView.Android does not exist in your list of scenes to choose from in the build settings, open the scene in the Unity editor. Then reopen the build settings and press 'Add Open Scenes'.
 
 ![Marker](images/AndroidSceneSelection.png)
@@ -155,7 +158,7 @@ If you are building Azure Spatial Anchors on iOS, you will need to take some add
 1. Make sure your Unity project contains the asset caches that were created in the 'Before building' steps. Asset caches can't be recreated in new development environments, so the asset caches created on the PC need to be checked in or copied over to your mac development environment.
 2. Import [Unity's ARKit Plugin](https://bitbucket.org/Unity-Technologies/unity-arkit-plugin/src/default/) to your Unity project. To do this, download the source code from the provided link. You can then add the source code to the `external/ARKit-Unity-Plugin` folder. The `tools/Scripts/AddDependencies.bat` script should have added a symbolic link to this folder to your project when setting things up.
 3. Open the `SpectatorView.iOS` Unity scene.
-4. Press the 'iOS' button on the `Platform Switcher` attached to Spectator View in the Unity inspector (This should configure the correct build settings and app capabilities).
+4. Press the 'iOS' button on the `Platform Switcher` attached to `Spectator View` in the Unity inspector (This should configure the correct build settings and app capabilities).
 5. Export the iOS project to a XCode solution. Be sure to include the SpectatorView.iOS scene. If SpectatorView.iOS scene does not exist in your list of scenes to choose from in the build settings, open the scene in the Unity editor. Then reopen the build settings and press 'Add Open Scenes'.
 6. Configure the [signing certificate](https://developer.apple.com/support/code-signing/) for your Unity generated project in XCode to reflect your developer account.
 7. Build and deploy the application through XCode to your desired device (See the below steps if using ASA).
