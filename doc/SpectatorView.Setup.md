@@ -141,21 +141,12 @@ If you are building Azure Spatial Anchors on iOS, you will need to take some add
 1. Make sure your Unity project contains the asset caches that were created in the 'Before building' steps.
 2. Make sure that you have a reference to ARCore v1.7.0 in your project. This can be achieved by running the `tools/Scripts/SetupRepository.bat` script as an administrator or by downloading and importing the package from [ARCore v1.7.0](https://github.com/google-ar/arcore-unity-sdk/releases/tag/v1.7.0).
 3. Open the `SpectatorView.Android` Unity scene.
-4. Press the 'Android' button on the `Platform Switcher` attached to Spectator View in the Unity inspector (This should configure the correct build settings and app capabilities).
-5. Check 'ARCore Supported' under 'Build Settings -> Player Settings -> Android -> XR Settings' from the Unity editor toolbar.
-6. Export your project to Android Studio. Be sure to declare the SpectatorView.Android scene as the scene included. If SpectatorView.Android does not exist in your list of scenes to choose from in the build settings, open the scene in the Unity editor. Then reopen the build settings and press 'Add Open Scenes'.
+4. Press the 'Android' button on the `Platform Switcher` attached to Spectator View in the Unity inspector (This should configure the correct build settings, app capabilities, and make sure you have a valid Android manifest file).
+5. Make sure to declare the SpectatorView.Android scene as the scene included. If SpectatorView.Android does not exist in your list of scenes to choose from in the build settings, open the scene in the Unity editor. Then reopen the build settings and press 'Add Open Scenes'.
 
-![Marker](images/AndroidExport.png)
+![Marker](images/AndroidSceneSelection.png)
 
-8. Update the AndroidManifest.xml in Android Studio to use the `Microsoft.MixedReality.SpectatorView.Unity.ScreenRecorderActivity` class compared to the UnityPlayerActivity as the application activity.
-
-![Marker](images/AndroidManifestActivity.png)
-
-9. Update the AndroidManifest.xml in Android Studio to contain `android.permission.CAMERA`, `android.permission.INTERNET`, `android.permission.RECORD_AUDIO` and `android.permission.WRITE_EXTERNAL_STORAGE` uses-permissions.
-
-![Marker](images/AndroidManifestPermission.png)
-
-10. Build and deploy the application through Android Studio to your desired device. If it is a new Android development device, you may need to enable developer options and debugging. For information on setting up your Android device for debugging, see [here](https://developer.android.com/studio/debug/dev-options).
+6. Build and deploy the application. If you're targeting a new Android development device, you may need to enable developer options and debugging. For information on setting up your Android device for debugging, see [here](https://developer.android.com/studio/debug/dev-options).
 
 ### iOS
 
