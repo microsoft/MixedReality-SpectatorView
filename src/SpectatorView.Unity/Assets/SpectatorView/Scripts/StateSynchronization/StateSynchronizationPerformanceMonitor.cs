@@ -2,88 +2,169 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.SpectatorView
 {
-    internal enum StateSynchronizationPerformanceFeature : byte
+    public class StateSynchronizationPerformanceMonitor : Singleton<StateSynchronizationPerformanceMonitor>
     {
-        GameObjectComponentCheck = 0x0,
-        MaterialPropertyUpdate = 0x1,
-        MaterialPropertyBlockUpdate = 0x2,
-    }
+        private struct StopWatchKey
+        {
+            public string ComponentName;
+            public string EventName;
 
-    internal class StateSynchronizationPerformanceMonitor : Singleton<StateSynchronizationPerformanceMonitor>
-    {
-        private const int PeriodsToAverageOver = 5;
-        private const int FeatureCount = 3;
-        private Stopwatch[] stopwatches;
-        private float[][] previousSpentTimes;
-        private float[][] previousActualTimes;
-        private int currentPeriod = 0;
+            public StopWatchKey(string componentName, string eventName)
+            {
+                this.ComponentName = componentName;
+                this.EventName = eventName;
+            }
+        };
+
+        public struct ParsedMessage
+        {
+            public bool PerformanceMonitoringEnabled;
+            public List<Tuple<string, double>> EventDurations;
+            public List<Tuple<string, int>> EventCounts;
+
+            public ParsedMessage(bool performanceMonitoringEnabled, List<Tuple<string, double>> eventDurations, List<Tuple<string, int>> eventCounts)
+            {
+                this.PerformanceMonitoringEnabled = performanceMonitoringEnabled;
+                this.EventDurations = eventDurations;
+                this.EventCounts = eventCounts;
+            }
+        };
+
+        private Dictionary<StopWatchKey, Stopwatch> eventStopWatches = new Dictionary<StopWatchKey, Stopwatch>();
+        private Dictionary<StopWatchKey, int> eventCounts = new Dictionary<StopWatchKey, int>();
 
         protected override void Awake()
         {
             base.Awake();
-
-            stopwatches = new Stopwatch[FeatureCount];
-            previousSpentTimes = new float[PeriodsToAverageOver][];
-            previousActualTimes = new float[PeriodsToAverageOver][];
-            for (int i = 0; i < FeatureCount; i++)
-            {
-                stopwatches[i] = new Stopwatch();
-            }
-
-            for (int i = 0; i < PeriodsToAverageOver; i++)
-            {
-                previousSpentTimes[i] = new float[FeatureCount];
-                previousActualTimes[i] = new float[FeatureCount];
-            }
         }
 
-        public IDisposable MeasureScope(StateSynchronizationPerformanceFeature feature)
+        public IDisposable MeasureEventDuration(string componentName, string eventName)
         {
-            return new TimeScope(stopwatches[(byte)feature]);
+            if (!StateSynchronizationPerformanceParameters.EnablePerformanceReporting)
+            {
+                return null;
+            }
+
+            var key = new StopWatchKey(componentName, eventName);
+            if (!eventStopWatches.TryGetValue(key, out var stopwatch))
+            {
+                stopwatch = new Stopwatch();
+                eventStopWatches.Add(key, stopwatch);
+            }
+
+            return new TimeScope(stopwatch);
         }
 
-        public void WriteMessage(BinaryWriter message)
+        public void IncrementEventCount(string componentName, string eventName)
         {
-            for (int i = 0; i < currentPeriod && i < PeriodsToAverageOver - 1; i++)
+            if (!StateSynchronizationPerformanceParameters.EnablePerformanceReporting)
             {
-                for (int j = 0; j < FeatureCount; j++)
-                {
-                    previousSpentTimes[i + 1][j] = previousSpentTimes[i][j];
-                    previousActualTimes[i + 1][j] = previousActualTimes[i][j];
-                }
-            }
-            currentPeriod++;
-            for (int i = 0; i < FeatureCount; i++)
-            {
-                previousSpentTimes[0][i] = (float)stopwatches[i].Elapsed.TotalMilliseconds;
-                previousActualTimes[0][i] = Time.time;
+                return;
             }
 
-            if (currentPeriod > 1)
+            var key = new StopWatchKey(componentName, eventName);
+            if (!eventCounts.ContainsKey(key))
             {
-                int targetPeriodSlot = Math.Min(currentPeriod, PeriodsToAverageOver - 1);
-                message.Write(FeatureCount);
-                for (int i = 0; i < FeatureCount; i++)
-                {
-                    float spentTimeDelta = previousSpentTimes[0][i] - previousSpentTimes[targetPeriodSlot][i];
-                    float actualTimeDelta = previousActualTimes[0][i] - previousActualTimes[targetPeriodSlot][i];
-                    message.Write(spentTimeDelta / actualTimeDelta);
-                }
+                eventCounts.Add(key, 1);
             }
             else
             {
-                message.Write(FeatureCount);
-                for (int i = 0; i < FeatureCount; i++)
+                eventCounts[key]++;
+            }
+        }
+
+        public void WriteMessage(BinaryWriter message, int numFrames)
+        {
+            if (StateSynchronizationPerformanceParameters.EnablePerformanceReporting)
+            {
+                message.Write(true);
+            }
+            else
+            {
+                message.Write(false);
+                return;
+            }
+
+            double numFramesScale = (numFrames == 0) ? 1.0 : 1.0 / numFrames;
+            List<Tuple<string, double>> durations = new List<Tuple<string, double>>();
+            foreach(var pair in eventStopWatches)
+            {
+                durations.Add(new Tuple<string, double>($"{pair.Key.ComponentName}.{pair.Key.EventName}", pair.Value.Elapsed.TotalMilliseconds * numFramesScale));
+                pair.Value.Reset();
+            }
+
+            message.Write(durations.Count);
+            foreach(var duration in durations)
+            {
+                message.Write(duration.Item1);
+                message.Write(duration.Item2);
+            }
+
+            List<Tuple<string, int>> counts = new List<Tuple<string, int>>();
+            foreach (var pair in eventCounts.ToList())
+            {
+                counts.Add(new Tuple<string, int>($"{pair.Key.ComponentName}.{pair.Key.EventName}", (int)(pair.Value * numFramesScale)));
+                eventCounts[pair.Key] = 0;
+            }
+
+            message.Write(counts.Count);
+            foreach(var count in counts)
+            {
+                message.Write(count.Item1);
+                message.Write(count.Item2);
+            }
+        }
+
+        public static void ReadMessage(BinaryReader reader, out ParsedMessage message)
+        {
+            bool performanceMonitoringEnabled = reader.ReadBoolean();
+            List<Tuple<string, double>> durations = null;
+            List<Tuple<string, int>> counts = null;
+
+            if (!performanceMonitoringEnabled)
+            {
+                message = new ParsedMessage(performanceMonitoringEnabled, durations, counts);
+                return;
+            }
+
+            int durationsCount = reader.ReadInt32();
+            if (durationsCount > 0)
+            {
+                durations = new List<Tuple<string, double>>();
+                for (int i = 0; i < durationsCount; i++)
                 {
-                    message.Write(0.0f);
+                    string eventName = reader.ReadString();
+                    double eventDuration = reader.ReadDouble();
+                    durations.Add(new Tuple<string, double>(eventName, eventDuration));
                 }
             }
+
+            int countsCount = reader.ReadInt32();
+            if (countsCount > 0)
+            {
+                counts = new List<Tuple<string, int>>();
+                for (int i = 0; i < countsCount; i++)
+                {
+                    string eventName = reader.ReadString();
+                    int eventCount = reader.ReadInt32();
+                    counts.Add(new Tuple<string, int>(eventName, eventCount));
+                }
+            }
+
+            message = new ParsedMessage(performanceMonitoringEnabled, durations, counts);
+        }
+
+        public void SetDiagnosticMode(bool enabled)
+        {
+            StateSynchronizationPerformanceParameters.EnablePerformanceReporting = enabled;
         }
 
         private struct TimeScope : IDisposable

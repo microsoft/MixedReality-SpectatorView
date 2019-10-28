@@ -12,14 +12,14 @@ namespace Microsoft.MixedReality.SpectatorView
     {
         private void Awake()
         {
-#if UNITY_IOS || UNITY_ANDROID
+#if UNITY_IOS || UNITY_ANDROID || UNITY_EDITOR
             float designDpi = 424;
             float dpi = Screen.dpi;
 
             float scaler = dpi / designDpi;
             gameObject.transform.localScale *= scaler;
 #else
-            gameObject.transform.localScale *= 0.01f;
+            gameObject.transform.localScale *= 1.0f;
 #endif
         }
     }

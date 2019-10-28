@@ -59,7 +59,7 @@ Not all spatial alignment strategies support all platforms. See the chart below 
 2. Obtain [AzureSpatialAnchors v1.1.1](https://github.com/Azure/azure-spatial-anchors-samples/releases/tag/v1.1.1). This can be achieved by running the `tools/Scripts/SetupRepository.bat` script as an administrator or by manually copying assets content into the `external/Azure-Spatial-Anchors-Samples` folder.
 3. Add the `SPATIALALIGNMENT_ASA` preprocessor directive to your **Universal Windows Platform Player Settings** (This is located via Build Settings -> Player Settings -> Other Settings -> 'Scripting Defined Symbols')
 
-![Marker](images/UWPPlayerSEttings.png)
+![Marker](images/UWPPlayerSettings.png)
 
 4. Add the `SPATIALALIGNMENT_ASA` preprocessor directive to your **Android Player Settings** (This is located via Build Settings -> Player Settings -> Other Settings -> 'Scripting Defined Symbols'). **Be sure to pick the Android tab in the Player Settings.**
 
@@ -118,12 +118,14 @@ If you are building Azure Spatial Anchors on iOS, you will need to take some add
 
 ![Marker](images/UpdateAllAssetCaches.png)
 
+6. Edit the state synchronization performance parameters in your application to monitor material property changes based on your applications needs (SpectatorView -> Edit Global Performance Parameters). For more information on performance tuning content synchronization, see [here](../src/SpectatorView.Unity/Assets/SpectatorView/Scripts/StateSynchronization/README.md).
+
 > Note: **Asset Caches need to be updated on one development machine and shared across development machines**. Asset Caches aren't currently created in a deterministic manner and can't be recreated in new development environments. The easiest way to share this with a team is to commit changes to the Generated.StateSynchronization.AssetCaches folder that will appear in the Unity project's Assets directory. For more information on Asset Caches see [SpectatorView.StateSynchronization](../src/SpectatorView.Unity/Assets/SpectatorView/Scripts/StateSynchronization/README.md).
 
 ### HoloLens 2 & HoloLens
 
 1. Make sure your Unity project contains the asset caches that were created in the 'Before building' steps.
-2. Open the project scene that you intend to use with SpectatorView.
+2. Open the project scene that you intend to use with SpectatorView. (**Note:** For spectating with a HoloLens device, use `SpectatorView.HoloLens.Spectator` scene.)
 3. Add the `SpectatorView` prefab to the scene.
 4. Setup your scene to synchronize content. You can either have all content synchronized by checking 'Automatically Broadcast All Game Objects' in BroadcasterSettings located in your SpectatorViewSettings prefab. Or, you can manually add GameObjectHierarchyBroadcaster components to all parent game objects in the scene that you want synchronized.
 
@@ -131,7 +133,7 @@ If you are building Azure Spatial Anchors on iOS, you will need to take some add
 
 ![Marker](images/BroadcastAll.png)
 
-5. Press the 'HoloLens' button on the `Platform Switcher` attached to Spectator View in the Unity inspector (This should configure the correct build settings and app capabilities).
+5. Press the 'HoloLens' button on the `Platform Switcher` attached to `Spectator View` in the Unity inspector (This should configure the correct build settings and app capabilities).
 6. Build and deploy the application to your HoloLens device.
 
 ### Android
@@ -139,21 +141,15 @@ If you are building Azure Spatial Anchors on iOS, you will need to take some add
 1. Make sure your Unity project contains the asset caches that were created in the 'Before building' steps.
 2. Make sure that you have a reference to ARCore v1.7.0 in your project. This can be achieved by running the `tools/Scripts/SetupRepository.bat` script as an administrator or by downloading and importing the package from [ARCore v1.7.0](https://github.com/google-ar/arcore-unity-sdk/releases/tag/v1.7.0).
 3. Open the `SpectatorView.Android` Unity scene.
-4. Press the 'Android' button on the `Platform Switcher` attached to Spectator View in the Unity inspector (This should configure the correct build settings and app capabilities).
-5. Check 'ARCore Supported' under 'Build Settings -> Player Settings -> Android -> XR Settings' from the Unity editor toolbar.
-6. Export your project to Android Studio. Be sure to declare the SpectatorView.Android scene as the scene included. If SpectatorView.Android does not exist in your list of scenes to choose from in the build settings, open the scene in the Unity editor. Then reopen the build settings and press 'Add Open Scenes'.
+4. Press the 'Android' button on the `Platform Switcher` attached to `Spectator View` in the Unity inspector (This should configure the correct build settings, app capabilities, and make sure you have a valid Android manifest file).
 
-![Marker](images/AndroidExport.png)
+> Note: If you need to customize your Android manifest, you can make changes to `Assets/Plugins/Android/AndroidManifest.xml` before you build, or you can use the 'Export Project' build option in Unity and then edit `src/main/AndroidManifest.xml` in your Android Studio project.
 
-8. Update the AndroidManifest.xml in Android Studio to use the `Microsoft.MixedReality.SpectatorView.Unity.ScreenRecorderActivity` class compared to the UnityPlayerActivity as the application activity.
+5. Make sure to declare the SpectatorView.Android scene as the scene included. If SpectatorView.Android does not exist in your list of scenes to choose from in the build settings, open the scene in the Unity editor. Then reopen the build settings and press 'Add Open Scenes'.
 
-![Marker](images/AndroidManifestActivity.png)
+![Marker](images/AndroidSceneSelection.png)
 
-9. Update the AndroidManifest.xml in Android Studio to contain `android.permission.CAMERA`, `android.permission.INTERNET`, `android.permission.RECORD_AUDIO` and `android.permission.WRITE_EXTERNAL_STORAGE` uses-permissions.
-
-![Marker](images/AndroidManifestPermission.png)
-
-10. Build and deploy the application through Android Studio to your desired device. If it is a new Android development device, you may need to enable developer options and debugging. For information on setting up your Android device for debugging, see [here](https://developer.android.com/studio/debug/dev-options).
+6. Build and deploy the application. If you're targeting a new Android development device, you may need to enable developer options and debugging. For information on setting up your Android device for debugging, see [here](https://developer.android.com/studio/debug/dev-options).
 
 ### iOS
 
@@ -162,7 +158,7 @@ If you are building Azure Spatial Anchors on iOS, you will need to take some add
 1. Make sure your Unity project contains the asset caches that were created in the 'Before building' steps. Asset caches can't be recreated in new development environments, so the asset caches created on the PC need to be checked in or copied over to your mac development environment.
 2. Import [Unity's ARKit Plugin](https://bitbucket.org/Unity-Technologies/unity-arkit-plugin/src/default/) to your Unity project. To do this, download the source code from the provided link. You can then add the source code to the `external/ARKit-Unity-Plugin` folder. The `tools/Scripts/AddDependencies.bat` script should have added a symbolic link to this folder to your project when setting things up.
 3. Open the `SpectatorView.iOS` Unity scene.
-4. Press the 'iOS' button on the `Platform Switcher` attached to Spectator View in the Unity inspector (This should configure the correct build settings and app capabilities).
+4. Press the 'iOS' button on the `Platform Switcher` attached to `Spectator View` in the Unity inspector (This should configure the correct build settings and app capabilities).
 5. Export the iOS project to a XCode solution. Be sure to include the SpectatorView.iOS scene. If SpectatorView.iOS scene does not exist in your list of scenes to choose from in the build settings, open the scene in the Unity editor. Then reopen the build settings and press 'Add Open Scenes'.
 6. Configure the [signing certificate](https://developer.apple.com/support/code-signing/) for your Unity generated project in XCode to reflect your developer account.
 7. Build and deploy the application through XCode to your desired device (See the below steps if using ASA).
@@ -177,7 +173,8 @@ If you are building Azure Spatial Anchors on iOS, you will need to take some add
 
 If you would like to try out an example before setting up your own application to work with spectator view, run `tools/Scripts/SetupRepository.bat` as an administrator. Then, open the `samples/SpectatorView.Example.Unity` project. You can then build and deploy the following scenes:
 
-* HoloLens: `SpectatorView.HoloLens`
+* HoloLens Host: `SpectatorView.HoloLens`
+* HoloLens Spectator: `SpectatorView.HoloLens.Spectator`
 * Android: `SpectatorView.Android`
 * iOS: `SpectatorView.iOS`
 
@@ -214,3 +211,17 @@ In some instances, file permissions may generate errors when opening a spectator
 The ARKit Camera has an Enable Auto Focus feature that consumes touch input events, breaking Unity canvas interactions on iOS. This can cause the Screen Recording UI to fail to show. To fix this, uncheck the `Enable Auto Focus` option for ARKit's `UnityARCameraManager`:
 
 ![Marker](images/iOSAutoFocus.png)
+
+### __Issue:__ Build errors occur when `STATESYNC_TEXTMESHPRO` is enabled
+In some instances, if your project does not use Unity 2018.3.14f1, you may encounter breaks in TextMeshPro state synchronization code. In most instances, you will need to make small, often type, fixes to get TextMeshPro synchronization correctly. For now, Spectator View supports Unity 2018.3.14f1 and the TextMeshPro code in the state synchronization code base will be built based off of the TextMeshPro packages shipped with Unity 2018.3.14f1.
+
+### __Issue:__ Azure Spatial Anchors session fails to initialize on Android
+Azure spatial anchors uses a custom gradle file, `mainTemplate.gradle`, in order to obtain external dependencies. Prior to release/1.0.3, helper scripts did not correctly setup the symbolic link required to include `mainTemplate.gradle` for new projects. Without this gradle file, initializing Azure Spatial Anchors will fail. To fix this issue, check in your project for `Assets/Plugins/Android/mainTemplate.gradle`. If it does not exist create a symbolic link or copy `mainTemplate.gradle` into an `Assets/Plugins/Android` folder in your Unity project. If this gradle file is in a nested Plugins folder (Not `Assets/Plugins/Android`), it may fail to get picked up correctly. You can test whether the correct gradle file was used by looking in your `build.gradle` definition within Android Studio. It should contain content similar to the `mainTemplate.gradle` distributed with the Azure Spatial Anchors submodule dependency.
+
+### __Issue:__ Frame rate for HoloLens device drastically drops when a spectator device connects to the experience.
+Scraping the entire Unity scene for content updates on the HoloLens device can be computationally expensive. You may find that you need to better tune your synchronization story to improve the overall experience. For information on how to tune your synchronization experience for better performance, see [here](../src/SpectatorView.Unity/Assets/SpectatorView/Scripts/StateSynchronization/README.md).
+
+### __Issue:__ Transparent objects display incorrectly on Android or iOS devices.
+Its been observed that different shader variants may not get correctly built into Android and iOS applications when only including the SpectatorView.Android or SpectatorView.iOS scene. For example, the standard shader may not end up with transparent variants included in the Android/iOS builds, causing transparent content to not display correctly on spectator devices. To fix this, its suggested to include your HoloLens scene in the Android/iOS build. You can do this by including the scene in your build settings (see below). Note that you will need to keep the SpectatorView.Android or SpectatorView.iOS scene has scene 0 in the build. You may also be able to fix this by including your desired shader in the Build-in Shader Settings (Edit -> Project Settings -> Graphics). You may also be able to fix this by creating a [ShaderVariantCollection](https://docs.unity3d.com/Manual/OptimizingShaderLoadTime.html).
+
+![Marker](images/FixTransparency.png)

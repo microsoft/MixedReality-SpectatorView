@@ -41,7 +41,7 @@ The MixedReality-SpectatorView repository uses Unity packages, git submodules an
 * The setup script will obtain and update all git submodules declared in the MixedReality-SpectatorView repository.
 * The setup script will fix any symbolic linked directories in the MixedReality-SpectatorView repository.
 
-> Note: Not all submodules have the same MIT `LICENSE` as the MixedReality-SpectatorView repository. Submodules in this project currently include: [MixedRealityToolkit-Unity](https://github.com/microsoft/MixedRealityToolkit-Unity), [Azure-Spatial-Anchors-Samples](https://github.com/Azure/azure-spatial-anchors-samples) and [ARCore-Unity-SDK](https://github.com/google-ar/arcore-unity-sdk). You should view and accept the licenses in these projects before running the `tools/Scripts/SetupRepository.bat` script.
+> Note: Some of the external repositories we reference through git submodules may not have the same MIT `LICENSE` as the MixedReality-SpectatorView repository. Submodules in this project currently include: [MixedRealityToolkit-Unity](https://github.com/microsoft/MixedRealityToolkit-Unity), [Azure-Spatial-Anchors-Samples](https://github.com/Azure/azure-spatial-anchors-samples) and [ARCore-Unity-SDK](https://github.com/google-ar/arcore-unity-sdk). You should review the license of each of those repositories. These repositories will be pulled down to your computer when you run `tools/Scripts/SetupRepository.bat` script, or any of the `git submodule` related commands directly.
 
 Depending on what release you are using the correct setup script may vary. Choose the appropriate script below based on the git branch that you have checked out in your clone of the MixedReality-SpectatorView repository.
 
@@ -64,7 +64,7 @@ After obtaining a local clone of the MixedReality-SpectatorView repository and r
 
 1. Close any instances of Unity.
 2. Open an administrator command window.
-3. Run `tools\Scripts\AddDependencies.bat "Assets" "sv"` (These paths are the relative paths to your project Assets folder and your MixedReality-SpectatorView submodule from the root directory of your repository).  This script is located within your MixedReality-SpectatorView submodule.
+3. Run `tools\Scripts\AddDependencies.bat -AssetPath "Assets" -SVPath "sv"` (These paths are the relative paths to your project Assets folder and your MixedReality-SpectatorView submodule from the root directory of your repository).  This script is located within your MixedReality-SpectatorView submodule.
 
 Now, when you reopen your project in Unity, folders should appear in your project's Assets folder.
 
@@ -100,14 +100,16 @@ Below are quick instructions for adding Spectator View to your project:
 
 8. Build & Deploy your primary scene to the HoloLens device.
 
-9. Open the example spectating scene appropriate for your mobile device type. This should either be `SpectatorView.Android.unity` or `SpectatorView.iOS.unity`.
+9. Open the example spectating scene appropriate for your mobile device type. This should either be `SpectatorView.Android.unity`, `SpectatorView.iOS.unity` or `SpectatorView.HoloLens.Spectator.unity`.
 
-10. Build & Deploy your spectating scene onto your mobile device. Be sure to include the `SpectatorView.Android.unity` or `SpectatorView.iOS.unity` scene in your build through the Build Settings. Platform specific build instructions can be found [here](doc/SpectatorView.Setup.md) for Android and iOS.
+    > Note: If you are creating your own spectating scene, ensure that the `Role` property of the `SpectatorView` game object is set to `Spectator`; and the property `Shared Coordinate Origin` on `SpectatorView > SpatialCoordinateSystem > CameraTransform` game object is set to the parent game object of the main camera.
+
+10. Build & Deploy your spectating scene onto your mobile device. Be sure to include the `SpectatorView.Android.unity`, `SpectatorView.iOS.unity` or `SpectatorView.HoloLens.Spectator.unity` scene in your build through the Build Settings. Platform specific build instructions can be found [here](doc/SpectatorView.Setup.md) for Android and iOS.
 
 ### Detailed Unity Setup
 For more information on setting up a Spectator View project, see the following pages:
 
-* [Spectating with an Android or iOS device](doc/SpectatorView.Setup.md)
+* [Spectating with an Android, an iOS or a HoloLens device](doc/SpectatorView.Setup.md)
 * [Spectating with a video camera](doc/SpectatorView.Setup.VideoCamera.md)
 
 ## Architecture

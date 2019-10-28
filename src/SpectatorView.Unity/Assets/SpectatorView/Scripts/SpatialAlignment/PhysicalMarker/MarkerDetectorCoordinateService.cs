@@ -52,6 +52,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
         private readonly IMarkerDetector markerDetector;
         private readonly bool debugLogging;
+        private readonly TimeSpan simulatedMarkerDetectionDelay = TimeSpan.FromSeconds(5); // Wait 5 seconds before stating a marker was detected.
 
         public MarkerDetectorCoordinateService(IMarkerDetector markerDetector, bool debugLogging)
         {
@@ -126,17 +127,14 @@ namespace Microsoft.MixedReality.SpectatorView
         protected override async Task OnDiscoverCoordinatesAsync(CancellationToken cancellationToken, int[] idsToLocate = null)
         {
 #if UNITY_EDITOR
-            if (idsToLocate.Length != 1)
-            {
-                DebugLog("Running the MarkerDetectorCoordinateService in the editor only supports one coordinate id");
-                return;
-            }
-
-            var coordinate = new SpatialCoordinate(new Marker(idsToLocate[0], UnityEngine.Vector3.zero, UnityEngine.Quaternion.identity));
-            DebugLog("Created artificial coordinate at origin for debugging in the editor");
-            await Task.Delay(TimeSpan.FromSeconds(1), cancellationToken).IgnoreCancellation();
-            OnNewCoordinate(coordinate.Id, coordinate);
+            await OnDiscoverCoordinatesEditorAsync(cancellationToken, idsToLocate);
 #else
+            await OnDiscoverCoordinatesImplAsync(cancellationToken, idsToLocate);
+#endif
+        }
+
+        private async Task OnDiscoverCoordinatesImplAsync(CancellationToken cancellationToken, int[] idsToLocate = null)
+        {
             DebugLog("Starting detection");
             markerDetector.StartDetecting();
             try
@@ -183,7 +181,22 @@ namespace Microsoft.MixedReality.SpectatorView
                 markerDetector.StopDetecting();
                 DebugLog("Stopped detection");
             }
-#endif
+        }
+
+        private async Task OnDiscoverCoordinatesEditorAsync(CancellationToken cancellationToken, int[] idsToLocate = null)
+        {
+            if (idsToLocate == null ||
+                idsToLocate.Length != 1)
+            {
+                DebugLog("Running the MarkerDetectorCoordinateService in the editor only supports one coordinate id");
+                return;
+            }
+
+            var coordinate = new SimulatedSpatialCoordinate<int>(idsToLocate[0], Vector3.zero, Quaternion.Euler(0, 180, 0));
+            DebugLog("Created artificial coordinate for debugging in the editor, waiting five seconds to fire detection event.");
+            await Task.Delay(simulatedMarkerDetectionDelay, cancellationToken).IgnoreCancellation();
+            OnNewCoordinate(coordinate.Id, coordinate);
+            await Task.CompletedTask;
         }
     }
 }

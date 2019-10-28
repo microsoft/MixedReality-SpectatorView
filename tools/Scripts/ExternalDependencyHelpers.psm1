@@ -5,6 +5,8 @@ function DownloadQRCodePlugin
   {
     Write-Host "Populating QR Code Dependencies"
     $url = "https://github.com/dorreneb/mixed-reality/releases/download/1.1/release.zip"
+
+    [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
     $wc = New-Object System.Net.WebClient
     $wc.DownloadFile($url, $zipFile)
     Expand-Archive -Path $zipFile -DestinationPath "$PSScriptRoot\..\..\external\MixedReality-QRCodePlugin" -Force
@@ -22,6 +24,8 @@ function DownloadARKitPlugin
   {
     Write-Host "Populating ARKit Dependencies"
     $url = "https://bitbucket.org/Unity-Technologies/unity-arkit-plugin/get/94e47eae5954.zip"
+
+    [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
     $wc = New-Object System.Net.WebClient
     $wc.DownloadFile($url, $zipFile)
     Expand-Archive -Path $zipFile -DestinationPath "$PSScriptRoot\..\..\external\ARKit-Unity-Plugin\Temp" -Force

@@ -89,6 +89,14 @@ namespace Microsoft.MixedReality.SpectatorView
         }
 
         /// <summary>
+        /// Call to prevent additional attempts at connecting. Note: if no connection has been established, calling this function will prevent establishing a connection.
+        /// </summary>
+        public void StopConnectionAttempts()
+        {
+            socketerClient.StopConnectionAttempts();
+        }
+
+        /// <summary>
         /// Call to send data to this endpoint
         /// </summary>
         /// <param name="data">data to send</param>

@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.SpatialAlignment;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -49,7 +50,74 @@ namespace Microsoft.MixedReality.SpectatorView
         private readonly Dictionary<SocketEndpoint, TaskCompletionSource<bool>> remoteLocalizationSessions = new Dictionary<SocketEndpoint, TaskCompletionSource<bool>>();
         private Dictionary<SocketEndpoint, SpatialCoordinateSystemParticipant> participants = new Dictionary<SocketEndpoint, SpatialCoordinateSystemParticipant>();
         private HashSet<INetworkManager> networkManagers = new HashSet<INetworkManager>();
-        private ISpatialLocalizationSession currentLocalizationSession = null;
+        private ITrackingObserver trackingObserver = null;
+
+        private readonly object localizationLock = new object();
+        private LocalizationSessionDetails currentLocalizationSession = null;
+
+        private class LocalizationSessionDetails
+        {
+            public ISpatialLocalizationSession Session { get; private set; }
+            public TaskCompletionSource<bool> CompletionSource { get; private set; }
+            public SpatialCoordinateSystemParticipant Participant { get; private set; }
+
+            public LocalizationSessionDetails(ISpatialLocalizationSession session, SpatialCoordinateSystemParticipant participant)
+            {
+                this.Session = session;
+                this.Participant = participant;
+                this.CompletionSource = new TaskCompletionSource<bool>();
+            }
+        }
+
+        /// <summary>
+        /// Current Tracking state for the AR/VR Device associated with the application.
+        /// </summary>
+        public TrackingState TrackingState
+        {
+            get
+            {
+                if (trackingObserver == null)
+                {
+                    return TrackingState.Unknown;
+                }
+
+                return trackingObserver.TrackingState;
+            }
+        }
+
+        /// <summary>
+        /// True if all local and peer coordinates known to the device have been found in the shared experience space.
+        /// </summary>
+        public bool AllCoordinatesLocated
+        {
+            get
+            {
+                bool allFound = participants.Count > 0;
+                foreach (var participantPair in participants)
+                {
+                    if (participantPair.Value.Coordinate == null ||
+                        participantPair.Value.IsLocatingSpatialCoordinate ||
+                        !participantPair.Value.PeerSpatialCoordinateIsLocated)
+                    {
+                        allFound = false;
+                        break;
+                    }
+                }
+
+                return allFound;
+            }
+        }
+
+        /// <summary>
+        /// True if the device is currently in a localization session with a peer.
+        /// </summary>
+        public bool LocalizationRunning
+        {
+            get
+            {
+                return remoteLocalizationSessions.Count > 0 || currentLocalizationSession != null;
+            }
+        }
 
         public IReadOnlyCollection<ISpatialLocalizer> Localizers
         {
@@ -101,9 +169,46 @@ namespace Microsoft.MixedReality.SpectatorView
             UnregisterEvents(networkManager);
         }
 
+        /// <summary>
+        /// Call to register an ITrackingObserver to use for determining tracking state.
+        /// </summary>
+        /// <param name="trackingObserver">Tracking observer used to determine tracking state.</param>
+        public void RegisterTrackingObserver(ITrackingObserver trackingObserver)
+        {
+            if (this.trackingObserver != null)
+            {
+                Debug.LogError("Multiple tracking observers registered for the application.");
+            }
+
+            this.trackingObserver = trackingObserver;
+        }
+
+        /// <summary>
+        /// Call to unregister an ITrackingObserver to use for determining tracking state.
+        /// </summary>
+        /// <param name="trackingObserver">Tracking observer used to determine tracking state.</param>
+        public void UnregisterTrackingObserver(ITrackingObserver trackingObserver)
+        {
+            if (this.trackingObserver != trackingObserver)
+            {
+                Debug.LogWarning("Attempted to unregister tracking observer that wasn't registered.");
+            }
+            else
+            {
+                this.trackingObserver = null;
+            }
+        }
+
         public Task<bool> RunRemoteLocalizationAsync(SocketEndpoint socketEndpoint, Guid spatialLocalizerID, ISpatialLocalizationSettings settings)
         {
             DebugLog($"Initiating remote localization: {socketEndpoint.Address}, {spatialLocalizerID.ToString()}");
+            if (remoteLocalizationSessions.TryGetValue(socketEndpoint, out var currentCompletionSource))
+            {
+                DebugLog("Canceling existing remote localization session: {socketEndpoint.Address}");
+                currentCompletionSource.TrySetCanceled();
+                remoteLocalizationSessions.Remove(socketEndpoint);
+            }
+
             TaskCompletionSource<bool> taskCompletionSource = new TaskCompletionSource<bool>();
             remoteLocalizationSessions.Add(socketEndpoint, taskCompletionSource);
 
@@ -123,12 +228,6 @@ namespace Microsoft.MixedReality.SpectatorView
         public Task<bool> LocalizeAsync(SocketEndpoint socketEndpoint, Guid spatialLocalizerID, ISpatialLocalizationSettings settings)
         {
             DebugLog("LocalizeAsync");
-            if (currentLocalizationSession != null)
-            {
-                Debug.LogError($"Failed to start localization session because an existing localization session is in progress");
-                return Task.FromResult(false);
-            }
-
             if (!participants.TryGetValue(socketEndpoint, out SpatialCoordinateSystemParticipant participant))
             {
                 Debug.LogError($"Could not find a SpatialCoordinateSystemParticipant for SocketEndpoint {socketEndpoint.Address}");
@@ -177,9 +276,9 @@ namespace Microsoft.MixedReality.SpectatorView
 
         private void OnConnected(SocketEndpoint endpoint)
         {
-            if (participants.ContainsKey(endpoint))
+            if (participants.TryGetValue(endpoint, out var existingParticipant))
             {
-                Debug.LogWarning("SpatialCoordinateSystemParticipant connected that already existed");
+                Debug.LogWarning("SpatialCoordinateSystemParticipant connected that already existed.");
                 return;
             }
 
@@ -205,20 +304,25 @@ namespace Microsoft.MixedReality.SpectatorView
         {
             if (participants.TryGetValue(endpoint, out var participant))
             {
+                TryCleanupExistingLocalizationSession(participant);
                 participant.Dispose();
                 participants.Remove(endpoint);
 
                 ParticipantDisconnected?.Invoke(participant);
             }
 
-            remoteLocalizationSessions.Remove(endpoint);
+            if (remoteLocalizationSessions.TryGetValue(endpoint, out var completionSource))
+            {
+                completionSource.TrySetResult(false);
+                remoteLocalizationSessions.Remove(endpoint);
+            }
         }
 
         private void OnCoordinateStateReceived(SocketEndpoint socketEndpoint, string command, BinaryReader reader, int remainingDataSize)
         {
             if (!participants.TryGetValue(socketEndpoint, out SpatialCoordinateSystemParticipant participant))
             {
-                Debug.LogError($"Failed to find a SpatialCoordinateSystemParticipant for an attached SocketEndpoint");
+                Debug.LogWarning($"Failed to find a SpatialCoordinateSystemParticipant for an attached SocketEndpoint");
                 return;
             }
 
@@ -229,7 +333,7 @@ namespace Microsoft.MixedReality.SpectatorView
         {
             if (!participants.TryGetValue(socketEndpoint, out SpatialCoordinateSystemParticipant participant))
             {
-                Debug.LogError($"Failed to find a SpatialCoordinateSystemParticipant for an attached SocketEndpoint");
+                Debug.LogWarning($"Failed to find a SpatialCoordinateSystemParticipant for an attached SocketEndpoint");
                 return;
             }
 
@@ -242,19 +346,22 @@ namespace Microsoft.MixedReality.SpectatorView
 
             if (!remoteLocalizationSessions.TryGetValue(socketEndpoint, out TaskCompletionSource<bool> taskSource))
             {
-                Debug.LogError($"Remote session from endpoint {socketEndpoint.Address} completed but we were no longer tracking that session");
+                DebugLog($"Remote session from endpoint {socketEndpoint.Address} completed but we were no longer tracking that session");
                 return;
             }
 
+            DebugLog($"Localization completed message received: {socketEndpoint.Address}");
             remoteLocalizationSessions.Remove(socketEndpoint);
-            taskSource.SetResult(localizationSuccessful);
+            taskSource.TrySetResult(localizationSuccessful);
         }
 
         private async void OnLocalizeMessageReceived(SocketEndpoint socketEndpoint, string command, BinaryReader reader, int remainingDataSize)
         {
-            if (currentLocalizationSession != null)
+            DebugLog("LocalizeMessageReceived");
+            if (!participants.TryGetValue(socketEndpoint, out SpatialCoordinateSystemParticipant participant))
             {
-                Debug.LogError($"Failed to start localization session because an existing localization session is in progress");
+                Debug.LogError($"Could not find a SpatialCoordinateSystemParticipant for SocketEndpoint {socketEndpoint.Address}");
+                SendLocalizationCompleteCommand(socketEndpoint, localizationSuccessful: false);
                 return;
             }
 
@@ -270,13 +377,6 @@ namespace Microsoft.MixedReality.SpectatorView
             if (!localizer.TryDeserializeSettings(reader, out ISpatialLocalizationSettings settings))
             {
                 Debug.LogError($"Failed to deserialize settings for localizer {spatialLocalizerID}");
-                SendLocalizationCompleteCommand(socketEndpoint, localizationSuccessful: false);
-                return;
-            }
-
-            if (!participants.TryGetValue(socketEndpoint, out SpatialCoordinateSystemParticipant participant))
-            {
-                Debug.LogError($"Could not find a SpatialCoordinateSystemParticipant for SocketEndpoint {socketEndpoint.Address}");
                 SendLocalizationCompleteCommand(socketEndpoint, localizationSuccessful: false);
                 return;
             }
@@ -311,36 +411,107 @@ namespace Microsoft.MixedReality.SpectatorView
 
         private async Task<bool> RunLocalizationSessionAsync(ISpatialLocalizer localizer, ISpatialLocalizationSettings settings, SpatialCoordinateSystemParticipant participant)
         {
-            DebugLog($"Creating localization session: {participant.SocketEndpoint.Address}, {settings.ToString()}, {localizer.ToString()}");
-            if (!localizer.TryCreateLocalizationSession(participant, settings, out ISpatialLocalizationSession currentLocalizationSession))
+            if (!TryCleanupExistingLocalizationSession(participant))
+            {
+                DebugLog("Existing localization session with different participant prevented creating new localization session");
+                return false;
+            }
+
+            if (!localizer.TryCreateLocalizationSession(participant, settings, out var localizationSession))
             {
                 Debug.LogError($"Failed to create an ISpatialLocalizationSession from localizer {localizer.SpatialLocalizerId}");
                 return false;
             }
 
-            using (currentLocalizationSession)
+            Task<bool> resultTask;
+            bool startSession = false;
+            var localizationSessionDetails = new LocalizationSessionDetails(localizationSession, participant);
+            lock (localizationLock)
             {
-                DebugLog($"Setting localization session for participant: {participant.SocketEndpoint.Address}, {currentLocalizationSession.ToString()}");
-                participant.CurrentLocalizationSession = currentLocalizationSession;
-
-                try
+                if (currentLocalizationSession != null)
                 {
-                    DebugLog($"Starting localization: {participant.SocketEndpoint.Address}, {currentLocalizationSession.ToString()}");
-                    // Some SpatialLocalizers/SpatialCoordinateServices key off of token cancellation for their logic flow.
-                    // Therefore, we need to create a cancellation token even it is never actually cancelled by the SpatialCoordinateSystemManager.
-                    using (var localizeCTS = new CancellationTokenSource())
-                    {
-                        var coordinate = await currentLocalizationSession.LocalizeAsync(localizeCTS.Token);
-                        participant.Coordinate = coordinate;
-                    }
+                    DebugLog($"Current localization session repopulated after cleanup, localization not performed.");
+                    localizationSessionDetails.Session.Dispose();
+                    resultTask = Task.FromResult(false);
                 }
-                finally
+                else
                 {
-                    participant.CurrentLocalizationSession = null;
+                    currentLocalizationSession = localizationSessionDetails;
+                    localizationSessionDetails.Participant.CurrentLocalizationSession = localizationSessionDetails.Session;
+                    resultTask = localizationSessionDetails.CompletionSource.Task;
+                    startSession = true;
                 }
             }
-            currentLocalizationSession = null;
-            return participant.Coordinate != null;
+
+            if (startSession)
+            {
+                await Dispatcher.ScheduleAsync(async () =>
+                {
+                    try
+                    {
+                        // Some SpatialLocalizers/SpatialCoordinateServices key off of token cancellation for their logic flow.
+                        // Therefore, we need to create a cancellation token even it is never actually cancelled by the SpatialCoordinateSystemManager.
+                        using (var localizeCTS = new CancellationTokenSource())
+                        {
+                            var coordinate = await localizationSessionDetails.Session.LocalizeAsync(localizeCTS.Token);
+                            bool succeeded = (coordinate != null);
+                            localizationSessionDetails.Session.Dispose();
+                            localizationSessionDetails.CompletionSource.TrySetResult(succeeded);
+
+                            if (localizationSessionDetails.Participant.CurrentLocalizationSession == localizationSessionDetails.Session)
+                            {
+                                localizationSessionDetails.Participant.Coordinate = coordinate;
+                                localizationSessionDetails.Participant.CurrentLocalizationSession = null;
+                            }
+                            else
+                            {
+                                Debug.LogWarning("Localization session completed but was no longer assigned to the associated participant");
+                            }
+                        }
+                    }
+                    catch (OperationCanceledException)
+                    {
+                        DebugLog("Localization operation cancelled.");
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.LogError($"Exception thrown localizing experience: {e.ToString()}");
+                    }
+                }, CancellationToken.None, true);
+            }
+
+            return await resultTask;
+        }
+
+        private bool TryCleanupExistingLocalizationSession(SpatialCoordinateSystemParticipant participant)
+        {
+            bool succeeded = true;
+            LocalizationSessionDetails sessionToCancel = null;
+            lock (localizationLock)
+            {
+                if (currentLocalizationSession != null)
+                {
+                    if (currentLocalizationSession.Participant == participant)
+                    {
+                        sessionToCancel = currentLocalizationSession;
+                        currentLocalizationSession = null;
+                    }
+                    else
+                    {
+                        succeeded = false;
+                    }
+                }
+            }
+
+            if (sessionToCancel != null)
+            {
+                DebugLog($"Cancelling spatial localization session for participant: {participant?.SocketEndpoint?.Address ?? "Unknown"}");
+                sessionToCancel.Session.Cancel();
+                sessionToCancel.Session.Dispose();
+                sessionToCancel.CompletionSource.TrySetResult(false);
+            }
+
+            return succeeded;
         }
 
         private void RegisterEvents(INetworkManager networkManager)

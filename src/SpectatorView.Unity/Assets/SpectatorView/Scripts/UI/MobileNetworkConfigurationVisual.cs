@@ -19,10 +19,6 @@ namespace Microsoft.MixedReality.SpectatorView
         [SerializeField]
         private Button connectButton = null;
 
-        [Tooltip("The text used to display error messages to the user.")]
-        [SerializeField]
-        private Text errorText = null;
-
         [Tooltip("Check to enable debug logging.")]
         [SerializeField]
         private bool debugLogging = false;
@@ -68,7 +64,6 @@ namespace Microsoft.MixedReality.SpectatorView
             {
                 DebugLog("Unable to obtain ip address from field.");
                 ipAddressField.text = ipAddress;
-                errorText.text = "Invalid IP Address specified.";
                 return;
             }
 

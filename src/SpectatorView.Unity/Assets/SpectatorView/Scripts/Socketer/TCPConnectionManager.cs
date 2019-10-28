@@ -24,6 +24,10 @@ namespace Microsoft.MixedReality.SpectatorView
         /// Called when a data payload is received
         /// </summary>
         public event Action<IncomingMessage> OnReceive;
+        /// <summary>
+        /// If true, socket clients will attempt to reconnect when disconnected.
+        /// </summary>
+        public bool AttemptReconnectWhenClient = true;
 
         private readonly TimeSpan timeoutInterval = TimeSpan.Zero;
         private readonly ConcurrentQueue<SocketEndpoint> newConnections = new ConcurrentQueue<SocketEndpoint>();
@@ -97,6 +101,24 @@ namespace Microsoft.MixedReality.SpectatorView
         /// <param name="port">port to use for communication</param>
         public void ConnectTo(string serverAddress, int port)
         {
+            if (client != null)
+            {
+                if (client.Host == serverAddress &&
+                    client.Port == port)
+                {
+                    Debug.Log($"Client already created: {client.Host}:{client.Port}");
+                    return;
+                }
+                else
+                {
+                    Debug.Log($"Disconnecting existing client {client.Host}:{client.Port}");
+                    client.Stop();
+                    client.Connected -= OnClientConnected;
+                    client.Disconnected -= OnClientDisconnected;
+                    client = null;
+                }
+            }
+
             Debug.LogFormat($"Connecting to {serverAddress}:{port}");
             client = SocketerClient.CreateSender(SocketerClient.Protocol.TCP, serverAddress, port);
             client.Connected += OnClientConnected;
@@ -128,6 +150,12 @@ namespace Microsoft.MixedReality.SpectatorView
         {
             Debug.Log("Client connected to " + hostAddress);
             SocketEndpoint socketEndpoint = new SocketEndpoint(client, timeoutInterval, hostAddress, sourceId);
+
+            if (!AttemptReconnectWhenClient)
+            {
+                socketEndpoint.StopConnectionAttempts();
+            }
+
             clientConnection = socketEndpoint;
             socketEndpoint.QueueIncomingMessages(inputMessageQueue);
             newConnections.Enqueue(socketEndpoint);
@@ -141,6 +169,20 @@ namespace Microsoft.MixedReality.SpectatorView
                 clientConnection.StopIncomingMessageQueue();
                 oldConnections.Enqueue(clientConnection);
                 clientConnection = null;
+            }
+
+            if (!AttemptReconnectWhenClient)
+            {
+                Debug.Log("Stopping subscriptions to disconnected client");
+                client.Stop();
+                client.Connected -= OnClientConnected;
+                client.Disconnected -= OnClientDisconnected;
+
+                if (this.client == client)
+                {
+                    Debug.Log("Clearing client cache");
+                    this.client = null;
+                }
             }
         }
 

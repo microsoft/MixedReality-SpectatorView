@@ -4,5 +4,26 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/MixedReality-SpectatorView/SpectatorView/Scenes/SpectatorView.HoloLens.unity
+    guid: aaaef5009f203534696f812a2010313e
+  - enabled: 0
+    path: Assets/MixedReality-SpectatorView/SpectatorView/Scenes/SpectatorView.Android.unity
+    guid: 8c5e2534a4ad5f64dbb50a1bad484ef2
+  - enabled: 0
+    path: Assets/MixedReality-SpectatorView/SpectatorView/Scenes/SpectatorView.iOS.unity
+    guid: f8cc70d0d868b754ab89047eb4a6317b
+  - enabled: 0
+    path: Assets/MixedReality-SpectatorView/SpectatorView.Editor/Scenes/SpectatorViewCompositor.unity
+    guid: 4b7532bb75e238f49b6f062cf8a58d9e
+  - enabled: 0
+    path: Assets/MixedReality-SpectatorView/SpectatorView/Scenes/SpectatorView.HoloLens.MultiScene.unity
+    guid: fceb8ed6dc6e5b548b4d6f4d09ffe903
+  - enabled: 0
+    path: Assets/MixedReality-SpectatorView/SpectatorView/Scenes/SpectatorView.TestScene1.unity
+    guid: 1924413700e95ca40a7b7282309e81a7
+  - enabled: 0
+    path: Assets/MixedReality-SpectatorView/SpectatorView/Scenes/SpectatorView.TestScene2.unity
+    guid: 7ec8d09e480bccf43a45744d91abf116
   m_configObjects: {}

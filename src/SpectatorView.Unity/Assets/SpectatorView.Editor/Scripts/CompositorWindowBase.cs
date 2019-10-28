@@ -30,6 +30,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
 
         protected const string notConnectedMessage = "Not connected";
         private const string trackingLostStatusMessage = "Tracking lost";
+        private const string unknownTrackingStatusMessage = "Unknown tracking state";
         private const string trackingStalledStatusMessage = "No tracking update in over a second";
         private const string locatingSharedSpatialCoordinate = "Locating shared spatial coordinate...";
         private const string notLocatedSharedSpatialCoordinate = "Not located";
@@ -61,7 +62,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
             PlayerPrefs.Save();
         }
 
-        protected void HolographicCameraNetworkConnectionGUI(string deviceTypeLabel, DeviceInfoObserver deviceInfo, SpatialCoordinateSystemParticipant spatialCoordinateSystemParticipant, bool showCalibrationStatus, ref string ipAddressField)
+        protected void HolographicCameraNetworkConnectionGUI(string deviceTypeLabel, DeviceInfoObserver deviceInfo, SpatialCoordinateSystemParticipant spatialCoordinateSystemParticipant, bool showCalibrationStatus, bool showSpatialLocalization, ref string ipAddressField)
         {
             GUIStyle boldLabelStyle = new GUIStyle(GUI.skin.label);
             boldLabelStyle.fontStyle = FontStyle.Bold;
@@ -75,7 +76,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
                     deviceInfo.NetworkManager != null &&
                     deviceInfo.NetworkManager.IsConnected &&
                     spatialCoordinateSystemParticipant != null &&
-                    spatialCoordinateSystemParticipant.PeerDeviceHasTracking &&
+                    spatialCoordinateSystemParticipant.PeerDeviceTrackingState == TrackingState.Tracking &&
                     spatialCoordinateSystemParticipant.PeerSpatialCoordinateIsLocated &&
                     !spatialCoordinateSystemParticipant.PeerIsLocatingSpatialCoordinate &&
                     !deviceInfo.IsTrackingStalled &&
@@ -97,7 +98,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
                 {
                     sharedSpatialCoordinateStatusMessage = notConnectedMessage;
                 }
-                else if (!spatialCoordinateSystemParticipant.PeerDeviceHasTracking)
+                else if (spatialCoordinateSystemParticipant.PeerDeviceTrackingState == TrackingState.LostTracking)
                 {
                     sharedSpatialCoordinateStatusMessage = trackingLostStatusMessage;
                 }
@@ -113,13 +114,20 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
                 {
                     sharedSpatialCoordinateStatusMessage = notLocatedSharedSpatialCoordinate;
                 }
+                else if (spatialCoordinateSystemParticipant.PeerDeviceTrackingState == TrackingState.Unknown)
+                {
+                    sharedSpatialCoordinateStatusMessage = unknownTrackingStatusMessage;
+                }
                 else
                 {
                     sharedSpatialCoordinateStatusMessage = locatedSharedSpatialCoordinateMessage;
                 }
 
-                GUILayout.Label("Shared spatial coordinate status", boldLabelStyle);
-                GUILayout.Label(sharedSpatialCoordinateStatusMessage);
+                if (showSpatialLocalization)
+                {
+                    GUILayout.Label("Shared spatial coordinate status", boldLabelStyle);
+                    GUILayout.Label(sharedSpatialCoordinateStatusMessage);
+                }
 
                 string calibrationStatusMessage;
                 if (compositionManager != null && compositionManager.IsCalibrationDataLoaded)
@@ -144,13 +152,16 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
                     GUILayout.Label(string.Empty);
                 }
 
-                EditorGUILayout.Space();
+                if (showSpatialLocalization)
+                {
+                    EditorGUILayout.Space();
 
-                GUILayout.Label("Spatial Alignment", boldLabelStyle);
+                    GUILayout.Label("Spatial Alignment", boldLabelStyle);
 
-                GUILayout.Space(4);
+                    GUILayout.Space(4);
 
-                SpatialLocalizationGUI(deviceTypeLabel, spatialCoordinateSystemParticipant);
+                    SpatialLocalizationGUI(deviceTypeLabel, spatialCoordinateSystemParticipant);
+                }
 
                 GUI.enabled = true;
             }

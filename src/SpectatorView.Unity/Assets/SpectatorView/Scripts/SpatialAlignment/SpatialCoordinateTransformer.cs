@@ -53,9 +53,20 @@ namespace Microsoft.MixedReality.SpectatorView
                 var peerCoordinateToWorldRotation = currentParticipant.PeerSpatialCoordinateWorldRotation;
 
                 // Create a transform that converts the local world space to the peer world space (peer coordinate to peer world * local world to local shared coordinate).
-                sharedCoordinateOrigin.position = peerCoordinateToWorldPosition + localWorldToCoordinatePosition;
-                sharedCoordinateOrigin.rotation = peerCoordinateToWorldRotation * localWorldToCoordinateRotation;
-                DebugLog($"Updated transform, Position: {sharedCoordinateOrigin.position.ToString("G4")}, Rotation: {sharedCoordinateOrigin.rotation.ToString("G4")}");
+                var matrix = Matrix4x4.TRS(peerCoordinateToWorldPosition, peerCoordinateToWorldRotation, Vector3.one) * Matrix4x4.TRS(localWorldToCoordinatePosition, localWorldToCoordinateRotation, Vector3.one);
+                Vector3 position = matrix.GetColumn(3);
+                var rotation = Quaternion.LookRotation(matrix.GetColumn(2), matrix.GetColumn(1));
+
+                if (sharedCoordinateOrigin.position != position ||
+                    sharedCoordinateOrigin.rotation != rotation)
+                {
+                    DebugLog($"World To Coordinate, Position:{localWorldToCoordinatePosition.ToString("G4")}, Rotation:{localWorldToCoordinateRotation.ToString("G4")}");
+                    DebugLog($"Peer Coordinate To World, Position:{peerCoordinateToWorldPosition.ToString("G4")}, Rotation:{peerCoordinateToWorldRotation.ToString("G4")}");
+
+                    sharedCoordinateOrigin.rotation = rotation;
+                    sharedCoordinateOrigin.position = position;
+                    DebugLog($"Updated transform, Position: {sharedCoordinateOrigin.position.ToString("G4")}, Rotation: {sharedCoordinateOrigin.rotation.ToString("G4")}");
+                }
             }
         }
 
@@ -64,7 +75,7 @@ namespace Microsoft.MixedReality.SpectatorView
             DebugLog($"Participant disconnected: {participant?.SocketEndpoint?.Address ?? "IPAddress unknown"}");
             if (currentParticipant == null)
             {
-                Debug.LogError("Unexpected that no participant was registered when a participant disconnected");
+                DebugLog("No participant was registered when a participant disconnected");
             }
             currentParticipant = null;
         }
@@ -74,7 +85,7 @@ namespace Microsoft.MixedReality.SpectatorView
             DebugLog($"Participant connected: {participant?.SocketEndpoint?.Address ?? "IPAddress unknown"}");
             if (currentParticipant != null)
             {
-                Debug.LogError("Unexpected existing participant when another participant connected");
+                DebugLog("Participant was already registered when new participant connected");
             }
             currentParticipant = participant;
         }
