@@ -168,8 +168,14 @@ namespace Microsoft.MixedReality.SpectatorView
             using (MemoryStream memoryStream = new MemoryStream())
             using (BinaryWriter message = new BinaryWriter(memoryStream))
             {
+                Transform camTrans = null;
+                if (Camera.main != null &&
+                    Camera.main.transform != null)
+                {
+                    camTrans = Camera.main.transform;
+                }
+
                 message.Write(StateSynchronizationObserver.CameraCommand);
-                Transform camTrans = Camera.main?.transform ?? null;
                 message.Write(Time.time);
                 message.Write(camTrans != null ? camTrans.position : Vector3.zero);
                 message.Write(camTrans != null ? camTrans.rotation : Quaternion.identity);

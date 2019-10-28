@@ -180,7 +180,7 @@ namespace Microsoft.MixedReality.SpectatorView
             GameObject settings = Resources.Load<GameObject>(SettingsPrefabName);
             if (settings != null)
             {
-                settingsGameObject = Instantiate(settings, gameObject.transform);
+                settingsGameObject = Instantiate(settings, this.transform);
             }
 
             CreateDeviceTrackingObserver();

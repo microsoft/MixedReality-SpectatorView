@@ -88,7 +88,7 @@ namespace Microsoft.MixedReality.SpectatorView
             GameObject performanceParameters = Resources.Load<GameObject>(DefaultStateSynchronizationPerformanceParametersPrefabName);
             if (performanceParameters != null)
             {
-                Instantiate(performanceParameters, gameObject.transform);
+                Instantiate(performanceParameters, this.transform);
             }
         }
 
