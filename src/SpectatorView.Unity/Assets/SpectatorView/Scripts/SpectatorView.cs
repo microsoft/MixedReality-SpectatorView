@@ -113,6 +113,11 @@ namespace Microsoft.MixedReality.SpectatorView
         private GameObject defaultMobileRecordingServiceVisualPrefab = null;
 #pragma warning restore 414
 
+        [Header("Miscellaneous")]
+        [Tooltip("Check to call DontDestroyOnLoad for this game object.")]
+        [SerializeField]
+        private bool persistAcrossScenes = true;
+
         [Header("Debugging")]
         /// <summary>
         /// Debug visual prefab created by the user.
@@ -164,12 +169,18 @@ namespace Microsoft.MixedReality.SpectatorView
 
         private void Awake()
         {
-            Debug.Log($"SpectatorView is running as: {Role.ToString()}. Expected User IPAddress: {userIpAddress}");
+            if (persistAcrossScenes)
+            {
+                DebugLog("Setting up spectator view content to persist across scenes.");
+                DontDestroyOnLoad(this);
+            }
+
+            DebugLog($"SpectatorView is running as: {Role.ToString()}. Expected User IPAddress: {userIpAddress}");
 
             GameObject settings = Resources.Load<GameObject>(SettingsPrefabName);
             if (settings != null)
             {
-                settingsGameObject = Instantiate(settings, null);
+                settingsGameObject = Instantiate(settings, this.transform);
             }
 
             CreateDeviceTrackingObserver();
