@@ -225,3 +225,14 @@ Scraping the entire Unity scene for content updates on the HoloLens device can b
 Its been observed that different shader variants may not get correctly built into Android and iOS applications when only including the SpectatorView.Android or SpectatorView.iOS scene. For example, the standard shader may not end up with transparent variants included in the Android/iOS builds, causing transparent content to not display correctly on spectator devices. To fix this, its suggested to include your HoloLens scene in the Android/iOS build. You can do this by including the scene in your build settings (see below). Note that you will need to keep the SpectatorView.Android or SpectatorView.iOS scene has scene 0 in the build. You may also be able to fix this by including your desired shader in the Build-in Shader Settings (Edit -> Project Settings -> Graphics). You may also be able to fix this by creating a [ShaderVariantCollection](https://docs.unity3d.com/Manual/OptimizingShaderLoadTime.html).
 
 ![Marker](images/FixTransparency.png)
+
+### __Issue:__ Shaders don't compile for Android or iOS Unity Players
+Shaders originally created to run on HoloLens may not immediately compile for Android or iOS. One common issue is that shader model 5.0 is not supported by OpenGL. To hide DirectX11 shader model 5.0 logic, you can use the below `#if defined(SHADER_API_D3D11)` (Note: In some instances, shaders may not appear correctly in the editor but will compile correctly for iOS and Android). For more information on shader target levels, see [here](https://docs.unity3d.com/Manual/SL-ShaderCompileTargets.html).
+
+`#if defined(SHADER_API_D3D11)`
+
+`#pragma target 5.0`
+
+`#endif`
+
+> Note: Unity has the ability to [emulate different graphics configurations](https://docs.unity3d.com/2018.3/Documentation/Manual/GraphicsEmulation.html) (Edit -> Graphics Emulation). Adjusting these settings may allow for testing your shaders for Android or iOS in the Editor.
