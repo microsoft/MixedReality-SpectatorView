@@ -1,0 +1,130 @@
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+
+using UnityEngine;
+using UnityEngine.UI;
+
+namespace Microsoft.MixedReality.SpectatorView
+{
+    public class AssetStateVisual : MonoBehaviour
+    {
+        [Tooltip("Text used to display asset state.")]
+        [SerializeField]
+        protected Text assetStateText = null;
+
+        private StateSynchronizationObserver observer;
+
+        protected void Awake()
+        {
+            if (assetStateText == null)
+            {
+                Debug.LogError($"{nameof(assetStateText)} is required.", this);
+            }
+        }
+
+        protected void OnEnable()
+        {
+            if (observer == null)
+            {
+                var allObservers = Resources.FindObjectsOfTypeAll<StateSynchronizationObserver>();
+
+                if (allObservers.Length > 1)
+                {
+                    Debug.LogWarning($"{nameof(AssetStateVisual)} expected exactly 1 {nameof(StateSynchronizationObserver)}, but got {allObservers.Length}. Taking the first.", this);
+                    observer = allObservers[0];
+                }
+                else if (allObservers.Length == 1)
+                {
+                    observer = allObservers[0];
+                }
+                else
+                {
+                    Debug.LogWarning($"{nameof(AssetStateVisual)} couldn't find {nameof(StateSynchronizationObserver)}.", this);
+                }
+            }
+
+            if (observer != null)
+            {
+                observer.AssetStateChanged += UpdateVisual;
+                UpdateVisual(observer.AssetState);
+            }
+        }
+
+        protected void OnDisable()
+        {
+            if (observer != null)
+            {
+                observer.AssetStateChanged -= UpdateVisual;
+            }
+        }
+
+        private void UpdateVisual(AssetState assetState)
+        {
+            string newStateText;
+            Color newColor;
+
+            switch (assetState.Status)
+            {
+                case AssetStateStatus.Unknown:
+                    newStateText = "Unknown.";
+                    newColor = Color.yellow;
+                    break;
+
+                case AssetStateStatus.None:
+                    newStateText = "None.";
+                    newColor = Color.red;
+                    break;
+
+                case AssetStateStatus.Preloaded:
+                    newStateText = "Loaded built-in assets.";
+                    newColor = Color.green;
+                    break;
+
+                case AssetStateStatus.RequestingAssetBundle:
+                    newStateText = "Asking remote user for an updated asset bundle.";
+
+                    if (assetState.AssetBundleDisplayName != null)
+                    {
+                        newStateText += $" Current asset bundle: \"{assetState.AssetBundleDisplayName}\".";
+                    }
+
+                    newColor = Color.yellow;
+                    break;
+
+                case AssetStateStatus.DownloadingAssetBundle:
+                    newStateText = $"Downloading. Progress: {assetState.BytesSoFar:N0}/{assetState.TotalBytes:N0} bytes ({100.0 * assetState.BytesSoFar / assetState.TotalBytes:N1}%). Bundle: \"{assetState.AssetBundleDisplayName}\".";
+                    newColor = Color.yellow;
+                    break;
+
+                case AssetStateStatus.AssetBundleLoaded:
+                    newStateText = $"Loaded \"{assetState.AssetBundleDisplayName}\".";
+                    newColor = Color.green;
+                    break;
+
+                case AssetStateStatus.NonePreloadedAndNoAssetBundleAvailable:
+                    newStateText = "No assets. Consider building asset bundles into the remote user app.";
+                    newColor = Color.red;
+                    break;
+
+                case AssetStateStatus.ErrorDownloadingAssetBundle:
+                    newStateText = $"Error downloading asset bundle \"{assetState.AssetBundleDisplayName}\". Error details: {assetState.ErrorDetails}";
+                    newColor = Color.red;
+                    break;
+
+                case AssetStateStatus.ErrorLoadingAssetBundle:
+                    newStateText = $"Error loading asset bundle \"{assetState.AssetBundleDisplayName}\". Error details: {assetState.ErrorDetails}";
+                    newColor = Color.red;
+                    break;
+
+                default:
+                    Debug.LogError($"Unexpected {nameof(assetState)}.{nameof(assetState.Status)} \"{assetState.Status}\".", this);
+                    newStateText = "Unexpected internal error.";
+                    newColor = Color.red;
+                    break;
+            }
+
+            assetStateText.text = $"Assets: {newStateText}";
+            assetStateText.color = newColor;
+        }
+    }
+}

@@ -83,6 +83,10 @@ namespace Microsoft.MixedReality.SpectatorView
             RegisterCommandHandler(AssetBundleReportDownloadDataCommand, HandleAssetBundleDownloadDataCommand);
 
             AssetCache.AssetCacheCountChanged += AssetCacheCountChanged;
+            AssetState = new AssetState
+            {
+                Status = (AssetCache.AssetCacheCount > 0) ? AssetStateStatus.Preloaded : AssetStateStatus.None
+            };
         }
 
         protected override void OnDestroy()
@@ -120,6 +124,12 @@ namespace Microsoft.MixedReality.SpectatorView
 
             hologramSynchronizer.Reset(endpoint);
             // TODO: should this be called here?!?!?!  ResetAssetCaches();
+
+            AssetState = new AssetState
+            {
+                Status = AssetStateStatus.RequestingAssetBundle,
+                AssetBundleDisplayName = currentAssetBundleDisplayName,
+            };
 
             SendAssetBundleInfoRequest(endpoint);
         }
@@ -164,17 +174,33 @@ namespace Microsoft.MixedReality.SpectatorView
                 if (assetBundleIdentity == currentAssetBundleIdentity)
                 {
                     DebugLog($"Not requesting asset bundle download.  Already have asset bundle {AssetBundleVersion.Format(currentAssetBundleIdentity, currentAssetBundleDisplayName)}.");
+
+                    AssetState = new AssetState
+                    {
+                        Status = AssetStateStatus.AssetBundleLoaded,
+                        AssetBundleDisplayName = currentAssetBundleDisplayName,
+                    };
+
                     SendAssetsLoaded(endpoint);
                 }
                 else
                 {
                     DebugLog($"Requesting asset bundle download for {AssetBundleVersion.Format(assetBundleIdentity, assetBundleDisplayName)}...");
+                    Debug.Assert(AssetState.Status == AssetStateStatus.RequestingAssetBundle, this);
                     SendAssetBundleDownloadRequest(endpoint);
                 }
             }
             else
             {
                 DebugLog($"Not requesting asset bundle download.  None is available for platform {AssetBundlePlatformInfo.Current}.");
+
+                Debug.Assert(currentAssetBundle == null, "If we already have an asset bundle loaded, but the remote user doesn't have one, it probably means we have mismatched assets... how did we get into this state?  Should we clear assets?", this);
+
+                AssetState = new AssetState
+                {
+                    Status = (AssetCache.AssetCacheCount > 0) ? AssetStateStatus.Preloaded : AssetStateStatus.NonePreloadedAndNoAssetBundleAvailable,
+                };
+
                 SendAssetsLoaded(endpoint);
             }
         }
@@ -197,10 +223,24 @@ namespace Microsoft.MixedReality.SpectatorView
                 };
 
                 DebugLog($"Receiving asset bundle {AssetBundleVersion.Format(currentAssetBundleIdentity, currentAssetBundleDisplayName)} with {pendingAssetBundleReceive.Data.Length:N0} bytes...");
+
+                AssetState = new AssetState
+                {
+                    Status = AssetStateStatus.DownloadingAssetBundle,
+                    AssetBundleDisplayName = currentAssetBundleDisplayName,
+                    BytesSoFar = pendingAssetBundleReceive.NextDataToReceiveIndex,
+                    TotalBytes = pendingAssetBundleReceive.Data.Length,
+                };
             }
             else
             {
                 DebugLog($"Unexpectedly got no asset bundle for platform {AssetBundlePlatformInfo.Current}.");
+
+                AssetState = new AssetState
+                {
+                    Status = (AssetCache.AssetCacheCount > 0) ? AssetStateStatus.Preloaded : AssetStateStatus.NonePreloadedAndNoAssetBundleAvailable,
+                };
+
                 SendAssetsLoaded(endpoint);
             }
         }
@@ -220,6 +260,14 @@ namespace Microsoft.MixedReality.SpectatorView
                 if ((pendingAssetBundleReceive.NextDataToReceiveIndex + newData.Length) > pendingAssetBundleReceive.Data.Length)
                 {
                     DebugLog($"Unexpectedly got too much data for {nameof(pendingAssetBundleReceive)}.");
+
+                    AssetState = new AssetState
+                    {
+                        Status = AssetStateStatus.ErrorDownloadingAssetBundle,
+                        AssetBundleDisplayName = currentAssetBundleDisplayName,
+                        ErrorDetails = $"Unexpectedly got too much data.",
+                    };
+
                     ResetAssetCaches();
                 }
                 else
@@ -230,13 +278,35 @@ namespace Microsoft.MixedReality.SpectatorView
                     if (pendingAssetBundleReceive.NextDataToReceiveIndex == pendingAssetBundleReceive.Data.Length)
                     {
                         DebugLog($"Successfully received all {pendingAssetBundleReceive.Data.Length:N0} bytes of asset bundle {AssetBundleVersion.Format(currentAssetBundleIdentity, currentAssetBundleDisplayName)}.  Loading its assets...");
-                        currentAssetBundle = AssetBundle.LoadFromMemory(pendingAssetBundleReceive.Data);
-                        pendingAssetBundleReceive = null;
 
-                        DebugLog($"Successfully loaded asset bundle.  Loading all assets from bundle...");
-                        currentAssetBundle.LoadAllAssets();
+                        try
+                        {
+                            currentAssetBundle = AssetBundle.LoadFromMemory(pendingAssetBundleReceive.Data);
+                            pendingAssetBundleReceive = null;
+
+                            DebugLog($"Successfully loaded asset bundle.  Loading all assets from bundle...");
+                            currentAssetBundle.LoadAllAssets();
+                        }
+                        catch (System.Exception ex)
+                        {
+                            AssetState = new AssetState
+                            {
+                                Status = AssetStateStatus.ErrorLoadingAssetBundle,
+                                AssetBundleDisplayName = currentAssetBundleDisplayName,
+                                ErrorDetails = $"{ex.GetType()} - {ex.Message}",
+                            };
+
+                            ResetAssetCaches();
+                            return;
+                        }
 
                         DebugLog($"All assets loaded from bundle.");
+
+                        AssetState = new AssetState
+                        {
+                            Status = AssetStateStatus.AssetBundleLoaded,
+                            AssetBundleDisplayName = currentAssetBundleDisplayName,
+                        };
 
                         SendAssetsLoaded(endpoint);
                     }
@@ -245,16 +315,32 @@ namespace Microsoft.MixedReality.SpectatorView
                         var percentComplete = (100.0 * pendingAssetBundleReceive.NextDataToReceiveIndex / pendingAssetBundleReceive.Data.Length);
 
                         DebugLog($"Received {pendingAssetBundleReceive.NextDataToReceiveIndex:N0}/{pendingAssetBundleReceive.Data.Length:N0} bytes of asset bundle ({percentComplete:N2}%).  Waiting for more...");
+
+                        AssetState = new AssetState
+                        {
+                            Status = AssetStateStatus.DownloadingAssetBundle,
+                            AssetBundleDisplayName = currentAssetBundleDisplayName,
+                            BytesSoFar = pendingAssetBundleReceive.NextDataToReceiveIndex,
+                            TotalBytes = pendingAssetBundleReceive.Data.Length,
+                        };
                     }
                 }
             }
         }
 
-        public string AssetStatus { get; private set; }
+        private AssetState assetState = new AssetState { Status = AssetStateStatus.Unknown };
+        public AssetState AssetState
+        {
+            get { return assetState; }
 
-        public bool AssetStatusIsError { get; private set; }
+            private set
+            {
+                assetState = value;
+                AssetStateChanged?.Invoke(assetState);
+            }
+        }
 
-        public event System.Action<string, bool> AssetStatusChanged;
+        public event System.Action<AssetState> AssetStateChanged;
 
         internal int PerformanceFeatureCount
         {
@@ -350,7 +436,36 @@ namespace Microsoft.MixedReality.SpectatorView
 
         private void AssetCacheCountChanged(int assetCacheCount)
         {
-            // TODO:?
+            switch (AssetState.Status)
+            {
+                case AssetStateStatus.None:
+                    if (assetCacheCount > 0)
+                    {
+                        AssetState = new AssetState { Status = AssetStateStatus.Preloaded };
+                    }
+                    break;
+
+                case AssetStateStatus.Preloaded:
+                    if (assetCacheCount <= 0)
+                    {
+                        AssetState = new AssetState { Status = AssetStateStatus.None };
+                    }
+                    break;
+
+                case AssetStateStatus.RequestingAssetBundle:
+                case AssetStateStatus.DownloadingAssetBundle:
+                case AssetStateStatus.AssetBundleLoaded:
+                case AssetStateStatus.NonePreloadedAndNoAssetBundleAvailable:
+                case AssetStateStatus.ErrorDownloadingAssetBundle:
+                case AssetStateStatus.ErrorLoadingAssetBundle:
+                    // No adjustments needed
+                    break;
+
+                case AssetStateStatus.Unknown:
+                default:
+                    Debug.LogError($"Unexpected asset state status \"{AssetState.Status}\".", this);
+                    break;
+            }
         }
 
         private class AssetBundleReceive
@@ -358,5 +473,46 @@ namespace Microsoft.MixedReality.SpectatorView
             public byte[] Data;
             public int NextDataToReceiveIndex;
         }
+    }
+
+    public enum AssetStateStatus
+    {
+        Unknown,
+
+        None,
+        Preloaded,
+
+        RequestingAssetBundle,
+        DownloadingAssetBundle,
+        AssetBundleLoaded,
+
+        NonePreloadedAndNoAssetBundleAvailable,
+        ErrorDownloadingAssetBundle,
+        ErrorLoadingAssetBundle,
+    }
+
+    public struct AssetState
+    {
+        public AssetStateStatus Status;
+
+        /// <summary>
+        /// For <see cref="Status"/> associated with an asset bundle, this is the asset bundle's display name.  Otherwise, undefined.
+        /// </summary>
+        public string AssetBundleDisplayName;
+
+        /// <summary>
+        /// For <see cref="Status"/> that has partial bytes associated with it, the byte count so far.  Otherwise, undefined.
+        /// </summary>
+        public int BytesSoFar;
+
+        /// <summary>
+        /// For <see cref="Status"/> that has total bytes associated with it, the total byte count.  Otherwise, undefined.
+        /// </summary>
+        public int TotalBytes;
+
+        /// <summary>
+        /// For <see cref="Status"/> that indicates an error, the error message.  Otherwise, undefined.
+        /// </summary>
+        public string ErrorDetails;
     }
 }
