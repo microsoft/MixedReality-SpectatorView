@@ -40,7 +40,6 @@ namespace Microsoft.MixedReality.SpectatorView
 
         public override int GetHashCode()
         {
-            Debug.Log($"{FileIdentifier} {FileIdentifier.GetHashCode()} {Guid.ToString()} {Guid.ToString().GetHashCode()}");
             return FileIdentifier.GetHashCode() ^ Guid.ToString().GetHashCode();
         }
 
