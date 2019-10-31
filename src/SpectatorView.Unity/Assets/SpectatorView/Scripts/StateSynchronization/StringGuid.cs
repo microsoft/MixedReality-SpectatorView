@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.SpectatorView
 {
     [Serializable]
-    internal class StringGuid
+    internal class StringGuid : IComparable
     {
         [SerializeField]
         private string m_storage;
@@ -28,6 +28,22 @@ namespace Microsoft.MixedReality.SpectatorView
             {
                 return System.Guid.Empty;
             }
+        }
+
+        public override string ToString()
+        {
+            return (m_storage == null) ? System.Guid.Empty.ToString("D") : m_storage;
+        }
+
+        public int CompareTo(object obj)
+        {
+            var guid = obj as StringGuid;
+            if (guid == null)
+            {
+                return 1;
+            }
+
+            return this.m_storage.CompareTo(guid.m_storage);
         }
     }
 }

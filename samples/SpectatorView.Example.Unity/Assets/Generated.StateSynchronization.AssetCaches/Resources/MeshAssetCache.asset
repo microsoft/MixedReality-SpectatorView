@@ -14,17 +14,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   assets:
   - AssetId:
-      m_storage: 92883a9b-3133-4aee-883e-6a0fe260fdae
-    Asset: {fileID: 4300000, guid: ce4cfb5a16c86b048bb700360ee47685, type: 3}
+      guid:
+        m_storage: 00000000-0000-0000-e000-000000000000
+      fileIdentifier: 10202
+    Asset: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
   - AssetId:
-      m_storage: ab5f7134-16ff-49bd-823e-a57ce6045546
+      guid:
+        m_storage: 00000000-0000-0000-e000-000000000000
+      fileIdentifier: 10206
     Asset: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
   - AssetId:
-      m_storage: 1a708a81-a0a1-46b4-b611-f4aa389221fe
+      guid:
+        m_storage: 00000000-0000-0000-e000-000000000000
+      fileIdentifier: 10207
     Asset: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
   - AssetId:
-      m_storage: 7de1c5a0-ac83-47c0-9397-6d6400a5cea9
+      guid:
+        m_storage: 00000000-0000-0000-e000-000000000000
+      fileIdentifier: 10209
     Asset: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
   - AssetId:
-      m_storage: 3e5f8501-f0c8-45d0-82a9-8f0c8297c5b1
-    Asset: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+      guid:
+        m_storage: ce4cfb5a-16c8-6b04-8bb7-00360ee47685
+      fileIdentifier: 4300000
+    Asset: {fileID: 4300000, guid: ce4cfb5a16c86b048bb700360ee47685, type: 3}

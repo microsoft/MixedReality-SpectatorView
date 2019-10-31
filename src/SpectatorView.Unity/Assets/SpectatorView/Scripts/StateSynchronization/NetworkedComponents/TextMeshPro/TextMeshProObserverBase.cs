@@ -63,7 +63,8 @@ namespace Microsoft.MixedReality.SpectatorView
 
             if (HasFlag(changeType, TextMeshProBroadcasterChangeType.FontAndPlacement))
             {
-                TextMeshObserver.font = TextMeshProService.Instance.GetFont(message.ReadGuid());
+                AssetId fontId = message.ReadAssetId();
+                TextMeshObserver.font = TextMeshProService.Instance.GetFont(fontId);
 
                 bool[] values = Unpack(message.ReadByte());
                 TextMeshObserver.autoSizeTextContainer = values[0];
