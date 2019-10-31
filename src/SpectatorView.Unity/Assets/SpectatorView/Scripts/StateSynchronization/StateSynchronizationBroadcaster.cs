@@ -2,9 +2,11 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using CallerMemberNameAttribute = System.Runtime.CompilerServices.CallerMemberNameAttribute;
 
 namespace Microsoft.MixedReality.SpectatorView
 {
@@ -30,7 +32,9 @@ namespace Microsoft.MixedReality.SpectatorView
         private float timeUntilNextPerfUpdate = PerfUpdateTimeSeconds;
 
         private GameObject dontDestroyOnLoadGameObject;
-        
+
+        private readonly List<AssetBundleSend> pendingAssetBundleSends = new List<AssetBundleSend>();
+
         protected override int RemotePort => Port;
 
         public event Action<SocketEndpoint> ConnectedAndReady;
@@ -78,11 +82,11 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
-        private void DebugLog(string message)
+        private void DebugLog(string message, [CallerMemberName] string callerMemberName = null)
         {
             if (debugLogging)
             {
-                Debug.Log($"StateSynchronizationBroadcaster: {message}");
+                Debug.Log($"StateSynchronizationBroadcaster - {callerMemberName}: {message}", this);
             }
         }
 
@@ -94,7 +98,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
         protected override void OnDisconnected(SocketEndpoint endpoint)
         {
-            DebugLog($"Broadcaster received disconnect from {endpoint.Address}");
+            DebugLog($"Broadcaster received disconnect from {endpoint.Address}.");
             base.OnDisconnected(endpoint);
         }
 
@@ -128,6 +132,7 @@ namespace Microsoft.MixedReality.SpectatorView
             }
 
             UpdateExtension();
+            UpdatePendingAssetBundleSends();
 
             if (HasConnections && BroadcasterSettings.IsInitialized && BroadcasterSettings.Instance && BroadcasterSettings.Instance.AutomaticallyBroadcastAllGameObjects)
             {
@@ -206,19 +211,57 @@ namespace Microsoft.MixedReality.SpectatorView
             StateSynchronizationSceneManager.Instance.ReceiveMessage(endpoint, reader);
         }
 
+        private bool TryGetAssetBundle(AssetBundlePlatform platform, out string versionIdentity, out string versionDisplayName, out byte[] data)
+        {
+            var assetPath = $"{platform}/{StateSynchronizationObserver.AssetBundleName}";
+
+            var assetBundle = Resources.Load<TextAsset>(assetPath);
+            var version = Resources.Load<AssetBundleVersion>($"{assetPath}.version");
+
+            if ((assetBundle == null) || (version == null))
+            {
+                versionIdentity = default;
+                versionDisplayName = default;
+                data = default;
+            }
+            else
+            {
+                versionIdentity = version.Identity;
+                versionDisplayName = version.DisplayName;
+                data = assetBundle.bytes;
+            }
+
+            if (assetBundle != null)
+            {
+                Resources.UnloadAsset(assetBundle);
+            }
+
+            if (version != null)
+            {
+                Resources.UnloadAsset(version);
+            }
+
+            return (data != null);
+        }
 
         private void HandleAssetBundleRequestInfo(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
         {
             AssetBundlePlatform platform = (AssetBundlePlatform)reader.ReadByte();
             DebugLog($"Received asset bundle info request for platform {platform}");
-            TextAsset asset = Resources.Load<TextAsset>($"{platform.ToString()}/spectatorview");
-            bool hasAsset = asset != null;
+
+            bool hasAsset = TryGetAssetBundle(platform, out var versionIdentity, out var versionDisplayName, out _);
 
             using (MemoryStream stream = new MemoryStream())
             using (BinaryWriter writer = new BinaryWriter(stream))
             {
                 writer.Write(StateSynchronizationObserver.AssetBundleReportInfoCommand);
                 writer.Write(hasAsset);
+
+                if (hasAsset)
+                {
+                    writer.Write(versionIdentity);
+                    writer.Write(versionDisplayName);
+                }
 
                 endpoint.Send(stream.ToArray());
             }
@@ -227,21 +270,33 @@ namespace Microsoft.MixedReality.SpectatorView
         private void HandleAssetBundleRequestDownload(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
         {
             AssetBundlePlatform platform = (AssetBundlePlatform)reader.ReadByte();
-            TextAsset asset = Resources.Load<TextAsset>($"{platform.ToString()}/spectatorview");
-            bool hasAsset = asset != null;
+
+            bool hasAsset = TryGetAssetBundle(platform, out var versionIdentity, out var versionDisplayName, out var data);
 
             using (MemoryStream stream = new MemoryStream())
             using (BinaryWriter writer = new BinaryWriter(stream))
             {
-                writer.Write(StateSynchronizationObserver.AssetBundleReportDownloadCommand);
+                writer.Write(StateSynchronizationObserver.AssetBundleReportDownloadStartCommand);
+                writer.Write(hasAsset);
+
                 if (hasAsset)
                 {
-                    writer.Write(asset.bytes.Length);
-                    writer.Write(asset.bytes);
+                    DebugLog($"Starting to send asset bundle {AssetBundleVersion.Format(versionIdentity, versionDisplayName)} with {data.Length:N0} bytes to {endpoint.Address}...");
+
+                    writer.Write(versionIdentity);
+                    writer.Write(versionDisplayName);
+                    writer.Write(data.Length);
+
+                    pendingAssetBundleSends.Add(new AssetBundleSend
+                    {
+                        Recipient = endpoint,
+                        Data = data,
+                        NextDataToSendIndex = 0,
+                    });
                 }
                 else
                 {
-                    writer.Write(0);
+                    DebugLog($"Unexpectedly received asset bundle download request for platform {platform} from {endpoint.Address}.");
                 }
 
                 endpoint.Send(stream.ToArray());
@@ -250,10 +305,61 @@ namespace Microsoft.MixedReality.SpectatorView
 
         private void HandleAssetLoadCompleted(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
         {
-            DebugLog("Asset loading is complete, sending the ConnectedAndReady event");
+            DebugLog($"Asset loading is complete for {endpoint.Address}, sending the {nameof(ConnectedAndReady)} event.");
 
             // Notify everyone the connection is actually ready
             ConnectedAndReady?.Invoke(endpoint);
+        }
+
+        private void UpdatePendingAssetBundleSends()
+        {
+            for (int iPendingSend = (pendingAssetBundleSends.Count - 1); iPendingSend >= 0; iPendingSend--)
+            {
+                var pendingSend = pendingAssetBundleSends[iPendingSend];
+
+                if (pendingSend.Recipient.IsConnected)
+                {
+                    using (MemoryStream stream = new MemoryStream())
+                    using (BinaryWriter writer = new BinaryWriter(stream))
+                    {
+                        writer.Write(StateSynchronizationObserver.AssetBundleReportDownloadDataCommand);
+
+                        int bytesRemaining = (pendingSend.Data.Length - pendingSend.NextDataToSendIndex);
+                        Debug.Assert(bytesRemaining > 0, this);
+
+                        int bytesToSend = Math.Min(StateSynchronizationObserver.AssetBundleReportDownloadDataMaxByteCount, bytesRemaining);
+
+                        writer.Write(pendingSend.Data, pendingSend.NextDataToSendIndex, bytesToSend);
+                        pendingSend.NextDataToSendIndex += bytesToSend;
+
+                        pendingSend.Recipient.Send(stream.ToArray());
+                    }
+
+                    if (pendingSend.NextDataToSendIndex == pendingSend.Data.Length)
+                    {
+                        DebugLog($"Completed asset bundle send to {pendingSend.Recipient.Address} of {pendingSend.Data.Length:N0} bytes.");
+                        pendingAssetBundleSends.RemoveAt(iPendingSend);
+                    }
+                    else
+                    {
+                        var percentComplete = (100.0 * pendingSend.NextDataToSendIndex / pendingSend.Data.Length);
+
+                        DebugLog($"Sent {pendingSend.NextDataToSendIndex:N0}/{pendingSend.Data.Length:N0} bytes of asset bundle ({percentComplete:N2}%) to {pendingSend.Recipient.Address}.  Waiting to send more...");
+                    }
+                }
+                else
+                {
+                    DebugLog($"Abandoning asset bundle send, because observer {pendingSend.Recipient.Address} disconnected.");
+                    pendingAssetBundleSends.RemoveAt(iPendingSend);
+                }
+            }
+        }
+
+        private class AssetBundleSend
+        {
+            public SocketEndpoint Recipient;
+            public byte[] Data;
+            public int NextDataToSendIndex;
         }
     }
 }

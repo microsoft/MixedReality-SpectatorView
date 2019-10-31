@@ -4,6 +4,7 @@
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using CallerMemberNameAttribute = System.Runtime.CompilerServices.CallerMemberNameAttribute;
 
 namespace Microsoft.MixedReality.SpectatorView
 {
@@ -18,8 +19,12 @@ namespace Microsoft.MixedReality.SpectatorView
         public const string AssetBundleRequestInfoCommand = "RequestAssetBundleInfo";
         public const string AssetBundleReportInfoCommand = "ReportAssetBundleInfo";
         public const string AssetBundleRequestDownloadCommand = "RequestAssetBundleDownload";
-        public const string AssetBundleReportDownloadCommand = "ReportAssetBundleDownload";
+        public const string AssetBundleReportDownloadStartCommand = "ReportAssetBundleDownloadStart";
+        public const string AssetBundleReportDownloadDataCommand = "ReportAssetBundleDownloadData";
         public const string AssetLoadCompletedCommand = "AssetLoadCompleted";
+
+        public const string AssetBundleName = "spectatorview";
+        public const int AssetBundleReportDownloadDataMaxByteCount = 256 * 1024;
 
         /// <summary>
         /// Check to enable debug logging.
@@ -39,7 +44,11 @@ namespace Microsoft.MixedReality.SpectatorView
         private const float heartbeatTimeInterval = 0.1f;
         private float timeSinceLastHeartbeat = 0.0f;
         private HologramSynchronizer hologramSynchronizer = new HologramSynchronizer();
+
         private AssetBundle currentAssetBundle;
+        private string currentAssetBundleIdentity;
+        private string currentAssetBundleDisplayName;
+        private AssetBundleReceive pendingAssetBundleReceive;
 
         private static readonly byte[] heartbeatMessage = GenerateHeartbeatMessage();
 
@@ -70,7 +79,17 @@ namespace Microsoft.MixedReality.SpectatorView
             RegisterCommandHandler(CameraCommand, HandleCameraCommand);
             RegisterCommandHandler(PerfCommand, HandlePerfCommand);
             RegisterCommandHandler(AssetBundleReportInfoCommand, HandleAssetBundleInfoCommand);
-            RegisterCommandHandler(AssetBundleReportDownloadCommand, HandleAssetBundleDownloadCommand);
+            RegisterCommandHandler(AssetBundleReportDownloadStartCommand, HandleAssetBundleDownloadStartCommand);
+            RegisterCommandHandler(AssetBundleReportDownloadDataCommand, HandleAssetBundleDownloadDataCommand);
+
+            AssetCache.AssetCacheCountChanged += AssetCacheCountChanged;
+        }
+
+        protected override void OnDestroy()
+        {
+            AssetCache.AssetCacheCountChanged -= AssetCacheCountChanged;
+
+            base.OnDestroy();
         }
 
         protected void Update()
@@ -79,12 +98,12 @@ namespace Microsoft.MixedReality.SpectatorView
             hologramSynchronizer.UpdateHolograms();
         }
 
-        private void DebugLog(string message)
+        private void DebugLog(string message, [CallerMemberName] string callerMemberName = null)
         {
             if (debugLogging)
             {
                 string connectedState = IsConnected ? $"Connected - {ConnectedIPAddress}" : "Not Connected";
-                Debug.Log($"StateSynchronizationObserver - {connectedState}: {message}");
+                Debug.Log($"StateSynchronizationObserver - {callerMemberName} - {connectedState}: {message}", this);
             }
         }
 
@@ -100,7 +119,7 @@ namespace Microsoft.MixedReality.SpectatorView
             }
 
             hologramSynchronizer.Reset(endpoint);
-            ResetAssetCaches();
+            // TODO: should this be called here?!?!?!  ResetAssetCaches();
 
             SendAssetBundleInfoRequest(endpoint);
         }
@@ -139,31 +158,103 @@ namespace Microsoft.MixedReality.SpectatorView
             bool hasAssetBundle = reader.ReadBoolean();
             if (hasAssetBundle)
             {
-                DebugLog($"We determined that there is an asset bundle for this platform");
-                SendAssetBundleDownloadRequest(endpoint);
+                var assetBundleIdentity = reader.ReadString();
+                var assetBundleDisplayName = reader.ReadString();
+
+                if (assetBundleIdentity == currentAssetBundleIdentity)
+                {
+                    DebugLog($"Not requesting asset bundle download.  Already have asset bundle {AssetBundleVersion.Format(currentAssetBundleIdentity, currentAssetBundleDisplayName)}.");
+                    SendAssetsLoaded(endpoint);
+                }
+                else
+                {
+                    DebugLog($"Requesting asset bundle download for {AssetBundleVersion.Format(assetBundleIdentity, assetBundleDisplayName)}...");
+                    SendAssetBundleDownloadRequest(endpoint);
+                }
             }
             else
             {
-                DebugLog($"We determined that there is NOT an asset bundle for this platform");
+                DebugLog($"Not requesting asset bundle download.  None is available for platform {AssetBundlePlatformInfo.Current}.");
                 SendAssetsLoaded(endpoint);
             }
         }
 
-        private void HandleAssetBundleDownloadCommand(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
+        private void HandleAssetBundleDownloadStartCommand(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
         {
-            int length = reader.ReadInt32();
-            byte[] rawAssetBundle;
-            if (length > 0)
-            {
-                rawAssetBundle = reader.ReadBytes(length);
-                Debug.Log("Loading asset bundle");
-                currentAssetBundle = AssetBundle.LoadFromMemory(rawAssetBundle);
-                Debug.Log("Asset bundle load completed");
-                currentAssetBundle.LoadAllAssets();
-            }
+            bool hasAssetBundle = reader.ReadBoolean();
 
-            SendAssetsLoaded(endpoint);
+            if (hasAssetBundle)
+            {
+                ResetAssetCaches();
+
+                currentAssetBundleIdentity = reader.ReadString();
+                currentAssetBundleDisplayName = reader.ReadString();
+
+                pendingAssetBundleReceive = new AssetBundleReceive
+                {
+                    Data = new byte[reader.ReadInt32()],
+                    NextDataToReceiveIndex = 0,
+                };
+
+                DebugLog($"Receiving asset bundle {AssetBundleVersion.Format(currentAssetBundleIdentity, currentAssetBundleDisplayName)} with {pendingAssetBundleReceive.Data.Length:N0} bytes...");
+            }
+            else
+            {
+                DebugLog($"Unexpectedly got no asset bundle for platform {AssetBundlePlatformInfo.Current}.");
+                SendAssetsLoaded(endpoint);
+            }
         }
+
+        private void HandleAssetBundleDownloadDataCommand(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
+        {
+            if (pendingAssetBundleReceive == null)
+            {
+                DebugLog($"Unexpected command.  There is no {nameof(pendingAssetBundleReceive)}.");
+            }
+            else
+            {
+                Debug.Assert(currentAssetBundle == null, this);
+
+                var newData = reader.ReadBytes(remainingDataSize);
+
+                if ((pendingAssetBundleReceive.NextDataToReceiveIndex + newData.Length) > pendingAssetBundleReceive.Data.Length)
+                {
+                    DebugLog($"Unexpectedly got too much data for {nameof(pendingAssetBundleReceive)}.");
+                    ResetAssetCaches();
+                }
+                else
+                {
+                    System.Array.Copy(newData, 0, pendingAssetBundleReceive.Data, pendingAssetBundleReceive.NextDataToReceiveIndex, newData.Length);
+                    pendingAssetBundleReceive.NextDataToReceiveIndex += newData.Length;
+
+                    if (pendingAssetBundleReceive.NextDataToReceiveIndex == pendingAssetBundleReceive.Data.Length)
+                    {
+                        DebugLog($"Successfully received all {pendingAssetBundleReceive.Data.Length:N0} bytes of asset bundle {AssetBundleVersion.Format(currentAssetBundleIdentity, currentAssetBundleDisplayName)}.  Loading its assets...");
+                        currentAssetBundle = AssetBundle.LoadFromMemory(pendingAssetBundleReceive.Data);
+                        pendingAssetBundleReceive = null;
+
+                        DebugLog($"Successfully loaded asset bundle.  Loading all assets from bundle...");
+                        currentAssetBundle.LoadAllAssets();
+
+                        DebugLog($"All assets loaded from bundle.");
+
+                        SendAssetsLoaded(endpoint);
+                    }
+                    else
+                    {
+                        var percentComplete = (100.0 * pendingAssetBundleReceive.NextDataToReceiveIndex / pendingAssetBundleReceive.Data.Length);
+
+                        DebugLog($"Received {pendingAssetBundleReceive.NextDataToReceiveIndex:N0}/{pendingAssetBundleReceive.Data.Length:N0} bytes of asset bundle ({percentComplete:N2}%).  Waiting for more...");
+                    }
+                }
+            }
+        }
+
+        public string AssetStatus { get; private set; }
+
+        public bool AssetStatusIsError { get; private set; }
+
+        public event System.Action<string, bool> AssetStatusChanged;
 
         internal int PerformanceFeatureCount
         {
@@ -251,6 +342,21 @@ namespace Microsoft.MixedReality.SpectatorView
                 currentAssetBundle.Unload(unloadAllLoadedObjects: true);
                 currentAssetBundle = null;
             }
+
+            currentAssetBundleIdentity = null;
+            currentAssetBundleDisplayName = null;
+            pendingAssetBundleReceive = null;
+        }
+
+        private void AssetCacheCountChanged(int assetCacheCount)
+        {
+            // TODO:?
+        }
+
+        private class AssetBundleReceive
+        {
+            public byte[] Data;
+            public int NextDataToReceiveIndex;
         }
     }
 }
