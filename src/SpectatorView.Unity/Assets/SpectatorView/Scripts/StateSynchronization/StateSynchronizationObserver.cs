@@ -134,7 +134,7 @@ namespace Microsoft.MixedReality.SpectatorView
             SendAssetBundleInfoRequest(endpoint);
         }
 
-        public void HandleCameraCommand(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
+        private void HandleCameraCommand(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
         {
             float timeStamp = reader.ReadSingle();
             hologramSynchronizer.RegisterCameraUpdate(timeStamp);
@@ -142,13 +142,13 @@ namespace Microsoft.MixedReality.SpectatorView
             transform.rotation = reader.ReadQuaternion();
         }
 
-        public void HandleSyncCommand(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
+        private void HandleSyncCommand(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
         {
             float timeStamp = reader.ReadSingle();
             hologramSynchronizer.RegisterFrameData(reader.ReadBytes(remainingDataSize), timeStamp);
         }
 
-        public void HandlePerfCommand(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
+        private void HandlePerfCommand(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
         {
             int featureCount = reader.ReadInt32();
 
@@ -173,7 +173,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
                 if (assetBundleIdentity == currentAssetBundleIdentity)
                 {
-                    DebugLog($"Not requesting asset bundle download.  Already have asset bundle {AssetBundleVersion.Format(currentAssetBundleIdentity, currentAssetBundleDisplayName)}.");
+                    DebugLog($"Not requesting asset bundle download. Already have asset bundle {AssetBundleVersion.Format(currentAssetBundleIdentity, currentAssetBundleDisplayName)}.");
 
                     AssetState = new AssetState
                     {
@@ -192,7 +192,7 @@ namespace Microsoft.MixedReality.SpectatorView
             }
             else
             {
-                DebugLog($"Not requesting asset bundle download.  None is available for platform {AssetBundlePlatformInfo.Current}.");
+                DebugLog($"Not requesting asset bundle download. None is available for platform {AssetBundlePlatformInfo.Current}.");
 
                 Debug.Assert(currentAssetBundle == null, "If we already have an asset bundle loaded, but the remote user doesn't have one, it probably means we have mismatched assets... how did we get into this state?  Should we clear assets?", this);
 
@@ -222,7 +222,7 @@ namespace Microsoft.MixedReality.SpectatorView
                     NextDataToReceiveIndex = 0,
                 };
 
-                DebugLog($"Receiving asset bundle {AssetBundleVersion.Format(currentAssetBundleIdentity, currentAssetBundleDisplayName)} with {pendingAssetBundleReceive.Data.Length:N0} bytes...");
+                DebugLog($"Receiving asset bundle {AssetBundleVersion.Format(currentAssetBundleIdentity, currentAssetBundleDisplayName)} with {FormatBytes(pendingAssetBundleReceive.Data.Length)}...");
 
                 AssetState = new AssetState
                 {
@@ -249,7 +249,7 @@ namespace Microsoft.MixedReality.SpectatorView
         {
             if (pendingAssetBundleReceive == null)
             {
-                DebugLog($"Unexpected command.  There is no {nameof(pendingAssetBundleReceive)}.");
+                DebugLog($"Unexpected command. There is no {nameof(pendingAssetBundleReceive)}.");
             }
             else
             {
@@ -277,14 +277,14 @@ namespace Microsoft.MixedReality.SpectatorView
 
                     if (pendingAssetBundleReceive.NextDataToReceiveIndex == pendingAssetBundleReceive.Data.Length)
                     {
-                        DebugLog($"Successfully received all {pendingAssetBundleReceive.Data.Length:N0} bytes of asset bundle {AssetBundleVersion.Format(currentAssetBundleIdentity, currentAssetBundleDisplayName)}.  Loading its assets...");
+                        DebugLog($"Successfully received all {FormatBytes(pendingAssetBundleReceive.Data.Length)} of asset bundle {AssetBundleVersion.Format(currentAssetBundleIdentity, currentAssetBundleDisplayName)}. Loading its assets...");
 
                         try
                         {
                             currentAssetBundle = AssetBundle.LoadFromMemory(pendingAssetBundleReceive.Data);
                             pendingAssetBundleReceive = null;
 
-                            DebugLog($"Successfully loaded asset bundle.  Loading all assets from bundle...");
+                            DebugLog($"Successfully loaded asset bundle. Loading all assets from bundle...");
                             currentAssetBundle.LoadAllAssets();
                         }
                         catch (System.Exception ex)
@@ -312,9 +312,7 @@ namespace Microsoft.MixedReality.SpectatorView
                     }
                     else
                     {
-                        var percentComplete = (100.0 * pendingAssetBundleReceive.NextDataToReceiveIndex / pendingAssetBundleReceive.Data.Length);
-
-                        DebugLog($"Received {pendingAssetBundleReceive.NextDataToReceiveIndex:N0}/{pendingAssetBundleReceive.Data.Length:N0} bytes of asset bundle ({percentComplete:N2}%).  Waiting for more...");
+                        DebugLog($"Received {FormatByteProgress(pendingAssetBundleReceive.NextDataToReceiveIndex, pendingAssetBundleReceive.Data.Length)} of asset bundle. Waiting for more...");
 
                         AssetState = new AssetState
                         {
@@ -468,6 +466,47 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
+        public static string FormatByteProgress(int bytesSoFar, int totalBytes)
+        {
+            GetBytesFormat(totalBytes, out float bytesDivisor, out string bytesFormat, out string bytesUnitSpecifier);
+
+            var bytesSoFarText = (bytesSoFar / bytesDivisor).ToString(bytesFormat);
+            var totalBytesText = (totalBytes / bytesDivisor).ToString(bytesFormat);
+
+            var percentCompleteText = (100.0 * bytesSoFar / totalBytes).ToString("N1");
+
+            return $"{percentCompleteText}% ({bytesSoFarText}/{totalBytesText} {bytesUnitSpecifier})";
+        }
+
+        public static string FormatBytes(int totalBytes)
+        {
+            GetBytesFormat(totalBytes, out float divisor, out string format, out string unitSpecifier);
+
+            return $"{(totalBytes / divisor).ToString(format)} {unitSpecifier}";
+        }
+
+        private static void GetBytesFormat(int totalBytes, out float divisor, out string format, out string unitSpecifier)
+        {
+            if (totalBytes >= 1024 * 1024)
+            {
+                divisor = 1024 * 1024;
+                format = "N1";
+                unitSpecifier = "MB";
+            }
+            else if (totalBytes >= 1024)
+            {
+                divisor = 1024;
+                format = "N1";
+                unitSpecifier = "KB";
+            }
+            else
+            {
+                divisor = 1;
+                format = "N0";
+                unitSpecifier = "B";
+            }
+        }
+
         private class AssetBundleReceive
         {
             public byte[] Data;
@@ -496,22 +535,22 @@ namespace Microsoft.MixedReality.SpectatorView
         public AssetStateStatus Status;
 
         /// <summary>
-        /// For <see cref="Status"/> associated with an asset bundle, this is the asset bundle's display name.  Otherwise, undefined.
+        /// For <see cref="Status"/> associated with an asset bundle, this is the asset bundle's display name. Otherwise, undefined.
         /// </summary>
         public string AssetBundleDisplayName;
 
         /// <summary>
-        /// For <see cref="Status"/> that has partial bytes associated with it, the byte count so far.  Otherwise, undefined.
+        /// For <see cref="Status"/> that has partial bytes associated with it, the byte count so far. Otherwise, undefined.
         /// </summary>
         public int BytesSoFar;
 
         /// <summary>
-        /// For <see cref="Status"/> that has total bytes associated with it, the total byte count.  Otherwise, undefined.
+        /// For <see cref="Status"/> that has total bytes associated with it, the total byte count. Otherwise, undefined.
         /// </summary>
         public int TotalBytes;
 
         /// <summary>
-        /// For <see cref="Status"/> that indicates an error, the error message.  Otherwise, undefined.
+        /// For <see cref="Status"/> that indicates an error, the error message. Otherwise, undefined.
         /// </summary>
         public string ErrorDetails;
     }

@@ -81,18 +81,18 @@ namespace Microsoft.MixedReality.SpectatorView
                     break;
 
                 case AssetStateStatus.RequestingAssetBundle:
-                    newStateText = "Asking remote user for an updated asset bundle.";
+                    newStateText = "Asking remote user for updated asset bundle.";
 
                     if (assetState.AssetBundleDisplayName != null)
                     {
-                        newStateText += $" Current asset bundle: \"{assetState.AssetBundleDisplayName}\".";
+                        newStateText += $" Current bundle: \"{assetState.AssetBundleDisplayName}\".";
                     }
 
                     newColor = Color.yellow;
                     break;
 
                 case AssetStateStatus.DownloadingAssetBundle:
-                    newStateText = $"Downloading. Progress: {assetState.BytesSoFar:N0}/{assetState.TotalBytes:N0} bytes ({100.0 * assetState.BytesSoFar / assetState.TotalBytes:N1}%). Bundle: \"{assetState.AssetBundleDisplayName}\".";
+                    newStateText = $"Downloaded {StateSynchronizationObserver.FormatByteProgress(assetState.BytesSoFar, assetState.TotalBytes)} of bundle \"{assetState.AssetBundleDisplayName}\".";
                     newColor = Color.yellow;
                     break;
 

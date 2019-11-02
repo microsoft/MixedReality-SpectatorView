@@ -281,7 +281,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
                 if (hasAsset)
                 {
-                    DebugLog($"Starting to send asset bundle {AssetBundleVersion.Format(versionIdentity, versionDisplayName)} with {data.Length:N0} bytes to {endpoint.Address}...");
+                    DebugLog($"Starting {StateSynchronizationObserver.FormatBytes(data.Length)} asset bundle send to {endpoint.Address}. Bundle: {AssetBundleVersion.Format(versionIdentity, versionDisplayName)}...");
 
                     writer.Write(versionIdentity);
                     writer.Write(versionDisplayName);
@@ -337,14 +337,12 @@ namespace Microsoft.MixedReality.SpectatorView
 
                     if (pendingSend.NextDataToSendIndex == pendingSend.Data.Length)
                     {
-                        DebugLog($"Completed asset bundle send to {pendingSend.Recipient.Address} of {pendingSend.Data.Length:N0} bytes.");
+                        DebugLog($"Completed {StateSynchronizationObserver.FormatBytes(pendingSend.Data.Length)} asset bundle send to {pendingSend.Recipient.Address}.");
                         pendingAssetBundleSends.RemoveAt(iPendingSend);
                     }
                     else
                     {
-                        var percentComplete = (100.0 * pendingSend.NextDataToSendIndex / pendingSend.Data.Length);
-
-                        DebugLog($"Sent {pendingSend.NextDataToSendIndex:N0}/{pendingSend.Data.Length:N0} bytes of asset bundle ({percentComplete:N2}%) to {pendingSend.Recipient.Address}.  Waiting to send more...");
+                        DebugLog($"Sent {StateSynchronizationObserver.FormatByteProgress(pendingSend.NextDataToSendIndex, pendingSend.Data.Length)} of asset bundle to {pendingSend.Recipient.Address}. Waiting to send more...");
                     }
                 }
                 else
