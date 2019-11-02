@@ -71,6 +71,7 @@ namespace Microsoft.MixedReality.SpectatorView
         [Tooltip("StateSynchronizationObserver MonoBehaviour")]
         [SerializeField]
         private StateSynchronizationObserver stateSynchronizationObserver = null;
+        public StateSynchronizationObserver StateSynchronizationObserver => stateSynchronizationObserver;
 
         [Header("Spatial Alignment")]
         [Tooltip("A prioritized list of SpatialLocalizationInitializers that should be used when a spectator connects.")]

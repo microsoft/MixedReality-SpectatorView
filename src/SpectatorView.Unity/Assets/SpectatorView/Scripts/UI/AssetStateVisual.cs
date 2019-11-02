@@ -26,20 +26,13 @@ namespace Microsoft.MixedReality.SpectatorView
         {
             if (observer == null)
             {
-                var allObservers = Resources.FindObjectsOfTypeAll<StateSynchronizationObserver>();
+                var spectatorView = FindObjectOfType<SpectatorView>();
 
-                if (allObservers.Length > 1)
+                observer = spectatorView?.StateSynchronizationObserver;
+
+                if (observer == null)
                 {
-                    Debug.LogWarning($"{nameof(AssetStateVisual)} expected exactly 1 {nameof(StateSynchronizationObserver)}, but got {allObservers.Length}. Taking the first.", this);
-                    observer = allObservers[0];
-                }
-                else if (allObservers.Length == 1)
-                {
-                    observer = allObservers[0];
-                }
-                else
-                {
-                    Debug.LogWarning($"{nameof(AssetStateVisual)} couldn't find {nameof(StateSynchronizationObserver)}.", this);
+                    Debug.LogWarning($"{nameof(AssetStateVisual)} couldn't find {nameof(SpectatorView)}.{nameof(spectatorView.StateSynchronizationObserver)}.", this);
                 }
             }
 
