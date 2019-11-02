@@ -15,6 +15,7 @@ namespace Microsoft.MixedReality.SpectatorView
     internal abstract class TextMeshProBroadcasterBase<TComponentService> : ComponentBroadcaster<TComponentService, TextMeshProBroadcasterChangeType>
         where TComponentService : Singleton<TComponentService>, IComponentBroadcasterService
     {
+
 #if STATESYNC_TEXTMESHPRO
 
         private TMP_Text textMesh;

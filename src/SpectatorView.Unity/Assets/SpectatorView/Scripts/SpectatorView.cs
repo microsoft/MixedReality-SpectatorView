@@ -50,6 +50,13 @@ namespace Microsoft.MixedReality.SpectatorView
         private GameObject defaultMobileNetworkConfigurationVisualPrefab = null;
 #pragma warning restore 414
 
+        /// <summary>
+        /// Uncheck to reshow the network configuration visual prefab on network disconnect. If kept checked a network reconnect will be attempted indefinitely.
+        /// </summary>
+        [Tooltip("Uncheck to reshow the network configuration visual prefab on network disconnect. If checked, a network reconnect will be attempted indefinitely after setting up the initial network configuration.")]
+        [SerializeField]
+        private bool automaticallyAttemptNetworkReconnects = false;
+
         [Header("State Synchronization")]
         /// <summary>
         /// StateSynchronizationSceneManager MonoBehaviour
@@ -106,6 +113,11 @@ namespace Microsoft.MixedReality.SpectatorView
         private GameObject defaultMobileRecordingServiceVisualPrefab = null;
 #pragma warning restore 414
 
+        [Header("Miscellaneous")]
+        [Tooltip("Check to call DontDestroyOnLoad for this game object.")]
+        [SerializeField]
+        private bool persistAcrossScenes = true;
+
         [Header("Debugging")]
         /// <summary>
         /// Debug visual prefab created by the user.
@@ -157,12 +169,18 @@ namespace Microsoft.MixedReality.SpectatorView
 
         private void Awake()
         {
-            Debug.Log($"SpectatorView is running as: {Role.ToString()}. Expected User IPAddress: {userIpAddress}");
+            if (persistAcrossScenes)
+            {
+                DebugLog("Setting up spectator view content to persist across scenes.");
+                DontDestroyOnLoad(this);
+            }
+
+            DebugLog($"SpectatorView is running as: {Role.ToString()}. Expected User IPAddress: {userIpAddress}");
 
             GameObject settings = Resources.Load<GameObject>(SettingsPrefabName);
             if (settings != null)
             {
-                settingsGameObject = Instantiate(settings, null);
+                settingsGameObject = Instantiate(settings, this.transform);
             }
 
             CreateDeviceTrackingObserver();
@@ -199,21 +217,37 @@ namespace Microsoft.MixedReality.SpectatorView
                         // When running as a spectator, automatic localization should be initiated if it's configured.
                         SpatialCoordinateSystemManager.Instance.ParticipantConnected += OnParticipantConnected;
 
-                        if (!ShouldUseNetworkConfigurationVisual())
-                        {
-                            DebugLog("Not using a network configuration visual, beginning state synchronization as an observer.");
-                            RunStateSynchronizationAsObserver();
-                        }
-                        else
-                        {
-                            DebugLog("Using a network configuration visual. State synchronization will be delayed until a connection is started by the user.");
-                            SetupNetworkConfigurationVisual();
-                        }
+                        SetupSpectatorNetworkConnection();
                     }
                     break;
             }
 
             SetupRecordingService();
+        }
+
+        private void SetupSpectatorNetworkConnection()
+        {
+            if (!ShouldUseNetworkConfigurationVisual())
+            {
+                DebugLog("Not using a network configuration visual, beginning state synchronization as an observer.");
+                RunStateSynchronizationAsObserver();
+            }
+            else
+            {
+                DebugLog("Using a network configuration visual. State synchronization will be delayed until a connection is started by the user.");
+                SetupNetworkConfigurationVisual();
+            }
+        }
+
+        private void OnSpectatorNetworkDisconnect(SocketEndpoint endoint)
+        {
+            if (stateSynchronizationObserver != null)
+            {
+                stateSynchronizationObserver.Disconnected -= OnSpectatorNetworkDisconnect;
+            }
+
+            DebugLog("Observed network disconnect for spectator, rerunning spectator view network connection setup logic.");
+            SetupSpectatorNetworkConnection();
         }
 
         private void Update()
@@ -240,7 +274,10 @@ namespace Microsoft.MixedReality.SpectatorView
             }
 #endif
 
-            SpatialCoordinateSystemManager.Instance.ParticipantConnected -= OnParticipantConnected;
+            if (this.Role == Role.Spectator)
+            {
+                SpatialCoordinateSystemManager.Instance.ParticipantConnected -= OnParticipantConnected;
+            }
         }
 
         private void RunStateSynchronizationAsBroadcaster()
@@ -259,6 +296,16 @@ namespace Microsoft.MixedReality.SpectatorView
 
             // The StateSynchronizationSceneManager needs to be enabled after the broadcaster/observer
             stateSynchronizationSceneManager.gameObject.SetActive(true);
+
+            if (!automaticallyAttemptNetworkReconnects)
+            {
+                // Listen for disconnects in order to reshow the network configuration visual
+                stateSynchronizationObserver.Disconnected += OnSpectatorNetworkDisconnect;
+
+                // Tell the StateSynchronizationObserver to prevent attempting reconnects
+                DebugLog("Disabling attempts to reconnect on disconnect.");
+                stateSynchronizationObserver.AttemptReconnectWhenClient = false;
+            }
 
             // Make sure the StateSynchronizationSceneManager is enabled prior to connecting the observer
             stateSynchronizationObserver.ConnectTo(userIpAddress);
@@ -353,10 +400,11 @@ namespace Microsoft.MixedReality.SpectatorView
         private void OnNetworkConfigurationUpdated(object sender, string ipAddress)
         {
 #if UNITY_ANDROID || UNITY_IOS
+            DebugLog($"OnNetworkConfigurationUpdated: ipAddress:{ipAddress}");
+
             this.userIpAddress = ipAddress;
             if (networkConfigurationVisual != null)
             {
-                networkConfigurationVisual.NetworkConfigurationUpdated -= OnNetworkConfigurationUpdated;
                 networkConfigurationVisual.Hide();
             }
 
@@ -385,7 +433,7 @@ namespace Microsoft.MixedReality.SpectatorView
         {
             if (debugLogging)
             {
-                UnityEngine.Debug.Log($"SpatialLocalizationInitializationSettings: {message}");
+                UnityEngine.Debug.Log($"SpectatorView: {message}");
             }
         }
 
@@ -433,22 +481,28 @@ namespace Microsoft.MixedReality.SpectatorView
                 supportedLocalizers != null)
             {
                 DebugLog($"Received a set of {peerSupportedLocalizers.Count} supported localizers");
-                DebugLog($"Using prioritized initializers list from spectator view settings: {SpatialLocalizationInitializationSettings.IsInitialized && SpatialLocalizationInitializationSettings.Instance.PrioritizedInitializers != null}");
 
+                var initializers = new List<SpatialLocalizationInitializer>();
                 if (SpatialLocalizationInitializationSettings.IsInitialized &&
-                    await TryRunLocalizationWithInitializerAsync(SpatialLocalizationInitializationSettings.Instance.PrioritizedInitializers, supportedLocalizers, participant))
+                    SpatialLocalizationInitializationSettings.Instance.PrioritizedInitializers != null)
                 {
-                    // Succeeded at using a custom localizer specified by the app.
-                    return true;
+                    DebugLog($"Found prioritized spatial localization initializers list in spectator view settings");
+                    foreach(var initializer in SpatialLocalizationInitializationSettings.Instance.PrioritizedInitializers)
+                    {
+                        initializers.Add(initializer);
+                    }
                 }
 
-                if (await TryRunLocalizationWithInitializerAsync(defaultSpatialLocalizationInitializers, supportedLocalizers, participant))
+                if (defaultSpatialLocalizationInitializers != null)
                 {
-                    // Succeeded at using one of the default localizers from the prefab.
-                    return true;
+                    DebugLog($"Found default spatial localization initializers list for spectator view settings");
+                    foreach (var initializer in defaultSpatialLocalizationInitializers)
+                    {
+                        initializers.Add(initializer);
+                    }
                 }
 
-                Debug.LogWarning($"None of the configured LocalizationInitializers were supported by the connected participant, localization will not be started");
+                return await TryRunLocalizationWithInitializerAsync(initializers, supportedLocalizers, participant);
             }
             else
             {
@@ -460,12 +514,12 @@ namespace Microsoft.MixedReality.SpectatorView
 
         private async Task<bool> TryRunLocalizationWithInitializerAsync(IList<SpatialLocalizationInitializer> initializers, ISet<Guid> supportedLocalizers, SpatialCoordinateSystemParticipant participant)
         {
-            DebugLog($"TryRunLocalizationWithInitializerAsync");
-
-            if (initializers == null)
+            if (initializers == null || supportedLocalizers == null)
             {
+                Debug.LogWarning("Did not find a supported localizer/initializer combination.");
                 return false;
             }
+            DebugLog($"TryRunLocalizationWithInitializerAsync, initializers:{initializers.Count}, supportedLocalizers:{supportedLocalizers.Count}");
 
             for (int i = 0; i < initializers.Count; i++)
             {

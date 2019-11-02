@@ -267,6 +267,17 @@ namespace Microsoft.MixedReality.SpectatorView
         }
 
         /// <summary>
+        /// Call to prevent additional attempts at connecting. Note: if no connection has been established, calling this function will prevent establishing a connection.
+        /// </summary>
+        public void StopConnectionAttempts()
+        {
+            if (tcpClient != null)
+            {
+                tcpClient.StopConnectionAttempts();
+            }
+        }
+
+        /// <summary>
         /// Sends a string to the other side.  Works for all Socketers except UDP Listeners.
         /// If the other Socketer is not listening, the messages are lost.
         /// </summary>
@@ -553,6 +564,7 @@ namespace Microsoft.MixedReality.SpectatorView
             private bool threadShouldRun;
             // If a connection fails, wait this many ms
             private const int timeoutMS = 500;
+            private volatile bool attemptConnection = true;
 
             internal class ConnectionEventArgs : EventArgs
             {
@@ -694,6 +706,10 @@ namespace Microsoft.MixedReality.SpectatorView
                 }
             }
 
+            public void StopConnectionAttempts()
+            {
+                attemptConnection = false;
+            }
 
             private bool Connect()
             {
@@ -792,10 +808,19 @@ namespace Microsoft.MixedReality.SpectatorView
                 {
                     if (!IsConnected)
                     {
-                        Debug.Log("Trying to connect to " + host + ":" + port);
-                        if (!Connect())
+                        if (attemptConnection)
                         {
-                            Thread.Sleep(timeoutMS);
+                            Debug.Log("Trying to connect to " + host + ":" + port);
+                            if (!Connect())
+                            {
+                                Thread.Sleep(timeoutMS);
+                                continue;
+                            }
+                        }
+                        else
+                        {
+                            Debug.Log("SocketClient was disconnected. Reconnect won't be attempted.");
+                            this.Stop();
                             continue;
                         }
                     }
@@ -978,6 +1003,11 @@ namespace Microsoft.MixedReality.SpectatorView
             {
                 shouldConnect = false;
                 Disconnect();
+            }
+
+            public void StopConnectionAttempts()
+            {
+                shouldConnect = false;
             }
 
             public void Disconnect()
