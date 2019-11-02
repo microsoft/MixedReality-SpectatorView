@@ -17,6 +17,8 @@ namespace Microsoft.MixedReality.SpatialAlignment
     internal class SpatialAnchorsAndroidCoordinateService : SpatialAnchorsCoordinateService
     {
         private long lastFrameProcessedTimeStamp;
+        private static object initializeLock = new object();
+        private static TaskCompletionSource<object> initializeCompletionSource = null;
 
         /// <summary>
         /// Instantiates a new <see cref="SpatialAnchorsAndroidCoordinateService"/>.
@@ -30,7 +32,16 @@ namespace Microsoft.MixedReality.SpatialAlignment
         /// <inheritdoc/>
         protected override Task OnInitializeAsync()
         {
-            TaskCompletionSource<object> taskCompletionSource = new TaskCompletionSource<object>();
+            lock (initializeLock)
+            {
+                if (initializeCompletionSource != null)
+                {
+                    Debug.Log("SpatialAnchorsAndroidCoordinateService: initializeCompletionSource already initialized");
+                    return initializeCompletionSource.Task;
+                }
+
+                initializeCompletionSource = new TaskCompletionSource<object>();
+            }
 
             UnityAndroidHelper.Instance.DispatchUiThread(unityActivity =>
             {
@@ -40,17 +51,18 @@ namespace Microsoft.MixedReality.SpatialAlignment
                     using (AndroidJavaClass cloudServices = new AndroidJavaClass("com.microsoft.CloudServices"))
                     {
                         cloudServices.CallStatic("initialize", unityActivity);
-                        taskCompletionSource.SetResult(null);
+                        Debug.Log("SpatialAnchorsAndroidCoordinateService: session successfully initialized");
+                        initializeCompletionSource.SetResult(null);
                     }
                 }
                 catch (Exception ex)
                 {
                     Debug.LogError($"Exception throw initializing SpatialAnchorAndroidCoordinateService: {ex.ToString()}");
-                    taskCompletionSource.SetException(ex);
+                    initializeCompletionSource.SetException(ex);
                 }
             });
 
-            return taskCompletionSource.Task;
+            return initializeCompletionSource.Task;
         }
 
         /// <inheritdoc/>

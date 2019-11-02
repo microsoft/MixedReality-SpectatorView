@@ -25,37 +25,40 @@ namespace Microsoft.MixedReality.SpectatorView
 
         public void OnFrameCompleted(SocketEndpointConnectionDelta connectionDelta)
         {
-            var assetCache = CustomShaderPropertyAssetCache.Instance;
-
-            if (assetCache != null && assetCache.CustomGlobalShaderProperties != null)
+            using (StateSynchronizationPerformanceMonitor.Instance.MeasureEventDuration(nameof(GlobalShaderPropertiesBroadcaster), nameof(OnFrameCompleted)))
             {
-                if (previousValues == null)
-                {
-                    InitializeValues(assetCache);
-                }
+                var assetCache = CustomShaderPropertyAssetCache.Instance;
 
-                if (connectionDelta.AddedConnections.Count > 0)
+                if (assetCache != null && assetCache.CustomGlobalShaderProperties != null)
                 {
-                    StateSynchronizationSceneManager.Instance.SendGlobalShaderProperties(assetCache.CustomGlobalShaderProperties, connectionDelta.AddedConnections);
-                }
-
-                if (connectionDelta.ContinuedConnections.Count > 0)
-                {
-                    changedProperties.Clear();
-
-                    for (int i = 0; i < assetCache.CustomGlobalShaderProperties.Length; i++)
+                    if (previousValues == null)
                     {
-                        object newValue = assetCache.CustomGlobalShaderProperties[i].GetValue();
-                        if (!Equals(previousValues[i], newValue))
-                        {
-                            previousValues[i] = newValue;
-                            changedProperties.Add(assetCache.CustomGlobalShaderProperties[i]);
-                        }
+                        InitializeValues(assetCache);
                     }
 
-                    if (changedProperties.Count > 0)
+                    if (connectionDelta.AddedConnections.Count > 0)
                     {
-                        StateSynchronizationSceneManager.Instance.SendGlobalShaderProperties(changedProperties, connectionDelta.ContinuedConnections);
+                        StateSynchronizationSceneManager.Instance.SendGlobalShaderProperties(assetCache.CustomGlobalShaderProperties, connectionDelta.AddedConnections);
+                    }
+
+                    if (connectionDelta.ContinuedConnections.Count > 0)
+                    {
+                        changedProperties.Clear();
+
+                        for (int i = 0; i < assetCache.CustomGlobalShaderProperties.Length; i++)
+                        {
+                            object newValue = assetCache.CustomGlobalShaderProperties[i].GetValue();
+                            if (!Equals(previousValues[i], newValue))
+                            {
+                                previousValues[i] = newValue;
+                                changedProperties.Add(assetCache.CustomGlobalShaderProperties[i]);
+                            }
+                        }
+
+                        if (changedProperties.Count > 0)
+                        {
+                            StateSynchronizationSceneManager.Instance.SendGlobalShaderProperties(changedProperties, connectionDelta.ContinuedConnections);
+                        }
                     }
                 }
             }

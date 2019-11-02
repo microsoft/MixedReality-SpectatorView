@@ -30,6 +30,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
         private const float PerfUpdateTimeSeconds = 1.0f;
         private float timeUntilNextPerfUpdate = PerfUpdateTimeSeconds;
+        private int numFrames = 0;
 
         private GameObject dontDestroyOnLoadGameObject;
 
@@ -45,6 +46,7 @@ namespace Microsoft.MixedReality.SpectatorView
             base.Awake();
 
             RegisterCommandHandler(StateSynchronizationObserver.SyncCommand, HandleSyncCommand);
+            RegisterCommandHandler(StateSynchronizationObserver.PerfDiagnosticModeEnabledCommand, HandlePerfMonitoringModeEnableRequest);
             RegisterCommandHandler(StateSynchronizationObserver.AssetBundleRequestInfoCommand, HandleAssetBundleRequestInfo);
             RegisterCommandHandler(StateSynchronizationObserver.AssetBundleRequestDownloadCommand, HandleAssetBundleRequestDownload);
             RegisterCommandHandler(StateSynchronizationObserver.AssetLoadCompletedCommand, HandleAssetLoadCompleted);
@@ -59,6 +61,7 @@ namespace Microsoft.MixedReality.SpectatorView
             base.OnDestroy();
 
             UnregisterCommandHandler(StateSynchronizationObserver.SyncCommand, HandleSyncCommand);
+            UnregisterCommandHandler(StateSynchronizationObserver.PerfDiagnosticModeEnabledCommand, HandlePerfMonitoringModeEnableRequest);
         }
 
         protected override void Start()
@@ -173,35 +176,41 @@ namespace Microsoft.MixedReality.SpectatorView
         public void OnFrameCompleted()
         {
             //Camera update
+            using (MemoryStream memoryStream = new MemoryStream())
+            using (BinaryWriter message = new BinaryWriter(memoryStream))
             {
-                using (MemoryStream memoryStream = new MemoryStream())
-                using (BinaryWriter message = new BinaryWriter(memoryStream))
+                Transform camTrans = null;
+                if (Camera.main != null &&
+                    Camera.main.transform != null)
                 {
-                    message.Write(StateSynchronizationObserver.CameraCommand);
-                    Transform camTrans = Camera.main.transform;
-                    message.Write(Time.time);
-                    message.Write(camTrans.position);
-                    message.Write(camTrans.rotation);
-                    message.Flush();
-
-                    connectionManager.Broadcast(memoryStream.ToArray());
+                    camTrans = Camera.main.transform;
                 }
+
+                message.Write(StateSynchronizationObserver.CameraCommand);
+                message.Write(Time.time);
+                message.Write(camTrans != null ? camTrans.position : Vector3.zero);
+                message.Write(camTrans != null ? camTrans.rotation : Quaternion.identity);
+                message.Flush();
+
+                connectionManager.Broadcast(memoryStream.ToArray());
             }
 
             //Perf
             timeUntilNextPerfUpdate -= Time.deltaTime;
+            numFrames++;
             if (timeUntilNextPerfUpdate < 0)
             {
-                timeUntilNextPerfUpdate = PerfUpdateTimeSeconds;
-
                 using (MemoryStream memoryStream = new MemoryStream())
                 using (BinaryWriter message = new BinaryWriter(memoryStream))
                 {
                     message.Write(StateSynchronizationObserver.PerfCommand);
-                    StateSynchronizationPerformanceMonitor.Instance.WriteMessage(message);
+                    StateSynchronizationPerformanceMonitor.Instance.WriteMessage(message, numFrames);
                     message.Flush();
                     connectionManager.Broadcast(memoryStream.ToArray());
                 }
+
+                timeUntilNextPerfUpdate = PerfUpdateTimeSeconds;
+                numFrames = 0;
             }
         }
 
@@ -209,6 +218,15 @@ namespace Microsoft.MixedReality.SpectatorView
         {
             reader.ReadSingle(); // float time
             StateSynchronizationSceneManager.Instance.ReceiveMessage(endpoint, reader);
+        }
+
+        private void HandlePerfMonitoringModeEnableRequest(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
+        {
+            bool enabled = reader.ReadBoolean();
+            if (StateSynchronizationPerformanceMonitor.Instance != null)
+            {
+                StateSynchronizationPerformanceMonitor.Instance.SetDiagnosticMode(enabled);
+            }
         }
 
         private bool TryGetAssetBundle(AssetBundlePlatform platform, out string versionIdentity, out string versionDisplayName, out byte[] data)

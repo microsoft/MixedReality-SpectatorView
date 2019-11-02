@@ -14,6 +14,13 @@ namespace Microsoft.MixedReality.SpectatorView
         [SerializeField]
         protected TCPConnectionManager connectionManager = null;
 
+        public bool AttemptReconnectWhenClient
+        {
+            get { return attemptReconnectWhenClient; }
+            set { attemptReconnectWhenClient = value; }
+        }
+        private bool attemptReconnectWhenClient = true;
+
         private SocketEndpoint currentConnection;
 
         /// <inheritdoc />
@@ -57,6 +64,7 @@ namespace Microsoft.MixedReality.SpectatorView
         {
             if (connectionManager != null)
             {
+                connectionManager.AttemptReconnectWhenClient = AttemptReconnectWhenClient;
                 connectionManager.ConnectTo(ipAddress, port);
             }
             else

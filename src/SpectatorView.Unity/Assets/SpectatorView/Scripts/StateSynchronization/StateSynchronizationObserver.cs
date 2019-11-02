@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -16,6 +17,7 @@ namespace Microsoft.MixedReality.SpectatorView
         public const string SyncCommand = "SYNC";
         public const string CameraCommand = "Camera";
         public const string PerfCommand = "Perf";
+        public const string PerfDiagnosticModeEnabledCommand = "PERFDIAG";
         public const string AssetBundleRequestInfoCommand = "RequestAssetBundleInfo";
         public const string AssetBundleReportInfoCommand = "ReportAssetBundleInfo";
         public const string AssetBundleRequestDownloadCommand = "RequestAssetBundleDownload";
@@ -40,10 +42,10 @@ namespace Microsoft.MixedReality.SpectatorView
         [SerializeField]
         protected int port = 7410;
 
-        private double[] averageTimePerFeature;
         private const float heartbeatTimeInterval = 0.1f;
         private float timeSinceLastHeartbeat = 0.0f;
         private HologramSynchronizer hologramSynchronizer = new HologramSynchronizer();
+        private StateSynchronizationPerformanceMonitor.ParsedMessage lastPerfMessage = new StateSynchronizationPerformanceMonitor.ParsedMessage(false, null, null);
 
         private AssetBundle currentAssetBundle;
         private string currentAssetBundleIdentity;
@@ -150,18 +152,31 @@ namespace Microsoft.MixedReality.SpectatorView
 
         private void HandlePerfCommand(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
         {
-            int featureCount = reader.ReadInt32();
+            StateSynchronizationPerformanceMonitor.ReadMessage(reader, out lastPerfMessage);
+        }
 
-            if (averageTimePerFeature == null)
+        public void SetPerformanceMonitoringMode(bool enabled)
+        {
+            if (connectionManager != null &&
+                connectionManager.HasConnections)
             {
-                averageTimePerFeature = new double[featureCount];
-            }
+                byte[] message;
+                using (MemoryStream stream = new MemoryStream())
+                using (BinaryWriter writer = new BinaryWriter(stream))
+                {
+                    writer.Write(PerfDiagnosticModeEnabledCommand);
+                    writer.Write(enabled);
+                    writer.Flush();
+                    message = stream.ToArray();
+                }
 
-            for (int i = 0; i < featureCount; i++)
-            {
-                averageTimePerFeature[i] = reader.ReadSingle();
+                connectionManager.Broadcast(message);
             }
         }
+
+        internal bool PerformanceMonitoringModeEnabled => lastPerfMessage.PerformanceMonitoringEnabled;
+        internal IReadOnlyList<Tuple<string, double>> PerformanceEventDurations => lastPerfMessage.EventDurations;
+        internal IReadOnlyList<Tuple<string, int>> PerformanceEventCounts => lastPerfMessage.EventCounts;
 
         private void HandleAssetBundleInfoCommand(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
         {
@@ -339,16 +354,6 @@ namespace Microsoft.MixedReality.SpectatorView
         }
 
         public event System.Action<AssetState> AssetStateChanged;
-
-        internal int PerformanceFeatureCount
-        {
-            get { return averageTimePerFeature?.Length ?? 0; }
-        }
-
-        internal IReadOnlyList<double> AverageTimePerFeature
-        {
-            get { return averageTimePerFeature; }
-        }
 
         private void CheckAndSendHeartbeat()
         {

@@ -274,6 +274,7 @@ namespace Microsoft.MixedReality.SpatialAlignment
         protected GameObject SpawnGameObject(Vector3 worldPosition, Quaternion worldRotation)
         {
             GameObject spawnedAnchorObject = new GameObject("Azure Spatial Anchor");
+            UnityEngine.Object.DontDestroyOnLoad(spawnedAnchorObject);
 
             spawnedAnchorObject.transform.position = worldPosition;
             spawnedAnchorObject.transform.rotation = worldRotation;
