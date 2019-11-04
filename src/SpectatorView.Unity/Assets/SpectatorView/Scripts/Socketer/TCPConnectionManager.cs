@@ -10,7 +10,7 @@ namespace Microsoft.MixedReality.SpectatorView
     /// <summary>
     /// Helper class for setting up a TCP based network connection
     /// </summary>
-    public class TCPConnectionManager : MonoBehaviour, IConnectionManager
+    public class TCPConnectionManager : MonoBehaviour, INetworkConnectionManager
     {
         /// <summary>
         /// If true, socket clients will attempt to reconnect when disconnected.

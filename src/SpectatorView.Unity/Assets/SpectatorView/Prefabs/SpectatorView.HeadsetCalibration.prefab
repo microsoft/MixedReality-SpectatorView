@@ -99,7 +99,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1460904458451800399}
-  - component: {fileID: 5160028384735353979}
+  - component: {fileID: 7502463803281077024}
   m_Layer: 0
   m_Name: SpectatorView.HeadsetCalibration
   m_TagString: Untagged
@@ -122,7 +122,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5160028384735353979
+--- !u!114 &7502463803281077024
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -134,10 +134,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: efd457102e242bf4887c1854e0758d2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  holographicCameraBroadcaster: {fileID: 0}
-  connectionManager: {fileID: 0}
   headsetCalibration: {fileID: 1460904458842936431}
-  lastRequestTimestampText: {fileID: 0}
 --- !u!1 &1460904458842936430
 GameObject:
   m_ObjectHideFlags: 0

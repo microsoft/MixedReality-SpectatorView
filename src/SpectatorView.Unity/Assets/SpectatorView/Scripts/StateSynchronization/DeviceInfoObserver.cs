@@ -9,6 +9,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.SpectatorView
 {
+    [RequireComponent(typeof(INetworkManager))]
     public class DeviceInfoObserver : MonoBehaviour
     {
         private static readonly TimeSpan trackingStalledReceiveDelay = TimeSpan.FromSeconds(1.0);

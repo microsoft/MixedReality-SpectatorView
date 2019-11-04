@@ -5,7 +5,7 @@ using System;
 
 namespace Microsoft.MixedReality.SpectatorView
 {
-    public interface IConnectionManager
+    public interface INetworkConnectionManager
     {
         event Action<INetworkConnection> OnConnected;
         event Action<INetworkConnection> OnDisconnected;

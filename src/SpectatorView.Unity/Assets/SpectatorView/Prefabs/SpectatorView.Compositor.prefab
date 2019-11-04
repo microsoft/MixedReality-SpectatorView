@@ -9,11 +9,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1637570032}
-  - component: {fileID: 1637570033}
   - component: {fileID: 1637570034}
   - component: {fileID: 1579017802430472267}
   m_Layer: 0
-  m_Name: Camera TCP Connection
+  m_Name: Holographic Camera Observer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -33,18 +32,6 @@ Transform:
   m_Father: {fileID: 7614939800065736745}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1637570033
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1637570031}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9de2b7859644fbd409cf9c1a2bb52d9a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1637570034
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -57,7 +44,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: efe6bee4ac4782544930e52efd9782c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  connectionManager: {fileID: 1637570033}
+  defaultConnectionManagerPrefab: {fileID: 2004196205564261228, guid: af6c7b759e55b224192c6906ec148cb2,
+    type: 3}
   compositionManager: {fileID: 6067065728461685249}
   appDeviceObserver: {fileID: 3060919853072160088}
   remotePort: 7502
@@ -265,6 +253,7 @@ MonoBehaviour:
   SuperSampleLevel: 0
   DefaultAlpha: 0.9
   EnableMicrophoneAudio: 1
+  debugLogging: 0
 --- !u!20 &1555454989804645697
 Camera:
   m_ObjectHideFlags: 0
@@ -378,11 +367,10 @@ GameObject:
   m_Component:
   - component: {fileID: 9153189694046729988}
   - component: {fileID: 7683599918031045855}
-  - component: {fileID: 8346405782049582648}
-  - component: {fileID: 3816466463138103882}
   - component: {fileID: 3060919853072160088}
+  - component: {fileID: 8346405782049582648}
   m_Layer: 0
-  m_Name: App TCP Connection
+  m_Name: State Synchronization Observer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -414,9 +402,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f820ead9dbb8f244b5614cf48d6247d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  connectionManager: {fileID: 3816466463138103882}
+  defaultConnectionManagerPrefab: {fileID: 2004196205564261228, guid: af6c7b759e55b224192c6906ec148cb2,
+    type: 3}
   debugLogging: 0
   port: 7410
+--- !u!114 &3060919853072160088
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7138024644092308250}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 567276354a1ef87489c6148407d7c189, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &8346405782049582648
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -430,30 +431,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   compositionManager: {fileID: 6067065728461685249}
---- !u!114 &3816466463138103882
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7138024644092308250}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9de2b7859644fbd409cf9c1a2bb52d9a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &3060919853072160088
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7138024644092308250}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 567276354a1ef87489c6148407d7c189, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &8188703494409108216
 GameObject:
   m_ObjectHideFlags: 0

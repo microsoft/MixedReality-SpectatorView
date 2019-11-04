@@ -1,11 +1,13 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Networking;
 #if UNITY_WSA
 using UnityEngine.XR.WSA;
 
@@ -17,25 +19,24 @@ using Windows.Networking.Connectivity;
 
 namespace Microsoft.MixedReality.SpectatorView
 {
+    [RequireComponent(typeof(INetworkManager))]
     public class DeviceInfoBroadcaster : MonoBehaviour
     {
-        [SerializeField]
-#pragma warning disable 414 // The field is assigned but its value is never used
-        private IConnectionManager connectionManager = null;
-#pragma warning restore 414
+        private INetworkManager networkManager = null;
 
 #if UNITY_WSA
         private void Awake()
         {
-            connectionManager.OnConnected += IConnectionManager_OnConnected;
+            networkManager = GetComponent<INetworkManager>();
+            networkManager.Connected += NetworkManagerConnected;
         }
 
         private void OnDestroy()
         {
-            connectionManager.OnConnected -= IConnectionManager_OnConnected;
+            networkManager.Connected -= NetworkManagerConnected;
         }
 
-        private void IConnectionManager_OnConnected(INetworkConnection obj)
+        private void NetworkManagerConnected(INetworkConnection obj)
         {
             SendDeviceInfo();
         }
@@ -49,7 +50,7 @@ namespace Microsoft.MixedReality.SpectatorView
                 message.Write(GetMachineName());
                 message.Write(GetIPAddress());
 
-                connectionManager.Broadcast(memoryStream.ToArray());
+                networkManager.Broadcast(memoryStream.ToArray());
             }
         }
 

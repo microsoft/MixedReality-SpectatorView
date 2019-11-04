@@ -9,10 +9,15 @@ namespace Microsoft.MixedReality.SpectatorView
 {
     public abstract class NetworkManager<TService> : CommandRegistry<TService>, INetworkManager where TService : Singleton<TService>
     {
-        private float lastReceivedUpdate;
-
+#pragma warning disable 414 // The field is assigned but its value is never used
+        [Tooltip("Default prefab for creating an INetworkConnectionManager.")]
         [SerializeField]
-        protected IConnectionManager connectionManager = null;
+        private GameObject defaultConnectionManagerPrefab = null;
+        private GameObject connectionManagerGameObject = null;
+        protected INetworkConnectionManager connectionManager = null;
+#pragma warning restore 414
+
+        private float lastReceivedUpdate;
 
         private INetworkConnection currentConnection;
 
@@ -95,6 +100,7 @@ namespace Microsoft.MixedReality.SpectatorView
         protected override void Awake()
         {
             base.Awake();
+            CreateConnectionManager();
 
             if (connectionManager != null)
             {
@@ -134,6 +140,12 @@ namespace Microsoft.MixedReality.SpectatorView
                 connectionManager.OnReceive -= OnReceive;
             }
 
+            if (connectionManagerGameObject != null)
+            {
+                connectionManager = null;
+                Destroy(connectionManagerGameObject);
+            }
+
             if (SpatialCoordinateSystemManager.IsInitialized)
             {
                 SpatialCoordinateSystemManager.Instance.UnregisterNetworkManager(this);
@@ -167,6 +179,29 @@ namespace Microsoft.MixedReality.SpectatorView
                 string command = reader.ReadString();
 
                 NotifyCommand(data.Connection, command, reader, data.Size - (int)stream.Position);
+            }
+        }
+
+        private void CreateConnectionManager()
+        {
+            var prefab = defaultConnectionManagerPrefab;
+            if (NetworkConfigurationSettings.IsInitialized &&
+                NetworkConfigurationSettings.Instance.OverrideConnectionManagerPrefab != null)
+            {
+                prefab = NetworkConfigurationSettings.Instance.OverrideConnectionManagerPrefab;
+            }
+
+            if (prefab == null)
+            {
+                throw new Exception("Network connection manager prefab wasn't specified. DeviceInfoBroadcaster will not work correctly.");
+            }
+
+            connectionManagerGameObject = Instantiate(prefab, this.transform);
+            connectionManager = connectionManagerGameObject.GetComponentInChildren<INetworkConnectionManager>();
+
+            if (connectionManager == null)
+            {
+                throw new Exception("INetworkConnectionManager wasn't found in instantiated prefab. DeviceInfoBroadcaster will not work correctly.");
             }
         }
     }

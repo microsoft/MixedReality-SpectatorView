@@ -12,9 +12,9 @@ using UnityEditor;
 namespace Microsoft.MixedReality.SpectatorView
 {
     /// <summary>
-    /// Helper class for testing socketer <see cref="TCPConnectionManager"/>
+    /// Helper class for testing <see cref="INetworkConnectionManager"/> prefabs
     /// </summary>
-    public class TCPConnectionManagerTest : MonoBehaviour
+    public class ConnectionManagerTest : MonoBehaviour
     {
         /// <summary>
         /// Check to run as the server
@@ -45,11 +45,13 @@ namespace Microsoft.MixedReality.SpectatorView
         protected float timeBetweenBroadcasts = 1.0f;
 
         /// <summary>
-        /// IConnectionManager to use for networking
+        /// INetworkConnectionManager to use for networking
         /// </summary>
-        [Tooltip("IConnectionManager to use for networking")]
+        [Tooltip("Prefab that contains INetworkConnectionManager to use for networking")]
         [SerializeField]
-        protected IConnectionManager connectionManager;
+        protected GameObject connectionManagerPrefab;
+        private GameObject connectionManagerGameObject;
+        private INetworkConnectionManager connectionManager;
 
         private float lastBroadcast = 0.0f;
         private bool broadcastSent = false;
@@ -65,6 +67,9 @@ namespace Microsoft.MixedReality.SpectatorView
 
         private void Start()
         {
+            connectionManagerGameObject = Instantiate(connectionManagerPrefab);
+            connectionManager = connectionManagerGameObject.GetComponent<INetworkConnectionManager>();
+
             connectionManager.OnConnected += OnNetConnected;
             connectionManager.OnDisconnected += OnNetDisconnected;
             connectionManager.OnReceive += OnNetReceived;
@@ -91,7 +96,7 @@ namespace Microsoft.MixedReality.SpectatorView
             {
                 Debug.Log("Broadcasts sent and received, attempting to disconnect");
                 connectionManager.DisconnectAll();
-                Debug.Log("IConnectionManager has disconnected");
+                Debug.Log("INetworkConnectionManager has disconnected");
             }
             else if ((Time.time - lastBroadcast) > timeBetweenBroadcasts)
             {
@@ -106,21 +111,28 @@ namespace Microsoft.MixedReality.SpectatorView
         private void OnDestroy()
         {
             connectionManager.DisconnectAll();
+            connectionManager.OnConnected -= OnNetConnected;
+            connectionManager.OnDisconnected -= OnNetDisconnected;
+            connectionManager.OnReceive -= OnNetReceived;
+
+            connectionManager = null;
+            Destroy(connectionManagerGameObject);
+            connectionManagerGameObject = null;
         }
 
         private void OnNetConnected(INetworkConnection obj)
         {
-            Debug.Log($"IConnectionManager Connected:{obj.ToString()}");
+            Debug.Log($"INetworkConnectionManager Connected:{obj.ToString()}");
         }
 
         private void OnNetDisconnected(INetworkConnection obj)
         {
-            Debug.Log($"IConnectionManager Disconnected:{obj.ToString()}");
+            Debug.Log($"INetworkConnectionManager Disconnected:{obj.ToString()}");
         }
 
         private void OnNetReceived(IncomingMessage obj)
         {
-            Debug.Log($"IConnectionManager Received:{obj.ToString()}");
+            Debug.Log($"INetworkConnectionManager Received:{obj.ToString()}");
             broadcastReceived = true;
         }
     }
