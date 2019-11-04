@@ -50,18 +50,7 @@ namespace Microsoft.MixedReality.SpectatorView
             // messages even if it loses focus
             Application.runInBackground = true;
 
-            if (connectionManager != null)
-            {
-                DebugLog("Setting up connection manager");
-
-                // Start listening to incoming connections as well.
-                connectionManager.StartListening(port);
-            }
-            else
-            {
-                Debug.LogError("Connection manager not specified for Observer.");
-            }
-
+            StartListening(port);
             RegisterCommandHandler(SyncCommand, HandleSyncCommand);
             RegisterCommandHandler(CameraCommand, HandleCameraCommand);
             RegisterCommandHandler(PerfCommand, HandlePerfCommand);

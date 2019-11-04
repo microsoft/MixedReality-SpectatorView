@@ -57,22 +57,7 @@ namespace Microsoft.MixedReality.SpectatorView
         protected override void Start()
         {
             base.Start();
-
-            SetupNetworkConnectionManager();
-        }
-
-        protected virtual void SetupNetworkConnectionManager()
-        {
-            if (connectionManager != null)
-            {
-                DebugLog("Setting up connection manager");
-
-                connectionManager.StartListening(Port);
-            }
-            else
-            {
-                Debug.LogWarning("Connection Manager not defined for Broadcaster.");
-            }
+            StartListening(Port);
         }
 
         private void DebugLog(string message)
