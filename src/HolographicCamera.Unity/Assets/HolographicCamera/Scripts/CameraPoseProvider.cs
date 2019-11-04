@@ -7,6 +7,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.XR.WSA;
@@ -23,13 +24,13 @@ namespace Microsoft.MixedReality.SpectatorView
     /// <summary>
     /// Component that provides time-adjusted holographic poses to the compositor.
     /// </summary>
-    [RequireComponent(typeof(TCPConnectionManager))]
+    [RequireComponent(typeof(INetworkManager))]
     public class CameraPoseProvider : MonoBehaviour
     {
-        private TCPConnectionManager tcpConnectionManager;
+        private INetworkManager networkManager;
         private Stopwatch timestampStopwatch;
         private SpatialCoordinateSystemParticipant sharedCoordinateParticipant;
-        private SocketEndpoint currentConnection;
+        private INetworkConnection currentConnection;
 
 #if !UNITY_EDITOR && UNITY_WSA
         private Calendar timeConversionCalendar;
@@ -37,13 +38,13 @@ namespace Microsoft.MixedReality.SpectatorView
 
         private void Awake()
         {
-            tcpConnectionManager = GetComponent<TCPConnectionManager>();
-            tcpConnectionManager.OnConnected += TcpConnectionManager_OnConnected;
+            networkManager = GetComponent<INetworkManager>();
+            networkManager.Connected += NetworkManagerConnected;
         }
 
         private void OnDestroy()
         {
-            tcpConnectionManager.OnConnected -= TcpConnectionManager_OnConnected;
+            networkManager.Connected -= NetworkManagerConnected;
         }
 
         private void Update()
@@ -80,12 +81,12 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
-        private void TcpConnectionManager_OnConnected(SocketEndpoint endpoint)
+        private void NetworkManagerConnected(INetworkConnection connection)
         {
             // Restart the timeline at 0 each time we reconnect to the HoloLens
             timestampStopwatch = Stopwatch.StartNew();
             sharedCoordinateParticipant = null;
-            currentConnection = endpoint;
+            currentConnection = connection;
         }
 
         private void SendCameraPose(float timestamp, Vector3 cameraPosition, Quaternion cameraRotation)
@@ -98,7 +99,7 @@ namespace Microsoft.MixedReality.SpectatorView
                 message.Write(cameraPosition);
                 message.Write(cameraRotation);
 
-                tcpConnectionManager.Broadcast(stream.ToArray());
+                networkManager.Broadcast(stream.ToArray());
             }
         }
 
