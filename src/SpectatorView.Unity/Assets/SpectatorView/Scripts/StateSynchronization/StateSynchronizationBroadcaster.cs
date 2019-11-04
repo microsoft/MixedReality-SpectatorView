@@ -62,6 +62,9 @@ namespace Microsoft.MixedReality.SpectatorView
 
             UnregisterCommandHandler(StateSynchronizationObserver.SyncCommand, HandleSyncCommand);
             UnregisterCommandHandler(StateSynchronizationObserver.PerfDiagnosticModeEnabledCommand, HandlePerfMonitoringModeEnableRequest);
+            UnregisterCommandHandler(StateSynchronizationObserver.AssetBundleRequestInfoCommand, HandleAssetBundleRequestInfo);
+            UnregisterCommandHandler(StateSynchronizationObserver.AssetBundleRequestDownloadCommand, HandleAssetBundleRequestDownload);
+            UnregisterCommandHandler(StateSynchronizationObserver.AssetLoadCompletedCommand, HandleAssetLoadCompleted);
         }
 
         protected override void Start()

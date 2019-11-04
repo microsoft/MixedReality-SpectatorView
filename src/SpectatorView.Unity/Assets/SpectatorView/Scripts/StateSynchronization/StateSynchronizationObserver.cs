@@ -95,6 +95,13 @@ namespace Microsoft.MixedReality.SpectatorView
         {
             AssetCache.AssetCacheCountChanged -= AssetCacheCountChanged;
 
+            UnregisterCommandHandler(SyncCommand, HandleSyncCommand);
+            UnregisterCommandHandler(CameraCommand, HandleCameraCommand);
+            UnregisterCommandHandler(PerfCommand, HandlePerfCommand);
+            UnregisterCommandHandler(AssetBundleReportInfoCommand, HandleAssetBundleInfoCommand);
+            UnregisterCommandHandler(AssetBundleReportDownloadStartCommand, HandleAssetBundleDownloadStartCommand);
+            UnregisterCommandHandler(AssetBundleReportDownloadDataCommand, HandleAssetBundleDownloadDataCommand);
+
             base.OnDestroy();
         }
 
