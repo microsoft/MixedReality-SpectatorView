@@ -119,6 +119,14 @@ namespace Microsoft.MixedReality.SpectatorView
             {
                 StateSynchronizationBroadcaster.Instance.Connected += OnClientConnected;
                 StateSynchronizationBroadcaster.Instance.Disconnected += OnClientDisconnected;
+
+                if (StateSynchronizationBroadcaster.Instance.IsConnected)
+                {
+                    foreach (var connection in StateSynchronizationBroadcaster.Instance.Connections)
+                    {
+                        OnClientConnected(connection);
+                    }
+                }
             }
 
             StartCoroutine(RunEndOfFrameUpdates());

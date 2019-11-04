@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using System;
+using System.Collections.Generic;
 
 namespace Microsoft.MixedReality.SpectatorView
 {
@@ -23,9 +24,9 @@ namespace Microsoft.MixedReality.SpectatorView
         event Action<IncomingMessage> OnReceive;
 
         /// <summary>
-        /// Returns true if any server or client connections exist, otherwise false
+        /// Readonly list of all current connections
         /// </summary>
-        bool HasConnections { get; }
+        IReadOnlyList<INetworkConnection> Connections { get; }
 
         /// <summary>
         /// Returns true if a connection is being attempted, otherwise false

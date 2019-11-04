@@ -86,7 +86,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
         private void Update()
         {
-            if (!connectionManager.HasConnections)
+            if (connectionManager.Connections.Count == 0)
             {
                 return;
             }

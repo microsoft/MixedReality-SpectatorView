@@ -54,6 +54,20 @@ namespace Microsoft.MixedReality.SpectatorView
             networkManager.Connected += OnConnected;
             networkManager.Disconnected += OnDisconnected;
             networkManager.RegisterCommandHandler(DeviceInfoCommand, HandleDeviceInfoCommand);
+
+            if (networkManager.IsConnected)
+            {
+                var connections = networkManager.Connections;
+                if (connections.Count > 1)
+                {
+                    Debug.LogWarning("More than one connection was found, DeviceInfoObserver only expects one network connection");
+                }
+
+                foreach (var connection in connections)
+                {
+                    OnConnected(connection);
+                }
+            }
         }
 
         private void OnDestroy()

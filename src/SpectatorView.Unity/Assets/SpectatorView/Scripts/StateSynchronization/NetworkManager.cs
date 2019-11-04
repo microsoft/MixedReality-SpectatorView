@@ -2,7 +2,10 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using UnityEditor.MemoryProfiler;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.SpectatorView
@@ -24,11 +27,13 @@ namespace Microsoft.MixedReality.SpectatorView
         /// <inheritdoc />
         public string ConnectedIPAddress => currentConnection?.Address;
 
-        /// <inheritdoc />
-        public bool IsConnected => connectionManager != null && connectionManager.HasConnections;
+        public IReadOnlyList<INetworkConnection> Connections => connectionManager == null ? new List<INetworkConnection>() : connectionManager.Connections;
 
         /// <inheritdoc />
-        public bool IsConnecting => connectionManager != null && connectionManager.IsConnecting && !connectionManager.HasConnections;
+        public bool IsConnected => connectionManager != null && connectionManager.Connections.Count > 0;
+
+        /// <inheritdoc />
+        public bool IsConnecting => connectionManager != null && connectionManager.IsConnecting && connectionManager.Connections.Count == 0;
 
         /// <inheritdoc />
         public TimeSpan TimeSinceLastUpdate => TimeSpan.FromSeconds(Time.time - lastReceivedUpdate);
@@ -38,8 +43,11 @@ namespace Microsoft.MixedReality.SpectatorView
         /// </summary>
         protected abstract int RemotePort { get; }
 
-        /// <inheritdoc />
-        public void StartListening(int port)
+        /// <summary>
+        /// Starts a listening socket on the given port.
+        /// </summary>
+        /// <param name="port">The port to listen for new connections on.</param>
+        protected void StartListening(int port)
         {
             if (connectionManager != null)
             {

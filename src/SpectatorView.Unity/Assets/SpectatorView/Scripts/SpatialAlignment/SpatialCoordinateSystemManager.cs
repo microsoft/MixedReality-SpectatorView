@@ -453,6 +453,15 @@ namespace Microsoft.MixedReality.SpectatorView
             networkManager.RegisterCommandHandler(CoordinateStateMessageHeader, OnCoordinateStateReceived);
             networkManager.RegisterCommandHandler(SupportedLocalizersMessageHeader, OnSupportedLocalizersMessageReceived);
             networkManager.RegisterCommandHandler(SpatialCoordinateSystemParticipant.LocalizationDataExchangeCommand, OnParticipantDataReceived);
+            
+            if (networkManager.IsConnected)
+            {
+                var connections = networkManager.Connections;
+                foreach (var connection in connections)
+                {
+                    OnConnected(connection);
+                }
+            }
         }
 
         private void UnregisterEvents(INetworkManager networkManager)

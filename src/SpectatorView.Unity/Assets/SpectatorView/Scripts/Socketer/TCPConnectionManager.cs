@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.SpectatorView
@@ -37,6 +38,29 @@ namespace Microsoft.MixedReality.SpectatorView
         private SocketerClient client;
 
         private SocketerClient server;
+
+        /// <inheritdoc />
+        public IReadOnlyList<INetworkConnection> Connections
+        {
+            get
+            {
+                List<INetworkConnection> connections = new List<INetworkConnection>();
+                if (clientConnection != null)
+                {
+                    connections.Add(clientConnection);
+                }
+
+                if (serverConnections.Count > 0)
+                {
+                    foreach(var connection in serverConnections.Values)
+                    {
+                        connections.Add(connection);
+                    }
+                }
+
+                return connections;
+            }
+        }
 
         /// <inheritdoc />
         public bool HasConnections => (serverConnections.Count > 0 || clientConnection != null);

@@ -87,7 +87,7 @@ namespace Microsoft.MixedReality.SpectatorView
         {
             get
             {
-                return connectionManager != null && connectionManager.HasConnections;
+                return connectionManager != null && connectionManager.Connections.Count > 0;
             }
         }
 

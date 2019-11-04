@@ -106,8 +106,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
         public void SetPerformanceMonitoringMode(bool enabled)
         {
-            if (connectionManager != null &&
-                connectionManager.HasConnections)
+            if (IsConnected)
             {
                 byte[] message;
                 using (MemoryStream stream = new MemoryStream())
@@ -129,8 +128,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
         private void CheckAndSendHeartbeat()
         {
-            if (connectionManager != null &&
-                connectionManager.HasConnections)
+            if (IsConnected)
             {
                 timeSinceLastHeartbeat += Time.deltaTime;
                 if (timeSinceLastHeartbeat > heartbeatTimeInterval)
