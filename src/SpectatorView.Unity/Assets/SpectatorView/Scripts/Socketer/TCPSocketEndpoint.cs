@@ -15,9 +15,7 @@ namespace Microsoft.MixedReality.SpectatorView
             Disconnected
         }
 
-        /// <summary>
-        /// IP address for the socket endpoint
-        /// </summary>
+        /// <inheritdoc />
         public string Address { get; private set; }
 
         private readonly SocketerClient socketerClient;
@@ -28,17 +26,13 @@ namespace Microsoft.MixedReality.SpectatorView
 
         private ConnectionState State { get; set; } = ConnectionState.Connected;
 
-        /// <summary>
-        /// Returns true if the socket endpoint is connected, otherwise false
-        /// </summary>
+        /// <inheritdoc />
         public bool IsConnected
         {
             get { return State == ConnectionState.Connected; }
         }
 
-        /// <summary>
-        /// Call to set the socket endpoint state to disconnected
-        /// </summary>
+        /// <inheritdoc />
         public void Disconnect()
         {
             if (State != ConnectionState.Disconnected)
@@ -48,10 +42,7 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
-        /// <summary>
-        /// Checks whether the associated client is still active. If not, the client is disconnected.
-        /// </summary>
-        /// <param name="currentTime">Time to use relative to last active timestamp to determine whether to disconnect</param>
+        /// <inheritdoc />
         public void CheckConnectionTimeout(DateTime currentTime)
         {
             if (timeoutInterval != TimeSpan.Zero && currentTime - lastActiveTimestamp > timeoutInterval)
@@ -69,19 +60,14 @@ namespace Microsoft.MixedReality.SpectatorView
             this.lastActiveTimestamp = DateTime.UtcNow;
         }
 
-        /// <summary>
-        /// Call to start enqueuing incoming messages
-        /// </summary>
-        /// <param name="incomingQueue">Queue used for enqueuing messages</param>
+        /// <inheritdoc />
         public void QueueIncomingMessages(ConcurrentQueue<IncomingMessage> incomingQueue)
         {
             this.incomingQueue = incomingQueue;
             socketerClient.Message += Socket_Message;
         }
 
-        /// <summary>
-        /// Call to stop enqueuing incoming messages
-        /// </summary>
+        /// <inheritdoc />
         public void StopIncomingMessageQueue()
         {
             socketerClient.Message -= Socket_Message;
@@ -96,10 +82,7 @@ namespace Microsoft.MixedReality.SpectatorView
             socketerClient.StopConnectionAttempts();
         }
 
-        /// <summary>
-        /// Call to send data to this endpoint
-        /// </summary>
-        /// <param name="data">data to send</param>
+        /// <inheritdoc />
         public void Send(byte[] data)
         {
             if (!IsConnected)

@@ -19,17 +19,13 @@ namespace Microsoft.MixedReality.SpectatorView
         [SerializeField]
         public bool AttemptReconnectWhenClient = false;
 
-        /// <summary>
-        /// Called when a client or server connection is established and the connection manager is using the TCP protocol.
-        /// </summary>
+        /// <inheritdoc />
         public event Action<INetworkConnection> OnConnected;
-        /// <summary>
-        /// Called when a client or server connection is disconnected and the connection manager is using the TCP protocol.
-        /// </summary>
+
+        /// <inheritdoc />
         public event Action<INetworkConnection> OnDisconnected;
-        /// <summary>
-        /// Called when a data payload is received
-        /// </summary>
+
+        /// <inheritdoc />
         public event Action<IncomingMessage> OnReceive;
 
         private readonly TimeSpan timeoutInterval = TimeSpan.Zero;
@@ -42,25 +38,16 @@ namespace Microsoft.MixedReality.SpectatorView
 
         private SocketerClient server;
 
-        /// <summary>
-        /// Returns true if any server or client connections exist, otherwise false
-        /// </summary>
+        /// <inheritdoc />
         public bool HasConnections => (serverConnections.Count > 0 || clientConnection != null);
 
-        /// <summary>
-        /// Returns true if a connection is being attempted, otherwise false
-        /// </summary>
+        /// <inheritdoc />
         public bool IsConnecting => client != null;
 
-        /// <summary>
-        /// Returns the number of bytes currently queued for the socketer server
-        /// </summary>
+        /// <inheritdoc />
         public int OutputBytesQueued => SocketerClient.OutputQueueLength;
 
-        /// <summary>
-        /// Call to begin acting as a server listening on the provided port
-        /// </summary>
-        /// <param name="port">port to listen on</param>
+        /// <inheritdoc />
         public void StartListening(int port)
         {
             if (server == null)
@@ -79,9 +66,7 @@ namespace Microsoft.MixedReality.SpectatorView
             return newServer;
         }
 
-        /// <summary>
-        /// Call to stop acting as a server
-        /// </summary>
+        /// <inheritdoc />
         public void StopListening()
         {
             DoStopListening(ref server);
@@ -97,11 +82,7 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
-        /// <summary>
-        /// Call to start acting as a client connected to the provided server and port
-        /// </summary>
-        /// <param name="serverAddress">server to connect to</param>
-        /// <param name="port">port to use for communication</param>
+        /// <inheritdoc />
         public void ConnectTo(string serverAddress, int port)
         {
             Debug.LogFormat($"Connecting to {serverAddress}:{port}");
@@ -190,10 +171,7 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
-        /// <summary>
-        /// Call to broadcast the provided data to all connected clients/servers
-        /// </summary>
-        /// <param name="data">data to send</param>
+        /// <inheritdoc />
         public void Broadcast(byte[] data)
         {
             foreach (TCPSocketEndpoint endpoint in serverConnections.Values)
@@ -207,9 +185,7 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
-        /// <summary>
-        /// Disconnect all connections
-        /// </summary>
+        /// <inheritdoc />
         public void DisconnectAll()
         {
             // Make sure the client stops before attempting to disconnect
