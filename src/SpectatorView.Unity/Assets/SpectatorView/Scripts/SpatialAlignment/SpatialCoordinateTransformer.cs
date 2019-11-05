@@ -75,7 +75,7 @@ namespace Microsoft.MixedReality.SpectatorView
             DebugLog($"Participant disconnected: {participant?.NetworkConnection?.Address ?? "IPAddress unknown"}");
             if (currentParticipant == null)
             {
-                Debug.LogError("Unexpected that no participant was registered when a participant disconnected");
+                DebugLog("No participant was registered when a participant disconnected");
             }
             currentParticipant = null;
         }
@@ -85,7 +85,7 @@ namespace Microsoft.MixedReality.SpectatorView
             DebugLog($"Participant connected: {participant?.NetworkConnection?.Address ?? "IPAddress unknown"}");
             if (currentParticipant != null)
             {
-                Debug.LogError("Unexpected existing participant when another participant connected");
+                DebugLog("Participant was already registered when new participant connected");
             }
             currentParticipant = participant;
         }

@@ -24,6 +24,11 @@ namespace Microsoft.MixedReality.SpectatorView
         Task<ISpatialCoordinate> LocalizeAsync(CancellationToken cancellationToken);
 
         /// <summary>
+        /// Call to cancel the localization sessions
+        /// </summary>
+        void Cancel();
+
+        /// <summary>
         /// Call to provide network information
         /// </summary>
         /// <param name="reader">reader containing a network payload</param>

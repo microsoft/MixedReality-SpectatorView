@@ -40,9 +40,10 @@ namespace Microsoft.MixedReality.SpectatorView
             return true;
         }
 
-        private class LocalizationSession : DisposableBase, ISpatialLocalizationSession
+        private class LocalizationSession : SpatialLocalizationSession
         {
-            public IPeerConnection Peer => peerConnection;
+            /// <inheritdoc />
+            public override IPeerConnection Peer => peerConnection;
 
             private readonly MarkerVisualDetectorSpatialLocalizer localizer;
             private readonly MarkerVisualDetectorLocalizationSettings settings;
@@ -54,7 +55,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
             private string coordinateId = string.Empty;
 
-            public LocalizationSession(MarkerVisualDetectorSpatialLocalizer localizer, MarkerVisualDetectorLocalizationSettings settings, IPeerConnection peerConnection, bool debugLogging = false)
+            public LocalizationSession(MarkerVisualDetectorSpatialLocalizer localizer, MarkerVisualDetectorLocalizationSettings settings, IPeerConnection peerConnection, bool debugLogging = false) : base()
             {
                 DebugLog("Session created");
                 this.localizer = localizer;
@@ -70,41 +71,51 @@ namespace Microsoft.MixedReality.SpectatorView
             /// <inheritdoc />
             protected override void OnManagedDispose()
             {
-                coordinateService.Dispose();
+                base.OnManagedDispose();
                 discoveryCTS.Dispose();
+                coordinateService.Dispose();
             }
 
             /// <inheritdoc />
-            public async Task<ISpatialCoordinate> LocalizeAsync(CancellationToken cancellationToken)
+            public override async Task<ISpatialCoordinate> LocalizeAsync(CancellationToken cancellationToken)
             {
-                DebugLog($"Waiting for marker visual, CanBeCanceled:{cancellationToken.CanBeCanceled}, IsCancellationRequested:{cancellationToken.IsCancellationRequested}");
-                await Task.WhenAny(coordinateAssigned.Task, Task.Delay(-1, cancellationToken));
-                if (string.IsNullOrEmpty(coordinateId))
+                if (!defaultCancellationToken.CanBeCanceled)
                 {
-                    DebugLog("Failed to assign coordinate id");
+                    Debug.LogError("Session is invalid. No localization performed.");
                     return null;
                 }
 
-                ISpatialCoordinate coordinate = null;
-                using (var cts = CancellationTokenSource.CreateLinkedTokenSource(discoveryCTS.Token, cancellationToken))
+                DebugLog($"Waiting for marker visual, CanBeCanceled:{cancellationToken.CanBeCanceled}, IsCancellationRequested:{cancellationToken.IsCancellationRequested}");
+                using (var cancellableCTS = CancellationTokenSource.CreateLinkedTokenSource(defaultCancellationToken, cancellationToken))
                 {
-                    DebugLog($"Attempting to discover coordinate: {coordinateId}, CanBeCanceled:{cts.Token.CanBeCanceled}, IsCancellationRequested:{cts.Token.IsCancellationRequested}");
-                    if (await coordinateService.TryDiscoverCoordinatesAsync(cts.Token, new string[] { coordinateId.ToString() }))
+                    await Task.WhenAny(coordinateAssigned.Task, Task.Delay(-1, cancellableCTS.Token));
+                    if (string.IsNullOrEmpty(coordinateId))
                     {
-                        DebugLog($"Coordinate discovery completed: {coordinateId}");
-                        if (!coordinateService.TryGetKnownCoordinate(coordinateId, out coordinate))
+                        DebugLog("Failed to assign coordinate id");
+                        return null;
+                    }
+
+                    ISpatialCoordinate coordinate = null;
+                    using (var cts = CancellationTokenSource.CreateLinkedTokenSource(discoveryCTS.Token, cancellableCTS.Token))
+                    {
+                        DebugLog($"Attempting to discover coordinate: {coordinateId}, CanBeCanceled:{cts.Token.CanBeCanceled}, IsCancellationRequested:{cts.Token.IsCancellationRequested}");
+                        if (await coordinateService.TryDiscoverCoordinatesAsync(cts.Token, new string[] { coordinateId.ToString() }))
                         {
-                            DebugLog("Failed to find spatial coordinate although discovery completed.");
+                            DebugLog($"Coordinate discovery completed: {coordinateId}");
+                            if (!coordinateService.TryGetKnownCoordinate(coordinateId, out coordinate))
+                            {
+                                DebugLog("Failed to find spatial coordinate although discovery completed.");
+                            }
+                            else
+                            {
+                                SendCoordinateFound(coordinate.Id);
+                                return coordinate;
+                            }
                         }
                         else
                         {
-                            SendCoordinateFound(coordinate.Id);
-                            return coordinate;
+                            DebugLog("TryDiscoverCoordinatesAsync failed.");
                         }
-                    }
-                    else
-                    {
-                        DebugLog("TryDiscoverCoordinatesAsync failed.");
                     }
                 }
 
@@ -112,7 +123,7 @@ namespace Microsoft.MixedReality.SpectatorView
             }
 
             /// <inheritdoc />
-            public void OnDataReceived(BinaryReader reader)
+            public override void OnDataReceived(BinaryReader reader)
             {
                 string command = reader.ReadString();
                 DebugLog($"Received command: {command}");
