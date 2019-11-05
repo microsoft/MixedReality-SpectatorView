@@ -59,7 +59,9 @@ namespace Microsoft.MixedReality.SpectatorView
 
         protected override void SendCompleteChanges(IEnumerable<INetworkConnection> connections)
         {
-            SendDeltaChanges(endpoints, TextMeshProBroadcasterChangeType.FontAndPlacement | TextMeshProBroadcasterChangeType.Text);
+            previousText = this.textMesh.text;
+            previousProperties = new TextMeshProperties(textMesh);
+            SendDeltaChanges(connections, TextMeshProBroadcasterChangeType.FontAndPlacement | TextMeshProBroadcasterChangeType.Text);
         }
 
         protected override void SendDeltaChanges(IEnumerable<INetworkConnection> connections, TextMeshProBroadcasterChangeType changeFlags)
@@ -73,7 +75,7 @@ namespace Microsoft.MixedReality.SpectatorView
                 WriteText(changeFlags, message);
 
                 message.Flush();
-                StateSynchronizationSceneManager.Instance.Send(endpoints, memoryStream.ToArray());
+                StateSynchronizationSceneManager.Instance.Send(connections, memoryStream.ToArray());
             }
         }
 
