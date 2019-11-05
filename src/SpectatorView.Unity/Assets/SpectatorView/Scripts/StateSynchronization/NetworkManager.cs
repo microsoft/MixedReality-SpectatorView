@@ -4,8 +4,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using UnityEditor.MemoryProfiler;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.SpectatorView
