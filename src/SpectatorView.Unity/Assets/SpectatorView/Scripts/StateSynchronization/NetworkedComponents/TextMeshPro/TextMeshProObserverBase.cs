@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System.Diagnostics;
 using System.IO;
 
 #if STATESYNC_TEXTMESHPRO
@@ -13,6 +14,8 @@ namespace Microsoft.MixedReality.SpectatorView
 {
     internal abstract class TextMeshProObserverBase : ComponentObserver
     {
+        private bool needsUpdate = false;
+
 #if STATESYNC_TEXTMESHPRO
         protected TMP_Text TextMeshObserver
         {
@@ -119,8 +122,19 @@ namespace Microsoft.MixedReality.SpectatorView
                 TextMeshObserver.verticalMapping = (TextureMappingOptions)message.ReadByte();
                 TextMeshObserver.wordWrappingRatios = message.ReadSingle();
                 TextMeshObserver.wordSpacing = message.ReadSingle();
+
+                needsUpdate = true;
             }
 #endif
+        }
+
+        protected virtual void Update()
+        {
+            if (needsUpdate)
+            {
+                TextMeshObserver.ForceMeshUpdate();
+                needsUpdate = false;
+            }
         }
     }
 }
