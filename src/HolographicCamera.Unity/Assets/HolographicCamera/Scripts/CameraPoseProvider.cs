@@ -40,6 +40,20 @@ namespace Microsoft.MixedReality.SpectatorView
         {
             networkManager = GetComponent<INetworkManager>();
             networkManager.Connected += NetworkManagerConnected;
+
+            if (networkManager.IsConnected)
+            {
+                var connections = networkManager.Connections;
+                if (connections.Count > 1)
+                {
+                    Debug.LogWarning("More than one connection was found, CameraPoseProvider only expects one network connection");
+                }
+
+                foreach (var connection in connections)
+                {
+                    NetworkManagerConnected(connection);
+                }
+            }
         }
 
         private void OnDestroy()

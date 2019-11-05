@@ -27,6 +27,10 @@ namespace Microsoft.MixedReality.SpectatorView
         {
             networkManager = GetComponent<INetworkManager>();
             networkManager.Connected += NetworkManagerConnected;
+            if (networkManager.IsConnected)
+            {
+                SendCalibrationDataAsync();
+            }
         }
 
         private void OnDestroy()
