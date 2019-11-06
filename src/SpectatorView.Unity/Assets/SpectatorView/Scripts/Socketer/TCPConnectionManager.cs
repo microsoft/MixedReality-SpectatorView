@@ -30,11 +30,11 @@ namespace Microsoft.MixedReality.SpectatorView
         public event Action<IncomingMessage> OnReceive;
 
         private readonly TimeSpan timeoutInterval = TimeSpan.Zero;
-        private readonly ConcurrentQueue<TCPSocketEndpoint> newConnections = new ConcurrentQueue<TCPSocketEndpoint>();
-        private readonly ConcurrentQueue<TCPSocketEndpoint> oldConnections = new ConcurrentQueue<TCPSocketEndpoint>();
-        private readonly ConcurrentDictionary<int, TCPSocketEndpoint> serverConnections = new ConcurrentDictionary<int, TCPSocketEndpoint>();
+        private readonly ConcurrentQueue<TCPNetworkConnection> newConnections = new ConcurrentQueue<TCPNetworkConnection>();
+        private readonly ConcurrentQueue<TCPNetworkConnection> oldConnections = new ConcurrentQueue<TCPNetworkConnection>();
+        private readonly ConcurrentDictionary<int, TCPNetworkConnection> serverConnections = new ConcurrentDictionary<int, TCPNetworkConnection>();
         private readonly ConcurrentQueue<IncomingMessage> inputMessageQueue = new ConcurrentQueue<IncomingMessage>();
-        private TCPSocketEndpoint clientConnection;
+        private TCPNetworkConnection clientConnection;
         private SocketerClient client;
 
         private SocketerClient server;
@@ -50,7 +50,7 @@ namespace Microsoft.MixedReality.SpectatorView
                     connections.Add(clientConnection);
                 }
 
-                if (serverConnections.Count > 0)
+                if (!serverConnections.IsEmpty)
                 {
                     foreach(var connection in serverConnections.Values)
                     {
@@ -63,7 +63,7 @@ namespace Microsoft.MixedReality.SpectatorView
         }
 
         /// <inheritdoc />
-        public bool HasConnections => (serverConnections.Count > 0 || clientConnection != null);
+        public bool HasConnections => (!serverConnections.IsEmpty || clientConnection != null);
 
         /// <inheritdoc />
         public bool IsConnecting => client != null;
@@ -137,36 +137,36 @@ namespace Microsoft.MixedReality.SpectatorView
         private void OnServerConnected(SocketerClient client, int sourceId, string clientAddress)
         {
             Debug.Log("Server connected to " + clientAddress);
-            TCPSocketEndpoint socketEndpoint = new TCPSocketEndpoint(client, timeoutInterval, clientAddress, sourceId);
-            serverConnections[sourceId] = socketEndpoint;
-            socketEndpoint.QueueIncomingMessages(inputMessageQueue);
-            newConnections.Enqueue(socketEndpoint);
+            TCPNetworkConnection connection = new TCPNetworkConnection(client, timeoutInterval, clientAddress, sourceId);
+            serverConnections[sourceId] = connection;
+            connection.QueueIncomingMessages(inputMessageQueue);
+            newConnections.Enqueue(connection);
         }
 
         protected virtual void OnServerDisconnected(SocketerClient client, int sourceId, string clientAddress)
         {
-            TCPSocketEndpoint socketEndpoint;
-            if (serverConnections.TryRemove(sourceId, out socketEndpoint))
+            TCPNetworkConnection connection;
+            if (serverConnections.TryRemove(sourceId, out connection))
             {
                 Debug.Log("Server disconnected from " + clientAddress);
-                socketEndpoint.StopIncomingMessageQueue();
-                oldConnections.Enqueue(socketEndpoint);
+                connection.StopIncomingMessageQueue();
+                oldConnections.Enqueue(connection);
             }
         }
 
         private void OnClientConnected(SocketerClient client, int sourceId, string hostAddress)
         {
             Debug.Log("Client connected to " + hostAddress);
-            TCPSocketEndpoint socketEndpoint = new TCPSocketEndpoint(client, timeoutInterval, hostAddress, sourceId);
+            TCPNetworkConnection connection = new TCPNetworkConnection(client, timeoutInterval, hostAddress, sourceId);
 
             if (!AttemptReconnectWhenClient)
             {
-                socketEndpoint.StopConnectionAttempts();
+                connection.StopConnectionAttempts();
             }
 
-            clientConnection = socketEndpoint;
-            socketEndpoint.QueueIncomingMessages(inputMessageQueue);
-            newConnections.Enqueue(socketEndpoint);
+            clientConnection = connection;
+            connection.QueueIncomingMessages(inputMessageQueue);
+            newConnections.Enqueue(connection);
         }
 
         private void OnClientDisconnected(SocketerClient client, int sourceId, string hostAddress)
@@ -202,12 +202,12 @@ namespace Microsoft.MixedReality.SpectatorView
                 clientConnection.CheckConnectionTimeout(utcNow);
             }
 
-            foreach (INetworkConnection endpoint in serverConnections.Values)
+            foreach (INetworkConnection serverConnection in serverConnections.Values)
             {
-                endpoint.CheckConnectionTimeout(utcNow);
+                serverConnection.CheckConnectionTimeout(utcNow);
             }
 
-            TCPSocketEndpoint connection;
+            TCPNetworkConnection connection;
             while (newConnections.TryDequeue(out connection))
             {
                 OnConnected?.Invoke(connection);
@@ -230,9 +230,9 @@ namespace Microsoft.MixedReality.SpectatorView
         /// <inheritdoc />
         public void Broadcast(byte[] data)
         {
-            foreach (TCPSocketEndpoint endpoint in serverConnections.Values)
+            foreach (TCPNetworkConnection connection in serverConnections.Values)
             {
-                endpoint.Send(data);
+                connection.Send(data);
             }
 
             if (clientConnection != null)
@@ -259,9 +259,9 @@ namespace Microsoft.MixedReality.SpectatorView
                 clientConnection = null;
             }
 
-            foreach (TCPSocketEndpoint endpoint in serverConnections.Values)
+            foreach (TCPNetworkConnection connection in serverConnections.Values)
             {
-                endpoint.Disconnect();
+                connection.Disconnect();
             }
             serverConnections.Clear();
         }
