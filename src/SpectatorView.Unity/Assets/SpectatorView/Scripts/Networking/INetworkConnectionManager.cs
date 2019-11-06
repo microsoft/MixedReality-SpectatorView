@@ -24,6 +24,11 @@ namespace Microsoft.MixedReality.SpectatorView
         event Action<IncomingMessage> OnReceive;
 
         /// <summary>
+        ///  Returns true if connections exist, otherwise false
+        /// </summary>
+        bool HasConnections { get; }
+
+        /// <summary>
         /// Readonly list of all current connections
         /// </summary>
         IReadOnlyList<INetworkConnection> Connections { get; }

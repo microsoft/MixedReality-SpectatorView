@@ -89,8 +89,7 @@ namespace Microsoft.MixedReality.SpectatorView
         {
             foreach (INetworkConnection connection in connections)
             {
-                PerConnectionInstantiationState state;
-                if (!perConnectionInstantiationState.TryGetValue(connection, out state))
+                if (!perConnectionInstantiationState.ContainsKey(connection))
                 {
                     perConnectionInstantiationState.Add(connection, new PerConnectionInstantiationState
                     {

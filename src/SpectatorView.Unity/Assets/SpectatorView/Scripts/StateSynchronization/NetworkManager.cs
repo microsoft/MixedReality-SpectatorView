@@ -17,19 +17,20 @@ namespace Microsoft.MixedReality.SpectatorView
         protected INetworkConnectionManager connectionManager = null;
 
         private float lastReceivedUpdate;
-
         private INetworkConnection currentConnection;
+
+        private static readonly List<INetworkConnection> emptyConnectionList = new List<INetworkConnection>();
 
         /// <inheritdoc />
         public string ConnectedIPAddress => currentConnection?.Address;
 
-        public IReadOnlyList<INetworkConnection> Connections => connectionManager == null ? new List<INetworkConnection>() : connectionManager.Connections;
+        public IReadOnlyList<INetworkConnection> Connections => connectionManager == null ? emptyConnectionList : connectionManager.Connections;
 
         /// <inheritdoc />
-        public bool IsConnected => connectionManager != null && connectionManager.Connections.Count > 0;
+        public bool IsConnected => connectionManager != null && connectionManager.HasConnections;
 
         /// <inheritdoc />
-        public bool IsConnecting => connectionManager != null && connectionManager.IsConnecting && connectionManager.Connections.Count == 0;
+        public bool IsConnecting => connectionManager != null && connectionManager.IsConnecting && !connectionManager.HasConnections;
 
         /// <inheritdoc />
         public TimeSpan TimeSinceLastUpdate => TimeSpan.FromSeconds(Time.time - lastReceivedUpdate);
@@ -123,11 +124,12 @@ namespace Microsoft.MixedReality.SpectatorView
                 connectionManager.OnConnected -= OnConnected;
                 connectionManager.OnDisconnected -= OnDisconnected;
                 connectionManager.OnReceive -= OnReceive;
+
+                connectionManager = null;
             }
 
             if (connectionManagerGameObject != null)
             {
-                connectionManager = null;
                 Destroy(connectionManagerGameObject);
             }
 
