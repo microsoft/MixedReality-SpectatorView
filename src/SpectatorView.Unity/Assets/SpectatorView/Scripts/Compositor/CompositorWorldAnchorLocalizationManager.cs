@@ -84,7 +84,7 @@ namespace Microsoft.MixedReality.SpectatorView
             }
             else
             {
-                Debug.LogError($"Remote localization failed on device {participant.NetworkConnection.Address} for spatial localizer {spatialLocalizerId}");
+                Debug.LogError($"Remote localization failed on device {participant.NetworkConnection} for spatial localizer {spatialLocalizerId}");
             }
         }
     }

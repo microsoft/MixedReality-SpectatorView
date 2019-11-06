@@ -15,13 +15,11 @@ namespace Microsoft.MixedReality.SpectatorView
             Disconnected
         }
 
-        /// <inheritdoc />
-        public string Address { get; private set; }
-
         private readonly SocketerClient socketerClient;
         private readonly int sourceId;
         private ConcurrentQueue<IncomingMessage> incomingQueue;
         private DateTime lastActiveTimestamp;
+        private string address;
 
         private ConnectionState State { get; set; } = ConnectionState.Connected;
 
@@ -45,7 +43,7 @@ namespace Microsoft.MixedReality.SpectatorView
         {
             this.socketerClient = socketerClient;
             this.sourceId = sourceId;
-            this.Address = address;
+            this.address = address;
             this.lastActiveTimestamp = DateTime.UtcNow;
         }
 
@@ -88,6 +86,12 @@ namespace Microsoft.MixedReality.SpectatorView
             {
                 socketerClient.Disconnect(sourceId);
             }
+        }
+
+        /// <inheritdoc />
+        public override string ToString()
+        {
+            return address;
         }
 
         private void Socket_Message(SocketerClient arg1, MessageEvent e)

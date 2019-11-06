@@ -26,7 +26,7 @@ namespace Microsoft.MixedReality.SpectatorView
         private HolographicCameraBroadcaster holographicCameraBroadcaster = null;
 
         private bool initialized = false;
-        private string editorAddress = string.Empty;
+        private INetworkConnection editorConnection = null;
         private bool updateData = false;
         private HeadsetCalibrationDataRequest request = null;
 
@@ -66,7 +66,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
         private void OnDisconnect(INetworkConnection connection)
         {
-            if (connection.Address == editorAddress)
+            if (connection == editorConnection)
             {
                 DisableChildren();
             }
@@ -74,7 +74,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
         private void CalibrationDataRequested(INetworkConnection connection, string command, BinaryReader reader, int remainingDataSize)
         {
-            editorAddress = connection.Address;
+            editorConnection = connection;
             EnableChildren();
 
             if (HeadsetCalibrationDataRequest.TryDeserialize(reader, out request))

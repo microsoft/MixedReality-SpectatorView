@@ -75,7 +75,7 @@ namespace Microsoft.MixedReality.SpectatorView
         {
             base.OnConnected(connection);
 
-            DebugLog($"Observer Connected to connection: {connection.Address}");
+            DebugLog($"Observer Connected to connection: {connection.ToString()}");
 
             if (StateSynchronizationSceneManager.IsInitialized)
             {

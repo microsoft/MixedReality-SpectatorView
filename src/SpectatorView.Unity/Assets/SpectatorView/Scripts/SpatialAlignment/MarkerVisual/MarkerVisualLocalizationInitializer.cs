@@ -69,7 +69,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
         private async Task<bool> TryRunLocalizationImplAsync(SpatialCoordinateSystemParticipant participant)
         {
-            DebugLog($"Marker-based localization started for: {participant?.NetworkConnection?.Address ?? "IPAddress unknown"} with marker type {markerType}");
+            DebugLog($"Marker-based localization started for: {participant?.NetworkConnection?.ToString() ?? "Unknown NetworkConnection"} with marker type {markerType}");
 
             // Note: We need to send the remote localization message prior to starting marker visual localization. The MarkerVisualSpatialLocalizer won't return until localization has completed.
             Task<bool> remoteTask = SpatialCoordinateSystemManager.Instance.RunRemoteLocalizationAsync(participant.NetworkConnection, PeerSpatialLocalizerId, new MarkerVisualDetectorLocalizationSettings());

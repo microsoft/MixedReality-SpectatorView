@@ -70,13 +70,13 @@ namespace Microsoft.MixedReality.SpectatorView
 
         protected override void OnConnected(INetworkConnection connection)
         {
-            DebugLog($"Broadcaster received connection from {connection.Address}.");
+            DebugLog($"Broadcaster received connection from {connection.ToString()}.");
             base.OnConnected(connection);
         }
 
         protected override void OnDisconnected(INetworkConnection connection)
         {
-            DebugLog($"Broadcaster received disconnect from {connection.Address}"); ;
+            DebugLog($"Broadcaster received disconnect from {connection.ToString()}"); ;
             base.OnDisconnected(connection);
         }
 

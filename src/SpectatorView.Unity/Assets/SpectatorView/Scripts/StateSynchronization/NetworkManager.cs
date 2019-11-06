@@ -20,7 +20,7 @@ namespace Microsoft.MixedReality.SpectatorView
         private INetworkConnection currentConnection;
 
         /// <inheritdoc />
-        public string ConnectedIPAddress => currentConnection?.Address;
+        public string ConnectedIPAddress => currentConnection?.ToString();
 
         /// <inheritdoc />
         public IReadOnlyList<INetworkConnection> Connections => connectionManager == null ? Array.Empty<INetworkConnection>() : connectionManager.Connections;

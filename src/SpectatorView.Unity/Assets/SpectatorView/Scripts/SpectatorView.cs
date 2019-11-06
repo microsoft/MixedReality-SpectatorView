@@ -451,7 +451,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
         private async Task<bool> TryRunLocalizationForParticipantAsync(SpatialCoordinateSystemParticipant participant)
         {
-            DebugLog($"Waiting for the set of supported localizers from connected participant {participant.NetworkConnection.Address}");
+            DebugLog($"Waiting for the set of supported localizers from connected participant {participant.NetworkConnection.ToString()}");
 
             if (!peerSupportedLocalizers.ContainsKey(participant))
             {
@@ -514,11 +514,11 @@ namespace Microsoft.MixedReality.SpectatorView
                     bool result = await initializers[i].TryRunLocalizationAsync(participant);
                     if (!result)
                     {
-                        Debug.LogError($"Failed to localize experience with participant: {participant.NetworkConnection.Address}");
+                        Debug.LogError($"Failed to localize experience with participant: {participant.NetworkConnection.ToString()}");
                     }
                     else
                     {
-                        DebugLog($"Succeeded in localizing experience with participant: {participant.NetworkConnection.Address}");
+                        DebugLog($"Succeeded in localizing experience with participant: {participant.NetworkConnection.ToString()}");
                     }
 
                     return result;

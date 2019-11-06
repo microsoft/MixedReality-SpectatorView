@@ -12,11 +12,6 @@ namespace Microsoft.MixedReality.SpectatorView
     public interface INetworkConnection
     {
         /// <summary>
-        /// IP address for the connected peer
-        /// </summary>
-        string Address { get; }
-
-        /// <summary>
         /// Returns true if the network connection is connected, otherwise false
         /// </summary>
         bool IsConnected { get; }
@@ -42,5 +37,10 @@ namespace Microsoft.MixedReality.SpectatorView
         /// </summary>
         /// <param name="data">data to send</param>
         void Send(byte[] data);
+
+        /// <summary>
+        /// Returns a string that can be used to identify the network connection in UI/for logging.
+        /// </summary>
+        string ToString();
     }
 }
