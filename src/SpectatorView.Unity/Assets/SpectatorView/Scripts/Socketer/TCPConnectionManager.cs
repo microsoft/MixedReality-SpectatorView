@@ -138,7 +138,12 @@ namespace Microsoft.MixedReality.SpectatorView
             Debug.Log("Server connected to " + clientAddress);
             TCPNetworkConnection connection = new TCPNetworkConnection(client, clientAddress, sourceId);
             serverConnections[sourceId] = connection;
-            connection.QueueIncomingMessages(inputMessageQueue);
+
+            if (!connection.TrySubscribeToIncomingMessages(inputMessageQueue))
+            {
+                Debug.LogError($"{nameof(TCPConnectionManager)} Failed to subscribe to incoming messages for NetworkConnection: {connection.ToString()}");
+            }
+
             newConnections.Enqueue(connection);
         }
 
@@ -148,7 +153,7 @@ namespace Microsoft.MixedReality.SpectatorView
             if (serverConnections.TryRemove(sourceId, out connection))
             {
                 Debug.Log("Server disconnected from " + clientAddress);
-                connection.StopIncomingMessageQueue();
+                connection.UnsubscribeToIncomingMessages(inputMessageQueue);
                 oldConnections.Enqueue(connection);
             }
         }
@@ -164,7 +169,12 @@ namespace Microsoft.MixedReality.SpectatorView
             }
 
             clientConnection = connection;
-            connection.QueueIncomingMessages(inputMessageQueue);
+
+            if (!connection.TrySubscribeToIncomingMessages(inputMessageQueue))
+            {
+                Debug.LogError($"{nameof(TCPConnectionManager)} Failed to subscribe to incoming messages for NetworkConnection: {connection.ToString()}");
+            }
+
             newConnections.Enqueue(connection);
         }
 
@@ -173,7 +183,7 @@ namespace Microsoft.MixedReality.SpectatorView
             if (clientConnection != null)
             {
                 Debug.Log("Client disconnected");
-                clientConnection.StopIncomingMessageQueue();
+                clientConnection.UnsubscribeToIncomingMessages(inputMessageQueue);
                 oldConnections.Enqueue(clientConnection);
                 clientConnection = null;
             }

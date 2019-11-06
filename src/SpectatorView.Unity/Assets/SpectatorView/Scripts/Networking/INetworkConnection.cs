@@ -22,15 +22,16 @@ namespace Microsoft.MixedReality.SpectatorView
         void Disconnect();
 
         /// <summary>
-        /// Call to start enqueuing incoming messages
+        /// Tries to subscribe to incoming messages for the connection.
         /// </summary>
-        /// <param name="incomingQueue">Queue used for enqueuing messages</param>
-        void QueueIncomingMessages(ConcurrentQueue<IncomingMessage> incomingQueue);
+        /// <param name="incomingQueue"></param>
+        /// <returns> Returns true when subscribing succeeds, otherwise false.</returns>
+        bool TrySubscribeToIncomingMessages(ConcurrentQueue<IncomingMessage> incomingQueue);
 
         /// <summary>
-        /// Call to stop enqueuing incoming messages
+        /// Call to stop receiving incoming messages
         /// </summary>
-        void StopIncomingMessageQueue();
+        void UnsubscribeToIncomingMessages(ConcurrentQueue<IncomingMessage> incomingQueue);
 
         /// <summary>
         /// Call to send data to the connected peer

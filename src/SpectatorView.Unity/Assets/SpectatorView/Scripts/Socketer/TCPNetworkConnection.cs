@@ -48,17 +48,26 @@ namespace Microsoft.MixedReality.SpectatorView
         }
 
         /// <inheritdoc />
-        public void QueueIncomingMessages(ConcurrentQueue<IncomingMessage> incomingQueue)
+        public bool TrySubscribeToIncomingMessages(ConcurrentQueue<IncomingMessage> incomingQueue)
         {
+            if (this.incomingQueue != null)
+            {
+                return false;
+            }
+
             this.incomingQueue = incomingQueue;
             socketerClient.Message += Socket_Message;
+            return true;
         }
 
         /// <inheritdoc />
-        public void StopIncomingMessageQueue()
+        public void UnsubscribeToIncomingMessages(ConcurrentQueue<IncomingMessage> incomingQueue)
         {
-            socketerClient.Message -= Socket_Message;
-            this.incomingQueue = null;
+            if (this.incomingQueue == incomingQueue)
+            {
+                socketerClient.Message -= Socket_Message;
+                this.incomingQueue = null;
+            }
         }
 
         /// <summary>
@@ -97,7 +106,8 @@ namespace Microsoft.MixedReality.SpectatorView
         private void Socket_Message(SocketerClient arg1, MessageEvent e)
         {
             // This event is sent to all socket endpoints. Make sure this message matches the server (connectionId == 0) or the correct client (sourceId == e.SourceId)
-            if (sourceId == 0 || sourceId == e.SourceId)
+            if (incomingQueue != null &&
+                (sourceId == 0 || sourceId == e.SourceId))
             {
                 lastActiveTimestamp = DateTime.UtcNow;
                 IncomingMessage incomingMessage = new IncomingMessage(this, e.Message, e.Message.Length);

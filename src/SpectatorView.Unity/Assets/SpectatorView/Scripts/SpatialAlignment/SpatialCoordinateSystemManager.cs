@@ -505,7 +505,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
             if (sessionToCancel != null)
             {
-                DebugLog($"Cancelling spatial localization session for participant: {participant?.NetworkConnection?.ToString() ?? "Unknown NetworkConnection"}");
+                DebugLog($"Cancelling spatial localization session for participant: {participant?.NetworkConnection?.ToString() ?? "Unknown"}");
                 sessionToCancel.Session.Cancel();
                 sessionToCancel.Session.Dispose();
                 sessionToCancel.CompletionSource.TrySetResult(false);
