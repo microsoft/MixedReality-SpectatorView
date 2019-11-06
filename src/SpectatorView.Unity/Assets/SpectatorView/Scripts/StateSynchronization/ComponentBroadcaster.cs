@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.SpectatorView
@@ -182,35 +183,35 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
-        protected virtual void SendComponentCreation(IEnumerable<INetworkConnection> newConnections)
+        protected virtual void SendComponentCreation(IReadOnlyList<INetworkConnection> newConnections)
         {
-            if (connectionsNeedingComponentCreation != null)
+            if (connectionsNeedingComponentCreation == null)
             {
-                for (int i = connectionsNeedingComponentCreation.Count - 1; i >= 0; i--)
-                {
-                    if (ShouldSendChanges(connectionsNeedingComponentCreation[i]))
-                    {
-                        SendComponentCreation(connectionsNeedingComponentCreation[i]);
-                        connectionsNeedingComponentCreation.RemoveAt(i);
-                    }
-                }
+                connectionsNeedingComponentCreation = new List<INetworkConnection>();
+            }
+            else
+            {
+                connectionsNeedingComponentCreation.RemoveAll(x => TrySendComponentCreation(x));
             }
 
             foreach (INetworkConnection newConnection in newConnections)
             {
-                if (ShouldSendChanges(newConnection))
+                if (!TrySendComponentCreation(newConnection))
                 {
-                    SendComponentCreation(newConnection);
-                }
-                else
-                {
-                    if (connectionsNeedingComponentCreation == null)
-                    {
-                        connectionsNeedingComponentCreation = new List<INetworkConnection>();
-                    }
                     connectionsNeedingComponentCreation.Add(newConnection);
                 }
             }
+        }
+
+        private bool TrySendComponentCreation(INetworkConnection connection)
+        {
+            if (ShouldSendChanges(connection))
+            {
+                SendComponentCreation(connection);
+                return true;
+            }
+
+            return false;
         }
 
         private void SendComponentCreation(INetworkConnection connection)
