@@ -10,13 +10,11 @@ namespace Microsoft.MixedReality.SpectatorView
 {
     public abstract class NetworkManager<TService> : CommandRegistry<TService>, INetworkManager where TService : Singleton<TService>
     {
-#pragma warning disable 414 // The field is assigned but its value is never used
         [Tooltip("Default prefab for creating an INetworkConnectionManager.")]
         [SerializeField]
         private GameObject defaultConnectionManagerPrefab = null;
         private GameObject connectionManagerGameObject = null;
         protected INetworkConnectionManager connectionManager = null;
-#pragma warning restore 414
 
         private float lastReceivedUpdate;
 
@@ -47,14 +45,8 @@ namespace Microsoft.MixedReality.SpectatorView
         /// <param name="port">The port to listen for new connections on.</param>
         protected void StartListening(int port)
         {
-            if (connectionManager != null)
-            {
-                connectionManager.StartListening(port);
-            }
-            else
-            {
-                Debug.LogError($"Failed to start listening: {nameof(connectionManager)} was not assigned.");
-            }
+            CreateConnectionManager();
+            connectionManager.StartListening(port);
         }
 
         /// <inheritdoc />
@@ -66,14 +58,8 @@ namespace Microsoft.MixedReality.SpectatorView
         /// <inheritdoc />
         public void ConnectTo(string ipAddress, int port)
         {
-            if (connectionManager != null)
-            {
-                connectionManager.ConnectTo(ipAddress, port);
-            }
-            else
-            {
-                Debug.LogError($"Failed to start connecting: {nameof(connectionManager)} was not assigned.");
-            }
+            CreateConnectionManager();
+            connectionManager.ConnectTo(ipAddress, port);
         }
 
         /// <summary>
@@ -108,16 +94,9 @@ namespace Microsoft.MixedReality.SpectatorView
             base.Awake();
             CreateConnectionManager();
 
-            if (connectionManager != null)
-            {
-                connectionManager.OnConnected += OnConnected;
-                connectionManager.OnDisconnected += OnDisconnected;
-                connectionManager.OnReceive += OnReceive;
-            }
-            else
-            {
-                Debug.LogError($"{nameof(connectionManager)} is required but was not assigned.");
-            }
+            connectionManager.OnConnected += OnConnected;
+            connectionManager.OnDisconnected += OnDisconnected;
+            connectionManager.OnReceive += OnReceive;
         }
 
         protected virtual void Start()
@@ -190,24 +169,27 @@ namespace Microsoft.MixedReality.SpectatorView
 
         private void CreateConnectionManager()
         {
-            var prefab = defaultConnectionManagerPrefab;
-            if (NetworkConfigurationSettings.IsInitialized &&
-                NetworkConfigurationSettings.Instance.OverrideConnectionManagerPrefab != null)
+            if (connectionManagerGameObject == null)
             {
-                prefab = NetworkConfigurationSettings.Instance.OverrideConnectionManagerPrefab;
-            }
+                var prefab = defaultConnectionManagerPrefab;
+                if (NetworkConfigurationSettings.IsInitialized &&
+                    NetworkConfigurationSettings.Instance.OverrideConnectionManagerPrefab != null)
+                {
+                    prefab = NetworkConfigurationSettings.Instance.OverrideConnectionManagerPrefab;
+                }
 
-            if (prefab == null)
-            {
-                throw new Exception("Network connection manager prefab wasn't specified. DeviceInfoBroadcaster will not work correctly.");
-            }
+                if (prefab == null)
+                {
+                    throw new MissingComponentException("Network connection manager prefab wasn't specified. DeviceInfoBroadcaster will not work correctly.");
+                }
 
-            connectionManagerGameObject = Instantiate(prefab, this.transform);
-            connectionManager = connectionManagerGameObject.GetComponentInChildren<INetworkConnectionManager>();
+                connectionManagerGameObject = Instantiate(prefab, this.transform);
+                connectionManager = connectionManagerGameObject.GetComponentInChildren<INetworkConnectionManager>();
 
-            if (connectionManager == null)
-            {
-                throw new Exception("INetworkConnectionManager wasn't found in instantiated prefab. DeviceInfoBroadcaster will not work correctly.");
+                if (connectionManager == null)
+                {
+                    throw new MissingComponentException("INetworkConnectionManager wasn't found in instantiated prefab. DeviceInfoBroadcaster will not work correctly.");
+                }
             }
         }
     }
