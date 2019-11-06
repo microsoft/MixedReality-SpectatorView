@@ -29,7 +29,6 @@ namespace Microsoft.MixedReality.SpectatorView
         /// <inheritdoc />
         public event Action<IncomingMessage> OnReceive;
 
-        private readonly TimeSpan timeoutInterval = TimeSpan.Zero;
         private readonly ConcurrentQueue<TCPNetworkConnection> newConnections = new ConcurrentQueue<TCPNetworkConnection>();
         private readonly ConcurrentQueue<TCPNetworkConnection> oldConnections = new ConcurrentQueue<TCPNetworkConnection>();
         private readonly ConcurrentDictionary<int, TCPNetworkConnection> serverConnections = new ConcurrentDictionary<int, TCPNetworkConnection>();
@@ -137,7 +136,7 @@ namespace Microsoft.MixedReality.SpectatorView
         private void OnServerConnected(SocketerClient client, int sourceId, string clientAddress)
         {
             Debug.Log("Server connected to " + clientAddress);
-            TCPNetworkConnection connection = new TCPNetworkConnection(client, timeoutInterval, clientAddress, sourceId);
+            TCPNetworkConnection connection = new TCPNetworkConnection(client, clientAddress, sourceId);
             serverConnections[sourceId] = connection;
             connection.QueueIncomingMessages(inputMessageQueue);
             newConnections.Enqueue(connection);
@@ -157,7 +156,7 @@ namespace Microsoft.MixedReality.SpectatorView
         private void OnClientConnected(SocketerClient client, int sourceId, string hostAddress)
         {
             Debug.Log("Client connected to " + hostAddress);
-            TCPNetworkConnection connection = new TCPNetworkConnection(client, timeoutInterval, hostAddress, sourceId);
+            TCPNetworkConnection connection = new TCPNetworkConnection(client, hostAddress, sourceId);
 
             if (!AttemptReconnectWhenClient)
             {
@@ -196,17 +195,6 @@ namespace Microsoft.MixedReality.SpectatorView
 
         private void Update()
         {
-            DateTime utcNow = DateTime.UtcNow;
-            if (clientConnection != null)
-            {
-                clientConnection.CheckConnectionTimeout(utcNow);
-            }
-
-            foreach (INetworkConnection serverConnection in serverConnections.Values)
-            {
-                serverConnection.CheckConnectionTimeout(utcNow);
-            }
-
             TCPNetworkConnection connection;
             while (newConnections.TryDequeue(out connection))
             {

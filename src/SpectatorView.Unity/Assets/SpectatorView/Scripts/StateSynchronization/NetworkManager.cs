@@ -19,12 +19,11 @@ namespace Microsoft.MixedReality.SpectatorView
         private float lastReceivedUpdate;
         private INetworkConnection currentConnection;
 
-        private static readonly List<INetworkConnection> emptyConnectionList = new List<INetworkConnection>();
-
         /// <inheritdoc />
         public string ConnectedIPAddress => currentConnection?.Address;
 
-        public IReadOnlyList<INetworkConnection> Connections => connectionManager == null ? emptyConnectionList : connectionManager.Connections;
+        /// <inheritdoc />
+        public IReadOnlyList<INetworkConnection> Connections => connectionManager == null ? Array.Empty<INetworkConnection>() : connectionManager.Connections;
 
         /// <inheritdoc />
         public bool IsConnected => connectionManager != null && connectionManager.HasConnections;
@@ -182,7 +181,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
                 if (prefab == null)
                 {
-                    throw new MissingComponentException("Network connection manager prefab wasn't specified. DeviceInfoBroadcaster will not work correctly.");
+                    throw new MissingComponentException("Network connection manager prefab wasn't specified. NetworkManager will not work correctly.");
                 }
 
                 connectionManagerGameObject = Instantiate(prefab, this.transform);
@@ -190,7 +189,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
                 if (connectionManager == null)
                 {
-                    throw new MissingComponentException("INetworkConnectionManager wasn't found in instantiated prefab. DeviceInfoBroadcaster will not work correctly.");
+                    throw new MissingComponentException("INetworkConnectionManager wasn't found in instantiated prefab. NetworkManager will not work correctly.");
                 }
             }
         }

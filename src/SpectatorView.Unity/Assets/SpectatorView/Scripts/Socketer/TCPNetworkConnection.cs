@@ -22,7 +22,6 @@ namespace Microsoft.MixedReality.SpectatorView
         private readonly int sourceId;
         private ConcurrentQueue<IncomingMessage> incomingQueue;
         private DateTime lastActiveTimestamp;
-        private TimeSpan timeoutInterval;
 
         private ConnectionState State { get; set; } = ConnectionState.Connected;
 
@@ -42,19 +41,9 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
-        /// <inheritdoc />
-        public void CheckConnectionTimeout(DateTime currentTime)
-        {
-            if (timeoutInterval != TimeSpan.Zero && currentTime - lastActiveTimestamp > timeoutInterval)
-            {
-                this.socketerClient.Disconnect(sourceId);
-            }
-        }
-
-        public TCPNetworkConnection(SocketerClient socketerClient, TimeSpan timeoutInterval, string address, int sourceId = 0)
+        public TCPNetworkConnection(SocketerClient socketerClient, string address, int sourceId = 0)
         {
             this.socketerClient = socketerClient;
-            this.timeoutInterval = timeoutInterval;
             this.sourceId = sourceId;
             this.Address = address;
             this.lastActiveTimestamp = DateTime.UtcNow;
@@ -87,7 +76,7 @@ namespace Microsoft.MixedReality.SpectatorView
         {
             if (!IsConnected)
             {
-                Debug.LogWarning("Attempted to send message to disconnected TCPNetworkConnection.");
+                Debug.LogWarning($"Attempted to send message to disconnected {nameof(TCPNetworkConnection)}.");
                 return;
             }
 

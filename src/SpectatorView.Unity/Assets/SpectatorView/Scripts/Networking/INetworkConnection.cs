@@ -27,12 +27,6 @@ namespace Microsoft.MixedReality.SpectatorView
         void Disconnect();
 
         /// <summary>
-        /// Checks whether the associated client is still active. If not, the client is disconnected.
-        /// </summary>
-        /// <param name="currentTime">Time to use relative to last active timestamp to determine whether to disconnect</param>
-        void CheckConnectionTimeout(DateTime currentTime);
-
-        /// <summary>
         /// Call to start enqueuing incoming messages
         /// </summary>
         /// <param name="incomingQueue">Queue used for enqueuing messages</param>
