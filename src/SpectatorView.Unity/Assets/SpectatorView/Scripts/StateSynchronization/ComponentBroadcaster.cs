@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -183,7 +184,7 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
-        protected virtual void SendComponentCreation(IReadOnlyList<INetworkConnection> newConnections)
+        protected virtual void SendComponentCreation(IEnumerable<INetworkConnection> newConnections)
         {
             if (connectionsNeedingComponentCreation == null)
             {
