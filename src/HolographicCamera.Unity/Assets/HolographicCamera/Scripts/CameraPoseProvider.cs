@@ -24,7 +24,6 @@ namespace Microsoft.MixedReality.SpectatorView
     /// <summary>
     /// Component that provides time-adjusted holographic poses to the compositor.
     /// </summary>
-    [RequireComponent(typeof(INetworkManager))]
     public class CameraPoseProvider : MonoBehaviour
     {
         private INetworkManager networkManager;
@@ -35,10 +34,14 @@ namespace Microsoft.MixedReality.SpectatorView
 #if !UNITY_EDITOR && UNITY_WSA
         private Calendar timeConversionCalendar;
 #endif
-
         private void Awake()
         {
             networkManager = GetComponent<INetworkManager>();
+            if (networkManager == null)
+            {
+                throw new MissingComponentException("Missing network manager component");
+            }
+
             networkManager.Connected += NetworkManagerConnected;
 
             if (networkManager.IsConnected)

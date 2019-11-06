@@ -19,7 +19,6 @@ using Windows.Networking.Connectivity;
 
 namespace Microsoft.MixedReality.SpectatorView
 {
-    [RequireComponent(typeof(INetworkManager))]
     public class DeviceInfoBroadcaster : MonoBehaviour
     {
         private INetworkManager networkManager = null;
@@ -28,6 +27,11 @@ namespace Microsoft.MixedReality.SpectatorView
         private void Awake()
         {
             networkManager = GetComponent<INetworkManager>();
+            if (networkManager == null)
+            {
+                throw new MissingComponentException("Missing network manager component");
+            }
+
             networkManager.Connected += NetworkManagerConnected;
 
             if (networkManager.IsConnected)

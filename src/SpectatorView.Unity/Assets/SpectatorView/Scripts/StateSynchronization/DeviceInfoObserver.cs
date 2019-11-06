@@ -9,7 +9,6 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.SpectatorView
 {
-    [RequireComponent(typeof(INetworkManager))]
     public class DeviceInfoObserver : MonoBehaviour
     {
         private static readonly TimeSpan trackingStalledReceiveDelay = TimeSpan.FromSeconds(1.0);
@@ -51,6 +50,11 @@ namespace Microsoft.MixedReality.SpectatorView
         private void Awake()
         {
             networkManager = GetComponent<INetworkManager>();
+            if (networkManager == null)
+            {
+                throw new MissingComponentException("Missing network manager component");
+            }
+
             networkManager.Connected += OnConnected;
             networkManager.Disconnected += OnDisconnected;
             networkManager.RegisterCommandHandler(DeviceInfoCommand, HandleDeviceInfoCommand);
