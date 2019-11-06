@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.SpectatorView
 {
-    public sealed class TCPSocketEndpoint : INetworkConnection
+    public sealed class TCPNetworkConnection : INetworkConnection
     {
         private enum ConnectionState
         {
@@ -51,7 +51,7 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
-        public TCPSocketEndpoint(SocketerClient socketerClient, TimeSpan timeoutInterval, string address, int sourceId = 0)
+        public TCPNetworkConnection(SocketerClient socketerClient, TimeSpan timeoutInterval, string address, int sourceId = 0)
         {
             this.socketerClient = socketerClient;
             this.timeoutInterval = timeoutInterval;
@@ -87,7 +87,7 @@ namespace Microsoft.MixedReality.SpectatorView
         {
             if (!IsConnected)
             {
-                Debug.LogWarning("Attempted to send message to disconnected TCPSocketEndpoint.");
+                Debug.LogWarning("Attempted to send message to disconnected TCPNetworkConnection.");
                 return;
             }
 
