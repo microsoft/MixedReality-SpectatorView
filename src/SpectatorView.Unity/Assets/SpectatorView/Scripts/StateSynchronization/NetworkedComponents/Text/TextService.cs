@@ -27,14 +27,14 @@ namespace Microsoft.MixedReality.SpectatorView
             StateSynchronizationSceneManager.Instance.RegisterService(this, new ComponentBroadcasterDefinition<TextBroadcaster>(typeof(Text)));
         }
 
-        public Guid GetFontId(Font font)
+        public AssetId GetFontId(Font font)
         {
-            return fontAssets?.GetAssetId(font) ?? Guid.Empty;
+            return fontAssets?.GetAssetId(font) ?? AssetId.Empty;
         }
 
-        public Font GetFont(Guid guid)
+        public Font GetFont(AssetId assetId)
         {
-            return fontAssets?.GetAsset(guid);
+            return fontAssets?.GetAsset(assetId);
         }
     }
 }

@@ -69,6 +69,19 @@ namespace Microsoft.MixedReality.SpectatorView
             message.Write(value.a);
         }
 
+        internal static void Write(this BinaryWriter message, AssetId assetId)
+        {
+            message.Write(assetId.Guid);
+            message.Write(assetId.FileIdentifier);
+        }
+
+        internal static AssetId ReadAssetId(this BinaryReader message)
+        {
+            var guid = message.ReadGuid();
+            var fileId = message.ReadInt64();
+            return new AssetId(guid, fileId);
+        }
+
         public static bool ReadBoolean(this BinaryReader message)
         {
             return message.ReadByte() != 0;

@@ -15,8 +15,8 @@ namespace Microsoft.MixedReality.SpectatorView
 
             if (AudioSourceBroadcaster.HasFlag(changeType, AudioSourceBroadcaster.ChangeType.Properties))
             {
-                Guid audioClipId = message.ReadGuid();
-                Guid audioMixerGroupId = message.ReadGuid();
+                AssetId audioClipId = message.ReadAssetId();
+                AssetId audioMixerGroupId = message.ReadAssetId();
 
                 attachedComponent.clip = AudioSourceService.Instance.GetAudioClip(audioClipId);
                 attachedComponent.outputAudioMixerGroup = AudioSourceService.Instance.GetAudioMixerGroup(audioMixerGroupId);

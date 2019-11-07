@@ -85,12 +85,12 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
-        public Guid GetMeshId(Mesh mesh)
+        public AssetId GetMeshId(Mesh mesh)
         {
-            return meshAssets?.GetAssetId(mesh) ?? Guid.Empty;
+            return meshAssets?.GetAssetId(mesh) ?? AssetId.Empty;
         }
 
-        public bool AttachMeshFilter(GameObject gameObject, Guid assetId)
+        public bool AttachMeshFilter(GameObject gameObject, AssetId assetId)
         {
             ComponentExtensions.EnsureComponent<MeshRenderer>(gameObject);
 
@@ -105,7 +105,7 @@ namespace Microsoft.MixedReality.SpectatorView
             return false;
         }
 
-        public bool AttachSkinnedMeshRenderer(GameObject gameObject, Guid assetId)
+        public bool AttachSkinnedMeshRenderer(GameObject gameObject, AssetId assetId)
         {
             Mesh mesh = meshAssets.GetAsset(assetId);
             if (mesh != null)
