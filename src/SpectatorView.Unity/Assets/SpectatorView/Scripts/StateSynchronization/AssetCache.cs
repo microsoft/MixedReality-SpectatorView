@@ -261,6 +261,9 @@ namespace Microsoft.MixedReality.SpectatorView
 #endif
         }
 
+        /// <summary>
+        /// Assets are ordered in their associated AssetCache by AssetId (first by file identifier, then by guid).
+        /// </summary>
         public override void UpdateAssetCache()
         {
 #if UNITY_EDITOR
