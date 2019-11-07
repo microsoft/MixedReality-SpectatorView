@@ -11,11 +11,17 @@ namespace Microsoft.MixedReality.SpectatorView
     {
         public static AssetId Empty { get; } = new AssetId(System.Guid.Empty, -1);
 
+        /// <summary>
+        /// The Unity guid for the Asset
+        /// </summary>
         public StringGuid Guid => guid;
 
         [SerializeField]
         private StringGuid guid;
 
+        /// <summary>
+        /// The Unity file identifier for the Asset
+        /// </summary>
         public long FileIdentifier => fileIdentifier;
 
         [SerializeField]
