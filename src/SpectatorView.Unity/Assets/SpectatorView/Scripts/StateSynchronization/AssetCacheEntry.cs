@@ -46,7 +46,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
         public override int GetHashCode()
         {
-            return FileIdentifier.GetHashCode() ^ Guid.ToString().GetHashCode();
+            return FileIdentifier.GetHashCode() ^ Guid.GetHashCode();
         }
 
         public static bool operator ==(AssetId lhs, AssetId rhs)
@@ -61,7 +61,7 @@ namespace Microsoft.MixedReality.SpectatorView
                 return false;
             }
 
-            return (lhs.Guid.ToString() == rhs.Guid.ToString()) && (lhs.FileIdentifier == rhs.FileIdentifier);
+            return Equals(lhs.Guid, rhs.Guid) && (lhs.FileIdentifier == rhs.FileIdentifier);
         }
 
         public static bool operator !=(AssetId lhs, AssetId rhs)
