@@ -1,0 +1,69 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2176511210942373200
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7006763751770142361}
+  - component: {fileID: 8895299810279681199}
+  m_Layer: 0
+  m_Name: DefaultStateSynchronizationPerformanceParameters
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7006763751770142361
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2176511210942373200}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8895299810279681199
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2176511210942373200}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e476078f139b76b4bb5abc31ec92b582, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  checkForComponentBroadcasters: 2
+  shaderKeywords: 1
+  renderQueue: 1
+  materialProperties: 1
+  materialPropertyOverrides:
+  - shaderName: Standard
+    propertyName: _Metallic
+    updateFrequency: 2
+  - shaderName: Standard
+    propertyName: _Glossiness
+    updateFrequency: 2
+  - shaderName: Standard
+    propertyName: _Color
+    updateFrequency: 2
+  - shaderName: Standard
+    propertyName: _SrcBlend
+    updateFrequency: 2
+  - shaderName: Standard
+    propertyName: _DstBlend
+    updateFrequency: 2
+  - shaderName: Standard
+    propertyName: _ZWrite
+    updateFrequency: 2
+  materialPropertyBlocks: 1

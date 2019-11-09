@@ -1,0 +1,17 @@
+{
+    "name": "Microsoft.MixedReality.Toolkit.Services.InputSimulation",
+    "references": [
+        "Microsoft.MixedReality.Toolkit"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [
+        "Editor",
+        "WSA"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": []
+}
