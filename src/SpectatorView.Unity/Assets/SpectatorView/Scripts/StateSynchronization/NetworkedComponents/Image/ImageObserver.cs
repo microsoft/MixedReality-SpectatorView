@@ -31,7 +31,12 @@ namespace Microsoft.MixedReality.SpectatorView
             }
             if (ImageBroadcaster.HasFlag(changeType, ImageBroadcaster.ChangeType.Materials))
             {
-                attachedComponent.material = MaterialPropertyAsset.ReadMaterials(message, null)?[0];
+                var materials = MaterialPropertyAsset.ReadMaterials(message, null);
+                if (materials != null &&
+                    materials.Length > 0)
+                {
+                    attachedComponent.material = materials[0];
+                }
             }
             if (ImageBroadcaster.HasFlag(changeType, ImageBroadcaster.ChangeType.MaterialProperty))
             {

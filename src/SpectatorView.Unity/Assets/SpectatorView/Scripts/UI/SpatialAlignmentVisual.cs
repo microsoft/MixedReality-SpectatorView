@@ -15,6 +15,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
         private SpectatorView spectatorView;
         private readonly string spatialAlignmentStatePrompt = "Experience spatially aligned:";
+        private readonly string spatialAlignmentRunningPrompt = "Running spatial alignment...";
 
         private void Start()
         {
@@ -31,10 +32,16 @@ namespace Microsoft.MixedReality.SpectatorView
                     spatialAlignmentStateText.text = $"{spatialAlignmentStatePrompt} True";
                     spatialAlignmentStateText.color = Color.green;
                 }
+                else if (SpatialCoordinateSystemManager.IsInitialized &&
+                    SpatialCoordinateSystemManager.Instance.LocalizationRunning)
+                {
+                    spatialAlignmentStateText.text = spatialAlignmentRunningPrompt;
+                    spatialAlignmentStateText.color = Color.yellow;
+                }
                 else
                 {
                     spatialAlignmentStateText.text = $"{spatialAlignmentStatePrompt} False";
-                    spatialAlignmentStateText.color = Color.yellow;
+                    spatialAlignmentStateText.color = Color.red;
                 }
             }
         }
@@ -47,7 +54,7 @@ namespace Microsoft.MixedReality.SpectatorView
             }
             else
             {
-                Debug.LogError("SpectatorView was not found in the scene, failed to reset localiation.");
+                Debug.LogError("SpectatorView was not found in the scene, failed to reset localization.");
             }
         }
     }

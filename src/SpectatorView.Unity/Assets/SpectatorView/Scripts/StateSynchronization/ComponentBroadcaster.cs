@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -45,15 +46,10 @@ namespace Microsoft.MixedReality.SpectatorView
     public abstract class ComponentBroadcaster<TComponentBroadcasterService, TChangeFlags> : MonoBehaviour, IComponentBroadcaster where TComponentBroadcasterService : Singleton<TComponentBroadcasterService>, IComponentBroadcasterService
     {
         protected TransformBroadcaster transformBroadcaster;
-        private readonly HashSet<SocketEndpoint> fullyInitializedEndpoints = new HashSet<SocketEndpoint>();
         private List<SocketEndpoint> endpointsNeedingComponentCreation;
         private bool isUpdatedThisFrame;
         private bool isInitialized;
-        private readonly List<SocketEndpoint> endpointsNeedingCompleteChanges = new List<SocketEndpoint>();
-        private readonly List<SocketEndpoint> endpointsNeedingDeltaChanges = new List<SocketEndpoint>();
-        private readonly List<SocketEndpoint> filteredEndpointsNeedingCompleteChanges = new List<SocketEndpoint>();
-        private readonly List<SocketEndpoint> filteredEndpointsNeedingDeltaChanges = new List<SocketEndpoint>();
-        private readonly List<SocketEndpoint> filteredEndpointsNotNeedingDeltaChanges = new List<SocketEndpoint>();
+        private IDisposable perfMonitoringInstance = null;
 
         /// <inheritdoc />
         public TransformBroadcaster TransformBroadcaster
@@ -83,8 +79,10 @@ namespace Microsoft.MixedReality.SpectatorView
         /// <inheritdoc />
         protected virtual bool UpdateWhenDisabled => false;
 
+        public string PerformanceComponentName => this.GetType().Name;
+
         /// <inheritdoc />
-        public void ResetFrame()
+        public virtual void ResetFrame()
         {
             isUpdatedThisFrame = false;
         }
@@ -133,89 +131,44 @@ namespace Microsoft.MixedReality.SpectatorView
                     {
                         EnsureComponentInitialized();
 
-                        endpointsNeedingCompleteChanges.Clear();
-                        endpointsNeedingDeltaChanges.Clear();
-
-                        filteredEndpointsNeedingCompleteChanges.Clear();
-                        filteredEndpointsNeedingDeltaChanges.Clear();
-                        filteredEndpointsNotNeedingDeltaChanges.Clear();
-
-                        foreach (SocketEndpoint endpoint in connectionDelta.AddedConnections)
+                        IReadOnlyList<SocketEndpoint> endpointsNeedingCompleteChanges;
+                        IReadOnlyList<SocketEndpoint> filteredEndpointsNeedingDeltaChanges;
+                        IReadOnlyList<SocketEndpoint> filteredEndpointsNeedingCompleteChanges;
+                        using (StateSynchronizationPerformanceMonitor.Instance.MeasureEventDuration(PerformanceComponentName, "ProcessConnectionDelta"))
                         {
-                            endpointsNeedingCompleteChanges.Add(endpoint);
-                            if (ShouldSendChanges(endpoint))
+                            TransformBroadcaster.ProcessConnectionDelta(connectionDelta, out endpointsNeedingCompleteChanges, out filteredEndpointsNeedingDeltaChanges, out filteredEndpointsNeedingCompleteChanges);
+                        }
+
+                        if (endpointsNeedingCompleteChanges != null &&
+                            endpointsNeedingCompleteChanges.Count > 0)
+                        {
+                            SendComponentCreation(endpointsNeedingCompleteChanges);
+                        }
+
+                        if (filteredEndpointsNeedingDeltaChanges != null &&
+                            filteredEndpointsNeedingDeltaChanges.Count > 0)
+                        {
+                            TChangeFlags changeFlags = CalculateDeltaChanges();
+                            if (HasChanges(changeFlags))
                             {
-                                filteredEndpointsNeedingCompleteChanges.Add(endpoint);
+                                SendDeltaChanges(filteredEndpointsNeedingDeltaChanges, changeFlags);
                             }
                         }
 
-                        foreach (SocketEndpoint endpoint in connectionDelta.ContinuedConnections)
-                        {
-                            if (fullyInitializedEndpoints.Contains(endpoint))
-                            {
-                                endpointsNeedingDeltaChanges.Add(endpoint);
-                                if (ShouldSendChanges(endpoint))
-                                {
-                                    filteredEndpointsNeedingDeltaChanges.Add(endpoint);
-                                }
-                                else
-                                {
-                                    filteredEndpointsNotNeedingDeltaChanges.Add(endpoint);
-                                }
-                            }
-                            else
-                            {
-                                endpointsNeedingCompleteChanges.Add(endpoint);
-
-                                if (ShouldSendChanges(endpoint))
-                                {
-                                    filteredEndpointsNeedingCompleteChanges.Add(endpoint);
-                                }
-                            }
-                        }
-
-                        SendComponentCreation(endpointsNeedingCompleteChanges);
-
-                        TChangeFlags changeFlags = CalculateDeltaChanges();
-                        if (HasChanges(changeFlags) && filteredEndpointsNeedingDeltaChanges.Any())
-                        {
-                            SendDeltaChanges(filteredEndpointsNeedingDeltaChanges, changeFlags);
-                        }
-
-                        if (filteredEndpointsNeedingCompleteChanges.Count > 0)
+                        if (filteredEndpointsNeedingCompleteChanges != null &&
+                            filteredEndpointsNeedingCompleteChanges.Count > 0)
                         {
                             SendCompleteChanges(filteredEndpointsNeedingCompleteChanges);
-
-                            foreach (SocketEndpoint endpoint in filteredEndpointsNeedingCompleteChanges)
-                            {
-                                fullyInitializedEndpoints.Add(endpoint);
-                            }
                         }
 
-                        foreach (SocketEndpoint endpoint in endpointsNeedingDeltaChanges)
+                        if (connectionDelta.RemovedConnections != null &&
+                            connectionDelta.RemovedConnections.Count > 0)
                         {
-                            if (!ShouldSendChanges(endpoint))
-                            {
-                                fullyInitializedEndpoints.Remove(endpoint);
-                            }
+                            RemoveDisconnectedEndpoints(connectionDelta.RemovedConnections);
                         }
-                        UpdateRemovedConnections(connectionDelta);
 
                         EndUpdatingFrame();
                     }
-                }
-            }
-        }
-
-        private void UpdateRemovedConnections(SocketEndpointConnectionDelta connectionDelta)
-        {
-            if (connectionDelta.RemovedConnections.Count > 0)
-            {
-                RemoveDisconnectedEndpoints(connectionDelta.RemovedConnections);
-
-                foreach (SocketEndpoint endpoint in connectionDelta.RemovedConnections)
-                {
-                    fullyInitializedEndpoints.Remove(endpoint);
                 }
             }
         }
@@ -278,9 +231,23 @@ namespace Microsoft.MixedReality.SpectatorView
             return this.enabled;
         }
 
-        protected virtual void BeginUpdatingFrame(SocketEndpointConnectionDelta connectionDelta) {}
+        protected virtual void BeginUpdatingFrame(SocketEndpointConnectionDelta connectionDelta)
+        {
+            if (PerformanceComponentName != string.Empty &&
+                StateSynchronizationPerformanceMonitor.Instance != null)
+            {
+                perfMonitoringInstance = StateSynchronizationPerformanceMonitor.Instance.MeasureEventDuration(PerformanceComponentName, "FrameUpdateDuration");
+            }
+        }
 
-        protected virtual void EndUpdatingFrame() {}
+        protected virtual void EndUpdatingFrame()
+        {
+            if (perfMonitoringInstance != null)
+            {
+                perfMonitoringInstance.Dispose();
+                perfMonitoringInstance = null;
+            }
+        }
 
         protected abstract void SendCompleteChanges(IEnumerable<SocketEndpoint> endpoints);
 

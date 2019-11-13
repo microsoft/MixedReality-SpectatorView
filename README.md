@@ -100,14 +100,16 @@ Below are quick instructions for adding Spectator View to your project:
 
 8. Build & Deploy your primary scene to the HoloLens device.
 
-9. Open the example spectating scene appropriate for your mobile device type. This should either be `SpectatorView.Android.unity` or `SpectatorView.iOS.unity`.
+9. Open the example spectating scene appropriate for your mobile device type. This should either be `SpectatorView.Android.unity`, `SpectatorView.iOS.unity` or `SpectatorView.HoloLens.Spectator.unity`.
 
-10. Build & Deploy your spectating scene onto your mobile device. Be sure to include the `SpectatorView.Android.unity` or `SpectatorView.iOS.unity` scene in your build through the Build Settings. Platform specific build instructions can be found [here](doc/SpectatorView.Setup.md) for Android and iOS.
+    > Note: If you are creating your own spectating scene, ensure that the `Role` property of the `SpectatorView` game object is set to `Spectator`; and the property `Shared Coordinate Origin` on `SpectatorView > SpatialCoordinateSystem > CameraTransform` game object is set to the parent game object of the main camera.
+
+10. Build & Deploy your spectating scene onto your mobile device. Be sure to include the `SpectatorView.Android.unity`, `SpectatorView.iOS.unity` or `SpectatorView.HoloLens.Spectator.unity` scene in your build through the Build Settings. Platform specific build instructions can be found [here](doc/SpectatorView.Setup.md) for Android and iOS.
 
 ### Detailed Unity Setup
 For more information on setting up a Spectator View project, see the following pages:
 
-* [Spectating with an Android or iOS device](doc/SpectatorView.Setup.md)
+* [Spectating with an Android, an iOS or a HoloLens device](doc/SpectatorView.Setup.md)
 * [Spectating with a video camera](doc/SpectatorView.Setup.VideoCamera.md)
 
 ## Architecture

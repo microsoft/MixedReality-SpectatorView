@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
@@ -17,6 +18,9 @@ namespace Microsoft.MixedReality.SpectatorView
         public string propertyName;
         public MaterialPropertyType propertyType;
         private int? propertyId;
+        private Dictionary<Material, Dictionary<int, object>> materialProperties = new Dictionary<Material, Dictionary<int, object>>();
+        private float cachedTime;
+        private string performanceComponentName = "MaterialPropertyAsset";
 
         public Shader Shader
         {
@@ -47,44 +51,84 @@ namespace Microsoft.MixedReality.SpectatorView
 
         public object GetValue(Renderer renderer, Material material)
         {
-            MaterialPropertyBlock.PropertyData data;
-            if (renderer != null && renderer.TryGetPropertyBlockData(out data) && data.HasValue(PropertyID, propertyType))
+            object output = null;
+            using (StateSynchronizationPerformanceMonitor.Instance.MeasureEventDuration(performanceComponentName, "GetValue"))
             {
-                switch (propertyType)
+
+                if (cachedTime != Time.time)
                 {
-                    case MaterialPropertyType.Color:
-                        return data.GetColor(PropertyID);
-                    case MaterialPropertyType.Float:
-                    case MaterialPropertyType.Range:
-                        return data.GetFloat(PropertyID);
-                    case MaterialPropertyType.Texture:
-                        return data.GetTexture(PropertyID);
-                    case MaterialPropertyType.Vector:
-                        return data.GetVector(PropertyID);
-                    case MaterialPropertyType.Matrix:
-                        return data.GetMatrix(PropertyID);
+                    ResetCachedData();
+                }
+
+                cachedTime = Time.time;
+
+                MaterialPropertyBlock.PropertyData data;
+                if (renderer != null && renderer.TryGetPropertyBlockData(out data) && data.HasValue(PropertyID, propertyType))
+                {
+                    switch (propertyType)
+                    {
+                        case MaterialPropertyType.Color:
+                            return data.GetColor(PropertyID);
+                        case MaterialPropertyType.Float:
+                        case MaterialPropertyType.Range:
+                            return data.GetFloat(PropertyID);
+                        case MaterialPropertyType.Texture:
+                            return data.GetTexture(PropertyID);
+                        case MaterialPropertyType.Vector:
+                            return data.GetVector(PropertyID);
+                        case MaterialPropertyType.Matrix:
+                            return data.GetMatrix(PropertyID);
+                    }
+                }
+
+                if (!materialProperties.TryGetValue(material, out var dictionary))
+                {
+                    dictionary = new Dictionary<int, object>();
+                    materialProperties.Add(material, dictionary);
+                }
+
+                if (!dictionary.TryGetValue(PropertyID, out output))
+                {
+                    switch (propertyType)
+                    {
+                        case MaterialPropertyType.Color:
+                            output = material.GetColor(PropertyID);
+                            break;
+                        case MaterialPropertyType.Float:
+                        case MaterialPropertyType.Range:
+                            output = material.GetFloat(PropertyID);
+                            break;
+                        case MaterialPropertyType.Texture:
+                            output = material.GetTexture(PropertyID);
+                            break;
+                        case MaterialPropertyType.Vector:
+                            output = material.GetVector(PropertyID);
+                            break;
+                        case MaterialPropertyType.Matrix:
+                            output = material.GetMatrix(PropertyID);
+                            break;
+                        case MaterialPropertyType.RenderQueue:
+                            output = material.renderQueue;
+                            break;
+                        case MaterialPropertyType.ShaderKeywords:
+                            output = material.shaderKeywords;
+                            break;
+                        default:
+                            throw new NotImplementedException();
+                    }
+
+                    dictionary.Add(PropertyID, output);
                 }
             }
 
-            switch (propertyType)
+            return output;
+        }
+
+        private void ResetCachedData()
+        {
+            foreach(var dictionaryPair in materialProperties)
             {
-                case MaterialPropertyType.Color:
-                    return material.GetColor(PropertyID);
-                case MaterialPropertyType.Float:
-                case MaterialPropertyType.Range:
-                    return material.GetFloat(PropertyID);
-                case MaterialPropertyType.Texture:
-                    return material.GetTexture(PropertyID);
-                case MaterialPropertyType.Vector:
-                    return material.GetVector(PropertyID);
-                case MaterialPropertyType.Matrix:
-                    return material.GetMatrix(PropertyID);
-                case MaterialPropertyType.RenderQueue:
-                    return material.renderQueue;
-                case MaterialPropertyType.ShaderKeywords:
-                    return material.shaderKeywords;
-                default:
-                    throw new NotImplementedException();
+                dictionaryPair.Value.Clear();
             }
         }
 
