@@ -87,53 +87,93 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
             Debug.Log("Asset caches cleared.");
         }
 
+        private struct AssetBundleInfo
+        {
+            public AssetBundlePlatform AssetBundlePlatform;
+            public BuildTargetGroup BuildTargetGroup;
+            public BuildTarget BuildTarget;
+        }
+
         [MenuItem("Spectator View/Generate Asset Bundles", priority = 102)]
         public static void GenerateAssetBundles()
         {
-            string iOSDirectory = Application.dataPath + $"/{AssetCache.assetCacheDirectory}/{ResourcesDirectoryName}/{nameof(AssetBundlePlatform.iOS)}";
-            string androidDirectory = Application.dataPath + $"/{AssetCache.assetCacheDirectory}/{ResourcesDirectoryName}/{nameof(AssetBundlePlatform.Android)}";
-            string wsaDirectory = Application.dataPath + $"/{AssetCache.assetCacheDirectory}/{ResourcesDirectoryName}/{nameof(AssetBundlePlatform.WSA)}";
-
-            Directory.CreateDirectory(iOSDirectory.Replace('/', Path.DirectorySeparatorChar));
-            Directory.CreateDirectory(androidDirectory.Replace('/', Path.DirectorySeparatorChar));
-            Directory.CreateDirectory(wsaDirectory.Replace('/', Path.DirectorySeparatorChar));
-
-            List<string> builtDirectories = new List<string>();
+            var bundlesToCreate = new List<AssetBundleInfo>();
 
 #if UNITY_EDITOR_OSX
-            EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.iOS, BuildTarget.iOS);
-            BuildPipeline.BuildAssetBundles(iOSDirectory, BuildAssetBundleOptions.None, BuildTarget.iOS);
-            builtDirectories.Add(iOSDirectory);
-#elif UNITY_EDITOR_WIN
-            EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.Android, BuildTarget.Android);
-            BuildPipeline.BuildAssetBundles(androidDirectory, BuildAssetBundleOptions.None, BuildTarget.Android);
+            bundlesToCreate.Add(new AssetBundleInfo
+            {
+                AssetBundlePlatform = AssetBundlePlatform.iOS,
+                BuildTargetGroup = BuildTargetGroup.iOS,
+                BuildTarget = BuildTarget.iOS,
+            });
+#else
+            bundlesToCreate.Add(new AssetBundleInfo
+            {
+                AssetBundlePlatform = AssetBundlePlatform.Android,
+                BuildTargetGroup = BuildTargetGroup.Android,
+                BuildTarget = BuildTarget.Android,
+            });
 
-            EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.WSA, BuildTarget.WSAPlayer);
-            BuildPipeline.BuildAssetBundles(wsaDirectory, BuildAssetBundleOptions.None, BuildTarget.WSAPlayer);
-
-            builtDirectories.Add(androidDirectory);
-            builtDirectories.Add(wsaDirectory);
+            bundlesToCreate.Add(new AssetBundleInfo
+            {
+                AssetBundlePlatform = AssetBundlePlatform.WSA,
+                BuildTargetGroup = BuildTargetGroup.WSA,
+                BuildTarget = BuildTarget.WSAPlayer,
+            });
 #endif
 
-            foreach (var directory in builtDirectories)
+            // TODO: save current build target and restore it at the end... perhaps build the current target bundle before switching (or maybe at the end).
+
+            BuildAssetBundleOptions bundleOptions = BuildAssetBundleOptions.None
+                | BuildAssetBundleOptions.DeterministicAssetBundle
+                | BuildAssetBundleOptions.ForceRebuildAssetBundle
+                ;
+
+            foreach (var bundleInfo in bundlesToCreate)
             {
-                string assetPath = $"{directory}/spectatorview".Replace('/', Path.DirectorySeparatorChar);
-                string resourcePath = $"{directory}/{Path.GetFileName(directory)}".Replace('/', Path.DirectorySeparatorChar);
+                string directoryPath = Path.Combine(
+                    Application.dataPath.Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar),
+                    AssetCache.assetCacheDirectory,
+                    ResourcesDirectoryName,
+                    bundleInfo.AssetBundlePlatform.ToString()
+                    );
+
+                string assetIntermediatePath = Path.Combine(directoryPath, StateSynchronizationObserver.AssetBundleName);
+                string assetFinalPath = $"{assetIntermediatePath}.bytes";
+
+                string manifestIntermediatePath = $"{assetIntermediatePath}.manifest";
+                string manifestFinalPath = $"{manifestIntermediatePath}.bytes";
+
+                string versionFinalPath = $"{assetIntermediatePath}.version.asset";
+                string versionProjectRelativeFinalPath = "Assets" + versionFinalPath.Substring(Application.dataPath.Length);
+
+                string resourcePath = Path.Combine(directoryPath, bundleInfo.AssetBundlePlatform.ToString());
+
+                Directory.CreateDirectory(directoryPath);
+
+                EditorUserBuildSettings.SwitchActiveBuildTarget(bundleInfo.BuildTargetGroup, bundleInfo.BuildTarget);
+                var bundleManifest = BuildPipeline.BuildAssetBundles(directoryPath, bundleOptions, bundleInfo.BuildTarget);
+
+                var bundleVersion = ScriptableObject.CreateInstance<AssetBundleVersion>();
+                bundleVersion.Identity = bundleManifest.GetAssetBundleHash(StateSynchronizationObserver.AssetBundleName).ToString().ToLowerInvariant();
+                bundleVersion.DisplayName = $"{PlayerSettings.productName} - {System.DateTime.Now:g}";
 
                 File.Delete(resourcePath);
                 File.Delete($"{resourcePath}.manifest");
 
-                File.Delete($"{assetPath}.bytes");
-                File.Delete($"{assetPath}.manifest.bytes");
+                File.Delete(assetFinalPath);
+                File.Delete(manifestFinalPath);
+                File.Delete(versionFinalPath);
 
-                if (File.Exists(assetPath))
+                if (File.Exists(assetIntermediatePath))
                 {
-                    File.Move(assetPath, $"{assetPath}.bytes");
-                    File.Move($"{assetPath}.manifest", $"{assetPath}.manifest.bytes");
+                    File.Move(assetIntermediatePath, assetFinalPath);
+                    File.Move(manifestIntermediatePath, manifestFinalPath);
+                    AssetDatabase.CreateAsset(bundleVersion, versionProjectRelativeFinalPath);
                 }
                 else
                 {
-                    Debug.LogError($"Expected that asset bundle {assetPath} was generated, but it does not exist");
+                    Debug.LogError($"Expected that asset bundle {assetIntermediatePath} was generated, but it does not exist");
                 }
             }
         }

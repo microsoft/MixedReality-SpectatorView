@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 3635376042
+CRC: 2925813663
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 69e3319eb2f2f0e7045ac01453043ccf
+    Hash: b7e1ee132ff1ffafb35561530ad18068
   TypeTreeHash:
     serializedVersion: 2
     Hash: cbf5003a09e70257b90f1ba730fb5830
@@ -52,7 +52,6 @@ Assets:
 - Assets/Generated.StateSynchronization.AssetCaches/Resources/MaterialPropertyAssetCache.asset
 - Assets/Generated.StateSynchronization.AssetCaches/Resources/AudioMixerGroupAssetCache.asset
 - Assets/Generated.StateSynchronization.AssetCaches/Resources/TextureAssetCache.asset
-- Assets/Demo/PlaygroundButtons/Shaders/Rounded_Edge_Thick.shader
 - Assets/Generated.StateSynchronization.AssetCaches/Resources/SpriteAssetCache.asset
 - Assets/Generated.StateSynchronization.AssetCaches/Resources/MeshAssetCache.asset
 - Assets/Generated.StateSynchronization.AssetCaches/Resources/TextMeshProFontAssetCache.asset

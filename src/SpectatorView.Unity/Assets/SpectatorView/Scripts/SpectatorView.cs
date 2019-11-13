@@ -79,6 +79,11 @@ namespace Microsoft.MixedReality.SpectatorView
         [SerializeField]
         private StateSynchronizationObserver stateSynchronizationObserver = null;
 
+        /// <summary>
+        /// StateSynchronizationObserver MonoBehaviour
+        /// </summary>
+        public StateSynchronizationObserver StateSynchronizationObserver => stateSynchronizationObserver;
+
         [Header("Spatial Alignment")]
         [Tooltip("A prioritized list of SpatialLocalizationInitializers that should be used when a spectator connects.")]
         [SerializeField]
@@ -320,9 +325,9 @@ namespace Microsoft.MixedReality.SpectatorView
                 recordingVisualPrefab = MobileRecordingSettings.Instance.OverrideMobileRecordingServicePrefab;
             }
 
-            if (MobileRecordingSettings.IsInitialized && 
-                MobileRecordingSettings.Instance.EnableMobileRecordingService &&
-                recordingVisualPrefab != null)
+            bool enableMobileRecordingService = (!MobileRecordingSettings.IsInitialized) || MobileRecordingSettings.Instance.EnableMobileRecordingService;
+
+            if (enableMobileRecordingService && (recordingVisualPrefab != null))
             {
                 mobileRecordingServiceVisual = Instantiate(recordingVisualPrefab);
 
