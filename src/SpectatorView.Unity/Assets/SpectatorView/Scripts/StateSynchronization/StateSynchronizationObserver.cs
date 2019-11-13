@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using CallerMemberNameAttribute = System.Runtime.CompilerServices.CallerMemberNameAttribute;
 
 namespace Microsoft.MixedReality.SpectatorView
 {
@@ -20,8 +21,17 @@ namespace Microsoft.MixedReality.SpectatorView
         public const string AssetBundleRequestInfoCommand = "RequestAssetBundleInfo";
         public const string AssetBundleReportInfoCommand = "ReportAssetBundleInfo";
         public const string AssetBundleRequestDownloadCommand = "RequestAssetBundleDownload";
-        public const string AssetBundleReportDownloadCommand = "ReportAssetBundleDownload";
+        public const string AssetBundleReportDownloadStartCommand = "ReportAssetBundleDownloadStart";
+        public const string AssetBundleReportDownloadDataCommand = "ReportAssetBundleDownloadData";
         public const string AssetLoadCompletedCommand = "AssetLoadCompleted";
+
+        public const string AssetBundleName = "spectatorview";
+
+        /// <summary>
+        /// This is the maximum number of bytes the <see cref="StateSynchronizationBroadcaster"/> should send and the <see cref="StateSynchronizationObserver"/>
+        /// can expect to receive in a given <see cref="AssetBundleReportDownloadDataCommand"/>.
+        /// </summary>
+        public const int AssetBundleReportDownloadDataMaxByteCount = 256 * 1024;
 
         /// <summary>
         /// Check to enable debug logging.
@@ -41,7 +51,11 @@ namespace Microsoft.MixedReality.SpectatorView
         private float timeSinceLastHeartbeat = 0.0f;
         private HologramSynchronizer hologramSynchronizer = new HologramSynchronizer();
         private StateSynchronizationPerformanceMonitor.ParsedMessage lastPerfMessage = new StateSynchronizationPerformanceMonitor.ParsedMessage(false, null, null);
+
         private AssetBundle currentAssetBundle;
+        private string currentAssetBundleIdentity;
+        private string currentAssetBundleDisplayName;
+        private AssetBundleReceive pendingAssetBundleReceive;
 
         private static readonly byte[] heartbeatMessage = GenerateHeartbeatMessage();
 
@@ -72,7 +86,28 @@ namespace Microsoft.MixedReality.SpectatorView
             RegisterCommandHandler(CameraCommand, HandleCameraCommand);
             RegisterCommandHandler(PerfCommand, HandlePerfCommand);
             RegisterCommandHandler(AssetBundleReportInfoCommand, HandleAssetBundleInfoCommand);
-            RegisterCommandHandler(AssetBundleReportDownloadCommand, HandleAssetBundleDownloadCommand);
+            RegisterCommandHandler(AssetBundleReportDownloadStartCommand, HandleAssetBundleDownloadStartCommand);
+            RegisterCommandHandler(AssetBundleReportDownloadDataCommand, HandleAssetBundleDownloadDataCommand);
+
+            AssetCache.AssetCacheCountChanged += AssetCacheCountChanged;
+            AssetState = new AssetState
+            {
+                Status = (AssetCache.AssetCacheCount > 0) ? AssetStateStatus.Preloaded : AssetStateStatus.None
+            };
+        }
+
+        protected override void OnDestroy()
+        {
+            AssetCache.AssetCacheCountChanged -= AssetCacheCountChanged;
+
+            UnregisterCommandHandler(SyncCommand, HandleSyncCommand);
+            UnregisterCommandHandler(CameraCommand, HandleCameraCommand);
+            UnregisterCommandHandler(PerfCommand, HandlePerfCommand);
+            UnregisterCommandHandler(AssetBundleReportInfoCommand, HandleAssetBundleInfoCommand);
+            UnregisterCommandHandler(AssetBundleReportDownloadStartCommand, HandleAssetBundleDownloadStartCommand);
+            UnregisterCommandHandler(AssetBundleReportDownloadDataCommand, HandleAssetBundleDownloadDataCommand);
+
+            base.OnDestroy();
         }
 
         protected void Update()
@@ -81,12 +116,12 @@ namespace Microsoft.MixedReality.SpectatorView
             hologramSynchronizer.UpdateHolograms();
         }
 
-        private void DebugLog(string message)
+        private void DebugLog(string message, [CallerMemberName] string callerMemberName = null)
         {
             if (debugLogging)
             {
                 string connectedState = IsConnected ? $"Connected - {ConnectedIPAddress}" : "Not Connected";
-                Debug.Log($"StateSynchronizationObserver - {connectedState}: {message}");
+                Debug.Log($"StateSynchronizationObserver - {callerMemberName} - {connectedState}: {message}", this);
             }
         }
 
@@ -102,12 +137,17 @@ namespace Microsoft.MixedReality.SpectatorView
             }
 
             hologramSynchronizer.Reset(endpoint);
-            ResetAssetCaches();
+
+            AssetState = new AssetState
+            {
+                Status = AssetStateStatus.RequestingAssetBundle,
+                AssetBundleDisplayName = currentAssetBundleDisplayName,
+            };
 
             SendAssetBundleInfoRequest(endpoint);
         }
 
-        public void HandleCameraCommand(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
+        private void HandleCameraCommand(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
         {
             float timeStamp = reader.ReadSingle();
             hologramSynchronizer.RegisterCameraUpdate(timeStamp);
@@ -115,13 +155,13 @@ namespace Microsoft.MixedReality.SpectatorView
             transform.rotation = reader.ReadQuaternion();
         }
 
-        public void HandleSyncCommand(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
+        private void HandleSyncCommand(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
         {
             float timeStamp = reader.ReadSingle();
             hologramSynchronizer.RegisterFrameData(reader.ReadBytes(remainingDataSize), timeStamp);
         }
 
-        public void HandlePerfCommand(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
+        private void HandlePerfCommand(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
         {
             StateSynchronizationPerformanceMonitor.ReadMessage(reader, out lastPerfMessage);
         }
@@ -154,31 +194,177 @@ namespace Microsoft.MixedReality.SpectatorView
             bool hasAssetBundle = reader.ReadBoolean();
             if (hasAssetBundle)
             {
-                DebugLog($"We determined that there is an asset bundle for this platform");
-                SendAssetBundleDownloadRequest(endpoint);
+                var assetBundleIdentity = reader.ReadString();
+                var assetBundleDisplayName = reader.ReadString();
+
+                if (assetBundleIdentity == currentAssetBundleIdentity)
+                {
+                    DebugLog($"Not requesting asset bundle download. Already have asset bundle {AssetBundleVersion.Format(currentAssetBundleIdentity, currentAssetBundleDisplayName)}.");
+
+                    AssetState = new AssetState
+                    {
+                        Status = AssetStateStatus.AssetBundleLoaded,
+                        AssetBundleDisplayName = currentAssetBundleDisplayName,
+                    };
+
+                    SendAssetsLoaded(endpoint);
+                }
+                else
+                {
+                    DebugLog($"Requesting asset bundle download for {AssetBundleVersion.Format(assetBundleIdentity, assetBundleDisplayName)}...");
+                    Debug.Assert(AssetState.Status == AssetStateStatus.RequestingAssetBundle, this);
+                    SendAssetBundleDownloadRequest(endpoint);
+                }
             }
             else
             {
-                DebugLog($"We determined that there is NOT an asset bundle for this platform");
+                DebugLog($"Not requesting asset bundle download. None is available for platform {AssetBundlePlatformInfo.Current}.");
+
+                Debug.Assert(currentAssetBundle == null, "If we already have an asset bundle loaded, but the remote user doesn't have one, it probably means we have mismatched assets... how did we get into this state?  Should we clear assets?", this);
+
+                AssetState = new AssetState
+                {
+                    Status = (AssetCache.AssetCacheCount > 0) ? AssetStateStatus.Preloaded : AssetStateStatus.NonePreloadedAndNoAssetBundleAvailable,
+                };
+
                 SendAssetsLoaded(endpoint);
             }
         }
 
-        private void HandleAssetBundleDownloadCommand(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
+        private void HandleAssetBundleDownloadStartCommand(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
         {
-            int length = reader.ReadInt32();
-            byte[] rawAssetBundle;
-            if (length > 0)
-            {
-                rawAssetBundle = reader.ReadBytes(length);
-                Debug.Log("Loading asset bundle");
-                currentAssetBundle = AssetBundle.LoadFromMemory(rawAssetBundle);
-                Debug.Log("Asset bundle load completed");
-                currentAssetBundle.LoadAllAssets();
-            }
+            bool hasAssetBundle = reader.ReadBoolean();
 
-            SendAssetsLoaded(endpoint);
+            if (hasAssetBundle)
+            {
+                ResetAssetCaches();
+
+                currentAssetBundleIdentity = reader.ReadString();
+                currentAssetBundleDisplayName = reader.ReadString();
+
+                pendingAssetBundleReceive = new AssetBundleReceive
+                {
+                    Data = new byte[reader.ReadInt32()],
+                    NextDataToReceiveIndex = 0,
+                };
+
+                DebugLog($"Receiving asset bundle {AssetBundleVersion.Format(currentAssetBundleIdentity, currentAssetBundleDisplayName)} with {FormatBytes(pendingAssetBundleReceive.Data.Length)}...");
+
+                AssetState = new AssetState
+                {
+                    Status = AssetStateStatus.DownloadingAssetBundle,
+                    AssetBundleDisplayName = currentAssetBundleDisplayName,
+                    BytesSoFar = pendingAssetBundleReceive.NextDataToReceiveIndex,
+                    TotalBytes = pendingAssetBundleReceive.Data.Length,
+                };
+            }
+            else
+            {
+                DebugLog($"Unexpectedly got no asset bundle for platform {AssetBundlePlatformInfo.Current}.");
+
+                AssetState = new AssetState
+                {
+                    Status = (AssetCache.AssetCacheCount > 0) ? AssetStateStatus.Preloaded : AssetStateStatus.NonePreloadedAndNoAssetBundleAvailable,
+                };
+
+                SendAssetsLoaded(endpoint);
+            }
         }
+
+        private void HandleAssetBundleDownloadDataCommand(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
+        {
+            if (pendingAssetBundleReceive == null)
+            {
+                DebugLog($"Unexpected command. There is no {nameof(pendingAssetBundleReceive)}.");
+            }
+            else
+            {
+                Debug.Assert(currentAssetBundle == null, this);
+
+                var newData = reader.ReadBytes(remainingDataSize);
+
+                if ((pendingAssetBundleReceive.NextDataToReceiveIndex + newData.Length) > pendingAssetBundleReceive.Data.Length)
+                {
+                    DebugLog($"Unexpectedly got too much data for {nameof(pendingAssetBundleReceive)}.");
+
+                    AssetState = new AssetState
+                    {
+                        Status = AssetStateStatus.ErrorDownloadingAssetBundle,
+                        AssetBundleDisplayName = currentAssetBundleDisplayName,
+                        ErrorDetails = $"Unexpectedly got too much data.",
+                    };
+
+                    ResetAssetCaches();
+                }
+                else
+                {
+                    System.Array.Copy(newData, 0, pendingAssetBundleReceive.Data, pendingAssetBundleReceive.NextDataToReceiveIndex, newData.Length);
+                    pendingAssetBundleReceive.NextDataToReceiveIndex += newData.Length;
+
+                    if (pendingAssetBundleReceive.NextDataToReceiveIndex == pendingAssetBundleReceive.Data.Length)
+                    {
+                        DebugLog($"Successfully received all {FormatBytes(pendingAssetBundleReceive.Data.Length)} of asset bundle {AssetBundleVersion.Format(currentAssetBundleIdentity, currentAssetBundleDisplayName)}. Loading its assets...");
+
+                        try
+                        {
+                            currentAssetBundle = AssetBundle.LoadFromMemory(pendingAssetBundleReceive.Data);
+                            pendingAssetBundleReceive = null;
+
+                            DebugLog($"Successfully loaded asset bundle. Loading all assets from bundle...");
+                            currentAssetBundle.LoadAllAssets();
+                        }
+                        catch (System.Exception ex)
+                        {
+                            AssetState = new AssetState
+                            {
+                                Status = AssetStateStatus.ErrorLoadingAssetBundle,
+                                AssetBundleDisplayName = currentAssetBundleDisplayName,
+                                ErrorDetails = $"{ex.GetType()} - {ex.Message}",
+                            };
+
+                            ResetAssetCaches();
+                            return;
+                        }
+
+                        DebugLog($"All assets loaded from bundle.");
+
+                        AssetState = new AssetState
+                        {
+                            Status = AssetStateStatus.AssetBundleLoaded,
+                            AssetBundleDisplayName = currentAssetBundleDisplayName,
+                        };
+
+                        SendAssetsLoaded(endpoint);
+                    }
+                    else
+                    {
+                        DebugLog($"Received {FormatByteProgress(pendingAssetBundleReceive.NextDataToReceiveIndex, pendingAssetBundleReceive.Data.Length)} of asset bundle. Waiting for more...");
+
+                        AssetState = new AssetState
+                        {
+                            Status = AssetStateStatus.DownloadingAssetBundle,
+                            AssetBundleDisplayName = currentAssetBundleDisplayName,
+                            BytesSoFar = pendingAssetBundleReceive.NextDataToReceiveIndex,
+                            TotalBytes = pendingAssetBundleReceive.Data.Length,
+                        };
+                    }
+                }
+            }
+        }
+
+        private AssetState assetState = new AssetState { Status = AssetStateStatus.Unknown };
+        internal AssetState AssetState
+        {
+            get { return assetState; }
+
+            private set
+            {
+                assetState = value;
+                AssetStateChanged?.Invoke(assetState);
+            }
+        }
+
+        internal event Action<AssetState> AssetStateChanged;
 
         private void CheckAndSendHeartbeat()
         {
@@ -256,6 +442,132 @@ namespace Microsoft.MixedReality.SpectatorView
                 currentAssetBundle.Unload(unloadAllLoadedObjects: true);
                 currentAssetBundle = null;
             }
+
+            currentAssetBundleIdentity = null;
+            currentAssetBundleDisplayName = null;
+            pendingAssetBundleReceive = null;
         }
+
+        private void AssetCacheCountChanged(int assetCacheCount)
+        {
+            switch (AssetState.Status)
+            {
+                case AssetStateStatus.None:
+                    if (assetCacheCount > 0)
+                    {
+                        AssetState = new AssetState { Status = AssetStateStatus.Preloaded };
+                    }
+                    break;
+
+                case AssetStateStatus.Preloaded:
+                    if (assetCacheCount <= 0)
+                    {
+                        AssetState = new AssetState { Status = AssetStateStatus.None };
+                    }
+                    break;
+
+                case AssetStateStatus.RequestingAssetBundle:
+                case AssetStateStatus.DownloadingAssetBundle:
+                case AssetStateStatus.AssetBundleLoaded:
+                case AssetStateStatus.NonePreloadedAndNoAssetBundleAvailable:
+                case AssetStateStatus.ErrorDownloadingAssetBundle:
+                case AssetStateStatus.ErrorLoadingAssetBundle:
+                    // No adjustments needed
+                    break;
+
+                case AssetStateStatus.Unknown:
+                default:
+                    Debug.LogError($"Unexpected asset state status \"{AssetState.Status}\".", this);
+                    break;
+            }
+        }
+
+        public static string FormatByteProgress(int bytesSoFar, int totalBytes)
+        {
+            GetBytesFormat(totalBytes, out float bytesDivisor, out string bytesFormat, out string bytesUnitSpecifier);
+
+            var bytesSoFarText = (bytesSoFar / bytesDivisor).ToString(bytesFormat);
+            var totalBytesText = (totalBytes / bytesDivisor).ToString(bytesFormat);
+
+            var percentCompleteText = (100.0 * bytesSoFar / totalBytes).ToString("N1");
+
+            return $"{percentCompleteText}% ({bytesSoFarText}/{totalBytesText} {bytesUnitSpecifier})";
+        }
+
+        public static string FormatBytes(int totalBytes)
+        {
+            GetBytesFormat(totalBytes, out float divisor, out string format, out string unitSpecifier);
+
+            return $"{(totalBytes / divisor).ToString(format)} {unitSpecifier}";
+        }
+
+        private static void GetBytesFormat(int totalBytes, out float divisor, out string format, out string unitSpecifier)
+        {
+            if (totalBytes >= 1024 * 1024)
+            {
+                divisor = 1024 * 1024;
+                format = "N1";
+                unitSpecifier = "MB";
+            }
+            else if (totalBytes >= 1024)
+            {
+                divisor = 1024;
+                format = "N1";
+                unitSpecifier = "KB";
+            }
+            else
+            {
+                divisor = 1;
+                format = "N0";
+                unitSpecifier = "B";
+            }
+        }
+
+        private class AssetBundleReceive
+        {
+            public byte[] Data;
+            public int NextDataToReceiveIndex;
+        }
+    }
+
+    internal enum AssetStateStatus
+    {
+        Unknown,
+
+        None,
+        Preloaded,
+
+        RequestingAssetBundle,
+        DownloadingAssetBundle,
+        AssetBundleLoaded,
+
+        NonePreloadedAndNoAssetBundleAvailable,
+        ErrorDownloadingAssetBundle,
+        ErrorLoadingAssetBundle,
+    }
+
+    internal struct AssetState
+    {
+        public AssetStateStatus Status;
+
+        /// <summary>
+        /// For <see cref="Status"/> associated with an asset bundle, this is the asset bundle's display name. Otherwise, undefined.
+        /// </summary>
+        public string AssetBundleDisplayName;
+
+        /// <summary>
+        /// For <see cref="Status"/> that has partial bytes associated with it, the byte count so far. Otherwise, undefined.
+        /// </summary>
+        public int BytesSoFar;
+
+        /// <summary>
+        /// For <see cref="Status"/> that has total bytes associated with it, the total byte count. Otherwise, undefined.
+        /// </summary>
+        public int TotalBytes;
+
+        /// <summary>
+        /// For <see cref="Status"/> that indicates an error, the error message. Otherwise, undefined.
+        /// </summary>
+        public string ErrorDetails;
     }
 }

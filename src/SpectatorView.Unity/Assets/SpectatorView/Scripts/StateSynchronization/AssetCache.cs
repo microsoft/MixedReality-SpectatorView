@@ -15,6 +15,9 @@ namespace Microsoft.MixedReality.SpectatorView
 {
     internal abstract class AssetCache : ScriptableObject
     {
+        public static int AssetCacheCount { get; private set; }
+        public static event Action<int> AssetCacheCountChanged;
+
         public const string assetCacheDirectory = "Generated.StateSynchronization.AssetCaches";
         private const string spectatorViewAssetBundleName = "SpectatorView";
 
@@ -72,6 +75,18 @@ namespace Microsoft.MixedReality.SpectatorView
 #else
             return LoadAssetCache<TAssetCache>();
 #endif
+        }
+
+        protected virtual void Awake()
+        {
+            AssetCacheCount++;
+            AssetCacheCountChanged?.Invoke(AssetCacheCount);
+        }
+
+        protected virtual void OnDestroy()
+        {
+            AssetCacheCount--;
+            AssetCacheCountChanged?.Invoke(AssetCacheCount);
         }
 
         public virtual void ClearAssetCache()
@@ -188,15 +203,19 @@ namespace Microsoft.MixedReality.SpectatorView
     {
         private static TAssetCacheSingleton _Instance;
 
-        protected virtual void Awake()
+        protected override void Awake()
         {
+            base.Awake();
+
             Debug.Log("Asset awake for " + this.GetType().Name);
             _Instance = (TAssetCacheSingleton)this;
         }
 
-        protected virtual void OnDestroy()
+        protected override void OnDestroy()
         {
             _Instance = null;
+
+            base.OnDestroy();
         }
 
         /// <summary>
