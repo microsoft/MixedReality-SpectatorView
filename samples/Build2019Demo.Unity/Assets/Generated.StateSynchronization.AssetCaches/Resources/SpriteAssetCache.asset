@@ -190,3 +190,21 @@ MonoBehaviour:
   - AssetId:
       m_storage: e632a796-6a7c-4129-b587-51dae4ae1652
     Asset: {fileID: 21300000, guid: d6cb64feb90e0314f9c6e885fcc3d39b, type: 3}
+  - AssetId:
+      m_storage: ea9da5b1-d3b7-4010-9efe-3b99a6556e6b
+    Asset: {fileID: 21300000, guid: b3bc1c32ce2284758a917d938d8c3693, type: 3}
+  - AssetId:
+      m_storage: 1fe54ad7-7999-40ca-a162-0c4d7d5e0215
+    Asset: {fileID: 21300000, guid: 209563986116240d6aaec5a6fb7786a7, type: 3}
+  - AssetId:
+      m_storage: 970167fd-5f25-45d3-a967-a86581caa7fe
+    Asset: {fileID: 21300000, guid: a41c8e3a2c8914604bc66103fad54c24, type: 3}
+  - AssetId:
+      m_storage: 43c436bc-445b-4a48-a7af-f0a89eb9e7d9
+    Asset: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  - AssetId:
+      m_storage: a44faf43-334d-43e3-9ab9-490a6d296a7c
+    Asset: {fileID: 10911, guid: 0000000000000000f000000000000000, type: 0}
+  - AssetId:
+      m_storage: 87223c5f-fa1c-456a-9a14-cbcfb600f288
+    Asset: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
