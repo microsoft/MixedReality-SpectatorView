@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 namespace Microsoft.MixedReality.SpectatorView
 {
-    public class AssetStateVisual : MonoBehaviour
+    internal class AssetStateVisual : MonoBehaviour
     {
         [Tooltip("Text used to display asset state.")]
         [SerializeField]

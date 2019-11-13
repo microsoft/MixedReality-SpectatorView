@@ -26,6 +26,11 @@ namespace Microsoft.MixedReality.SpectatorView
         public const string AssetLoadCompletedCommand = "AssetLoadCompleted";
 
         public const string AssetBundleName = "spectatorview";
+
+        /// <summary>
+        /// This is the maximum number of bytes the <see cref="StateSynchronizationBroadcaster"/> should send and the <see cref="StateSynchronizationObserver"/>
+        /// can expect to receive in a given <see cref="AssetBundleReportDownloadDataCommand"/>.
+        /// </summary>
         public const int AssetBundleReportDownloadDataMaxByteCount = 256 * 1024;
 
         /// <summary>
@@ -132,7 +137,6 @@ namespace Microsoft.MixedReality.SpectatorView
             }
 
             hologramSynchronizer.Reset(endpoint);
-            // TODO: should this be called here?!?!?!  ResetAssetCaches();
 
             AssetState = new AssetState
             {
@@ -349,7 +353,7 @@ namespace Microsoft.MixedReality.SpectatorView
         }
 
         private AssetState assetState = new AssetState { Status = AssetStateStatus.Unknown };
-        public AssetState AssetState
+        internal AssetState AssetState
         {
             get { return assetState; }
 
@@ -360,7 +364,7 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
-        public event System.Action<AssetState> AssetStateChanged;
+        internal event Action<AssetState> AssetStateChanged;
 
         private void CheckAndSendHeartbeat()
         {
@@ -526,7 +530,7 @@ namespace Microsoft.MixedReality.SpectatorView
         }
     }
 
-    public enum AssetStateStatus
+    internal enum AssetStateStatus
     {
         Unknown,
 
@@ -542,7 +546,7 @@ namespace Microsoft.MixedReality.SpectatorView
         ErrorLoadingAssetBundle,
     }
 
-    public struct AssetState
+    internal struct AssetState
     {
         public AssetStateStatus Status;
 

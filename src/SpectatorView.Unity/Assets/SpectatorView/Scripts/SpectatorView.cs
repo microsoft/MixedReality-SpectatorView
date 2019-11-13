@@ -78,6 +78,10 @@ namespace Microsoft.MixedReality.SpectatorView
         [Tooltip("StateSynchronizationObserver MonoBehaviour")]
         [SerializeField]
         private StateSynchronizationObserver stateSynchronizationObserver = null;
+
+        /// <summary>
+        /// StateSynchronizationObserver MonoBehaviour
+        /// </summary>
         public StateSynchronizationObserver StateSynchronizationObserver => stateSynchronizationObserver;
 
         [Header("Spatial Alignment")]
