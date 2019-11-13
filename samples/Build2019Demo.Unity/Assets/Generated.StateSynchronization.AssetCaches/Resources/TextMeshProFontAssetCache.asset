@@ -14,26 +14,42 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   assets:
   - AssetId:
-      m_storage: 0dd21619-d0ea-4f91-87f9-0d208a64fa61
-    Asset: {fileID: 11400000, guid: 8f25585131267564cab5bbdafd36a94f, type: 2}
-  - AssetId:
-      m_storage: 158dac00-74df-4ed7-8c39-13ad5da0f35a
-    Asset: {fileID: 11400000, guid: f137eba12ee10834cb19632437cfdb2e, type: 2}
-  - AssetId:
-      m_storage: 48a317a5-8183-4ccc-aa17-4615808fd367
-    Asset: {fileID: 11400000, guid: fc8fa6e10f9c7fa4fa49a53ec702237e, type: 2}
-  - AssetId:
-      m_storage: e0b39d61-362e-4ca5-97df-2cd3fc14336c
-    Asset: {fileID: 11400000, guid: d94d0d64ec3545b408d5621e7d27cf96, type: 2}
-  - AssetId:
-      m_storage: b47c946e-054e-4dc3-8ee0-7970b3c9c546
+      guid:
+        m_storage: 6a84f857-bec7-e734-5843-ae29404c57ce
+      fileIdentifier: 11400000
     Asset: {fileID: 11400000, guid: 6a84f857bec7e7345843ae29404c57ce, type: 2}
   - AssetId:
-      m_storage: 5bb956e0-50ef-49c7-9dfb-016017b7c0ec
+      guid:
+        m_storage: 8f255851-3126-7564-cab5-bbdafd36a94f
+      fileIdentifier: 11400000
+    Asset: {fileID: 11400000, guid: 8f25585131267564cab5bbdafd36a94f, type: 2}
+  - AssetId:
+      guid:
+        m_storage: 8f586378-b4e1-44a9-851e-7b34d9b748ee
+      fileIdentifier: 11400000
+    Asset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  - AssetId:
+      guid:
+        m_storage: afc8299d-5d5b-bd44-0a06-16c8ecbc7217
+      fileIdentifier: 11400000
     Asset: {fileID: 11400000, guid: afc8299d5d5bbd440a0616c8ecbc7217, type: 2}
   - AssetId:
-      m_storage: 382d06c8-f5f2-4df5-8748-04ae26a4eeaa
+      guid:
+        m_storage: cf40b52f-b347-8de4-ea4a-df277e3b75ef
+      fileIdentifier: 11400000
     Asset: {fileID: 11400000, guid: cf40b52fb3478de4ea4adf277e3b75ef, type: 2}
   - AssetId:
-      m_storage: 4b6839bb-00be-4c66-9384-d1d971fd5f40
-    Asset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+      guid:
+        m_storage: d94d0d64-ec35-45b4-08d5-621e7d27cf96
+      fileIdentifier: 11400000
+    Asset: {fileID: 11400000, guid: d94d0d64ec3545b408d5621e7d27cf96, type: 2}
+  - AssetId:
+      guid:
+        m_storage: f137eba1-2ee1-0834-cb19-632437cfdb2e
+      fileIdentifier: 11400000
+    Asset: {fileID: 11400000, guid: f137eba12ee10834cb19632437cfdb2e, type: 2}
+  - AssetId:
+      guid:
+        m_storage: fc8fa6e1-0f9c-7fa4-fa49-a53ec702237e
+      fileIdentifier: 11400000
+    Asset: {fileID: 11400000, guid: fc8fa6e10f9c7fa4fa49a53ec702237e, type: 2}

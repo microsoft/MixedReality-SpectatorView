@@ -19,12 +19,12 @@ namespace Microsoft.MixedReality.SpectatorView
             StateSynchronizationSceneManager.Instance.RegisterService(this, new ComponentBroadcasterDefinition<TextBroadcaster>(typeof(Text)));
         }
 
-        public Guid GetFontId(Font font)
+        public AssetId GetFontId(Font font)
         {
             var fontAssets = FontAssetCache.Instance;
             if (fontAssets == null)
             {
-                return Guid.Empty;
+                return AssetId.Empty;
             }
             else
             {
@@ -32,7 +32,7 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
-        public Font GetFont(Guid guid)
+        public Font GetFont(AssetId assetId)
         {
             var fontAssets = FontAssetCache.Instance;
             if (fontAssets == null)
@@ -41,7 +41,7 @@ namespace Microsoft.MixedReality.SpectatorView
             }
             else
             {
-                return fontAssets.GetAsset(guid);
+                return fontAssets.GetAsset(assetId);
             }
         }
     }

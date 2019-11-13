@@ -13,42 +13,6 @@ MonoBehaviour:
   m_Name: MaterialPropertyAssetCache
   m_EditorClassIdentifier: 
   materialPropertyAssets:
-  - shader: {fileID: 10770, guid: 0000000000000000f000000000000000, type: 0}
-    shaderName: UI/Default
-    propertyName: _MainTex
-    propertyType: 4
-  - shader: {fileID: 10770, guid: 0000000000000000f000000000000000, type: 0}
-    shaderName: UI/Default
-    propertyName: _Color
-    propertyType: 0
-  - shader: {fileID: 10770, guid: 0000000000000000f000000000000000, type: 0}
-    shaderName: UI/Default
-    propertyName: _StencilComp
-    propertyType: 2
-  - shader: {fileID: 10770, guid: 0000000000000000f000000000000000, type: 0}
-    shaderName: UI/Default
-    propertyName: _Stencil
-    propertyType: 2
-  - shader: {fileID: 10770, guid: 0000000000000000f000000000000000, type: 0}
-    shaderName: UI/Default
-    propertyName: _StencilOp
-    propertyType: 2
-  - shader: {fileID: 10770, guid: 0000000000000000f000000000000000, type: 0}
-    shaderName: UI/Default
-    propertyName: _StencilWriteMask
-    propertyType: 2
-  - shader: {fileID: 10770, guid: 0000000000000000f000000000000000, type: 0}
-    shaderName: UI/Default
-    propertyName: _StencilReadMask
-    propertyType: 2
-  - shader: {fileID: 10770, guid: 0000000000000000f000000000000000, type: 0}
-    shaderName: UI/Default
-    propertyName: _ColorMask
-    propertyType: 2
-  - shader: {fileID: 10770, guid: 0000000000000000f000000000000000, type: 0}
-    shaderName: UI/Default
-    propertyName: _UseUIAlphaClip
-    propertyType: 2
   - shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
     shaderName: Standard
     propertyName: _Color
@@ -157,6 +121,46 @@ MonoBehaviour:
     shaderName: Standard
     propertyName: _ZWrite
     propertyType: 2
+  - shader: {fileID: 10770, guid: 0000000000000000f000000000000000, type: 0}
+    shaderName: UI/Default
+    propertyName: _MainTex
+    propertyType: 4
+  - shader: {fileID: 10770, guid: 0000000000000000f000000000000000, type: 0}
+    shaderName: UI/Default
+    propertyName: _Color
+    propertyType: 0
+  - shader: {fileID: 10770, guid: 0000000000000000f000000000000000, type: 0}
+    shaderName: UI/Default
+    propertyName: _StencilComp
+    propertyType: 2
+  - shader: {fileID: 10770, guid: 0000000000000000f000000000000000, type: 0}
+    shaderName: UI/Default
+    propertyName: _Stencil
+    propertyType: 2
+  - shader: {fileID: 10770, guid: 0000000000000000f000000000000000, type: 0}
+    shaderName: UI/Default
+    propertyName: _StencilOp
+    propertyType: 2
+  - shader: {fileID: 10770, guid: 0000000000000000f000000000000000, type: 0}
+    shaderName: UI/Default
+    propertyName: _StencilWriteMask
+    propertyType: 2
+  - shader: {fileID: 10770, guid: 0000000000000000f000000000000000, type: 0}
+    shaderName: UI/Default
+    propertyName: _StencilReadMask
+    propertyType: 2
+  - shader: {fileID: 10770, guid: 0000000000000000f000000000000000, type: 0}
+    shaderName: UI/Default
+    propertyName: _ColorMask
+    propertyType: 2
+  - shader: {fileID: 10770, guid: 0000000000000000f000000000000000, type: 0}
+    shaderName: UI/Default
+    propertyName: _UseUIAlphaClip
+    propertyType: 2
+  - shader: {fileID: 4800000, guid: b0afe19eb5a14bd4a804a6dcae920c15, type: 3}
+    shaderName: SV/RGBToYUV
+    propertyName: _MainTex
+    propertyType: 4
   - shader: {fileID: 4800000, guid: b0afe19eb5a14bd4a804a6dcae920c15, type: 3}
     shaderName: SV/RGBToYUV
     propertyName: _MainTex

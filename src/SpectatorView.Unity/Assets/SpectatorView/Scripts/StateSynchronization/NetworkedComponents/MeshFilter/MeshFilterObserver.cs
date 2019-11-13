@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.SpectatorView
         {
             if (MeshFilterBroadcaster.HasFlag(changeType, MeshFilterBroadcaster.MeshFilterChangeType.Mesh))
             {
-                Guid assetId = message.ReadGuid();
+                AssetId assetId = message.ReadAssetId();
                 AssetService.Instance.AttachMeshFilter(this.gameObject, assetId);
             }
 
