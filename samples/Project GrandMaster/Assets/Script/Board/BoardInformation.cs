@@ -428,7 +428,6 @@ namespace Microsoft.MixedReality.USYD.Board
         /// </summary>
         public void CheckDisplay()
         {
-            EndGameResult.SetActive(true);
             string check = "CHECK!!";
             SetText(check);
             StartCoroutine(FlashText(3, true));
@@ -444,6 +443,7 @@ namespace Microsoft.MixedReality.USYD.Board
 
         IEnumerator FlashText(int duration, bool flashAll)
         {
+            EndGameResult.SetActive(true);
             int time = 0;
             bool active = true;
 
@@ -478,7 +478,6 @@ namespace Microsoft.MixedReality.USYD.Board
         /// </summary>
         public void Checkmate(int colour)
         {
-            EndGameResult.SetActive(true);
             string checkmate = "CHECKMATE";
             SetText(checkmate);
             EndGame(colour);
@@ -502,6 +501,35 @@ namespace Microsoft.MixedReality.USYD.Board
             else { Winner = 0; }
 
             // Display result to players
+            ShowResult();
+            StartCoroutine(FlashText(5, false));
+        }
+
+        /// <summary>
+        /// Forfeit display
+        /// </summary>
+        /// <param name="colour">The colour of the side that forfeited.</param>
+        public void Forfeited(int colour)
+        {
+            GameEnded = true;
+            string text;
+            
+            // White won
+            if (colour == 1)
+            {
+                text = "Black forfeited!";
+                Winner = 1;
+            }
+
+            // Black won
+            else
+            {
+                text = "White forfeited!";
+                Winner = -1;
+            }
+
+            // Display result to players
+            SetText(text);
             ShowResult();
             StartCoroutine(FlashText(5, false));
         }

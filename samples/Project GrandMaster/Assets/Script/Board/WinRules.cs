@@ -175,42 +175,11 @@ namespace Microsoft.MixedReality.USYD.Board
                 GameObject pieceCollided = hit.collider.gameObject;
                 if (string.Compare(pieceCollided.name, "forfeit tile") == 0)
                 {
-                    KingForfeited(type, colour, boardInfo);
                     return true;
                 }
             }
 
             return false;
-        }
-
-        /// <summary>
-        /// Gets all the active pieces of the same colour and starts the animation for knocking them down
-        /// </summary>
-        static void KingForfeited(int type, int colour, BoardInformation boardInfo)
-        {
-            List<GameObject> pieces = boardInfo.GetPieceAvailable();
-
-            // If piece is forfeited player's piece, make piece collapse
-            foreach (GameObject piece in pieces)
-            {
-                PieceInformation thisPiece = piece.GetComponent<PieceInformation>();
-
-                if ((int)thisPiece.type != type && (int)thisPiece.colour == colour)
-                {
-                   // StartCoroutine(pieceAction.FallDown(piece));
-                }
-            }
-
-            // Black won
-            if (colour == 0)
-            {
-                // Display board
-            }
-            // White won
-            else
-            {
-                // Display board
-            }
         }
 
         /// <summary>
