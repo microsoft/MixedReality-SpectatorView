@@ -234,6 +234,7 @@ namespace Microsoft.MixedReality.USYD.ChessPiece
 
             // Check if king placed on the forfeit tile
             if (WinRules.CheckForfeit((int)type, (int)colour, gameObject, boardInfo)) {
+                KingForfeited();
                 return;
             }
 
@@ -437,6 +438,28 @@ namespace Microsoft.MixedReality.USYD.ChessPiece
             {
                 return;
             }
+        }
+
+        /// <summary>
+        /// Gets all the active pieces of the same colour and starts the animation for knocking them down
+        /// </summary>
+        void KingForfeited()
+        {
+            List<GameObject> pieces = boardInfo.GetPieceAvailable();
+
+            // If piece is forfeited player's piece, make piece collapse
+            foreach (GameObject piece in pieces)
+            {
+                PieceInformation thisPiece = piece.GetComponent<PieceInformation>();
+
+                if (thisPiece.type != type && thisPiece.colour == colour)
+                {
+                    StartCoroutine(pieceAction.FallDown(piece));
+                }
+            }
+
+            // Display result
+            boardInfo.Forfeited((int)colour);
         }
 
         void FixPosition()

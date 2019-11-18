@@ -196,7 +196,7 @@ namespace Microsoft.MixedReality.USYD.ChessPiece
                 timePassed = Time.time - timeStart;
                 piece.transform.rotation = Quaternion.Slerp(quatStart, quatEnd, timePassed);
             }
-            while (timePassed < 2f);
+            while (timePassed < 1f);
 
         }
     }
