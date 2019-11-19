@@ -20,19 +20,20 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
             boardInformation = manager.GetComponent<BoardInformation>();
         }
 
-        // Reset button
+        /// <summary>
+        /// Resets the game.
+        /// </summary>
         public void Reset()
         {
             boardInformation.ResetState();
         }
 
+        /// <summary>
+        /// Undoes the last move.
+        /// </summary>
         public void Undo()
         {
-            // Undo to the last move
             boardInformation.UndoState();
-
-            // If playing against a bot, undo again so it's back to your turn
-            if (boardInformation.AIEnabled) { boardInformation.UndoState(); }
         }
     }
 }

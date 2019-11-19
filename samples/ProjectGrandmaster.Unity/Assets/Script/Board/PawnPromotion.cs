@@ -49,8 +49,8 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
                 GameObject pieceCollided = hit.collider.gameObject;
                 if (string.Compare(pieceCollided.name, "forfeit tile") == 0)
                 {
-                    boardInfo.mesh = mesh;
-                    boardInfo.meshChosen = true;
+                    boardInfo.Mesh = mesh;
+                    boardInfo.MeshChosen = true;
                 }
             }
         }

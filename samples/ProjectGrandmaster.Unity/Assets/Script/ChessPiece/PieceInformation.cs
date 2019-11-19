@@ -13,16 +13,16 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
     public class PieceInformation : MonoBehaviour
     {
         // Original position on the board 2D array
-        int originalXPosition;
-        int originalZPosition;
-        Vector3 currPos;
+        private int originalXPosition;
+        private int originalZPosition;
+        private Vector3 currPos;
 
         // Current position on the board 2D array
-        int currentXPosition;
-        int currentZPosition;
+        private int currentXPosition;
+        private int currentZPosition;
 
         // Piece dropped fix boolean
-        bool fixingYPosition;
+        private bool fixingYPosition;
 
         // Piece colour and type {Rook, Knight, Bishop, Queen, King, Pawn}
         public enum Colour { White, Black };
@@ -32,19 +32,19 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
         public char piece;
 
         // Raycast detect only chessboard layer - for valid position checking
-        LayerMask chessboardLayer;
+        private LayerMask chessboardLayer;
 
         // Stores Possible locations the piece can move
-        List<string> possibleMoves;
+        private List<string> possibleMoves;
 
-        GameObject[,] board;
+        private GameObject[,] board;
 
         // Referencing other scripts
-        GameObject manager;
-        BoardInformation boardInfo;
-        PieceAction pieceAction;
-        GameObject chessboard;
-        GhostPickup ghostPickup;
+        private GameObject manager;
+        private BoardInformation boardInfo;
+        private PieceAction pieceAction;
+        private GameObject chessboard;
+        private GhostPickup ghostPickup;
 
         // Pawn promotion related variables
         public bool BeenPromoted { get; set; }
@@ -82,7 +82,7 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
             }
 
             // Get Updated Board
-            board = boardInfo.GetBoard();
+            board = boardInfo.Board;
 
             possibleMoves = new List<string>();
             
@@ -291,7 +291,7 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
                     
                     pieceAction.Eliminate(eliminatedPiece);
                     MoveDataStructure.Move(true, eliminatedPiece, gameObject, originalPosition, newPosition);
-                    boardInfo.RemovedFromBoard(eliminatedPiece);
+                    boardInfo.RemoveFromBoard(eliminatedPiece);
 
                     // Reset fifty move to 0
                     WinRules.FiftyMoves = 0;
