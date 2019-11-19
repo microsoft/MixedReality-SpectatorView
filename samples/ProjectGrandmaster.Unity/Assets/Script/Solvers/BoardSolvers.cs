@@ -4,7 +4,7 @@ using UnityEngine;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Utilities.Solvers;
 
-namespace Microsoft.MixedReality.USYD.Solvers
+namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
 {
     public class BoardSolvers : MonoBehaviour
     {

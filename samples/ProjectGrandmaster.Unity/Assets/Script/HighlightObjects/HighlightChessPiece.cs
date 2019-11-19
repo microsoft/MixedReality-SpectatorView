@@ -5,7 +5,7 @@ using UnityEngine;
 //This script is attached to the chess pieces and is used to change their colour
 //Used by Manipulation Handler script
 
-namespace Microsoft.MixedReality.USYD.HighlightObjects
+namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
 {
     public class HighlightChessPiece : MonoBehaviour
     {

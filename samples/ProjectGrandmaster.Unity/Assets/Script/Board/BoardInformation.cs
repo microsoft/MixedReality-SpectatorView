@@ -5,11 +5,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-using Microsoft.MixedReality.USYD.ChessPiece;
+using Microsoft.MixedReality.SpectatorView.ProjectGrandmaster;
 using UnityEngine.UI;
 using TMPro;
 
-namespace Microsoft.MixedReality.USYD.Board
+namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
 {
     public class BoardInformation : MonoBehaviour
     {

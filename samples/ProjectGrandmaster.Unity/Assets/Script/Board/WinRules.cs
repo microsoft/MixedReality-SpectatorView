@@ -1,10 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Microsoft.MixedReality.USYD.ChessPiece;
+using Microsoft.MixedReality.SpectatorView.ProjectGrandmaster;
 using System;
 
-namespace Microsoft.MixedReality.USYD.Board
+namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
 {
     public class WinRules : MonoBehaviour
     {

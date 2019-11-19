@@ -2,31 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MenuVoiceHandler : MonoBehaviour
+namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
 {
-
-
-    // Start is called before the first frame update
-    void Start()
+    public class MenuVoiceHandler : MonoBehaviour
     {
-        
-    }
+        public void ToggleMenuOn()
+        {
+            if (!gameObject.activeSelf)
+                gameObject.SetActive(true);
+        }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    public void ToggleMenuOn()
-    {
-        if (!gameObject.activeSelf)
-            gameObject.SetActive(true);
-    }
-
-    public void ToggleMenuOff()
-    {
-        if (gameObject.activeSelf)
-            gameObject.SetActive(false);
+        public void ToggleMenuOff()
+        {
+            if (gameObject.activeSelf)
+                gameObject.SetActive(false);
+        }
     }
 }
