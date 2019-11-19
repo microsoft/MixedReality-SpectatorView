@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 //This script is attached to the tile objects and is used to change their colour
-namespace Microsoft.MixedReality.USYD.HighlightObjects
+namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
 {
     public class ActivateHighlight : MonoBehaviour
     {

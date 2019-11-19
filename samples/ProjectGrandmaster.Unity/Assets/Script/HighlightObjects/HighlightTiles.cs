@@ -1,13 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Microsoft.MixedReality.USYD.Board;
-using Microsoft.MixedReality.USYD.ChessPiece;
+using Microsoft.MixedReality.SpectatorView.ProjectGrandmaster;
 
 //This script is attached to pieces to change the colour of tiles they can move to.
 //The methods should be called when the players hand moves ontop of the piece.
 
-namespace Microsoft.MixedReality.USYD.HighlightObjects
+namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
 {
     public class HighlightTiles : MonoBehaviour
     {

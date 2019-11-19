@@ -1,10 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Microsoft.MixedReality.USYD.ChessPiece;
-using Microsoft.MixedReality.USYD.ChessPiece;
+using Microsoft.MixedReality.SpectatorView.ProjectGrandmaster;
 
-namespace Microsoft.MixedReality.USYD.ChessPiece
+namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
 {
     public class Rook : MonoBehaviour
     {

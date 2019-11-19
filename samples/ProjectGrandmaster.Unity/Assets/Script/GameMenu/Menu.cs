@@ -1,10 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Microsoft.MixedReality.USYD.Board;
-using Microsoft.MixedReality.USYD.Solvers;
+using Microsoft.MixedReality.SpectatorView.ProjectGrandmaster;
 
-namespace Microsoft.MixedReality.USYD.GameMenu
+namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
 {
     public class Menu : MonoBehaviour
     {

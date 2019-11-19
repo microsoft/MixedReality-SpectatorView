@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.USYD.ChessPiece
+namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
 {
     public class MoveDataStructure : MonoBehaviour
     {

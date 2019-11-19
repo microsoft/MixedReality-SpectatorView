@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-namespace Microsoft.MixedReality.USYD.ChessPiece
+namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
 {
     /// <summary>
     /// Remove/Add Piece From Board When Eliminated/Undo/Reset

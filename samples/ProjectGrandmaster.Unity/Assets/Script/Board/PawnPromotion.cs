@@ -1,11 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Microsoft.MixedReality.USYD.Board;
-using Microsoft.MixedReality.USYD.ChessPiece;
+using Microsoft.MixedReality.SpectatorView.ProjectGrandmaster;
 using UnityEngine.UI;
 
-namespace Microsoft.MixedReality.USYD.Board
+namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
 {
     public class PawnPromotion : MonoBehaviour
     {
