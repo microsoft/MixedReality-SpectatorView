@@ -12,19 +12,24 @@ using TMPro;
 
 namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
 {
+    /// <summary>
+    /// This class contains information about the board state/layout. 
+    /// Functions related to undo/redo/pawn promotion/check/checkmate/draw can also be found here.
+    /// </summary>
     public class BoardInformation : MonoBehaviour
     {
-        enum Colours { White, Black };
-        Colours turn;
+        private enum Colours { White, Black };
+        private Colours turn;
 
-        GameObject[,] board;
+        // 2D chess layout with individual piece GameObject
+        public GameObject[,] Board { get; } = new GameObject[8, 8];
 
-        PieceAction pieceAction;
+        private PieceAction pieceAction;
 
-        List<GameObject> piecesOnBoard;
+        private List<GameObject> piecesOnBoard;
 
-        GameObject blackKing;
-        GameObject whiteKing;
+        private GameObject blackKing;
+        private GameObject whiteKing;
 
         public LayerMask chessboardLayer;
 
@@ -43,7 +48,6 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
 
         public bool Check { get; set; }
         public bool GameEnded { get; set; }
-        public bool AIEnabled { get; set; }
         public bool ghostActive { get; set; }
 
         // Side that won. -1 if black, 0 if draw, +1 if white.
@@ -57,10 +61,14 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
         public Material playerTurn;
         public Material opponentTurn;
 
+        private Renderer blackArrowRenderer;
+        private Renderer whiteArrowRenderer;
+
+
         // Variables related to pawn promotion
-        public Mesh mesh { get; set; }
-        public bool promoted { get; set; }
-        public bool meshChosen { get; set; }
+        public Mesh Mesh { get; set; }
+        public bool Promoted { get; set; }
+        public bool MeshChosen { get; set; }
         public GameObject pawnPromo;
 
         public GameObject boardMenuTileText;
@@ -69,10 +77,6 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
 
         void Start()
         {
-            /// <summary>
-            /// 2D chess layout with individual piece GameObject
-            /// </summary>
-            board = new GameObject[8, 8];
             piecesOnBoard = new List<GameObject>();
 
             foreach (GameObject piece in GameObject.FindGameObjectsWithTag("pieces"))
@@ -80,44 +84,35 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
                 PieceInformation info = piece.GetComponent<PieceInformation>();
                 int x = info.GetXPosition();
                 int z = info.GetZPosition();
-                board[z, x] = piece;
+                Board[z, x] = piece;
 
-                /// <summary>
-                /// Initialise kings
-                /// </summary>
+                // Initialise kings
                 if (info.type == PieceInformation.Type.King)
                 {
                     if (info.colour == PieceInformation.Colour.White) { whiteKing = piece; }
                     else { blackKing = piece; }
                 }
 
-                /// <summary>
-                /// Add piece to piecesOnBoard list to keep track of all pieces on board
-                /// </summary>
+                // Add piece to piecesOnBoard list to keep track of all pieces on board
                 piecesOnBoard.Add(piece);
             }
 
-            /// <summary>
-            /// Assign null for empty positions
-            /// </summary>
+            // Assign null for empty positions
             for (int i = 2; i <= 5; i++)
             {
                 for (int j = 0; j <= 7; j++)
                 {
-                    board[i, j] = null;
+                    Board[i, j] = null;
                 }
             }
-            /// <summary>
-            /// Initialise whose turn it is
-            /// </summary>
+
+            // Initialise whose turn it is
             turn = Colours.White;
 
-            /// <summary>
-            /// Initialise Data Structure
-            /// </summary>
+            // Initialise data structure
             pieceAction = GetComponent<PieceAction>();
 
-            //Turn off collisions for all pieces if ghost animation is active
+            // Turn off collisions for all pieces if ghost animation is active
             if (ghostActive)
             {
                 Physics.IgnoreLayerCollision(14, 14);
@@ -128,9 +123,10 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
             // Disable the result display
             EndGameResult.SetActive(false);
             pawnPromo.SetActive(false);
-        }
 
-        public GameObject[,] GetBoard() { return board; }
+            blackArrowRenderer = blackArrow.GetComponent<Renderer>();
+            whiteArrowRenderer = whiteArrow.GetComponent<Renderer>();
+        }
 
         public int GetTurn() { return (int)turn; }
 
@@ -146,31 +142,27 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
         }
 
         /// <summary>
-        /// If Multiplayer toggled off in the menu, AI = true, and vice versa
-        /// </summary>
-        public void toggleAI()
-        {
-            if (AIEnabled) { AIEnabled = false; }
-            else { AIEnabled = true; }
-        }
-
-        /// <summary>
         /// If ghosting enabled in the menu, Ghosting = true, and vice versa
         /// </summary>
         public void toggleGhosting()
         {
-            if (ghostActive) {
+            if (ghostActive)
+            {
                 ghostActive = false;
 
                 // Pieces ignore collisions if ghosting is on
-                Physics.IgnoreLayerCollision(14, 15, false);
-                Physics.IgnoreLayerCollision(14, 14, false);
-                Physics.IgnoreLayerCollision(15, 15, false);
+                LayerMask blackPieces = LayerMask.NameToLayer("BlackPieces");
+                LayerMask whitePieces = LayerMask.NameToLayer("WhitePieces");
+
+                Physics.IgnoreLayerCollision(blackPieces, whitePieces, false);
+                Physics.IgnoreLayerCollision(blackPieces, blackPieces, false);
+                Physics.IgnoreLayerCollision(whitePieces, whitePieces, false);
             }
             else {
                 ghostActive = true;
 
                 // Turn collisions back on
+
                 Physics.IgnoreLayerCollision(14, 15, true);
                 Physics.IgnoreLayerCollision(14, 14, true);
                 Physics.IgnoreLayerCollision(15, 15, true);
@@ -185,47 +177,28 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
             if (turn == 0)
             {
                 turn = Colours.Black;
-                whiteArrow.GetComponent<Renderer>().material = opponentTurn;
-                blackArrow.GetComponent<Renderer>().material = playerTurn;
+                whiteArrowRenderer.material = opponentTurn;
+                blackArrowRenderer.material = playerTurn;
             }
             else
             {
                 turn = Colours.White;
-                whiteArrow.GetComponent<Renderer>().material = playerTurn;
-                blackArrow.GetComponent<Renderer>().material = opponentTurn;
+                whiteArrowRenderer.material = playerTurn;
+                blackArrowRenderer.material = opponentTurn;
             }
         }
 
-        public void ResetTurn() {
+        public void ResetTurn()
+        {
             turn = Colours.Black;
             
             // Change arrow colours and reset turn to white
             NextTurn();
         }
 
-        public void PrintBoard()
-        {
-            for (int i = 7; i >= 0; i--)
-            {
-                string row = "";
-                for (int j = 0; j < 8; j++)
-                {
-                    if (board[i, j] == null)
-                    {
-                        row += "1 ";
-                        continue;
-                    }
-                    PieceInformation info = board[i, j].GetComponent<PieceInformation>();
-                    row += info.type;
-                    row += " " + info.colour + " ";
-                }
-                Debug.Log(row);
-            }
-        }
+        #region Move Related Functions
 
-        /////////////////////////////////////////////////////////////// Move Related Functions ///////////////////////////////////////////////////////////////
-
-        public void RemovedFromBoard(GameObject piece)
+        public void RemoveFromBoard(GameObject piece)
         {
             piecesOnBoard.Remove(piece);
         }
@@ -233,9 +206,9 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
         public void UpdateBoard(int prevX, int prevZ, int currentX, int currentZ, GameObject pieceParam = null)
         {
             GameObject piece = pieceParam;
-            if (pieceParam == null) { piece = board[prevZ, prevX]; }
-            board[prevZ, prevX] = null;
-            board[currentZ, currentX] = piece;
+            if (pieceParam == null) { piece = Board[prevZ, prevX]; }
+            Board[prevZ, prevX] = null;
+            Board[currentZ, currentX] = piece;
 
             PieceInformation pieceInfo = piece.GetComponent<PieceInformation>();
             pieceInfo.SetXPosition(currentX);
@@ -244,9 +217,6 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
 
         public void ResetState()
         {
-            /// <summary>
-            /// Reset state
-            /// </summary>
             Check = false;
             GameEnded = false;
 
@@ -270,38 +240,28 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
                     UndoPromotion(piece);
                 }
 
-                /// <summary>
-                /// Update board
-                /// </summary>
+                // Update board
                 UpdateBoard(pieceInfo.GetXPosition(), pieceInfo.GetZPosition(), pieceInfo.GetOriginalX(), pieceInfo.GetOriginalZ(), piece);
 
-                /// <summary>
-                /// Reset to piece's default values
-                /// </summary>
+                // Reset to piece's default values
                 pieceInfo.SetXPosition(pieceInfo.GetOriginalX());
                 pieceInfo.SetZPosition(pieceInfo.GetOriginalZ());
                 pieceInfo.PieceMoves = 0;
 
-                /// <summary>
-                /// Reset location
-                /// </summary>
+                // Reset location
                 Vector3 endPosition = new Vector3(pieceInfo.GetOriginalX(), 0, pieceInfo.GetOriginalZ());
                 pieceAction.ChangePosition(piece, endPosition, (int)pieceInfo.colour);
             }
 
             MoveDataStructure.Clear();
 
-            /// <summary>
-            /// Reset turn - White Starts
-            /// </summary>
+            // Reset turn - White Start
             ResetTurn();
         }
 
         public void UndoState()
         {
-            /// <summary>
             /// Check if previous move exists
-            /// </summary>
             if (MoveDataStructure.GetCount() == 0)
             {
                 return;
@@ -316,15 +276,11 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
                 MoveDataStructure.RemoveLastPath();
             }
 
-            /// <summary>
-            /// Check = check state prior to the last move
-            /// </summary>
+            // Check = check state prior to the last move
             Check = MoveDataStructure.GetLastCheck();
             Debug.Log(Check.ToString());
 
-            /// <summary>
-            /// Change piece's position
-            /// </summary>
+            // Change piece's position
             int lastZPosition = (int) moveData[4];
             int lastXPosition = (int) moveData[3];
 
@@ -342,87 +298,70 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
             pieceInformation.SetXPosition(lastXPosition);
             pieceInformation.SetZPosition(lastZPosition);
 
-            /// <summary>
-            /// Subtract one from total moves on current piece
-            /// </summary>
+            // Subtract one from total moves on current piece
             pieceInformation.PieceMoves--;
 
-            /// <summary>
-            /// Move piece
-            /// </summary>
+            // Move piece
             Vector3 revertPosition = new Vector3(lastXPosition, 0, lastZPosition);
             bool rookPiece = (int)pieceInformation.type == 0 ? true : false; // sliding motion
             pieceAction.ChangePosition(piece, revertPosition, (int)pieceInformation.colour, rookPiece);
 
-            /// <summary>
-            /// Update Board
-            /// </summary>
+            // Update Board
             UpdateBoard(currentXPosition, currentZPosition, lastXPosition, lastZPosition);
 
-            /// <summary>
-            /// Check if the last move was a castle 
-            /// </summary>
+            // Check if the last move was a castle 
             if ((int)pieceInformation.type == 4 && Math.Abs(currentXPosition - lastXPosition) == 2)
             {
                 int rookX;
                 int originalRookX;
 
-                /// <summary>
-                /// King castled right 
-                /// </summary>
+                // King castled right 
                 if (currentXPosition > lastXPosition)
                 {
                     rookX = currentXPosition - 1;
                     originalRookX = 7;
                 }
-                /// <summary>
-                /// King castled left
-                /// </summary>
+
+                // King castled left
                 else
                 {
                     rookX = currentXPosition + 1;
                     originalRookX = 0;
                 }
 
-                GameObject rook = board[currentZPosition, rookX];
+                GameObject rook = Board[currentZPosition, rookX];
                 Vector3 rookPos = new Vector3(originalRookX, 0, currentZPosition);
 
-                /// <summary>
-                /// Move the rook to its original position
-                /// </summary>
+                // Move the rook to its original position
                 pieceAction.ChangePosition(rook, rookPos, (int)pieceInformation.colour, true);
-                /// <summary>
-                /// Update board
-                /// </summary>
+
+                // Update board
                 UpdateBoard(rookX, currentZPosition, originalRookX, currentZPosition);
             }
-
-            /// <summary>
-            /// Reinstate any piece eliminated in the last move
-            /// </summary>
+            
+            // Reinstate any piece eliminated in the last move
             else if ((bool)moveData[0])
             {
                 GameObject reinstate = (GameObject)moveData[1];
                 piecesOnBoard.Add(reinstate);
                 pieceAction.FadeIn(reinstate);
 
-                /// <summary>
-                /// Fix positioning of the reinstated piece
-                /// </summary>
+                // Fix positioning of the reinstated piece
                 PieceInformation pieceInfo = reinstate.GetComponent<PieceInformation>();
                 Vector3 position = new Vector3(pieceInfo.GetXPosition(), 0, pieceInfo.GetZPosition());
                 pieceAction.ChangePosition(reinstate, position, (int)pieceInfo.colour);
 
-                /// <summary>
-                /// Update Board
-                /// </summary>
-                board[pieceInfo.GetZPosition(), pieceInfo.GetXPosition()] = reinstate;
+                // Update Board
+                Board[pieceInfo.GetZPosition(), pieceInfo.GetXPosition()] = reinstate;
             }
-            /// <summary>
-            /// Change player's turn 
-            /// </summary>
+
+            // Change player's turn 
             NextTurn();
         }
+
+        #endregion
+
+        #region Check/Checkmate/Draw/Pawn Promotion Functions
 
         /// <summary>
         /// Displays check for 5 seconds, turning on/off every second
@@ -473,10 +412,10 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
             EndGameResult.SetActive(false);
         }
 
-
         /// <summary>
         /// Checkmate. Shows Checkmate to notify the players
         /// </summary>
+        /// <param name="colour"> Colour that won. 0 = white, 1 = black </param>
         public void Checkmate(int colour)
         {
             string checkmate = "CHECKMATE";
@@ -484,7 +423,6 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
             EndGame(colour);
         }
 
-        /// <summary>
         /// Changes the game state
         /// Declares the winner
         /// </summary>
@@ -581,38 +519,38 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
 
             EndGameResult.SetActive(true);
 
-            while (!promoted)
+            while (!Promoted)
             {
-                if (meshChosen)
+                if (MeshChosen)
                 {
                     int x = pieceInfo.GetXPosition();
                     int z = pieceInfo.GetZPosition();
 
-                    pawn.GetComponent<MeshFilter>().mesh = mesh;
-                    if (mesh.ToString().Contains("Rook"))
+                    pawn.GetComponent<MeshFilter>().mesh = Mesh;
+                    if (Mesh.ToString().Contains("Rook"))
                     {
                         pieceInfo.type = PieceInformation.Type.Rook;
                     }
-                    else if (mesh.ToString().Contains("Queen"))
+                    else if (Mesh.ToString().Contains("Queen"))
                     {
                         pieceInfo.type = PieceInformation.Type.Queen;
                     }
-                    else if (mesh.ToString().Contains("Bishop"))
+                    else if (Mesh.ToString().Contains("Bishop"))
                     {
                         pieceInfo.type = PieceInformation.Type.Bishop;
                     }
-                    else if (mesh.ToString().Contains("Knight"))
+                    else if (Mesh.ToString().Contains("Knight"))
                     {
                         pieceInfo.type = PieceInformation.Type.Knight;
                     }
-                    promoted = true;
+                    Promoted = true;
                 }
 
                 yield return null;
             }
 
-            promoted = false;
-            meshChosen = false;
+            Promoted = false;
+            MeshChosen = false;
             boardMenuTileText.GetComponent<TextMeshPro>().text = "Forfeit Tile";
             boardMenuTileTextTwo.GetComponent<TextMeshPro>().text = "Forfeit Tile";
             pawnPromo.SetActive(false);
@@ -630,5 +568,7 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
 
             pawn.GetComponent<MeshFilter>().mesh = pawnMesh;
         }
+
+        #endregion
     }
 }
