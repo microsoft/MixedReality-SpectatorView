@@ -24,9 +24,9 @@ namespace Microsoft.MixedReality.SpectatorView
             get { return this.textMesh; }
         }
 
-        public Guid FontAssetId
+        public AssetId FontAssetId
         {
-            get { return TextMesh.font == null ? Guid.Empty : TextMeshService.Instance.GetFontId(TextMesh.font); }
+            get { return TextMesh.font == null ? AssetId.Empty : TextMeshService.Instance.GetFontId(TextMesh.font); }
         }
 
         protected override void OnInitialized()

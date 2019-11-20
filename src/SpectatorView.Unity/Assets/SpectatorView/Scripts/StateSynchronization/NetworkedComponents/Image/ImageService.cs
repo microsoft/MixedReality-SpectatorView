@@ -29,12 +29,12 @@ namespace Microsoft.MixedReality.SpectatorView
         }
 
 
-        public Guid GetSpriteId(Sprite sprite)
+        public AssetId GetSpriteId(Sprite sprite)
         {
             var spriteAssets = SpriteAssetCache.Instance;
             if (spriteAssets == null)
             {
-                return Guid.Empty;
+                return AssetId.Empty;
             }
             else
             {
@@ -42,7 +42,7 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
-        public Sprite GetSprite(Guid guid)
+        public Sprite GetSprite(AssetId assetId)
         {
             var spriteAssets = SpriteAssetCache.Instance;
             if (spriteAssets == null)
@@ -51,7 +51,7 @@ namespace Microsoft.MixedReality.SpectatorView
             }
             else
             {
-                return spriteAssets.GetAsset(guid);
+                return spriteAssets.GetAsset(assetId);
             }
         }
 

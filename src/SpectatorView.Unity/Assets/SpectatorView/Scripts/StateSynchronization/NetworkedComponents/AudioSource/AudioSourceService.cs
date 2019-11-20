@@ -30,12 +30,12 @@ namespace Microsoft.MixedReality.SpectatorView
             StateSynchronizationSceneManager.Instance.RegisterService(this, new ComponentBroadcasterDefinition<AudioSourceBroadcaster>(typeof(AudioSource)));
         }
 
-        public Guid GetAudioClipId(AudioClip clip)
+        public AssetId GetAudioClipId(AudioClip clip)
         {
             var audioClipAssets = AudioClipAssetCache.Instance;
             if (audioClipAssets == null)
             {
-                return Guid.Empty;
+                return AssetId.Empty;
             }
             else
             {
@@ -43,7 +43,7 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
-        public AudioClip GetAudioClip(Guid assetId)
+        public AudioClip GetAudioClip(AssetId assetId)
         {
             var audioClipAssets = AudioClipAssetCache.Instance;
 
@@ -57,12 +57,12 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
-        public Guid GetAudioMixerGroupId(AudioMixerGroup group)
+        public AssetId GetAudioMixerGroupId(AudioMixerGroup group)
         {
             var audioMixerGroups = AudioMixerGroupAssetCache.Instance;
             if (audioMixerGroups == null)
             {
-                return Guid.Empty;
+                return AssetId.Empty;
             }
             else
             {
@@ -70,7 +70,7 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
-        public AudioMixerGroup GetAudioMixerGroup(Guid assetId)
+        public AudioMixerGroup GetAudioMixerGroup(AssetId assetId)
         {
             var audioMixerGroups = AudioMixerGroupAssetCache.Instance;
             if (audioMixerGroups == null)

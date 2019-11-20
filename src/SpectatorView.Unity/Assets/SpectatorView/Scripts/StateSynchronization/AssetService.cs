@@ -83,12 +83,12 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
-        public Guid GetMeshId(Mesh mesh)
+        public AssetId GetMeshId(Mesh mesh)
         {
             var meshAssets = MeshAssetCache.Instance;
             if (meshAssets == null)
             {
-                return Guid.Empty;
+                return AssetId.Empty;
             }
             else
             {
@@ -96,7 +96,7 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
-        public bool AttachMeshFilter(GameObject gameObject, Guid assetId)
+        public bool AttachMeshFilter(GameObject gameObject, AssetId assetId)
         {
             var meshAssets = MeshAssetCache.Instance;
 
@@ -118,7 +118,7 @@ namespace Microsoft.MixedReality.SpectatorView
             return false;
         }
 
-        public bool AttachSkinnedMeshRenderer(GameObject gameObject, Guid assetId)
+        public bool AttachSkinnedMeshRenderer(GameObject gameObject, AssetId assetId)
         {
             var meshAssets = MeshAssetCache.Instance;
 
