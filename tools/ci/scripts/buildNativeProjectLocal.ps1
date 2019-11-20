@@ -53,6 +53,8 @@ if ($SetupResult -eq $true)
     # Building in visual studio automatically copies these binaries
     Copy-Item $PSScriptRoot\..\..\..\external\vcpkg\installed\x86-uwp\bin\* $PSScriptRoot\..\..\..\src\SpectatorView.Native\Release\SpectatorView.OpenCV.UWP\ -Force
 
+    Copy-Item $PSScriptRoot\dependencies.props $PSScriptRoot\..\..\..\src\SpectatorView.Native\SpectatorView.Compositor\dependencies.props
+
     $64Includes = "`"$PSScriptRoot\..\..\..\external\vcpkg\installed\x64-windows\include`""
     $64LibDirs = "`"$PSScriptRoot\..\..\..\external\vcpkg\installed\x64-windows\lib`""
     $64Libs = "`"$PSScriptRoot\..\..\..\external\vcpkg\installed\x64-windows\lib\*.lib`""
