@@ -19,6 +19,15 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
         protected const string AppDeviceTypeLabel = "App";
         protected string holographicCameraIPAddress;
 
+        private readonly List<Guid> unsupportedLocalizers = new List<Guid>
+        {
+            ArUcoMarkerVisualSpatialLocalizer.Id,
+            ArUcoMarkerVisualDetectorSpatialLocalizer.Id,
+            QRCodeMarkerVisualSpatialLocalizer.Id,
+            QRCodeMarkerVisualDetectorSpatialLocalizer.Id,
+            new Guid("FB077E49-B855-453F-9FB5-77187B1AF784") // SpatialAnchorsLocalizer (There is no asmdef to reference for ASA)
+        };
+
         private CompositionManager cachedCompositionManager;
         private HolographicCameraObserver cachedHolographicCameraObserver;
 
@@ -180,7 +189,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
                 var supportedPeerLocalizers = spatialCoordinateSystemParticipant?.GetPeerSupportedLocalizersAsync();
                 if (supportedPeerLocalizers.IsCompleted)
                 {
-                    localizers = SpatialCoordinateSystemManager.Instance.Localizers.Where(localizer => supportedPeerLocalizers.Result.Contains(localizer.SpatialLocalizerId)).ToArray();
+                    localizers = SpatialCoordinateSystemManager.Instance.Localizers.Where(localizer => !unsupportedLocalizers.Contains(localizer.SpatialLocalizerId) && supportedPeerLocalizers.Result.Contains(localizer.SpatialLocalizerId)).ToArray();
                     localizerNames = localizers.Select(localizer => localizer.DisplayName).ToArray();
                     if (localizerNames.Length == 0)
                     {
