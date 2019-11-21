@@ -89,7 +89,8 @@ namespace Microsoft.MixedReality.SpectatorView
                 }
 
                 message.Flush();
-                StateSynchronizationSceneManager.Instance.Send(connections, memoryStream.ToArray());
+                var data = memoryStream.ToArray();
+                StateSynchronizationSceneManager.Instance.Send(connections, ref data);
             }
         }
 

@@ -138,12 +138,7 @@ namespace Microsoft.MixedReality.SpectatorView
             Debug.Log("Server connected to " + clientAddress);
             TCPNetworkConnection connection = new TCPNetworkConnection(client, clientAddress, sourceId);
             serverConnections[sourceId] = connection;
-
-            if (!connection.TrySubscribeToIncomingMessages(inputMessageQueue))
-            {
-                Debug.LogError($"{nameof(TCPConnectionManager)} Failed to subscribe to incoming messages for NetworkConnection: {connection.ToString()}");
-            }
-
+            connection.SetIncomingMessageQueue(inputMessageQueue);
             newConnections.Enqueue(connection);
         }
 
@@ -153,7 +148,7 @@ namespace Microsoft.MixedReality.SpectatorView
             if (serverConnections.TryRemove(sourceId, out connection))
             {
                 Debug.Log("Server disconnected from " + clientAddress);
-                connection.UnsubscribeToIncomingMessages(inputMessageQueue);
+                connection.SetIncomingMessageQueue(null);
                 oldConnections.Enqueue(connection);
             }
         }
@@ -169,12 +164,7 @@ namespace Microsoft.MixedReality.SpectatorView
             }
 
             clientConnection = connection;
-
-            if (!connection.TrySubscribeToIncomingMessages(inputMessageQueue))
-            {
-                Debug.LogError($"{nameof(TCPConnectionManager)} Failed to subscribe to incoming messages for NetworkConnection: {connection.ToString()}");
-            }
-
+            connection.SetIncomingMessageQueue(inputMessageQueue);
             newConnections.Enqueue(connection);
         }
 
@@ -183,7 +173,7 @@ namespace Microsoft.MixedReality.SpectatorView
             if (clientConnection != null)
             {
                 Debug.Log("Client disconnected");
-                clientConnection.UnsubscribeToIncomingMessages(inputMessageQueue);
+                clientConnection.SetIncomingMessageQueue(null);
                 oldConnections.Enqueue(clientConnection);
                 clientConnection = null;
             }
@@ -226,17 +216,19 @@ namespace Microsoft.MixedReality.SpectatorView
         }
 
         /// <inheritdoc />
-        public void Broadcast(byte[] data)
+        public void Broadcast(ref byte[] data)
         {
             foreach (TCPNetworkConnection connection in serverConnections.Values)
             {
-                connection.Send(data);
+                connection.Send(ref data);
             }
 
             if (clientConnection != null)
             {
-                clientConnection.Send(data);
+                clientConnection.Send(ref data);
             }
+
+            data = null;
         }
 
         /// <inheritdoc />

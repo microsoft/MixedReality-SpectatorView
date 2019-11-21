@@ -222,7 +222,8 @@ namespace Microsoft.MixedReality.SpectatorView
             {
                 this.ComponentBroadcasterService.WriteHeader(message, this, ComponentBroadcasterChangeType.Created);
                 message.Flush();
-                connection.Send(memoryStream.ToArray());
+                var data = memoryStream.ToArray();
+                connection.Send(ref data);
             }
         }
 

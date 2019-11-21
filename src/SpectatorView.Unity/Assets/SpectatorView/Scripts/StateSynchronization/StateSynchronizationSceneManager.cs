@@ -176,13 +176,13 @@ namespace Microsoft.MixedReality.SpectatorView
         /// </summary>
         /// <param name="connections">The connections to send the message to.</param>
         /// <param name="message">The message to send.</param>
-        public void Send(IEnumerable<INetworkConnection> connections, byte[] message)
+        public void Send(IEnumerable<INetworkConnection> connections, ref byte[] message)
         {
             if (StateSynchronizationBroadcaster.IsInitialized && StateSynchronizationBroadcaster.Instance.HasConnections)
             {
                 foreach (INetworkConnection connection in connections)
                 {
-                    connection.Send(message);
+                    connection.Send(ref message);
                 }
             }
         }
@@ -202,11 +202,12 @@ namespace Microsoft.MixedReality.SpectatorView
                 }
 
                 message.Flush();
-
                 byte[] messageArray = memoryStream.ToArray();
                 foreach (INetworkConnection connection in connections)
                 {
-                    connection.Send(messageArray);
+                    var messageCopy = new byte[messageArray.Length];
+                    messageArray.CopyTo(messageCopy, 0);
+                    connection.Send(ref messageCopy);
                 }
             }
         }
@@ -471,7 +472,8 @@ namespace Microsoft.MixedReality.SpectatorView
             {
                 component.ComponentBroadcasterService.WriteHeader(message, component, ComponentBroadcasterChangeType.Destroyed);
                 message.Flush();
-                Send(connections, memoryStream.ToArray());
+                var data = memoryStream.ToArray();
+                Send(connections, ref data);
             }
         }
 

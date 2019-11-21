@@ -101,7 +101,8 @@ namespace Microsoft.MixedReality.SpectatorView
             else if ((Time.time - lastBroadcast) > timeBetweenBroadcasts)
             {
                 var message = runAsServer ? "Message from server" : "Message from client";
-                connectionManager.Broadcast(Encoding.ASCII.GetBytes(message));
+                var data = Encoding.ASCII.GetBytes(message);
+                connectionManager.Broadcast(ref data);
                 broadcastSent = true;
 
                 lastBroadcast = Time.time;

@@ -118,7 +118,7 @@ namespace Microsoft.MixedReality.SpectatorView
                     message = stream.ToArray();
                 }
 
-                connectionManager.Broadcast(message);
+                connectionManager.Broadcast(ref message);
             }
         }
 
@@ -134,7 +134,9 @@ namespace Microsoft.MixedReality.SpectatorView
                 if (timeSinceLastHeartbeat > heartbeatTimeInterval)
                 {
                     timeSinceLastHeartbeat = 0.0f;
-                    connectionManager.Broadcast(heartbeatMessage);
+                    var data = new byte[heartbeatMessage.Length];
+                    heartbeatMessage.CopyTo(data, 0);
+                    connectionManager.Broadcast(ref data);
                 }
             }
         }

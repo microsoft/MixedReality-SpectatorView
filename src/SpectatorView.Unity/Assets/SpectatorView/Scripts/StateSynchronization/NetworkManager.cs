@@ -62,15 +62,12 @@ namespace Microsoft.MixedReality.SpectatorView
             connectionManager.ConnectTo(ipAddress, port);
         }
 
-        /// <summary>
-        /// Sends data to other connected devices
-        /// </summary>
-        /// <param name="data">payload to send to other devices</param>
-        public void Broadcast(byte[] data)
+        /// <inheritdoc />
+        public void Broadcast(ref byte[] data)
         {
             if (currentConnection != null)
             {
-                currentConnection.Send(data);
+                currentConnection.Send(ref data);
             }
         }
 

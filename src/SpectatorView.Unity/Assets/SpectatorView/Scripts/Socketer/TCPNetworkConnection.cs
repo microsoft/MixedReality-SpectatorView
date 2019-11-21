@@ -48,25 +48,22 @@ namespace Microsoft.MixedReality.SpectatorView
         }
 
         /// <inheritdoc />
-        public bool TrySubscribeToIncomingMessages(ConcurrentQueue<IncomingMessage> incomingQueue)
+        public void SetIncomingMessageQueue(ConcurrentQueue<IncomingMessage> incomingQueue)
         {
-            if (this.incomingQueue != null)
+            if (this.incomingQueue != null &&
+                incomingQueue != null)
             {
-                return false;
+                Debug.LogError($"Multiple incoming message queues were set for a {nameof(TCPNetworkConnection)}");
             }
 
             this.incomingQueue = incomingQueue;
-            socketerClient.Message += Socket_Message;
-            return true;
-        }
-
-        /// <inheritdoc />
-        public void UnsubscribeToIncomingMessages(ConcurrentQueue<IncomingMessage> incomingQueue)
-        {
-            if (this.incomingQueue == incomingQueue)
+            if (this.incomingQueue != null)
+            {
+                socketerClient.Message += Socket_Message;
+            }
+            else
             {
                 socketerClient.Message -= Socket_Message;
-                this.incomingQueue = null;
             }
         }
 
@@ -79,22 +76,25 @@ namespace Microsoft.MixedReality.SpectatorView
         }
 
         /// <inheritdoc />
-        public void Send(byte[] data)
+        public void Send(ref byte[] data)
         {
             if (!IsConnected)
             {
                 Debug.LogWarning($"Attempted to send message to disconnected {nameof(TCPNetworkConnection)}.");
-                return;
+            }
+            else
+            {
+                try
+                {
+                    socketerClient.SendNetworkMessage(data, sourceId);
+                }
+                catch
+                {
+                    socketerClient.Disconnect(sourceId);
+                }
             }
 
-            try
-            {
-                socketerClient.SendNetworkMessage(data, sourceId);
-            }
-            catch
-            {
-                socketerClient.Disconnect(sourceId);
-            }
+            data = null;
         }
 
         /// <inheritdoc />

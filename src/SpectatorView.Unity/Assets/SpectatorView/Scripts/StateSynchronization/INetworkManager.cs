@@ -53,7 +53,7 @@ namespace Microsoft.MixedReality.SpectatorView
         /// <summary>
         /// Send a packet of data to all connected devices.
         /// </summary>
-        /// <param name="data">The data to send to each connected device.</param>
-        void Broadcast(byte[] data);
+        /// <param name="data">The data to send to each connected device. The reference is set to null once taking over ownership</param>
+        void Broadcast(ref byte[] data);
     }
 }

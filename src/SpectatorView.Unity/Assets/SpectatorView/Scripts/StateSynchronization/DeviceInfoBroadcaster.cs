@@ -59,7 +59,8 @@ namespace Microsoft.MixedReality.SpectatorView
                 message.Write(GetMachineName());
                 message.Write(GetIPAddress());
 
-                networkManager.Broadcast(memoryStream.ToArray());
+                var data = memoryStream.ToArray();
+                networkManager.Broadcast(ref data);
             }
         }
 

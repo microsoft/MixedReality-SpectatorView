@@ -219,7 +219,8 @@ namespace Microsoft.MixedReality.SpectatorView
                 message.Write(spatialLocalizerID);
                 settings.Serialize(message);
 
-                connection.Send(stream.ToArray());
+                byte[] data = stream.ToArray();
+                connection.Send(ref data);
             }
 
             return taskCompletionSource.Task;
@@ -270,7 +271,8 @@ namespace Microsoft.MixedReality.SpectatorView
                 message.Write(LocalizationCompleteCommand);
                 message.Write(localizationSuccessful);
 
-                socketEndpoint.Send(stream.ToArray());
+                byte[] data = stream.ToArray();
+                socketEndpoint.Send(ref data);
             }
         }
 
