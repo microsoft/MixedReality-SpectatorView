@@ -25,7 +25,7 @@ namespace Microsoft.MixedReality.SpectatorView
                 // We return true for the editor so that this localizer registers as available for video camera compositing scenarios.
                 return true;
 #elif QRCODESTRACKER_BINARY_AVAILABLE && UNITY_WSA
-                return (Windows.ApplicationModel.Package.Current.Id.Architecture != Windows.System.ProcessorArchitecture.X86); // HoloLens 1 is not supported.
+                return (global::Windows.ApplicationModel.Package.Current.Id.Architecture != global::Windows.System.ProcessorArchitecture.X86); // HoloLens 1 is not supported.
 #else
                 return false;
 #endif
