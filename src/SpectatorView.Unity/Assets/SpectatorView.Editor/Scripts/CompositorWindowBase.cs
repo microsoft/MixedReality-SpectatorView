@@ -19,6 +19,9 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
         protected const string AppDeviceTypeLabel = "App";
         protected string holographicCameraIPAddress;
 
+        /// <summary>
+        /// This list contains localizers that can't be used in the compositor window for video camera filming.
+        /// </summary>
         private readonly List<Guid> unsupportedLocalizers = new List<Guid>
         {
             ArUcoMarkerVisualSpatialLocalizer.Id,
@@ -189,6 +192,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
                 var supportedPeerLocalizers = spatialCoordinateSystemParticipant?.GetPeerSupportedLocalizersAsync();
                 if (supportedPeerLocalizers.IsCompleted)
                 {
+                    // Only use localizers that are supported by both the device and the compositor window
                     localizers = SpatialCoordinateSystemManager.Instance.Localizers.Where(localizer => !unsupportedLocalizers.Contains(localizer.SpatialLocalizerId) && supportedPeerLocalizers.Result.Contains(localizer.SpatialLocalizerId)).ToArray();
                     localizerNames = localizers.Select(localizer => localizer.DisplayName).ToArray();
                     if (localizerNames.Length == 0)
