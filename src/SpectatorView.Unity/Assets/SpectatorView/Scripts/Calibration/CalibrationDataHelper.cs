@@ -276,7 +276,7 @@ namespace Microsoft.MixedReality.SpectatorView
 #if UNITY_EDITOR || UNITY_STANDALONE
             return Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 #elif UNITY_WSA
-            return Windows.Storage.KnownFolders.DocumentsLibrary.Path;
+            return global::Windows.Storage.KnownFolders.DocumentsLibrary.Path;
 #else
             return string.Empty;
 #endif
