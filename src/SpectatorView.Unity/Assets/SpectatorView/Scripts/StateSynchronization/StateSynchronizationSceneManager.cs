@@ -178,11 +178,15 @@ namespace Microsoft.MixedReality.SpectatorView
         /// <param name="message">The message to send.</param>
         public void Send(IEnumerable<INetworkConnection> connections, ref byte[] message)
         {
-            if (StateSynchronizationBroadcaster.IsInitialized && StateSynchronizationBroadcaster.Instance.HasConnections)
+            using (StateSynchronizationPerformanceMonitor.Instance.MeasureEventDuration(nameof(StateSynchronizationSceneManager), "Send"))
             {
-                foreach (INetworkConnection connection in connections)
+                if (StateSynchronizationBroadcaster.IsInitialized && StateSynchronizationBroadcaster.Instance.HasConnections)
                 {
-                    connection.Send(ref message);
+                    foreach (INetworkConnection connection in connections)
+                    {
+                        StateSynchronizationPerformanceMonitor.Instance.IncrementEventCount(nameof(StateSynchronizationSceneManager), "Send");
+                        connection.Send(ref message);
+                    }
                 }
             }
         }
