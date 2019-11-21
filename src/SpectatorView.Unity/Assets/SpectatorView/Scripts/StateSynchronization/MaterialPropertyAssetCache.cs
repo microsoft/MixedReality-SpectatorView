@@ -18,8 +18,22 @@ namespace Microsoft.MixedReality.SpectatorView
         private MaterialAsset[] materialAssets = null;
 
         private ILookup<string, MaterialPropertyAsset> materialPropertiesByShaderName;
+        private ILookup<string, MaterialAsset> materialAssetsByShaderName;
         private ILookup<string, MaterialPropertyAsset> customMaterialPropertiesByShaderName;
         private MaterialPropertyAsset[] customInstanceShaderProperties;
+
+        protected override void Awake()
+        {
+            base.Awake();
+
+            foreach (MaterialAsset materialAsset in materialAssets)
+            {
+                foreach (MaterialPropertyAsset materialProperty in materialAsset.MaterialProperties)
+                {
+                    materialProperty.MaterialAsset = materialAsset;
+                }
+            }
+        }
 
         private MaterialPropertyAsset[] universalMaterialProperties = new MaterialPropertyAsset[]
         {
@@ -52,6 +66,14 @@ namespace Microsoft.MixedReality.SpectatorView
             return universalMaterialProperties.Concat(MaterialPropertiesByShaderName[shaderName]).Concat(CustomMaterialPropertiesByShaderName[shaderName]);
         }
 
+        private ILookup<string, MaterialAsset> MaterialAssetsByShaderName
+        {
+            get
+            {
+                return materialAssetsByShaderName ?? (materialAssetsByShaderName = (materialAssets ?? Array.Empty<MaterialAsset>()).ToLookup(m => m.ShaderName));
+            }
+        }
+
         private ILookup<string, MaterialPropertyAsset> MaterialPropertiesByShaderName
         {
             get
@@ -70,7 +92,9 @@ namespace Microsoft.MixedReality.SpectatorView
 
         public Shader GetShader(string shaderName)
         {
-            return MaterialPropertiesByShaderName[shaderName].Select(asset => asset.Shader).FirstOrDefault();
+            Debug.Log("GetShader for " + shaderName);
+            Debug.Log(materialAssets?.Length);
+            return MaterialAssetsByShaderName[shaderName].Select(asset => asset.Shader).FirstOrDefault();
         }
 
         public override void UpdateAssetCache()

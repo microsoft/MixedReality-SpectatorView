@@ -54,7 +54,8 @@ namespace Microsoft.MixedReality.SpectatorView
                 materialPropertyAssetLookup.Add(materialProperty.name, new MaterialPropertyAsset
                 {
                     propertyName = materialProperty.name,
-                    propertyType = (MaterialPropertyType)materialProperty.type
+                    propertyType = (MaterialPropertyType)materialProperty.type,
+                    MaterialAsset = this
                 });
             }
         }

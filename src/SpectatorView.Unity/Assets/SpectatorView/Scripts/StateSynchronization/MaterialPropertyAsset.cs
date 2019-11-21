@@ -18,11 +18,11 @@ namespace Microsoft.MixedReality.SpectatorView
         private float cachedTime;
         private string performanceComponentName = "MaterialPropertyAsset";
 
-        public MaterialAsset Material { get; set; }
+        public MaterialAsset MaterialAsset { get; set; }
 
-        public Shader Shader => Material?.Shader;
+        public Shader Shader => MaterialAsset?.Shader;
 
-        public string ShaderName => Material?.ShaderName;
+        public string ShaderName => MaterialAsset?.ShaderName;
 
         private int PropertyID
         {
