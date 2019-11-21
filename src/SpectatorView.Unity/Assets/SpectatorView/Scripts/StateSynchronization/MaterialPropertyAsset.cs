@@ -11,10 +11,6 @@ namespace Microsoft.MixedReality.SpectatorView
     [Serializable]
     internal class MaterialPropertyAsset
     {
-        public Shader shader;
-
-        [SerializeField]
-        private string shaderName;
         public string propertyName;
         public MaterialPropertyType propertyType;
         private int? propertyId;
@@ -22,20 +18,11 @@ namespace Microsoft.MixedReality.SpectatorView
         private float cachedTime;
         private string performanceComponentName = "MaterialPropertyAsset";
 
-        public Shader Shader
-        {
-            get { return shader; }
-            set
-            {
-                shader = value;
-                shaderName = shader?.name;
-            }
-        }
+        public MaterialAsset Material { get; set; }
 
-        public string ShaderName
-        {
-            get { return shaderName; }
-        }
+        public Shader Shader => Material?.Shader;
+
+        public string ShaderName => Material?.ShaderName;
 
         private int PropertyID
         {

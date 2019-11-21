@@ -15,7 +15,7 @@ namespace Microsoft.MixedReality.SpectatorView
     internal class MaterialPropertyAssetCache : AssetCache<MaterialPropertyAssetCache>
     {
         [SerializeField]
-        private MaterialPropertyAsset[] materialPropertyAssets = null;
+        private MaterialAsset[] materialAssets = null;
 
         private ILookup<string, MaterialPropertyAsset> materialPropertiesByShaderName;
         private ILookup<string, MaterialPropertyAsset> customMaterialPropertiesByShaderName;
@@ -27,13 +27,11 @@ namespace Microsoft.MixedReality.SpectatorView
             {
                 propertyName = "renderQueue-36f16fdc-72c7-430d-9479-6c9c2a318b6b",
                 propertyType = MaterialPropertyType.RenderQueue,
-                Shader = null
             },
             new MaterialPropertyAsset
             {
                 propertyName = "shaderKeywords-266455c9-953b-476b-85cd-7dd3fde79381",
                 propertyType = MaterialPropertyType.ShaderKeywords,
-                Shader = null
             }
         };
 
@@ -58,7 +56,7 @@ namespace Microsoft.MixedReality.SpectatorView
         {
             get
             {
-                return materialPropertiesByShaderName ?? (materialPropertiesByShaderName = (materialPropertyAssets ?? Array.Empty<MaterialPropertyAsset>()).ToLookup(m => m.ShaderName));
+                return materialPropertiesByShaderName ?? (materialPropertiesByShaderName = (materialAssets.SelectMany(m => m.MaterialProperties) ?? Array.Empty<MaterialPropertyAsset>()).ToLookup(m => m.ShaderName));
             }
         }
 
@@ -78,8 +76,7 @@ namespace Microsoft.MixedReality.SpectatorView
         public override void UpdateAssetCache()
         {
 #if UNITY_EDITOR
-            Dictionary<MaterialPropertyKey, MaterialPropertyAsset> materialProperties = (materialPropertyAssets ?? Array.Empty<MaterialPropertyAsset>()).ToDictionary(p => new MaterialPropertyKey { PropertyName = p.propertyName, ShaderName = p.ShaderName });
-            HashSet<MaterialPropertyKey> unvisitedMaterialProperties = new HashSet<MaterialPropertyKey>(materialProperties.Keys);
+            Dictionary<string, MaterialAsset> newMaterialAssets = new Dictionary<string, MaterialAsset>();
 
             foreach (Renderer renderer in EnumerateAllComponentsInScenesAndPrefabs<Renderer>())
             {
@@ -87,7 +84,7 @@ namespace Microsoft.MixedReality.SpectatorView
                 {
                     foreach (Material material in renderer.sharedMaterials)
                     {
-                        UpdateMaterial(materialProperties, unvisitedMaterialProperties, material);
+                        UpdateMaterial(newMaterialAssets, material);
                     }
                 }
             }
@@ -96,17 +93,21 @@ namespace Microsoft.MixedReality.SpectatorView
             {
                 if (graphic.materialForRendering != null)
                 {
-                    UpdateMaterial(materialProperties, unvisitedMaterialProperties, graphic.materialForRendering);
+                    UpdateMaterial(newMaterialAssets, graphic.materialForRendering);
                 }
             }
 
             foreach (Material material in EnumerateAllAssetsInAssetDatabase<Material>(IsMaterialFileExtension))
             {
-                UpdateMaterial(materialProperties, unvisitedMaterialProperties, material);
+                UpdateMaterial(newMaterialAssets, material);
             }
 
-            CleanUpUnused(materialProperties, unvisitedMaterialProperties);
-            materialPropertyAssets = materialProperties.Values.ToArray();
+            materialAssets = newMaterialAssets.Values.OrderBy(m => m.ShaderName).ToArray();
+
+            foreach (MaterialAsset materialAsset in materialAssets)
+            {
+                materialAsset.CompleteEditing();
+            }
 
             EditorUtility.SetDirty(this);
 #endif
@@ -115,7 +116,7 @@ namespace Microsoft.MixedReality.SpectatorView
         public override void ClearAssetCache()
         {
 #if UNITY_EDITOR
-            materialPropertyAssets = null;
+            materialAssets = null;
             materialPropertiesByShaderName = null;
 
             EditorUtility.SetDirty(this);
@@ -128,23 +129,22 @@ namespace Microsoft.MixedReality.SpectatorView
         }
 
 #if UNITY_EDITOR
-        private static void UpdateMaterial(Dictionary<MaterialPropertyKey, MaterialPropertyAsset> materialProperties, HashSet<MaterialPropertyKey> unvisitedMaterialProperties, Material material)
+        private static void UpdateMaterial(Dictionary<string, MaterialAsset> materialAssets, Material material)
         {
             if (material != null)
             {
+                if (!materialAssets.TryGetValue(material.shader.name, out MaterialAsset materialAsset))
+                {
+                    materialAsset = new MaterialAsset
+                    {
+                        Shader = material.shader
+                    };
+                    materialAssets.Add(material.shader.name, materialAsset);
+                }
+
                 foreach (MaterialProperty materialProperty in MaterialEditor.GetMaterialProperties(new Material[] { material }))
                 {
-                    var key = new MaterialPropertyKey(material.shader.name, materialProperty.name);
-                    unvisitedMaterialProperties.Remove(key);
-                    if (!materialProperties.ContainsKey(key))
-                    {
-                        materialProperties.Add(key, new MaterialPropertyAsset
-                        {
-                            Shader = material.shader,
-                            propertyName = materialProperty.name,
-                            propertyType = (MaterialPropertyType)materialProperty.type
-                        });
-                    }
+                    materialAsset.AddProperty(materialProperty);
                 }
             }
         }
