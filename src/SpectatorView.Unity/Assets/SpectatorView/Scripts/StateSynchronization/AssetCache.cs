@@ -22,7 +22,7 @@ namespace Microsoft.MixedReality.SpectatorView
             where TAssetCache : AssetCache
         {
             using (StateSynchronizationPerformanceMonitor.Instance.IncrementEventDuration(typeof(TAssetCache).Name, "LoadAssetCache"))
-            using(StateSynchronizationPerformanceMonitor.Instance.MeasureEventMemoryUsage(typeof(TAssetCache).Name, "LoadAssetCache"))
+            using(StateSynchronizationPerformanceMonitor.Instance.MeasureEventMemoryUsage(typeof(TAssetCache).Name, "LoadingAssets"))
             {
                 return Resources.Load<TAssetCache>(typeof(TAssetCache).Name);
             }
