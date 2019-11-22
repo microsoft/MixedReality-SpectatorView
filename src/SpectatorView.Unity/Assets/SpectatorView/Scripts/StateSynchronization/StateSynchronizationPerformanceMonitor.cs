@@ -7,17 +7,37 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Profiling;
 
 namespace Microsoft.MixedReality.SpectatorView
 {
     public class StateSynchronizationPerformanceMonitor : Singleton<StateSynchronizationPerformanceMonitor>
     {
-        private struct StopWatchKey
+        public class MemoryUsage
+        {
+            public long TotalAllocatedMemoryDelta;
+            public long TotalReservedMemoryDelta;
+            public long TotalUnusedReservedMemoryDelta;
+
+            public MemoryUsage()
+            {
+                TotalAllocatedMemoryDelta = 0;
+                TotalReservedMemoryDelta = 0;
+                TotalUnusedReservedMemoryDelta = 0;
+            }
+
+            public override string ToString()
+            {
+                return $"TotalAllocatedMemoryDelta:{TotalAllocatedMemoryDelta}, TotalReservedMemoryDelta:{TotalReservedMemoryDelta}, TotalUnusedReservedMemoryDelta:{TotalUnusedReservedMemoryDelta}";
+            }
+        }
+
+        private struct PerformanceEventKey
         {
             public string ComponentName;
             public string EventName;
 
-            public StopWatchKey(string componentName, string eventName)
+            public PerformanceEventKey(string componentName, string eventName)
             {
                 this.ComponentName = componentName;
                 this.EventName = eventName;
@@ -28,22 +48,48 @@ namespace Microsoft.MixedReality.SpectatorView
         {
             public bool PerformanceMonitoringEnabled;
             public List<Tuple<string, double>> EventDurations;
+            public List<Tuple<string, double>> SummedEventDurations;
             public List<Tuple<string, int>> EventCounts;
+            public List<Tuple<string, MemoryUsage>> MemoryUsages;
 
-            public ParsedMessage(bool performanceMonitoringEnabled, List<Tuple<string, double>> eventDurations, List<Tuple<string, int>> eventCounts)
+            public ParsedMessage(bool performanceMonitoringEnabled, List<Tuple<string, double>> eventDurations, List<Tuple<string, double>> summedDurations, List<Tuple<string, int>> eventCounts, List<Tuple<string, MemoryUsage>> memoryUsages)
             {
                 this.PerformanceMonitoringEnabled = performanceMonitoringEnabled;
                 this.EventDurations = eventDurations;
+                this.SummedEventDurations = summedDurations;
                 this.EventCounts = eventCounts;
+                this.MemoryUsages = memoryUsages; 
             }
+
+            public static ParsedMessage Empty => new ParsedMessage(false, null, null, null, null);
         };
 
-        private Dictionary<StopWatchKey, Stopwatch> eventStopWatches = new Dictionary<StopWatchKey, Stopwatch>();
-        private Dictionary<StopWatchKey, int> eventCounts = new Dictionary<StopWatchKey, int>();
+        private Dictionary<PerformanceEventKey, Stopwatch> eventStopWatches = new Dictionary<PerformanceEventKey, Stopwatch>();
+        private Dictionary<PerformanceEventKey, Stopwatch> incrementEventStopWatches = new Dictionary<PerformanceEventKey, Stopwatch>();
+        private Dictionary<PerformanceEventKey, int> eventCounts = new Dictionary<PerformanceEventKey, int>();
+        private Dictionary<PerformanceEventKey, MemoryUsage> eventMemoryUsage = new Dictionary<PerformanceEventKey, MemoryUsage>();
 
         protected override void Awake()
         {
             base.Awake();
+            Profiler.enabled = StateSynchronizationPerformanceParameters.EnablePerformanceReporting;
+        }
+
+        public IDisposable IncrementEventDuration(string componentName, string eventName)
+        {
+            if (!StateSynchronizationPerformanceParameters.EnablePerformanceReporting)
+            {
+                return null;
+            }
+
+            var key = new PerformanceEventKey(componentName, eventName);
+            if (!incrementEventStopWatches.TryGetValue(key, out var stopwatch))
+            {
+                stopwatch = new Stopwatch();
+                incrementEventStopWatches.Add(key, stopwatch);
+            }
+
+            return new TimeScope(stopwatch);
         }
 
         public IDisposable MeasureEventDuration(string componentName, string eventName)
@@ -53,7 +99,7 @@ namespace Microsoft.MixedReality.SpectatorView
                 return null;
             }
 
-            var key = new StopWatchKey(componentName, eventName);
+            var key = new PerformanceEventKey(componentName, eventName);
             if (!eventStopWatches.TryGetValue(key, out var stopwatch))
             {
                 stopwatch = new Stopwatch();
@@ -70,7 +116,7 @@ namespace Microsoft.MixedReality.SpectatorView
                 return;
             }
 
-            var key = new StopWatchKey(componentName, eventName);
+            var key = new PerformanceEventKey(componentName, eventName);
             if (!eventCounts.ContainsKey(key))
             {
                 eventCounts.Add(key, 1);
@@ -79,6 +125,24 @@ namespace Microsoft.MixedReality.SpectatorView
             {
                 eventCounts[key]++;
             }
+        }
+        
+        public IDisposable MeasureEventMemoryUsage(string componentName, string eventName)
+        {
+            if (!StateSynchronizationPerformanceParameters.EnablePerformanceReporting)
+            {
+                UnityEngine.Debug.LogWarning($"Performance reporting was not enabled for memory usage event: {componentName}.{eventName}");
+                return null;
+            }
+
+            var key = new PerformanceEventKey(componentName, eventName);
+            if (!eventMemoryUsage.TryGetValue(key, out var memoryUsage))
+            {
+                memoryUsage = new MemoryUsage();
+                eventMemoryUsage.Add(key, memoryUsage);
+            }
+
+            return new MemoryDelta(memoryUsage);
         }
 
         public void WriteMessage(BinaryWriter message, int numFrames)
@@ -108,6 +172,13 @@ namespace Microsoft.MixedReality.SpectatorView
                 message.Write(duration.Item2);
             }
 
+            message.Write(incrementEventStopWatches.Count);
+            foreach (var pair in incrementEventStopWatches)
+            {
+                message.Write($"{pair.Key.ComponentName}.{pair.Key.EventName}");
+                message.Write(pair.Value.Elapsed.TotalMilliseconds);
+            }
+
             List<Tuple<string, int>> counts = new List<Tuple<string, int>>();
             foreach (var pair in eventCounts.ToList())
             {
@@ -121,17 +192,28 @@ namespace Microsoft.MixedReality.SpectatorView
                 message.Write(count.Item1);
                 message.Write(count.Item2);
             }
+
+            message.Write(eventMemoryUsage.Count);
+            foreach (var pair in eventMemoryUsage)
+            {
+                message.Write($"{pair.Key.ComponentName}.{pair.Key.EventName}");
+                message.Write(pair.Value.TotalAllocatedMemoryDelta);
+                message.Write(pair.Value.TotalReservedMemoryDelta);
+                message.Write(pair.Value.TotalUnusedReservedMemoryDelta);
+            }
         }
 
         public static void ReadMessage(BinaryReader reader, out ParsedMessage message)
         {
             bool performanceMonitoringEnabled = reader.ReadBoolean();
             List<Tuple<string, double>> durations = null;
+            List<Tuple<string, double>> summedDurations = null;
             List<Tuple<string, int>> counts = null;
+            List<Tuple<string, MemoryUsage>> memoryUsages = null;
 
             if (!performanceMonitoringEnabled)
             {
-                message = new ParsedMessage(performanceMonitoringEnabled, durations, counts);
+                message = ParsedMessage.Empty;
                 return;
             }
 
@@ -147,6 +229,18 @@ namespace Microsoft.MixedReality.SpectatorView
                 }
             }
 
+            int summedDurationsCount = reader.ReadInt32();
+            if (summedDurationsCount > 0)
+            {
+                summedDurations = new List<Tuple<string, double>>();
+                for (int i = 0; i < summedDurationsCount; i++)
+                {
+                    string eventName = reader.ReadString();
+                    double eventDuration = reader.ReadDouble();
+                    summedDurations.Add(new Tuple<string, double>(eventName, eventDuration));
+                }
+            }
+
             int countsCount = reader.ReadInt32();
             if (countsCount > 0)
             {
@@ -159,7 +253,22 @@ namespace Microsoft.MixedReality.SpectatorView
                 }
             }
 
-            message = new ParsedMessage(performanceMonitoringEnabled, durations, counts);
+            int memoryUsageCount = reader.ReadInt32();
+            if (memoryUsageCount > 0)
+            {
+                memoryUsages = new List<Tuple<string, MemoryUsage>>();
+                for (int i = 0; i < memoryUsageCount; i++)
+                {
+                    string eventName = reader.ReadString();
+                    MemoryUsage usage = new MemoryUsage();
+                    usage.TotalAllocatedMemoryDelta = reader.ReadInt64();
+                    usage.TotalReservedMemoryDelta = reader.ReadInt64();
+                    usage.TotalUnusedReservedMemoryDelta = reader.ReadInt64();
+                    memoryUsages.Add(new Tuple<string, MemoryUsage>(eventName, usage));
+                }
+            }
+
+            message = new ParsedMessage(performanceMonitoringEnabled, durations, summedDurations, counts, memoryUsages);
         }
 
         public void SetDiagnosticMode(bool enabled)
@@ -184,6 +293,43 @@ namespace Microsoft.MixedReality.SpectatorView
                     stopwatch.Stop();
                     stopwatch = null;
                 }
+            }
+        }
+
+        private class MemoryDelta : IDisposable
+        {
+            private long startingAllocatedMemory;
+            private long startingReservedMemory;
+            private long startingUnusedMemory;
+
+            private MemoryUsage memoryUsage = null;
+
+            public MemoryDelta(MemoryUsage memoryUsage)
+            {
+                if (!Profiler.enabled)
+                {
+                    UnityEngine.Debug.LogError($"Profiler not enabled, MemoryUsage not supported.");
+                    return;
+                }
+
+                this.memoryUsage = memoryUsage;
+                startingAllocatedMemory = Profiler.GetTotalAllocatedMemoryLong();
+                startingReservedMemory = Profiler.GetTotalReservedMemoryLong();
+                startingUnusedMemory = Profiler.GetTotalUnusedReservedMemoryLong();
+            }
+
+            public void Dispose()
+            {
+                if (!Profiler.enabled ||
+                    memoryUsage == null)
+                {
+                    UnityEngine.Debug.LogError($"Profiler not enabled or memoryUsage was null, MemoryUsage not in usable state.");
+                    return;
+                }
+
+                memoryUsage.TotalAllocatedMemoryDelta += Profiler.GetTotalAllocatedMemoryLong() - startingAllocatedMemory;
+                memoryUsage.TotalReservedMemoryDelta += Profiler.GetTotalReservedMemoryLong() - startingReservedMemory;
+                memoryUsage.TotalUnusedReservedMemoryDelta += Profiler.GetTotalUnusedReservedMemoryLong() - startingUnusedMemory;
             }
         }
     }

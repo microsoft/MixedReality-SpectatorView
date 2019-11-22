@@ -13,16 +13,10 @@ namespace Microsoft.MixedReality.SpectatorView
         public override ShortID GetID() { return ID; }
 
         private FontAssetCache fontAssets;
-
-        protected override void Awake()
-        {
-            base.Awake();
-
-            fontAssets = FontAssetCache.LoadAssetCache<FontAssetCache>();
-        }
-
+        
         private void Start()
         {
+            fontAssets = FontAssetCache.LoadAssetCache<FontAssetCache>();
             StateSynchronizationSceneManager.Instance.RegisterService(this, new ComponentBroadcasterDefinition<TextMeshBroadcaster>(typeof(TextMesh), typeof(MeshRenderer)));
         }
 

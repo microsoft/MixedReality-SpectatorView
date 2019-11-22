@@ -15,10 +15,8 @@ namespace Microsoft.MixedReality.SpectatorView
         private List<GlobalMaterialPropertyAsset> changedProperties = new List<GlobalMaterialPropertyAsset>();
         private CustomShaderPropertyAssetCache assetCache;
 
-        protected override void Awake()
+        protected void Start()
         {
-            base.Awake();
-
             assetCache = AssetCache.LoadAssetCache<CustomShaderPropertyAssetCache>();
         }
 

@@ -110,11 +110,31 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
                     }
                 }
 
+                if (StateSynchronizationObserver.Instance.PerformanceSummedEventDurations != null)
+                {
+                    GUILayout.Space(defaultSpacing);
+                    RenderTitle("Summed Event Durations (ms)", Color.green);
+                    foreach (var count in StateSynchronizationObserver.Instance.PerformanceSummedEventDurations)
+                    {
+                        GUILayout.Label($"{count.Item1}:{count.Item2}");
+                    }
+                }
+
                 if (StateSynchronizationObserver.Instance.PerformanceEventCounts != null)
                 {
                     GUILayout.Space(defaultSpacing);
                     RenderTitle("Event Counts (per frame)", Color.green);
                     foreach (var count in StateSynchronizationObserver.Instance.PerformanceEventCounts)
+                    {
+                        GUILayout.Label($"{count.Item1}:{count.Item2}");
+                    }
+                }
+
+                if (StateSynchronizationObserver.Instance.PerformanceMemoryUsageEvents != null)
+                {
+                    GUILayout.Space(defaultSpacing);
+                    RenderTitle("Memory Changes (bytes)", Color.green);
+                    foreach (var count in StateSynchronizationObserver.Instance.PerformanceMemoryUsageEvents)
                     {
                         GUILayout.Label($"{count.Item1}:{count.Item2}");
                     }
