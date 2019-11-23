@@ -100,7 +100,8 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
             int colour = (int)pieceInfo.colour;
             if ((colour == 0 && validMoves.Contains(kingPos)) || (colour == 1 && validMoves.Contains(kingPos)))
             {
-                MoveDataStructure.Check();
+                int historyIndex = MoveHistory.Instance.Index;
+                MoveHistory.Instance.Check[historyIndex] = true;
                 boardInfo.Check = true;
                 StoreCheckPath(pieceInfo, kingPos);
                 if (CheckmateStalemate(colour, boardInfo))
@@ -280,7 +281,7 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
             }
 
             // Add the path to the MoveDataStructure
-            MoveDataStructure.AddCheckPath(checkPath);
+            MoveHistory.Instance.AddCheckPath(checkPath);
         }
     }
 }

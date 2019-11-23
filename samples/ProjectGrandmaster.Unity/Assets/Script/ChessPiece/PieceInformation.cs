@@ -120,7 +120,7 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
             // Skip if king as it can move away from the check path
             if (boardInfo.Check && type != Type.King)
             {
-                List<string> checkPath = MoveDataStructure.GetCheckPath();
+                List<string> checkPath = MoveHistory.Instance.GetCheckPath();
                 int count = possibleMoves.Count;
                 for (int i = count - 1; i >= 0; i--)
                 {
@@ -290,7 +290,7 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
                     GameObject eliminatedPiece = board[newZPosition, newXPosition];
                     
                     pieceAction.Eliminate(eliminatedPiece);
-                    MoveDataStructure.Move(true, eliminatedPiece, gameObject, originalPosition, newPosition);
+                    MoveHistory.Instance.Move(true, eliminatedPiece, gameObject, originalPosition, newPosition);
                     boardInfo.RemoveFromBoard(eliminatedPiece);
 
                     // Reset fifty move to 0
@@ -303,7 +303,7 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
                     GameObject eliminatedPiece = board[currentZPosition, newXPosition];
                     
                     pieceAction.Eliminate(eliminatedPiece);
-                    MoveDataStructure.Move(true, eliminatedPiece, gameObject, originalPosition, newPosition);
+                    MoveHistory.Instance.Move(true, eliminatedPiece, gameObject, originalPosition, newPosition);
                     board[currentZPosition, newXPosition] = null;
 
                     // reset fifty move to 0
@@ -321,7 +321,7 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
                         WinRules.FiftyMoves += 1;
                     }
 
-                    MoveDataStructure.Move(false, null, gameObject, originalPosition, newPosition);
+                    MoveHistory.Instance.Move(false, null, gameObject, originalPosition, newPosition);
 
                     // Check if king and castling
                     // xDisplacement (- if moving right, + if moving left)
