@@ -8,6 +8,9 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
 {
+    /// <summary>
+    /// Tracks the piece movements throughout the game
+    /// </summary>
     public class MoveHistory
     {
         private static MoveHistory instance;
@@ -58,6 +61,14 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
 
         public List<bool> PawnPromoted { get; } = new List<bool>();
 
+        /// <summary>
+        /// Called when a move is made
+        /// </summary>
+        /// <param name="pieceEliminated"> True if the move eliminate's the opponent's piece </param>
+        /// <param name="eliminatedObject"> Opponent's piece that has been eliminated, otherwise null </param>
+        /// <param name="piece"> Piece that was moved </param>
+        /// <param name="originalPos"> Original Position of the piece ("x z")</param>
+        /// <param name="newPos"> New Position of the Piece ("x z")</param>
         public void Move(bool pieceEliminated, GameObject eliminatedObject, GameObject piece, string originalPos, string newPos)
         {
             Eliminated.Add(pieceEliminated);
@@ -87,21 +98,19 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
             Count++;
         }
 
+        /// <summary>
+        /// New game or 'reset'
+        /// </summary>
         public void Clear()
         {
-            Eliminated.Clear();
-            EliminatedObjects.Clear();
-            PieceMoved.Clear();
-            PreviousXPosition.Clear();
-            PreviousZPosition.Clear();
-            CurrentXPosition.Clear();
-            CurrentZPosition.Clear();
-            CheckPath.Clear();
-            Check.Clear();
-            PawnPromoted.Clear();
-            Count = 0;
+            instance = new MoveHistory();
         }
 
+        /// <summary>
+        /// When king is checked, store the path from the piece checking the king, to the king
+        /// into CheckPath
+        /// </summary>
+        /// <param name="path"></param>
         public void AddCheckPath(List<string> path)
         {
             CheckPath.Add(path);
