@@ -88,7 +88,7 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
                 }
                 piece.GetComponent<HighlightChessPiece>().ChangeStartColour();
             }
-            foreach (GameObject piece in MoveDataStructure.GetAllEliminated())
+            foreach (GameObject piece in MoveHistory.Instance.EliminatedObjects)
             {
                 PieceInformation pieceInfo = piece.GetComponent<PieceInformation>();
                 if (pieceInfo.colour == 0)

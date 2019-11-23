@@ -220,7 +220,7 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
             Check = false;
             GameEnded = false;
 
-            foreach (GameObject restorePiece in MoveDataStructure.GetAllEliminated())
+            foreach (GameObject restorePiece in MoveHistory.Instance.EliminatedObjects)
             {
                 if (restorePiece == null)
                 {
@@ -253,7 +253,7 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
                 pieceAction.ChangePosition(piece, endPosition, (int)pieceInfo.colour);
             }
 
-            MoveDataStructure.Clear();
+            MoveHistory.Instance.Clear();
 
             // Reset turn - White Start
             ResetTurn();
@@ -262,23 +262,28 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
         public void UndoState()
         {
             /// Check if previous move exists
-            if (MoveDataStructure.GetCount() == 0)
+            if (MoveHistory.Instance.Index < 0)
             {
                 return;
             }
 
             //  Retrieve previous move
-            ArrayList moveData = MoveDataStructure.Undo();
+            ArrayList moveData = MoveHistory.Instance.Undo();
 
             // If undo'd a check, remove the check path
             if ((bool)moveData[7])
             {
-                MoveDataStructure.RemoveLastPath();
+                MoveHistory.Instance.RemoveLastPath();
             }
 
             // Check = check state prior to the last move
-            Check = MoveDataStructure.GetLastCheck();
-            Debug.Log(Check.ToString());
+            int checkIndex = MoveHistory.Instance.Index;
+
+            Check = false;
+            if (checkIndex >= 0)
+            {
+                Check = MoveHistory.Instance.Check[checkIndex];
+            }
 
             // Change piece's position
             int lastZPosition = (int) moveData[4];
@@ -512,7 +517,7 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
             pawnPromo.SetActive(true);
             string pawnPromotion = "PAWN PROMOTION!";
             SetText(pawnPromotion);
-            MoveDataStructure.Promoted();
+            MoveHistory.Instance.Promoted();
 
             boardMenuTileText.GetComponent<TextMeshPro>().text = "Promotion Tile";
             boardMenuTileTextTwo.GetComponent<TextMeshPro>().text = "Promotion Tile";
