@@ -229,7 +229,6 @@ namespace Microsoft.MixedReality.SpectatorView
         public TAsset GetAsset(AssetId assetId)
         {
             using (StateSynchronizationPerformanceMonitor.Instance.IncrementEventDuration(this.GetType().Name, "GetAsset"))
-            using (StateSynchronizationPerformanceMonitor.Instance.MeasureEventMemoryUsage(this.GetType().Name, "GetAsset"))
             {
                 TAssetEntry assetEntry;
                 if (LookupByAssetId.TryGetValue(assetId, out assetEntry))
@@ -246,7 +245,6 @@ namespace Microsoft.MixedReality.SpectatorView
         public AssetId GetAssetId(TAsset asset)
         {
             using (StateSynchronizationPerformanceMonitor.Instance.IncrementEventDuration(this.GetType().Name, "GetAssetId"))
-            using (StateSynchronizationPerformanceMonitor.Instance.MeasureEventMemoryUsage(this.GetType().Name, "GetAssetId"))
             {
                 TAssetEntry assetEntry;
                 if (asset != null && LookupByAsset.TryGetValue(asset, out assetEntry))
