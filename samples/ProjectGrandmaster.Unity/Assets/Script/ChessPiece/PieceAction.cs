@@ -115,6 +115,8 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
             Vector3 aboveOriginalPosition = new Vector3(endPosition.x, 2, endPosition.z);
             Quaternion startRotation = piece.transform.localRotation;
 
+            Debug.Log(piece.transform.rotation);
+
             bool skip = false;
             if ((Math.Abs(startPosition.x - endPosition.x) <= 1 && Math.Abs(startPosition.z - endPosition.z) <= 1) || slide)
             {
@@ -129,11 +131,11 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
             Quaternion endRotation;
             if (colour == 0)
             {
-                endRotation = new Quaternion(0, 0, 0, 1);
+                endRotation = new Quaternion(-90, 180, 0, 1);
             }
             else
             {
-                endRotation = new Quaternion(0, 180, 0, 1);
+                endRotation = new Quaternion(-90, 0, 0, 1);
             }
 
             if (!skip)
@@ -144,7 +146,7 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
                     float blend = Mathf.Clamp01(time / duration);
 
                     piece.transform.localPosition = Vector3.Lerp(startPosition, up, blend);
-                    piece.transform.localRotation = Quaternion.Slerp(startRotation, endRotation, blend);
+                   // piece.transform.localRotation = Quaternion.Slerp(startRotation, endRotation, blend);
 
                     yield return null;
                 }
@@ -170,11 +172,11 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
                 float blend = Mathf.Clamp01(time / duration);
 
                 piece.transform.localPosition = Vector3.Lerp(aboveOriginalPosition, endPosition, blend);
-                piece.transform.localRotation = Quaternion.Slerp(startRotation, endRotation, blend);
+               // piece.transform.localRotation = Quaternion.Slerp(startRotation, endRotation, blend);
 
                 yield return null;
             }
-
+            Debug.Log(piece.transform.rotation);
             piece.GetComponent<Rigidbody>().detectCollisions = true;
             piece.GetComponent<Rigidbody>().isKinematic = false;
         }
@@ -187,7 +189,7 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
         {
             int fallDirection = UnityEngine.Random.Range(0, 359);
             var quatStart = transform.rotation;
-            var quatEnd = Quaternion.Euler(0, fallDirection, 90);
+            var quatEnd = Quaternion.Euler(-90, fallDirection, 90);
             var timeStart = Time.time;
             float timePassed;
 

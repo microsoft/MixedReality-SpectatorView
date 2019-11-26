@@ -379,7 +379,7 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
                 // Check if in final tile
                 if ((colour == Colour.White && newZPosition == 7) || (colour == Colour.Black && newZPosition == 0))
                 {
-                    StartCoroutine(boardInfo.PromotePawn(GetComponent<PieceInformation>(), gameObject));
+                    StartCoroutine(boardInfo.PromotePawn(GetComponent<PieceInformation>()));
                     BeenPromoted = true;
                 }
                 else
@@ -461,7 +461,7 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
             }
 
             // Display result
-            boardInfo.Forfeited((int)colour);
+            boardInfo.Forfeit((int)colour);
         }
 
         void FixPosition()
