@@ -24,6 +24,7 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
         public List<GameObject> whiteTiles;
 
         private BoardInformation boardInfo;
+        private PieceAction pieceAction;
 
         // Classic material by default
         private bool modern = false;
@@ -32,27 +33,48 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
         {
             GameObject manager = GameObject.Find("GameManager");
             boardInfo = manager.GetComponent<BoardInformation>();
+            pieceAction = manager.GetComponent<PieceAction>();
+        }
+
+        void ClassicMat()
+        {
+            float blackMat = classicBlack.GetFloat("_Metallic");
+            float blackGloss = classicBlack.GetFloat("_Glossiness");
+            float whiteMat = classicWhite.GetFloat("_Metallic");
+            float whiteGloss = classicBlack.GetFloat("_Glossiness");
+            pieceAction.SetMaterialValues(blackMat, whiteMat, whiteGloss, blackGloss);
+        }
+
+        void ModernMat()
+        {
+            float blackMat = modernBlack.GetFloat("_Metallic");
+            float blackGloss = modernBlack.GetFloat("_Glossiness");
+            float whiteMat = modernWhite.GetFloat("_Metallic");
+            float whiteGloss = modernBlack.GetFloat("_Glossiness");
+            pieceAction.SetMaterialValues(blackMat, whiteMat, whiteGloss, blackGloss);
         }
 
         /// <summary>
         /// Called when the button is pressed in the hand menu
         /// </summary>
-        public void toggle()
+        public void Toggle()
         {
             // Change from modern to classic
             if (modern)
             {
                 modern = false;
-                changePieceMat(classicWhite, classicBlack);
-                changeTileMat(classicWhiteTile, classicBlackTile);
+                ChangePieceMat(classicWhite, classicBlack);
+                ChangeTileMat(classicWhiteTile, classicBlackTile);
+                ClassicMat();
             }
 
             // Change from classic to modern
             else
             {
                 modern = true;
-                changePieceMat(modernWhite, modernBlack);
-                changeTileMat(whiteTileMat, blackTileMat);
+                ChangePieceMat(modernWhite, modernBlack);
+                ChangeTileMat(whiteTileMat, blackTileMat);
+                ModernMat();
             }
         }
 
@@ -61,7 +83,7 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
         /// </summary>
         /// <param name="white">The new white material.</param>
         /// <param name="black">The new black material.</param>
-        private void changeTileMat(Material white, Material black)
+        private void ChangeTileMat(Material white, Material black)
         {
             foreach (GameObject tile in blackTiles)
             {
@@ -86,7 +108,7 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
         /// </summary>
         /// <param name="white">The new white piece material.</param>
         /// <param name="black">The new black piece material.</param>
-        private void changePieceMat(Material white, Material black)
+        private void ChangePieceMat(Material white, Material black)
         {
             foreach (GameObject piece in boardInfo.GetPieceAvailable())
             {
@@ -115,6 +137,5 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
                 piece.GetComponent<HighlightChessPiece>().ChangeStartColour();
             }
         }
-       
     }
 }

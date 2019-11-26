@@ -14,6 +14,28 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
     /// </summary>
     public class PieceAction : MonoBehaviour
     {
+        private float blackMatallic;
+        private float blackGloss;
+        private float whiteMetallic;
+        private float whiteGloss;
+        private float duration = 1f;
+
+        void Awake()
+        {
+            this.blackGloss = 0.511f;
+            this.whiteGloss = 1f;
+            this.blackMatallic = 0.045f;
+            this.whiteMetallic = 0.185f;
+        }
+
+        public void SetMaterialValues(float blackMat, float whiteMat, float whiteGloss, float blackGloss) 
+        {
+            this.blackGloss = blackGloss;
+            this.whiteGloss = whiteGloss;
+            this.blackMatallic = blackMat;
+            this.whiteMetallic = whiteMat;
+        }
+
         /// <summary>
         /// Removes the piece from board in a fade-out motion
         /// </summary>
@@ -23,7 +45,7 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
             piece.GetComponent<Rigidbody>().detectCollisions = false;
             Material material = piece.GetComponent<Renderer>().material;
             ChangeRendModeTransparent(material);
-            StartCoroutine(Fade(piece, material, 0f, 0f, 0f, 1f));
+            StartCoroutine(Fade(piece, material, 0f, 0f, 0f, duration));
         }
 
         /// <summary>
@@ -34,7 +56,14 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
         {
             piece.SetActive(true);
             Material material = piece.GetComponent<Renderer>().material;
-            StartCoroutine(Fade(piece, material, 1f, 1f, 1f, 1f));
+            if (piece.name.Contains("Dark"))
+            {
+                StartCoroutine(Fade(piece, material, 1f, blackMatallic, blackGloss, duration));
+            }
+            else
+            {
+                StartCoroutine(Fade(piece, material, 1f, whiteMetallic, whiteGloss, duration));
+            }
         }
 
         /// <summary>

@@ -43788,16 +43788,80 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1571045787d926e4284433a0d2734971, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  classicWhite: {fileID: 0}
-  classicBlack: {fileID: 0}
-  modernBlack: {fileID: 0}
-  modernWhite: {fileID: 0}
-  blackTileMat: {fileID: 0}
-  whiteTileMat: {fileID: 0}
-  classicBlackTile: {fileID: 0}
-  classicWhiteTile: {fileID: 0}
-  blackTiles: []
-  whiteTiles: []
+  classicWhite: {fileID: 2100000, guid: fedf78764146e5b46b101d5d182aaabb, type: 2}
+  classicBlack: {fileID: 2100000, guid: 8a3622362731b394da92805ee3cd44a5, type: 2}
+  modernBlack: {fileID: 2100000, guid: 38d3e07a42c7aa94aaf4eb31a7b6e71f, type: 2}
+  modernWhite: {fileID: 2100000, guid: 0a73e9f1ef204a34d972dd3c3bdd1bed, type: 2}
+  blackTileMat: {fileID: 2100000, guid: 524222c38ff8cc14b8f12ec335115a61, type: 2}
+  whiteTileMat: {fileID: 2100000, guid: 0ee8242c83443044097a193eff9f0216, type: 2}
+  classicBlackTile: {fileID: 2100000, guid: 872ee4948d9673648be6f73fdc692aa4, type: 2}
+  classicWhiteTile: {fileID: 2100000, guid: 3f7185fcb5d0ccd4eacc8ec5b11d7281, type: 2}
+  blackTiles:
+  - {fileID: 422072869}
+  - {fileID: 1189274427}
+  - {fileID: 1153839785}
+  - {fileID: 1421216031}
+  - {fileID: 555053427}
+  - {fileID: 177384886}
+  - {fileID: 1662456635}
+  - {fileID: 521074210}
+  - {fileID: 509648656}
+  - {fileID: 356522440}
+  - {fileID: 1809489753}
+  - {fileID: 650390208}
+  - {fileID: 995602739}
+  - {fileID: 2000060148}
+  - {fileID: 794520654}
+  - {fileID: 404544602}
+  - {fileID: 906223868}
+  - {fileID: 1133670003}
+  - {fileID: 816955230}
+  - {fileID: 1835308650}
+  - {fileID: 1248802730}
+  - {fileID: 1608703143}
+  - {fileID: 381283143}
+  - {fileID: 1701312070}
+  - {fileID: 136531715}
+  - {fileID: 1465288569}
+  - {fileID: 1499023768}
+  - {fileID: 74659553}
+  - {fileID: 868303171}
+  - {fileID: 1150176372}
+  - {fileID: 1081206526}
+  - {fileID: 286194782}
+  whiteTiles:
+  - {fileID: 276557477}
+  - {fileID: 1695403445}
+  - {fileID: 1515717435}
+  - {fileID: 1617032758}
+  - {fileID: 974934779}
+  - {fileID: 1347377379}
+  - {fileID: 1481770496}
+  - {fileID: 1831229230}
+  - {fileID: 1512657589}
+  - {fileID: 1070893223}
+  - {fileID: 675458107}
+  - {fileID: 1741211377}
+  - {fileID: 1193928230}
+  - {fileID: 640549740}
+  - {fileID: 244071463}
+  - {fileID: 1847693993}
+  - {fileID: 992354416}
+  - {fileID: 2059522744}
+  - {fileID: 1309856715}
+  - {fileID: 1393968195}
+  - {fileID: 240337471}
+  - {fileID: 1113546642}
+  - {fileID: 2099197555}
+  - {fileID: 1279245693}
+  - {fileID: 799455573}
+  - {fileID: 97472031}
+  - {fileID: 973280089}
+  - {fileID: 699694239}
+  - {fileID: 1605158580}
+  - {fileID: 918672305}
+  - {fileID: 1964077495}
+  - {fileID: 1722064933}
 --- !u!1 &1818034735
 GameObject:
   m_ObjectHideFlags: 0
