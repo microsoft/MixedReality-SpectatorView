@@ -16,10 +16,8 @@ namespace Microsoft.MixedReality.SpectatorView
 
         private readonly Dictionary<ShortID, IAssetSerializer<Texture>> textureSerializers = new Dictionary<ShortID, IAssetSerializer<Texture>>();
 
-        protected override void Awake()
+        protected virtual void Start()
         {
-            base.Awake();
-
             textureAssets = LookupAssetCache<TextureAssetCache>();
             meshAssets = LookupAssetCache<MeshAssetCache>();
             materialPropertyAssets = LookupAssetCache<MaterialPropertyAssetCache>();

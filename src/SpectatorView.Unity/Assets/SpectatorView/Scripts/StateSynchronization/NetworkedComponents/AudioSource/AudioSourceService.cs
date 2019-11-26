@@ -23,16 +23,10 @@ namespace Microsoft.MixedReality.SpectatorView
         private AudioClipAssetCache audioClipAssets;
         private AudioMixerGroupAssetCache audioMixerGroupAssets;
 
-        protected override void Awake()
-        {
-            base.Awake();
-
-            audioClipAssets = AudioClipAssetCache.LoadAssetCache<AudioClipAssetCache>();
-            audioMixerGroupAssets = AudioMixerGroupAssetCache.LoadAssetCache<AudioMixerGroupAssetCache>();
-        }
-
         private void Start()
         {
+            audioClipAssets = AudioClipAssetCache.LoadAssetCache<AudioClipAssetCache>();
+            audioMixerGroupAssets = AudioMixerGroupAssetCache.LoadAssetCache<AudioMixerGroupAssetCache>();
             StateSynchronizationSceneManager.Instance.RegisterService(this, new ComponentBroadcasterDefinition<AudioSourceBroadcaster>(typeof(AudioSource)));
         }
 

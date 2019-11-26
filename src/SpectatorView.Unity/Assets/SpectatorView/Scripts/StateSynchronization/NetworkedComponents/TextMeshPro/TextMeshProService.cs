@@ -17,15 +17,9 @@ namespace Microsoft.MixedReality.SpectatorView
 #if STATESYNC_TEXTMESHPRO
         private TextMeshProFontAssetCache fontAssets;
 
-        protected override void Awake()
-        {
-            base.Awake();
-
-            fontAssets = TextMeshProFontAssetCache.LoadAssetCache<TextMeshProFontAssetCache>();
-        }
-
         private void Start()
         {
+            fontAssets = TextMeshProFontAssetCache.LoadAssetCache<TextMeshProFontAssetCache>();
             StateSynchronizationSceneManager.Instance.RegisterService(this, new ComponentBroadcasterDefinition<TextMeshProBroadcaster>(typeof(TextMeshPro)));
         }
 
