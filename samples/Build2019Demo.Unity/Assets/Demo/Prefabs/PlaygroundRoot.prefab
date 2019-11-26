@@ -219,6 +219,16 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 8769686775148015902, guid: 1e0989a651826fc4891cc66de10f020c,
+        type: 3}
+      propertyPath: maxPushDistance
+      value: 2.18
+      objectReference: {fileID: 0}
+    - target: {fileID: 8769686775148015902, guid: 1e0989a651826fc4891cc66de10f020c,
+        type: 3}
+      propertyPath: pressDistance
+      value: 1.36
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1e0989a651826fc4891cc66de10f020c, type: 3}
 --- !u!4 &3375224487742316495 stripped
