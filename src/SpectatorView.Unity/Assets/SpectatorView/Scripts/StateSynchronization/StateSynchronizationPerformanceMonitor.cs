@@ -15,20 +15,20 @@ namespace Microsoft.MixedReality.SpectatorView
     {
         public class MemoryUsage
         {
-            public long TotalAllocatedMemoryDelta;
-            public long TotalReservedMemoryDelta;
-            public long TotalUnusedReservedMemoryDelta;
+            public long TotalAllocatedMemory;
+            public long TotalReservedMemory;
+            public long TotalUnusedReservedMemory;
 
             public MemoryUsage()
             {
-                TotalAllocatedMemoryDelta = 0;
-                TotalReservedMemoryDelta = 0;
-                TotalUnusedReservedMemoryDelta = 0;
+                TotalAllocatedMemory = 0;
+                TotalReservedMemory = 0;
+                TotalUnusedReservedMemory = 0;
             }
 
             public override string ToString()
             {
-                return $"TotalAllocatedMemoryDelta:{TotalAllocatedMemoryDelta}, TotalReservedMemoryDelta:{TotalReservedMemoryDelta}, TotalUnusedReservedMemoryDelta:{TotalUnusedReservedMemoryDelta}";
+                return $"TotalAllocatedMemory:{TotalAllocatedMemory}, TotalReservedMemory:{TotalReservedMemory}, TotalUnusedReservedMemory:{TotalUnusedReservedMemory}";
             }
         }
 
@@ -142,7 +142,7 @@ namespace Microsoft.MixedReality.SpectatorView
                 eventMemoryUsage.Add(key, memoryUsage);
             }
 
-            return new MemoryDelta(memoryUsage);
+            return new MemoryScope(memoryUsage);
         }
 
         public void WriteMessage(BinaryWriter message, int numFrames)
@@ -197,9 +197,9 @@ namespace Microsoft.MixedReality.SpectatorView
             foreach (var pair in eventMemoryUsage)
             {
                 message.Write($"{pair.Key.ComponentName}.{pair.Key.EventName}");
-                message.Write(pair.Value.TotalAllocatedMemoryDelta);
-                message.Write(pair.Value.TotalReservedMemoryDelta);
-                message.Write(pair.Value.TotalUnusedReservedMemoryDelta);
+                message.Write(pair.Value.TotalAllocatedMemory);
+                message.Write(pair.Value.TotalReservedMemory);
+                message.Write(pair.Value.TotalUnusedReservedMemory);
             }
         }
 
@@ -261,9 +261,9 @@ namespace Microsoft.MixedReality.SpectatorView
                 {
                     string eventName = reader.ReadString();
                     MemoryUsage usage = new MemoryUsage();
-                    usage.TotalAllocatedMemoryDelta = reader.ReadInt64();
-                    usage.TotalReservedMemoryDelta = reader.ReadInt64();
-                    usage.TotalUnusedReservedMemoryDelta = reader.ReadInt64();
+                    usage.TotalAllocatedMemory = reader.ReadInt64();
+                    usage.TotalReservedMemory = reader.ReadInt64();
+                    usage.TotalUnusedReservedMemory = reader.ReadInt64();
                     memoryUsages.Add(new Tuple<string, MemoryUsage>(eventName, usage));
                 }
             }
@@ -296,19 +296,22 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
-        private class MemoryDelta : IDisposable
+        private struct MemoryScope : IDisposable
         {
             private long startingAllocatedMemory;
             private long startingReservedMemory;
             private long startingUnusedMemory;
+            private MemoryUsage memoryUsage;
 
-            private MemoryUsage memoryUsage = null;
-
-            public MemoryDelta(MemoryUsage memoryUsage)
+            public MemoryScope(MemoryUsage memoryUsage)
             {
                 if (!Profiler.enabled)
                 {
                     UnityEngine.Debug.LogError($"Profiler not enabled, MemoryUsage not supported.");
+                    this.memoryUsage = null;
+                    startingAllocatedMemory = 0;
+                    startingReservedMemory = 0;
+                    startingUnusedMemory = 0;
                     return;
                 }
 
@@ -327,9 +330,9 @@ namespace Microsoft.MixedReality.SpectatorView
                     return;
                 }
 
-                memoryUsage.TotalAllocatedMemoryDelta += Profiler.GetTotalAllocatedMemoryLong() - startingAllocatedMemory;
-                memoryUsage.TotalReservedMemoryDelta += Profiler.GetTotalReservedMemoryLong() - startingReservedMemory;
-                memoryUsage.TotalUnusedReservedMemoryDelta += Profiler.GetTotalUnusedReservedMemoryLong() - startingUnusedMemory;
+                memoryUsage.TotalAllocatedMemory += Profiler.GetTotalAllocatedMemoryLong() - startingAllocatedMemory;
+                memoryUsage.TotalReservedMemory += Profiler.GetTotalReservedMemoryLong() - startingReservedMemory;
+                memoryUsage.TotalUnusedReservedMemory += Profiler.GetTotalUnusedReservedMemoryLong() - startingUnusedMemory;
             }
         }
     }
