@@ -17,6 +17,8 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
         private int originalZPosition;
         private Vector3 currPos;
 
+        private Rigidbody pieceRigidBody;
+
         // Current position on the board 2D array
         public int CurrentXPosition { get; set; }
         public int CurrentZPosition { get; set; }
@@ -68,6 +70,8 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
             pieceAction = manager.GetComponent<PieceAction>();
             ghostPickup = GetComponent<GhostPickup>();
             chessboardLayer = boardInfo.GetChessboardLayer();
+
+            pieceRigidBody = GetComponent<Rigidbody>();
         }
 
         #region Possible positions the piece can move
@@ -211,6 +215,14 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
             {
                 GetComponent<MeshRenderer>().enabled = false;
                 ghostPickup.EndManipulation();
+            }
+        }
+
+        void OnCollisionEnter(Collision collision)
+        {
+            if (collision.gameObject.tag == "pieces")
+            {
+                pieceRigidBody.useGravity = true;
             }
         }
 
@@ -458,6 +470,11 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
 
         void MoveCompleted()
         {
+            foreach (GameObject piece in boardInfo.GetPieceAvailable())
+            {
+                PieceInformation pieceInfo = piece.GetComponent<PieceInformation>();
+                pieceInfo.pieceRigidBody.useGravity = false;
+            }
             boardInfo.CanMove = true;
         }
 
