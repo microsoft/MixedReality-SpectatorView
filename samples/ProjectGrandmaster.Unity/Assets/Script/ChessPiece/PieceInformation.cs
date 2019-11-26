@@ -467,7 +467,7 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
                 }
             }
 
-            Invoke("MoveCompleted", 1.5f);
+            Invoke("MoveCompleted", 2.5f);
         }
 
         void MoveCompleted()

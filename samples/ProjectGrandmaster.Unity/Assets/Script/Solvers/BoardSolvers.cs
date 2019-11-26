@@ -70,6 +70,11 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
 
         public void DestroySolver()
         {
+            // Surface magnetism not set up
+            if (!enabled)
+            {
+                return;
+            }
             if (currentSolver != null)
             {
                 DestroyImmediate(currentSolver);

@@ -23428,8 +23428,8 @@ MonoBehaviour:
   OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: Increment
+      - m_Target: {fileID: 860215228}
+        m_MethodName: SetSurfaceMagnetism
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
