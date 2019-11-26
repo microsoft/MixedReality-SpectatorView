@@ -11,8 +11,8 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
 {
     public class Menu : MonoBehaviour
     {
-        bool pause;
-        GameObject[] mainOptions { get; set; }
+        private bool pause;
+        private GameObject[] mainOptions { get; set; }
 
         public GameObject visual;
         public GameObject homeMenu;
@@ -29,11 +29,11 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
 
         private GameObject currentlyOpenedMenu;
 
-        GameObject manager;
-        BoardSolvers solvers;
-        BoardInformation boardInfo;
+        private GameObject manager;
+        private BoardSolvers solvers;
+        private BoardInformation boardInfo;
 
-        float startY = 0.05f;
+        private float startY = 0.05f;
 
         void Awake()
         {
@@ -47,6 +47,9 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
             originalSpot = homeMenu.transform.localPosition;
         }
 
+        /// <summary>
+        /// Displays the menu.
+        /// </summary>
         public void display()
         {
             visual.SetActive(true);
@@ -54,6 +57,9 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
             currentlyOpenedMenu = homeMenu;
         }
 
+        /// <summary>
+        /// Closes the menu.
+        /// </summary>
         public void close()
         {
             visual.SetActive(false);
@@ -62,6 +68,10 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
             // destroy surface magnetism solver 
             solvers.DestroySolver();
         }
+
+        /// <summary>
+        /// Starts new game.
+        /// </summary>
         public void NewGame()
         {
             boardInfo.ResetState();
@@ -70,6 +80,9 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
             close();
         }
 
+        /// <summary>
+        /// Resumes the game.
+        /// </summary>
         public void Resume()
         {
             pause = true;
@@ -77,16 +90,25 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
             close();
         }
 
+        /// <summary>
+        /// Goes to the settings menu page.
+        /// </summary>
         public void Settings()
         {
             Motion(settingMenu);
         }
 
+        /// <summary>
+        /// Goes to the volume menu page
+        /// </summary>
         public void Volume()
         {
             Motion(volume);
         }
 
+        /// <summary>
+        /// Goes to the previous menu page
+        /// </summary>
         public void Back()
         {
             if (currentlyOpenedMenu == volume) { Motion(settingMenu); }
@@ -95,50 +117,53 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
             else if (currentlyOpenedMenu == settingMenu) { Motion(homeMenu); }
         }
 
-        // called when going to the next menu page
-        private void Motion(GameObject piece)
+        /// <summary>
+        /// Called when going to the next menu page
+        /// </summary>
+        /// <param name="page"> The new menu page the player is being navigated to. </param>
+        private void Motion(GameObject page)
         {
             // Remove button colliders during animation
             RemoveColliders();
 
-            piece.transform.localPosition += displacement;
-            piece.SetActive(true);
-            StartCoroutine(SetToPosition(piece, piece.transform.localPosition - (displacement * 1.5f)));
+            page.transform.localPosition += displacement;
+            page.SetActive(true);
+            StartCoroutine(SetToPosition(page, page.transform.localPosition - (displacement * 1.5f)));
         }
 
-        IEnumerator SetToPosition(GameObject piece, Vector3 moveFront)
+        IEnumerator SetToPosition(GameObject page, Vector3 moveFront)
         {
             float time = 0;
             float duration = 1f;
             currentlyOpenedMenu.SetActive(false);
 
-            Vector3 startPosition = piece.transform.localPosition;
+            Vector3 startPosition = page.transform.localPosition;
             // move front
             while (time <= duration)
             {
                 time += Time.deltaTime;
                 float blend = Mathf.Clamp01(time / duration);
 
-                piece.transform.localPosition = Vector3.Lerp(startPosition, moveFront, blend);
+                page.transform.localPosition = Vector3.Lerp(startPosition, moveFront, blend);
 
                 yield return null;
             }
 
             time = 0;
             duration = 0.5f;
-            startPosition = piece.transform.localPosition;
+            startPosition = page.transform.localPosition;
             // Move back
             while (time <= duration)
             {
                 time += Time.deltaTime;
                 float blend = Mathf.Clamp01(time / duration);
 
-                piece.transform.localPosition = Vector3.Lerp(startPosition, originalSpot, blend);
+                page.transform.localPosition = Vector3.Lerp(startPosition, originalSpot, blend);
 
                 yield return null;
             }
 
-            currentlyOpenedMenu = piece;
+            currentlyOpenedMenu = page;
             EnableColliders();
         }
 
@@ -152,7 +177,9 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
             Motion(gameSettings); 
         }
 
-        // Disable box colliders during animation to avoid accidental press
+        /// <summary>
+        /// Disable box colliders during animation to avoid accidental press
+        /// </summary>
         public void RemoveColliders()
         {
             foreach (GameObject button in buttons)
@@ -160,8 +187,10 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
                 button.GetComponent<Collider>().enabled = false;
             }
         }
-    
-        // Enable box colliders after animation
+
+        /// <summary>
+        /// Enable box colliders after animation
+        /// </summary>
         public void EnableColliders()
         {
             foreach (GameObject button in buttons)
@@ -170,7 +199,9 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
             }
         }
 
-        // Allow player to align the board with the surface
+        /// <summary>
+        /// Allow player to align the board with the surface
+        /// </summary>
         public void SurfaceMagnetism()
         {
             solvers.SetSurfaceMagnetism();

@@ -18,8 +18,8 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
         private Vector3 currPos;
 
         // Current position on the board 2D array
-        private int currentXPosition;
-        private int currentZPosition;
+        public int CurrentXPosition { get; set; }
+        public int CurrentZPosition { get; set; }
 
         // Piece dropped fix boolean
         private bool fixingYPosition;
@@ -30,6 +30,9 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
         public Colour colour;
         public Type type;
         public char piece;
+
+        // Tracking number of times the piece has moved
+        public int PieceMoves { get; set; }
 
         // Raycast detect only chessboard layer - for valid position checking
         private LayerMask chessboardLayer;
@@ -55,8 +58,8 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
             originalXPosition = (int)transform.localPosition.x;
             originalZPosition = (int)transform.localPosition.z;
 
-            currentXPosition = originalXPosition;
-            currentZPosition = originalZPosition;
+            CurrentXPosition = originalXPosition;
+            CurrentZPosition = originalZPosition;
             currPos = transform.position;
 
             manager = GameObject.Find("GameManager");
@@ -68,8 +71,7 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
             chessboardLayer = boardInfo.GetChessboardLayer();
         }
 
-        /////////////////////////////////////// Determines possible positions the piece can move, and stores it in an arraylist ///////////////////////////////////////
-
+        #region Possible positions the piece can move
         /// <summary>
         /// Retrieves all valid positions the piece can move
         /// </summary>
@@ -87,7 +89,7 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
             possibleMoves = new List<string>();
             
             // Global position of the tile the piece is currently on
-            GameObject tile = chessboard.transform.GetChild(currentZPosition).gameObject.transform.GetChild(currentXPosition).gameObject;
+            GameObject tile = chessboard.transform.GetChild(CurrentZPosition).gameObject.transform.GetChild(CurrentXPosition).gameObject;
             Vector3 globalPosition = new Vector3(tile.transform.position.x, tile.transform.position.y + 0.025f, tile.transform.position.z);
 
             /// <summary>
@@ -132,17 +134,9 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
             }
         }
 
-        //////////////////////////////////////////////////////////////// Retrieving/Setting Piece Information ////////////////////////////////////////////////////////////////
+        #endregion
 
-        public int GetXPosition()
-        {
-            return currentXPosition;
-        }
-
-        public int GetZPosition()
-        {
-            return currentZPosition;
-        }
+        #region Retrieving/Setting Piece Information
 
         public int GetOriginalX()
         {
@@ -164,20 +158,9 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
             return possibleMoves;
         }
 
-        public void SetXPosition(int newPosition)
-        {
-            currentXPosition = newPosition;
-        }
+        #endregion
 
-        public void SetZPosition(int newPosition)
-        {
-            currentZPosition = newPosition;
-        }
-
-        // Tracking number of times the piece has moved
-        public int PieceMoves { get; set; }
-
-        ////////////////////////////////////// Piece Manipulation //////////////////////////////////////
+        #region Piece Manipulation
 
         public void Manipulation()
         {
@@ -281,7 +264,7 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
                     boardInfo.Check = false;
                 }
 
-                string originalPosition = currentXPosition.ToString() + " " + currentZPosition.ToString();
+                string originalPosition = CurrentXPosition.ToString() + " " + CurrentZPosition.ToString();
 
                 // Check if new position has opponent's piece
                 if (board[newZPosition, newXPosition] != null)
@@ -297,14 +280,14 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
                     WinRules.FiftyMoves = 0;
                 }
                 // Check if en passant
-                else if (type == Type.Pawn && currentXPosition != newXPosition)
+                else if (type == Type.Pawn && CurrentXPosition != newXPosition)
                 {
                     // Destroy opponent's pawn
-                    GameObject eliminatedPiece = board[currentZPosition, newXPosition];
+                    GameObject eliminatedPiece = board[CurrentZPosition, newXPosition];
                     
                     pieceAction.Eliminate(eliminatedPiece);
                     MoveHistory.Instance.Move(true, eliminatedPiece, gameObject, originalPosition, newPosition);
-                    board[currentZPosition, newXPosition] = null;
+                    board[CurrentZPosition, newXPosition] = null;
 
                     // reset fifty move to 0
                     WinRules.FiftyMoves = 0;
@@ -325,7 +308,7 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
 
                     // Check if king and castling
                     // xDisplacement (- if moving right, + if moving left)
-                    int xDisplacement = currentXPosition - newXPosition;
+                    int xDisplacement = CurrentXPosition - newXPosition;
                     if (type == Type.King && Math.Abs(xDisplacement) == 2)
                     {
                         Vector3 endPosition;
@@ -358,7 +341,7 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
                     }
                 }
 
-                boardInfo.UpdateBoard(currentXPosition, currentZPosition, newXPosition, newZPosition);
+                boardInfo.UpdateBoard(CurrentXPosition, CurrentZPosition, newXPosition, newZPosition);
                 PieceMoves += 1;
 
                 if (boardInfo.ghostActive)
@@ -428,7 +411,7 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
             }
 
             PieceInformation kingInfo = king.GetComponent<PieceInformation>();
-            String kingPosition = kingInfo.GetXPosition() + " " + kingInfo.GetZPosition();
+            String kingPosition = kingInfo.CurrentXPosition + " " + kingInfo.CurrentZPosition;
 
             if (WinRules.CheckForCheck(possibleMoves, GetComponent<PieceInformation>(), boardInfo, kingPosition))
             {
@@ -470,7 +453,7 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
             foreach (GameObject piece in availablePieces)
             {
                 PieceInformation pieceInfo = piece.GetComponent<PieceInformation>();
-                Vector3 position = new Vector3(pieceInfo.GetXPosition(), 0, pieceInfo.GetZPosition());
+                Vector3 position = new Vector3(pieceInfo.CurrentXPosition, 0, pieceInfo.CurrentZPosition);
                 if (!CheckSimilarity(piece.transform.localPosition, position))
                 {
                     pieceAction.ChangePosition(piece, position, (int)pieceInfo.colour);
@@ -498,7 +481,7 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
         // Moves the piece back to the original position, then animates it to the square the player dropped it
         private IEnumerator AnimateMovement(Vector3 finalPos)
         {
-            var position = new Vector3(GetXPosition(), 0, GetZPosition());
+            var position = new Vector3(CurrentXPosition, 0, CurrentZPosition);
             transform.position = currPos;
             GetComponent<MeshRenderer>().enabled = true;
             ghostPickup.DestroyClone();
@@ -522,4 +505,6 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
             pieceAction.ChangePosition(gameObject, position, (int)colour, true);
         }
     }
+
+    #endregion
 }

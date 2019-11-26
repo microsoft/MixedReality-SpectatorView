@@ -11,8 +11,8 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
 {
     public class BoardButtons : MonoBehaviour
     {
-        GameObject manager;
-        BoardInformation boardInformation;
+        private GameObject manager;
+        private BoardInformation boardInformation;
 
         void Awake()
         {

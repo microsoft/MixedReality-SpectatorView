@@ -9,6 +9,10 @@ using Microsoft.MixedReality.SpectatorView.ProjectGrandmaster;
 
 namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
 {
+    /// <summary>
+    /// Game mode that creates a duplicate of a chess piece when picked up.
+    /// The piece automatically moves to the new chosen position.
+    /// </summary>
     public class GhostPickup : MonoBehaviour
     {
         private GameObject clonePiece;
@@ -16,8 +20,10 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
         public BoardInformation bi;
         private Vector3 origPos, finalPos;
 
-        // Called by Manipulation script when a piece is picked up and creates a clone. 
-        // The original is the piece being moved whereas the clone is a placeholder in the original spot.
+        /// <summary>
+        /// Called by Manipulation script when a piece is picked up and creates a clone. 
+        /// The original is the piece being moved whereas the clone is a placeholder in the original spot.
+        /// </summary>
         public void DuplicatePiece()
         {
             //Create clone and change colours of clone
@@ -35,11 +41,11 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
 
         }
 
-
-        // Called by Manipulation script when a piece is dropped.
+        /// <summary>
+        /// Called by Manipulation script when a piece is dropped.
+        /// </summary>
         public void EndManipulation()
         {
-
             GetComponent<Rigidbody>().isKinematic = false;
             GetComponent<Rigidbody>().detectCollisions = true;
             StartCoroutine(DestroyCloneDelayed());
@@ -54,7 +60,6 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
                 piece.GetComponent<Rigidbody>().isKinematic = false;
                 piece.GetComponent<Rigidbody>().detectCollisions = true;
             }
-
         }
 
         public void DestroyClone()
@@ -64,7 +69,6 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
 
         IEnumerator DestroyCloneDelayed()
         {
-
             yield return new WaitForSeconds(4f);
             GetComponent<MeshRenderer>().enabled = true;
             if (clonePiece)

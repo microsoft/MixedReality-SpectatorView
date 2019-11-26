@@ -6,11 +6,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-//This script is attached to the chess pieces and is used to change their colour
-//Used by Manipulation Handler script
-
 namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
 {
+    /// <summary>
+    /// This script is attached to the chess pieces and is used to change their colour
+    /// Used by Manipulation Handler script
+    /// </summary>
     public class HighlightChessPiece : MonoBehaviour
     {
         private MeshRenderer mr;
@@ -34,7 +35,6 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
                 GrabHighlightColor = new Color(155f / 255f, 90f / 255f, 170f / 255f, 130f / 255f);
                 //new Color(63/175f, 190/255f, 180/255f, 0.4f); //blue highlight
             }
-           
         }
 
         public void TouchHighlightOn()

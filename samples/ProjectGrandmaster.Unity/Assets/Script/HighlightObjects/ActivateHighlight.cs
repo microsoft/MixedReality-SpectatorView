@@ -6,9 +6,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-//This script is attached to the tile objects and is used to change their colour
 namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
 {
+    /// <summary>
+    /// This script is attached to the tile objects and is used to change their colour
+    /// </summary>
     public class ActivateHighlight : MonoBehaviour
     {
         private MeshRenderer mr;

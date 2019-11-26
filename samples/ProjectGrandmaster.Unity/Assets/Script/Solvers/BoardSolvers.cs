@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
     public class BoardSolvers : MonoBehaviour
     {
         // To prevent enabling twice
-        static bool enabled;
+        private static bool enabled;
 
         private SolverHandler handler;
         private Solver currentSolver;

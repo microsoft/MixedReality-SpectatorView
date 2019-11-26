@@ -102,9 +102,7 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
 
         IEnumerator Pos(GameObject piece, Vector3 endPosition, int colour, bool slide)
         {
-            /// <summary>
-            /// Piece resets over 2.25 seconds
-            /// </summary>
+            // Piece resets over 2.25 seconds
             float time = 0;
             float duration = 0.75f;
             piece.GetComponent<Rigidbody>().isKinematic = true;
@@ -123,9 +121,7 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
                 duration *= 1.5f;
             }
 
-            /// <summary>
-            /// Fix the rotation of piece if knocked over
-            /// </summary>
+            // Fix the rotation of piece if knocked over
             Quaternion endRotation;
             if (colour == 0)
             {
@@ -172,6 +168,7 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
                 float blend = Mathf.Clamp01(time / duration);
 
                 piece.transform.localPosition = Vector3.Lerp(aboveOriginalPosition, endPosition, blend);
+
                // piece.transform.localRotation = Quaternion.Slerp(startRotation, endRotation, blend);
 
                 yield return null;
@@ -185,7 +182,6 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
         /// <summary>
         /// Player forfeit piece animation 
         /// </summary>
-
         public IEnumerator FallDown(GameObject piece)
         {
             int fallDirection = UnityEngine.Random.Range(0, 359);

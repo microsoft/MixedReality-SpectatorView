@@ -7,11 +7,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using Microsoft.MixedReality.SpectatorView.ProjectGrandmaster;
 
-//This script is attached to pieces to change the colour of tiles they can move to.
-//The methods should be called when the players hand moves ontop of the piece.
-
 namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
 {
+    /// <summary>
+    /// This script is attached to pieces to change the colour of tiles they can move to.
+    /// The methods should be called when the players hand moves ontop of the piece.
+    /// </summary>
     public class HighlightTiles : MonoBehaviour
     {
         private PieceInformation pi;
@@ -31,8 +32,10 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
             if (!chessboard) { Debug.LogError("chessboard gameobject not found"); }
         }
 
-        //Highlights tiles that this piece can move to
-        //Used by Interactable script events
+        /// <summary>
+        /// Highlights tiles that this piece can move to
+        /// Used by Interactable script events
+        /// </summary>
         public void TilesOn()
         {
             //Look for possible moves
@@ -56,8 +59,10 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
             }
         }
 
-        //Goes through the active tiles and turns highlight off
-        //Used by Interactable script events
+        /// <summary>
+        /// Goes through the active tiles and turns highlight off
+        /// Used by Interactable script events
+        /// </summary>
         public void TilesOff()
         {
             if (possibleMoves== null)
@@ -71,8 +76,12 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
             possibleMoves.Clear();
         }
 
-        //changes the int for board position to the letter position used in editor
-        //delete if not referenced once finished
+        /// <summary>
+        /// changes the int for board position to the letter position used in editor
+        /// delete if not referenced once finished
+        /// </summary>
+        /// <param name="num"></param>
+        /// <returns></returns>
         public char NumToLetter(int num)
         {
             return ((char)(num + 'A'));

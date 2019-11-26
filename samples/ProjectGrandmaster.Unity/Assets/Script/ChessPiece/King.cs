@@ -50,7 +50,14 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
             }
         }
 
-        private King() { }
+        private static GameObject gameManager;
+        private static Rules rules;
+
+        private King()
+        {
+            gameManager = GameObject.Find("GameManager");
+            rules = gameManager.GetComponent<Rules>();
+        }
 
         /// <summary>
         /// Returns a list of positions the pawn can move.
@@ -61,8 +68,8 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
         {
             PieceInformation piece = pieceObject.GetComponent<PieceInformation>();
             colour = (int)piece.colour;
-            currentZPosition = piece.GetZPosition();
-            currentXPosition = piece.GetXPosition();
+            currentZPosition = piece.CurrentZPosition;
+            currentXPosition = piece.CurrentXPosition;
 
             board = boardState;
 
@@ -101,7 +108,7 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
                     }
 
                     // Check if king can move to this position without getting compromised
-                    if (Rules.KingMove(currentXPosition + xDisplacement, currentZPosition + zDisplacement, colour, board))
+                    if (rules.KingMove(currentXPosition + xDisplacement, currentZPosition + zDisplacement, colour, board))
                     {
                         StorePosition(currentXPosition + xDisplacement, currentZPosition + zDisplacement);
                     }
@@ -115,11 +122,11 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
             {
                 // Check if king can castle left
                 Vector3 left = new Vector3(-1, 0, 0);
-                if (Rules.Castling(position, left, colour))
+                if (rules.Castling(position, left, colour))
                 {
                     // Check if king's new position is controlled by the opponent
                     // If not, add to list of valid moves
-                    if (Rules.KingMove(currentXPosition - 2, currentZPosition, colour, board))
+                    if (rules.KingMove(currentXPosition - 2, currentZPosition, colour, board))
                     {
                         StorePosition(currentXPosition - 2, currentZPosition); 
                     }
@@ -129,11 +136,11 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
                 /// Check if king can castle right
                 /// </summary>
                 Vector3 right = new Vector3(1, 0, 0);
-                if (Rules.Castling(position, right, colour))
+                if (rules.Castling(position, right, colour))
                 {
                     // Check if king's new position is controlled by the opponent
                     // If not, add to list of valid moves
-                    if (Rules.KingMove(currentXPosition + 2, currentZPosition, colour, board))
+                    if (rules.KingMove(currentXPosition + 2, currentZPosition, colour, board))
                     {
                         StorePosition(currentXPosition + 2, currentZPosition);
                     }

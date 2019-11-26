@@ -10,15 +10,12 @@ using System;
 
 namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
 {
+    /// <summary>
+    /// Checks if win conditions have been met.
+    /// </summary>
     public class WinRules : MonoBehaviour
     {
         public static int FiftyMoves { get; set; }
-
-        // not yet implemented
-        static bool ThreefoldRepetition()
-        {
-            return false;
-        }
 
         /// <summary>
         /// Rule: if 50 moves played without moving a pawn or capturing piece
@@ -152,7 +149,7 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
         /// <returns></returns>
         public static bool CheckDraw(int colour, BoardInformation boardInfo)
         {
-            if (FiftyMoveRule() || Impossibility(boardInfo) || ThreefoldRepetition() || CheckmateStalemate(colour, boardInfo))
+            if (FiftyMoveRule() || Impossibility(boardInfo) || CheckmateStalemate(colour, boardInfo))
             {
                 // Display draw
                 return true;
@@ -194,8 +191,8 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
         {
             int type = (int)pieceInfo.type;
             int colour = (int)pieceInfo.colour;
-            int xPosition = pieceInfo.GetXPosition();
-            int zPosition = pieceInfo.GetZPosition();
+            int xPosition = pieceInfo.CurrentXPosition;
+            int zPosition = pieceInfo.CurrentZPosition;
 
             int kingX = (int)char.GetNumericValue(kingPosition[0]);
             int kingZ = (int)char.GetNumericValue(kingPosition[2]);

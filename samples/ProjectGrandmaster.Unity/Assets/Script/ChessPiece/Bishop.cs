@@ -49,7 +49,14 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
             }
         }
 
-        private Bishop() { }
+        private static GameObject gameManager;
+        private static Rules rules;
+
+        private Bishop()
+        {
+            gameManager = GameObject.Find("GameManager");
+            rules = gameManager.GetComponent<Rules>();
+        }
 
         /// <summary>
         /// Returns a list of positions the pawn can move.
@@ -59,8 +66,8 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
         {
             PieceInformation piece = pieceObject.GetComponent<PieceInformation>();
             colour = (int)piece.colour;
-            currentZPosition = piece.GetZPosition();
-            currentXPosition = piece.GetXPosition();
+            currentZPosition = piece.CurrentZPosition;
+            currentXPosition = piece.CurrentXPosition;
 
             board = boardState;
 
@@ -69,12 +76,12 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
 
             // Check if king is compromised if moving top-right and bottom-left
             // Or top-left and bottom-right
-            bool forwards = Rules.DiagonalCheckBackward(globalPosition, colour);
-            bool backwards = Rules.DiagonalCheckForward(globalPosition, colour);
+            bool forwards = rules.DiagonalCheckBackward(globalPosition, colour);
+            bool backwards = rules.DiagonalCheckForward(globalPosition, colour);
 
             // King will be left compromised if piece moves in any valid direction
             // return empty list
-            if (Rules.ColumnCheck(globalPosition, colour) || Rules.RowCheck(globalPosition, colour))
+            if (rules.ColumnCheck(globalPosition, colour) || rules.RowCheck(globalPosition, colour))
             {
                 return validPositions;
             }

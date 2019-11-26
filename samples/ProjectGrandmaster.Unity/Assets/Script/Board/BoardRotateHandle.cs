@@ -51,7 +51,7 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
             foreach (GameObject piece in pieces)
             {
                 PieceInformation pieceInfo = piece.GetComponent<PieceInformation>();
-                Vector3 position = new Vector3(pieceInfo.GetXPosition(), 0, pieceInfo.GetZPosition());
+                Vector3 position = new Vector3(pieceInfo.CurrentXPosition, 0, pieceInfo.CurrentZPosition);
                 if (!CheckSimilarity(piece.transform.localPosition, position))
                 {
                     if (pieceInfo.colour != lossColour)

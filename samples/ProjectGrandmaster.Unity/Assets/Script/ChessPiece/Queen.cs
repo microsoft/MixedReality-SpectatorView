@@ -49,7 +49,14 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
             }
         }
 
-        private Queen() { }
+        private static GameObject gameManager;
+        private static Rules rules;
+
+        private Queen()
+        {
+            gameManager = GameObject.Find("GameManager");
+            rules = gameManager.GetComponent<Rules>();
+        }
 
         /// <summary>
         /// Returns a list of positions the pawn can move.
@@ -59,8 +66,8 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
         {
             PieceInformation piece = pieceObject.GetComponent<PieceInformation>();
             colour = (int)piece.colour;
-            currentZPosition = piece.GetZPosition();
-            currentXPosition = piece.GetXPosition();
+            currentZPosition = piece.CurrentZPosition;
+            currentXPosition = piece.CurrentXPosition;
 
             board = boardState;
             
@@ -69,13 +76,13 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
 
             // Check if king is compromised if moving top-right and bottom-left
             // Or top-left and bottom-right
-            bool forwards = Rules.DiagonalCheckBackward(globalPosition, colour);
-            bool backwards = Rules.DiagonalCheckForward(globalPosition, colour);
+            bool forwards = rules.DiagonalCheckBackward(globalPosition, colour);
+            bool backwards = rules.DiagonalCheckForward(globalPosition, colour);
 
             // Check if king is compromised if moving up and down
             // Or left and right
-            bool rowMovement = Rules.ColumnCheck(globalPosition, colour);
-            bool columnMovement = Rules.RowCheck(globalPosition, colour);
+            bool rowMovement = rules.ColumnCheck(globalPosition, colour);
+            bool columnMovement = rules.RowCheck(globalPosition, colour);
 
             // If compromised diagonally, cannot move up and down, or left and right
             if (!forwards && !backwards)

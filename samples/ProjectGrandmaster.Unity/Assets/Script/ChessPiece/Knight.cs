@@ -60,8 +60,8 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
         {
             PieceInformation piece = pieceObject.GetComponent<PieceInformation>();
             colour = (int)piece.colour;
-            currentZPosition = piece.GetZPosition();
-            currentXPosition = piece.GetXPosition();
+            currentZPosition = piece.CurrentZPosition;
+            currentXPosition = piece.CurrentXPosition;
 
             board = boardState;
 

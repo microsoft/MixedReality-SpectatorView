@@ -23,7 +23,7 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
         public List<GameObject> blackTiles;
         public List<GameObject> whiteTiles;
 
-        BoardInformation boardInfo;
+        private BoardInformation boardInfo;
 
         // Classic material by default
         private bool modern = false;
@@ -34,6 +34,9 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
             boardInfo = manager.GetComponent<BoardInformation>();
         }
 
+        /// <summary>
+        /// Called when the button is pressed in the hand menu
+        /// </summary>
         public void toggle()
         {
             // Change from modern to classic
@@ -53,6 +56,11 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
             }
         }
 
+        /// <summary>
+        /// Changes the tile mat.
+        /// </summary>
+        /// <param name="white">The new white material.</param>
+        /// <param name="black">The new black material.</param>
         private void changeTileMat(Material white, Material black)
         {
             foreach (GameObject tile in blackTiles)
@@ -73,6 +81,11 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
             }
         }
 
+        /// <summary>
+        /// Changes the piece mat.
+        /// </summary>
+        /// <param name="white">The new white piece material.</param>
+        /// <param name="black">The new black piece material.</param>
         private void changePieceMat(Material white, Material black)
         {
             foreach (GameObject piece in boardInfo.GetPieceAvailable())

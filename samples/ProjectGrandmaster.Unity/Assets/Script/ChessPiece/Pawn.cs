@@ -49,7 +49,14 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
             }
         }
 
-        private Pawn() { }
+        private static GameObject gameManager;
+        private static Rules rules;
+
+        private Pawn()
+        {
+            gameManager = GameObject.Find("GameManager");
+            rules = gameManager.GetComponent<Rules>();
+        }
 
         /// <summary>
         /// Returns a list of positions the pawn can move.
@@ -59,8 +66,8 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
         {
             PieceInformation piece = pieceObject.GetComponent<PieceInformation>();
             colour = (int)piece.colour;
-            currentZPosition = piece.GetZPosition();
-            currentXPosition = piece.GetXPosition();
+            currentZPosition = piece.CurrentZPosition;
+            currentXPosition = piece.CurrentXPosition;
 
             board = boardState;
 
@@ -71,10 +78,10 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
             // Check if king is compromised if pawn moves top-left/ top-right
             // Check if king is compromised if pawn moves, from top-left or top-right
             // (substitute top with bottom if black)
-            bool columnMovement = Rules.RowCheck(globalPosition, colour);
-            bool rowMovement = Rules.ColumnCheck(globalPosition, colour);
-            bool topLeftMovement = Rules.DiagonalCheckForward(globalPosition, colour);
-            bool topRightMovement = Rules.DiagonalCheckBackward(globalPosition, colour);
+            bool columnMovement = rules.RowCheck(globalPosition, colour);
+            bool rowMovement = rules.ColumnCheck(globalPosition, colour);
+            bool topLeftMovement = rules.DiagonalCheckForward(globalPosition, colour);
+            bool topRightMovement = rules.DiagonalCheckBackward(globalPosition, colour);
 
             // King will be left compromised if pawn moves in the upwards direction
             // return empty list
@@ -124,7 +131,7 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
 
                 // Check if en passant condition is met
                 // Add position to allowed moves if true
-                if (right <= 7 && Rules.EnPassant(globalPosition, new Vector3(1, 0, 0), colour))
+                if (right <= 7 && rules.EnPassant(globalPosition, new Vector3(1, 0, 0), colour))
                 {
                     StorePosition(right, displacement);
                 }
@@ -141,7 +148,7 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
 
                 // Check if en passant condition is met
                 // Add position to allowed moves if true
-                if (left >= 0 && Rules.EnPassant(globalPosition, new Vector3(-1, 0, 0), colour))
+                if (left >= 0 && rules.EnPassant(globalPosition, new Vector3(-1, 0, 0), colour))
                 {
                     StorePosition(left, displacement);
                 }

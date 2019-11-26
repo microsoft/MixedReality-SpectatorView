@@ -94,8 +94,8 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
             foreach (GameObject piece in GameObject.FindGameObjectsWithTag("pieces"))
             {
                 PieceInformation info = piece.GetComponent<PieceInformation>();
-                int x = info.GetXPosition();
-                int z = info.GetZPosition();
+                int x = info.CurrentXPosition;
+                int z = info.CurrentZPosition;
                 Board[z, x] = piece;
 
                 // Initialise kings
@@ -242,8 +242,8 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
             Board[currentZ, currentX] = piece;
 
             PieceInformation pieceInfo = piece.GetComponent<PieceInformation>();
-            pieceInfo.SetXPosition(currentX);
-            pieceInfo.SetZPosition(currentZ);
+            pieceInfo.CurrentXPosition = currentX;
+            pieceInfo.CurrentZPosition = currentZ;
         }
 
         /// <summary>
@@ -275,11 +275,11 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
                 }
 
                 // Update board
-                UpdateBoard(pieceInfo.GetXPosition(), pieceInfo.GetZPosition(), pieceInfo.GetOriginalX(), pieceInfo.GetOriginalZ(), piece);
+                UpdateBoard(pieceInfo.CurrentXPosition, pieceInfo.CurrentZPosition, pieceInfo.GetOriginalX(), pieceInfo.GetOriginalZ(), piece);
 
                 // Reset to piece's default values
-                pieceInfo.SetXPosition(pieceInfo.GetOriginalX());
-                pieceInfo.SetZPosition(pieceInfo.GetOriginalZ());
+                pieceInfo.CurrentXPosition = pieceInfo.GetOriginalX();
+                pieceInfo.CurrentZPosition = pieceInfo.GetOriginalZ();
                 pieceInfo.PieceMoves = 0;
 
                 // Reset location
@@ -335,10 +335,10 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
                 UndoPromotion(piece);
             }
 
-            int currentXPosition = pieceInformation.GetXPosition();
-            int currentZPosition = pieceInformation.GetZPosition();
-            pieceInformation.SetXPosition(lastXPosition);
-            pieceInformation.SetZPosition(lastZPosition);
+            int currentXPosition = pieceInformation.CurrentXPosition;
+            int currentZPosition = pieceInformation.CurrentZPosition;
+            pieceInformation.CurrentXPosition = lastXPosition;
+            pieceInformation.CurrentZPosition = lastZPosition;
 
             // Subtract one from total moves on current piece
             pieceInformation.PieceMoves--;
@@ -390,11 +390,11 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
 
                 // Fix positioning of the reinstated piece
                 PieceInformation pieceInfo = reinstate.GetComponent<PieceInformation>();
-                Vector3 position = new Vector3(pieceInfo.GetXPosition(), 0, pieceInfo.GetZPosition());
+                Vector3 position = new Vector3(pieceInfo.CurrentXPosition, 0, pieceInfo.CurrentZPosition);
                 pieceAction.ChangePosition(reinstate, position, (int)pieceInfo.colour);
 
                 // Update Board
-                Board[pieceInfo.GetZPosition(), pieceInfo.GetXPosition()] = reinstate;
+                Board[pieceInfo.CurrentZPosition, pieceInfo.CurrentXPosition] = reinstate;
             }
 
             // Change player's turn 
@@ -566,8 +566,8 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
             {
                 if (MeshChosen)
                 {
-                    int x = pieceInfo.GetXPosition();
-                    int z = pieceInfo.GetZPosition();
+                    int x = pieceInfo.CurrentXPosition;
+                    int z = pieceInfo.CurrentZPosition;
 
                     pawn.GetComponent<MeshFilter>().mesh = Mesh;
                     if (Mesh.name.Contains("Rook"))
