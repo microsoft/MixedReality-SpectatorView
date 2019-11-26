@@ -281,13 +281,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eventsToReceive: 0
-  pokeThreshold: 0.25
   debounceThreshold: 0.01
-  touchableCollider: {fileID: 7856844}
   localForward: {x: 0, y: 0, z: -1}
   localUp: {x: 0, y: 1, z: 0}
   localCenter: {x: 0, y: 0, z: -0.0055}
   bounds: {x: 0.032, y: 0.032}
+  touchableCollider: {fileID: 7856844}
 --- !u!82 &7856840
 AudioSource:
   m_ObjectHideFlags: 0
@@ -396,25 +395,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1410eac1ae94b4d4492a09cc368e152c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Enabled: 1
-  States: {fileID: 11400000, guid: e51893c8eb7938e4ba43985af43c0f72, type: 2}
-  InputAction:
-    id: 0
-    description: 
-    axisConstraint: 0
+  states: {fileID: 11400000, guid: e51893c8eb7938e4ba43985af43c0f72, type: 2}
   InputActionId: 0
-  IsGlobal: 0
+  isGlobal: 0
   Dimensions: 1
-  StartDimensionIndex: 0
+  dimensionIndex: 0
+  startDimensionIndex: 0
   CanSelect: 0
   CanDeselect: 0
   VoiceCommand: 
-  RequiresFocus: 1
-  Profiles:
+  voiceRequiresFocus: 1
+  profiles:
   - Target: {fileID: 76430319}
     Themes:
     - {fileID: 11400000, guid: bf681c4b08de9824785c11ccf5a83258, type: 2}
-    HadDefaultTheme: 1
   OnClick:
     m_PersistentCalls:
       m_Calls:
@@ -432,8 +426,7 @@ MonoBehaviour:
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   Events:
-  - Name: OnPress
-    Event:
+  - Event:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 7856840}
@@ -542,8 +535,7 @@ MonoBehaviour:
       - Near and Far
       - Near Only
       - Far Only
-    HideUnityEvents: 0
-  dimensionIndex: 0
+  enabledOnStart: 1
 --- !u!114 &7856842
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -723,6 +715,7 @@ MonoBehaviour:
       m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
   persistentKeywords: 0
+  speechConfirmationTooltipPrefab: {fileID: 0}
 --- !u!1 &15329737
 GameObject:
   m_ObjectHideFlags: 0
@@ -930,9 +923,9 @@ GameObject:
   - component: {fileID: 27261452}
   - component: {fileID: 27261451}
   - component: {fileID: 27261450}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Knight_Dark_(B7)
-  m_TagString: Untagged
+  m_TagString: pieces
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -960,7 +953,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 27261448}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd87c5bf85c55db4780b5acf1289bf39, type: 3}
+  m_Script: {fileID: 11500000, guid: b5822c75dd29f3242b21e55f86bb1b2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   collisionSound: {fileID: 8300000, guid: 4c6382fcf6e28634fa5af9731f69bd43, type: 3}
@@ -2631,7 +2624,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eventsToReceive: 0
-  pokeThreshold: 0.25
   debounceThreshold: 0.01
 --- !u!114 &128202515
 MonoBehaviour:
@@ -3099,7 +3091,7 @@ Transform:
   - {fileID: 254345099}
   - {fileID: 684364762}
   m_Father: {fileID: 555111875}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &153334195
 GameObject:
@@ -3213,9 +3205,9 @@ GameObject:
   - component: {fileID: 154631424}
   - component: {fileID: 154631423}
   - component: {fileID: 154631422}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Pawn_Dark_(G7)
-  m_TagString: Untagged
+  m_TagString: pieces
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3243,7 +3235,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 154631420}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd87c5bf85c55db4780b5acf1289bf39, type: 3}
+  m_Script: {fileID: 11500000, guid: b5822c75dd29f3242b21e55f86bb1b2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   collisionSound: {fileID: 8300000, guid: 4c6382fcf6e28634fa5af9731f69bd43, type: 3}
@@ -3648,9 +3640,9 @@ GameObject:
   - component: {fileID: 158304578}
   - component: {fileID: 158304577}
   - component: {fileID: 158304576}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Pawn_Light_(E2)
-  m_TagString: Untagged
+  m_TagString: pieces
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3662,13 +3654,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 158304574}
-  m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071067}
+  m_LocalRotation: {x: 0, y: 0.7072302, z: 0.7069834, w: 0}
   m_LocalPosition: {x: 4, y: 0, z: 1}
   m_LocalScale: {x: 42.780746, y: 42.780724, z: 106.95179}
   m_Children: []
   m_Father: {fileID: 535089656}
   m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -89.98, y: 180, z: 0}
 --- !u!114 &158304576
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3678,7 +3670,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 158304574}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd87c5bf85c55db4780b5acf1289bf39, type: 3}
+  m_Script: {fileID: 11500000, guid: b5822c75dd29f3242b21e55f86bb1b2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   collisionSound: {fileID: 8300000, guid: 4c6382fcf6e28634fa5af9731f69bd43, type: 3}
@@ -4034,7 +4026,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: ddfde96e667d5ac4fb13183f7cb22ba9, type: 3}
+  - {fileID: 2100000, guid: fedf78764146e5b46b101d5d182aaabb, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -4370,9 +4362,9 @@ GameObject:
   - component: {fileID: 182854448}
   - component: {fileID: 182854447}
   - component: {fileID: 182854446}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Knight_Light_(G1)
-  m_TagString: Untagged
+  m_TagString: pieces
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4384,13 +4376,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 182854444}
-  m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071067}
+  m_LocalRotation: {x: 0, y: 0.7072302, z: 0.7069834, w: 0}
   m_LocalPosition: {x: 6, y: 0, z: 0}
   m_LocalScale: {x: 42.780746, y: 42.780735, z: 85.56147}
   m_Children: []
   m_Father: {fileID: 1171791312}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -89.98, y: 180, z: 0}
 --- !u!114 &182854446
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4400,7 +4392,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 182854444}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd87c5bf85c55db4780b5acf1289bf39, type: 3}
+  m_Script: {fileID: 11500000, guid: b5822c75dd29f3242b21e55f86bb1b2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   collisionSound: {fileID: 8300000, guid: 4c6382fcf6e28634fa5af9731f69bd43, type: 3}
@@ -4784,237 +4776,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 182854444}
   m_Mesh: {fileID: 4300008, guid: ddfde96e667d5ac4fb13183f7cb22ba9, type: 3}
---- !u!1 &184559209
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 184559210}
-  - component: {fileID: 184559217}
-  - component: {fileID: 184559216}
-  - component: {fileID: 184559215}
-  - component: {fileID: 184559214}
-  - component: {fileID: 184559213}
-  - component: {fileID: 184559212}
-  - component: {fileID: 184559211}
-  - component: {fileID: 184559218}
-  m_Layer: 15
-  m_Name: Queen
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &184559210
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 184559209}
-  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 0.125, y: 0, z: 1}
-  m_LocalScale: {x: 0.22, y: 0.22000001, z: 0.21999995}
-  m_Children: []
-  m_Father: {fileID: 2080385628}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
---- !u!114 &184559211
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 184559209}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5afd5316c63705643b3daba5a6e923bd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ShowTetherWhenManipulating: 0
---- !u!65 &184559212
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 184559209}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.89571756, y: 1.2560699, z: 0.8315647}
-  m_Center: {x: 0.00000166893, y: 0.6280345, z: 0.027929055}
---- !u!114 &184559213
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 184559209}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 03daa81ea5f685f4ebf6e32038d058ca, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hostTransform: {fileID: 0}
-  manipulationType: 0
-  twoHandedManipulationType: 2
-  allowFarManipulation: 1
-  oneHandRotationModeNear: 6
-  oneHandRotationModeFar: 6
-  releaseBehavior: 0
-  constraintOnRotation: 0
-  constraintOnMovement: 0
-  smoothingActive: 1
-  smoothingAmountOneHandManip: 0.001
-  OnManipulationStarted:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 184559218}
-        m_MethodName: set_manipulating
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-    m_TypeName: Microsoft.MixedReality.Toolkit.UI.ManipulationEvent, Microsoft.MixedReality.Toolkit.SDK,
-      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-  OnManipulationEnded:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 184559218}
-        m_MethodName: PromoteCheck
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 4300000, guid: 8d213db23e89f6b4fa3d427f07a32b13,
-            type: 3}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Mesh, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 184559218}
-        m_MethodName: set_manipulating
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_TypeName: Microsoft.MixedReality.Toolkit.UI.ManipulationEvent, Microsoft.MixedReality.Toolkit.SDK,
-      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-  OnHoverEntered:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: Microsoft.MixedReality.Toolkit.UI.ManipulationEvent, Microsoft.MixedReality.Toolkit.SDK,
-      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-  OnHoverExited:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: Microsoft.MixedReality.Toolkit.UI.ManipulationEvent, Microsoft.MixedReality.Toolkit.SDK,
-      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
---- !u!64 &184559214
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 184559209}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Convex: 1
-  m_CookingOptions: 14
-  m_Mesh: {fileID: 4300000, guid: 3d375d4a1907b3f4098bb64446492fed, type: 3}
---- !u!54 &184559215
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 184559209}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
---- !u!23 &184559216
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 184559209}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: fedf78764146e5b46b101d5d182aaabb, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
---- !u!33 &184559217
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 184559209}
-  m_Mesh: {fileID: 4300000, guid: 8d213db23e89f6b4fa3d427f07a32b13, type: 3}
---- !u!114 &184559218
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 184559209}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dbd30a52020297148ba92edab8eea2b2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  layer:
-    serializedVersion: 2
-    m_Bits: 2048
 --- !u!1 &188852178
 GameObject:
   m_ObjectHideFlags: 0
@@ -5078,13 +4839,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eventsToReceive: 0
-  pokeThreshold: 0.25
   debounceThreshold: 0.01
-  touchableCollider: {fileID: 188852186}
   localForward: {x: 0, y: 0, z: -1}
   localUp: {x: 0, y: 1, z: 0}
   localCenter: {x: 0, y: 0, z: -0.0055}
   bounds: {x: 0.032, y: 0.032}
+  touchableCollider: {fileID: 188852186}
 --- !u!82 &188852182
 AudioSource:
   m_ObjectHideFlags: 0
@@ -5193,25 +4953,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1410eac1ae94b4d4492a09cc368e152c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Enabled: 1
-  States: {fileID: 11400000, guid: e51893c8eb7938e4ba43985af43c0f72, type: 2}
-  InputAction:
-    id: 0
-    description: 
-    axisConstraint: 0
+  states: {fileID: 11400000, guid: e51893c8eb7938e4ba43985af43c0f72, type: 2}
   InputActionId: 0
-  IsGlobal: 0
+  isGlobal: 0
   Dimensions: 1
-  StartDimensionIndex: 0
+  dimensionIndex: 0
+  startDimensionIndex: 0
   CanSelect: 0
   CanDeselect: 0
   VoiceCommand: 
-  RequiresFocus: 1
-  Profiles:
+  voiceRequiresFocus: 1
+  profiles:
   - Target: {fileID: 1188426482}
     Themes:
     - {fileID: 11400000, guid: bf681c4b08de9824785c11ccf5a83258, type: 2}
-    HadDefaultTheme: 1
   OnClick:
     m_PersistentCalls:
       m_Calls:
@@ -5229,8 +4984,7 @@ MonoBehaviour:
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   Events:
-  - Name: OnPress
-    Event:
+  - Event:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 188852182}
@@ -5339,8 +5093,7 @@ MonoBehaviour:
       - Near and Far
       - Near Only
       - Far Only
-    HideUnityEvents: 0
-  dimensionIndex: 0
+  enabledOnStart: 1
 --- !u!114 &188852184
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5596,13 +5349,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eventsToReceive: 0
-  pokeThreshold: 0.25
   debounceThreshold: 0.01
-  touchableCollider: {fileID: 208739526}
   localForward: {x: 0, y: 0, z: -1}
   localUp: {x: 0, y: 1, z: 0}
   localCenter: {x: 0, y: 0, z: -0.008}
   bounds: {x: 0.1274702, y: 0.032}
+  touchableCollider: {fileID: 208739526}
 --- !u!82 &208739522
 AudioSource:
   m_ObjectHideFlags: 0
@@ -5711,29 +5463,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1410eac1ae94b4d4492a09cc368e152c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Enabled: 1
-  States: {fileID: 11400000, guid: e51893c8eb7938e4ba43985af43c0f72, type: 2}
-  InputAction:
-    id: 0
-    description: 
-    axisConstraint: 0
+  states: {fileID: 11400000, guid: e51893c8eb7938e4ba43985af43c0f72, type: 2}
   InputActionId: 0
-  IsGlobal: 0
+  isGlobal: 0
   Dimensions: 1
-  StartDimensionIndex: 0
+  dimensionIndex: 0
+  startDimensionIndex: 0
   CanSelect: 0
   CanDeselect: 0
   VoiceCommand: 
-  RequiresFocus: 1
-  Profiles:
+  voiceRequiresFocus: 1
+  profiles:
   - Target: {fileID: 385328554}
     Themes:
     - {fileID: 11400000, guid: 0c4c73f326f602744bdcfff481fd6f20, type: 2}
-    HadDefaultTheme: 1
   - Target: {fileID: 1693608407}
     Themes:
     - {fileID: 11400000, guid: 8f8cfb3041153fa45bccb6d664a563ec, type: 2}
-    HadDefaultTheme: 1
   OnClick:
     m_PersistentCalls:
       m_Calls:
@@ -5751,8 +5497,7 @@ MonoBehaviour:
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   Events:
-  - Name: OnFocus
-    Event:
+  - Event:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 208739525}
@@ -5814,9 +5559,7 @@ MonoBehaviour:
         m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
       Options: []
-    HideUnityEvents: 0
-  - Name: OnPress
-    Event:
+  - Event:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 208739522}
@@ -5914,8 +5657,7 @@ MonoBehaviour:
       - Near and Far
       - Near Only
       - Far Only
-    HideUnityEvents: 0
-  dimensionIndex: 0
+  enabledOnStart: 1
 --- !u!114 &208739524
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6743,7 +6485,7 @@ Transform:
   - {fileID: 1621945813}
   - {fileID: 1741884782}
   m_Father: {fileID: 860215230}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!1 &269069536
 GameObject:
@@ -6880,10 +6622,10 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 272617608}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.07166667, y: 0.523, z: -0.15399988}
-  m_LocalScale: {x: 0.2352941, y: 0.2352941, z: 0.2352941}
+  m_LocalPosition: {x: 0.19195001, y: 0.22930238, z: 0.17390005}
+  m_LocalScale: {x: 0.23529409, y: 0.23529409, z: 0.23529409}
   m_Children: []
-  m_Father: {fileID: 860215230}
+  m_Father: {fileID: 555111875}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &272971199
@@ -6907,9 +6649,9 @@ GameObject:
   - component: {fileID: 272971203}
   - component: {fileID: 272971202}
   - component: {fileID: 272971201}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Rook_Dark_(A8)
-  m_TagString: Untagged
+  m_TagString: pieces
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6951,7 +6693,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 272971199}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd87c5bf85c55db4780b5acf1289bf39, type: 3}
+  m_Script: {fileID: 11500000, guid: b5822c75dd29f3242b21e55f86bb1b2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   collisionSound: {fileID: 8300000, guid: 4c6382fcf6e28634fa5af9731f69bd43, type: 3}
@@ -7824,13 +7566,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eventsToReceive: 0
-  pokeThreshold: 0.25
   debounceThreshold: 0.01
-  touchableCollider: {fileID: 287896619}
   localForward: {x: 0, y: 0, z: -1}
   localUp: {x: 0, y: 1, z: 0}
   localCenter: {x: 0, y: 0, z: -0.008}
   bounds: {x: 0.1274702, y: 0.032}
+  touchableCollider: {fileID: 287896619}
 --- !u!82 &287896615
 AudioSource:
   m_ObjectHideFlags: 0
@@ -7939,29 +7680,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1410eac1ae94b4d4492a09cc368e152c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Enabled: 1
-  States: {fileID: 11400000, guid: e51893c8eb7938e4ba43985af43c0f72, type: 2}
-  InputAction:
-    id: 0
-    description: 
-    axisConstraint: 0
+  states: {fileID: 11400000, guid: e51893c8eb7938e4ba43985af43c0f72, type: 2}
   InputActionId: 0
-  IsGlobal: 0
+  isGlobal: 0
   Dimensions: 1
-  StartDimensionIndex: 0
+  dimensionIndex: 0
+  startDimensionIndex: 0
   CanSelect: 0
   CanDeselect: 0
   VoiceCommand: 
-  RequiresFocus: 1
-  Profiles:
+  voiceRequiresFocus: 1
+  profiles:
   - Target: {fileID: 870648287}
     Themes:
     - {fileID: 11400000, guid: 0c4c73f326f602744bdcfff481fd6f20, type: 2}
-    HadDefaultTheme: 1
   - Target: {fileID: 1743256194}
     Themes:
     - {fileID: 11400000, guid: 8f8cfb3041153fa45bccb6d664a563ec, type: 2}
-    HadDefaultTheme: 1
   OnClick:
     m_PersistentCalls:
       m_Calls:
@@ -7979,8 +7714,7 @@ MonoBehaviour:
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   Events:
-  - Name: OnFocus
-    Event:
+  - Event:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 287896618}
@@ -8042,9 +7776,7 @@ MonoBehaviour:
         m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
       Options: []
-    HideUnityEvents: 0
-  - Name: OnPress
-    Event:
+  - Event:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 287896615}
@@ -8142,8 +7874,7 @@ MonoBehaviour:
       - Near and Far
       - Near Only
       - Far Only
-    HideUnityEvents: 0
-  dimensionIndex: 0
+  enabledOnStart: 1
 --- !u!114 &287896617
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8988,9 +8719,9 @@ GameObject:
   - component: {fileID: 343774669}
   - component: {fileID: 343774668}
   - component: {fileID: 343774674}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Rook_Light_(H1)
-  m_TagString: Untagged
+  m_TagString: pieces
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -9002,13 +8733,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 343774666}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 7, y: 0, z: 0}
+  m_LocalRotation: {x: 0, y: 0.7072302, z: 0.7069834, w: 0}
+  m_LocalPosition: {x: 7, y: 0, z: -0}
   m_LocalScale: {x: 42.780746, y: 42.780735, z: 85.56147}
   m_Children: []
   m_Father: {fileID: 432608498}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -89.98, y: 180, z: 0}
 --- !u!114 &343774668
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9018,7 +8749,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 343774666}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd87c5bf85c55db4780b5acf1289bf39, type: 3}
+  m_Script: {fileID: 11500000, guid: b5822c75dd29f3242b21e55f86bb1b2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   collisionSound: {fileID: 8300000, guid: 4c6382fcf6e28634fa5af9731f69bd43, type: 3}
@@ -10308,7 +10039,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0.00042, y: 0.02835}
-  m_SizeDelta: {x: 0.05, y: 0.01}
+  m_SizeDelta: {x: 0.035, y: 0.01}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &380856307
 MonoBehaviour:
@@ -11174,9 +10905,9 @@ GameObject:
   - component: {fileID: 421586919}
   - component: {fileID: 421586918}
   - component: {fileID: 421586917}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Pawn_Dark_(D7)
-  m_TagString: Untagged
+  m_TagString: pieces
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -11204,7 +10935,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 421586915}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd87c5bf85c55db4780b5acf1289bf39, type: 3}
+  m_Script: {fileID: 11500000, guid: b5822c75dd29f3242b21e55f86bb1b2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   collisionSound: {fileID: 8300000, guid: 4c6382fcf6e28634fa5af9731f69bd43, type: 3}
@@ -11846,49 +11577,6 @@ Transform:
   m_Father: {fileID: 254345099}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &433268229
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 433268230}
-  - component: {fileID: 433268231}
-  m_Layer: 0
-  m_Name: FocusProvider
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &433268230
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 433268229}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 677338463}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &433268231
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 433268229}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 09c04dafcb77c1e4195a36bd131cbdec, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &445852921
 GameObject:
   m_ObjectHideFlags: 0
@@ -12115,9 +11803,9 @@ GameObject:
   - component: {fileID: 449017805}
   - component: {fileID: 449017804}
   - component: {fileID: 449017803}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Bishop_Light_(F1)
-  m_TagString: Untagged
+  m_TagString: pieces
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -12129,13 +11817,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 449017801}
-  m_LocalRotation: {x: 0, y: 0.7071068, z: 0.7071068, w: 0}
+  m_LocalRotation: {x: 0, y: 0.7072302, z: 0.7069834, w: 0}
   m_LocalPosition: {x: 5, y: 0, z: 0}
   m_LocalScale: {x: 42.780746, y: 42.780735, z: 85.56147}
   m_Children: []
   m_Father: {fileID: 618970961}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: -90, y: 180, z: 0}
+  m_LocalEulerAnglesHint: {x: -89.98, y: 180, z: 0}
 --- !u!114 &449017803
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12145,7 +11833,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 449017801}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd87c5bf85c55db4780b5acf1289bf39, type: 3}
+  m_Script: {fileID: 11500000, guid: b5822c75dd29f3242b21e55f86bb1b2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   collisionSound: {fileID: 8300000, guid: 4c6382fcf6e28634fa5af9731f69bd43, type: 3}
@@ -12849,7 +12537,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 555111875}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &465082385
 MonoBehaviour:
@@ -12890,7 +12578,7 @@ MonoBehaviour:
   pawnPromo: {fileID: 2080385627}
   boardMenuTileText: {fileID: 1154510025}
   boardMenuTileTextTwo: {fileID: 732034026}
-  pawnMesh: {fileID: 4300000, guid: 1ae3b6cad3254b848942cea678f244c7, type: 3}
+  pawnMesh: {fileID: 4300006, guid: ddfde96e667d5ac4fb13183f7cb22ba9, type: 3}
 --- !u!114 &465082387
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12987,13 +12675,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eventsToReceive: 0
-  pokeThreshold: 0.25
   debounceThreshold: 0.01
-  touchableCollider: {fileID: 472628995}
   localForward: {x: 0, y: 0, z: -1}
   localUp: {x: 0, y: 1, z: 0}
   localCenter: {x: 0, y: 0, z: -0.008}
   bounds: {x: 0.1274702, y: 0.032}
+  touchableCollider: {fileID: 472628995}
 --- !u!82 &472628991
 AudioSource:
   m_ObjectHideFlags: 0
@@ -13102,29 +12789,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1410eac1ae94b4d4492a09cc368e152c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Enabled: 1
-  States: {fileID: 11400000, guid: e51893c8eb7938e4ba43985af43c0f72, type: 2}
-  InputAction:
-    id: 0
-    description: 
-    axisConstraint: 0
+  states: {fileID: 11400000, guid: e51893c8eb7938e4ba43985af43c0f72, type: 2}
   InputActionId: 0
-  IsGlobal: 0
+  isGlobal: 0
   Dimensions: 1
-  StartDimensionIndex: 0
+  dimensionIndex: 0
+  startDimensionIndex: 0
   CanSelect: 0
   CanDeselect: 0
   VoiceCommand: 
-  RequiresFocus: 1
-  Profiles:
+  voiceRequiresFocus: 1
+  profiles:
   - Target: {fileID: 970112506}
     Themes:
     - {fileID: 11400000, guid: 0c4c73f326f602744bdcfff481fd6f20, type: 2}
-    HadDefaultTheme: 1
   - Target: {fileID: 232292926}
     Themes:
     - {fileID: 11400000, guid: 8f8cfb3041153fa45bccb6d664a563ec, type: 2}
-    HadDefaultTheme: 1
   OnClick:
     m_PersistentCalls:
       m_Calls:
@@ -13142,8 +12823,7 @@ MonoBehaviour:
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   Events:
-  - Name: OnFocus
-    Event:
+  - Event:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 472628994}
@@ -13205,9 +12885,7 @@ MonoBehaviour:
         m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
       Options: []
-    HideUnityEvents: 0
-  - Name: OnPress
-    Event:
+  - Event:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 472628991}
@@ -13305,8 +12983,7 @@ MonoBehaviour:
       - Near and Far
       - Near Only
       - Far Only
-    HideUnityEvents: 0
-  dimensionIndex: 0
+  enabledOnStart: 1
 --- !u!114 &472628993
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13536,13 +13213,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eventsToReceive: 0
-  pokeThreshold: 0.25
   debounceThreshold: 0.01
-  touchableCollider: {fileID: 486372487}
   localForward: {x: 0, y: 0, z: -1}
   localUp: {x: 0, y: 1, z: 0}
   localCenter: {x: 0, y: 0, z: -0.008}
   bounds: {x: 0.032, y: 0.032}
+  touchableCollider: {fileID: 486372487}
 --- !u!82 &486372483
 AudioSource:
   m_ObjectHideFlags: 0
@@ -13651,29 +13327,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1410eac1ae94b4d4492a09cc368e152c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Enabled: 1
-  States: {fileID: 11400000, guid: e51893c8eb7938e4ba43985af43c0f72, type: 2}
-  InputAction:
-    id: 0
-    description: 
-    axisConstraint: 0
+  states: {fileID: 11400000, guid: e51893c8eb7938e4ba43985af43c0f72, type: 2}
   InputActionId: 0
-  IsGlobal: 0
+  isGlobal: 0
   Dimensions: 1
-  StartDimensionIndex: 0
+  dimensionIndex: 0
+  startDimensionIndex: 0
   CanSelect: 0
   CanDeselect: 0
   VoiceCommand: 
-  RequiresFocus: 1
-  Profiles:
+  voiceRequiresFocus: 1
+  profiles:
   - Target: {fileID: 2036558225}
     Themes:
     - {fileID: 11400000, guid: 0c4c73f326f602744bdcfff481fd6f20, type: 2}
-    HadDefaultTheme: 1
   - Target: {fileID: 120367346}
     Themes:
     - {fileID: 11400000, guid: 8f8cfb3041153fa45bccb6d664a563ec, type: 2}
-    HadDefaultTheme: 1
   OnClick:
     m_PersistentCalls:
       m_Calls:
@@ -13691,8 +13361,7 @@ MonoBehaviour:
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   Events:
-  - Name: OnFocus
-    Event:
+  - Event:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 486372486}
@@ -13754,9 +13423,7 @@ MonoBehaviour:
         m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
       Options: []
-    HideUnityEvents: 0
-  - Name: OnPress
-    Event:
+  - Event:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 486372483}
@@ -13854,8 +13521,7 @@ MonoBehaviour:
       - Near and Far
       - Near Only
       - Far Only
-    HideUnityEvents: 0
-  dimensionIndex: 0
+  enabledOnStart: 1
 --- !u!114 &486372485
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14039,49 +13705,6 @@ Transform:
   m_Father: {fileID: 994606763}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &500472728
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 500472729}
-  - component: {fileID: 500472730}
-  m_Layer: 0
-  m_Name: DefaultRaycastProvider
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &500472729
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 500472728}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 677338463}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &500472730
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 500472728}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 09c04dafcb77c1e4195a36bd131cbdec, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &503677037
 GameObject:
   m_ObjectHideFlags: 0
@@ -15355,11 +14978,12 @@ Transform:
   m_LocalPosition: {x: -0.26361668, y: 0.29369763, z: -0.32789993}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 272617610}
   - {fileID: 776382769}
   - {fileID: 153108375}
   - {fileID: 465082383}
   m_Father: {fileID: 860215230}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &556980349
 GameObject:
@@ -15594,49 +15218,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 569300539}
   m_CullTransparentMesh: 0
---- !u!1 &571917787
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 571917788}
-  - component: {fileID: 571917789}
-  m_Layer: 0
-  m_Name: MixedRealitySpatialAwarenessSystem
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &571917788
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 571917787}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 677338463}
-  m_RootOrder: 5
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &571917789
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 571917787}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 09c04dafcb77c1e4195a36bd131cbdec, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &575620619
 GameObject:
   m_ObjectHideFlags: 0
@@ -16985,14 +16566,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.3, y: 0, z: 0.258}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 500472729}
-  - {fileID: 433268230}
-  - {fileID: 1825341370}
-  - {fileID: 2081612040}
-  - {fileID: 1235237434}
-  - {fileID: 571917788}
-  - {fileID: 1594653860}
+  m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -17186,13 +16760,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eventsToReceive: 0
-  pokeThreshold: 0.25
   debounceThreshold: 0.01
-  touchableCollider: {fileID: 692744715}
   localForward: {x: 0, y: 0, z: -1}
   localUp: {x: 0, y: 1, z: 0}
   localCenter: {x: 0, y: 0, z: -0.008}
   bounds: {x: 0.032, y: 0.032}
+  touchableCollider: {fileID: 692744715}
 --- !u!82 &692744711
 AudioSource:
   m_ObjectHideFlags: 0
@@ -17301,29 +16874,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1410eac1ae94b4d4492a09cc368e152c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Enabled: 1
-  States: {fileID: 11400000, guid: e51893c8eb7938e4ba43985af43c0f72, type: 2}
-  InputAction:
-    id: 0
-    description: 
-    axisConstraint: 0
+  states: {fileID: 11400000, guid: e51893c8eb7938e4ba43985af43c0f72, type: 2}
   InputActionId: 0
-  IsGlobal: 0
+  isGlobal: 0
   Dimensions: 1
-  StartDimensionIndex: 0
+  dimensionIndex: 0
+  startDimensionIndex: 0
   CanSelect: 0
   CanDeselect: 0
   VoiceCommand: 
-  RequiresFocus: 1
-  Profiles:
+  voiceRequiresFocus: 1
+  profiles:
   - Target: {fileID: 2041412633}
     Themes:
     - {fileID: 11400000, guid: 0c4c73f326f602744bdcfff481fd6f20, type: 2}
-    HadDefaultTheme: 1
   - Target: {fileID: 346950615}
     Themes:
     - {fileID: 11400000, guid: 8f8cfb3041153fa45bccb6d664a563ec, type: 2}
-    HadDefaultTheme: 1
   OnClick:
     m_PersistentCalls:
       m_Calls:
@@ -17341,8 +16908,7 @@ MonoBehaviour:
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   Events:
-  - Name: OnFocus
-    Event:
+  - Event:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 692744714}
@@ -17404,9 +16970,7 @@ MonoBehaviour:
         m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
       Options: []
-    HideUnityEvents: 0
-  - Name: OnPress
-    Event:
+  - Event:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 692744711}
@@ -17504,8 +17068,7 @@ MonoBehaviour:
       - Near and Far
       - Near Only
       - Far Only
-    HideUnityEvents: 0
-  dimensionIndex: 0
+  enabledOnStart: 1
 --- !u!114 &692744713
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19123,7 +18686,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eventsToReceive: 0
-  pokeThreshold: 0.25
   debounceThreshold: 0.01
 --- !u!114 &747343691
 MonoBehaviour:
@@ -19309,9 +18871,9 @@ GameObject:
   - component: {fileID: 770986781}
   - component: {fileID: 770986780}
   - component: {fileID: 770986779}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Pawn_Light_(D2)
-  m_TagString: Untagged
+  m_TagString: pieces
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -19323,13 +18885,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 770986777}
-  m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071067}
+  m_LocalRotation: {x: 0, y: 0.7072302, z: 0.7069834, w: 0}
   m_LocalPosition: {x: 3, y: 0, z: 1}
   m_LocalScale: {x: 42.780746, y: 42.780724, z: 106.95179}
   m_Children: []
   m_Father: {fileID: 535089656}
   m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -89.98, y: 180, z: 0}
 --- !u!114 &770986779
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19339,7 +18901,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 770986777}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd87c5bf85c55db4780b5acf1289bf39, type: 3}
+  m_Script: {fileID: 11500000, guid: b5822c75dd29f3242b21e55f86bb1b2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   collisionSound: {fileID: 8300000, guid: 4c6382fcf6e28634fa5af9731f69bd43, type: 3}
@@ -19695,7 +19257,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: ddfde96e667d5ac4fb13183f7cb22ba9, type: 3}
+  - {fileID: 2100000, guid: fedf78764146e5b46b101d5d182aaabb, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -19850,7 +19412,7 @@ Transform:
   - {fileID: 1032724066}
   - {fileID: 1327373762}
   m_Father: {fileID: 555111875}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &776382770
 MonoBehaviour:
@@ -19864,7 +19426,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8276837018c9584d8b4e5667cf78db6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  chessBoard: {fileID: 776382767}
 --- !u!1 &781654371
 GameObject:
   m_ObjectHideFlags: 0
@@ -20482,9 +20043,9 @@ GameObject:
   - component: {fileID: 806840888}
   - component: {fileID: 806840887}
   - component: {fileID: 806840886}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Pawn_Light_(C2)
-  m_TagString: Untagged
+  m_TagString: pieces
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -20496,13 +20057,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 806840884}
-  m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071067}
+  m_LocalRotation: {x: 0, y: 0.7072302, z: 0.7069834, w: 0}
   m_LocalPosition: {x: 2, y: 0, z: 1}
   m_LocalScale: {x: 42.780746, y: 42.780724, z: 106.95179}
   m_Children: []
   m_Father: {fileID: 535089656}
   m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -89.98, y: 180, z: 0}
 --- !u!114 &806840886
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20512,7 +20073,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 806840884}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd87c5bf85c55db4780b5acf1289bf39, type: 3}
+  m_Script: {fileID: 11500000, guid: b5822c75dd29f3242b21e55f86bb1b2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   collisionSound: {fileID: 8300000, guid: 4c6382fcf6e28634fa5af9731f69bd43, type: 3}
@@ -20868,7 +20429,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: ddfde96e667d5ac4fb13183f7cb22ba9, type: 3}
+  - {fileID: 2100000, guid: fedf78764146e5b46b101d5d182aaabb, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -21564,9 +21125,9 @@ GameObject:
   - component: {fileID: 846876121}
   - component: {fileID: 846876120}
   - component: {fileID: 846876119}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Bishop_Dark_(C8)
-  m_TagString: Untagged
+  m_TagString: pieces
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -21594,7 +21155,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 846876117}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd87c5bf85c55db4780b5acf1289bf39, type: 3}
+  m_Script: {fileID: 11500000, guid: b5822c75dd29f3242b21e55f86bb1b2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   collisionSound: {fileID: 8300000, guid: 4c6382fcf6e28634fa5af9731f69bd43, type: 3}
@@ -22224,7 +21785,6 @@ Transform:
   m_LocalPosition: {x: 0.26361668, y: -0.6436976, z: 1.3478999}
   m_LocalScale: {x: 0.85, y: 0.85, z: 0.85}
   m_Children:
-  - {fileID: 272617610}
   - {fileID: 555111875}
   - {fileID: 266569055}
   m_Father: {fileID: 0}
@@ -22573,9 +22133,9 @@ GameObject:
   - component: {fileID: 890171346}
   - component: {fileID: 890171345}
   - component: {fileID: 890171344}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Pawn_Light_(F2)
-  m_TagString: Untagged
+  m_TagString: pieces
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -22587,13 +22147,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 890171342}
-  m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071067}
+  m_LocalRotation: {x: 0, y: 0.7072302, z: 0.7069834, w: 0}
   m_LocalPosition: {x: 5, y: 0, z: 1}
   m_LocalScale: {x: 42.780746, y: 42.780724, z: 106.95179}
   m_Children: []
   m_Father: {fileID: 535089656}
   m_RootOrder: 5
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -89.98, y: 180, z: 0}
 --- !u!114 &890171344
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22603,7 +22163,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 890171342}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd87c5bf85c55db4780b5acf1289bf39, type: 3}
+  m_Script: {fileID: 11500000, guid: b5822c75dd29f3242b21e55f86bb1b2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   collisionSound: {fileID: 8300000, guid: 4c6382fcf6e28634fa5af9731f69bd43, type: 3}
@@ -22959,7 +22519,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: ddfde96e667d5ac4fb13183f7cb22ba9, type: 3}
+  - {fileID: 2100000, guid: fedf78764146e5b46b101d5d182aaabb, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -23152,7 +22712,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eventsToReceive: 0
-  pokeThreshold: 0.25
   debounceThreshold: 0.01
 --- !u!114 &902853157
 MonoBehaviour:
@@ -23513,237 +23072,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 924706188}
   m_CullTransparentMesh: 0
---- !u!1 &925022142
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 925022143}
-  - component: {fileID: 925022150}
-  - component: {fileID: 925022149}
-  - component: {fileID: 925022148}
-  - component: {fileID: 925022147}
-  - component: {fileID: 925022146}
-  - component: {fileID: 925022145}
-  - component: {fileID: 925022151}
-  - component: {fileID: 925022144}
-  m_Layer: 15
-  m_Name: Rook
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &925022143
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 925022142}
-  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: -0.125, y: 0, z: 1}
-  m_LocalScale: {x: 0.21999995, y: 0.22000001, z: 0.21999995}
-  m_Children: []
-  m_Father: {fileID: 2080385628}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
---- !u!114 &925022144
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 925022142}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5afd5316c63705643b3daba5a6e923bd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ShowTetherWhenManipulating: 0
---- !u!65 &925022145
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 925022142}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.89571756, y: 1.2560699, z: 0.8315647}
-  m_Center: {x: 0.00000166893, y: 0.6280345, z: 0.027929055}
---- !u!114 &925022146
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 925022142}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 03daa81ea5f685f4ebf6e32038d058ca, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hostTransform: {fileID: 0}
-  manipulationType: 0
-  twoHandedManipulationType: 2
-  allowFarManipulation: 1
-  oneHandRotationModeNear: 6
-  oneHandRotationModeFar: 6
-  releaseBehavior: 0
-  constraintOnRotation: 0
-  constraintOnMovement: 0
-  smoothingActive: 1
-  smoothingAmountOneHandManip: 0.001
-  OnManipulationStarted:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 925022151}
-        m_MethodName: set_manipulating
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-    m_TypeName: Microsoft.MixedReality.Toolkit.UI.ManipulationEvent, Microsoft.MixedReality.Toolkit.SDK,
-      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-  OnManipulationEnded:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 925022151}
-        m_MethodName: PromoteCheck
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 4300000, guid: 4c7fefe9f4d55e44398c01a6266ef093,
-            type: 3}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Mesh, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 925022151}
-        m_MethodName: set_manipulating
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_TypeName: Microsoft.MixedReality.Toolkit.UI.ManipulationEvent, Microsoft.MixedReality.Toolkit.SDK,
-      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-  OnHoverEntered:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: Microsoft.MixedReality.Toolkit.UI.ManipulationEvent, Microsoft.MixedReality.Toolkit.SDK,
-      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-  OnHoverExited:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: Microsoft.MixedReality.Toolkit.UI.ManipulationEvent, Microsoft.MixedReality.Toolkit.SDK,
-      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
---- !u!64 &925022147
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 925022142}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Convex: 1
-  m_CookingOptions: 14
-  m_Mesh: {fileID: 4300000, guid: 3d375d4a1907b3f4098bb64446492fed, type: 3}
---- !u!54 &925022148
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 925022142}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
---- !u!23 &925022149
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 925022142}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: fedf78764146e5b46b101d5d182aaabb, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
---- !u!33 &925022150
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 925022142}
-  m_Mesh: {fileID: 4300000, guid: 4c7fefe9f4d55e44398c01a6266ef093, type: 3}
---- !u!114 &925022151
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 925022142}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dbd30a52020297148ba92edab8eea2b2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  layer:
-    serializedVersion: 2
-    m_Bits: 2048
 --- !u!1 &929732588
 GameObject:
   m_ObjectHideFlags: 0
@@ -23794,7 +23122,7 @@ MeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 3f7185fcb5d0ccd4eacc8ec5b11d7281, type: 2}
+  - {fileID: 2100000, guid: 98d0ce8a233fbd943aaabeab78bd3f10, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -23966,13 +23294,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eventsToReceive: 0
-  pokeThreshold: 0.25
   debounceThreshold: 0.01
-  touchableCollider: {fileID: 962560886}
   localForward: {x: 0, y: 0, z: -1}
   localUp: {x: 0, y: 1, z: 0}
   localCenter: {x: 0, y: 0, z: -0.008}
   bounds: {x: 0.1274702, y: 0.032}
+  touchableCollider: {fileID: 962560886}
 --- !u!82 &962560882
 AudioSource:
   m_ObjectHideFlags: 0
@@ -24081,29 +23408,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1410eac1ae94b4d4492a09cc368e152c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Enabled: 1
-  States: {fileID: 11400000, guid: e51893c8eb7938e4ba43985af43c0f72, type: 2}
-  InputAction:
-    id: 0
-    description: 
-    axisConstraint: 0
+  states: {fileID: 11400000, guid: e51893c8eb7938e4ba43985af43c0f72, type: 2}
   InputActionId: 0
-  IsGlobal: 0
+  isGlobal: 0
   Dimensions: 1
-  StartDimensionIndex: 0
+  dimensionIndex: 0
+  startDimensionIndex: 0
   CanSelect: 0
   CanDeselect: 0
   VoiceCommand: 
-  RequiresFocus: 1
-  Profiles:
+  voiceRequiresFocus: 1
+  profiles:
   - Target: {fileID: 161669012}
     Themes:
     - {fileID: 11400000, guid: 0c4c73f326f602744bdcfff481fd6f20, type: 2}
-    HadDefaultTheme: 1
   - Target: {fileID: 1114663790}
     Themes:
     - {fileID: 11400000, guid: 8f8cfb3041153fa45bccb6d664a563ec, type: 2}
-    HadDefaultTheme: 1
   OnClick:
     m_PersistentCalls:
       m_Calls:
@@ -24121,8 +23442,7 @@ MonoBehaviour:
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   Events:
-  - Name: OnFocus
-    Event:
+  - Event:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 962560885}
@@ -24184,9 +23504,7 @@ MonoBehaviour:
         m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
       Options: []
-    HideUnityEvents: 0
-  - Name: OnPress
-    Event:
+  - Event:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 962560882}
@@ -24284,8 +23602,7 @@ MonoBehaviour:
       - Near and Far
       - Near Only
       - Far Only
-    HideUnityEvents: 0
-  dimensionIndex: 0
+  enabledOnStart: 1
 --- !u!114 &962560884
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24459,9 +23776,9 @@ GameObject:
   - component: {fileID: 963249583}
   - component: {fileID: 963249582}
   - component: {fileID: 963249581}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Pawn_Dark_(C7)
-  m_TagString: Untagged
+  m_TagString: pieces
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -24489,7 +23806,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 963249579}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd87c5bf85c55db4780b5acf1289bf39, type: 3}
+  m_Script: {fileID: 11500000, guid: b5822c75dd29f3242b21e55f86bb1b2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   collisionSound: {fileID: 8300000, guid: 4c6382fcf6e28634fa5af9731f69bd43, type: 3}
@@ -25166,7 +24483,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eventsToReceive: 0
-  pokeThreshold: 0.25
   debounceThreshold: 0.01
 --- !u!114 &970221231
 MonoBehaviour:
@@ -25365,9 +24681,9 @@ GameObject:
   - component: {fileID: 973281191}
   - component: {fileID: 973281190}
   - component: {fileID: 973281189}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Pawn_Dark_(B7)
-  m_TagString: Untagged
+  m_TagString: pieces
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -25395,7 +24711,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 973281187}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd87c5bf85c55db4780b5acf1289bf39, type: 3}
+  m_Script: {fileID: 11500000, guid: b5822c75dd29f3242b21e55f86bb1b2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   collisionSound: {fileID: 8300000, guid: 4c6382fcf6e28634fa5af9731f69bd43, type: 3}
@@ -26407,13 +25723,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eventsToReceive: 0
-  pokeThreshold: 0.25
   debounceThreshold: 0.01
-  touchableCollider: {fileID: 994606770}
   localForward: {x: 0, y: 0, z: -1}
   localUp: {x: 0, y: 1, z: 0}
   localCenter: {x: 0, y: 0, z: -0.008}
   bounds: {x: 0.1274702, y: 0.032}
+  touchableCollider: {fileID: 994606770}
 --- !u!82 &994606766
 AudioSource:
   m_ObjectHideFlags: 0
@@ -26522,29 +25837,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1410eac1ae94b4d4492a09cc368e152c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Enabled: 1
-  States: {fileID: 11400000, guid: e51893c8eb7938e4ba43985af43c0f72, type: 2}
-  InputAction:
-    id: 0
-    description: 
-    axisConstraint: 0
+  states: {fileID: 11400000, guid: e51893c8eb7938e4ba43985af43c0f72, type: 2}
   InputActionId: 0
-  IsGlobal: 0
+  isGlobal: 0
   Dimensions: 1
-  StartDimensionIndex: 0
+  dimensionIndex: 0
+  startDimensionIndex: 0
   CanSelect: 0
   CanDeselect: 0
   VoiceCommand: 
-  RequiresFocus: 1
-  Profiles:
+  voiceRequiresFocus: 1
+  profiles:
   - Target: {fileID: 279000083}
     Themes:
     - {fileID: 11400000, guid: 0c4c73f326f602744bdcfff481fd6f20, type: 2}
-    HadDefaultTheme: 1
   - Target: {fileID: 146807592}
     Themes:
     - {fileID: 11400000, guid: 8f8cfb3041153fa45bccb6d664a563ec, type: 2}
-    HadDefaultTheme: 1
   OnClick:
     m_PersistentCalls:
       m_Calls:
@@ -26562,8 +25871,7 @@ MonoBehaviour:
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   Events:
-  - Name: OnFocus
-    Event:
+  - Event:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 994606769}
@@ -26625,9 +25933,7 @@ MonoBehaviour:
         m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
       Options: []
-    HideUnityEvents: 0
-  - Name: OnPress
-    Event:
+  - Event:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 994606766}
@@ -26725,8 +26031,7 @@ MonoBehaviour:
       - Near and Far
       - Near Only
       - Far Only
-    HideUnityEvents: 0
-  dimensionIndex: 0
+  enabledOnStart: 1
 --- !u!114 &994606768
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -28718,6 +28023,7 @@ MonoBehaviour:
       m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
   persistentKeywords: 1
+  speechConfirmationTooltipPrefab: {fileID: 0}
 --- !u!1 &1105461699
 GameObject:
   m_ObjectHideFlags: 0
@@ -29080,7 +28386,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eventsToReceive: 0
-  pokeThreshold: 0.25
   debounceThreshold: 0.01
 --- !u!114 &1117327313
 MonoBehaviour:
@@ -30064,9 +29369,9 @@ GameObject:
   - component: {fileID: 1172282026}
   - component: {fileID: 1172282025}
   - component: {fileID: 1172282024}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Pawn_Light_(H2)
-  m_TagString: Untagged
+  m_TagString: pieces
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -30078,13 +29383,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1172282022}
-  m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071067}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0.7071068, w: 0}
   m_LocalPosition: {x: 7, y: 0, z: 1}
   m_LocalScale: {x: 42.780746, y: 42.780724, z: 106.95179}
   m_Children: []
   m_Father: {fileID: 535089656}
   m_RootOrder: 7
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -90, y: 180, z: 0}
 --- !u!114 &1172282024
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -30094,7 +29399,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1172282022}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd87c5bf85c55db4780b5acf1289bf39, type: 3}
+  m_Script: {fileID: 11500000, guid: b5822c75dd29f3242b21e55f86bb1b2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   collisionSound: {fileID: 8300000, guid: 4c6382fcf6e28634fa5af9731f69bd43, type: 3}
@@ -30450,7 +29755,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: ddfde96e667d5ac4fb13183f7cb22ba9, type: 3}
+  - {fileID: 2100000, guid: fedf78764146e5b46b101d5d182aaabb, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -30576,9 +29881,9 @@ GameObject:
   - component: {fileID: 1186242573}
   - component: {fileID: 1186242572}
   - component: {fileID: 1186242571}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Knight_Dark_(G7)
-  m_TagString: Untagged
+  m_TagString: pieces
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -30606,7 +29911,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1186242569}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd87c5bf85c55db4780b5acf1289bf39, type: 3}
+  m_Script: {fileID: 11500000, guid: b5822c75dd29f3242b21e55f86bb1b2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   collisionSound: {fileID: 8300000, guid: 4c6382fcf6e28634fa5af9731f69bd43, type: 3}
@@ -31435,9 +30740,9 @@ GameObject:
   - component: {fileID: 1231172414}
   - component: {fileID: 1231172413}
   - component: {fileID: 1231172412}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Pawn_Dark_(H7)
-  m_TagString: Untagged
+  m_TagString: pieces
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -31465,7 +30770,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1231172410}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd87c5bf85c55db4780b5acf1289bf39, type: 3}
+  m_Script: {fileID: 11500000, guid: b5822c75dd29f3242b21e55f86bb1b2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   collisionSound: {fileID: 8300000, guid: 4c6382fcf6e28634fa5af9731f69bd43, type: 3}
@@ -31880,49 +31185,6 @@ Transform:
   m_Father: {fileID: 1866115880}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1235237433
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1235237434}
-  - component: {fileID: 1235237435}
-  m_Layer: 0
-  m_Name: MixedRealityInputSystem
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1235237434
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1235237433}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 677338463}
-  m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1235237435
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1235237433}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 09c04dafcb77c1e4195a36bd131cbdec, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1240786262
 GameObject:
   m_ObjectHideFlags: 0
@@ -32021,9 +31283,9 @@ GameObject:
   - component: {fileID: 1241395079}
   - component: {fileID: 1241395078}
   - component: {fileID: 1241395077}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Rook_Dark_(H8)
-  m_TagString: Untagged
+  m_TagString: pieces
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -32065,7 +31327,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1241395075}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd87c5bf85c55db4780b5acf1289bf39, type: 3}
+  m_Script: {fileID: 11500000, guid: b5822c75dd29f3242b21e55f86bb1b2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   collisionSound: {fileID: 8300000, guid: 4c6382fcf6e28634fa5af9731f69bd43, type: 3}
@@ -32693,13 +31955,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eventsToReceive: 0
-  pokeThreshold: 0.25
   debounceThreshold: 0.01
-  touchableCollider: {fileID: 1260171193}
   localForward: {x: 0, y: 0, z: -1}
   localUp: {x: 0, y: 1, z: 0}
   localCenter: {x: 0, y: 0, z: -0.008}
   bounds: {x: 0.032, y: 0.032}
+  touchableCollider: {fileID: 1260171193}
 --- !u!82 &1260171189
 AudioSource:
   m_ObjectHideFlags: 0
@@ -32808,29 +32069,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1410eac1ae94b4d4492a09cc368e152c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Enabled: 1
-  States: {fileID: 11400000, guid: e51893c8eb7938e4ba43985af43c0f72, type: 2}
-  InputAction:
-    id: 0
-    description: 
-    axisConstraint: 0
+  states: {fileID: 11400000, guid: e51893c8eb7938e4ba43985af43c0f72, type: 2}
   InputActionId: 0
-  IsGlobal: 0
+  isGlobal: 0
   Dimensions: 1
-  StartDimensionIndex: 0
+  dimensionIndex: 0
+  startDimensionIndex: 0
   CanSelect: 0
   CanDeselect: 0
   VoiceCommand: 
-  RequiresFocus: 1
-  Profiles:
+  voiceRequiresFocus: 1
+  profiles:
   - Target: {fileID: 1849824928}
     Themes:
     - {fileID: 11400000, guid: 0c4c73f326f602744bdcfff481fd6f20, type: 2}
-    HadDefaultTheme: 1
   - Target: {fileID: 1706092023}
     Themes:
     - {fileID: 11400000, guid: 8f8cfb3041153fa45bccb6d664a563ec, type: 2}
-    HadDefaultTheme: 1
   OnClick:
     m_PersistentCalls:
       m_Calls:
@@ -32848,8 +32103,7 @@ MonoBehaviour:
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   Events:
-  - Name: OnFocus
-    Event:
+  - Event:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 1260171192}
@@ -32911,9 +32165,7 @@ MonoBehaviour:
         m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
       Options: []
-    HideUnityEvents: 0
-  - Name: OnPress
-    Event:
+  - Event:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 1260171189}
@@ -33011,8 +32263,7 @@ MonoBehaviour:
       - Near and Far
       - Near Only
       - Far Only
-    HideUnityEvents: 0
-  dimensionIndex: 0
+  enabledOnStart: 1
 --- !u!114 &1260171191
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -33966,9 +33217,9 @@ GameObject:
   - component: {fileID: 1321702089}
   - component: {fileID: 1321702088}
   - component: {fileID: 1321702087}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Pawn_Dark_(A7)
-  m_TagString: Untagged
+  m_TagString: pieces
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -33996,7 +33247,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1321702085}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd87c5bf85c55db4780b5acf1289bf39, type: 3}
+  m_Script: {fileID: 11500000, guid: b5822c75dd29f3242b21e55f86bb1b2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   collisionSound: {fileID: 8300000, guid: 4c6382fcf6e28634fa5af9731f69bd43, type: 3}
@@ -34480,7 +33731,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eventsToReceive: 0
-  pokeThreshold: 0.25
   debounceThreshold: 0.01
 --- !u!114 &1330179330
 MonoBehaviour:
@@ -36293,7 +35543,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eventsToReceive: 0
-  pokeThreshold: 0.25
   debounceThreshold: 0.01
 --- !u!114 &1462118426
 MonoBehaviour:
@@ -36740,9 +35989,9 @@ GameObject:
   - component: {fileID: 1495724389}
   - component: {fileID: 1495724388}
   - component: {fileID: 1495724387}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Pawn_Dark_(E7)
-  m_TagString: Untagged
+  m_TagString: pieces
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -36770,7 +36019,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1495724385}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd87c5bf85c55db4780b5acf1289bf39, type: 3}
+  m_Script: {fileID: 11500000, guid: b5822c75dd29f3242b21e55f86bb1b2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   collisionSound: {fileID: 8300000, guid: 4c6382fcf6e28634fa5af9731f69bd43, type: 3}
@@ -37529,13 +36778,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eventsToReceive: 0
-  pokeThreshold: 0.25
   debounceThreshold: 0.01
-  touchableCollider: {fileID: 1519539866}
   localForward: {x: 0, y: 0, z: -1}
   localUp: {x: 0, y: 1, z: 0}
   localCenter: {x: 0, y: 0, z: -0.0055}
   bounds: {x: 0.032, y: 0.032}
+  touchableCollider: {fileID: 1519539866}
 --- !u!82 &1519539862
 AudioSource:
   m_ObjectHideFlags: 0
@@ -37644,25 +36892,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1410eac1ae94b4d4492a09cc368e152c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Enabled: 1
-  States: {fileID: 11400000, guid: e51893c8eb7938e4ba43985af43c0f72, type: 2}
-  InputAction:
-    id: 0
-    description: 
-    axisConstraint: 0
+  states: {fileID: 11400000, guid: e51893c8eb7938e4ba43985af43c0f72, type: 2}
   InputActionId: 0
-  IsGlobal: 0
+  isGlobal: 0
   Dimensions: 1
-  StartDimensionIndex: 0
+  dimensionIndex: 0
+  startDimensionIndex: 0
   CanSelect: 0
   CanDeselect: 0
   VoiceCommand: 
-  RequiresFocus: 1
-  Profiles:
+  voiceRequiresFocus: 1
+  profiles:
   - Target: {fileID: 670269473}
     Themes:
     - {fileID: 11400000, guid: bf681c4b08de9824785c11ccf5a83258, type: 2}
-    HadDefaultTheme: 1
   OnClick:
     m_PersistentCalls:
       m_Calls:
@@ -37680,8 +36923,7 @@ MonoBehaviour:
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   Events:
-  - Name: OnPress
-    Event:
+  - Event:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 1519539862}
@@ -37790,8 +37032,7 @@ MonoBehaviour:
       - Near and Far
       - Near Only
       - Far Only
-    HideUnityEvents: 0
-  dimensionIndex: 0
+  enabledOnStart: 1
 --- !u!114 &1519539864
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -37939,237 +37180,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.032, y: 0.032, z: 0.015}
   m_Center: {x: 0, y: 0, z: 0.002}
---- !u!1 &1519935008
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1519935009}
-  - component: {fileID: 1519935016}
-  - component: {fileID: 1519935015}
-  - component: {fileID: 1519935014}
-  - component: {fileID: 1519935013}
-  - component: {fileID: 1519935012}
-  - component: {fileID: 1519935011}
-  - component: {fileID: 1519935010}
-  - component: {fileID: 1519935017}
-  m_Layer: 15
-  m_Name: Bishop
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1519935009
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1519935008}
-  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 0.375, y: 0, z: 1}
-  m_LocalScale: {x: 0.22, y: 0.22000001, z: 0.21999995}
-  m_Children: []
-  m_Father: {fileID: 2080385628}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
---- !u!114 &1519935010
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1519935008}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5afd5316c63705643b3daba5a6e923bd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ShowTetherWhenManipulating: 0
---- !u!65 &1519935011
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1519935008}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.89571756, y: 1.2560699, z: 0.8315647}
-  m_Center: {x: 0.00000166893, y: 0.6280345, z: 0.027929055}
---- !u!114 &1519935012
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1519935008}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 03daa81ea5f685f4ebf6e32038d058ca, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hostTransform: {fileID: 0}
-  manipulationType: 0
-  twoHandedManipulationType: 2
-  allowFarManipulation: 1
-  oneHandRotationModeNear: 6
-  oneHandRotationModeFar: 6
-  releaseBehavior: 0
-  constraintOnRotation: 0
-  constraintOnMovement: 0
-  smoothingActive: 1
-  smoothingAmountOneHandManip: 0.001
-  OnManipulationStarted:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1519935017}
-        m_MethodName: set_manipulating
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-    m_TypeName: Microsoft.MixedReality.Toolkit.UI.ManipulationEvent, Microsoft.MixedReality.Toolkit.SDK,
-      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-  OnManipulationEnded:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1519935017}
-        m_MethodName: PromoteCheck
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 4300000, guid: 9872e0b509ff2d04299e3fe92e0deacc,
-            type: 3}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Mesh, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1519935017}
-        m_MethodName: set_manipulating
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_TypeName: Microsoft.MixedReality.Toolkit.UI.ManipulationEvent, Microsoft.MixedReality.Toolkit.SDK,
-      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-  OnHoverEntered:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: Microsoft.MixedReality.Toolkit.UI.ManipulationEvent, Microsoft.MixedReality.Toolkit.SDK,
-      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-  OnHoverExited:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: Microsoft.MixedReality.Toolkit.UI.ManipulationEvent, Microsoft.MixedReality.Toolkit.SDK,
-      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
---- !u!64 &1519935013
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1519935008}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Convex: 1
-  m_CookingOptions: 14
-  m_Mesh: {fileID: 4300000, guid: 3d375d4a1907b3f4098bb64446492fed, type: 3}
---- !u!54 &1519935014
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1519935008}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
---- !u!23 &1519935015
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1519935008}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: fedf78764146e5b46b101d5d182aaabb, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
---- !u!33 &1519935016
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1519935008}
-  m_Mesh: {fileID: 4300000, guid: 9872e0b509ff2d04299e3fe92e0deacc, type: 3}
---- !u!114 &1519935017
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1519935008}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dbd30a52020297148ba92edab8eea2b2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  layer:
-    serializedVersion: 2
-    m_Bits: 2048
 --- !u!1 &1522146141
 GameObject:
   m_ObjectHideFlags: 0
@@ -38563,9 +37573,9 @@ GameObject:
   - component: {fileID: 1545248682}
   - component: {fileID: 1545248681}
   - component: {fileID: 1545248680}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: King_Dark_(E8)
-  m_TagString: Untagged
+  m_TagString: pieces
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -38593,7 +37603,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1545248678}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd87c5bf85c55db4780b5acf1289bf39, type: 3}
+  m_Script: {fileID: 11500000, guid: b5822c75dd29f3242b21e55f86bb1b2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   collisionSound: {fileID: 8300000, guid: 4c6382fcf6e28634fa5af9731f69bd43, type: 3}
@@ -39349,7 +38359,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eventsToReceive: 0
-  pokeThreshold: 0.25
   debounceThreshold: 0.01
 --- !u!114 &1564543635
 MonoBehaviour:
@@ -40096,49 +39105,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1594617900}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &1594653859
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1594653860}
-  - component: {fileID: 1594653861}
-  m_Layer: 0
-  m_Name: MixedRealityTeleportSystem
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1594653860
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1594653859}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 677338463}
-  m_RootOrder: 6
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1594653861
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1594653859}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 09c04dafcb77c1e4195a36bd131cbdec, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1604112829
 GameObject:
   m_ObjectHideFlags: 0
@@ -41548,9 +40514,9 @@ GameObject:
   - component: {fileID: 1709567225}
   - component: {fileID: 1709567224}
   - component: {fileID: 1709567223}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Pawn_Light_(B2)
-  m_TagString: Untagged
+  m_TagString: pieces
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -41562,13 +40528,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1709567221}
-  m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071067}
+  m_LocalRotation: {x: 0, y: 0.7072302, z: 0.7069834, w: 0}
   m_LocalPosition: {x: 1, y: 0, z: 1}
   m_LocalScale: {x: 42.780746, y: 42.780724, z: 106.95179}
   m_Children: []
   m_Father: {fileID: 535089656}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -89.98, y: 180, z: 0}
 --- !u!114 &1709567223
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -41578,7 +40544,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1709567221}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd87c5bf85c55db4780b5acf1289bf39, type: 3}
+  m_Script: {fileID: 11500000, guid: b5822c75dd29f3242b21e55f86bb1b2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   collisionSound: {fileID: 8300000, guid: 4c6382fcf6e28634fa5af9731f69bd43, type: 3}
@@ -41934,7 +40900,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: ddfde96e667d5ac4fb13183f7cb22ba9, type: 3}
+  - {fileID: 2100000, guid: fedf78764146e5b46b101d5d182aaabb, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -43433,9 +42399,9 @@ GameObject:
   - component: {fileID: 1797048178}
   - component: {fileID: 1797048177}
   - component: {fileID: 1797048176}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Bishop_Dark_(F8)
-  m_TagString: Untagged
+  m_TagString: pieces
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -43463,7 +42429,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1797048174}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd87c5bf85c55db4780b5acf1289bf39, type: 3}
+  m_Script: {fileID: 11500000, guid: b5822c75dd29f3242b21e55f86bb1b2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   collisionSound: {fileID: 8300000, guid: 4c6382fcf6e28634fa5af9731f69bd43, type: 3}
@@ -43924,13 +42890,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eventsToReceive: 0
-  pokeThreshold: 0.25
   debounceThreshold: 0.01
-  touchableCollider: {fileID: 1799082649}
   localForward: {x: 0, y: 0, z: -1}
   localUp: {x: 0, y: 1, z: 0}
   localCenter: {x: 0, y: 0, z: -0.008}
   bounds: {x: 0.1274702, y: 0.032}
+  touchableCollider: {fileID: 1799082649}
 --- !u!82 &1799082645
 AudioSource:
   m_ObjectHideFlags: 0
@@ -44039,29 +43004,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1410eac1ae94b4d4492a09cc368e152c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Enabled: 1
-  States: {fileID: 11400000, guid: e51893c8eb7938e4ba43985af43c0f72, type: 2}
-  InputAction:
-    id: 0
-    description: 
-    axisConstraint: 0
+  states: {fileID: 11400000, guid: e51893c8eb7938e4ba43985af43c0f72, type: 2}
   InputActionId: 0
-  IsGlobal: 0
+  isGlobal: 0
   Dimensions: 1
-  StartDimensionIndex: 0
+  dimensionIndex: 0
+  startDimensionIndex: 0
   CanSelect: 0
   CanDeselect: 0
   VoiceCommand: 
-  RequiresFocus: 1
-  Profiles:
+  voiceRequiresFocus: 1
+  profiles:
   - Target: {fileID: 1305131595}
     Themes:
     - {fileID: 11400000, guid: 0c4c73f326f602744bdcfff481fd6f20, type: 2}
-    HadDefaultTheme: 1
   - Target: {fileID: 1594617900}
     Themes:
     - {fileID: 11400000, guid: 8f8cfb3041153fa45bccb6d664a563ec, type: 2}
-    HadDefaultTheme: 1
   OnClick:
     m_PersistentCalls:
       m_Calls:
@@ -44079,8 +43038,7 @@ MonoBehaviour:
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   Events:
-  - Name: OnFocus
-    Event:
+  - Event:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 1799082648}
@@ -44142,9 +43100,7 @@ MonoBehaviour:
         m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
       Options: []
-    HideUnityEvents: 0
-  - Name: OnPress
-    Event:
+  - Event:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 1799082645}
@@ -44242,8 +43198,7 @@ MonoBehaviour:
       - Near and Far
       - Near Only
       - Far Only
-    HideUnityEvents: 0
-  dimensionIndex: 0
+  enabledOnStart: 1
 --- !u!114 &1799082647
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -44952,49 +43907,6 @@ Transform:
   m_Father: {fileID: 684364762}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1825341369
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1825341370}
-  - component: {fileID: 1825341371}
-  m_Layer: 0
-  m_Name: MixedRealityBoundarySystem
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1825341370
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1825341369}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 677338463}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1825341371
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1825341369}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 09c04dafcb77c1e4195a36bd131cbdec, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1831229230
 GameObject:
   m_ObjectHideFlags: 0
@@ -45704,13 +44616,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eventsToReceive: 0
-  pokeThreshold: 0.25
   debounceThreshold: 0.01
-  touchableCollider: {fileID: 1866115887}
   localForward: {x: 0, y: 0, z: -1}
   localUp: {x: 0, y: 1, z: 0}
   localCenter: {x: 0, y: 0, z: -0.008}
   bounds: {x: 0.032, y: 0.032}
+  touchableCollider: {fileID: 1866115887}
 --- !u!82 &1866115883
 AudioSource:
   m_ObjectHideFlags: 0
@@ -45819,29 +44730,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1410eac1ae94b4d4492a09cc368e152c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Enabled: 1
-  States: {fileID: 11400000, guid: e51893c8eb7938e4ba43985af43c0f72, type: 2}
-  InputAction:
-    id: 0
-    description: 
-    axisConstraint: 0
+  states: {fileID: 11400000, guid: e51893c8eb7938e4ba43985af43c0f72, type: 2}
   InputActionId: 0
-  IsGlobal: 0
+  isGlobal: 0
   Dimensions: 1
-  StartDimensionIndex: 0
+  dimensionIndex: 0
+  startDimensionIndex: 0
   CanSelect: 0
   CanDeselect: 0
   VoiceCommand: 
-  RequiresFocus: 1
-  Profiles:
+  voiceRequiresFocus: 1
+  profiles:
   - Target: {fileID: 2129319190}
     Themes:
     - {fileID: 11400000, guid: 0c4c73f326f602744bdcfff481fd6f20, type: 2}
-    HadDefaultTheme: 1
   - Target: {fileID: 2049773442}
     Themes:
     - {fileID: 11400000, guid: 8f8cfb3041153fa45bccb6d664a563ec, type: 2}
-    HadDefaultTheme: 1
   OnClick:
     m_PersistentCalls:
       m_Calls:
@@ -45859,8 +44764,7 @@ MonoBehaviour:
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   Events:
-  - Name: OnFocus
-    Event:
+  - Event:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 1866115886}
@@ -45922,9 +44826,7 @@ MonoBehaviour:
         m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
       Options: []
-    HideUnityEvents: 0
-  - Name: OnPress
-    Event:
+  - Event:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 1866115883}
@@ -46022,8 +44924,7 @@ MonoBehaviour:
       - Near and Far
       - Near Only
       - Far Only
-    HideUnityEvents: 0
-  dimensionIndex: 0
+  enabledOnStart: 1
 --- !u!114 &1866115885
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -46277,6 +45178,7 @@ MonoBehaviour:
       m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
   persistentKeywords: 0
+  speechConfirmationTooltipPrefab: {fileID: 0}
 --- !u!114 &1870297802
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -46302,13 +45204,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eventsToReceive: 0
-  pokeThreshold: 0.25
   debounceThreshold: 0.01
-  touchableCollider: {fileID: 1870297808}
   localForward: {x: 0, y: 0, z: -1}
   localUp: {x: 0, y: 1, z: 0}
   localCenter: {x: 0, y: 0, z: -0.0055}
   bounds: {x: 0.032, y: 0.032}
+  touchableCollider: {fileID: 1870297808}
 --- !u!82 &1870297804
 AudioSource:
   m_ObjectHideFlags: 0
@@ -46417,25 +45318,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1410eac1ae94b4d4492a09cc368e152c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Enabled: 1
-  States: {fileID: 11400000, guid: e51893c8eb7938e4ba43985af43c0f72, type: 2}
-  InputAction:
-    id: 0
-    description: 
-    axisConstraint: 0
+  states: {fileID: 11400000, guid: e51893c8eb7938e4ba43985af43c0f72, type: 2}
   InputActionId: 0
-  IsGlobal: 0
+  isGlobal: 0
   Dimensions: 1
-  StartDimensionIndex: 0
+  dimensionIndex: 0
+  startDimensionIndex: 0
   CanSelect: 0
   CanDeselect: 0
   VoiceCommand: 
-  RequiresFocus: 1
-  Profiles:
+  voiceRequiresFocus: 1
+  profiles:
   - Target: {fileID: 637467031}
     Themes:
     - {fileID: 11400000, guid: bf681c4b08de9824785c11ccf5a83258, type: 2}
-    HadDefaultTheme: 1
   OnClick:
     m_PersistentCalls:
       m_Calls:
@@ -46453,8 +45349,7 @@ MonoBehaviour:
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   Events:
-  - Name: OnPress
-    Event:
+  - Event:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 1870297804}
@@ -46563,8 +45458,7 @@ MonoBehaviour:
       - Near and Far
       - Near Only
       - Far Only
-    HideUnityEvents: 0
-  dimensionIndex: 0
+  enabledOnStart: 1
 --- !u!114 &1870297806
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -47709,9 +46603,9 @@ GameObject:
   - component: {fileID: 1963214666}
   - component: {fileID: 1963214665}
   - component: {fileID: 1963214664}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Pawn_Light_(G2)
-  m_TagString: Untagged
+  m_TagString: pieces
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -47723,13 +46617,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1963214662}
-  m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071067}
+  m_LocalRotation: {x: 0, y: 0.7072302, z: 0.7069834, w: 0}
   m_LocalPosition: {x: 6, y: 0, z: 1}
   m_LocalScale: {x: 42.780746, y: 42.780724, z: 106.95179}
   m_Children: []
   m_Father: {fileID: 535089656}
   m_RootOrder: 6
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -89.98, y: 180, z: 0}
 --- !u!114 &1963214664
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -47739,7 +46633,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1963214662}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd87c5bf85c55db4780b5acf1289bf39, type: 3}
+  m_Script: {fileID: 11500000, guid: b5822c75dd29f3242b21e55f86bb1b2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   collisionSound: {fileID: 8300000, guid: 4c6382fcf6e28634fa5af9731f69bd43, type: 3}
@@ -48095,7 +46989,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: ddfde96e667d5ac4fb13183f7cb22ba9, type: 3}
+  - {fileID: 2100000, guid: fedf78764146e5b46b101d5d182aaabb, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -48312,7 +47206,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eventsToReceive: 0
-  pokeThreshold: 0.25
   debounceThreshold: 0.01
 --- !u!114 &1982049898
 MonoBehaviour:
@@ -49514,9 +48407,9 @@ GameObject:
   - component: {fileID: 2058018388}
   - component: {fileID: 2058018387}
   - component: {fileID: 2058018386}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Queen_Dark_(D8)
-  m_TagString: Untagged
+  m_TagString: pieces
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -49544,7 +48437,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2058018384}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd87c5bf85c55db4780b5acf1289bf39, type: 3}
+  m_Script: {fileID: 11500000, guid: b5822c75dd29f3242b21e55f86bb1b2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   collisionSound: {fileID: 8300000, guid: 4c6382fcf6e28634fa5af9731f69bd43, type: 3}
@@ -50053,9 +48946,9 @@ GameObject:
   - component: {fileID: 2066454295}
   - component: {fileID: 2066454294}
   - component: {fileID: 2066454293}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Pawn_Dark_(F7)
-  m_TagString: Untagged
+  m_TagString: pieces
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -50083,7 +48976,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2066454291}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd87c5bf85c55db4780b5acf1289bf39, type: 3}
+  m_Script: {fileID: 11500000, guid: b5822c75dd29f3242b21e55f86bb1b2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   collisionSound: {fileID: 8300000, guid: 4c6382fcf6e28634fa5af9731f69bd43, type: 3}
@@ -50886,13 +49779,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2080385627}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0.333, z: -0.7925}
+  m_LocalPosition: {x: -0, y: 0.494, z: -0.7925}
   m_LocalScale: {x: 0.8333337, y: 0.8333332, z: 0.8333337}
   m_Children:
-  - {fileID: 3160862306402672899}
-  - {fileID: 925022143}
-  - {fileID: 184559210}
-  - {fileID: 1519935009}
+  - {fileID: 2384181165854663601}
+  - {fileID: 2384181165854663607}
+  - {fileID: 2384181165854663611}
+  - {fileID: 2384181165854663613}
   m_Father: {fileID: 1262033677}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -50919,49 +49812,6 @@ MonoBehaviour:
   rows: 1
   cellWidth: 0.25
   cellHeight: 0.5
---- !u!1 &2081612039
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2081612040}
-  - component: {fileID: 2081612041}
-  m_Layer: 0
-  m_Name: MixedRealityCameraSystem
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2081612040
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2081612039}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 677338463}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2081612041
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2081612039}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 09c04dafcb77c1e4195a36bd131cbdec, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &2085576129
 GameObject:
   m_ObjectHideFlags: 0
@@ -51322,13 +50172,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eventsToReceive: 0
-  pokeThreshold: 0.25
   debounceThreshold: 0.01
-  touchableCollider: {fileID: 2122541221}
   localForward: {x: 0, y: 0, z: -1}
   localUp: {x: 0, y: 1, z: 0}
   localCenter: {x: 0, y: 0, z: -0.008}
   bounds: {x: 0.1274702, y: 0.032}
+  touchableCollider: {fileID: 2122541221}
 --- !u!82 &2122541217
 AudioSource:
   m_ObjectHideFlags: 0
@@ -51437,29 +50286,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1410eac1ae94b4d4492a09cc368e152c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Enabled: 1
-  States: {fileID: 11400000, guid: e51893c8eb7938e4ba43985af43c0f72, type: 2}
-  InputAction:
-    id: 0
-    description: 
-    axisConstraint: 0
+  states: {fileID: 11400000, guid: e51893c8eb7938e4ba43985af43c0f72, type: 2}
   InputActionId: 0
-  IsGlobal: 0
+  isGlobal: 0
   Dimensions: 1
-  StartDimensionIndex: 0
+  dimensionIndex: 0
+  startDimensionIndex: 0
   CanSelect: 0
   CanDeselect: 0
   VoiceCommand: 
-  RequiresFocus: 1
-  Profiles:
+  voiceRequiresFocus: 1
+  profiles:
   - Target: {fileID: 629343739}
     Themes:
     - {fileID: 11400000, guid: 0c4c73f326f602744bdcfff481fd6f20, type: 2}
-    HadDefaultTheme: 1
   - Target: {fileID: 768266196}
     Themes:
     - {fileID: 11400000, guid: 8f8cfb3041153fa45bccb6d664a563ec, type: 2}
-    HadDefaultTheme: 1
   OnClick:
     m_PersistentCalls:
       m_Calls:
@@ -51477,8 +50320,7 @@ MonoBehaviour:
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   Events:
-  - Name: OnFocus
-    Event:
+  - Event:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 2122541220}
@@ -51540,9 +50382,7 @@ MonoBehaviour:
         m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
       Options: []
-    HideUnityEvents: 0
-  - Name: OnPress
-    Event:
+  - Event:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 2122541217}
@@ -51640,8 +50480,7 @@ MonoBehaviour:
       - Near and Far
       - Near Only
       - Far Only
-    HideUnityEvents: 0
-  dimensionIndex: 0
+  enabledOnStart: 1
 --- !u!114 &2122541219
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -51966,13 +50805,45 @@ Transform:
   m_Father: {fileID: 1260171186}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!23 &3141367023848267973
+--- !u!33 &2384181165851796369
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2384181165854965649}
+  m_Mesh: {fileID: 4300004, guid: d7fff0939eabb334299a6bcb9d4f1b93, type: 3}
+--- !u!33 &2384181165851796373
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2384181165854965655}
+  m_Mesh: {fileID: 4300002, guid: d7fff0939eabb334299a6bcb9d4f1b93, type: 3}
+--- !u!33 &2384181165851796377
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2384181165854965659}
+  m_Mesh: {fileID: 4300006, guid: d7fff0939eabb334299a6bcb9d4f1b93, type: 3}
+--- !u!33 &2384181165851796379
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2384181165854965661}
+  m_Mesh: {fileID: 4300000, guid: d7fff0939eabb334299a6bcb9d4f1b93, type: 3}
+--- !u!23 &2384181165852762449
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3155636023704762515}
+  m_GameObject: {fileID: 2384181165854965649}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -51983,7 +50854,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: fedf78764146e5b46b101d5d182aaabb, type: 2}
+  - {fileID: 2100000, guid: bbf9e38165fe42f469d4d62b9e0d67d7, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -52003,15 +50874,174 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!33 &3149319638583778491
-MeshFilter:
+--- !u!23 &2384181165852762453
+MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3155636023704762515}
-  m_Mesh: {fileID: 4300000, guid: 3d375d4a1907b3f4098bb64446492fed, type: 3}
---- !u!1 &3155636023704762515
+  m_GameObject: {fileID: 2384181165854965655}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 1c64b61b7b4be364388b9a68c13ffa43, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+--- !u!23 &2384181165852762457
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2384181165854965659}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 0229bab55e45fe34e80e5cdfec5d2135, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+--- !u!23 &2384181165852762459
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2384181165854965661}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 71d471797c0e430783230146721c3fcb, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+--- !u!4 &2384181165854663601
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2384181165854965649}
+  m_LocalRotation: {x: -0.7071069, y: -0, z: -0, w: 0.70710677}
+  m_LocalPosition: {x: -0.375, y: 0, z: 1}
+  m_LocalScale: {x: 0.097401105, y: 0.0974011, z: 0.19480234}
+  m_Children: []
+  m_Father: {fileID: 2080385628}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &2384181165854663607
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2384181165854965655}
+  m_LocalRotation: {x: -0.7071069, y: -0, z: -0, w: 0.70710677}
+  m_LocalPosition: {x: -0.125, y: 0, z: 1}
+  m_LocalScale: {x: 0.097401105, y: 0.0974011, z: 0.19480234}
+  m_Children: []
+  m_Father: {fileID: 2080385628}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &2384181165854663611
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2384181165854965659}
+  m_LocalRotation: {x: -0.7071069, y: -0, z: -0, w: 0.70710677}
+  m_LocalPosition: {x: 0.125, y: 0, z: 1}
+  m_LocalScale: {x: 0.097401105, y: 0.0974011, z: 0.19480234}
+  m_Children: []
+  m_Father: {fileID: 2080385628}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &2384181165854663613
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2384181165854965661}
+  m_LocalRotation: {x: -0.7071069, y: -0, z: -0, w: 0.70710677}
+  m_LocalPosition: {x: 0.375, y: 0, z: 1}
+  m_LocalScale: {x: 0.097401105, y: 0.0974011, z: 0.19480234}
+  m_Children: []
+  m_Father: {fileID: 2080385628}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2384181165854965649
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -52019,55 +51049,86 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 3160862306402672899}
-  - component: {fileID: 3149319638583778491}
-  - component: {fileID: 3141367023848267973}
-  - component: {fileID: 3155636023704762520}
-  - component: {fileID: 3155636023704762519}
-  - component: {fileID: 3155636023704762518}
-  - component: {fileID: 3155636023704762517}
-  - component: {fileID: 3155636023704762516}
-  - component: {fileID: 3155636023704762521}
-  m_Layer: 15
-  m_Name: Knight
+  - component: {fileID: 2384181165854663601}
+  - component: {fileID: 2384181165851796369}
+  - component: {fileID: 2384181165852762449}
+  - component: {fileID: 2384181165854965654}
+  - component: {fileID: 2384181165854965653}
+  - component: {fileID: 2384181165854965652}
+  - component: {fileID: 2384181165854965651}
+  - component: {fileID: 2384181165854965650}
+  m_Layer: 0
+  m_Name: Bishop
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &3155636023704762516
+--- !u!114 &2384181165854965650
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3155636023704762515}
+  m_GameObject: {fileID: 2384181165854965649}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbd30a52020297148ba92edab8eea2b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  layer:
+    serializedVersion: 2
+    m_Bits: 2048
+--- !u!114 &2384181165854965651
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2384181165854965649}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5afd5316c63705643b3daba5a6e923bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTetherWhenManipulating: 0
---- !u!65 &3155636023704762517
-BoxCollider:
+--- !u!64 &2384181165854965652
+MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3155636023704762515}
+  m_GameObject: {fileID: 2384181165854965649}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
+  serializedVersion: 3
+  m_Convex: 1
+  m_CookingOptions: 14
+  m_Mesh: {fileID: 4300004, guid: d7fff0939eabb334299a6bcb9d4f1b93, type: 3}
+--- !u!54 &2384181165854965653
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2384181165854965649}
   serializedVersion: 2
-  m_Size: {x: 0.89571756, y: 1.2560699, z: 0.8315647}
-  m_Center: {x: 0.00000166893, y: 0.6280345, z: 0.027929055}
---- !u!114 &3155636023704762518
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!114 &2384181165854965654
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3155636023704762515}
+  m_GameObject: {fileID: 2384181165854965649}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 03daa81ea5f685f4ebf6e32038d058ca, type: 3}
@@ -52075,7 +51136,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hostTransform: {fileID: 0}
   manipulationType: 0
-  twoHandedManipulationType: 2
+  twoHandedManipulationType: 3
   allowFarManipulation: 1
   oneHandRotationModeNear: 6
   oneHandRotationModeFar: 6
@@ -52087,9 +51148,20 @@ MonoBehaviour:
   OnManipulationStarted:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3155636023704762521}
+      - m_Target: {fileID: 2384181165854965650}
         m_MethodName: set_manipulating
         m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 1604112834}
+        m_MethodName: HighlightOn
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -52103,11 +51175,11 @@ MonoBehaviour:
   OnManipulationEnded:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3155636023704762521}
+      - m_Target: {fileID: 2384181165854965650}
         m_MethodName: PromoteCheck
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 4300000, guid: 3d375d4a1907b3f4098bb64446492fed,
+          m_ObjectArgument: {fileID: 4300010, guid: ddfde96e667d5ac4fb13183f7cb22ba9,
             type: 3}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Mesh, UnityEngine
           m_IntArgument: 0
@@ -52115,7 +51187,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 3155636023704762521}
+      - m_Target: {fileID: 1604112834}
+        m_MethodName: HighlightOff
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 2384181165854965650}
         m_MethodName: set_manipulating
         m_Mode: 6
         m_Arguments:
@@ -52138,27 +51221,150 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: Microsoft.MixedReality.Toolkit.UI.ManipulationEvent, Microsoft.MixedReality.Toolkit.SDK,
       Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
---- !u!64 &3155636023704762519
-MeshCollider:
+--- !u!1 &2384181165854965655
+GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3155636023704762515}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2384181165854663607}
+  - component: {fileID: 2384181165851796373}
+  - component: {fileID: 2384181165852762453}
+  - component: {fileID: 2384181165854965672}
+  - component: {fileID: 2384181165854965671}
+  - component: {fileID: 2384181165854965658}
+  - component: {fileID: 2384181165854965657}
+  - component: {fileID: 2384181165854965656}
+  m_Layer: 0
+  m_Name: Knight
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2384181165854965656
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2384181165854965655}
   m_Enabled: 1
-  serializedVersion: 3
-  m_Convex: 1
-  m_CookingOptions: 14
-  m_Mesh: {fileID: 4300000, guid: 3d375d4a1907b3f4098bb64446492fed, type: 3}
---- !u!54 &3155636023704762520
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03daa81ea5f685f4ebf6e32038d058ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hostTransform: {fileID: 0}
+  manipulationType: 0
+  twoHandedManipulationType: 3
+  allowFarManipulation: 1
+  oneHandRotationModeNear: 6
+  oneHandRotationModeFar: 6
+  releaseBehavior: 0
+  constraintOnRotation: 0
+  constraintOnMovement: 0
+  smoothingActive: 1
+  smoothingAmountOneHandManip: 0.001
+  OnManipulationStarted:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2384181165854965657}
+        m_MethodName: set_manipulating
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 1604112834}
+        m_MethodName: HighlightOn
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+    m_TypeName: Microsoft.MixedReality.Toolkit.UI.ManipulationEvent, Microsoft.MixedReality.Toolkit.SDK,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  OnManipulationEnded:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2384181165854965657}
+        m_MethodName: PromoteCheck
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 4300008, guid: ddfde96e667d5ac4fb13183f7cb22ba9,
+            type: 3}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Mesh, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1604112834}
+        m_MethodName: HighlightOff
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 2384181165854965657}
+        m_MethodName: set_manipulating
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: Microsoft.MixedReality.Toolkit.UI.ManipulationEvent, Microsoft.MixedReality.Toolkit.SDK,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  OnHoverEntered:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: Microsoft.MixedReality.Toolkit.UI.ManipulationEvent, Microsoft.MixedReality.Toolkit.SDK,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  OnHoverExited:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: Microsoft.MixedReality.Toolkit.UI.ManipulationEvent, Microsoft.MixedReality.Toolkit.SDK,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+--- !u!114 &2384181165854965657
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2384181165854965655}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbd30a52020297148ba92edab8eea2b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  layer:
+    serializedVersion: 2
+    m_Bits: 2048
+--- !u!54 &2384181165854965658
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3155636023704762515}
+  m_GameObject: {fileID: 2384181165854965655}
   serializedVersion: 2
   m_Mass: 1
   m_Drag: 0
@@ -52168,13 +51374,171 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &3155636023704762521
+--- !u!1 &2384181165854965659
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2384181165854663611}
+  - component: {fileID: 2384181165851796377}
+  - component: {fileID: 2384181165852762457}
+  - component: {fileID: 2384181165854965670}
+  - component: {fileID: 2384181165854965669}
+  - component: {fileID: 2384181165854965668}
+  - component: {fileID: 2384181165854965667}
+  - component: {fileID: 2384181165854965660}
+  m_Layer: 0
+  m_Name: Queen
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2384181165854965660
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3155636023704762515}
+  m_GameObject: {fileID: 2384181165854965659}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03daa81ea5f685f4ebf6e32038d058ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hostTransform: {fileID: 0}
+  manipulationType: 0
+  twoHandedManipulationType: 3
+  allowFarManipulation: 1
+  oneHandRotationModeNear: 6
+  oneHandRotationModeFar: 6
+  releaseBehavior: 0
+  constraintOnRotation: 0
+  constraintOnMovement: 0
+  smoothingActive: 1
+  smoothingAmountOneHandManip: 0.001
+  OnManipulationStarted:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2384181165854965668}
+        m_MethodName: set_manipulating
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 1604112834}
+        m_MethodName: HighlightOn
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+    m_TypeName: Microsoft.MixedReality.Toolkit.UI.ManipulationEvent, Microsoft.MixedReality.Toolkit.SDK,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  OnManipulationEnded:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2384181165854965668}
+        m_MethodName: PromoteCheck
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 4300012, guid: ddfde96e667d5ac4fb13183f7cb22ba9,
+            type: 3}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Mesh, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1604112834}
+        m_MethodName: HighlightOff
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 2384181165854965668}
+        m_MethodName: set_manipulating
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: Microsoft.MixedReality.Toolkit.UI.ManipulationEvent, Microsoft.MixedReality.Toolkit.SDK,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  OnHoverEntered:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: Microsoft.MixedReality.Toolkit.UI.ManipulationEvent, Microsoft.MixedReality.Toolkit.SDK,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  OnHoverExited:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: Microsoft.MixedReality.Toolkit.UI.ManipulationEvent, Microsoft.MixedReality.Toolkit.SDK,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+--- !u!1 &2384181165854965661
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2384181165854663613}
+  - component: {fileID: 2384181165851796379}
+  - component: {fileID: 2384181165852762459}
+  - component: {fileID: 2384181165854965666}
+  - component: {fileID: 2384181165854965665}
+  - component: {fileID: 2384181165854965664}
+  - component: {fileID: 2384181165854965663}
+  - component: {fileID: 2384181165854965662}
+  m_Layer: 0
+  m_Name: Rook
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2384181165854965662
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2384181165854965661}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5afd5316c63705643b3daba5a6e923bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTetherWhenManipulating: 0
+--- !u!114 &2384181165854965663
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2384181165854965661}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dbd30a52020297148ba92edab8eea2b2, type: 3}
@@ -52183,20 +51547,220 @@ MonoBehaviour:
   layer:
     serializedVersion: 2
     m_Bits: 2048
---- !u!4 &3160862306402672899
-Transform:
+--- !u!114 &2384181165854965664
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3155636023704762515}
-  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: -0.375, y: 0, z: 1}
-  m_LocalScale: {x: 0.21999995, y: 0.22000001, z: 0.21999995}
-  m_Children: []
-  m_Father: {fileID: 2080385628}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+  m_GameObject: {fileID: 2384181165854965661}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03daa81ea5f685f4ebf6e32038d058ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hostTransform: {fileID: 0}
+  manipulationType: 0
+  twoHandedManipulationType: 3
+  allowFarManipulation: 1
+  oneHandRotationModeNear: 6
+  oneHandRotationModeFar: 6
+  releaseBehavior: 0
+  constraintOnRotation: 0
+  constraintOnMovement: 0
+  smoothingActive: 1
+  smoothingAmountOneHandManip: 0.001
+  OnManipulationStarted:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2384181165854965663}
+        m_MethodName: set_manipulating
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 1604112834}
+        m_MethodName: HighlightOn
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+    m_TypeName: Microsoft.MixedReality.Toolkit.UI.ManipulationEvent, Microsoft.MixedReality.Toolkit.SDK,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  OnManipulationEnded:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2384181165854965663}
+        m_MethodName: PromoteCheck
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 4300004, guid: ddfde96e667d5ac4fb13183f7cb22ba9,
+            type: 3}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Mesh, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1604112834}
+        m_MethodName: HighlightOff
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 2384181165854965663}
+        m_MethodName: set_manipulating
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: Microsoft.MixedReality.Toolkit.UI.ManipulationEvent, Microsoft.MixedReality.Toolkit.SDK,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  OnHoverEntered:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: Microsoft.MixedReality.Toolkit.UI.ManipulationEvent, Microsoft.MixedReality.Toolkit.SDK,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  OnHoverExited:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: Microsoft.MixedReality.Toolkit.UI.ManipulationEvent, Microsoft.MixedReality.Toolkit.SDK,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+--- !u!64 &2384181165854965665
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2384181165854965661}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Convex: 1
+  m_CookingOptions: 14
+  m_Mesh: {fileID: 4300000, guid: d7fff0939eabb334299a6bcb9d4f1b93, type: 3}
+--- !u!54 &2384181165854965666
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2384181165854965661}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!114 &2384181165854965667
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2384181165854965659}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5afd5316c63705643b3daba5a6e923bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTetherWhenManipulating: 0
+--- !u!114 &2384181165854965668
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2384181165854965659}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbd30a52020297148ba92edab8eea2b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  layer:
+    serializedVersion: 2
+    m_Bits: 2048
+--- !u!64 &2384181165854965669
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2384181165854965659}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Convex: 1
+  m_CookingOptions: 14
+  m_Mesh: {fileID: 4300006, guid: d7fff0939eabb334299a6bcb9d4f1b93, type: 3}
+--- !u!54 &2384181165854965670
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2384181165854965659}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!64 &2384181165854965671
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2384181165854965655}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Convex: 1
+  m_CookingOptions: 14
+  m_Mesh: {fileID: 4300002, guid: d7fff0939eabb334299a6bcb9d4f1b93, type: 3}
+--- !u!114 &2384181165854965672
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2384181165854965655}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5afd5316c63705643b3daba5a6e923bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTetherWhenManipulating: 0
 --- !u!33 &6015648654932265791
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -52222,7 +51786,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: ddfde96e667d5ac4fb13183f7cb22ba9, type: 3}
+  - {fileID: 2100000, guid: fedf78764146e5b46b101d5d182aaabb, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -52263,9 +51827,9 @@ GameObject:
   - component: {fileID: 6015648654935234366}
   - component: {fileID: 6015648654935234365}
   - component: {fileID: 6015648654935234364}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Pawn_Light_(A2)
-  m_TagString: Untagged
+  m_TagString: pieces
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -52279,7 +51843,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6015648654935234363}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd87c5bf85c55db4780b5acf1289bf39, type: 3}
+  m_Script: {fileID: 11500000, guid: b5822c75dd29f3242b21e55f86bb1b2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   collisionSound: {fileID: 8300000, guid: 4c6382fcf6e28634fa5af9731f69bd43, type: 3}
@@ -52625,13 +52189,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6015648654935234363}
-  m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071067}
+  m_LocalRotation: {x: 0, y: 0.7072302, z: 0.7069834, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 1}
   m_LocalScale: {x: 42.780746, y: 42.780724, z: 106.95179}
   m_Children: []
   m_Father: {fileID: 535089656}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -89.98, y: 180, z: 0}
 --- !u!33 &7321196259674183665
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -52864,13 +52428,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7321196259677539309}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: 0.7072302, z: 0.7069834, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 42.780746, y: 42.780735, z: 85.56147}
   m_Children: []
   m_Father: {fileID: 432608498}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -89.98, y: 180, z: 0}
 --- !u!4 &7321196259677050831
 Transform:
   m_ObjectHideFlags: 0
@@ -52892,13 +52456,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7321196259677539315}
-  m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071067}
+  m_LocalRotation: {x: 0, y: 0.7072302, z: 0.7069834, w: 0}
   m_LocalPosition: {x: 1, y: 0, z: 0}
   m_LocalScale: {x: 42.780746, y: 42.780735, z: 85.56147}
   m_Children: []
   m_Father: {fileID: 1171791312}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -89.98, y: 180, z: 0}
 --- !u!4 &7321196259677050837
 Transform:
   m_ObjectHideFlags: 0
@@ -52920,13 +52484,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7321196259677539321}
-  m_LocalRotation: {x: 0, y: 0.7071068, z: 0.7071068, w: 0}
+  m_LocalRotation: {x: 0, y: 0.7072302, z: 0.7069834, w: 0}
   m_LocalPosition: {x: 2, y: 0, z: 0}
   m_LocalScale: {x: 42.780746, y: 42.780735, z: 85.56147}
   m_Children: []
   m_Father: {fileID: 618970961}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: -90, y: 180, z: 0}
+  m_LocalEulerAnglesHint: {x: -89.98, y: 180, z: 0}
 --- !u!1 &7321196259677539309
 GameObject:
   m_ObjectHideFlags: 0
@@ -52948,9 +52512,9 @@ GameObject:
   - component: {fileID: 7321196259677539312}
   - component: {fileID: 7321196259677539310}
   - component: {fileID: 7321196259677539319}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Rook_Light_(A1)
-  m_TagString: Untagged
+  m_TagString: pieces
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -52964,7 +52528,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7321196259677539309}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd87c5bf85c55db4780b5acf1289bf39, type: 3}
+  m_Script: {fileID: 11500000, guid: b5822c75dd29f3242b21e55f86bb1b2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   collisionSound: {fileID: 8300000, guid: 4c6382fcf6e28634fa5af9731f69bd43, type: 3}
@@ -52989,9 +52553,9 @@ GameObject:
   - component: {fileID: 7321196259677539326}
   - component: {fileID: 7321196259677539325}
   - component: {fileID: 7321196259677539324}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Queen_Light_(D1)
-  m_TagString: Untagged
+  m_TagString: pieces
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -53056,9 +52620,9 @@ GameObject:
   - component: {fileID: 7321196259677539346}
   - component: {fileID: 7321196259677539345}
   - component: {fileID: 7321196259677539344}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Knight_Light_(B1)
-  m_TagString: Untagged
+  m_TagString: pieces
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -53097,9 +52661,9 @@ GameObject:
   - component: {fileID: 7321196259677539336}
   - component: {fileID: 7321196259677539335}
   - component: {fileID: 7321196259677539334}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: King_Light_(E1)
-  m_TagString: Untagged
+  m_TagString: pieces
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -53251,9 +52815,9 @@ GameObject:
   - component: {fileID: 7321196259677539356}
   - component: {fileID: 7321196259677539355}
   - component: {fileID: 7321196259677539354}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Bishop_Light_(C1)
-  m_TagString: Untagged
+  m_TagString: pieces
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -53424,7 +52988,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7321196259677539311}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd87c5bf85c55db4780b5acf1289bf39, type: 3}
+  m_Script: {fileID: 11500000, guid: b5822c75dd29f3242b21e55f86bb1b2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   collisionSound: {fileID: 8300000, guid: 4c6382fcf6e28634fa5af9731f69bd43, type: 3}
@@ -53772,7 +53336,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7321196259677539317}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd87c5bf85c55db4780b5acf1289bf39, type: 3}
+  m_Script: {fileID: 11500000, guid: b5822c75dd29f3242b21e55f86bb1b2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   collisionSound: {fileID: 8300000, guid: 4c6382fcf6e28634fa5af9731f69bd43, type: 3}
@@ -54142,7 +53706,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7321196259677539315}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd87c5bf85c55db4780b5acf1289bf39, type: 3}
+  m_Script: {fileID: 11500000, guid: b5822c75dd29f3242b21e55f86bb1b2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   collisionSound: {fileID: 8300000, guid: 4c6382fcf6e28634fa5af9731f69bd43, type: 3}
@@ -54490,7 +54054,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7321196259677539321}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd87c5bf85c55db4780b5acf1289bf39, type: 3}
+  m_Script: {fileID: 11500000, guid: b5822c75dd29f3242b21e55f86bb1b2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   collisionSound: {fileID: 8300000, guid: 4c6382fcf6e28634fa5af9731f69bd43, type: 3}

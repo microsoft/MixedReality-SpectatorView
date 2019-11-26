@@ -95,7 +95,7 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
         {
             int type = (int)pieceInfo.type;
             int colour = (int)pieceInfo.colour;
-            if ((colour == 0 && validMoves.Contains(kingPos)) || (colour == 1 && validMoves.Contains(kingPos)))
+            if (validMoves.Contains(kingPos))
             {
                 int historyIndex = MoveHistory.Instance.Index;
                 MoveHistory.Instance.Check[historyIndex] = true;
@@ -128,7 +128,10 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
                 PieceInformation pieceOnBoardInfo = pieceOnBoard.GetComponent<PieceInformation>();
                 
                 // skip if not opponent's piece
-                if ((int)pieceOnBoardInfo.colour == colour) { continue; }
+                if ((int)pieceOnBoardInfo.colour == colour)
+                {
+                    continue;
+                }
 
                 pieceOnBoardInfo.GetMoves();
                 List<string> allowedPositions = pieceOnBoardInfo.GetPossibleMoves();
@@ -136,6 +139,9 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
                 // Break out early if at least one piece can be moved
                 if (allowedPositions.Count != 0)
                 {
+                    string spots = "";
+                    for (int i = 0; i < allowedPositions.Count; i++)
+                        spots += allowedPositions[i] + " ";
                     return false;
                 }
             }

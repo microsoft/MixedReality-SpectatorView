@@ -10,6 +10,9 @@ using UnityEngine.UI;
 
 namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
 {
+    /// <summary>
+    /// Script for the Pieces for pawn promotion
+    /// </summary>
     public class PawnPromotion : MonoBehaviour
     {
         BoardInformation boardInfo;
@@ -19,42 +22,41 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
         Vector3 position;
         Quaternion rotation;
 
-        void Awake()
+        void Start()
         {
             boardInfo = GameObject.Find("GameManager").GetComponent<BoardInformation>();
             position = transform.localPosition;
             rotation = transform.rotation;
         }
 
-        void Start()
-        {
-            transform.localPosition = position;
-        }
-
         void Update()
         {
-            if (transform.localPosition.y < -1f && !manipulating)
+            if (transform.localPosition.y < -1.5f && !manipulating)
             {
                 transform.localPosition = position;
                 transform.rotation = rotation;
             }
-
         }
 
+        /// <summary>
+        /// Checks if the piece is placed on top of the 'pawn promotion' tile
+        /// Change the piece mesh to the chosen piece for pawn promotion
+        /// </summary>
+        /// <param name="mesh">The mesh.</param>
         public void PromoteCheck(Mesh mesh)
         {
             RaycastHit hit;
-            if (Physics.Raycast(transform.position, -transform.up, out hit, 1f, layer))
+            if (Physics.Raycast(transform.position, -transform.forward, out hit, 1f, layer))
             {
                 GameObject pieceCollided = hit.collider.gameObject;
                 if (string.Compare(pieceCollided.name, "forfeit tile") == 0)
                 {
                     boardInfo.Mesh = mesh;
                     boardInfo.MeshChosen = true;
+                    transform.localPosition = position;
+                    transform.rotation = rotation;
                 }
             }
         }
-
-        
     }
 }

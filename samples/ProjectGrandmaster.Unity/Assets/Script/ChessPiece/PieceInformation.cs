@@ -67,7 +67,6 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
             chessboard = GameObject.Find("Chessboard");
             pieceAction = manager.GetComponent<PieceAction>();
             ghostPickup = GetComponent<GhostPickup>();
-            boardInfo.CanMove = true;
             chessboardLayer = boardInfo.GetChessboardLayer();
         }
 
@@ -162,6 +161,9 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
 
         #region Piece Manipulation
 
+        /// <summary>
+        /// Called when the piece is picked up
+        /// </summary>
         public void Manipulation()
         {
             // Check if previous move was successfully complete
@@ -187,6 +189,9 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
             GetMoves();
         }
 
+        /// <summary>
+        /// Called when the piece is dropped
+        /// </summary>
         public void Moved()
         {
             // Check if previous move was successfully complete
@@ -219,7 +224,7 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
 
             // Check if king placed on the forfeit tile
             if (WinRules.CheckForfeit((int)type, (int)colour, gameObject, boardInfo)) {
-                KingForfeited();
+                KingForfeit();
                 return;
             }
 
@@ -227,7 +232,6 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
             if (transform.localPosition.y <= -0.1f)
             {
                 FixPosition();
-                boardInfo.CanMove = true;
                 return;
             }
 
@@ -246,7 +250,7 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
                 newZPosition = (int) Char.GetNumericValue(pieceCollided.transform.parent.gameObject.name[0]) - 1;
             } 
             // Since the peice can go through the board
-            // It can miss the raycast
+            // It can miss the raycast (backup)
             else
             {
                 newXPosition = (int)Math.Round(transform.localPosition.x);
@@ -258,11 +262,8 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
             // Check if piece can be moved to this position
             if (possibleMoves.Contains(newPosition))
             {
-                // If player was under check, check = false and clear checkpath
-                if (boardInfo.Check)
-                {
-                    boardInfo.Check = false;
-                }
+                // If player was under check, check = false
+                boardInfo.Check = false;
 
                 string originalPosition = CurrentXPosition.ToString() + " " + CurrentZPosition.ToString();
 
@@ -270,15 +271,16 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
                 if (board[newZPosition, newXPosition] != null)
                 {
                     // Destroy opponent's piece at new position
-                    GameObject eliminatedPiece = board[newZPosition, newXPosition];
+                    GameObject opponentPiece = board[newZPosition, newXPosition];
                     
-                    pieceAction.Eliminate(eliminatedPiece);
-                    MoveHistory.Instance.Move(true, eliminatedPiece, gameObject, originalPosition, newPosition);
-                    boardInfo.RemoveFromBoard(eliminatedPiece);
+                    pieceAction.Eliminate(opponentPiece);
+                    MoveHistory.Instance.Move(true, opponentPiece, gameObject, originalPosition, newPosition);
+                    boardInfo.RemoveFromBoard(opponentPiece);
 
                     // Reset fifty move to 0
                     WinRules.FiftyMoves = 0;
                 }
+
                 // Check if en passant
                 else if (type == Type.Pawn && CurrentXPosition != newXPosition)
                 {
@@ -352,14 +354,13 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
             // Not a valid move, still the player's turn
             else
             {
-                boardInfo.CanMove = true;
                 FixPosition();
                 return;
             }
 
             if (type == Type.Pawn)
             {
-                // Check if in final tile
+                // Check if in final tile for pawn promotion
                 if ((colour == Colour.White && newZPosition == 7) || (colour == Colour.Black && newZPosition == 0))
                 {
                     StartCoroutine(boardInfo.PromotePawn(GetComponent<PieceInformation>()));
@@ -378,27 +379,17 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
 
         public void ContinueProcess()
         {
-            if (!boardInfo.ghostActive)
-            {
-                FixPosition();
-            }
-            
+            FixPosition();
 
-            boardInfo.CanMove = true;
-            boardInfo.NextTurn();
-
-            // If already in check, skip
-            if (boardInfo.Check) { return; }
-
-            // Check the board state for win conditions
-            GetMoves();
-
-            // Check after pieces have finished fixing positions
-            Invoke("CheckCondition", 1f);
+            // Check for check conditions after pieces have finished fixing positions
+            Invoke("CheckCondition", 1.5f);
         }
 
         void CheckCondition()
         {
+            // Check the board state for win conditions
+            GetMoves();
+
             GameObject king;
             // Obtain the opponent's king
             if (colour == Colour.White)
@@ -409,6 +400,8 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
             {
                 king = boardInfo.GetWhiteKing();
             }
+
+            boardInfo.NextTurn();
 
             PieceInformation kingInfo = king.GetComponent<PieceInformation>();
             String kingPosition = kingInfo.CurrentXPosition + " " + kingInfo.CurrentZPosition;
@@ -426,9 +419,9 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
         }
 
         /// <summary>
-        /// Gets all the active pieces of the same colour and starts the animation for knocking them down
+        /// Gets all the active pieces of the same colour and starts knock-down animation
         /// </summary>
-        void KingForfeited()
+        void KingForfeit()
         {
             List<GameObject> pieces = boardInfo.GetPieceAvailable();
 
@@ -459,9 +452,18 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
                     pieceAction.ChangePosition(piece, position, (int)pieceInfo.colour);
                 }
             }
+
+            Invoke("MoveCompleted", 2.25f);
         }
 
-        // Checks if the two vectors are roughly the same
+        void MoveCompleted()
+        {
+            boardInfo.CanMove = true;
+        }
+
+        /// <summary>
+        /// Checks if the two vectors are roughly the same
+        /// </summary>
         bool CheckSimilarity(Vector3 first, Vector3 second)
         {
             float xDiff = Math.Abs(first.x - second.x);
@@ -478,7 +480,9 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
             return true;
         }
 
-        // Moves the piece back to the original position, then animates it to the square the player dropped it
+        /// <summary>
+        /// Moves the piece back to the original position, then animates it to the square the player dropped it
+        /// </summary>
         private IEnumerator AnimateMovement(Vector3 finalPos)
         {
             var position = new Vector3(CurrentXPosition, 0, CurrentZPosition);
@@ -504,7 +508,7 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
 
             pieceAction.ChangePosition(gameObject, position, (int)colour, true);
         }
-    }
 
-    #endregion
+        #endregion
+    }
 }

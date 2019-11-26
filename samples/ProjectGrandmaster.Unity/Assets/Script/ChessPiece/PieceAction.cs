@@ -100,9 +100,34 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
             StartCoroutine(Pos(piece, endPosition, colour, slide));
         }
 
+        IEnumerator Rotate(float duration, GameObject piece, int colour)
+        {
+            float time = 0;
+
+            Quaternion startRotation = piece.transform.localRotation;
+            Quaternion endRotation;
+            if (colour == 0)
+            {
+                endRotation = Quaternion.Euler(-90, 180, 0);
+            }
+            else
+            {
+                endRotation = Quaternion.Euler(-90, 0, 0);
+            }
+
+            while (time <= duration)
+            {
+                time += Time.deltaTime;
+                float blend = Mathf.Clamp01(time / duration);
+
+                piece.transform.localRotation = Quaternion.Slerp(startRotation, endRotation, blend);
+                yield return null;
+            }
+        }
+
         IEnumerator Pos(GameObject piece, Vector3 endPosition, int colour, bool slide)
         {
-            // Piece resets over 2.25 seconds
+            // Piece resets over x seconds
             float time = 0;
             float duration = 0.75f;
             piece.GetComponent<Rigidbody>().isKinematic = true;
@@ -111,7 +136,6 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
             Vector3 startPosition = piece.transform.localPosition;
             Vector3 up = new Vector3(startPosition.x, 2, startPosition.z);
             Vector3 aboveOriginalPosition = new Vector3(endPosition.x, 2, endPosition.z);
-            Quaternion startRotation = piece.transform.localRotation;
 
             bool skip = false;
             if ((Math.Abs(startPosition.x - endPosition.x) <= 1 && Math.Abs(startPosition.z - endPosition.z) <= 1) || slide)
@@ -121,17 +145,8 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
                 duration *= 1.5f;
             }
 
-            // Fix the rotation of piece if knocked over
-            Quaternion endRotation;
-            if (colour == 0)
-            {
-                endRotation = new Quaternion(-90, 180, 0, 1);
-            }
-            else
-            {
-                endRotation = new Quaternion(-90, 0, 0, 1);
-
-            }
+            // Fix the rotation of the piece
+            StartCoroutine(Rotate(duration, piece, colour));
 
             if (!skip)
             {
@@ -139,11 +154,7 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
                 {
                     time += Time.deltaTime;
                     float blend = Mathf.Clamp01(time / duration);
-
                     piece.transform.localPosition = Vector3.Lerp(startPosition, up, blend);
-
-                   // piece.transform.localRotation = Quaternion.Slerp(startRotation, endRotation, blend);
-
                     yield return null;
                 }
 
@@ -153,9 +164,7 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
                 {
                     time += Time.deltaTime;
                     float blend = Mathf.Clamp01(time / duration);
-
                     piece.transform.localPosition = Vector3.Lerp(up, aboveOriginalPosition, blend);
-
                     yield return null;
                 }
             }
@@ -166,14 +175,10 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
             {
                 time += Time.deltaTime;
                 float blend = Mathf.Clamp01(time / duration);
-
                 piece.transform.localPosition = Vector3.Lerp(aboveOriginalPosition, endPosition, blend);
-
-               // piece.transform.localRotation = Quaternion.Slerp(startRotation, endRotation, blend);
 
                 yield return null;
             }
-            Debug.Log(piece.transform.rotation);
 
             piece.GetComponent<Rigidbody>().detectCollisions = true;
             piece.GetComponent<Rigidbody>().isKinematic = false;

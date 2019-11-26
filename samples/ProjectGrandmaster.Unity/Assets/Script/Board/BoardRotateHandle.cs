@@ -34,6 +34,7 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
                     StartCoroutine(pieceAction.FallDown(piece));
                 }
             }
+
             lossColour = colour;
             boardInfo.GameEnded = true;
         }

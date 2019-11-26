@@ -89,6 +89,7 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
 
         void Start()
         {
+            CanMove = true;
             piecesOnBoard = new List<GameObject>();
 
             foreach (GameObject piece in GameObject.FindGameObjectsWithTag("pieces"))
@@ -261,7 +262,6 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
                     continue;
                 }
                 piecesOnBoard.Add(restorePiece);
-                Debug.Log(restorePiece.name);
                 pieceAction.FadeIn(restorePiece);
             }
 
@@ -298,6 +298,7 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
         /// </summary>
         public void UndoState()
         {
+            GameEnded = false;
             /// Check if previous move exists
             if (MoveHistory.Instance.Index < 0)
             {
@@ -568,21 +569,20 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
                 {
                     int x = pieceInfo.CurrentXPosition;
                     int z = pieceInfo.CurrentZPosition;
-
                     pawn.GetComponent<MeshFilter>().mesh = Mesh;
-                    if (Mesh.name.Contains("Rook"))
+                    if (string.Compare(Mesh.name, "Rook") == 0)
                     {
                         pieceInfo.type = PieceInformation.Type.Rook;
                     }
-                    else if (Mesh.name.Contains("Queen"))
+                    else if (string.Compare(Mesh.name, "Queen") == 0)
                     {
                         pieceInfo.type = PieceInformation.Type.Queen;
                     }
-                    else if (Mesh.name.Contains("Bishop"))
+                    else if (string.Compare(Mesh.name, "Bishop") == 0)
                     {
                         pieceInfo.type = PieceInformation.Type.Bishop;
                     }
-                    else if (Mesh.name.Contains("Knight"))
+                    else if (string.Compare(Mesh.name, "Knight") == 0)
                     {
                         pieceInfo.type = PieceInformation.Type.Knight;
                     }
@@ -591,7 +591,6 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
 
                 yield return null;
             }
-
             Promoted = false;
             MeshChosen = false;
 
@@ -610,7 +609,6 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
         {
             PieceInformation pawnInfo = pawn.GetComponent<PieceInformation>();
             pawnInfo.type = PieceInformation.Type.Pawn;
-
             pawn.GetComponent<MeshFilter>().mesh = pawnMesh;
         }
 
