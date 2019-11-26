@@ -302,9 +302,12 @@ namespace Microsoft.MixedReality.SpectatorView
             private long startingReservedMemory;
             private long startingUnusedMemory;
             private MemoryUsage memoryUsage;
+            private bool calculationCompleted;
 
             public MemoryScope(MemoryUsage memoryUsage)
             {
+                calculationCompleted = false;
+
                 if (!Profiler.enabled)
                 {
                     UnityEngine.Debug.LogError($"Profiler not enabled, MemoryUsage not supported.");
@@ -312,13 +315,14 @@ namespace Microsoft.MixedReality.SpectatorView
                     startingAllocatedMemory = 0;
                     startingReservedMemory = 0;
                     startingUnusedMemory = 0;
-                    return;
                 }
-
-                this.memoryUsage = memoryUsage;
-                startingAllocatedMemory = Profiler.GetTotalAllocatedMemoryLong();
-                startingReservedMemory = Profiler.GetTotalReservedMemoryLong();
-                startingUnusedMemory = Profiler.GetTotalUnusedReservedMemoryLong();
+                else
+                {
+                    this.memoryUsage = memoryUsage;
+                    startingAllocatedMemory = Profiler.GetTotalAllocatedMemoryLong();
+                    startingReservedMemory = Profiler.GetTotalReservedMemoryLong();
+                    startingUnusedMemory = Profiler.GetTotalUnusedReservedMemoryLong();
+                }
             }
 
             public void Dispose()
@@ -330,9 +334,13 @@ namespace Microsoft.MixedReality.SpectatorView
                     return;
                 }
 
-                memoryUsage.TotalAllocatedMemory += Profiler.GetTotalAllocatedMemoryLong() - startingAllocatedMemory;
-                memoryUsage.TotalReservedMemory += Profiler.GetTotalReservedMemoryLong() - startingReservedMemory;
-                memoryUsage.TotalUnusedReservedMemory += Profiler.GetTotalUnusedReservedMemoryLong() - startingUnusedMemory;
+                if (!calculationCompleted)
+                {
+                    calculationCompleted = true;
+                    memoryUsage.TotalAllocatedMemory += Profiler.GetTotalAllocatedMemoryLong() - startingAllocatedMemory;
+                    memoryUsage.TotalReservedMemory += Profiler.GetTotalReservedMemoryLong() - startingReservedMemory;
+                    memoryUsage.TotalUnusedReservedMemory += Profiler.GetTotalUnusedReservedMemoryLong() - startingUnusedMemory;
+                }
             }
         }
     }
