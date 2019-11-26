@@ -176,8 +176,6 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
         public void toggleGhosting()
         {
             // Pieces ignore collisions if ghosting is on
-            LayerMask blackPieces = LayerMask.NameToLayer("BlackPieces");
-            LayerMask whitePieces = LayerMask.NameToLayer("WhitePieces");
             if (ghostActive)
             {
                 ghostActive = false;
@@ -186,10 +184,10 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
                 Physics.IgnoreLayerCollision(blackPieces, blackPieces, false);
                 Physics.IgnoreLayerCollision(whitePieces, whitePieces, false);
             }
-            else {
+            // Turn collisions back on
+            else
+            {
                 ghostActive = true;
-
-                // Turn collisions back on
 
                 Physics.IgnoreLayerCollision(blackPieces, whitePieces, true);
                 Physics.IgnoreLayerCollision(blackPieces, blackPieces, true);
@@ -234,10 +232,12 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
         public void UpdateBoard(int prevX, int prevZ, int currentX, int currentZ, GameObject pieceParam = null)
         {
             GameObject piece = pieceParam;
+
             if (piece == null)
             {
                 piece = Board[prevZ, prevX];
             }
+
             Board[prevZ, prevX] = null;
             Board[currentZ, currentX] = piece;
 
@@ -594,8 +594,10 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
 
             Promoted = false;
             MeshChosen = false;
+
             whiteForfeitText.text = "Forfeit Tile";
             blackForfeitText.text = "Forfeit Tile";
+
             pawnPromo.SetActive(false);
             EndGameResult.SetActive(false);
             pieceInfo.ContinueProcess();

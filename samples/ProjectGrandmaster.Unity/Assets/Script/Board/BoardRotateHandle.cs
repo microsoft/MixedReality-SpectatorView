@@ -23,7 +23,7 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
 
         private PieceInformation.Colour lossColour;
 
-        void TiltForfeit(PieceInformation.Colour colour)
+        private void TiltForfeit(PieceInformation.Colour colour)
         {
             List<GameObject> pieces = boardInfo.GetPieceAvailable();
             foreach (GameObject piece in pieces)
@@ -45,7 +45,7 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
             FixPieces();
         }
 
-        void FixPieces()
+        private void FixPieces()
         {
             List<GameObject> pieces = boardInfo.GetPieceAvailable();
             foreach (GameObject piece in pieces)
