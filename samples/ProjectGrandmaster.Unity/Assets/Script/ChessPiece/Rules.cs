@@ -37,10 +37,16 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
         public bool RowCheck(Vector3 position, int colour)
         {
             // Checking Left side of the piece
-            if (KingHit(position, new Vector3(-1, 0, 0), false, colour)) { return true; }
+            if (KingHit(position, new Vector3(-1, 0, 0), false, colour))
+            {
+                return true;
+            }
 
             // Checking right side of the piece
-            if (KingHit(position, new Vector3(1, 0, 0), false, colour)) { return true; }
+            if (KingHit(position, new Vector3(1, 0, 0), false, colour))
+            {
+                return true;
+            }
 
             // Piece not blocking check, can move.
             return false;
@@ -57,10 +63,16 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
         public bool ColumnCheck(Vector3 position, int colour)
         {
             // Checking the top side of the piece
-            if (KingHit(position, new Vector3(0, 0, 1), false, colour)) { return true; }
+            if (KingHit(position, new Vector3(0, 0, 1), false, colour))
+            {
+                return true;
+            }
 
             // Checking bottom side of the piece
-            if (KingHit(position, new Vector3(0, 0, -1), false, colour)) { return true; }
+            if (KingHit(position, new Vector3(0, 0, -1), false, colour))
+            {
+                return true;
+            }
 
             // Piece not blocking check, can move.
             return false;
@@ -76,19 +88,20 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
         /// <returns> true if opponent's queen or bishop is on the opposite side </returns>
         public bool DiagonalCheckForward(Vector3 position, int colour)
         {
-             
             // Checking Top-Right side of the piece
-            
-            if (KingHit(position, new Vector3(1, 0, 1), true, colour)) { return true; }
-
-             
+            if (KingHit(position, new Vector3(1, 0, 1), true, colour))
+            {
+                return true;
+            }
+                         
             // Checking Bottom-Left side of the piece
             
-            if (KingHit(position, new Vector3(-1, 0, -1), true, colour)) { return true; }
-
-            
+            if (KingHit(position, new Vector3(-1, 0, -1), true, colour))
+            {
+                return true;
+            }
+                        
             // Piece not blocking check, can move.
-            
             return false;
         }
 
@@ -102,19 +115,19 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
         /// <returns> true if opponent's queen or bishop is on the opposite side </returns>
         public bool DiagonalCheckBackward(Vector3 position, int colour)
         {
-             
             // Checking Top-Left side of the piece
-            
-            if (KingHit(position, new Vector3(-1, 0, 1), true, colour)) { return true; }
+            if (KingHit(position, new Vector3(-1, 0, 1), true, colour))
+            {
+                return true;
+            }
 
-             
             // Checking Bottom-Right side of the piece
-            
-            if (KingHit(position, new Vector3(1, 0, -1), true, colour)) { return true; }
-
+            if (KingHit(position, new Vector3(1, 0, -1), true, colour))
+            {
+                return true;
+            }
             
             // Piece not blocking check, can move.
-            
             return false;
         }
 
@@ -133,19 +146,17 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
         bool KingHit(Vector3 position, Vector3 direction, bool diagonal, int colour)
         {
             LayerMask layer = whiteMask;
-            if (colour == 0)
+            if (colour == 1)
             {
                 layer = blackMask;
             }
+
             RaycastHit hit;
-            
             // Raycast onto chess pieces only - provided in the layer
             if (Physics.Raycast(position, direction, out hit, 1f, layer))
             {
                 GameObject pieceCollided = hit.collider.gameObject;
                 PieceInformation piece = pieceCollided.GetComponent<PieceInformation>();
-
-                
                 // If piece in direction is player's king, check its opposite.
                 if ((int)piece.type == 4 && (int)piece.colour == colour)
                 {
@@ -158,17 +169,17 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
         bool FindOpposite(Vector3 position, Vector3 direction, bool diagonal, int colour)
         {
             LayerMask layer = whiteMask;
-            if (colour == 0)
+            if (colour == 1)
             {
                 layer = blackMask;
             }
+
             RaycastHit hit;
             if (Physics.Raycast(position, direction, out hit, 1f, layer))
             {
                 GameObject pieceCollided = hit.collider.gameObject;
                 PieceInformation piece = pieceCollided.GetComponent<PieceInformation>();
 
-                
                 // Moving the piece will not result in check if opposite is either
                 // king, pawn, knight or player's piece
                 if ((int)piece.type == 5 || (int)piece.type == 1 || (int)piece.type == 4 || (int)piece.colour == colour)
@@ -176,7 +187,6 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
                     return false;
                 }
 
-                
                 // Rook or queen directly opposite to the king
                 // Will compromise into a check if piece moved
                 if (!diagonal && ((int)piece.type == 0 || (int)piece.type == 3))
@@ -184,7 +194,6 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
                     return true;
                 }
 
-                
                 // bishop or queen directly opposite to the king
                 // Will compromise into a check if piece moved
                 if (diagonal && ((int)piece.type == 3 || (int)piece.type == 2))
@@ -204,7 +213,7 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
         public bool EnPassant(Vector3 position, Vector3 direction, int colour)
         {
             LayerMask layer = whiteMask;
-            if (colour == 0)
+            if (colour == 1)
             {
                 layer = blackMask;
             }
@@ -215,18 +224,15 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
                 GameObject pieceCollided = hit.collider.gameObject;
                 PieceInformation piece = pieceCollided.GetComponent<PieceInformation>();
 
-                
                 // Check if opponent's pawn in the direction provided.
                 if ((int)piece.type == 5 && (int)piece.colour != colour)
                 {
-                    
                     // Check if the pawn is displaced two positions from its original position
                     if (Math.Abs(piece.CurrentZPosition - piece.GetOriginalZ()) != 2)
                     {
                         return false;
                     }
 
-                    
                     // Check if the pawn has only moved once.
                     if (piece.PieceMoves != 1)
                     {
@@ -251,7 +257,7 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
         public bool Castling(Vector3 position, Vector3 direction, int colour)
         {
             LayerMask layer = whiteMask;
-            if (colour == 0)
+            if (colour == 1)
             {
                 layer = blackMask;
             }
@@ -262,7 +268,6 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
                 GameObject pieceCollided = hit.collider.gameObject;
                 PieceInformation piece = pieceCollided.GetComponent<PieceInformation>();
 
-                
                 // Check if player's rook in the direction
                 if ((int)piece.type == 0 && (int)piece.colour == colour)
                 {
@@ -288,12 +293,10 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
         /// <returns> true if king won't be under check in new position </returns>
         public bool KingMove(int tileX, int tileZ, int colour, GameObject[,] board)
         {
-            
             // Gets the global position of the tile in the game
             GameObject tile = boardObject.transform.GetChild(tileZ).gameObject.transform.GetChild(tileX).gameObject;
             Vector3 globalPosition = new Vector3(tile.transform.position.x, tile.transform.position.y + 0.025f, tile.transform.position.z);
 
-            
             // If under attack by rook or queen in new position, return false
             if (CheckByRookQueen(globalPosition, colour))
             {
@@ -483,16 +486,13 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
         /// <returns> true if knight found </returns>
         bool KnightHelperMethod(int newXPosition, int newZPosition, GameObject[,] board, int colour)
         {
-            
             // Check if x and z positions are outside bounds
-            
             if (newXPosition > 7 || newXPosition < 0 || newZPosition > 7 || newZPosition < 0)
             {
                 return false;
             }
 
             GameObject piece = board[newZPosition, newXPosition];
-
             // Check if no piece at location            
             if (piece == null)
             {
@@ -642,10 +642,11 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
         bool ValidMove(Vector3 position, Vector3 direction, int colour, int type, float range = 1f)
         {
             LayerMask layer = whiteMask;
-            if (colour == 0)
+            if (colour == 1)
             {
                 layer = blackMask;
             }
+
             RaycastHit hit;
             if (Physics.Raycast(position, direction, out hit, range, layer))
             {

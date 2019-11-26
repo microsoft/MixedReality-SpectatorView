@@ -94,7 +94,11 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
             // If black, move down, -1
             // If white, move up, +1
             int change = 1;
-            if (colour == 1) { change = -1; }
+            if (colour == 1)
+            {
+                change = -1;
+            }
+
             int displacement = currentZPosition + change;
 
             // Check if no piece ahead of the pawn.

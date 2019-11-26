@@ -170,6 +170,8 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
         /// </summary>
         public void Manipulation()
         {
+            pieceRigidBody.useGravity = true;
+
             // Check if previous move was successfully complete
             // Check if game ended
             if (!boardInfo.CanMove || boardInfo.GameEnded)
@@ -465,7 +467,7 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
                 }
             }
 
-            Invoke("MoveCompleted", 2.25f);
+            Invoke("MoveCompleted", 1.5f);
         }
 
         void MoveCompleted()
