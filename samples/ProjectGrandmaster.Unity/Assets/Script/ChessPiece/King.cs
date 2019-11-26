@@ -10,36 +10,54 @@ using Microsoft.MixedReality.SpectatorView.ProjectGrandmaster;
 namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
 {
 
-    public class King : MonoBehaviour
+    public class King
     {
         /// <summary>
         /// Colour of the king. 
         /// 0 if White, 1 if Black
         /// </summary>
-        static int colour;
+        private int colour;
 
         /// <summary>
         /// Reference to the board 2D array
         /// </summary>
-        static GameObject[,] board;
+        private GameObject[,] board;
 
         /// <summary>
         /// List storing valid move positions for the king
         /// </summary>
-        static List<string> validPositions;
+        private List<string> validPositions;
 
         /// <summary>
         /// Current position of the piece on the board
         /// </summary>
-        static int currentZPosition;
-        static int currentXPosition;
+        private int currentZPosition;
+        private int currentXPosition;
+
+        /// <summary>
+        /// The singleton instance
+        /// </summary>
+        private static King instance;
+        public static King Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new King();
+                }
+                return instance;
+            }
+        }
+
+        private King() { }
 
         /// <summary>
         /// Returns a list of positions the pawn can move.
         /// list contain strings => "xPosition yPosition"
         /// </summary>
         /// <param name="check"> States if the board state is in check. </param>
-        public static List<string> RuleMove(Vector3 position, GameObject pieceObject, GameObject[,] boardState, bool check)
+        public List<string> RuleMove(Vector3 position, GameObject pieceObject, GameObject[,] boardState, bool check)
         {
             PieceInformation piece = pieceObject.GetComponent<PieceInformation>();
             colour = (int)piece.colour;
@@ -48,29 +66,21 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
 
             board = boardState;
 
-            /// <summary>
-            /// Initialise new list
-            /// </summary>
+            // Initialise new list
             validPositions = new List<string>();
 
-            /// <summary>
-            /// Check if positions the king can move to will compromise the king to a check
-            /// </summary>
+            // Check if positions the king can move to will compromise the king to a check
             for (int xDisplacement = -1; xDisplacement <= 1; xDisplacement++)
             {
                 for (int zDisplacement = -1; zDisplacement <= 1; zDisplacement++)
                 {
-                    /// <summary>
-                    /// Skip if checking current position
-                    /// </summary> 
+                    // Skip if checking current position
                     if (xDisplacement == 0 && zDisplacement == 0)
                     {
                         continue;
                     }
 
-                    /// <summary>
-                    /// Skip if position out of bound
-                    /// </summary>
+                    // Skip if position out of bound
                     if (currentXPosition + xDisplacement < 0 || currentXPosition + xDisplacement > 7
                         || currentZPosition + zDisplacement < 0 || currentZPosition + zDisplacement > 7)
                     {
@@ -90,9 +100,7 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
                         }
                     }
 
-                    /// <summary>
-                    /// Check if king can move to this position without getting compromised
-                    /// </summary>
+                    // Check if king can move to this position without getting compromised
                     if (Rules.KingMove(currentXPosition + xDisplacement, currentZPosition + zDisplacement, colour, board))
                     {
                         StorePosition(currentXPosition + xDisplacement, currentZPosition + zDisplacement);
@@ -105,16 +113,12 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
             /// </summary>
             if (!check && !piece.HasMoved())
             {
-                /// <summary>
-                /// Check if king can castle left
-                /// </summary>
+                // Check if king can castle left
                 Vector3 left = new Vector3(-1, 0, 0);
                 if (Rules.Castling(position, left, colour))
                 {
-                    /// <summary>
-                    /// Check if king's new position is controlled by the opponent
-                    /// If not, add to list of valid moves
-                    /// </summary>
+                    // Check if king's new position is controlled by the opponent
+                    // If not, add to list of valid moves
                     if (Rules.KingMove(currentXPosition - 2, currentZPosition, colour, board))
                     {
                         StorePosition(currentXPosition - 2, currentZPosition); 
@@ -127,10 +131,8 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
                 Vector3 right = new Vector3(1, 0, 0);
                 if (Rules.Castling(position, right, colour))
                 {
-                    /// <summary>
-                    /// Check if king's new position is controlled by the opponent
-                    /// If not, add to list of valid moves
-                    /// </summary>
+                    // Check if king's new position is controlled by the opponent
+                    // If not, add to list of valid moves
                     if (Rules.KingMove(currentXPosition + 2, currentZPosition, colour, board))
                     {
                         StorePosition(currentXPosition + 2, currentZPosition);
@@ -147,11 +149,9 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
         /// Store location in list if allowed, that is, position is empty or has an enemy piece
         /// </summary>
         /// <returns> true if king can keep moving in this direction </returns>
-        static bool StorePosition(int x, int z)
+        bool StorePosition(int x, int z)
         {
-            /// <summary>
-            /// Empty position
-            /// </summary>
+            // Empty position
             string position = x.ToString() + " " + z.ToString();
             if (board[z, x] == null)
             {
@@ -159,9 +159,7 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
                 return true;
             }
 
-            /// <summary>
-            /// Position has a piece. Valid move if opponent's piece. Invalid if player's piece.
-            /// </summary>
+            // Position has a piece. Valid move if opponent's piece. Invalid if player's piece.
             GameObject piece = board[z, x];
             PieceInformation pieceInformation = piece.GetComponent<PieceInformation>();
 

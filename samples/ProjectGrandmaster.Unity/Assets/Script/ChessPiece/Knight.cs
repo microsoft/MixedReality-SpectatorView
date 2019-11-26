@@ -9,36 +9,54 @@ using Microsoft.MixedReality.SpectatorView.ProjectGrandmaster;
 
 namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
 {
-    public class Knight : MonoBehaviour
+    public class Knight
     {
         /// <summary>
         /// Colour of the knight. 
         /// 0 if White, 1 if Black
         /// </summary>
-        static int colour;
+        private int colour;
 
         /// <summary>
         /// Reference to the board 2D array
         /// </summary>
-        static GameObject[,] board;
+        private GameObject[,] board;
 
         /// <summary>
         /// List storing valid move positions for the knight
         /// </summary>
-        static List<string> validPositions;
+        private List<string> validPositions;
 
         /// <summary>
         /// Current position of the piece on the board
         /// </summary>
-        static int currentZPosition;
-        static int currentXPosition;
+        private int currentZPosition;
+        private int currentXPosition;
+
+        /// <summary>
+        /// The singleton instance
+        /// </summary>
+        private static Knight instance;
+        public static Knight Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new Knight();
+                }
+                return instance;
+            }
+        }
+
+        private Knight() { }
 
         /// <summary>
         /// Returns a list of positions the pawn can move.
         /// list contain strings => "xPosition yPosition"
         /// </summary>
         /// <param name="check"> States if the board state is in check. </param>
-        public static List<string> RuleMove(GameObject pieceObject, GameObject[,] boardState)
+        public List<string> RuleMove(GameObject pieceObject, GameObject[,] boardState)
         {
             PieceInformation piece = pieceObject.GetComponent<PieceInformation>();
             colour = (int)piece.colour;
@@ -47,83 +65,61 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
 
             board = boardState;
 
-            /// <summary>
-            /// Initialise new list
-            /// </summary>
+            // Initialise new list
             validPositions = new List<string>();
 
-            /// <summary>
-            /// Cases: DDL, DDR, UUL, UUR 
-            /// </summary>
+            // Cases: DDL, DDR, UUL, UUR 
             int zDisplacement = 2;
             int xDisplacement = 1;
 
-            /// <summary>
-            /// Check if valid position
-            /// Case: UUL
-            /// </summary>
+            // Check if valid position
+            // Case: UUL
             if (TwoStepsDisplacement(currentXPosition - xDisplacement, currentZPosition + zDisplacement))
             {
                 StorePosition(currentXPosition - xDisplacement, currentZPosition + zDisplacement);
             }
 
-            /// <summary>
-            /// Case: UUR
-            /// </summary>
+            // Case: UUR
             if (TwoStepsDisplacement(currentXPosition + xDisplacement, currentZPosition + zDisplacement))
             {
                 StorePosition(currentXPosition + xDisplacement, currentZPosition + zDisplacement);
             }
 
-            /// <summary>
-            /// Case: DDL
-            /// </summary>
+            // Case: DDL
             if (TwoStepsDisplacement(currentXPosition - xDisplacement, currentZPosition - zDisplacement))
             {
                 StorePosition(currentXPosition - xDisplacement, currentZPosition - zDisplacement);
             }
 
-            /// <summary>
-            /// Case: DDR
-            /// </summary>
+            // Case: DDR
             if (TwoStepsDisplacement(currentXPosition + xDisplacement, currentZPosition - zDisplacement))
             {
                 StorePosition(currentXPosition + xDisplacement, currentZPosition - zDisplacement);
             }
 
-            /// <summary>
-            /// Cases: LLU, LLD, RRU, RRD
-            /// </summary>
+            // Cases: LLU, LLD, RRU, RRD
             zDisplacement = 1;
             xDisplacement = 2;
 
-            /// <summary>
-            /// Case: LLU
-            /// </summary>
+            // Case: LLU
             if (TwoStepsDisplacement(currentXPosition - xDisplacement, currentZPosition + zDisplacement))
             {
                 StorePosition(currentXPosition - xDisplacement, currentZPosition + zDisplacement);
             }
 
-            /// <summary>
-            /// Case: LLD
-            /// </summary>
+            // Case: LLD
             if (TwoStepsDisplacement(currentXPosition - xDisplacement, currentZPosition - zDisplacement))
             {
                 StorePosition(currentXPosition - xDisplacement, currentZPosition - zDisplacement);
             }
 
-            /// <summary>
-            /// Case: RRU
-            /// </summary>
+            // Case: RRU
             if (TwoStepsDisplacement(currentXPosition + xDisplacement, currentZPosition + zDisplacement))
             {
                 StorePosition(currentXPosition + xDisplacement, currentZPosition + zDisplacement);
             }
 
-            /// <summary>
-            /// Case: RRD
-            /// </summary>
+            // Case: RRD
             if (TwoStepsDisplacement(currentXPosition + xDisplacement, currentZPosition - zDisplacement))
             {
                 StorePosition(currentXPosition + xDisplacement, currentZPosition - zDisplacement);
@@ -138,29 +134,23 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
         /// <param name="newXPosition"> x Position knight can move to </param>
         /// <param name="newZPosition"> z Position knight can move to </param>
         /// <returns></returns>
-        static bool TwoStepsDisplacement(int newXPosition, int newZPosition)
+        bool TwoStepsDisplacement(int newXPosition, int newZPosition)
         {
-            /// <summary>
-            /// Check if newXPosition and newZPosition are within bounds of the 2D board
-            /// Invalid if outside the bounds, return false;
-            /// </summary>
+            // Check if newXPosition and newZPosition are within bounds of the 2D board
+            // Invalid if outside the bounds, return false;
             if (newXPosition > 7 || newXPosition < 0 || newZPosition > 7 || newZPosition < 0)
             {
                 return false;
             }
 
-            /// <summary>
-            /// If position is empty, knight can move to position
-            /// </summary>
+            // If position is empty, knight can move to position
             if (board[newZPosition, newXPosition] == null)
             {
                 return true;
             }
 
-            /// <summary>
-            /// Checks if piece in the new location is the player's piece
-            /// If true, not a valid move, return false
-            /// </summary>
+            // Checks if piece in the new location is the player's piece
+            // If true, not a valid move, return false
             GameObject pieceObject = board[newZPosition, newXPosition];
             PieceInformation pieceInformation = pieceObject.GetComponent<PieceInformation>();
             if ((int)pieceInformation.colour == colour)
@@ -168,9 +158,7 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
                 return false;
             }
 
-            /// <summary>
-            /// Opponent's piece in location. Valid move.
-            /// </summary>
+            // Opponent's piece in location. Valid move.
             return true;
         }
 
@@ -179,11 +167,9 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
         /// Store location in list if allowed, that is, position is empty or has an enemy piece
         /// </summary>
         /// <returns> true if knight can keep moving in this direction </returns>
-        static bool StorePosition(int x, int z)
+        bool StorePosition(int x, int z)
         {
-            /// <summary>
-            /// Empty position
-            /// </summary>
+            // Empty position
             string position = x.ToString() + " " + z.ToString();
             if (board[z, x] == null)
             {
@@ -191,9 +177,7 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
                 return true;
             }
 
-            /// <summary>
-            /// Position has a piece. Valid move if opponent's piece. Invalid if player's piece.
-            /// </summary>
+            // Position has a piece. Valid move if opponent's piece. Invalid if player's piece.
             GameObject piece = board[z, x];
             PieceInformation pieceInformation = piece.GetComponent<PieceInformation>();
 

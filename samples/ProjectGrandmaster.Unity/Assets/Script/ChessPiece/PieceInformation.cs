@@ -97,22 +97,22 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
             switch (type)
             {
                 case Type.Pawn:
-                    possibleMoves = Pawn.RuleMove(globalPosition, gameObject, board);
+                    possibleMoves = Pawn.Instance.RuleMove(globalPosition, gameObject, board);
                     break;
                 case Type.Rook:
-                    possibleMoves = Rook.RuleMove(globalPosition, gameObject, board);
+                    possibleMoves = Rook.Instance.RuleMove(globalPosition, gameObject, board);
                     break;
                 case Type.Bishop:
-                    possibleMoves = Bishop.RuleMove(globalPosition, gameObject, board);
+                    possibleMoves = Bishop.Instance.RuleMove(globalPosition, gameObject, board);
                     break;
                 case Type.Knight:
-                    possibleMoves = Knight.RuleMove(gameObject, board);
+                    possibleMoves = Knight.Instance.RuleMove(gameObject, board);
                     break;
                 case Type.Queen:
-                    possibleMoves = Queen.RuleMove(globalPosition, gameObject, board);
+                    possibleMoves = Queen.Instance.RuleMove(globalPosition, gameObject, board);
                     break;
                 case Type.King:
-                    possibleMoves = King.RuleMove(globalPosition, gameObject, board, boardInfo.Check);
+                    possibleMoves = King.Instance.RuleMove(globalPosition, gameObject, board, boardInfo.Check);
                     break;
             }
 
