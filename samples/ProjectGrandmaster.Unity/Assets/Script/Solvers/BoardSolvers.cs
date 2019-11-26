@@ -20,6 +20,8 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
 
         private TrackedObjectType trackedType = TrackedObjectType.Head;
 
+        public GameObject chesspieces;
+
         public void SetSurfaceMagnetism()
         {
             // Already on
@@ -29,6 +31,8 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
             }
             AddSolver<SurfaceMagnetism>();
 
+            // Disable chess pieces
+            chesspieces.SetActive(false);
             var surfaceMagnetism = currentSolver as SurfaceMagnetism;
             surfaceMagnetism.SurfaceNormalOffset = -0.207f;
             surfaceMagnetism.ClosestDistance = 0.3f;
@@ -86,7 +90,7 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
                 DestroyImmediate(handler);
                 handler = null;
             }
-
+            chesspieces.SetActive(true);
             enabled = false;
         }
     }
