@@ -11,17 +11,19 @@ using Microsoft.MixedReality.SpectatorView.ProjectGrandmaster;
 
 namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
 {
+    /// <summary>
+    /// Forfeiting mechanism - Forfeits when the player flips the board from the middle 
+    /// Needs to be enabled in the 'Chessboard' game object
+    /// </summary>
     public class BoardRotateHandle : MonoBehaviour
     {
-        public GameObject chessBoard;
+        private GameObject gameManager;
+        private BoardInformation boardInfo;
+        private PieceAction pieceAction;
 
-        GameObject gameManager;
-        BoardInformation boardInfo;
-        PieceAction pieceAction;
+        private PieceInformation.Colour lossColour;
 
-        PieceInformation.Colour lossColour;
-
-        void tiltForfeit(PieceInformation.Colour colour)
+        void TiltForfeit(PieceInformation.Colour colour)
         {
             List<GameObject> pieces = boardInfo.GetPieceAvailable();
             foreach (GameObject piece in pieces)
@@ -35,13 +37,15 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
             lossColour = colour;
             boardInfo.GameEnded = true;
         }
-        public void fixBoard()
+
+        public void FixBoard()
         {
-            chessBoard.transform.Rotate(-chessBoard.transform.eulerAngles.x, 0, 0);
-            chessBoard.transform.localPosition = new Vector3(0, -0.0251f, 0);
-            fixPieces();
+            gameObject.transform.Rotate(-gameObject.transform.eulerAngles.x, 0, 0);
+            gameObject.transform.localPosition = new Vector3(0, -0.0251f, 0);
+            FixPieces();
         }
-        void fixPieces()
+
+        void FixPieces()
         {
             List<GameObject> pieces = boardInfo.GetPieceAvailable();
             foreach (GameObject piece in pieces)
@@ -57,6 +61,7 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
                 }
             }
         }
+
         bool CheckSimilarity(Vector3 first, Vector3 second)
         {
             float xDiff = Math.Abs(first.x - second.x);
@@ -71,6 +76,7 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
                 return true;
             }
         }
+
         // Start is called before the first frame update
         void Start()
         {
@@ -82,13 +88,13 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
         // Update is called once per frame
         void Update()
         {
-            if (chessBoard.transform.eulerAngles.x > 10)
+            if (gameObject.transform.eulerAngles.x > 10)
             {
-                tiltForfeit(PieceInformation.Colour.White);
+                TiltForfeit(PieceInformation.Colour.White);
             }
-            else if (chessBoard.transform.eulerAngles.x < -10)
+            else if (gameObject.transform.eulerAngles.x < -10)
             {
-                tiltForfeit(PieceInformation.Colour.Black);
+                TiltForfeit(PieceInformation.Colour.Black);
             }
         }
     }

@@ -65,8 +65,8 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
         private Renderer whiteArrowRenderer;
 
         // Piece Layer
-        LayerMask blackPieces;
-        LayerMask whitePieces;
+        private LayerMask blackPieces;
+        private LayerMask whitePieces;
 
         // Variables related to pawn promotion
         public Mesh Mesh { get; set; }
@@ -79,13 +79,13 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
         public Mesh pawnMesh;
 
         // Display texts
-        Text leftDisplayText;
-        Text rightDisplayText;
-        Text whiteDisplayText;
-        Text blackDisplayText;
+        private Text leftDisplayText;
+        private Text rightDisplayText;
+        private Text whiteDisplayText;
+        private Text blackDisplayText;
 
-        TextMeshPro whiteForfeitText;
-        TextMeshPro blackForfeitText;
+        private TextMeshPro whiteForfeitText;
+        private TextMeshPro blackForfeitText;
 
         void Start()
         {
