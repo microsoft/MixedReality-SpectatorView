@@ -95,7 +95,10 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
         /// </summary>
         public void Settings()
         {
-            Motion(settingMenu);
+            if (currentlyOpenedMenu == homeMenu)
+            {
+                Motion(settingMenu);
+            }
         }
 
         /// <summary>
@@ -111,10 +114,22 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
         /// </summary>
         public void Back()
         {
-            if (currentlyOpenedMenu == volume) { Motion(settingMenu); }
-            else if (currentlyOpenedMenu == surfaceMagnetism) { Motion(settingMenu); }
-            else if (currentlyOpenedMenu == gameSettings) { Motion(settingMenu); }
-            else if (currentlyOpenedMenu == settingMenu) { Motion(homeMenu); }
+            if (currentlyOpenedMenu == volume)
+            {
+                Motion(settingMenu);
+            }
+            else if (currentlyOpenedMenu == surfaceMagnetism)
+            {
+                Motion(settingMenu);
+            }
+            else if (currentlyOpenedMenu == gameSettings)
+            {
+                Motion(settingMenu);
+            }
+            else if (currentlyOpenedMenu == settingMenu)
+            {
+                Motion(homeMenu);
+            }
         }
 
         /// <summary>
@@ -169,12 +184,18 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
 
         public void SurfaceMagnetismMenu()
         {
-            Motion(surfaceMagnetism);
+            if (currentlyOpenedMenu == homeMenu)
+            {
+                Motion(surfaceMagnetism);
+            }
         }
 
         public void GameSettingsMenu()
         {
-            Motion(gameSettings); 
+            if (currentlyOpenedMenu == settingMenu)
+            {
+                Motion(gameSettings);
+            }
         }
 
         /// <summary>
@@ -204,7 +225,10 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
         /// </summary>
         public void SurfaceMagnetism()
         {
-            solvers.SetSurfaceMagnetism();
+            if (currentlyOpenedMenu == surfaceMagnetism)
+            {
+                solvers.SetSurfaceMagnetism();
+            }
         }
 
     }

@@ -158,13 +158,24 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
             blackForfeitText = boardMenuTileTextTwo.GetComponent<TextMeshPro>();
         }
 
-        public int GetTurn() { return (int)turn; }
+        public int GetTurn() {
+            return (int)turn;
+        }
 
-        public List<GameObject> GetPieceAvailable() { return piecesOnBoard; }
+        public List<GameObject> GetPieceAvailable()
+        {
+            return piecesOnBoard;
+        }
 
-        public GameObject GetBlackKing() { return blackKing; }
+        public GameObject GetBlackKing()
+        {
+            return blackKing;
+        }
 
-        public GameObject GetWhiteKing() { return whiteKing; }
+        public GameObject GetWhiteKing()
+        {
+            return whiteKing;
+        }
 
         public LayerMask GetChessboardLayer()
         {
@@ -174,7 +185,7 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
         /// <summary>
         /// If ghosting enabled in the menu, Ghosting = true, and vice versa
         /// </summary>
-        public void toggleGhosting()
+        public void ToggleGhosting()
         {
             // Pieces ignore collisions if ghosting is on
             if (ghostActive)
@@ -494,7 +505,7 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
 
             // Display result to players
             ShowResult();
-            StartCoroutine(FlashText(5, false));
+            StartCoroutine(FlashText(7, false));
         }
 
         public void DrawGame(string message)
@@ -607,6 +618,7 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
 
                 yield return null;
             }
+
             Promoted = false;
             MeshChosen = false;
 

@@ -44,3 +44,66 @@ MonoBehaviour:
       id: 0
       description: None
       axisConstraint: 0
+  - localizationKey: 
+    keyword: Reset
+    keyCode: 0
+    action:
+      id: 0
+      description: None
+      axisConstraint: 0
+  - localizationKey: 
+    keyword: Settings
+    keyCode: 284
+    action:
+      id: 0
+      description: None
+      axisConstraint: 0
+  - localizationKey: 
+    keyword: Surface Magnetism
+    keyCode: 285
+    action:
+      id: 0
+      description: None
+      axisConstraint: 0
+  - localizationKey: 
+    keyword: Game Settings
+    keyCode: 286
+    action:
+      id: 0
+      description: None
+      axisConstraint: 0
+  - localizationKey: 
+    keyword: Volume
+    keyCode: 287
+    action:
+      id: 0
+      description: None
+      axisConstraint: 0
+  - localizationKey: 
+    keyword: Back
+    keyCode: 98
+    action:
+      id: 0
+      description: None
+      axisConstraint: 0
+  - localizationKey: 
+    keyword: Magnetise
+    keyCode: 288
+    action:
+      id: 0
+      description: None
+      axisConstraint: 0
+  - localizationKey: 
+    keyword: Ghosting
+    keyCode: 0
+    action:
+      id: 0
+      description: None
+      axisConstraint: 0
+  - localizationKey: 
+    keyword: Change Material
+    keyCode: 0
+    action:
+      id: 0
+      description: None
+      axisConstraint: 0

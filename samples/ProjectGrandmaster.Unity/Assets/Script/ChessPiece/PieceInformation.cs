@@ -204,6 +204,7 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
             // Return if false
             if (!boardInfo.CanMove)
             {
+                FixPosition();
                 return;
             }
             else
@@ -467,7 +468,7 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
                 }
             }
 
-            Invoke("MoveCompleted", 2.5f);
+            Invoke("MoveCompleted", 1.5f);
         }
 
         void MoveCompleted()
