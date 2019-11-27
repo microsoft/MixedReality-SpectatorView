@@ -155,13 +155,23 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
         /// <returns></returns>
         public static bool CheckDraw(int colour, BoardInformation boardInfo)
         {
-            if (FiftyMoveRule() || Impossibility(boardInfo) || CheckmateStalemate(colour, boardInfo))
+            if (FiftyMoveRule())
             {
-                // Display draw
-                return true;
+                boardInfo.DrawGame("Draw by fifty move rule.");
             }
-
-            return false;
+            else if (Impossibility(boardInfo))
+            {
+                boardInfo.DrawGame("Draw by impossibility");
+            }
+            else if (CheckmateStalemate(colour, boardInfo))
+            {
+                boardInfo.DrawGame("Draw by stalemate");
+            }
+            else
+            {
+                return false;
+            }
+            return true;
         }
 
         /// <summary>

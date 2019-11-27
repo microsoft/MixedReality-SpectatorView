@@ -473,18 +473,34 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
         public void EndGame(int colour)
         {
             GameEnded = true;
+
             // White won
-            if (colour == 0) { Winner = 1; }
+            if (colour == 0)
+            {
+                Winner = 1;
+            }
 
             // Black won
-            else if (colour == 1) { Winner = -1; }
+            else if (colour == 1)
+            {
+                Winner = -1;
+            }
 
             // Draw
-            else { Winner = 0; }
+            else
+            {
+                Winner = 0;
+            }
 
             // Display result to players
             ShowResult();
             StartCoroutine(FlashText(5, false));
+        }
+
+        public void DrawGame(string message)
+        {
+            SetText(message);
+            EndGame(-1);
         }
 
         /// <summary>
@@ -493,27 +509,27 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
         /// <param name="colour">The colour of the side that forfeited.</param>
         public void Forfeit(int colour)
         {
-            GameEnded = true;
             string text;
             
-            // White won
             if (colour == 1)
             {
                 text = "Black forfeited!";
-                Winner = 1;
             }
-
-            // Black won
             else
             {
                 text = "White forfeited!";
-                Winner = -1;
             }
 
             // Display result to players
             SetText(text);
-            ShowResult();
-            StartCoroutine(FlashText(5, false));
+            if (colour == 1)
+            {
+                EndGame(0);
+            }
+            else
+            {
+                EndGame(1);
+            }
         }
 
         /// <summary>
