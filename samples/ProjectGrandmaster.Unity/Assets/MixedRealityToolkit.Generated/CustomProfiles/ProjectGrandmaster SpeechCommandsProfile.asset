@@ -102,7 +102,21 @@ MonoBehaviour:
       axisConstraint: 0
   - localizationKey: 
     keyword: Change Material
-    keyCode: 0
+    keyCode: 289
+    action:
+      id: 0
+      description: None
+      axisConstraint: 0
+  - localizationKey: 
+    keyword: Select
+    keyCode: 290
+    action:
+      id: 0
+      description: None
+      axisConstraint: 0
+  - localizationKey: 
+    keyword: Move
+    keyCode: 291
     action:
       id: 0
       description: None

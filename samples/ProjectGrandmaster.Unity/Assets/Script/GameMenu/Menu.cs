@@ -184,7 +184,7 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
 
         public void SurfaceMagnetismMenu()
         {
-            if (currentlyOpenedMenu == homeMenu)
+            if (currentlyOpenedMenu == settingMenu)
             {
                 Motion(surfaceMagnetism);
             }

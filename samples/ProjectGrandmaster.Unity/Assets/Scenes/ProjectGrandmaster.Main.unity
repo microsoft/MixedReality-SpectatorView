@@ -21639,6 +21639,8 @@ GameObject:
   m_Component:
   - component: {fileID: 860215230}
   - component: {fileID: 860215228}
+  - component: {fileID: 860215231}
+  - component: {fileID: 860215229}
   m_Layer: 2
   m_Name: Game
   m_TagString: Untagged
@@ -21659,6 +21661,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chesspieces: {fileID: 153108374}
+--- !u!114 &860215229
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 860215227}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09331aef52d5e1f4c87a06e6180c230f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  boardInformation: {fileID: 465082386}
 --- !u!4 &860215230
 Transform:
   m_ObjectHideFlags: 0
@@ -21675,6 +21690,56 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &860215231
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 860215227}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45b3eff181cc4244a8a14234096e62fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isFocusRequired: 1
+  keywords:
+  - keyword: Select
+    response:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 860215229}
+          m_MethodName: SelectPiece
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+  - keyword: Move
+    response:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 860215229}
+          m_MethodName: Move
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+  persistentKeywords: 0
+  speechConfirmationTooltipPrefab: {fileID: 0}
 --- !u!1 &866440064
 GameObject:
   m_ObjectHideFlags: 0
@@ -33675,7 +33740,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1327373762}
   - component: {fileID: 1327373763}
-  m_Layer: 11
+  m_Layer: 2
   m_Name: SoundCollision
   m_TagString: Untagged
   m_Icon: {fileID: 0}

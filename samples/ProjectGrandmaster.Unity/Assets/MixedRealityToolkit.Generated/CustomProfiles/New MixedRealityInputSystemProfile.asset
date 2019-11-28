@@ -67,7 +67,7 @@ MonoBehaviour:
     componentName: Input Simulation Service
     priority: 0
     runtimePlatform: 208
-    deviceManagerProfile: {fileID: 11400000, guid: 41478039094d47641bf4e09c20e61a5a,
+    deviceManagerProfile: {fileID: 11400000, guid: ae9c54e221233374eb1631715779afd7,
       type: 2}
   - componentType:
       reference: Microsoft.MixedReality.Toolkit.Input.InputRecordingService, Microsoft.MixedReality.Toolkit.Services.InputAnimation
@@ -82,6 +82,14 @@ MonoBehaviour:
     priority: 0
     runtimePlatform: -1
     deviceManagerProfile: {fileID: 0}
+  - componentType:
+      reference: Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.WindowsMixedRealityEyeGazeDataProvider,
+        Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
+    componentName: Windows Mixed Reality Eye Gaze Provider
+    priority: 0
+    runtimePlatform: 8
+    deviceManagerProfile: {fileID: 11400000, guid: 36c8c3ce2a40fc749a561f1af88583a4,
+      type: 2}
   focusProviderType:
     reference: Microsoft.MixedReality.Toolkit.Input.FocusProvider, Microsoft.MixedReality.Toolkit.Services.InputSystem
   raycastProviderType:
@@ -92,7 +100,7 @@ MonoBehaviour:
     type: 2}
   inputActionRulesProfile: {fileID: 11400000, guid: 03945385d89102f41855bc8f5116b199,
     type: 2}
-  pointerProfile: {fileID: 11400000, guid: 48aa63a9725047b28d4137fd0834bc31, type: 2}
+  pointerProfile: {fileID: 11400000, guid: 0a821e25c91141e4c955af1f00da477f, type: 2}
   gesturesProfile: {fileID: 11400000, guid: bd7829a9b29409045a745b5a18299291, type: 2}
   speechCommandsProfile: {fileID: 11400000, guid: 647dd2ac5a1771a4e8b1c4bf482573dd,
     type: 2}
