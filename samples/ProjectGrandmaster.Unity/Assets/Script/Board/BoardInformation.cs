@@ -517,12 +517,11 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
         /// <summary>
         /// Forfeit display
         /// </summary>
-        /// <param name="colour">The colour of the side that forfeited.</param>
-        public void Forfeit(int colour)
+        public void Forfeit()
         {
             string text;
             
-            if (colour == 1)
+            if (turn == Colours.Black)
             {
                 text = "Black forfeited!";
             }
@@ -533,7 +532,7 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
 
             // Display result to players
             SetText(text);
-            if (colour == 1)
+            if (turn  == Colours.Black)
             {
                 EndGame(0);
             }

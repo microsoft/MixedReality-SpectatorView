@@ -452,7 +452,7 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
             }
 
             // Display result
-            boardInfo.Forfeit((int)colour);
+            boardInfo.Forfeit();
         }
 
         void FixPosition()
