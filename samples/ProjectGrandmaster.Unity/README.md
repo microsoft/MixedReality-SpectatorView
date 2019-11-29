@@ -12,23 +12,51 @@ To take full advantage of the HoloLens 2's capabilities there are a set of diffe
 
 ### Eye Gaze
 
-### Speech recognition
+The player is able to move a chess pieces through eye gaze and voice commands. By looking at the piece and saying "Select", the piece will float above its position, as a way of indicating the piece has been selected and is now waiting for the next step.
+
+Once selected, the player can gaze on any potential tile for the piece and say "Move". This will start an animation leading the piece to the chosen location. If the selected tile is an invalid position, the piece will move back to its original spot, otherwise, it's the opponent's turn.  
+
+### Speech Recognition
+
+The game features various voice commands, including "Undo", "Reset", "Open Menu", "Close Menu", and for all other options available in the hand menu system, as displayed by its 'see it say it label'. 
 
 ### Gesture
 
-### Grabbable and touchable
+The way the hand menu is brought up is by facing the left palm upwards and using the other hand for selection. 
 
-## Player assistance features
+### Grabbable and Touchable
 
-### Piece and tile highlight
+The pieces can be manipulated using direct hand interactions and far interaction pointers. Along with this are the on-board menu buttons which can be pressed to undo the previous move or reset the game to the starting positions. 
 
-### On-board menu
+## Player Assistance Features
 
-## Additional features
+In order to make the game self-intuitive and user friendly, we have implemented a piece and tile highlight system that for a selected piece it highlights all the valid positions it can move to. 
+
+Along with this, there is an arrow on the on-board menu which changes colour between green and red. Green if it's the player's turn, and red if it's the opponent's go. 
+
+## Additional Features
+
+### Forfeit Mechanism
+
+If the player chooses to forfeit, they can do so in 3 distinct ways.
+
+1. Grab and move the king onto the dedicated tile on the on-board menu, labelled "Forfeit Tile". By doing this, player's pieces will all "fall down" and the game with enter sandbox mode.
+
+2. Through the voice command, "Forfeit"
+
+3. Flipping the board using the box handler (disabled by default. can be enabled through the 'chessboard' game object)
 
 ### Ghosting System
 
-### Piece fix mechanism
+## Miscellaneous Features
+
+### Surface Magnetism
+
+Surface magnetism allows the game to aligned onto a real-world surface, giving it a more authentic feel. This can be enabled on the hand-menu under settings.
+
+### Chess Customisation
+
+The game can be changed between the classic black and white look to a more modern look - gold and black. Available under game settings on the hand-menu. 
 
 ## Prepare your local codebase
 
