@@ -43,7 +43,7 @@ To use the Spectator View codebase, its suggested to clone and reference the Mix
 
 ## Spatial Alignment Strategy Dependencies
 
-Spectator View requires multiple devices understanding a shared application origin in the physical world. In order to establish this shared application origin, you will need to choose and use a spatial alignment strategy. Different dependencies are needed for different strategies. For more information on spatial alignment strategies, see [here](../src/SpectatorView.Unity/Assets/SpatialAlignment/README.md).
+Spectator View requires multiple devices understanding a shared application origin in the physical world. In order to establish this shared application origin, you will need to choose and use a [spatial alignment strategy](../src/SpectatorView.Unity/Assets/SpatialAlignment/README.md). **The suggested spatial alignment strategy for Spectator View is Azure Spatial Anchors.** You will only need to go through one setup process below for the spatial alignment strategy you choose.
 
 Not all spatial alignment strategies support all platforms. See the chart below to determine which strategy best addresses your intended user scenarios.
 
@@ -147,9 +147,9 @@ If you are building Azure Spatial Anchors on iOS, you will need to take some add
 
 5. Make sure to declare the SpectatorView.Android scene as the scene included. If SpectatorView.Android does not exist in your list of scenes to choose from in the build settings, open the scene in the Unity editor. Then reopen the build settings and press 'Add Open Scenes'.
 
-![Marker](images/AndroidSceneSelection.png)
+![Marker](images/AndroidSpectatorViewExampleBuildSettings.png)
 
-6. Build and deploy the application. If you're targeting a new Android development device, you may need to enable developer options and debugging. For information on setting up your Android device for debugging, see [here](https://developer.android.com/studio/debug/dev-options).
+6. `Build and Run` the application through Unity's Build Settings. If you're targeting a new Android development device, you may need to enable developer options and debugging. For information on setting up your Android device for debugging, see [here](https://developer.android.com/studio/debug/dev-options).
 
 ### iOS
 

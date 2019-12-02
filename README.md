@@ -2,7 +2,11 @@
 
 Spectator View is an augmented reality product that enables viewing HoloLens experiences from secondary devices. Spectator View has multiple configurations and supports a variety of scenarios from filming quick prototypes to producing keynote demos.
 
-## Getting Started
+## Samples
+
+The Spectator View repository contains multiple sample projects. **The instructions for building and running samples will differ from instructions for adding the Spectator View codebase to your own project.** To see how to set up samples go [here](samples/README.md). To add Spectator View to your own project, see below.
+
+## Getting started with your own project
 
 ### Obtaining the code
 
@@ -49,13 +53,9 @@ Depending on what release you are using the correct setup script may vary. Choos
 
 ![Marker](doc/images/SetupRepo.png)
 
-### Samples
-
-After going through the setup steps in 'Obtaining the code' and 'Setting up your local environment', sample projects will be configured for use in your clone of the MixedReality-SpectatorView repository. It's easy to get started by building off one of the samples or by inspecting them to understand project setup. For more information, see [Samples](samples/README.md).
-
 ### Adding references to your own project
 
-After obtaining a local clone of the MixedReality-SpectatorView repository and resolving its external dependencies (see above), the suggested mechanism for referencing the code is by adding symbolic linked directories to your Unity project's Assets folder. You can do this with the following:
+After setting up a submodule for the MixedReality-SpectatorView repository and resolving its external dependencies (see above), the suggested mechanism for referencing the code is by adding symbolic linked directories to your Unity project's Assets folder. You can do this with the following:
 
 > Note: Symbolic linked directories should be setup as relative paths. Using relative paths should allow directories to resolve correctly regardless of where you or your team members clone your project repository in their local file systems. The instructions below demonstrate setting up symbolic linked directories based on the following paths:
 >* **Project repository directory:** c:\Your\Unity\Project
