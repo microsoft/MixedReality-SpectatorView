@@ -859,10 +859,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movingButtonVisuals: {fileID: 859836855523218870}
+  distanceSpaceMode: 1
+  startPushDistance: 0
   maxPushDistance: 0.1
   pressDistance: 0.09
   releaseDistanceDelta: 0.01
-  returnRate: 25
+  returnSpeed: 25
+  releaseOnTouchEnd: 1
   enforceFrontPush: 0
   TouchBegin:
     m_PersistentCalls:
@@ -878,8 +881,6 @@ MonoBehaviour:
           m_StringArgument: TouchStarted
           m_BoolArgument: 0
         m_CallState: 2
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
   TouchEnd:
     m_PersistentCalls:
       m_Calls:
@@ -905,8 +906,6 @@ MonoBehaviour:
           m_StringArgument: Default
           m_BoolArgument: 0
         m_CallState: 2
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
   ButtonPressed:
     m_PersistentCalls:
       m_Calls:
@@ -944,8 +943,6 @@ MonoBehaviour:
           m_StringArgument: TouchCompleted
           m_BoolArgument: 0
         m_CallState: 2
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
   ButtonReleased:
     m_PersistentCalls:
       m_Calls:
@@ -972,10 +969,6 @@ MonoBehaviour:
           m_StringArgument: ButtonReleased
           m_BoolArgument: 0
         m_CallState: 2
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
-  isTouching: 0
-  isPressing: 0
 --- !u!114 &5627397627333092677
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -988,11 +981,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98c748f3768ab714a8449b60fb9edc5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  eventsToReceive: 0
+  debounceThreshold: 0.01
   localForward: {x: 0, y: 0, z: -1}
   localUp: {x: 0, y: 1, z: 0}
   localCenter: {x: 0.037090752, y: 0.00462055, z: -0.49999523}
-  eventsToReceive: 0
-  touchableSurface: 0
   bounds: {x: 1.513882, y: 1.7167902}
   touchableCollider: {fileID: 5862908691704103555}
 --- !u!1 &6106114697200025207
@@ -1216,8 +1209,6 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: 'Buttons
 
 '
@@ -1257,7 +1248,6 @@ MonoBehaviour:
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_textAlignment: 257
-  m_isAlignmentEnumConverted: 1
   m_characterSpacing: 0
   m_wordSpacing: 0
   m_lineSpacing: 0
@@ -1284,6 +1274,7 @@ MonoBehaviour:
   m_verticalMapping: 0
   m_uvLineOffset: 0
   m_geometrySortingOrder: 0
+  m_VertexBufferAutoSizeReduction: 1
   m_firstVisibleCharacter: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
@@ -1298,12 +1289,9 @@ MonoBehaviour:
     lineCount: 1
     pageCount: 1
     materialCount: 1
-  m_havePropertiesChanged: 0
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
-  m_isInputParsingRequired: 0
-  m_inputSource: 0
   m_hasFontAssetChanged: 0
   m_renderer: {fileID: 5068704825358201889}
   m_subTextObjects:
@@ -1375,10 +1363,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movingButtonVisuals: {fileID: 1043699453271150046}
-  maxPushDistance: 0.1
-  pressDistance: 0.09
+  distanceSpaceMode: 1
+  startPushDistance: 0
+  maxPushDistance: 1.55
+  pressDistance: 1.09
   releaseDistanceDelta: 0.01
-  returnRate: 25
+  returnSpeed: 25
+  releaseOnTouchEnd: 1
   enforceFrontPush: 0
   TouchBegin:
     m_PersistentCalls:
@@ -1394,8 +1385,6 @@ MonoBehaviour:
           m_StringArgument: TouchStarted
           m_BoolArgument: 0
         m_CallState: 2
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
   TouchEnd:
     m_PersistentCalls:
       m_Calls:
@@ -1421,8 +1410,6 @@ MonoBehaviour:
           m_StringArgument: Default
           m_BoolArgument: 0
         m_CallState: 2
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
   ButtonPressed:
     m_PersistentCalls:
       m_Calls:
@@ -1460,8 +1447,6 @@ MonoBehaviour:
           m_StringArgument: TouchCompleted
           m_BoolArgument: 0
         m_CallState: 2
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
   ButtonReleased:
     m_PersistentCalls:
       m_Calls:
@@ -1488,10 +1473,6 @@ MonoBehaviour:
           m_StringArgument: ButtonReleased
           m_BoolArgument: 0
         m_CallState: 2
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
-  isTouching: 0
-  isPressing: 0
 --- !u!114 &2238701570813732137
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1504,11 +1485,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98c748f3768ab714a8449b60fb9edc5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  eventsToReceive: 0
+  debounceThreshold: 0.01
   localForward: {x: 0, y: 0, z: -1}
   localUp: {x: 0, y: 1, z: 0}
   localCenter: {x: -0.0052735754, y: 0, z: -0.49999714}
-  eventsToReceive: 0
-  touchableSurface: 0
   bounds: {x: 0.9894514, y: 0.9999999}
   touchableCollider: {fileID: 5148394051504187293}
 --- !u!1 &6441239930075675429
