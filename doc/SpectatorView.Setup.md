@@ -122,7 +122,7 @@ If you are building Azure Spatial Anchors on iOS, you will need to take some add
 
 > Note: **Asset Caches need to be updated on one development machine and shared across development machines**. Asset Caches aren't currently created in a deterministic manner and can't be recreated in new development environments. The easiest way to share this with a team is to commit changes to the Generated.StateSynchronization.AssetCaches folder that will appear in the Unity project's Assets directory. For more information on Asset Caches see [SpectatorView.StateSynchronization](../src/SpectatorView.Unity/Assets/SpectatorView/Scripts/StateSynchronization/README.md).
 
-### HoloLens 2 & HoloLens
+### HoloLens 2 & HoloLens as the Host/User
 
 1. Make sure your Unity project contains the asset caches that were created in the 'Before building' steps.
 2. Open the project scene that you intend to use with SpectatorView. (**Note:** For spectating with a HoloLens device, use `SpectatorView.HoloLens.Spectator` scene.)
@@ -135,6 +135,14 @@ If you are building Azure Spatial Anchors on iOS, you will need to take some add
 
 5. Press the 'HoloLens' button on the `Platform Switcher` attached to `Spectator View` in the Unity inspector (This should configure the correct build settings and app capabilities).
 6. Build and deploy the application to your HoloLens device.
+
+### HoloLens 2 & HoloLens as a Spectator
+
+1. Make sure your Unity project contains the asset caches that were created in the 'Before building' steps.
+2. Open the `SpectatorView.HoloLens.Spectator` Unity scene.
+3. Press the 'HoloLens' button on the `Platform Switcher` attached to `Spectator View` in the Unity inspector (This should configure the correct build settings and app capabilities).
+4. Declare the `SpectatorView.HoloLens.Spectator` as the scene included in your Unity Build settings.
+5. Build and deploy the application to your HoloLens device.
 
 ### Android
 
