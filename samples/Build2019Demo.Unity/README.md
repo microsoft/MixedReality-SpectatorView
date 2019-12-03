@@ -1,6 +1,6 @@
 # //BUILD 2019 Demo
 
-This sample of using SpectatorView is very similar to the live code demo presented at //BUILD 2019 conference.
+This sample of using SpectatorView is very similar to the live code demo presented at //BUILD 2019 conference. It showcases the [Azure Spatial Anchors](https://azure.microsoft.com/en-us/services/spatial-anchors/) alignment strategy.
 
 [![//BUILD 2019 Video](../../doc/images/Build2019DemoVideo.png)](https://www.youtube.com/watch?v=P8og3nC5FaQ&t=2255 "//BUILD 2019 Video")
 
@@ -42,7 +42,7 @@ These instructions assume that a HoloLens 2 device will be used to host the shar
 2. Build UWP Player containing `Demo/Scenes/Finished_Scene.unity` scene, and deploy this application to the HoloLens 2 device.
 3. Launch the `SpectatorView.Build2019Demo` on the HoloLens 2, and wait for the experience to start.
 
-![Marker](./../../doc/images/HoloLens2019SampleBuildSettings.png)
+![Marker](./../../doc/images/HoloLensBuild2019SampleBuildSettings.png)
 
 ##### Android
 
@@ -50,7 +50,7 @@ These instructions assume that a HoloLens 2 device will be used to host the shar
 2. `Build and Run` the Android Player containing `MixedReality-SpectatorView/SpectatorView/Scenes/SpectatorView.Android.unity`.
 3. Launch the `SpectatorView.Build2019Demo` on the Android device and connect to the HoloLens device by specifying the HoloLens's IP Address.
 
-![Marker](./../../doc/images/Android2019SampleBuildSettings.png)
+![Marker](./../../doc/images/AndroidBuild2019SampleBuildSettings.png)
 
 ##### iOS
 
@@ -59,7 +59,7 @@ These instructions assume that a HoloLens 2 device will be used to host the shar
 3. Follow the Azure Spatial Anchors [official instructions](https://docs.microsoft.com/en-us/azure/spatial-anchors/quickstarts/get-started-unity-ios#open-the-xcode-project).
 4. Launch the `SpectatorView.Build2019Demo` on the iOS device and connect to the HoloLens device by specifying the HoloLens's IP Address.
 
-![Marker](./../../doc/images/iOS2019SampleBuildSettings.png)
+![Marker](./../../doc/images/iOSBuild2019SampleBuildSettings.png)
 
 > Note 1: Additional setup instructions and troubleshooting for spectating with mobile devices can be found [here](../../doc/SpectatorView.Setup.md).
 
