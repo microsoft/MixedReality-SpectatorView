@@ -48,6 +48,9 @@ If the player chooses to forfeit, they can do so in 3 distinct ways.
 
 ### Ghosting System
 
+The ghosting system is an alternative way for players to play the game. In this game mode, which can be switched on in the menu, player's manipulate a replica or 'ghost' rather than the actual chesspiece. Once the player has dropped the 'ghost' on the tile they wish to move to, the actual piece moves to this location via a sliding animation.
+The purpose of having this game mode was to eliminate any frustrations players might have due to the collisions that can occur from moving pieces around, while still allowing players to have the ability to pick up the pieces. It also provides an avenue for allowing more visually appealing, cinematic gameplay and is open to extension - for example, by adding animations for pieces destroying other pieces.
+
 ## Miscellaneous Features
 
 ### Surface Magnetism
