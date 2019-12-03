@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45678ff33f5ae1a4c93fd1fb6efd9275, type: 3}
   m_Name: spectatorview.version
   m_EditorClassIdentifier: 
-  Identity: c82fcda92366db91bae149305db3a85a
-  DisplayName: SpectatorViewExampleUnity - 11/14/2019 11:31 AM
+  Identity: 8a2ce52421c87b0e115921f0039c4f7d
+  DisplayName: SpectatorViewExampleUnity - 12/3/2019 3:28 PM
