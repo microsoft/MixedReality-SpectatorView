@@ -15,3 +15,7 @@
 # Conditional (sometimes hidden) folder metafiles
 /Assets/GoogleARCore.meta
 /Assets/UnityARKitPlugin.meta
+
+# TextMesh Pro Files
+[Aa]ssets/TextMesh*Pro/
+[Aa]ssets/TextMesh*Pro.meta
