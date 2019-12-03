@@ -438,6 +438,7 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
         /// </summary>
         void KingForfeit()
         {
+            boardInfo.GameEnded = true;
             List<GameObject> pieces = boardInfo.GetPieceAvailable();
 
             // If piece is forfeited player's piece, make piece collapse

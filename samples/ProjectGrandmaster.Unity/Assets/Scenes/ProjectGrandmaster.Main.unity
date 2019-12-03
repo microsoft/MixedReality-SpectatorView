@@ -923,6 +923,7 @@ GameObject:
   - component: {fileID: 27261452}
   - component: {fileID: 27261451}
   - component: {fileID: 27261450}
+  - component: {fileID: 27261462}
   m_Layer: 14
   m_Name: Knight_Dark_(B7)
   m_TagString: pieces
@@ -1136,7 +1137,7 @@ MonoBehaviour:
   hostTransform: {fileID: 0}
   manipulationType: 0
   twoHandedManipulationType: 3
-  allowFarManipulation: 1
+  allowFarManipulation: 0
   oneHandRotationModeNear: 6
   oneHandRotationModeFar: 6
   releaseBehavior: 0
@@ -1337,6 +1338,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 27261448}
   m_Mesh: {fileID: 4300008, guid: ddfde96e667d5ac4fb13183f7cb22ba9, type: 3}
+--- !u!114 &27261462
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 27261448}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5afd5316c63705643b3daba5a6e923bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTetherWhenManipulating: 0
 --- !u!1 &29187563
 GameObject:
   m_ObjectHideFlags: 0
@@ -1367,37 +1381,6 @@ Transform:
   - {fileID: 1584834697}
   m_Father: {fileID: 2129319191}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &40937129
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 40937130}
-  m_Layer: 0
-  m_Name: MixedRealityPlayspace
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &40937130
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 40937129}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 534669905}
-  m_Father: {fileID: 0}
-  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &54438292
 GameObject:
@@ -1901,6 +1884,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SpectatorView
+      objectReference: {fileID: 0}
+    - target: {fileID: 4941633254297953240, guid: aa311d939e452a045b897dcc7c9c36fb,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4941633254297953243, guid: aa311d939e452a045b897dcc7c9c36fb,
         type: 3}
@@ -3205,6 +3193,7 @@ GameObject:
   - component: {fileID: 154631424}
   - component: {fileID: 154631423}
   - component: {fileID: 154631422}
+  - component: {fileID: 154631434}
   m_Layer: 14
   m_Name: Pawn_Dark_(G7)
   m_TagString: pieces
@@ -3417,7 +3406,7 @@ MonoBehaviour:
   hostTransform: {fileID: 0}
   manipulationType: 0
   twoHandedManipulationType: 3
-  allowFarManipulation: 1
+  allowFarManipulation: 0
   oneHandRotationModeNear: 6
   oneHandRotationModeFar: 6
   releaseBehavior: 0
@@ -3619,6 +3608,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 154631420}
   m_Mesh: {fileID: 4300006, guid: ddfde96e667d5ac4fb13183f7cb22ba9, type: 3}
+--- !u!114 &154631434
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 154631420}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5afd5316c63705643b3daba5a6e923bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTetherWhenManipulating: 0
 --- !u!1 &158304574
 GameObject:
   m_ObjectHideFlags: 0
@@ -3640,6 +3642,7 @@ GameObject:
   - component: {fileID: 158304578}
   - component: {fileID: 158304577}
   - component: {fileID: 158304576}
+  - component: {fileID: 158304588}
   m_Layer: 15
   m_Name: Pawn_Light_(E2)
   m_TagString: pieces
@@ -3852,7 +3855,7 @@ MonoBehaviour:
   hostTransform: {fileID: 0}
   manipulationType: 0
   twoHandedManipulationType: 3
-  allowFarManipulation: 1
+  allowFarManipulation: 0
   oneHandRotationModeNear: 6
   oneHandRotationModeFar: 6
   releaseBehavior: 0
@@ -4054,6 +4057,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 158304574}
   m_Mesh: {fileID: 4300006, guid: ddfde96e667d5ac4fb13183f7cb22ba9, type: 3}
+--- !u!114 &158304588
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 158304574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5afd5316c63705643b3daba5a6e923bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTetherWhenManipulating: 0
 --- !u!1 &161669012
 GameObject:
   m_ObjectHideFlags: 0
@@ -4362,6 +4378,7 @@ GameObject:
   - component: {fileID: 182854448}
   - component: {fileID: 182854447}
   - component: {fileID: 182854446}
+  - component: {fileID: 182854458}
   m_Layer: 15
   m_Name: Knight_Light_(G1)
   m_TagString: pieces
@@ -4575,7 +4592,7 @@ MonoBehaviour:
   hostTransform: {fileID: 0}
   manipulationType: 0
   twoHandedManipulationType: 3
-  allowFarManipulation: 1
+  allowFarManipulation: 0
   oneHandRotationModeNear: 6
   oneHandRotationModeFar: 6
   releaseBehavior: 0
@@ -4776,6 +4793,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 182854444}
   m_Mesh: {fileID: 4300008, guid: ddfde96e667d5ac4fb13183f7cb22ba9, type: 3}
+--- !u!114 &182854458
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 182854444}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5afd5316c63705643b3daba5a6e923bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTetherWhenManipulating: 0
 --- !u!1 &188852178
 GameObject:
   m_ObjectHideFlags: 0
@@ -6649,6 +6679,7 @@ GameObject:
   - component: {fileID: 272971203}
   - component: {fileID: 272971202}
   - component: {fileID: 272971201}
+  - component: {fileID: 272971213}
   m_Layer: 14
   m_Name: Rook_Dark_(A8)
   m_TagString: pieces
@@ -6876,7 +6907,7 @@ MonoBehaviour:
   hostTransform: {fileID: 0}
   manipulationType: 0
   twoHandedManipulationType: 3
-  allowFarManipulation: 1
+  allowFarManipulation: 0
   oneHandRotationModeNear: 6
   oneHandRotationModeFar: 6
   releaseBehavior: 0
@@ -7063,6 +7094,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 272971199}
   m_Mesh: {fileID: 4300004, guid: ddfde96e667d5ac4fb13183f7cb22ba9, type: 3}
+--- !u!114 &272971213
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 272971199}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5afd5316c63705643b3daba5a6e923bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTetherWhenManipulating: 0
 --- !u!1 &274189044
 GameObject:
   m_ObjectHideFlags: 0
@@ -8719,6 +8763,7 @@ GameObject:
   - component: {fileID: 343774669}
   - component: {fileID: 343774668}
   - component: {fileID: 343774674}
+  - component: {fileID: 343774680}
   m_Layer: 15
   m_Name: Rook_Light_(H1)
   m_TagString: pieces
@@ -8946,7 +8991,7 @@ MonoBehaviour:
   hostTransform: {fileID: 0}
   manipulationType: 0
   twoHandedManipulationType: 3
-  allowFarManipulation: 1
+  allowFarManipulation: 0
   oneHandRotationModeNear: 6
   oneHandRotationModeFar: 6
   releaseBehavior: 0
@@ -9133,6 +9178,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 343774666}
   m_Mesh: {fileID: 4300004, guid: ddfde96e667d5ac4fb13183f7cb22ba9, type: 3}
+--- !u!114 &343774680
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 343774666}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5afd5316c63705643b3daba5a6e923bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTetherWhenManipulating: 0
 --- !u!1 &344828918
 GameObject:
   m_ObjectHideFlags: 0
@@ -10905,6 +10963,7 @@ GameObject:
   - component: {fileID: 421586919}
   - component: {fileID: 421586918}
   - component: {fileID: 421586917}
+  - component: {fileID: 421586929}
   m_Layer: 14
   m_Name: Pawn_Dark_(D7)
   m_TagString: pieces
@@ -11117,7 +11176,7 @@ MonoBehaviour:
   hostTransform: {fileID: 0}
   manipulationType: 0
   twoHandedManipulationType: 3
-  allowFarManipulation: 1
+  allowFarManipulation: 0
   oneHandRotationModeNear: 6
   oneHandRotationModeFar: 6
   releaseBehavior: 0
@@ -11319,6 +11378,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 421586915}
   m_Mesh: {fileID: 4300006, guid: ddfde96e667d5ac4fb13183f7cb22ba9, type: 3}
+--- !u!114 &421586929
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 421586915}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5afd5316c63705643b3daba5a6e923bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTetherWhenManipulating: 0
 --- !u!1 &422072869
 GameObject:
   m_ObjectHideFlags: 0
@@ -11803,6 +11875,7 @@ GameObject:
   - component: {fileID: 449017805}
   - component: {fileID: 449017804}
   - component: {fileID: 449017803}
+  - component: {fileID: 449017815}
   m_Layer: 15
   m_Name: Bishop_Light_(F1)
   m_TagString: pieces
@@ -12016,7 +12089,7 @@ MonoBehaviour:
   hostTransform: {fileID: 0}
   manipulationType: 0
   twoHandedManipulationType: 3
-  allowFarManipulation: 1
+  allowFarManipulation: 0
   oneHandRotationModeNear: 6
   oneHandRotationModeFar: 6
   releaseBehavior: 0
@@ -12217,6 +12290,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 449017801}
   m_Mesh: {fileID: 4300010, guid: ddfde96e667d5ac4fb13183f7cb22ba9, type: 3}
+--- !u!114 &449017815
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 449017801}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5afd5316c63705643b3daba5a6e923bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTetherWhenManipulating: 0
 --- !u!1 &456520214
 GameObject:
   m_ObjectHideFlags: 0
@@ -14272,148 +14358,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 533021706}
   m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &534669902
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 534669905}
-  - component: {fileID: 534669904}
-  - component: {fileID: 534669903}
-  - component: {fileID: 534669908}
-  - component: {fileID: 534669907}
-  - component: {fileID: 534669906}
-  m_Layer: 0
-  m_Name: Main Camera
-  m_TagString: MainCamera
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!81 &534669903
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 534669902}
-  m_Enabled: 1
---- !u!20 &534669904
-Camera:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 534669902}
-  m_Enabled: 1
-  serializedVersion: 2
-  m_ClearFlags: 1
-  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 1}
-  m_projectionMatrixMode: 1
-  m_SensorSize: {x: 36, y: 24}
-  m_LensShift: {x: 0, y: 0}
-  m_GateFitMode: 2
-  m_FocalLength: 50
-  m_NormalizedViewPortRect:
-    serializedVersion: 2
-    x: 0
-    y: 0
-    width: 1
-    height: 1
-  near clip plane: 0.1
-  far clip plane: 1000
-  field of view: 60
-  orthographic: 0
-  orthographic size: 5
-  m_Depth: -1
-  m_CullingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_RenderingPath: -1
-  m_TargetTexture: {fileID: 0}
-  m_TargetDisplay: 0
-  m_TargetEye: 3
-  m_HDR: 1
-  m_AllowMSAA: 1
-  m_AllowDynamicResolution: 0
-  m_ForceIntoRT: 0
-  m_OcclusionCulling: 1
-  m_StereoConvergence: 10
-  m_StereoSeparation: 0.022
---- !u!4 &534669905
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 534669902}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 40937130}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &534669906
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 534669902}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bf98dd1206224111a38765365e98e207, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  setCursorInvisibleWhenFocusLocked: 0
-  maxGazeCollisionDistance: 10
-  raycastLayerMasks:
-  - serializedVersion: 2
-    m_Bits: 4294967291
-  stabilizer:
-    storedStabilitySamples: 60
-  gazeTransform: {fileID: 0}
-  minHeadVelocityThreshold: 0.5
-  maxHeadVelocityThreshold: 2
-  useEyeTracking: 1
---- !u!114 &534669907
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 534669902}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a21b486d0bb44444b1418aaa38b44de, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_HorizontalAxis: Horizontal
-  m_VerticalAxis: Vertical
-  m_SubmitButton: Submit
-  m_CancelButton: Cancel
-  m_InputActionsPerSecond: 10
-  m_RepeatDelay: 0.5
-  m_ForceModuleActive: 0
---- !u!114 &534669908
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 534669902}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -619905303, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_FirstSelected: {fileID: 0}
-  m_sendNavigationEvents: 1
-  m_DragThreshold: 10
 --- !u!1 &535089655
 GameObject:
   m_ObjectHideFlags: 0
@@ -16526,50 +16470,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7667403efdd3cc149b4c51be477d6c48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &677338461
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 677338463}
-  - component: {fileID: 677338462}
-  m_Layer: 0
-  m_Name: MixedRealityToolkit
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &677338462
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 677338461}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 83d9acc7968244a8886f3af591305bcb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  activeProfile: {fileID: 11400000, guid: 76d525c269ac32646a23d91a59fe3819, type: 2}
---- !u!4 &677338463
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 677338461}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.3, y: 0, z: 0.258}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &684364761
 GameObject:
   m_ObjectHideFlags: 0
@@ -18865,6 +18765,7 @@ GameObject:
   - component: {fileID: 770986781}
   - component: {fileID: 770986780}
   - component: {fileID: 770986779}
+  - component: {fileID: 770986791}
   m_Layer: 15
   m_Name: Pawn_Light_(D2)
   m_TagString: pieces
@@ -19077,7 +18978,7 @@ MonoBehaviour:
   hostTransform: {fileID: 0}
   manipulationType: 0
   twoHandedManipulationType: 3
-  allowFarManipulation: 1
+  allowFarManipulation: 0
   oneHandRotationModeNear: 6
   oneHandRotationModeFar: 6
   releaseBehavior: 0
@@ -19279,6 +19180,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 770986777}
   m_Mesh: {fileID: 4300006, guid: ddfde96e667d5ac4fb13183f7cb22ba9, type: 3}
+--- !u!114 &770986791
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 770986777}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5afd5316c63705643b3daba5a6e923bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTetherWhenManipulating: 0
 --- !u!1 &776382767
 GameObject:
   m_ObjectHideFlags: 0
@@ -19927,6 +19841,7 @@ GameObject:
   - component: {fileID: 806840888}
   - component: {fileID: 806840887}
   - component: {fileID: 806840886}
+  - component: {fileID: 806840898}
   m_Layer: 15
   m_Name: Pawn_Light_(C2)
   m_TagString: pieces
@@ -20139,7 +20054,7 @@ MonoBehaviour:
   hostTransform: {fileID: 0}
   manipulationType: 0
   twoHandedManipulationType: 3
-  allowFarManipulation: 1
+  allowFarManipulation: 0
   oneHandRotationModeNear: 6
   oneHandRotationModeFar: 6
   releaseBehavior: 0
@@ -20341,6 +20256,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 806840884}
   m_Mesh: {fileID: 4300006, guid: ddfde96e667d5ac4fb13183f7cb22ba9, type: 3}
+--- !u!114 &806840898
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 806840884}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5afd5316c63705643b3daba5a6e923bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTetherWhenManipulating: 0
 --- !u!1 &812682162
 GameObject:
   m_ObjectHideFlags: 0
@@ -21009,6 +20937,7 @@ GameObject:
   - component: {fileID: 846876121}
   - component: {fileID: 846876120}
   - component: {fileID: 846876119}
+  - component: {fileID: 846876131}
   m_Layer: 14
   m_Name: Bishop_Dark_(C8)
   m_TagString: pieces
@@ -21222,7 +21151,7 @@ MonoBehaviour:
   hostTransform: {fileID: 0}
   manipulationType: 0
   twoHandedManipulationType: 3
-  allowFarManipulation: 1
+  allowFarManipulation: 0
   oneHandRotationModeNear: 6
   oneHandRotationModeFar: 6
   releaseBehavior: 0
@@ -21423,6 +21352,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 846876117}
   m_Mesh: {fileID: 4300010, guid: ddfde96e667d5ac4fb13183f7cb22ba9, type: 3}
+--- !u!114 &846876131
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 846876117}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5afd5316c63705643b3daba5a6e923bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTetherWhenManipulating: 0
 --- !u!1 &848984555
 GameObject:
   m_ObjectHideFlags: 0
@@ -21688,7 +21630,7 @@ Transform:
   - {fileID: 555111875}
   - {fileID: 266569055}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &860215231
 MonoBehaviour:
@@ -22100,6 +22042,7 @@ GameObject:
   - component: {fileID: 890171346}
   - component: {fileID: 890171345}
   - component: {fileID: 890171344}
+  - component: {fileID: 890171356}
   m_Layer: 15
   m_Name: Pawn_Light_(F2)
   m_TagString: pieces
@@ -22312,7 +22255,7 @@ MonoBehaviour:
   hostTransform: {fileID: 0}
   manipulationType: 0
   twoHandedManipulationType: 3
-  allowFarManipulation: 1
+  allowFarManipulation: 0
   oneHandRotationModeNear: 6
   oneHandRotationModeFar: 6
   releaseBehavior: 0
@@ -22514,6 +22457,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 890171342}
   m_Mesh: {fileID: 4300006, guid: ddfde96e667d5ac4fb13183f7cb22ba9, type: 3}
+--- !u!114 &890171356
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 890171342}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5afd5316c63705643b3daba5a6e923bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTetherWhenManipulating: 0
 --- !u!1 &895625260
 GameObject:
   m_ObjectHideFlags: 0
@@ -22856,6 +22812,50 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7667403efdd3cc149b4c51be477d6c48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &918292335
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 918292337}
+  - component: {fileID: 918292336}
+  m_Layer: 0
+  m_Name: MixedRealityToolkit
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &918292336
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 918292335}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83d9acc7968244a8886f3af591305bcb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  activeProfile: {fileID: 11400000, guid: 0f76e40a466dc154eb5252b3c3e4ef1f, type: 2}
+--- !u!4 &918292337
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 918292335}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &918672305
 GameObject:
   m_ObjectHideFlags: 0
@@ -23743,6 +23743,7 @@ GameObject:
   - component: {fileID: 963249583}
   - component: {fileID: 963249582}
   - component: {fileID: 963249581}
+  - component: {fileID: 963249593}
   m_Layer: 14
   m_Name: Pawn_Dark_(C7)
   m_TagString: pieces
@@ -23955,7 +23956,7 @@ MonoBehaviour:
   hostTransform: {fileID: 0}
   manipulationType: 0
   twoHandedManipulationType: 3
-  allowFarManipulation: 1
+  allowFarManipulation: 0
   oneHandRotationModeNear: 6
   oneHandRotationModeFar: 6
   releaseBehavior: 0
@@ -24157,6 +24158,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963249579}
   m_Mesh: {fileID: 4300006, guid: ddfde96e667d5ac4fb13183f7cb22ba9, type: 3}
+--- !u!114 &963249593
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963249579}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5afd5316c63705643b3daba5a6e923bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTetherWhenManipulating: 0
 --- !u!1 &966074061
 GameObject:
   m_ObjectHideFlags: 0
@@ -24648,6 +24662,7 @@ GameObject:
   - component: {fileID: 973281191}
   - component: {fileID: 973281190}
   - component: {fileID: 973281189}
+  - component: {fileID: 973281201}
   m_Layer: 14
   m_Name: Pawn_Dark_(B7)
   m_TagString: pieces
@@ -24860,7 +24875,7 @@ MonoBehaviour:
   hostTransform: {fileID: 0}
   manipulationType: 0
   twoHandedManipulationType: 3
-  allowFarManipulation: 1
+  allowFarManipulation: 0
   oneHandRotationModeNear: 6
   oneHandRotationModeFar: 6
   releaseBehavior: 0
@@ -25062,6 +25077,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 973281187}
   m_Mesh: {fileID: 4300006, guid: ddfde96e667d5ac4fb13183f7cb22ba9, type: 3}
+--- !u!114 &973281201
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 973281187}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5afd5316c63705643b3daba5a6e923bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTetherWhenManipulating: 0
 --- !u!1 &974934779
 GameObject:
   m_ObjectHideFlags: 0
@@ -28048,7 +28076,6 @@ GameObject:
   - component: {fileID: 1098128433}
   - component: {fileID: 1098128432}
   - component: {fileID: 1098128431}
-  - component: {fileID: 1098128436}
   - component: {fileID: 1098128437}
   m_Layer: 0
   m_Name: PalmUpHandMenu
@@ -28205,245 +28232,8 @@ Transform:
   m_Children:
   - {fileID: 2078465073}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1098128436
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1098128430}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 45b3eff181cc4244a8a14234096e62fd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isFocusRequired: 0
-  keywords:
-  - keyword: Open Menu
-    response:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1098128431}
-          m_MethodName: display
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-        Culture=neutral, PublicKeyToken=null
-  - keyword: Close Menu
-    response:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1098128431}
-          m_MethodName: close
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-        Culture=neutral, PublicKeyToken=null
-  - keyword: New Game
-    response:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1098128431}
-          m_MethodName: NewGame
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-        Culture=neutral, PublicKeyToken=null
-  - keyword: Undo
-    response:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1098128437}
-          m_MethodName: Undo
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-        Culture=neutral, PublicKeyToken=null
-  - keyword: Reset
-    response:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1098128437}
-          m_MethodName: Reset
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-        Culture=neutral, PublicKeyToken=null
-  - keyword: Back
-    response:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1098128431}
-          m_MethodName: Back
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-        Culture=neutral, PublicKeyToken=null
-  - keyword: Surface Magnetism
-    response:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1098128431}
-          m_MethodName: SurfaceMagnetismMenu
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-        Culture=neutral, PublicKeyToken=null
-  - keyword: Magnetise
-    response:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1098128431}
-          m_MethodName: SurfaceMagnetism
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-        Culture=neutral, PublicKeyToken=null
-  - keyword: Settings
-    response:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1098128431}
-          m_MethodName: Settings
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-        Culture=neutral, PublicKeyToken=null
-  - keyword: Game Settings
-    response:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1098128431}
-          m_MethodName: GameSettingsMenu
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-        Culture=neutral, PublicKeyToken=null
-  - keyword: Ghosting
-    response:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 465082386}
-          m_MethodName: ToggleGhosting
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-        Culture=neutral, PublicKeyToken=null
-  - keyword: Volume
-    response:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1098128431}
-          m_MethodName: Volume
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-        Culture=neutral, PublicKeyToken=null
-  - keyword: Change Material
-    response:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1813468363}
-          m_MethodName: Toggle
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-        Culture=neutral, PublicKeyToken=null
-  persistentKeywords: 1
-  speechConfirmationTooltipPrefab: {fileID: 0}
 --- !u!114 &1098128437
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -29833,6 +29623,7 @@ GameObject:
   - component: {fileID: 1172282026}
   - component: {fileID: 1172282025}
   - component: {fileID: 1172282024}
+  - component: {fileID: 1172282036}
   m_Layer: 15
   m_Name: Pawn_Light_(H2)
   m_TagString: pieces
@@ -30045,7 +29836,7 @@ MonoBehaviour:
   hostTransform: {fileID: 0}
   manipulationType: 0
   twoHandedManipulationType: 3
-  allowFarManipulation: 1
+  allowFarManipulation: 0
   oneHandRotationModeNear: 6
   oneHandRotationModeFar: 6
   releaseBehavior: 0
@@ -30247,6 +30038,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1172282022}
   m_Mesh: {fileID: 4300006, guid: ddfde96e667d5ac4fb13183f7cb22ba9, type: 3}
+--- !u!114 &1172282036
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1172282022}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5afd5316c63705643b3daba5a6e923bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTetherWhenManipulating: 0
 --- !u!1 &1176789784
 GameObject:
   m_ObjectHideFlags: 0
@@ -30345,6 +30149,7 @@ GameObject:
   - component: {fileID: 1186242573}
   - component: {fileID: 1186242572}
   - component: {fileID: 1186242571}
+  - component: {fileID: 1186242583}
   m_Layer: 14
   m_Name: Knight_Dark_(G7)
   m_TagString: pieces
@@ -30558,7 +30363,7 @@ MonoBehaviour:
   hostTransform: {fileID: 0}
   manipulationType: 0
   twoHandedManipulationType: 3
-  allowFarManipulation: 1
+  allowFarManipulation: 0
   oneHandRotationModeNear: 6
   oneHandRotationModeFar: 6
   releaseBehavior: 0
@@ -30759,6 +30564,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1186242569}
   m_Mesh: {fileID: 4300008, guid: ddfde96e667d5ac4fb13183f7cb22ba9, type: 3}
+--- !u!114 &1186242583
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1186242569}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5afd5316c63705643b3daba5a6e923bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTetherWhenManipulating: 0
 --- !u!1 &1188426482
 GameObject:
   m_ObjectHideFlags: 0
@@ -31204,6 +31022,7 @@ GameObject:
   - component: {fileID: 1231172414}
   - component: {fileID: 1231172413}
   - component: {fileID: 1231172412}
+  - component: {fileID: 1231172424}
   m_Layer: 14
   m_Name: Pawn_Dark_(H7)
   m_TagString: pieces
@@ -31416,7 +31235,7 @@ MonoBehaviour:
   hostTransform: {fileID: 0}
   manipulationType: 0
   twoHandedManipulationType: 3
-  allowFarManipulation: 1
+  allowFarManipulation: 0
   oneHandRotationModeNear: 6
   oneHandRotationModeFar: 6
   releaseBehavior: 0
@@ -31618,6 +31437,161 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1231172410}
   m_Mesh: {fileID: 4300006, guid: ddfde96e667d5ac4fb13183f7cb22ba9, type: 3}
+--- !u!114 &1231172424
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1231172410}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5afd5316c63705643b3daba5a6e923bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTetherWhenManipulating: 0
+--- !u!1 &1234898501
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1234898502}
+  - component: {fileID: 1234898506}
+  - component: {fileID: 1234898505}
+  - component: {fileID: 1234898504}
+  - component: {fileID: 1234898507}
+  - component: {fileID: 1234898503}
+  m_Layer: 0
+  m_Name: Main Camera
+  m_TagString: MainCamera
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1234898502
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1234898501}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1470763006}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1234898503
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1234898501}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf98dd1206224111a38765365e98e207, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  setCursorInvisibleWhenFocusLocked: 0
+  maxGazeCollisionDistance: 10
+  raycastLayerMasks:
+  - serializedVersion: 2
+    m_Bits: 4294967291
+  stabilizer:
+    storedStabilitySamples: 60
+  gazeTransform: {fileID: 0}
+  minHeadVelocityThreshold: 0.5
+  maxHeadVelocityThreshold: 2
+  useEyeTracking: 1
+--- !u!114 &1234898504
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1234898501}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -619905303, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_FirstSelected: {fileID: 0}
+  m_sendNavigationEvents: 1
+  m_DragThreshold: 10
+--- !u!81 &1234898505
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1234898501}
+  m_Enabled: 1
+--- !u!20 &1234898506
+Camera:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1234898501}
+  m_Enabled: 1
+  serializedVersion: 2
+  m_ClearFlags: 1
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 1}
+  m_projectionMatrixMode: 1
+  m_SensorSize: {x: 36, y: 24}
+  m_LensShift: {x: 0, y: 0}
+  m_GateFitMode: 2
+  m_FocalLength: 50
+  m_NormalizedViewPortRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
+  near clip plane: 0.1
+  far clip plane: 1000
+  field of view: 60
+  orthographic: 0
+  orthographic size: 5
+  m_Depth: 0
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RenderingPath: -1
+  m_TargetTexture: {fileID: 0}
+  m_TargetDisplay: 0
+  m_TargetEye: 3
+  m_HDR: 1
+  m_AllowMSAA: 1
+  m_AllowDynamicResolution: 0
+  m_ForceIntoRT: 0
+  m_OcclusionCulling: 1
+  m_StereoConvergence: 10
+  m_StereoSeparation: 0.022
+--- !u!114 &1234898507
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1234898501}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a21b486d0bb44444b1418aaa38b44de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HorizontalAxis: Horizontal
+  m_VerticalAxis: Vertical
+  m_SubmitButton: Submit
+  m_CancelButton: Cancel
+  m_InputActionsPerSecond: 10
+  m_RepeatDelay: 0.5
+  m_ForceModuleActive: 0
 --- !u!1 &1235196658
 GameObject:
   m_ObjectHideFlags: 0
@@ -31747,6 +31721,7 @@ GameObject:
   - component: {fileID: 1241395079}
   - component: {fileID: 1241395078}
   - component: {fileID: 1241395077}
+  - component: {fileID: 1241395089}
   m_Layer: 14
   m_Name: Rook_Dark_(H8)
   m_TagString: pieces
@@ -31974,7 +31949,7 @@ MonoBehaviour:
   hostTransform: {fileID: 0}
   manipulationType: 0
   twoHandedManipulationType: 3
-  allowFarManipulation: 1
+  allowFarManipulation: 0
   oneHandRotationModeNear: 6
   oneHandRotationModeFar: 6
   releaseBehavior: 0
@@ -32161,6 +32136,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1241395075}
   m_Mesh: {fileID: 4300004, guid: ddfde96e667d5ac4fb13183f7cb22ba9, type: 3}
+--- !u!114 &1241395089
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1241395075}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5afd5316c63705643b3daba5a6e923bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTetherWhenManipulating: 0
 --- !u!1 &1248802730
 GameObject:
   m_ObjectHideFlags: 0
@@ -33758,6 +33746,7 @@ GameObject:
   - component: {fileID: 1321702089}
   - component: {fileID: 1321702088}
   - component: {fileID: 1321702087}
+  - component: {fileID: 1321702099}
   m_Layer: 14
   m_Name: Pawn_Dark_(A7)
   m_TagString: pieces
@@ -33970,7 +33959,7 @@ MonoBehaviour:
   hostTransform: {fileID: 0}
   manipulationType: 0
   twoHandedManipulationType: 3
-  allowFarManipulation: 1
+  allowFarManipulation: 0
   oneHandRotationModeNear: 6
   oneHandRotationModeFar: 6
   releaseBehavior: 0
@@ -34172,6 +34161,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1321702085}
   m_Mesh: {fileID: 4300006, guid: ddfde96e667d5ac4fb13183f7cb22ba9, type: 3}
+--- !u!114 &1321702099
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1321702085}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5afd5316c63705643b3daba5a6e923bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTetherWhenManipulating: 0
 --- !u!1 &1327373761
 GameObject:
   m_ObjectHideFlags: 0
@@ -36405,6 +36407,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7667403efdd3cc149b4c51be477d6c48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1470763005
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1470763006}
+  m_Layer: 0
+  m_Name: MixedRealityPlayspace
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1470763006
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1470763005}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1234898502}
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1481770496
 GameObject:
   m_ObjectHideFlags: 0
@@ -36562,6 +36595,7 @@ GameObject:
   - component: {fileID: 1495724389}
   - component: {fileID: 1495724388}
   - component: {fileID: 1495724387}
+  - component: {fileID: 1495724399}
   m_Layer: 14
   m_Name: Pawn_Dark_(E7)
   m_TagString: pieces
@@ -36774,7 +36808,7 @@ MonoBehaviour:
   hostTransform: {fileID: 0}
   manipulationType: 0
   twoHandedManipulationType: 3
-  allowFarManipulation: 1
+  allowFarManipulation: 0
   oneHandRotationModeNear: 6
   oneHandRotationModeFar: 6
   releaseBehavior: 0
@@ -36976,6 +37010,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1495724385}
   m_Mesh: {fileID: 4300006, guid: ddfde96e667d5ac4fb13183f7cb22ba9, type: 3}
+--- !u!114 &1495724399
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1495724385}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5afd5316c63705643b3daba5a6e923bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTetherWhenManipulating: 0
 --- !u!1 &1499023768
 GameObject:
   m_ObjectHideFlags: 0
@@ -38146,6 +38193,7 @@ GameObject:
   - component: {fileID: 1545248682}
   - component: {fileID: 1545248681}
   - component: {fileID: 1545248680}
+  - component: {fileID: 1545248692}
   m_Layer: 13
   m_Name: King_Dark_(E8)
   m_TagString: pieces
@@ -38372,9 +38420,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hostTransform: {fileID: 0}
-  manipulationType: 2
+  manipulationType: 0
   twoHandedManipulationType: 3
-  allowFarManipulation: 1
+  allowFarManipulation: 0
   oneHandRotationModeNear: 6
   oneHandRotationModeFar: 6
   releaseBehavior: 0
@@ -38582,6 +38630,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1545248678}
   m_Mesh: {fileID: 4300014, guid: ddfde96e667d5ac4fb13183f7cb22ba9, type: 3}
+--- !u!114 &1545248692
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1545248678}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5afd5316c63705643b3daba5a6e923bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTetherWhenManipulating: 0
 --- !u!1 &1546419381
 GameObject:
   m_ObjectHideFlags: 0
@@ -41087,6 +41148,7 @@ GameObject:
   - component: {fileID: 1709567225}
   - component: {fileID: 1709567224}
   - component: {fileID: 1709567223}
+  - component: {fileID: 1709567235}
   m_Layer: 15
   m_Name: Pawn_Light_(B2)
   m_TagString: pieces
@@ -41299,7 +41361,7 @@ MonoBehaviour:
   hostTransform: {fileID: 0}
   manipulationType: 0
   twoHandedManipulationType: 3
-  allowFarManipulation: 1
+  allowFarManipulation: 0
   oneHandRotationModeNear: 6
   oneHandRotationModeFar: 6
   releaseBehavior: 0
@@ -41501,6 +41563,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1709567221}
   m_Mesh: {fileID: 4300006, guid: ddfde96e667d5ac4fb13183f7cb22ba9, type: 3}
+--- !u!114 &1709567235
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1709567221}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5afd5316c63705643b3daba5a6e923bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTetherWhenManipulating: 0
 --- !u!1 &1722064933
 GameObject:
   m_ObjectHideFlags: 0
@@ -42857,6 +42932,7 @@ GameObject:
   - component: {fileID: 1797048178}
   - component: {fileID: 1797048177}
   - component: {fileID: 1797048176}
+  - component: {fileID: 1797048188}
   m_Layer: 14
   m_Name: Bishop_Dark_(F8)
   m_TagString: pieces
@@ -43070,7 +43146,7 @@ MonoBehaviour:
   hostTransform: {fileID: 0}
   manipulationType: 0
   twoHandedManipulationType: 3
-  allowFarManipulation: 1
+  allowFarManipulation: 0
   oneHandRotationModeNear: 6
   oneHandRotationModeFar: 6
   releaseBehavior: 0
@@ -43271,6 +43347,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1797048174}
   m_Mesh: {fileID: 4300010, guid: ddfde96e667d5ac4fb13183f7cb22ba9, type: 3}
+--- !u!114 &1797048188
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1797048174}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5afd5316c63705643b3daba5a6e923bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTetherWhenManipulating: 0
 --- !u!1 &1799082641
 GameObject:
   m_ObjectHideFlags: 0
@@ -47009,6 +47098,7 @@ GameObject:
   - component: {fileID: 1963214666}
   - component: {fileID: 1963214665}
   - component: {fileID: 1963214664}
+  - component: {fileID: 1963214676}
   m_Layer: 15
   m_Name: Pawn_Light_(G2)
   m_TagString: pieces
@@ -47221,7 +47311,7 @@ MonoBehaviour:
   hostTransform: {fileID: 0}
   manipulationType: 0
   twoHandedManipulationType: 3
-  allowFarManipulation: 1
+  allowFarManipulation: 0
   oneHandRotationModeNear: 6
   oneHandRotationModeFar: 6
   releaseBehavior: 0
@@ -47423,6 +47513,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1963214662}
   m_Mesh: {fileID: 4300006, guid: ddfde96e667d5ac4fb13183f7cb22ba9, type: 3}
+--- !u!114 &1963214676
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1963214662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5afd5316c63705643b3daba5a6e923bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTetherWhenManipulating: 0
 --- !u!1 &1964077495
 GameObject:
   m_ObjectHideFlags: 0
@@ -48844,6 +48947,7 @@ GameObject:
   - component: {fileID: 2058018388}
   - component: {fileID: 2058018387}
   - component: {fileID: 2058018386}
+  - component: {fileID: 2058018398}
   m_Layer: 14
   m_Name: Queen_Dark_(D8)
   m_TagString: pieces
@@ -49072,7 +49176,7 @@ MonoBehaviour:
   hostTransform: {fileID: 0}
   manipulationType: 0
   twoHandedManipulationType: 3
-  allowFarManipulation: 1
+  allowFarManipulation: 0
   oneHandRotationModeNear: 6
   oneHandRotationModeFar: 6
   releaseBehavior: 0
@@ -49258,6 +49362,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2058018384}
   m_Mesh: {fileID: 4300012, guid: ddfde96e667d5ac4fb13183f7cb22ba9, type: 3}
+--- !u!114 &2058018398
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2058018384}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5afd5316c63705643b3daba5a6e923bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTetherWhenManipulating: 0
 --- !u!1 &2059522744
 GameObject:
   m_ObjectHideFlags: 0
@@ -49383,6 +49500,7 @@ GameObject:
   - component: {fileID: 2066454295}
   - component: {fileID: 2066454294}
   - component: {fileID: 2066454293}
+  - component: {fileID: 2066454305}
   m_Layer: 14
   m_Name: Pawn_Dark_(F7)
   m_TagString: pieces
@@ -49595,7 +49713,7 @@ MonoBehaviour:
   hostTransform: {fileID: 0}
   manipulationType: 0
   twoHandedManipulationType: 3
-  allowFarManipulation: 1
+  allowFarManipulation: 0
   oneHandRotationModeNear: 6
   oneHandRotationModeFar: 6
   releaseBehavior: 0
@@ -49797,6 +49915,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2066454291}
   m_Mesh: {fileID: 4300006, guid: ddfde96e667d5ac4fb13183f7cb22ba9, type: 3}
+--- !u!114 &2066454305
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2066454291}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5afd5316c63705643b3daba5a6e923bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTetherWhenManipulating: 0
 --- !u!1 &2076306200
 GameObject:
   m_ObjectHideFlags: 0
@@ -54073,6 +54204,7 @@ GameObject:
   - component: {fileID: 6015648654935234366}
   - component: {fileID: 6015648654935234365}
   - component: {fileID: 6015648654935234364}
+  - component: {fileID: 6015648654935234374}
   m_Layer: 15
   m_Name: Pawn_Light_(A2)
   m_TagString: pieces
@@ -54271,7 +54403,7 @@ MonoBehaviour:
   hostTransform: {fileID: 0}
   manipulationType: 0
   twoHandedManipulationType: 3
-  allowFarManipulation: 1
+  allowFarManipulation: 0
   oneHandRotationModeNear: 6
   oneHandRotationModeFar: 6
   releaseBehavior: 0
@@ -54428,6 +54560,19 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 14
   m_Mesh: {fileID: 4300006, guid: ddfde96e667d5ac4fb13183f7cb22ba9, type: 3}
+--- !u!114 &6015648654935234374
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6015648654935234363}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5afd5316c63705643b3daba5a6e923bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTetherWhenManipulating: 0
 --- !u!4 &6015648654935657243
 Transform:
   m_ObjectHideFlags: 0
@@ -54758,6 +54903,7 @@ GameObject:
   - component: {fileID: 7321196259677539312}
   - component: {fileID: 7321196259677539310}
   - component: {fileID: 7321196259677539319}
+  - component: {fileID: 7321196259677539368}
   m_Layer: 15
   m_Name: Rook_Light_(A1)
   m_TagString: pieces
@@ -54799,6 +54945,7 @@ GameObject:
   - component: {fileID: 7321196259677539326}
   - component: {fileID: 7321196259677539325}
   - component: {fileID: 7321196259677539324}
+  - component: {fileID: 7321196259677539364}
   m_Layer: 15
   m_Name: Queen_Light_(D1)
   m_TagString: pieces
@@ -54866,6 +55013,7 @@ GameObject:
   - component: {fileID: 7321196259677539346}
   - component: {fileID: 7321196259677539345}
   - component: {fileID: 7321196259677539344}
+  - component: {fileID: 7321196259677539366}
   m_Layer: 15
   m_Name: Knight_Light_(B1)
   m_TagString: pieces
@@ -54907,6 +55055,7 @@ GameObject:
   - component: {fileID: 7321196259677539336}
   - component: {fileID: 7321196259677539335}
   - component: {fileID: 7321196259677539334}
+  - component: {fileID: 7321196259677539365}
   m_Layer: 12
   m_Name: King_Light_(E1)
   m_TagString: pieces
@@ -55061,6 +55210,7 @@ GameObject:
   - component: {fileID: 7321196259677539356}
   - component: {fileID: 7321196259677539355}
   - component: {fileID: 7321196259677539354}
+  - component: {fileID: 7321196259677539367}
   m_Layer: 15
   m_Name: Bishop_Light_(C1)
   m_TagString: pieces
@@ -55083,7 +55233,7 @@ MonoBehaviour:
   hostTransform: {fileID: 0}
   manipulationType: 0
   twoHandedManipulationType: 3
-  allowFarManipulation: 1
+  allowFarManipulation: 0
   oneHandRotationModeNear: 6
   oneHandRotationModeFar: 6
   releaseBehavior: 0
@@ -55432,7 +55582,7 @@ MonoBehaviour:
   hostTransform: {fileID: 0}
   manipulationType: 0
   twoHandedManipulationType: 3
-  allowFarManipulation: 1
+  allowFarManipulation: 0
   oneHandRotationModeNear: 6
   oneHandRotationModeFar: 6
   releaseBehavior: 0
@@ -55778,9 +55928,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hostTransform: {fileID: 0}
-  manipulationType: 2
+  manipulationType: 0
   twoHandedManipulationType: 3
-  allowFarManipulation: 1
+  allowFarManipulation: 0
   oneHandRotationModeNear: 6
   oneHandRotationModeFar: 6
   releaseBehavior: 0
@@ -56135,7 +56285,7 @@ MonoBehaviour:
   hostTransform: {fileID: 0}
   manipulationType: 0
   twoHandedManipulationType: 3
-  allowFarManipulation: 1
+  allowFarManipulation: 0
   oneHandRotationModeNear: 6
   oneHandRotationModeFar: 6
   releaseBehavior: 0
@@ -56483,7 +56633,7 @@ MonoBehaviour:
   hostTransform: {fileID: 0}
   manipulationType: 0
   twoHandedManipulationType: 3
-  allowFarManipulation: 1
+  allowFarManipulation: 0
   oneHandRotationModeNear: 6
   oneHandRotationModeFar: 6
   releaseBehavior: 0
@@ -56639,3 +56789,68 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 14
   m_Mesh: {fileID: 4300010, guid: ddfde96e667d5ac4fb13183f7cb22ba9, type: 3}
+--- !u!114 &7321196259677539364
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7321196259677539311}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5afd5316c63705643b3daba5a6e923bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTetherWhenManipulating: 0
+--- !u!114 &7321196259677539365
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7321196259677539317}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5afd5316c63705643b3daba5a6e923bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTetherWhenManipulating: 0
+--- !u!114 &7321196259677539366
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7321196259677539315}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5afd5316c63705643b3daba5a6e923bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTetherWhenManipulating: 0
+--- !u!114 &7321196259677539367
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7321196259677539321}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5afd5316c63705643b3daba5a6e923bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTetherWhenManipulating: 0
+--- !u!114 &7321196259677539368
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7321196259677539309}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5afd5316c63705643b3daba5a6e923bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTetherWhenManipulating: 0

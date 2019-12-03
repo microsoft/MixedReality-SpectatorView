@@ -6,6 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Microsoft.MixedReality.Toolkit;
+using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.SpectatorView.ProjectGrandmaster;
 
 namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
@@ -23,13 +24,35 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
         private int tileZ;
         private float duration = 1f;
 
+        private IMixedRealityInputSystem inputSystem = null;
+
+        /// <summary>
+        /// The active instance of the input system.
+        /// </summary>
+        private IMixedRealityInputSystem InputSystem
+        {
+            get
+            {
+                if (inputSystem == null)
+                {
+                    MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem);
+                }
+                return inputSystem;
+            }
+        }
+
         /// <summary>
         /// Selects the piece the user is gazing on.
         /// Called when user says "select"
         /// </summary>
         public void SelectPiece()
         {
-            GameObject piece = MixedRealityToolkit.InputSystem.EyeGazeProvider.GazeTarget;
+            if (InputSystem?.GazeProvider == null)
+            {
+                return;
+            }
+
+            GameObject piece = InputSystem.GazeProvider.GazeTarget;
 
             // If "select" said twice, place the first piece back down
             if (pieceSelected != null)
@@ -56,13 +79,18 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
         /// </summary>
         public void Move()
         {
+            if (InputSystem?.GazeProvider == null)
+            {
+                return;
+            }
+
             // Check if piece has been selected to be moved
             if (pieceSelected == null)
             {
                 return;
             }
 
-            GameObject tile = MixedRealityToolkit.InputSystem.EyeGazeProvider.GazeTarget;
+            GameObject tile = InputSystem.GazeProvider.GazeTarget;
             chosenTile = tile;
 
             // if the gameobject is not a tile, do nothing

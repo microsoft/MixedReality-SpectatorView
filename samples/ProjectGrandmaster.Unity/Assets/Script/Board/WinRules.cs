@@ -177,7 +177,6 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
         /// <summary>
         /// Checks if the player placed the piece on the forfeit tile
         /// </summary>
-        /// 
         /// <returns></returns>
         public static bool CheckForfeit(int type, int colour, GameObject piece, BoardInformation boardInfo)
         {

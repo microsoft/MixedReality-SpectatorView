@@ -22,6 +22,8 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
         public GameObject volume;
         public GameObject game;
 
+        private GameObject opening;
+
         public List<GameObject> buttons;
 
         private Vector3 originalSpot;
@@ -53,8 +55,8 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
         public void display()
         {
             visual.SetActive(true);
-            homeMenu.SetActive(true);
             currentlyOpenedMenu = homeMenu;
+            currentlyOpenedMenu.SetActive(true);
         }
 
         /// <summary>
@@ -63,6 +65,10 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
         public void close()
         {
             visual.SetActive(false);
+            if (opening != null)
+            {
+                opening.SetActive(false);
+            }
             currentlyOpenedMenu.SetActive(false);
 
             // destroy surface magnetism solver 
@@ -142,6 +148,7 @@ namespace Microsoft.MixedReality.SpectatorView.ProjectGrandmaster
             RemoveColliders();
 
             page.transform.localPosition += displacement;
+            opening = page;
             page.SetActive(true);
             StartCoroutine(SetToPosition(page, page.transform.localPosition - (displacement * 1.5f)));
         }
