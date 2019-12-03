@@ -79,8 +79,6 @@ namespace Microsoft.MixedReality.SpectatorView
 
         public Shader GetShader(string shaderName)
         {
-            Debug.Log("GetShader for " + shaderName);
-            Debug.Log(materialAssets?.Length);
             return MaterialAssetsByShaderName[shaderName].Select(asset => asset.Shader).FirstOrDefault();
         }
 
