@@ -62,9 +62,9 @@ These instructions assume that a HoloLens device will be used to host the shared
 
 ![Marker](./../../doc/images/iOSSpectatorViewExampleBuildSettings.png)
 
-> Note 1: Additional setup instructions and troubleshooting for spectating with mobile devices can be found [here](../../doc/SpectatorView.Setup.md).
+> Note 1: Additional setup instructions and troubleshooting for spectating with mobile devices can be found [here](../../doc/SpectatorView.Setup.md#building--deploying).
 
 ## Troubleshooting
 
 ### __Additional Issues__
-For more information on troubleshooting other build issues, checkout the `Troubleshooting` section in our detailed setup steps [here](../../doc/SpectatorView.Setup.md).
+For more information on troubleshooting other build issues, checkout the `Troubleshooting` section in our detailed setup steps [here](../../doc/SpectatorView.Setup.md#troubleshooting).

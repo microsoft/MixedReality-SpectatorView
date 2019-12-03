@@ -61,7 +61,7 @@ These instructions assume that a HoloLens 2 device will be used to host the shar
 
 ![Marker](./../../doc/images/iOSBuild2019SampleBuildSettings.png)
 
-> Note 1: Additional setup instructions and troubleshooting for spectating with mobile devices can be found [here](../../doc/SpectatorView.Setup.md).
+> Note 1: Additional setup instructions and troubleshooting for spectating with mobile devices can be found [here](../../doc/SpectatorView.Setup.md#building--deploying).
 
 ## Sample Project Contents
 
@@ -81,4 +81,4 @@ The demo consists of a simple experience with a buttons panel and a slider, conf
 The MixedRealityToolkit-Unity project introduces some dependencies on System.Numerics.* types that can cause errors when building the UWP player. That going said, although these errors are generated during the build, they do not prevent the build from succeeding. Its suggested to ignore these errors when building the sample application for the time being.
 
 ### __Additional Issues__
-For more information on troubleshooting other build issues, checkout the `Troubleshooting` section in our detailed setup steps [here](../../doc/SpectatorView.Setup.md).
+For more information on troubleshooting other build issues, checkout the `Troubleshooting` section in our detailed setup steps [here](../../doc/SpectatorView.Setup.md#troubleshooting).

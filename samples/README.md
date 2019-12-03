@@ -4,7 +4,7 @@ This folder contains sample and demo projects that are maintained by Spectator V
 
 ## Getting Started
 
-Ensure you have all the required software, for detailed instructions see [Required Software](../doc/SpectatorView.Setup.md).
+Ensure you have all the required software, for detailed instructions see [Required Software](../doc/SpectatorView.Setup.md#software--hardware-requirements).
 
 - Git Tools
 - Visual Studio

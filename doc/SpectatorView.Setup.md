@@ -39,11 +39,11 @@ To setup spectator view with a video camera, see [here](SpectatorView.Setup.Vide
 
 # Preparing your project
 
-To use the Spectator View codebase, its suggested to clone and reference the MixedReality-SpectatorView repository through symbolic linked directories in your Unity project. Before beginning on the steps below, go through the repository setup process [here](../README.md). This will ensure that the Unity editor components referenced below exist in your project.
+To use the Spectator View codebase, its suggested to clone and reference the MixedReality-SpectatorView repository through symbolic linked directories in your Unity project. Before beginning on the steps below, go through the repository setup process [here](../README.md#getting-started-with-your-own-project). This will ensure that the Unity editor components referenced below exist in your project.
 
 ## Spatial Alignment Strategy Dependencies
 
-Spectator View requires multiple devices understanding a shared application origin in the physical world. In order to establish this shared application origin, you will need to choose and use a [spatial alignment strategy](../src/SpectatorView.Unity/Assets/SpatialAlignment/README.md). You will only need to go through one setup process below for the spatial alignment strategy you choose.
+Spectator View requires multiple devices understanding a shared application origin in the physical world. In order to establish this shared application origin, you will need to choose and use a [spatial alignment strategy](../src/SpectatorView.Unity/Assets/SpatialAlignment/README.md#detailed-breakdown-of-spatial-alignment-strategies). You will only need to go through one setup process below for the spatial alignment strategy you choose.
 
 Not all spatial alignment strategies support all platforms. See the chart below to determine which strategy best addresses your intended user scenarios.
 
