@@ -2,15 +2,19 @@
 
 This sample shows how to use [QR Code detection](https://docs.microsoft.com/en-us/windows/mixed-reality/qr-code-tracking) to spatially align devices in the physical world.
 
-## Running the Demo
+## Sample Project Contents
+
+Once connecting a mobile device to the HoloLens experience, the mobile device should display a rotating, transparent cube that contains a sphere. The HoloLens will show its user an additional object that has been tagged as hidden to the mobile device spectator.
+
+## Building and Running the Sample
 
 In order to run the demo, you will need a HoloLens and an AR capable mobile device. Once you have the devices ready, follow the instructions below.
 
-> **ARKit Note:** If you wish to run the experience on an iOS device with ARKit, download the [ARKit repository](https://bitbucket.org/Unity-Technologies/unity-arkit-plugin/downloads/), unzip it, and copy the contents of the `Unity-Technologies-unity-arkit-plugin-94e47eae5954/Assets` folder to `/samples/Build2019Demo.Unity/Assets/`.
+> **ARKit Note:** If you wish to run the experience on an iOS device with ARKit, download the [ARKit repository](https://bitbucket.org/Unity-Technologies/unity-arkit-plugin/downloads/), unzip it, and copy the contents of the `Unity-Technologies-unity-arkit-plugin-94e47eae5954/Assets` folder to `/samples/SpectatorView.Example.Unity/Assets/`.
 
 ### Instructions
 
-These instructions assume that a HoloLens device will be used to host the shared experience and that an Android phone will be used to spectate the shared experience. For iOS, replace references to Android with iOS.
+These instructions assume that a HoloLens device will be used to host the shared experience and that a mobile phone will be used to spectate the shared experience.
 
 #### Prepare your local codebase
 
@@ -41,8 +45,8 @@ These instructions assume that a HoloLens device will be used to host the shared
 ##### Android
 
 1. Select `Android` as your target platform using Spectator View's `PlatformSwitcher` (This can be found in the Unity inspector for the `SpectatorView` prefab GameObject).
-2. Include and declare `MixedReality-SpectatorView/SpectatorView/Scenes/SpectatorView.Android.unity` as Scene 0 in your Unity Build Settings.
-3. Include and declare `MixedReality-SpectatorView/SpectatorView/Scenes/SpectatorView.HoloLens.unity` as Scene 1 in your Unity Build Settings.
+2. Include and check `MixedReality-SpectatorView/SpectatorView/Scenes/SpectatorView.Android.unity` as Scene 0 in your Unity Build Settings.
+3. Include and check `MixedReality-SpectatorView/SpectatorView/Scenes/SpectatorView.HoloLens.unity` as Scene 1 in your Unity Build Settings.
 4. `Build and Run` the Android Player through Unity's Build Settings.
 5. Launch `SpectatorView.Example.Unity` on the Android device and connect to the HoloLens device by specifying the HoloLens's IP Address.
 
@@ -51,18 +55,14 @@ These instructions assume that a HoloLens device will be used to host the shared
 ##### iOS
 
 1. Select `iOS` as your target platform using Spectator View's `PlatformSwitcher` (This can be found in the Unity inspector for the `SpectatorView` prefab GameObject).
-2. Include and declare `MixedReality-SpectatorView/SpectatorView/Scenes/SpectatorView.iOS.unity` as Scene 0 in your Unity Build Settings.
-3. Include and declare `MixedReality-SpectatorView/SpectatorView/Scenes/SpectatorView.HoloLens.unity` as Scene 1 in your Unity Build Settings.
+2. Include and check `MixedReality-SpectatorView/SpectatorView/Scenes/SpectatorView.iOS.unity` as Scene 0 in your Unity Build Settings.
+3. Include and check `MixedReality-SpectatorView/SpectatorView/Scenes/SpectatorView.HoloLens.unity` as Scene 1 in your Unity Build Settings.
 4. `Build` the iOS Player through Unity's Build Settings.
 5. Launch `SpectatorView.Example.Unity` on the iOS device and connect to the HoloLens device by specifying the HoloLens's IP Address.
 
 ![Marker](./../../doc/images/iOSSpectatorViewExampleBuildSettings.png)
 
 > Note 1: Additional setup instructions and troubleshooting for spectating with mobile devices can be found [here](../../doc/SpectatorView.Setup.md).
-
-## Sample Project Contents
-
-Once connecting a mobile device to the HoloLens experience, the mobile device should display a rotating, transparent cube that contains a sphere. The HoloLens will show its user an additional object that has been tagged as hidden to the mobile device spectator.
 
 ## Troubleshooting
 
