@@ -13,7 +13,7 @@ using UnityEditor;
 namespace Microsoft.MixedReality.SpectatorView
 {
     [Serializable]
-    internal class MaterialAsset
+    internal class MaterialAsset : ISerializationCallbackReceiver
     {
         public Shader shader;
 
@@ -23,8 +23,21 @@ namespace Microsoft.MixedReality.SpectatorView
         [SerializeField]
         private MaterialPropertyAsset[] materialProperties = null;
 
-        public IReadOnlyList<MaterialPropertyAsset> MaterialProperties => materialProperties;
+        private bool areMaterialPropertiesInitialized = false;
         private Dictionary<string, MaterialPropertyAsset> materialPropertyAssetLookup;
+
+        public IReadOnlyList<MaterialPropertyAsset> MaterialProperties
+        {
+            get
+            {
+                if (!areMaterialPropertiesInitialized)
+                {
+                    InitializeMaterialProperties();
+                }
+
+                return materialProperties;
+            }
+        }
 
         public Shader Shader
         {
@@ -41,6 +54,28 @@ namespace Microsoft.MixedReality.SpectatorView
             get { return shaderName; }
         }
 
+        private void InitializeMaterialProperties()
+        {
+            if (materialProperties != null)
+            {
+                foreach (var materialProperty in materialProperties)
+                {
+                    materialProperty.MaterialAsset = this;
+                }
+            }
+            areMaterialPropertiesInitialized = true;
+        }
+
+        public void OnBeforeSerialize()
+        {
+            materialProperties = materialPropertyAssetLookup?.Values.OrderBy(p => p.propertyName).ToArray();
+        }
+
+        public void OnAfterDeserialize()
+        {
+            materialPropertyAssetLookup = (materialProperties ?? Array.Empty<MaterialPropertyAsset>()).ToDictionary(p => p.propertyName);
+        }
+
 #if UNITY_EDITOR
         public void AddProperty(MaterialProperty materialProperty)
         {
@@ -48,6 +83,10 @@ namespace Microsoft.MixedReality.SpectatorView
             {
                 materialPropertyAssetLookup = (materialProperties ?? Array.Empty<MaterialPropertyAsset>()).ToDictionary(p => p.propertyName);
             }
+
+            // Mark this property as dirty, so that next time the public property is accessed or serialization occurs
+            // the property is re-populated with sorted values
+            materialProperties = null;
 
             if (!materialPropertyAssetLookup.ContainsKey(materialProperty.name))
             {
@@ -58,11 +97,6 @@ namespace Microsoft.MixedReality.SpectatorView
                     MaterialAsset = this
                 });
             }
-        }
-
-        public void CompleteEditing()
-        {
-            materialProperties = materialPropertyAssetLookup?.Values.OrderBy(p => p.propertyName).ToArray();
         }
 #endif
     }

@@ -22,19 +22,6 @@ namespace Microsoft.MixedReality.SpectatorView
         private ILookup<string, MaterialPropertyAsset> customMaterialPropertiesByShaderName;
         private MaterialPropertyAsset[] customInstanceShaderProperties;
 
-        protected override void Awake()
-        {
-            base.Awake();
-
-            foreach (MaterialAsset materialAsset in materialAssets)
-            {
-                foreach (MaterialPropertyAsset materialProperty in materialAsset.MaterialProperties)
-                {
-                    materialProperty.MaterialAsset = materialAsset;
-                }
-            }
-        }
-
         private MaterialPropertyAsset[] universalMaterialProperties = new MaterialPropertyAsset[]
         {
             new MaterialPropertyAsset
@@ -127,11 +114,6 @@ namespace Microsoft.MixedReality.SpectatorView
             }
 
             materialAssets = newMaterialAssets.Values.OrderBy(m => m.ShaderName).ToArray();
-
-            foreach (MaterialAsset materialAsset in materialAssets)
-            {
-                materialAsset.CompleteEditing();
-            }
 
             EditorUtility.SetDirty(this);
 #endif
