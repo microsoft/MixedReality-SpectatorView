@@ -43,7 +43,7 @@ To use the Spectator View codebase, its suggested to clone and reference the Mix
 
 ## Spatial Alignment Strategy Dependencies
 
-Spectator View requires multiple devices understanding a shared application origin in the physical world. In order to establish this shared application origin, you will need to choose and use a [spatial alignment strategy](../src/SpectatorView.Unity/Assets/SpatialAlignment/README.md). **The suggested spatial alignment strategy for Spectator View is Azure Spatial Anchors.** You will only need to go through one setup process below for the spatial alignment strategy you choose.
+Spectator View requires multiple devices understanding a shared application origin in the physical world. In order to establish this shared application origin, you will need to choose and use a [spatial alignment strategy](../src/SpectatorView.Unity/Assets/SpatialAlignment/README.md). You will only need to go through one setup process below for the spatial alignment strategy you choose.
 
 Not all spatial alignment strategies support all platforms. See the chart below to determine which strategy best addresses your intended user scenarios.
 
