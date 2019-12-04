@@ -29,7 +29,7 @@ Documentation below highlights the process of setting up a Video Camera filming 
 
 Video camera filming relies on a physically mounted HoloLens 2 device generating position and orientation information for your video camera in the shared application space. This allows the Unity editor to understand where the video frame was filmed from in order to generate and composite Holograms into the feed. To get accurate tracking of your video camera in the physical world, you need to calculate the physical transform between the HoloLens 2 device and the video camera sensor. This is achieved through calibration.
 
-The below instructions assume that you have already gone through the repository setup instructions [here](../README.md) to obtain and reference the Spectator View codebase.
+The below instructions assume that you have already gone through the repository setup instructions [here](../README.md#getting-started-with-your-own-project) to obtain and reference the Spectator View codebase.
 
 ## Setup
 

@@ -11,3 +11,5 @@
 - name: API
   href: doc/build/api/
   topicHref: doc/build/api/Microsoft.MixedReality.SpectatorView.yml
+- name: Automation
+  href: doc/SpectatorView.Automation.md

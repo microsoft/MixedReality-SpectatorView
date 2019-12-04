@@ -39,11 +39,11 @@ To setup spectator view with a video camera, see [here](SpectatorView.Setup.Vide
 
 # Preparing your project
 
-To use the Spectator View codebase, its suggested to clone and reference the MixedReality-SpectatorView repository through symbolic linked directories in your Unity project. Before beginning on the steps below, go through the repository setup process [here](../README.md). This will ensure that the Unity editor components referenced below exist in your project.
+To use the Spectator View codebase, its suggested to clone and reference the MixedReality-SpectatorView repository through symbolic linked directories in your Unity project. Before beginning on the steps below, go through the repository setup process [here](../README.md#getting-started-with-your-own-project). This will ensure that the Unity editor components referenced below exist in your project.
 
 ## Spatial Alignment Strategy Dependencies
 
-Spectator View requires multiple devices understanding a shared application origin in the physical world. In order to establish this shared application origin, you will need to choose and use a spatial alignment strategy. Different dependencies are needed for different strategies. For more information on spatial alignment strategies, see [here](../src/SpectatorView.Unity/Assets/SpatialAlignment/README.md).
+Spectator View requires multiple devices understanding a shared application origin in the physical world. In order to establish this shared application origin, you will need to choose and use a [spatial alignment strategy](../src/SpectatorView.Unity/Assets/SpatialAlignment/README.md#detailed-breakdown-of-spatial-alignment-strategies). You will only need to go through one setup process below for the spatial alignment strategy you choose.
 
 Not all spatial alignment strategies support all platforms. See the chart below to determine which strategy best addresses your intended user scenarios.
 
@@ -122,7 +122,7 @@ If you are building Azure Spatial Anchors on iOS, you will need to take some add
 
 > Note: **Asset Caches need to be updated on one development machine and shared across development machines**. Asset Caches aren't currently created in a deterministic manner and can't be recreated in new development environments. The easiest way to share this with a team is to commit changes to the Generated.StateSynchronization.AssetCaches folder that will appear in the Unity project's Assets directory. For more information on Asset Caches see [SpectatorView.StateSynchronization](../src/SpectatorView.Unity/Assets/SpectatorView/Scripts/StateSynchronization/README.md).
 
-### HoloLens 2 & HoloLens
+### HoloLens 2 & HoloLens as the Host/User
 
 1. Make sure your Unity project contains the asset caches that were created in the 'Before building' steps.
 2. Open the project scene that you intend to use with SpectatorView. (**Note:** For spectating with a HoloLens device, use `SpectatorView.HoloLens.Spectator` scene.)
@@ -136,6 +136,14 @@ If you are building Azure Spatial Anchors on iOS, you will need to take some add
 5. Press the 'HoloLens' button on the `Platform Switcher` attached to `Spectator View` in the Unity inspector (This should configure the correct build settings and app capabilities).
 6. Build and deploy the application to your HoloLens device.
 
+### HoloLens 2 & HoloLens as a Spectator
+
+1. Make sure your Unity project contains the asset caches that were created in the 'Before building' steps.
+2. Open the `SpectatorView.HoloLens.Spectator` Unity scene.
+3. Press the 'HoloLens' button on the `Platform Switcher` attached to `Spectator View` in the Unity inspector (This should configure the correct build settings and app capabilities).
+4. Declare the `SpectatorView.HoloLens.Spectator` as the scene included in your Unity Build settings.
+5. Build and deploy the application to your HoloLens device.
+
 ### Android
 
 1. Make sure your Unity project contains the asset caches that were created in the 'Before building' steps.
@@ -147,9 +155,12 @@ If you are building Azure Spatial Anchors on iOS, you will need to take some add
 
 5. Make sure to declare the SpectatorView.Android scene as the scene included. If SpectatorView.Android does not exist in your list of scenes to choose from in the build settings, open the scene in the Unity editor. Then reopen the build settings and press 'Add Open Scenes'.
 
-![Marker](images/AndroidSceneSelection.png)
+![Marker](images/AndroidSpectatorViewExampleBuildSettings.png)
 
-6. Build and deploy the application. If you're targeting a new Android development device, you may need to enable developer options and debugging. For information on setting up your Android device for debugging, see [here](https://developer.android.com/studio/debug/dev-options).
+6. `Build and Run` the application through Unity's Build Settings. If you're targeting a new Android development device, you may need to enable developer options and debugging. For information on setting up your Android device for debugging, see [here](https://developer.android.com/studio/debug/dev-options).
+
+> Note: You may need to the `Run Device` dropdown to find your desired Android device.
+> ![Marker](images/AndroidDeviceSelectorBuildSettings.png)
 
 ### iOS
 
