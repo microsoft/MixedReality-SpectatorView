@@ -8,10 +8,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.SpectatorView
 {
     [Serializable]
-    internal class AudioClipAsset : AssetCacheEntry<AudioClip> { }
-
-    [Serializable]
-    internal class AudioClipAssetCache : AssetCache<AudioClipAsset, AudioClip>
+    internal class AudioClipAssetCache : AssetCache<AudioClip>
     {
         protected override IEnumerable<AudioClip> EnumerateAllAssets()
         {

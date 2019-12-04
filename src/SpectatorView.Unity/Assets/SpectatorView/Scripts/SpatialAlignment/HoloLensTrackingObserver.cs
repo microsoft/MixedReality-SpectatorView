@@ -15,15 +15,15 @@ namespace Microsoft.MixedReality.SpectatorView
         {
             get
             {
-#if UNITY_WSA
+#if UNITY_EDITOR
+                return TrackingState.Tracking;
+#elif UNITY_WSA
                 if (UnityEngine.XR.WSA.WorldManager.state == UnityEngine.XR.WSA.PositionalLocatorState.Active)
                 {
                     return TrackingState.Tracking;
                 }
 
                 return TrackingState.LostTracking;
-#elif UNITY_EDITOR
-                return TrackingState.Tracking;
 #else
                 return TrackingState.Unknown;
 #endif
