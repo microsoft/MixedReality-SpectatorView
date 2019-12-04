@@ -94,91 +94,129 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
             public BuildTarget BuildTarget;
         }
 
-        [MenuItem("Spectator View/Generate Asset Bundles", priority = 102)]
-        public static void GenerateAssetBundles()
+        [MenuItem("Spectator View/Generate iOS Asset Bundles", validate = true)]
+        public static bool ValidateIOSAssetBundles()
         {
-            var bundlesToCreate = new List<AssetBundleInfo>();
-
 #if UNITY_EDITOR_OSX
-            bundlesToCreate.Add(new AssetBundleInfo
+            return true;
+#else
+            return false;
+#endif
+        }
+
+        [MenuItem("Spectator View/Generate Android Asset Bundles", validate = true)]
+        public static bool ValidateAndroidAssetBundles()
+        {
+#if UNITY_EDITOR_OSX
+            return false;
+#else
+            return true;
+#endif
+        }
+
+        [MenuItem("Spectator View/Generate HoloLens Asset Bundles", validate = true)]
+        public static bool ValidateHoloLensAssetBundles()
+        {
+#if UNITY_EDITOR_OSX
+            return false;
+#else
+            return true;
+#endif
+        }
+
+        [MenuItem("Spectator View/Generate iOS Asset Bundles", priority = 202)]
+        public static void GenerateIOSAssetBundles()
+        {
+            BuildAssetBundleForPlatform(new AssetBundleInfo
             {
                 AssetBundlePlatform = AssetBundlePlatform.iOS,
                 BuildTargetGroup = BuildTargetGroup.iOS,
                 BuildTarget = BuildTarget.iOS,
             });
-#else
-            bundlesToCreate.Add(new AssetBundleInfo
+        }
+
+        [MenuItem("Spectator View/Generate Android Asset Bundles", priority = 203)]
+        public static void GenerateAndroidAssetBundles()
+        {
+            BuildAssetBundleForPlatform(new AssetBundleInfo
             {
                 AssetBundlePlatform = AssetBundlePlatform.Android,
                 BuildTargetGroup = BuildTargetGroup.Android,
                 BuildTarget = BuildTarget.Android,
             });
+        }
 
-            bundlesToCreate.Add(new AssetBundleInfo
+        [MenuItem("Spectator View/Generate HoloLens Asset Bundles", priority = 204)]
+        public static void GenerateHoloLensAssetBundles()
+        {
+            BuildAssetBundleForPlatform(new AssetBundleInfo
             {
                 AssetBundlePlatform = AssetBundlePlatform.WSA,
                 BuildTargetGroup = BuildTargetGroup.WSA,
                 BuildTarget = BuildTarget.WSAPlayer,
             });
-#endif
+        }
 
-            // TODO: save current build target and restore it at the end... perhaps build the current target bundle before switching (or maybe at the end).
+        private static void BuildAssetBundleForPlatform(AssetBundleInfo bundleInfo)
+        {
+            var currentBuildTargetGroup = EditorUserBuildSettings.selectedBuildTargetGroup;
+            var currentBuildTarget = EditorUserBuildSettings.activeBuildTarget;
 
             BuildAssetBundleOptions bundleOptions = BuildAssetBundleOptions.None
                 | BuildAssetBundleOptions.DeterministicAssetBundle
-                | BuildAssetBundleOptions.ForceRebuildAssetBundle
-                ;
+                | BuildAssetBundleOptions.ForceRebuildAssetBundle;
 
-            foreach (var bundleInfo in bundlesToCreate)
+            string directoryPath = Path.Combine(
+                                Application.dataPath.Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar),
+                                AssetCache.assetCacheDirectory,
+                                ResourcesDirectoryName,
+                                bundleInfo.AssetBundlePlatform.ToString()
+                                );
+
+            string assetIntermediatePath = Path.Combine(directoryPath, StateSynchronizationObserver.AssetBundleName);
+            string assetFinalPath = $"{assetIntermediatePath}.bytes";
+
+            string manifestIntermediatePath = $"{assetIntermediatePath}.manifest";
+            string manifestFinalPath = $"{manifestIntermediatePath}.bytes";
+
+            string versionFinalPath = $"{assetIntermediatePath}.version.asset";
+            string versionProjectRelativeFinalPath = "Assets" + versionFinalPath.Substring(Application.dataPath.Length);
+
+            string resourcePath = Path.Combine(directoryPath, bundleInfo.AssetBundlePlatform.ToString());
+
+            Directory.CreateDirectory(directoryPath);
+
+            EditorUserBuildSettings.SwitchActiveBuildTarget(bundleInfo.BuildTargetGroup, bundleInfo.BuildTarget);
+            var bundleManifest = BuildPipeline.BuildAssetBundles(directoryPath, bundleOptions, bundleInfo.BuildTarget);
+
+            var bundleVersion = ScriptableObject.CreateInstance<AssetBundleVersion>();
+            bundleVersion.Identity = bundleManifest.GetAssetBundleHash(StateSynchronizationObserver.AssetBundleName).ToString().ToLowerInvariant();
+            bundleVersion.DisplayName = $"{PlayerSettings.productName} - {System.DateTime.Now:g}";
+
+            File.Delete(resourcePath);
+            File.Delete($"{resourcePath}.manifest");
+
+            File.Delete(assetFinalPath);
+            File.Delete(manifestFinalPath);
+            File.Delete(versionFinalPath);
+
+            if (File.Exists(assetIntermediatePath))
             {
-                string directoryPath = Path.Combine(
-                    Application.dataPath.Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar),
-                    AssetCache.assetCacheDirectory,
-                    ResourcesDirectoryName,
-                    bundleInfo.AssetBundlePlatform.ToString()
-                    );
-
-                string assetIntermediatePath = Path.Combine(directoryPath, StateSynchronizationObserver.AssetBundleName);
-                string assetFinalPath = $"{assetIntermediatePath}.bytes";
-
-                string manifestIntermediatePath = $"{assetIntermediatePath}.manifest";
-                string manifestFinalPath = $"{manifestIntermediatePath}.bytes";
-
-                string versionFinalPath = $"{assetIntermediatePath}.version.asset";
-                string versionProjectRelativeFinalPath = "Assets" + versionFinalPath.Substring(Application.dataPath.Length);
-
-                string resourcePath = Path.Combine(directoryPath, bundleInfo.AssetBundlePlatform.ToString());
-
-                Directory.CreateDirectory(directoryPath);
-
-                EditorUserBuildSettings.SwitchActiveBuildTarget(bundleInfo.BuildTargetGroup, bundleInfo.BuildTarget);
-                var bundleManifest = BuildPipeline.BuildAssetBundles(directoryPath, bundleOptions, bundleInfo.BuildTarget);
-
-                var bundleVersion = ScriptableObject.CreateInstance<AssetBundleVersion>();
-                bundleVersion.Identity = bundleManifest.GetAssetBundleHash(StateSynchronizationObserver.AssetBundleName).ToString().ToLowerInvariant();
-                bundleVersion.DisplayName = $"{PlayerSettings.productName} - {System.DateTime.Now:g}";
-
-                File.Delete(resourcePath);
-                File.Delete($"{resourcePath}.manifest");
-
-                File.Delete(assetFinalPath);
-                File.Delete(manifestFinalPath);
-                File.Delete(versionFinalPath);
-
-                if (File.Exists(assetIntermediatePath))
-                {
-                    File.Move(assetIntermediatePath, assetFinalPath);
-                    File.Move(manifestIntermediatePath, manifestFinalPath);
-                    AssetDatabase.CreateAsset(bundleVersion, versionProjectRelativeFinalPath);
-                }
-                else
-                {
-                    Debug.LogError($"Expected that asset bundle {assetIntermediatePath} was generated, but it does not exist");
-                }
+                File.Move(assetIntermediatePath, assetFinalPath);
+                File.Move(manifestIntermediatePath, manifestFinalPath);
+                AssetDatabase.CreateAsset(bundleVersion, versionProjectRelativeFinalPath);
+                Debug.Log($"Completed generating asset bundle for platform {bundleInfo.AssetBundlePlatform}");
             }
+            else
+            {
+                Debug.LogError($"Expected that asset bundle {assetIntermediatePath} was generated, but it does not exist");
+            }
+
+            // Restore the previously-used build target after building the asset bundle
+            EditorUserBuildSettings.SwitchActiveBuildTarget(currentBuildTargetGroup, currentBuildTarget);
         }
 
-        [MenuItem("Spectator View/Edit Global Performance Parameters", priority = 200)]
+        [MenuItem("Spectator View/Edit Global Performance Parameters", priority = 300)]
         internal static void EditGlobalPerformanceParameters()
         {
             GameObject prefab = Resources.Load<GameObject>(StateSynchronizationSceneManager.DefaultStateSynchronizationPerformanceParametersPrefabName);
@@ -195,7 +233,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
             AssetDatabase.OpenAsset(prefab);
         }
 
-        [MenuItem("Spectator View/Edit Custom Network Services", priority = 201)]
+        [MenuItem("Spectator View/Edit Custom Network Services", priority = 301)]
         private static void EditCustomShaderProperties()
         {
             GameObject prefab = Resources.Load<GameObject>(StateSynchronizationSceneManager.CustomBroadcasterServicesPrefabName);
@@ -211,7 +249,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
             AssetDatabase.OpenAsset(prefab);
         }
 
-        [MenuItem("Spectator View/Edit Settings", priority = 202)]
+        [MenuItem("Spectator View/Edit Settings", priority = 302)]
         private static void EditCustomSettingsProperties()
         {
             GameObject prefab = Resources.Load<GameObject>(SpectatorView.SettingsPrefabName);
