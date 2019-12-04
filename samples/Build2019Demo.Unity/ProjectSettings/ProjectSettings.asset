@@ -8,7 +8,7 @@ PlayerSettings:
   AndroidProfiler: 0
   AndroidFilterTouchesWhenObscured: 0
   AndroidEnableSustainedPerformanceMode: 0
-  defaultScreenOrientation: 4
+  defaultScreenOrientation: 0
   targetDevice: 2
   useOnDemandResources: 0
   accelerometerFrequency: 60
@@ -155,7 +155,7 @@ PlayerSettings:
   applicationIdentifier:
     Android: com.Microsoft.SpectatorView.Build2019Demo
     Standalone: com.Microsoft.SpectatorView.Build2019Demo
-    iOS: com.Microsoft.SpectatorView.Build2019Demo
+    iOS: com.SpectatorView.Build2019Demo
   buildNumber: {}
   AndroidBundleVersionCode: 1
   AndroidMinSdkVersion: 26
@@ -173,7 +173,7 @@ PlayerSettings:
   StripUnusedMeshComponents: 1
   VertexChannelCompressionMask: 4054
   iPhoneSdkVersion: 988
-  iOSTargetOSVersionString: 9.0
+  iOSTargetOSVersionString: 11.0
   tvOSSdkVersion: 0
   tvOSRequireExtendedGameController: 0
   tvOSTargetOSVersionString: 9.0
@@ -409,7 +409,7 @@ PlayerSettings:
   enableInternalProfiler: 0
   logObjCUncaughtExceptions: 1
   enableCrashReportAPI: 0
-  cameraUsageDescription: 
+  cameraUsageDescription: Camera required for AR Foundation
   locationUsageDescription: 
   microphoneUsageDescription: 
   switchNetLibKey: 
@@ -631,7 +631,8 @@ PlayerSettings:
     4: SPATIALALIGNMENT_ASA;STATESYNC_TEXTMESHPRO
     7: SPATIALALIGNMENT_ASA;STATESYNC_TEXTMESHPRO
     14: SPATIALALIGNMENT_ASA;STATESYNC_TEXTMESHPRO
-  platformArchitecture: {}
+  platformArchitecture:
+    iOS: 1
   scriptingBackend:
     Metro: 2
   il2cppCompilerConfiguration: {}

@@ -1,22 +1,22 @@
 # Spectator View Samples
 
-This folder contains sample and demo projects that are maintained by the SpectatorView team. Below you will find the instructions on how to get started, as well as the sample folder structure setup and dependencies.
+This folder contains sample and demo projects that are maintained by Spectator View contributors. Below you will find the instructions on how to get started, as well as the sample folder structure setup and dependencies.
 
 ## Getting Started
 
-Ensure you have all the required software, for detailed instructions see [Required Software](../doc/SpectatorView.Setup.md).
+Ensure you have all the required software, for detailed instructions see [Required Software](../doc/SpectatorView.Setup.md#software--hardware-requirements).
 
 - Git Tools
 - Visual Studio
 - Unity 2018.3.14f1
-- __(Optional)__ Windows 10.0.18362.0 SDK
+- Windows 10.0.18362.0 SDK
 - __(Optional)__ Android Studio
 - __(Optional)__ XCode
 
 Once you have the required software, follow these steps:
 
-1. Using your favorite Git management tool, clone this repository if you haven't yet.
-2. Then with git, pull the latest version of the code.
+1. Using your favorite Git management tool, clone this repository.
+2. Then with git, checkout the latest release of the code. (This will be the `release/*.*.` branch with the highest version number)
 3. Run `/tools/scripts/SetupRepository.bat` as an administrator to get ensure the appropriate submodules for the sample projects are cloned and the correct directories are linked into the sample project.
     - On Mac or Linux, you can run `/tools/scripts/SetupRepository.sh`.
 
@@ -26,7 +26,12 @@ Once you have the required software, follow these steps:
 
 This repository currently has the following samples:
 
-- [//BUILD 2019 Demo](./Build2019Demo.Unity/README.md)
+1. [//BUILD 2019 Demo](./Build2019Demo.Unity/README.md)
+    - This sample shows how to use [Azure Spatial Anchors](https://azure.microsoft.com/en-us/services/spatial-anchors/) to spatially align devices in the physical world.
+    - This sample also shows to use Spectator View with the [Mixed Reality Toolkit](http://aka.ms/mrtk).
+2. [SpectatorView.Example.Unity](./SpectatorView.Example.Unity/README.md)
+    - This sample shows how to use [QR Code detection](https://docs.microsoft.com/en-us/windows/mixed-reality/qr-code-tracking) on HoloLens 2 to spatially align devices in the physical world.
+    - This sample can also use [ArUco marker detection](https://docs.opencv.org/master/d5/dae/tutorial_aruco_detection.html) on HoloLens 1 to spatially align devices in the physical world.
 
 ## Troubleshooting
 

@@ -45,13 +45,15 @@ Write-Host "${commitSha}: $commitTitle"
 Write-Host "Clean output folder '_docs/' if it exists"
 Remove-Item ".\_docs" -Force -Recurse -ErrorAction Ignore
 
+# For now default to all branches publishing so that we can publish for release branches instead of master
+$DestFolder = ".\_docs\"
 # Compute the source and destination folders
-$DestFolder = ".\_docs\versions\$SourceBranch\"
-if ($SourceBranch -eq "master")
-{
-    # The master branch is the default version at the root of the website
-    $DestFolder = ".\_docs\"
-}
+# $DestFolder = ".\_docs\versions\$SourceBranch\"
+# if ($SourceBranch -eq "master")
+# {
+#     # The master branch is the default version at the root of the website
+#     $DestFolder = ".\_docs\"
+# }
 $output = ""
 Invoke-Expression "git rev-parse --verify `"refs/remotes/origin/gh-pages^{commit}`"" | Tee-Object -Variable output | Out-Null
 if (-not $output)

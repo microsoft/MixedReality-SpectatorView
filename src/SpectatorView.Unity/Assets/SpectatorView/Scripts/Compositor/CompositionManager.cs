@@ -70,7 +70,9 @@ namespace Microsoft.MixedReality.SpectatorView
         /// Check to enable debug logging.
         /// </summary>
         [SerializeField]
+#pragma warning disable 414 // The field is assigned but its value is never used
         private bool debugLogging = false;
+#pragma warning restore 414
 
         private float videoTimestampToHolographicTimestampOffset = -10.0f;
         private int captureDeviceIndex = -1;

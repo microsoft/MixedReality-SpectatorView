@@ -36,6 +36,7 @@
           "src/SpectatorView.Native/**/*.md",
           "samples/README.md",
           "samples/Build2019Demo.Unity/README.md",
+          "samples/SpectatorView.Example.Unity/README.md",
           "doc/*.md" ]
       }
     ],

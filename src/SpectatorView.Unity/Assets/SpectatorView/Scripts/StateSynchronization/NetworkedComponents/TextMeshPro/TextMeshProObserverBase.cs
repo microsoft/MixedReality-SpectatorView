@@ -13,9 +13,9 @@ namespace Microsoft.MixedReality.SpectatorView
 {
     internal abstract class TextMeshProObserverBase : ComponentObserver
     {
+#if STATESYNC_TEXTMESHPRO
         private bool needsUpdate = false;
 
-#if STATESYNC_TEXTMESHPRO
         protected TMP_Text TextMeshObserver
         {
             get;
