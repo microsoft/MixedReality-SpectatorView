@@ -2409,6 +2409,44 @@ references:
   isSpec: "True"
   fullName: Microsoft.MixedReality.SpectatorView.AndroidRecordingService.StopRecording
   nameWithType: AndroidRecordingService.StopRecording
+- uid: Microsoft.MixedReality.SpectatorView.ARCoreTrackingObserver
+  name: ARCoreTrackingObserver
+  href: api/Microsoft.MixedReality.SpectatorView.ARCoreTrackingObserver.html
+  commentId: T:Microsoft.MixedReality.SpectatorView.ARCoreTrackingObserver
+  fullName: Microsoft.MixedReality.SpectatorView.ARCoreTrackingObserver
+  nameWithType: ARCoreTrackingObserver
+- uid: Microsoft.MixedReality.SpectatorView.ARCoreTrackingObserver.TrackingState
+  name: TrackingState
+  href: api/Microsoft.MixedReality.SpectatorView.ARCoreTrackingObserver.html#Microsoft_MixedReality_SpectatorView_ARCoreTrackingObserver_TrackingState
+  commentId: P:Microsoft.MixedReality.SpectatorView.ARCoreTrackingObserver.TrackingState
+  fullName: Microsoft.MixedReality.SpectatorView.ARCoreTrackingObserver.TrackingState
+  nameWithType: ARCoreTrackingObserver.TrackingState
+- uid: Microsoft.MixedReality.SpectatorView.ARCoreTrackingObserver.TrackingState*
+  name: TrackingState
+  href: api/Microsoft.MixedReality.SpectatorView.ARCoreTrackingObserver.html#Microsoft_MixedReality_SpectatorView_ARCoreTrackingObserver_TrackingState_
+  commentId: Overload:Microsoft.MixedReality.SpectatorView.ARCoreTrackingObserver.TrackingState
+  isSpec: "True"
+  fullName: Microsoft.MixedReality.SpectatorView.ARCoreTrackingObserver.TrackingState
+  nameWithType: ARCoreTrackingObserver.TrackingState
+- uid: Microsoft.MixedReality.SpectatorView.ARKitTrackingObserver
+  name: ARKitTrackingObserver
+  href: api/Microsoft.MixedReality.SpectatorView.ARKitTrackingObserver.html
+  commentId: T:Microsoft.MixedReality.SpectatorView.ARKitTrackingObserver
+  fullName: Microsoft.MixedReality.SpectatorView.ARKitTrackingObserver
+  nameWithType: ARKitTrackingObserver
+- uid: Microsoft.MixedReality.SpectatorView.ARKitTrackingObserver.TrackingState
+  name: TrackingState
+  href: api/Microsoft.MixedReality.SpectatorView.ARKitTrackingObserver.html#Microsoft_MixedReality_SpectatorView_ARKitTrackingObserver_TrackingState
+  commentId: P:Microsoft.MixedReality.SpectatorView.ARKitTrackingObserver.TrackingState
+  fullName: Microsoft.MixedReality.SpectatorView.ARKitTrackingObserver.TrackingState
+  nameWithType: ARKitTrackingObserver.TrackingState
+- uid: Microsoft.MixedReality.SpectatorView.ARKitTrackingObserver.TrackingState*
+  name: TrackingState
+  href: api/Microsoft.MixedReality.SpectatorView.ARKitTrackingObserver.html#Microsoft_MixedReality_SpectatorView_ARKitTrackingObserver_TrackingState_
+  commentId: Overload:Microsoft.MixedReality.SpectatorView.ARKitTrackingObserver.TrackingState
+  isSpec: "True"
+  fullName: Microsoft.MixedReality.SpectatorView.ARKitTrackingObserver.TrackingState
+  nameWithType: ARKitTrackingObserver.TrackingState
 - uid: Microsoft.MixedReality.SpectatorView.ArUcoMarkerDetector
   name: ArUcoMarkerDetector
   href: api/Microsoft.MixedReality.SpectatorView.ArUcoMarkerDetector.html
@@ -3741,6 +3779,23 @@ references:
   fullName.vb: Microsoft.MixedReality.SpectatorView.ComponentBroadcaster(Of TComponentBroadcasterService, TChangeFlags).OnInitialized
   nameWithType: ComponentBroadcaster<TComponentBroadcasterService, TChangeFlags>.OnInitialized
   nameWithType.vb: ComponentBroadcaster(Of TComponentBroadcasterService, TChangeFlags).OnInitialized
+- uid: Microsoft.MixedReality.SpectatorView.ComponentBroadcaster`2.PerformanceComponentName
+  name: PerformanceComponentName
+  href: api/Microsoft.MixedReality.SpectatorView.ComponentBroadcaster-2.html#Microsoft_MixedReality_SpectatorView_ComponentBroadcaster_2_PerformanceComponentName
+  commentId: P:Microsoft.MixedReality.SpectatorView.ComponentBroadcaster`2.PerformanceComponentName
+  fullName: Microsoft.MixedReality.SpectatorView.ComponentBroadcaster<TComponentBroadcasterService, TChangeFlags>.PerformanceComponentName
+  fullName.vb: Microsoft.MixedReality.SpectatorView.ComponentBroadcaster(Of TComponentBroadcasterService, TChangeFlags).PerformanceComponentName
+  nameWithType: ComponentBroadcaster<TComponentBroadcasterService, TChangeFlags>.PerformanceComponentName
+  nameWithType.vb: ComponentBroadcaster(Of TComponentBroadcasterService, TChangeFlags).PerformanceComponentName
+- uid: Microsoft.MixedReality.SpectatorView.ComponentBroadcaster`2.PerformanceComponentName*
+  name: PerformanceComponentName
+  href: api/Microsoft.MixedReality.SpectatorView.ComponentBroadcaster-2.html#Microsoft_MixedReality_SpectatorView_ComponentBroadcaster_2_PerformanceComponentName_
+  commentId: Overload:Microsoft.MixedReality.SpectatorView.ComponentBroadcaster`2.PerformanceComponentName
+  isSpec: "True"
+  fullName: Microsoft.MixedReality.SpectatorView.ComponentBroadcaster<TComponentBroadcasterService, TChangeFlags>.PerformanceComponentName
+  fullName.vb: Microsoft.MixedReality.SpectatorView.ComponentBroadcaster(Of TComponentBroadcasterService, TChangeFlags).PerformanceComponentName
+  nameWithType: ComponentBroadcaster<TComponentBroadcasterService, TChangeFlags>.PerformanceComponentName
+  nameWithType.vb: ComponentBroadcaster(Of TComponentBroadcasterService, TChangeFlags).PerformanceComponentName
 - uid: Microsoft.MixedReality.SpectatorView.ComponentBroadcaster`2.ProcessNewConnections(IEnumerable{Microsoft.MixedReality.SpectatorView.SocketEndpoint})
   name: ProcessNewConnections(IEnumerable<SocketEndpoint>)
   href: api/Microsoft.MixedReality.SpectatorView.ComponentBroadcaster-2.html#Microsoft_MixedReality_SpectatorView_ComponentBroadcaster_2_ProcessNewConnections_IEnumerable_Microsoft_MixedReality_SpectatorView_SocketEndpoint__
@@ -4731,12 +4786,180 @@ references:
   commentId: F:Microsoft.MixedReality.SpectatorView.DeviceInfoObserver.StatusCommand
   fullName: Microsoft.MixedReality.SpectatorView.DeviceInfoObserver.StatusCommand
   nameWithType: DeviceInfoObserver.StatusCommand
+- uid: Microsoft.MixedReality.SpectatorView.DeviceTrackingStateVisual
+  name: DeviceTrackingStateVisual
+  href: api/Microsoft.MixedReality.SpectatorView.DeviceTrackingStateVisual.html
+  commentId: T:Microsoft.MixedReality.SpectatorView.DeviceTrackingStateVisual
+  fullName: Microsoft.MixedReality.SpectatorView.DeviceTrackingStateVisual
+  nameWithType: DeviceTrackingStateVisual
 - uid: Microsoft.MixedReality.SpectatorView.DisconnectedEventHandler
   name: DisconnectedEventHandler
   href: api/Microsoft.MixedReality.SpectatorView.DisconnectedEventHandler.html
   commentId: T:Microsoft.MixedReality.SpectatorView.DisconnectedEventHandler
   fullName: Microsoft.MixedReality.SpectatorView.DisconnectedEventHandler
   nameWithType: DisconnectedEventHandler
+- uid: Microsoft.MixedReality.SpectatorView.Dispatcher
+  name: Dispatcher
+  href: api/Microsoft.MixedReality.SpectatorView.Dispatcher.html
+  commentId: T:Microsoft.MixedReality.SpectatorView.Dispatcher
+  fullName: Microsoft.MixedReality.SpectatorView.Dispatcher
+  nameWithType: Dispatcher
+- uid: Microsoft.MixedReality.SpectatorView.Dispatcher.CurrentThreadId
+  name: CurrentThreadId
+  href: api/Microsoft.MixedReality.SpectatorView.Dispatcher.html#Microsoft_MixedReality_SpectatorView_Dispatcher_CurrentThreadId
+  commentId: P:Microsoft.MixedReality.SpectatorView.Dispatcher.CurrentThreadId
+  fullName: Microsoft.MixedReality.SpectatorView.Dispatcher.CurrentThreadId
+  nameWithType: Dispatcher.CurrentThreadId
+- uid: Microsoft.MixedReality.SpectatorView.Dispatcher.CurrentThreadId*
+  name: CurrentThreadId
+  href: api/Microsoft.MixedReality.SpectatorView.Dispatcher.html#Microsoft_MixedReality_SpectatorView_Dispatcher_CurrentThreadId_
+  commentId: Overload:Microsoft.MixedReality.SpectatorView.Dispatcher.CurrentThreadId
+  isSpec: "True"
+  fullName: Microsoft.MixedReality.SpectatorView.Dispatcher.CurrentThreadId
+  nameWithType: Dispatcher.CurrentThreadId
+- uid: Microsoft.MixedReality.SpectatorView.Dispatcher.Initialize(System.Int32,TaskScheduler)
+  name: Initialize(Int32, TaskScheduler)
+  href: api/Microsoft.MixedReality.SpectatorView.Dispatcher.html#Microsoft_MixedReality_SpectatorView_Dispatcher_Initialize_System_Int32_TaskScheduler_
+  commentId: M:Microsoft.MixedReality.SpectatorView.Dispatcher.Initialize(System.Int32,TaskScheduler)
+  fullName: Microsoft.MixedReality.SpectatorView.Dispatcher.Initialize(System.Int32, TaskScheduler)
+  nameWithType: Dispatcher.Initialize(Int32, TaskScheduler)
+- uid: Microsoft.MixedReality.SpectatorView.Dispatcher.Initialize*
+  name: Initialize
+  href: api/Microsoft.MixedReality.SpectatorView.Dispatcher.html#Microsoft_MixedReality_SpectatorView_Dispatcher_Initialize_
+  commentId: Overload:Microsoft.MixedReality.SpectatorView.Dispatcher.Initialize
+  isSpec: "True"
+  fullName: Microsoft.MixedReality.SpectatorView.Dispatcher.Initialize
+  nameWithType: Dispatcher.Initialize
+- uid: Microsoft.MixedReality.SpectatorView.Dispatcher.IsGameThread
+  name: IsGameThread
+  href: api/Microsoft.MixedReality.SpectatorView.Dispatcher.html#Microsoft_MixedReality_SpectatorView_Dispatcher_IsGameThread
+  commentId: P:Microsoft.MixedReality.SpectatorView.Dispatcher.IsGameThread
+  fullName: Microsoft.MixedReality.SpectatorView.Dispatcher.IsGameThread
+  nameWithType: Dispatcher.IsGameThread
+- uid: Microsoft.MixedReality.SpectatorView.Dispatcher.IsGameThread*
+  name: IsGameThread
+  href: api/Microsoft.MixedReality.SpectatorView.Dispatcher.html#Microsoft_MixedReality_SpectatorView_Dispatcher_IsGameThread_
+  commentId: Overload:Microsoft.MixedReality.SpectatorView.Dispatcher.IsGameThread
+  isSpec: "True"
+  fullName: Microsoft.MixedReality.SpectatorView.Dispatcher.IsGameThread
+  nameWithType: Dispatcher.IsGameThread
+- uid: Microsoft.MixedReality.SpectatorView.Dispatcher.ScheduleAsync(System.Action,CancellationToken,System.Boolean)
+  name: ScheduleAsync(Action, CancellationToken, Boolean)
+  href: api/Microsoft.MixedReality.SpectatorView.Dispatcher.html#Microsoft_MixedReality_SpectatorView_Dispatcher_ScheduleAsync_System_Action_CancellationToken_System_Boolean_
+  commentId: M:Microsoft.MixedReality.SpectatorView.Dispatcher.ScheduleAsync(System.Action,CancellationToken,System.Boolean)
+  fullName: Microsoft.MixedReality.SpectatorView.Dispatcher.ScheduleAsync(System.Action, CancellationToken, System.Boolean)
+  nameWithType: Dispatcher.ScheduleAsync(Action, CancellationToken, Boolean)
+- uid: Microsoft.MixedReality.SpectatorView.Dispatcher.ScheduleAsync(System.Func{Task},CancellationToken,System.Boolean)
+  name: ScheduleAsync(Func<Task>, CancellationToken, Boolean)
+  href: api/Microsoft.MixedReality.SpectatorView.Dispatcher.html#Microsoft_MixedReality_SpectatorView_Dispatcher_ScheduleAsync_System_Func_Task__CancellationToken_System_Boolean_
+  commentId: M:Microsoft.MixedReality.SpectatorView.Dispatcher.ScheduleAsync(System.Func{Task},CancellationToken,System.Boolean)
+  name.vb: ScheduleAsync(Func(Of Task), CancellationToken, Boolean)
+  fullName: Microsoft.MixedReality.SpectatorView.Dispatcher.ScheduleAsync(System.Func<Task>, CancellationToken, System.Boolean)
+  fullName.vb: Microsoft.MixedReality.SpectatorView.Dispatcher.ScheduleAsync(System.Func(Of Task), CancellationToken, System.Boolean)
+  nameWithType: Dispatcher.ScheduleAsync(Func<Task>, CancellationToken, Boolean)
+  nameWithType.vb: Dispatcher.ScheduleAsync(Func(Of Task), CancellationToken, Boolean)
+- uid: Microsoft.MixedReality.SpectatorView.Dispatcher.ScheduleAsync*
+  name: ScheduleAsync
+  href: api/Microsoft.MixedReality.SpectatorView.Dispatcher.html#Microsoft_MixedReality_SpectatorView_Dispatcher_ScheduleAsync_
+  commentId: Overload:Microsoft.MixedReality.SpectatorView.Dispatcher.ScheduleAsync
+  isSpec: "True"
+  fullName: Microsoft.MixedReality.SpectatorView.Dispatcher.ScheduleAsync
+  nameWithType: Dispatcher.ScheduleAsync
+- uid: Microsoft.MixedReality.SpectatorView.Dispatcher.ScheduleAsync``1(System.Func{``0},CancellationToken,System.Boolean)
+  name: ScheduleAsync<TResult>(Func<TResult>, CancellationToken, Boolean)
+  href: api/Microsoft.MixedReality.SpectatorView.Dispatcher.html#Microsoft_MixedReality_SpectatorView_Dispatcher_ScheduleAsync__1_System_Func___0__CancellationToken_System_Boolean_
+  commentId: M:Microsoft.MixedReality.SpectatorView.Dispatcher.ScheduleAsync``1(System.Func{``0},CancellationToken,System.Boolean)
+  name.vb: ScheduleAsync(Of TResult)(Func(Of TResult), CancellationToken, Boolean)
+  fullName: Microsoft.MixedReality.SpectatorView.Dispatcher.ScheduleAsync<TResult>(System.Func<TResult>, CancellationToken, System.Boolean)
+  fullName.vb: Microsoft.MixedReality.SpectatorView.Dispatcher.ScheduleAsync(Of TResult)(System.Func(Of TResult), CancellationToken, System.Boolean)
+  nameWithType: Dispatcher.ScheduleAsync<TResult>(Func<TResult>, CancellationToken, Boolean)
+  nameWithType.vb: Dispatcher.ScheduleAsync(Of TResult)(Func(Of TResult), CancellationToken, Boolean)
+- uid: Microsoft.MixedReality.SpectatorView.Dispatcher.ScheduleAsync``1(System.Func{Task{``0}},CancellationToken,System.Boolean)
+  name: ScheduleAsync<TResult>(Func<Task<TResult>>, CancellationToken, Boolean)
+  href: api/Microsoft.MixedReality.SpectatorView.Dispatcher.html#Microsoft_MixedReality_SpectatorView_Dispatcher_ScheduleAsync__1_System_Func_Task___0___CancellationToken_System_Boolean_
+  commentId: M:Microsoft.MixedReality.SpectatorView.Dispatcher.ScheduleAsync``1(System.Func{Task{``0}},CancellationToken,System.Boolean)
+  name.vb: ScheduleAsync(Of TResult)(Func(Of Task(Of TResult)), CancellationToken, Boolean)
+  fullName: Microsoft.MixedReality.SpectatorView.Dispatcher.ScheduleAsync<TResult>(System.Func<Task<TResult>>, CancellationToken, System.Boolean)
+  fullName.vb: Microsoft.MixedReality.SpectatorView.Dispatcher.ScheduleAsync(Of TResult)(System.Func(Of Task(Of TResult)), CancellationToken, System.Boolean)
+  nameWithType: Dispatcher.ScheduleAsync<TResult>(Func<Task<TResult>>, CancellationToken, Boolean)
+  nameWithType.vb: Dispatcher.ScheduleAsync(Of TResult)(Func(Of Task(Of TResult)), CancellationToken, Boolean)
+- uid: Microsoft.MixedReality.SpectatorView.Dispatcher.ThrowIfNotGameThread
+  name: ThrowIfNotGameThread()
+  href: api/Microsoft.MixedReality.SpectatorView.Dispatcher.html#Microsoft_MixedReality_SpectatorView_Dispatcher_ThrowIfNotGameThread
+  commentId: M:Microsoft.MixedReality.SpectatorView.Dispatcher.ThrowIfNotGameThread
+  fullName: Microsoft.MixedReality.SpectatorView.Dispatcher.ThrowIfNotGameThread()
+  nameWithType: Dispatcher.ThrowIfNotGameThread()
+- uid: Microsoft.MixedReality.SpectatorView.Dispatcher.ThrowIfNotGameThread*
+  name: ThrowIfNotGameThread
+  href: api/Microsoft.MixedReality.SpectatorView.Dispatcher.html#Microsoft_MixedReality_SpectatorView_Dispatcher_ThrowIfNotGameThread_
+  commentId: Overload:Microsoft.MixedReality.SpectatorView.Dispatcher.ThrowIfNotGameThread
+  isSpec: "True"
+  fullName: Microsoft.MixedReality.SpectatorView.Dispatcher.ThrowIfNotGameThread
+  nameWithType: Dispatcher.ThrowIfNotGameThread
+- uid: Microsoft.MixedReality.SpectatorView.Dispatcher.Unintialize
+  name: Unintialize()
+  href: api/Microsoft.MixedReality.SpectatorView.Dispatcher.html#Microsoft_MixedReality_SpectatorView_Dispatcher_Unintialize
+  commentId: M:Microsoft.MixedReality.SpectatorView.Dispatcher.Unintialize
+  fullName: Microsoft.MixedReality.SpectatorView.Dispatcher.Unintialize()
+  nameWithType: Dispatcher.Unintialize()
+- uid: Microsoft.MixedReality.SpectatorView.Dispatcher.Unintialize*
+  name: Unintialize
+  href: api/Microsoft.MixedReality.SpectatorView.Dispatcher.html#Microsoft_MixedReality_SpectatorView_Dispatcher_Unintialize_
+  commentId: Overload:Microsoft.MixedReality.SpectatorView.Dispatcher.Unintialize
+  isSpec: "True"
+  fullName: Microsoft.MixedReality.SpectatorView.Dispatcher.Unintialize
+  nameWithType: Dispatcher.Unintialize
+- uid: Microsoft.MixedReality.SpectatorView.Dispatcher.WaitForNextFrameAsync
+  name: WaitForNextFrameAsync()
+  href: api/Microsoft.MixedReality.SpectatorView.Dispatcher.html#Microsoft_MixedReality_SpectatorView_Dispatcher_WaitForNextFrameAsync
+  commentId: M:Microsoft.MixedReality.SpectatorView.Dispatcher.WaitForNextFrameAsync
+  fullName: Microsoft.MixedReality.SpectatorView.Dispatcher.WaitForNextFrameAsync()
+  nameWithType: Dispatcher.WaitForNextFrameAsync()
+- uid: Microsoft.MixedReality.SpectatorView.Dispatcher.WaitForNextFrameAsync*
+  name: WaitForNextFrameAsync
+  href: api/Microsoft.MixedReality.SpectatorView.Dispatcher.html#Microsoft_MixedReality_SpectatorView_Dispatcher_WaitForNextFrameAsync_
+  commentId: Overload:Microsoft.MixedReality.SpectatorView.Dispatcher.WaitForNextFrameAsync
+  isSpec: "True"
+  fullName: Microsoft.MixedReality.SpectatorView.Dispatcher.WaitForNextFrameAsync
+  nameWithType: Dispatcher.WaitForNextFrameAsync
+- uid: Microsoft.MixedReality.SpectatorView.Dispatcher.WhenAsync(System.Func{System.Boolean},CancellationToken)
+  name: WhenAsync(Func<Boolean>, CancellationToken)
+  href: api/Microsoft.MixedReality.SpectatorView.Dispatcher.html#Microsoft_MixedReality_SpectatorView_Dispatcher_WhenAsync_System_Func_System_Boolean__CancellationToken_
+  commentId: M:Microsoft.MixedReality.SpectatorView.Dispatcher.WhenAsync(System.Func{System.Boolean},CancellationToken)
+  name.vb: WhenAsync(Func(Of Boolean), CancellationToken)
+  fullName: Microsoft.MixedReality.SpectatorView.Dispatcher.WhenAsync(System.Func<System.Boolean>, CancellationToken)
+  fullName.vb: Microsoft.MixedReality.SpectatorView.Dispatcher.WhenAsync(System.Func(Of System.Boolean), CancellationToken)
+  nameWithType: Dispatcher.WhenAsync(Func<Boolean>, CancellationToken)
+  nameWithType.vb: Dispatcher.WhenAsync(Func(Of Boolean), CancellationToken)
+- uid: Microsoft.MixedReality.SpectatorView.Dispatcher.WhenAsync*
+  name: WhenAsync
+  href: api/Microsoft.MixedReality.SpectatorView.Dispatcher.html#Microsoft_MixedReality_SpectatorView_Dispatcher_WhenAsync_
+  commentId: Overload:Microsoft.MixedReality.SpectatorView.Dispatcher.WhenAsync
+  isSpec: "True"
+  fullName: Microsoft.MixedReality.SpectatorView.Dispatcher.WhenAsync
+  nameWithType: Dispatcher.WhenAsync
+- uid: Microsoft.MixedReality.SpectatorView.Dispatcher.WhenNotNullAsync*
+  name: WhenNotNullAsync
+  href: api/Microsoft.MixedReality.SpectatorView.Dispatcher.html#Microsoft_MixedReality_SpectatorView_Dispatcher_WhenNotNullAsync_
+  commentId: Overload:Microsoft.MixedReality.SpectatorView.Dispatcher.WhenNotNullAsync
+  isSpec: "True"
+  fullName: Microsoft.MixedReality.SpectatorView.Dispatcher.WhenNotNullAsync
+  nameWithType: Dispatcher.WhenNotNullAsync
+- uid: Microsoft.MixedReality.SpectatorView.Dispatcher.WhenNotNullAsync``1(System.Func{``0},CancellationToken)
+  name: WhenNotNullAsync<T>(Func<T>, CancellationToken)
+  href: api/Microsoft.MixedReality.SpectatorView.Dispatcher.html#Microsoft_MixedReality_SpectatorView_Dispatcher_WhenNotNullAsync__1_System_Func___0__CancellationToken_
+  commentId: M:Microsoft.MixedReality.SpectatorView.Dispatcher.WhenNotNullAsync``1(System.Func{``0},CancellationToken)
+  name.vb: WhenNotNullAsync(Of T)(Func(Of T), CancellationToken)
+  fullName: Microsoft.MixedReality.SpectatorView.Dispatcher.WhenNotNullAsync<T>(System.Func<T>, CancellationToken)
+  fullName.vb: Microsoft.MixedReality.SpectatorView.Dispatcher.WhenNotNullAsync(Of T)(System.Func(Of T), CancellationToken)
+  nameWithType: Dispatcher.WhenNotNullAsync<T>(Func<T>, CancellationToken)
+  nameWithType.vb: Dispatcher.WhenNotNullAsync(Of T)(Func(Of T), CancellationToken)
+- uid: Microsoft.MixedReality.SpectatorView.DispatcherUnity
+  name: DispatcherUnity
+  href: api/Microsoft.MixedReality.SpectatorView.DispatcherUnity.html
+  commentId: T:Microsoft.MixedReality.SpectatorView.DispatcherUnity
+  fullName: Microsoft.MixedReality.SpectatorView.DispatcherUnity
+  nameWithType: DispatcherUnity
 - uid: Microsoft.MixedReality.SpectatorView.DynamicGameObjectHierarchyBroadcaster`1
   name: DynamicGameObjectHierarchyBroadcaster<TComponentService>
   href: api/Microsoft.MixedReality.SpectatorView.DynamicGameObjectHierarchyBroadcaster-1.html
@@ -5968,6 +6191,25 @@ references:
   commentId: F:Microsoft.MixedReality.SpectatorView.HoloLensCanvasHelper._zDistance
   fullName: Microsoft.MixedReality.SpectatorView.HoloLensCanvasHelper._zDistance
   nameWithType: HoloLensCanvasHelper._zDistance
+- uid: Microsoft.MixedReality.SpectatorView.HoloLensTrackingObserver
+  name: HoloLensTrackingObserver
+  href: api/Microsoft.MixedReality.SpectatorView.HoloLensTrackingObserver.html
+  commentId: T:Microsoft.MixedReality.SpectatorView.HoloLensTrackingObserver
+  fullName: Microsoft.MixedReality.SpectatorView.HoloLensTrackingObserver
+  nameWithType: HoloLensTrackingObserver
+- uid: Microsoft.MixedReality.SpectatorView.HoloLensTrackingObserver.TrackingState
+  name: TrackingState
+  href: api/Microsoft.MixedReality.SpectatorView.HoloLensTrackingObserver.html#Microsoft_MixedReality_SpectatorView_HoloLensTrackingObserver_TrackingState
+  commentId: P:Microsoft.MixedReality.SpectatorView.HoloLensTrackingObserver.TrackingState
+  fullName: Microsoft.MixedReality.SpectatorView.HoloLensTrackingObserver.TrackingState
+  nameWithType: HoloLensTrackingObserver.TrackingState
+- uid: Microsoft.MixedReality.SpectatorView.HoloLensTrackingObserver.TrackingState*
+  name: TrackingState
+  href: api/Microsoft.MixedReality.SpectatorView.HoloLensTrackingObserver.html#Microsoft_MixedReality_SpectatorView_HoloLensTrackingObserver_TrackingState_
+  commentId: Overload:Microsoft.MixedReality.SpectatorView.HoloLensTrackingObserver.TrackingState
+  isSpec: "True"
+  fullName: Microsoft.MixedReality.SpectatorView.HoloLensTrackingObserver.TrackingState
+  nameWithType: HoloLensTrackingObserver.TrackingState
 - uid: Microsoft.MixedReality.SpectatorView.IAssetCache
   name: IAssetCache
   href: api/Microsoft.MixedReality.SpectatorView.IAssetCache.html
@@ -6900,6 +7142,19 @@ references:
   commentId: T:Microsoft.MixedReality.SpectatorView.ISpatialLocalizationSession
   fullName: Microsoft.MixedReality.SpectatorView.ISpatialLocalizationSession
   nameWithType: ISpatialLocalizationSession
+- uid: Microsoft.MixedReality.SpectatorView.ISpatialLocalizationSession.Cancel
+  name: Cancel()
+  href: api/Microsoft.MixedReality.SpectatorView.ISpatialLocalizationSession.html#Microsoft_MixedReality_SpectatorView_ISpatialLocalizationSession_Cancel
+  commentId: M:Microsoft.MixedReality.SpectatorView.ISpatialLocalizationSession.Cancel
+  fullName: Microsoft.MixedReality.SpectatorView.ISpatialLocalizationSession.Cancel()
+  nameWithType: ISpatialLocalizationSession.Cancel()
+- uid: Microsoft.MixedReality.SpectatorView.ISpatialLocalizationSession.Cancel*
+  name: Cancel
+  href: api/Microsoft.MixedReality.SpectatorView.ISpatialLocalizationSession.html#Microsoft_MixedReality_SpectatorView_ISpatialLocalizationSession_Cancel_
+  commentId: Overload:Microsoft.MixedReality.SpectatorView.ISpatialLocalizationSession.Cancel
+  isSpec: "True"
+  fullName: Microsoft.MixedReality.SpectatorView.ISpatialLocalizationSession.Cancel
+  nameWithType: ISpatialLocalizationSession.Cancel
 - uid: Microsoft.MixedReality.SpectatorView.ISpatialLocalizationSession.LocalizeAsync(CancellationToken)
   name: LocalizeAsync(CancellationToken)
   href: api/Microsoft.MixedReality.SpectatorView.ISpatialLocalizationSession.html#Microsoft_MixedReality_SpectatorView_ISpatialLocalizationSession_LocalizeAsync_CancellationToken_
@@ -6926,6 +7181,19 @@ references:
   isSpec: "True"
   fullName: Microsoft.MixedReality.SpectatorView.ISpatialLocalizationSession.OnDataReceived
   nameWithType: ISpatialLocalizationSession.OnDataReceived
+- uid: Microsoft.MixedReality.SpectatorView.ISpatialLocalizationSession.Peer
+  name: Peer
+  href: api/Microsoft.MixedReality.SpectatorView.ISpatialLocalizationSession.html#Microsoft_MixedReality_SpectatorView_ISpatialLocalizationSession_Peer
+  commentId: P:Microsoft.MixedReality.SpectatorView.ISpatialLocalizationSession.Peer
+  fullName: Microsoft.MixedReality.SpectatorView.ISpatialLocalizationSession.Peer
+  nameWithType: ISpatialLocalizationSession.Peer
+- uid: Microsoft.MixedReality.SpectatorView.ISpatialLocalizationSession.Peer*
+  name: Peer
+  href: api/Microsoft.MixedReality.SpectatorView.ISpatialLocalizationSession.html#Microsoft_MixedReality_SpectatorView_ISpatialLocalizationSession_Peer_
+  commentId: Overload:Microsoft.MixedReality.SpectatorView.ISpatialLocalizationSession.Peer
+  isSpec: "True"
+  fullName: Microsoft.MixedReality.SpectatorView.ISpatialLocalizationSession.Peer
+  nameWithType: ISpatialLocalizationSession.Peer
 - uid: Microsoft.MixedReality.SpectatorView.ISpatialLocalizationSettings
   name: ISpatialLocalizationSettings
   href: api/Microsoft.MixedReality.SpectatorView.ISpatialLocalizationSettings.html
@@ -7022,6 +7290,25 @@ references:
   isSpec: "True"
   fullName: Microsoft.MixedReality.SpectatorView.ISpatialLocalizer.TryDeserializeSettings
   nameWithType: ISpatialLocalizer.TryDeserializeSettings
+- uid: Microsoft.MixedReality.SpectatorView.ITrackingObserver
+  name: ITrackingObserver
+  href: api/Microsoft.MixedReality.SpectatorView.ITrackingObserver.html
+  commentId: T:Microsoft.MixedReality.SpectatorView.ITrackingObserver
+  fullName: Microsoft.MixedReality.SpectatorView.ITrackingObserver
+  nameWithType: ITrackingObserver
+- uid: Microsoft.MixedReality.SpectatorView.ITrackingObserver.TrackingState
+  name: TrackingState
+  href: api/Microsoft.MixedReality.SpectatorView.ITrackingObserver.html#Microsoft_MixedReality_SpectatorView_ITrackingObserver_TrackingState
+  commentId: P:Microsoft.MixedReality.SpectatorView.ITrackingObserver.TrackingState
+  fullName: Microsoft.MixedReality.SpectatorView.ITrackingObserver.TrackingState
+  nameWithType: ITrackingObserver.TrackingState
+- uid: Microsoft.MixedReality.SpectatorView.ITrackingObserver.TrackingState*
+  name: TrackingState
+  href: api/Microsoft.MixedReality.SpectatorView.ITrackingObserver.html#Microsoft_MixedReality_SpectatorView_ITrackingObserver_TrackingState_
+  commentId: Overload:Microsoft.MixedReality.SpectatorView.ITrackingObserver.TrackingState
+  isSpec: "True"
+  fullName: Microsoft.MixedReality.SpectatorView.ITrackingObserver.TrackingState
+  nameWithType: ITrackingObserver.TrackingState
 - uid: Microsoft.MixedReality.SpectatorView.Marker
   name: Marker
   href: api/Microsoft.MixedReality.SpectatorView.Marker.html
@@ -7503,19 +7790,32 @@ references:
   isSpec: "True"
   fullName: Microsoft.MixedReality.SpectatorView.MarkerVisualLocalizationInitializer.PeerSpatialLocalizerId
   nameWithType: MarkerVisualLocalizationInitializer.PeerSpatialLocalizerId
-- uid: Microsoft.MixedReality.SpectatorView.MarkerVisualLocalizationInitializer.RunLocalization(Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemParticipant)
-  name: RunLocalization(SpatialCoordinateSystemParticipant)
-  href: api/Microsoft.MixedReality.SpectatorView.MarkerVisualLocalizationInitializer.html#Microsoft_MixedReality_SpectatorView_MarkerVisualLocalizationInitializer_RunLocalization_Microsoft_MixedReality_SpectatorView_SpatialCoordinateSystemParticipant_
-  commentId: M:Microsoft.MixedReality.SpectatorView.MarkerVisualLocalizationInitializer.RunLocalization(Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemParticipant)
-  fullName: Microsoft.MixedReality.SpectatorView.MarkerVisualLocalizationInitializer.RunLocalization(Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemParticipant)
-  nameWithType: MarkerVisualLocalizationInitializer.RunLocalization(SpatialCoordinateSystemParticipant)
-- uid: Microsoft.MixedReality.SpectatorView.MarkerVisualLocalizationInitializer.RunLocalization*
-  name: RunLocalization
-  href: api/Microsoft.MixedReality.SpectatorView.MarkerVisualLocalizationInitializer.html#Microsoft_MixedReality_SpectatorView_MarkerVisualLocalizationInitializer_RunLocalization_
-  commentId: Overload:Microsoft.MixedReality.SpectatorView.MarkerVisualLocalizationInitializer.RunLocalization
+- uid: Microsoft.MixedReality.SpectatorView.MarkerVisualLocalizationInitializer.TryResetLocalizationAsync(Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemParticipant)
+  name: TryResetLocalizationAsync(SpatialCoordinateSystemParticipant)
+  href: api/Microsoft.MixedReality.SpectatorView.MarkerVisualLocalizationInitializer.html#Microsoft_MixedReality_SpectatorView_MarkerVisualLocalizationInitializer_TryResetLocalizationAsync_Microsoft_MixedReality_SpectatorView_SpatialCoordinateSystemParticipant_
+  commentId: M:Microsoft.MixedReality.SpectatorView.MarkerVisualLocalizationInitializer.TryResetLocalizationAsync(Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemParticipant)
+  fullName: Microsoft.MixedReality.SpectatorView.MarkerVisualLocalizationInitializer.TryResetLocalizationAsync(Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemParticipant)
+  nameWithType: MarkerVisualLocalizationInitializer.TryResetLocalizationAsync(SpatialCoordinateSystemParticipant)
+- uid: Microsoft.MixedReality.SpectatorView.MarkerVisualLocalizationInitializer.TryResetLocalizationAsync*
+  name: TryResetLocalizationAsync
+  href: api/Microsoft.MixedReality.SpectatorView.MarkerVisualLocalizationInitializer.html#Microsoft_MixedReality_SpectatorView_MarkerVisualLocalizationInitializer_TryResetLocalizationAsync_
+  commentId: Overload:Microsoft.MixedReality.SpectatorView.MarkerVisualLocalizationInitializer.TryResetLocalizationAsync
   isSpec: "True"
-  fullName: Microsoft.MixedReality.SpectatorView.MarkerVisualLocalizationInitializer.RunLocalization
-  nameWithType: MarkerVisualLocalizationInitializer.RunLocalization
+  fullName: Microsoft.MixedReality.SpectatorView.MarkerVisualLocalizationInitializer.TryResetLocalizationAsync
+  nameWithType: MarkerVisualLocalizationInitializer.TryResetLocalizationAsync
+- uid: Microsoft.MixedReality.SpectatorView.MarkerVisualLocalizationInitializer.TryRunLocalizationAsync(Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemParticipant)
+  name: TryRunLocalizationAsync(SpatialCoordinateSystemParticipant)
+  href: api/Microsoft.MixedReality.SpectatorView.MarkerVisualLocalizationInitializer.html#Microsoft_MixedReality_SpectatorView_MarkerVisualLocalizationInitializer_TryRunLocalizationAsync_Microsoft_MixedReality_SpectatorView_SpatialCoordinateSystemParticipant_
+  commentId: M:Microsoft.MixedReality.SpectatorView.MarkerVisualLocalizationInitializer.TryRunLocalizationAsync(Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemParticipant)
+  fullName: Microsoft.MixedReality.SpectatorView.MarkerVisualLocalizationInitializer.TryRunLocalizationAsync(Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemParticipant)
+  nameWithType: MarkerVisualLocalizationInitializer.TryRunLocalizationAsync(SpatialCoordinateSystemParticipant)
+- uid: Microsoft.MixedReality.SpectatorView.MarkerVisualLocalizationInitializer.TryRunLocalizationAsync*
+  name: TryRunLocalizationAsync
+  href: api/Microsoft.MixedReality.SpectatorView.MarkerVisualLocalizationInitializer.html#Microsoft_MixedReality_SpectatorView_MarkerVisualLocalizationInitializer_TryRunLocalizationAsync_
+  commentId: Overload:Microsoft.MixedReality.SpectatorView.MarkerVisualLocalizationInitializer.TryRunLocalizationAsync
+  isSpec: "True"
+  fullName: Microsoft.MixedReality.SpectatorView.MarkerVisualLocalizationInitializer.TryRunLocalizationAsync
+  nameWithType: MarkerVisualLocalizationInitializer.TryRunLocalizationAsync
 - uid: Microsoft.MixedReality.SpectatorView.MarkerVisualLocalizationSettings
   name: MarkerVisualLocalizationSettings
   href: api/Microsoft.MixedReality.SpectatorView.MarkerVisualLocalizationSettings.html
@@ -8169,6 +8469,23 @@ references:
   fullName.vb: Microsoft.MixedReality.SpectatorView.NetworkManager(Of TService)
   nameWithType: NetworkManager<TService>
   nameWithType.vb: NetworkManager(Of TService)
+- uid: Microsoft.MixedReality.SpectatorView.NetworkManager`1.AttemptReconnectWhenClient
+  name: AttemptReconnectWhenClient
+  href: api/Microsoft.MixedReality.SpectatorView.NetworkManager-1.html#Microsoft_MixedReality_SpectatorView_NetworkManager_1_AttemptReconnectWhenClient
+  commentId: P:Microsoft.MixedReality.SpectatorView.NetworkManager`1.AttemptReconnectWhenClient
+  fullName: Microsoft.MixedReality.SpectatorView.NetworkManager<TService>.AttemptReconnectWhenClient
+  fullName.vb: Microsoft.MixedReality.SpectatorView.NetworkManager(Of TService).AttemptReconnectWhenClient
+  nameWithType: NetworkManager<TService>.AttemptReconnectWhenClient
+  nameWithType.vb: NetworkManager(Of TService).AttemptReconnectWhenClient
+- uid: Microsoft.MixedReality.SpectatorView.NetworkManager`1.AttemptReconnectWhenClient*
+  name: AttemptReconnectWhenClient
+  href: api/Microsoft.MixedReality.SpectatorView.NetworkManager-1.html#Microsoft_MixedReality_SpectatorView_NetworkManager_1_AttemptReconnectWhenClient_
+  commentId: Overload:Microsoft.MixedReality.SpectatorView.NetworkManager`1.AttemptReconnectWhenClient
+  isSpec: "True"
+  fullName: Microsoft.MixedReality.SpectatorView.NetworkManager<TService>.AttemptReconnectWhenClient
+  fullName.vb: Microsoft.MixedReality.SpectatorView.NetworkManager(Of TService).AttemptReconnectWhenClient
+  nameWithType: NetworkManager<TService>.AttemptReconnectWhenClient
+  nameWithType.vb: NetworkManager(Of TService).AttemptReconnectWhenClient
 - uid: Microsoft.MixedReality.SpectatorView.NetworkManager`1.Awake
   name: Awake()
   href: api/Microsoft.MixedReality.SpectatorView.NetworkManager-1.html#Microsoft_MixedReality_SpectatorView_NetworkManager_1_Awake
@@ -8841,18 +9158,18 @@ references:
   commentId: F:Microsoft.MixedReality.SpectatorView.RecordingServiceVisual._buttonParent
   fullName: Microsoft.MixedReality.SpectatorView.RecordingServiceVisual._buttonParent
   nameWithType: RecordingServiceVisual._buttonParent
-- uid: Microsoft.MixedReality.SpectatorView.RecordingServiceVisual._countdownImage
-  name: _countdownImage
-  href: api/Microsoft.MixedReality.SpectatorView.RecordingServiceVisual.html#Microsoft_MixedReality_SpectatorView_RecordingServiceVisual__countdownImage
-  commentId: F:Microsoft.MixedReality.SpectatorView.RecordingServiceVisual._countdownImage
-  fullName: Microsoft.MixedReality.SpectatorView.RecordingServiceVisual._countdownImage
-  nameWithType: RecordingServiceVisual._countdownImage
 - uid: Microsoft.MixedReality.SpectatorView.RecordingServiceVisual._countdownLength
   name: _countdownLength
   href: api/Microsoft.MixedReality.SpectatorView.RecordingServiceVisual.html#Microsoft_MixedReality_SpectatorView_RecordingServiceVisual__countdownLength
   commentId: F:Microsoft.MixedReality.SpectatorView.RecordingServiceVisual._countdownLength
   fullName: Microsoft.MixedReality.SpectatorView.RecordingServiceVisual._countdownLength
   nameWithType: RecordingServiceVisual._countdownLength
+- uid: Microsoft.MixedReality.SpectatorView.RecordingServiceVisual._countdownParent
+  name: _countdownParent
+  href: api/Microsoft.MixedReality.SpectatorView.RecordingServiceVisual.html#Microsoft_MixedReality_SpectatorView_RecordingServiceVisual__countdownParent
+  commentId: F:Microsoft.MixedReality.SpectatorView.RecordingServiceVisual._countdownParent
+  fullName: Microsoft.MixedReality.SpectatorView.RecordingServiceVisual._countdownParent
+  nameWithType: RecordingServiceVisual._countdownParent
 - uid: Microsoft.MixedReality.SpectatorView.RecordingServiceVisual._countdownText
   name: _countdownText
   href: api/Microsoft.MixedReality.SpectatorView.RecordingServiceVisual.html#Microsoft_MixedReality_SpectatorView_RecordingServiceVisual__countdownText
@@ -8871,12 +9188,24 @@ references:
   commentId: F:Microsoft.MixedReality.SpectatorView.RecordingServiceVisual._recordButton
   fullName: Microsoft.MixedReality.SpectatorView.RecordingServiceVisual._recordButton
   nameWithType: RecordingServiceVisual._recordButton
+- uid: Microsoft.MixedReality.SpectatorView.RecordingServiceVisual._startRecordingBackgroundImage
+  name: _startRecordingBackgroundImage
+  href: api/Microsoft.MixedReality.SpectatorView.RecordingServiceVisual.html#Microsoft_MixedReality_SpectatorView_RecordingServiceVisual__startRecordingBackgroundImage
+  commentId: F:Microsoft.MixedReality.SpectatorView.RecordingServiceVisual._startRecordingBackgroundImage
+  fullName: Microsoft.MixedReality.SpectatorView.RecordingServiceVisual._startRecordingBackgroundImage
+  nameWithType: RecordingServiceVisual._startRecordingBackgroundImage
 - uid: Microsoft.MixedReality.SpectatorView.RecordingServiceVisual._startRecordingImage
   name: _startRecordingImage
   href: api/Microsoft.MixedReality.SpectatorView.RecordingServiceVisual.html#Microsoft_MixedReality_SpectatorView_RecordingServiceVisual__startRecordingImage
   commentId: F:Microsoft.MixedReality.SpectatorView.RecordingServiceVisual._startRecordingImage
   fullName: Microsoft.MixedReality.SpectatorView.RecordingServiceVisual._startRecordingImage
   nameWithType: RecordingServiceVisual._startRecordingImage
+- uid: Microsoft.MixedReality.SpectatorView.RecordingServiceVisual._stopRecordingBackgroundImage
+  name: _stopRecordingBackgroundImage
+  href: api/Microsoft.MixedReality.SpectatorView.RecordingServiceVisual.html#Microsoft_MixedReality_SpectatorView_RecordingServiceVisual__stopRecordingBackgroundImage
+  commentId: F:Microsoft.MixedReality.SpectatorView.RecordingServiceVisual._stopRecordingBackgroundImage
+  fullName: Microsoft.MixedReality.SpectatorView.RecordingServiceVisual._stopRecordingBackgroundImage
+  nameWithType: RecordingServiceVisual._stopRecordingBackgroundImage
 - uid: Microsoft.MixedReality.SpectatorView.RecordingServiceVisual._stopRecordingImage
   name: _stopRecordingImage
   href: api/Microsoft.MixedReality.SpectatorView.RecordingServiceVisual.html#Microsoft_MixedReality_SpectatorView_RecordingServiceVisual__stopRecordingImage
@@ -8978,6 +9307,19 @@ references:
   isSpec: "True"
   fullName: Microsoft.MixedReality.SpectatorView.RecordingServiceVisual.Show
   nameWithType: RecordingServiceVisual.Show
+- uid: Microsoft.MixedReality.SpectatorView.RecordingServiceVisual.Start
+  name: Start()
+  href: api/Microsoft.MixedReality.SpectatorView.RecordingServiceVisual.html#Microsoft_MixedReality_SpectatorView_RecordingServiceVisual_Start
+  commentId: M:Microsoft.MixedReality.SpectatorView.RecordingServiceVisual.Start
+  fullName: Microsoft.MixedReality.SpectatorView.RecordingServiceVisual.Start()
+  nameWithType: RecordingServiceVisual.Start()
+- uid: Microsoft.MixedReality.SpectatorView.RecordingServiceVisual.Start*
+  name: Start
+  href: api/Microsoft.MixedReality.SpectatorView.RecordingServiceVisual.html#Microsoft_MixedReality_SpectatorView_RecordingServiceVisual_Start_
+  commentId: Overload:Microsoft.MixedReality.SpectatorView.RecordingServiceVisual.Start
+  isSpec: "True"
+  fullName: Microsoft.MixedReality.SpectatorView.RecordingServiceVisual.Start
+  nameWithType: RecordingServiceVisual.Start
 - uid: Microsoft.MixedReality.SpectatorView.RecordingServiceVisual.Update
   name: Update()
   href: api/Microsoft.MixedReality.SpectatorView.RecordingServiceVisual.html#Microsoft_MixedReality_SpectatorView_RecordingServiceVisual_Update
@@ -8991,6 +9333,12 @@ references:
   isSpec: "True"
   fullName: Microsoft.MixedReality.SpectatorView.RecordingServiceVisual.Update
   nameWithType: RecordingServiceVisual.Update
+- uid: Microsoft.MixedReality.SpectatorView.RecordingTestCube
+  name: RecordingTestCube
+  href: api/Microsoft.MixedReality.SpectatorView.RecordingTestCube.html
+  commentId: T:Microsoft.MixedReality.SpectatorView.RecordingTestCube
+  fullName: Microsoft.MixedReality.SpectatorView.RecordingTestCube
+  nameWithType: RecordingTestCube
 - uid: Microsoft.MixedReality.SpectatorView.Role
   name: Role
   href: api/Microsoft.MixedReality.SpectatorView.Role.html
@@ -9118,6 +9466,32 @@ references:
   isSpec: "True"
   fullName: Microsoft.MixedReality.SpectatorView.ShortID.Value
   nameWithType: ShortID.Value
+- uid: Microsoft.MixedReality.SpectatorView.SimulatedSpatialCoordinate`1
+  name: SimulatedSpatialCoordinate<TKey>
+  href: api/Microsoft.MixedReality.SpectatorView.SimulatedSpatialCoordinate-1.html
+  commentId: T:Microsoft.MixedReality.SpectatorView.SimulatedSpatialCoordinate`1
+  name.vb: SimulatedSpatialCoordinate(Of TKey)
+  fullName: Microsoft.MixedReality.SpectatorView.SimulatedSpatialCoordinate<TKey>
+  fullName.vb: Microsoft.MixedReality.SpectatorView.SimulatedSpatialCoordinate(Of TKey)
+  nameWithType: SimulatedSpatialCoordinate<TKey>
+  nameWithType.vb: SimulatedSpatialCoordinate(Of TKey)
+- uid: Microsoft.MixedReality.SpectatorView.SimulatedSpatialCoordinate`1.#ctor(`0,Vector3,Quaternion)
+  name: SimulatedSpatialCoordinate(TKey, Vector3, Quaternion)
+  href: api/Microsoft.MixedReality.SpectatorView.SimulatedSpatialCoordinate-1.html#Microsoft_MixedReality_SpectatorView_SimulatedSpatialCoordinate_1__ctor__0_Vector3_Quaternion_
+  commentId: M:Microsoft.MixedReality.SpectatorView.SimulatedSpatialCoordinate`1.#ctor(`0,Vector3,Quaternion)
+  fullName: Microsoft.MixedReality.SpectatorView.SimulatedSpatialCoordinate<TKey>.SimulatedSpatialCoordinate(TKey, Vector3, Quaternion)
+  fullName.vb: Microsoft.MixedReality.SpectatorView.SimulatedSpatialCoordinate(Of TKey).SimulatedSpatialCoordinate(TKey, Vector3, Quaternion)
+  nameWithType: SimulatedSpatialCoordinate<TKey>.SimulatedSpatialCoordinate(TKey, Vector3, Quaternion)
+  nameWithType.vb: SimulatedSpatialCoordinate(Of TKey).SimulatedSpatialCoordinate(TKey, Vector3, Quaternion)
+- uid: Microsoft.MixedReality.SpectatorView.SimulatedSpatialCoordinate`1.#ctor*
+  name: SimulatedSpatialCoordinate
+  href: api/Microsoft.MixedReality.SpectatorView.SimulatedSpatialCoordinate-1.html#Microsoft_MixedReality_SpectatorView_SimulatedSpatialCoordinate_1__ctor_
+  commentId: Overload:Microsoft.MixedReality.SpectatorView.SimulatedSpatialCoordinate`1.#ctor
+  isSpec: "True"
+  fullName: Microsoft.MixedReality.SpectatorView.SimulatedSpatialCoordinate<TKey>.SimulatedSpatialCoordinate
+  fullName.vb: Microsoft.MixedReality.SpectatorView.SimulatedSpatialCoordinate(Of TKey).SimulatedSpatialCoordinate
+  nameWithType: SimulatedSpatialCoordinate<TKey>.SimulatedSpatialCoordinate
+  nameWithType.vb: SimulatedSpatialCoordinate(Of TKey).SimulatedSpatialCoordinate
 - uid: Microsoft.MixedReality.SpectatorView.Singleton`1
   name: Singleton<T>
   href: api/Microsoft.MixedReality.SpectatorView.Singleton-1.html
@@ -9298,6 +9672,19 @@ references:
   isSpec: "True"
   fullName: Microsoft.MixedReality.SpectatorView.SocketEndpoint.Send
   nameWithType: SocketEndpoint.Send
+- uid: Microsoft.MixedReality.SpectatorView.SocketEndpoint.StopConnectionAttempts
+  name: StopConnectionAttempts()
+  href: api/Microsoft.MixedReality.SpectatorView.SocketEndpoint.html#Microsoft_MixedReality_SpectatorView_SocketEndpoint_StopConnectionAttempts
+  commentId: M:Microsoft.MixedReality.SpectatorView.SocketEndpoint.StopConnectionAttempts
+  fullName: Microsoft.MixedReality.SpectatorView.SocketEndpoint.StopConnectionAttempts()
+  nameWithType: SocketEndpoint.StopConnectionAttempts()
+- uid: Microsoft.MixedReality.SpectatorView.SocketEndpoint.StopConnectionAttempts*
+  name: StopConnectionAttempts
+  href: api/Microsoft.MixedReality.SpectatorView.SocketEndpoint.html#Microsoft_MixedReality_SpectatorView_SocketEndpoint_StopConnectionAttempts_
+  commentId: Overload:Microsoft.MixedReality.SpectatorView.SocketEndpoint.StopConnectionAttempts
+  isSpec: "True"
+  fullName: Microsoft.MixedReality.SpectatorView.SocketEndpoint.StopConnectionAttempts
+  nameWithType: SocketEndpoint.StopConnectionAttempts
 - uid: Microsoft.MixedReality.SpectatorView.SocketEndpoint.StopIncomingMessageQueue
   name: StopIncomingMessageQueue()
   href: api/Microsoft.MixedReality.SpectatorView.SocketEndpoint.html#Microsoft_MixedReality_SpectatorView_SocketEndpoint_StopIncomingMessageQueue
@@ -9712,6 +10099,19 @@ references:
   isSpec: "True"
   fullName: Microsoft.MixedReality.SpectatorView.SocketerClient.Stop
   nameWithType: SocketerClient.Stop
+- uid: Microsoft.MixedReality.SpectatorView.SocketerClient.StopConnectionAttempts
+  name: StopConnectionAttempts()
+  href: api/Microsoft.MixedReality.SpectatorView.SocketerClient.html#Microsoft_MixedReality_SpectatorView_SocketerClient_StopConnectionAttempts
+  commentId: M:Microsoft.MixedReality.SpectatorView.SocketerClient.StopConnectionAttempts
+  fullName: Microsoft.MixedReality.SpectatorView.SocketerClient.StopConnectionAttempts()
+  nameWithType: SocketerClient.StopConnectionAttempts()
+- uid: Microsoft.MixedReality.SpectatorView.SocketerClient.StopConnectionAttempts*
+  name: StopConnectionAttempts
+  href: api/Microsoft.MixedReality.SpectatorView.SocketerClient.html#Microsoft_MixedReality_SpectatorView_SocketerClient_StopConnectionAttempts_
+  commentId: Overload:Microsoft.MixedReality.SpectatorView.SocketerClient.StopConnectionAttempts
+  isSpec: "True"
+  fullName: Microsoft.MixedReality.SpectatorView.SocketerClient.StopConnectionAttempts
+  nameWithType: SocketerClient.StopConnectionAttempts
 - uid: Microsoft.MixedReality.SpectatorView.SocketerClient.SuppressUDPHeaders
   name: SuppressUDPHeaders
   href: api/Microsoft.MixedReality.SpectatorView.SocketerClient.html#Microsoft_MixedReality_SpectatorView_SocketerClient_SuppressUDPHeaders
@@ -9725,6 +10125,25 @@ references:
   isSpec: "True"
   fullName: Microsoft.MixedReality.SpectatorView.SocketerClient.SuppressUDPHeaders
   nameWithType: SocketerClient.SuppressUDPHeaders
+- uid: Microsoft.MixedReality.SpectatorView.SpatialAlignmentVisual
+  name: SpatialAlignmentVisual
+  href: api/Microsoft.MixedReality.SpectatorView.SpatialAlignmentVisual.html
+  commentId: T:Microsoft.MixedReality.SpectatorView.SpatialAlignmentVisual
+  fullName: Microsoft.MixedReality.SpectatorView.SpatialAlignmentVisual
+  nameWithType: SpatialAlignmentVisual
+- uid: Microsoft.MixedReality.SpectatorView.SpatialAlignmentVisual.OnResetLocalizationClick
+  name: OnResetLocalizationClick()
+  href: api/Microsoft.MixedReality.SpectatorView.SpatialAlignmentVisual.html#Microsoft_MixedReality_SpectatorView_SpatialAlignmentVisual_OnResetLocalizationClick
+  commentId: M:Microsoft.MixedReality.SpectatorView.SpatialAlignmentVisual.OnResetLocalizationClick
+  fullName: Microsoft.MixedReality.SpectatorView.SpatialAlignmentVisual.OnResetLocalizationClick()
+  nameWithType: SpatialAlignmentVisual.OnResetLocalizationClick()
+- uid: Microsoft.MixedReality.SpectatorView.SpatialAlignmentVisual.OnResetLocalizationClick*
+  name: OnResetLocalizationClick
+  href: api/Microsoft.MixedReality.SpectatorView.SpatialAlignmentVisual.html#Microsoft_MixedReality_SpectatorView_SpatialAlignmentVisual_OnResetLocalizationClick_
+  commentId: Overload:Microsoft.MixedReality.SpectatorView.SpatialAlignmentVisual.OnResetLocalizationClick
+  isSpec: "True"
+  fullName: Microsoft.MixedReality.SpectatorView.SpatialAlignmentVisual.OnResetLocalizationClick
+  nameWithType: SpatialAlignmentVisual.OnResetLocalizationClick
 - uid: Microsoft.MixedReality.SpectatorView.SpatialAnchorsConfiguration
   name: SpatialAnchorsConfiguration
   href: api/Microsoft.MixedReality.SpectatorView.SpatialAnchorsConfiguration.html
@@ -9835,19 +10254,32 @@ references:
   isSpec: "True"
   fullName: Microsoft.MixedReality.SpectatorView.SpatialAnchorsCoordinateLocalizationInitializer.PeerSpatialLocalizerId
   nameWithType: SpatialAnchorsCoordinateLocalizationInitializer.PeerSpatialLocalizerId
-- uid: Microsoft.MixedReality.SpectatorView.SpatialAnchorsCoordinateLocalizationInitializer.RunLocalization(Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemParticipant)
-  name: RunLocalization(SpatialCoordinateSystemParticipant)
-  href: api/Microsoft.MixedReality.SpectatorView.SpatialAnchorsCoordinateLocalizationInitializer.html#Microsoft_MixedReality_SpectatorView_SpatialAnchorsCoordinateLocalizationInitializer_RunLocalization_Microsoft_MixedReality_SpectatorView_SpatialCoordinateSystemParticipant_
-  commentId: M:Microsoft.MixedReality.SpectatorView.SpatialAnchorsCoordinateLocalizationInitializer.RunLocalization(Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemParticipant)
-  fullName: Microsoft.MixedReality.SpectatorView.SpatialAnchorsCoordinateLocalizationInitializer.RunLocalization(Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemParticipant)
-  nameWithType: SpatialAnchorsCoordinateLocalizationInitializer.RunLocalization(SpatialCoordinateSystemParticipant)
-- uid: Microsoft.MixedReality.SpectatorView.SpatialAnchorsCoordinateLocalizationInitializer.RunLocalization*
-  name: RunLocalization
-  href: api/Microsoft.MixedReality.SpectatorView.SpatialAnchorsCoordinateLocalizationInitializer.html#Microsoft_MixedReality_SpectatorView_SpatialAnchorsCoordinateLocalizationInitializer_RunLocalization_
-  commentId: Overload:Microsoft.MixedReality.SpectatorView.SpatialAnchorsCoordinateLocalizationInitializer.RunLocalization
+- uid: Microsoft.MixedReality.SpectatorView.SpatialAnchorsCoordinateLocalizationInitializer.TryResetLocalizationAsync(Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemParticipant)
+  name: TryResetLocalizationAsync(SpatialCoordinateSystemParticipant)
+  href: api/Microsoft.MixedReality.SpectatorView.SpatialAnchorsCoordinateLocalizationInitializer.html#Microsoft_MixedReality_SpectatorView_SpatialAnchorsCoordinateLocalizationInitializer_TryResetLocalizationAsync_Microsoft_MixedReality_SpectatorView_SpatialCoordinateSystemParticipant_
+  commentId: M:Microsoft.MixedReality.SpectatorView.SpatialAnchorsCoordinateLocalizationInitializer.TryResetLocalizationAsync(Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemParticipant)
+  fullName: Microsoft.MixedReality.SpectatorView.SpatialAnchorsCoordinateLocalizationInitializer.TryResetLocalizationAsync(Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemParticipant)
+  nameWithType: SpatialAnchorsCoordinateLocalizationInitializer.TryResetLocalizationAsync(SpatialCoordinateSystemParticipant)
+- uid: Microsoft.MixedReality.SpectatorView.SpatialAnchorsCoordinateLocalizationInitializer.TryResetLocalizationAsync*
+  name: TryResetLocalizationAsync
+  href: api/Microsoft.MixedReality.SpectatorView.SpatialAnchorsCoordinateLocalizationInitializer.html#Microsoft_MixedReality_SpectatorView_SpatialAnchorsCoordinateLocalizationInitializer_TryResetLocalizationAsync_
+  commentId: Overload:Microsoft.MixedReality.SpectatorView.SpatialAnchorsCoordinateLocalizationInitializer.TryResetLocalizationAsync
   isSpec: "True"
-  fullName: Microsoft.MixedReality.SpectatorView.SpatialAnchorsCoordinateLocalizationInitializer.RunLocalization
-  nameWithType: SpatialAnchorsCoordinateLocalizationInitializer.RunLocalization
+  fullName: Microsoft.MixedReality.SpectatorView.SpatialAnchorsCoordinateLocalizationInitializer.TryResetLocalizationAsync
+  nameWithType: SpatialAnchorsCoordinateLocalizationInitializer.TryResetLocalizationAsync
+- uid: Microsoft.MixedReality.SpectatorView.SpatialAnchorsCoordinateLocalizationInitializer.TryRunLocalizationAsync(Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemParticipant)
+  name: TryRunLocalizationAsync(SpatialCoordinateSystemParticipant)
+  href: api/Microsoft.MixedReality.SpectatorView.SpatialAnchorsCoordinateLocalizationInitializer.html#Microsoft_MixedReality_SpectatorView_SpatialAnchorsCoordinateLocalizationInitializer_TryRunLocalizationAsync_Microsoft_MixedReality_SpectatorView_SpatialCoordinateSystemParticipant_
+  commentId: M:Microsoft.MixedReality.SpectatorView.SpatialAnchorsCoordinateLocalizationInitializer.TryRunLocalizationAsync(Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemParticipant)
+  fullName: Microsoft.MixedReality.SpectatorView.SpatialAnchorsCoordinateLocalizationInitializer.TryRunLocalizationAsync(Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemParticipant)
+  nameWithType: SpatialAnchorsCoordinateLocalizationInitializer.TryRunLocalizationAsync(SpatialCoordinateSystemParticipant)
+- uid: Microsoft.MixedReality.SpectatorView.SpatialAnchorsCoordinateLocalizationInitializer.TryRunLocalizationAsync*
+  name: TryRunLocalizationAsync
+  href: api/Microsoft.MixedReality.SpectatorView.SpatialAnchorsCoordinateLocalizationInitializer.html#Microsoft_MixedReality_SpectatorView_SpatialAnchorsCoordinateLocalizationInitializer_TryRunLocalizationAsync_
+  commentId: Overload:Microsoft.MixedReality.SpectatorView.SpatialAnchorsCoordinateLocalizationInitializer.TryRunLocalizationAsync
+  isSpec: "True"
+  fullName: Microsoft.MixedReality.SpectatorView.SpatialAnchorsCoordinateLocalizationInitializer.TryRunLocalizationAsync
+  nameWithType: SpatialAnchorsCoordinateLocalizationInitializer.TryRunLocalizationAsync
 - uid: Microsoft.MixedReality.SpectatorView.SpatialAnchorsLocalizer
   name: SpatialAnchorsLocalizer
   href: api/Microsoft.MixedReality.SpectatorView.SpatialAnchorsLocalizer.html
@@ -9931,6 +10363,19 @@ references:
   commentId: T:Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemManager
   fullName: Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemManager
   nameWithType: SpatialCoordinateSystemManager
+- uid: Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemManager.AllCoordinatesLocated
+  name: AllCoordinatesLocated
+  href: api/Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemManager.html#Microsoft_MixedReality_SpectatorView_SpatialCoordinateSystemManager_AllCoordinatesLocated
+  commentId: P:Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemManager.AllCoordinatesLocated
+  fullName: Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemManager.AllCoordinatesLocated
+  nameWithType: SpatialCoordinateSystemManager.AllCoordinatesLocated
+- uid: Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemManager.AllCoordinatesLocated*
+  name: AllCoordinatesLocated
+  href: api/Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemManager.html#Microsoft_MixedReality_SpectatorView_SpatialCoordinateSystemManager_AllCoordinatesLocated_
+  commentId: Overload:Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemManager.AllCoordinatesLocated
+  isSpec: "True"
+  fullName: Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemManager.AllCoordinatesLocated
+  nameWithType: SpatialCoordinateSystemManager.AllCoordinatesLocated
 - uid: Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemManager.debugVisual
   name: debugVisual
   href: api/Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemManager.html#Microsoft_MixedReality_SpectatorView_SpatialCoordinateSystemManager_debugVisual
@@ -9943,6 +10388,19 @@ references:
   commentId: F:Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemManager.debugVisualScale
   fullName: Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemManager.debugVisualScale
   nameWithType: SpatialCoordinateSystemManager.debugVisualScale
+- uid: Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemManager.LocalizationRunning
+  name: LocalizationRunning
+  href: api/Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemManager.html#Microsoft_MixedReality_SpectatorView_SpatialCoordinateSystemManager_LocalizationRunning
+  commentId: P:Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemManager.LocalizationRunning
+  fullName: Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemManager.LocalizationRunning
+  nameWithType: SpatialCoordinateSystemManager.LocalizationRunning
+- uid: Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemManager.LocalizationRunning*
+  name: LocalizationRunning
+  href: api/Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemManager.html#Microsoft_MixedReality_SpectatorView_SpatialCoordinateSystemManager_LocalizationRunning_
+  commentId: Overload:Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemManager.LocalizationRunning
+  isSpec: "True"
+  fullName: Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemManager.LocalizationRunning
+  nameWithType: SpatialCoordinateSystemManager.LocalizationRunning
 - uid: Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemManager.LocalizeAsync(Microsoft.MixedReality.SpectatorView.SocketEndpoint,System.Guid,Microsoft.MixedReality.SpectatorView.ISpatialLocalizationSettings)
   name: LocalizeAsync(SocketEndpoint, Guid, ISpatialLocalizationSettings)
   href: api/Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemManager.html#Microsoft_MixedReality_SpectatorView_SpatialCoordinateSystemManager_LocalizeAsync_Microsoft_MixedReality_SpectatorView_SocketEndpoint_System_Guid_Microsoft_MixedReality_SpectatorView_ISpatialLocalizationSettings_
@@ -10020,6 +10478,19 @@ references:
   isSpec: "True"
   fullName: Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemManager.RegisterSpatialLocalizer
   nameWithType: SpatialCoordinateSystemManager.RegisterSpatialLocalizer
+- uid: Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemManager.RegisterTrackingObserver(Microsoft.MixedReality.SpectatorView.ITrackingObserver)
+  name: RegisterTrackingObserver(ITrackingObserver)
+  href: api/Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemManager.html#Microsoft_MixedReality_SpectatorView_SpatialCoordinateSystemManager_RegisterTrackingObserver_Microsoft_MixedReality_SpectatorView_ITrackingObserver_
+  commentId: M:Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemManager.RegisterTrackingObserver(Microsoft.MixedReality.SpectatorView.ITrackingObserver)
+  fullName: Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemManager.RegisterTrackingObserver(Microsoft.MixedReality.SpectatorView.ITrackingObserver)
+  nameWithType: SpatialCoordinateSystemManager.RegisterTrackingObserver(ITrackingObserver)
+- uid: Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemManager.RegisterTrackingObserver*
+  name: RegisterTrackingObserver
+  href: api/Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemManager.html#Microsoft_MixedReality_SpectatorView_SpatialCoordinateSystemManager_RegisterTrackingObserver_
+  commentId: Overload:Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemManager.RegisterTrackingObserver
+  isSpec: "True"
+  fullName: Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemManager.RegisterTrackingObserver
+  nameWithType: SpatialCoordinateSystemManager.RegisterTrackingObserver
 - uid: Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemManager.RunRemoteLocalizationAsync(Microsoft.MixedReality.SpectatorView.SocketEndpoint,System.Guid,Microsoft.MixedReality.SpectatorView.ISpatialLocalizationSettings)
   name: RunRemoteLocalizationAsync(SocketEndpoint, Guid, ISpatialLocalizationSettings)
   href: api/Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemManager.html#Microsoft_MixedReality_SpectatorView_SpatialCoordinateSystemManager_RunRemoteLocalizationAsync_Microsoft_MixedReality_SpectatorView_SocketEndpoint_System_Guid_Microsoft_MixedReality_SpectatorView_ISpatialLocalizationSettings_
@@ -10039,6 +10510,19 @@ references:
   commentId: F:Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemManager.showDebugVisuals
   fullName: Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemManager.showDebugVisuals
   nameWithType: SpatialCoordinateSystemManager.showDebugVisuals
+- uid: Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemManager.TrackingState
+  name: TrackingState
+  href: api/Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemManager.html#Microsoft_MixedReality_SpectatorView_SpatialCoordinateSystemManager_TrackingState
+  commentId: P:Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemManager.TrackingState
+  fullName: Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemManager.TrackingState
+  nameWithType: SpatialCoordinateSystemManager.TrackingState
+- uid: Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemManager.TrackingState*
+  name: TrackingState
+  href: api/Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemManager.html#Microsoft_MixedReality_SpectatorView_SpatialCoordinateSystemManager_TrackingState_
+  commentId: Overload:Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemManager.TrackingState
+  isSpec: "True"
+  fullName: Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemManager.TrackingState
+  nameWithType: SpatialCoordinateSystemManager.TrackingState
 - uid: Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemManager.TryGetSpatialCoordinateSystemParticipant(Microsoft.MixedReality.SpectatorView.SocketEndpoint,Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemParticipant@)
   name: TryGetSpatialCoordinateSystemParticipant(SocketEndpoint, out SpatialCoordinateSystemParticipant)
   href: api/Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemManager.html#Microsoft_MixedReality_SpectatorView_SpatialCoordinateSystemManager_TryGetSpatialCoordinateSystemParticipant_Microsoft_MixedReality_SpectatorView_SocketEndpoint_Microsoft_MixedReality_SpectatorView_SpatialCoordinateSystemParticipant__
@@ -10081,6 +10565,19 @@ references:
   isSpec: "True"
   fullName: Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemManager.UnregisterSpatialLocalizer
   nameWithType: SpatialCoordinateSystemManager.UnregisterSpatialLocalizer
+- uid: Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemManager.UnregisterTrackingObserver(Microsoft.MixedReality.SpectatorView.ITrackingObserver)
+  name: UnregisterTrackingObserver(ITrackingObserver)
+  href: api/Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemManager.html#Microsoft_MixedReality_SpectatorView_SpatialCoordinateSystemManager_UnregisterTrackingObserver_Microsoft_MixedReality_SpectatorView_ITrackingObserver_
+  commentId: M:Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemManager.UnregisterTrackingObserver(Microsoft.MixedReality.SpectatorView.ITrackingObserver)
+  fullName: Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemManager.UnregisterTrackingObserver(Microsoft.MixedReality.SpectatorView.ITrackingObserver)
+  nameWithType: SpatialCoordinateSystemManager.UnregisterTrackingObserver(ITrackingObserver)
+- uid: Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemManager.UnregisterTrackingObserver*
+  name: UnregisterTrackingObserver
+  href: api/Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemManager.html#Microsoft_MixedReality_SpectatorView_SpatialCoordinateSystemManager_UnregisterTrackingObserver_
+  commentId: Overload:Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemManager.UnregisterTrackingObserver
+  isSpec: "True"
+  fullName: Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemManager.UnregisterTrackingObserver
+  nameWithType: SpatialCoordinateSystemManager.UnregisterTrackingObserver
 - uid: Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemParticipant
   name: SpatialCoordinateSystemParticipant
   href: api/Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemParticipant.html
@@ -10178,19 +10675,19 @@ references:
   isSpec: "True"
   fullName: Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemParticipant.OnManagedDispose
   nameWithType: SpatialCoordinateSystemParticipant.OnManagedDispose
-- uid: Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemParticipant.PeerDeviceHasTracking
-  name: PeerDeviceHasTracking
-  href: api/Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemParticipant.html#Microsoft_MixedReality_SpectatorView_SpatialCoordinateSystemParticipant_PeerDeviceHasTracking
-  commentId: P:Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemParticipant.PeerDeviceHasTracking
-  fullName: Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemParticipant.PeerDeviceHasTracking
-  nameWithType: SpatialCoordinateSystemParticipant.PeerDeviceHasTracking
-- uid: Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemParticipant.PeerDeviceHasTracking*
-  name: PeerDeviceHasTracking
-  href: api/Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemParticipant.html#Microsoft_MixedReality_SpectatorView_SpatialCoordinateSystemParticipant_PeerDeviceHasTracking_
-  commentId: Overload:Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemParticipant.PeerDeviceHasTracking
+- uid: Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemParticipant.PeerDeviceTrackingState
+  name: PeerDeviceTrackingState
+  href: api/Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemParticipant.html#Microsoft_MixedReality_SpectatorView_SpatialCoordinateSystemParticipant_PeerDeviceTrackingState
+  commentId: P:Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemParticipant.PeerDeviceTrackingState
+  fullName: Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemParticipant.PeerDeviceTrackingState
+  nameWithType: SpatialCoordinateSystemParticipant.PeerDeviceTrackingState
+- uid: Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemParticipant.PeerDeviceTrackingState*
+  name: PeerDeviceTrackingState
+  href: api/Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemParticipant.html#Microsoft_MixedReality_SpectatorView_SpatialCoordinateSystemParticipant_PeerDeviceTrackingState_
+  commentId: Overload:Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemParticipant.PeerDeviceTrackingState
   isSpec: "True"
-  fullName: Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemParticipant.PeerDeviceHasTracking
-  nameWithType: SpatialCoordinateSystemParticipant.PeerDeviceHasTracking
+  fullName: Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemParticipant.PeerDeviceTrackingState
+  nameWithType: SpatialCoordinateSystemParticipant.PeerDeviceTrackingState
 - uid: Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemParticipant.PeerIsLocatingSpatialCoordinate
   name: PeerIsLocatingSpatialCoordinate
   href: api/Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemParticipant.html#Microsoft_MixedReality_SpectatorView_SpatialCoordinateSystemParticipant_PeerIsLocatingSpatialCoordinate
@@ -10355,19 +10852,122 @@ references:
   isSpec: "True"
   fullName: Microsoft.MixedReality.SpectatorView.SpatialLocalizationInitializer.PeerSpatialLocalizerId
   nameWithType: SpatialLocalizationInitializer.PeerSpatialLocalizerId
-- uid: Microsoft.MixedReality.SpectatorView.SpatialLocalizationInitializer.RunLocalization(Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemParticipant)
-  name: RunLocalization(SpatialCoordinateSystemParticipant)
-  href: api/Microsoft.MixedReality.SpectatorView.SpatialLocalizationInitializer.html#Microsoft_MixedReality_SpectatorView_SpatialLocalizationInitializer_RunLocalization_Microsoft_MixedReality_SpectatorView_SpatialCoordinateSystemParticipant_
-  commentId: M:Microsoft.MixedReality.SpectatorView.SpatialLocalizationInitializer.RunLocalization(Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemParticipant)
-  fullName: Microsoft.MixedReality.SpectatorView.SpatialLocalizationInitializer.RunLocalization(Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemParticipant)
-  nameWithType: SpatialLocalizationInitializer.RunLocalization(SpatialCoordinateSystemParticipant)
-- uid: Microsoft.MixedReality.SpectatorView.SpatialLocalizationInitializer.RunLocalization*
-  name: RunLocalization
-  href: api/Microsoft.MixedReality.SpectatorView.SpatialLocalizationInitializer.html#Microsoft_MixedReality_SpectatorView_SpatialLocalizationInitializer_RunLocalization_
-  commentId: Overload:Microsoft.MixedReality.SpectatorView.SpatialLocalizationInitializer.RunLocalization
+- uid: Microsoft.MixedReality.SpectatorView.SpatialLocalizationInitializer.TryResetLocalizationAsync(Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemParticipant)
+  name: TryResetLocalizationAsync(SpatialCoordinateSystemParticipant)
+  href: api/Microsoft.MixedReality.SpectatorView.SpatialLocalizationInitializer.html#Microsoft_MixedReality_SpectatorView_SpatialLocalizationInitializer_TryResetLocalizationAsync_Microsoft_MixedReality_SpectatorView_SpatialCoordinateSystemParticipant_
+  commentId: M:Microsoft.MixedReality.SpectatorView.SpatialLocalizationInitializer.TryResetLocalizationAsync(Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemParticipant)
+  fullName: Microsoft.MixedReality.SpectatorView.SpatialLocalizationInitializer.TryResetLocalizationAsync(Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemParticipant)
+  nameWithType: SpatialLocalizationInitializer.TryResetLocalizationAsync(SpatialCoordinateSystemParticipant)
+- uid: Microsoft.MixedReality.SpectatorView.SpatialLocalizationInitializer.TryResetLocalizationAsync*
+  name: TryResetLocalizationAsync
+  href: api/Microsoft.MixedReality.SpectatorView.SpatialLocalizationInitializer.html#Microsoft_MixedReality_SpectatorView_SpatialLocalizationInitializer_TryResetLocalizationAsync_
+  commentId: Overload:Microsoft.MixedReality.SpectatorView.SpatialLocalizationInitializer.TryResetLocalizationAsync
   isSpec: "True"
-  fullName: Microsoft.MixedReality.SpectatorView.SpatialLocalizationInitializer.RunLocalization
-  nameWithType: SpatialLocalizationInitializer.RunLocalization
+  fullName: Microsoft.MixedReality.SpectatorView.SpatialLocalizationInitializer.TryResetLocalizationAsync
+  nameWithType: SpatialLocalizationInitializer.TryResetLocalizationAsync
+- uid: Microsoft.MixedReality.SpectatorView.SpatialLocalizationInitializer.TryRunLocalizationAsync(Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemParticipant)
+  name: TryRunLocalizationAsync(SpatialCoordinateSystemParticipant)
+  href: api/Microsoft.MixedReality.SpectatorView.SpatialLocalizationInitializer.html#Microsoft_MixedReality_SpectatorView_SpatialLocalizationInitializer_TryRunLocalizationAsync_Microsoft_MixedReality_SpectatorView_SpatialCoordinateSystemParticipant_
+  commentId: M:Microsoft.MixedReality.SpectatorView.SpatialLocalizationInitializer.TryRunLocalizationAsync(Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemParticipant)
+  fullName: Microsoft.MixedReality.SpectatorView.SpatialLocalizationInitializer.TryRunLocalizationAsync(Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemParticipant)
+  nameWithType: SpatialLocalizationInitializer.TryRunLocalizationAsync(SpatialCoordinateSystemParticipant)
+- uid: Microsoft.MixedReality.SpectatorView.SpatialLocalizationInitializer.TryRunLocalizationAsync*
+  name: TryRunLocalizationAsync
+  href: api/Microsoft.MixedReality.SpectatorView.SpatialLocalizationInitializer.html#Microsoft_MixedReality_SpectatorView_SpatialLocalizationInitializer_TryRunLocalizationAsync_
+  commentId: Overload:Microsoft.MixedReality.SpectatorView.SpatialLocalizationInitializer.TryRunLocalizationAsync
+  isSpec: "True"
+  fullName: Microsoft.MixedReality.SpectatorView.SpatialLocalizationInitializer.TryRunLocalizationAsync
+  nameWithType: SpatialLocalizationInitializer.TryRunLocalizationAsync
+- uid: Microsoft.MixedReality.SpectatorView.SpatialLocalizationSession
+  name: SpatialLocalizationSession
+  href: api/Microsoft.MixedReality.SpectatorView.SpatialLocalizationSession.html
+  commentId: T:Microsoft.MixedReality.SpectatorView.SpatialLocalizationSession
+  fullName: Microsoft.MixedReality.SpectatorView.SpatialLocalizationSession
+  nameWithType: SpatialLocalizationSession
+- uid: Microsoft.MixedReality.SpectatorView.SpatialLocalizationSession.#ctor
+  name: SpatialLocalizationSession()
+  href: api/Microsoft.MixedReality.SpectatorView.SpatialLocalizationSession.html#Microsoft_MixedReality_SpectatorView_SpatialLocalizationSession__ctor
+  commentId: M:Microsoft.MixedReality.SpectatorView.SpatialLocalizationSession.#ctor
+  fullName: Microsoft.MixedReality.SpectatorView.SpatialLocalizationSession.SpatialLocalizationSession()
+  nameWithType: SpatialLocalizationSession.SpatialLocalizationSession()
+- uid: Microsoft.MixedReality.SpectatorView.SpatialLocalizationSession.#ctor*
+  name: SpatialLocalizationSession
+  href: api/Microsoft.MixedReality.SpectatorView.SpatialLocalizationSession.html#Microsoft_MixedReality_SpectatorView_SpatialLocalizationSession__ctor_
+  commentId: Overload:Microsoft.MixedReality.SpectatorView.SpatialLocalizationSession.#ctor
+  isSpec: "True"
+  fullName: Microsoft.MixedReality.SpectatorView.SpatialLocalizationSession.SpatialLocalizationSession
+  nameWithType: SpatialLocalizationSession.SpatialLocalizationSession
+- uid: Microsoft.MixedReality.SpectatorView.SpatialLocalizationSession.Cancel
+  name: Cancel()
+  href: api/Microsoft.MixedReality.SpectatorView.SpatialLocalizationSession.html#Microsoft_MixedReality_SpectatorView_SpatialLocalizationSession_Cancel
+  commentId: M:Microsoft.MixedReality.SpectatorView.SpatialLocalizationSession.Cancel
+  fullName: Microsoft.MixedReality.SpectatorView.SpatialLocalizationSession.Cancel()
+  nameWithType: SpatialLocalizationSession.Cancel()
+- uid: Microsoft.MixedReality.SpectatorView.SpatialLocalizationSession.Cancel*
+  name: Cancel
+  href: api/Microsoft.MixedReality.SpectatorView.SpatialLocalizationSession.html#Microsoft_MixedReality_SpectatorView_SpatialLocalizationSession_Cancel_
+  commentId: Overload:Microsoft.MixedReality.SpectatorView.SpatialLocalizationSession.Cancel
+  isSpec: "True"
+  fullName: Microsoft.MixedReality.SpectatorView.SpatialLocalizationSession.Cancel
+  nameWithType: SpatialLocalizationSession.Cancel
+- uid: Microsoft.MixedReality.SpectatorView.SpatialLocalizationSession.defaultCancellationToken
+  name: defaultCancellationToken
+  href: api/Microsoft.MixedReality.SpectatorView.SpatialLocalizationSession.html#Microsoft_MixedReality_SpectatorView_SpatialLocalizationSession_defaultCancellationToken
+  commentId: F:Microsoft.MixedReality.SpectatorView.SpatialLocalizationSession.defaultCancellationToken
+  fullName: Microsoft.MixedReality.SpectatorView.SpatialLocalizationSession.defaultCancellationToken
+  nameWithType: SpatialLocalizationSession.defaultCancellationToken
+- uid: Microsoft.MixedReality.SpectatorView.SpatialLocalizationSession.LocalizeAsync(CancellationToken)
+  name: LocalizeAsync(CancellationToken)
+  href: api/Microsoft.MixedReality.SpectatorView.SpatialLocalizationSession.html#Microsoft_MixedReality_SpectatorView_SpatialLocalizationSession_LocalizeAsync_CancellationToken_
+  commentId: M:Microsoft.MixedReality.SpectatorView.SpatialLocalizationSession.LocalizeAsync(CancellationToken)
+  fullName: Microsoft.MixedReality.SpectatorView.SpatialLocalizationSession.LocalizeAsync(CancellationToken)
+  nameWithType: SpatialLocalizationSession.LocalizeAsync(CancellationToken)
+- uid: Microsoft.MixedReality.SpectatorView.SpatialLocalizationSession.LocalizeAsync*
+  name: LocalizeAsync
+  href: api/Microsoft.MixedReality.SpectatorView.SpatialLocalizationSession.html#Microsoft_MixedReality_SpectatorView_SpatialLocalizationSession_LocalizeAsync_
+  commentId: Overload:Microsoft.MixedReality.SpectatorView.SpatialLocalizationSession.LocalizeAsync
+  isSpec: "True"
+  fullName: Microsoft.MixedReality.SpectatorView.SpatialLocalizationSession.LocalizeAsync
+  nameWithType: SpatialLocalizationSession.LocalizeAsync
+- uid: Microsoft.MixedReality.SpectatorView.SpatialLocalizationSession.OnDataReceived(BinaryReader)
+  name: OnDataReceived(BinaryReader)
+  href: api/Microsoft.MixedReality.SpectatorView.SpatialLocalizationSession.html#Microsoft_MixedReality_SpectatorView_SpatialLocalizationSession_OnDataReceived_BinaryReader_
+  commentId: M:Microsoft.MixedReality.SpectatorView.SpatialLocalizationSession.OnDataReceived(BinaryReader)
+  fullName: Microsoft.MixedReality.SpectatorView.SpatialLocalizationSession.OnDataReceived(BinaryReader)
+  nameWithType: SpatialLocalizationSession.OnDataReceived(BinaryReader)
+- uid: Microsoft.MixedReality.SpectatorView.SpatialLocalizationSession.OnDataReceived*
+  name: OnDataReceived
+  href: api/Microsoft.MixedReality.SpectatorView.SpatialLocalizationSession.html#Microsoft_MixedReality_SpectatorView_SpatialLocalizationSession_OnDataReceived_
+  commentId: Overload:Microsoft.MixedReality.SpectatorView.SpatialLocalizationSession.OnDataReceived
+  isSpec: "True"
+  fullName: Microsoft.MixedReality.SpectatorView.SpatialLocalizationSession.OnDataReceived
+  nameWithType: SpatialLocalizationSession.OnDataReceived
+- uid: Microsoft.MixedReality.SpectatorView.SpatialLocalizationSession.OnManagedDispose
+  name: OnManagedDispose()
+  href: api/Microsoft.MixedReality.SpectatorView.SpatialLocalizationSession.html#Microsoft_MixedReality_SpectatorView_SpatialLocalizationSession_OnManagedDispose
+  commentId: M:Microsoft.MixedReality.SpectatorView.SpatialLocalizationSession.OnManagedDispose
+  fullName: Microsoft.MixedReality.SpectatorView.SpatialLocalizationSession.OnManagedDispose()
+  nameWithType: SpatialLocalizationSession.OnManagedDispose()
+- uid: Microsoft.MixedReality.SpectatorView.SpatialLocalizationSession.OnManagedDispose*
+  name: OnManagedDispose
+  href: api/Microsoft.MixedReality.SpectatorView.SpatialLocalizationSession.html#Microsoft_MixedReality_SpectatorView_SpatialLocalizationSession_OnManagedDispose_
+  commentId: Overload:Microsoft.MixedReality.SpectatorView.SpatialLocalizationSession.OnManagedDispose
+  isSpec: "True"
+  fullName: Microsoft.MixedReality.SpectatorView.SpatialLocalizationSession.OnManagedDispose
+  nameWithType: SpatialLocalizationSession.OnManagedDispose
+- uid: Microsoft.MixedReality.SpectatorView.SpatialLocalizationSession.Peer
+  name: Peer
+  href: api/Microsoft.MixedReality.SpectatorView.SpatialLocalizationSession.html#Microsoft_MixedReality_SpectatorView_SpatialLocalizationSession_Peer
+  commentId: P:Microsoft.MixedReality.SpectatorView.SpatialLocalizationSession.Peer
+  fullName: Microsoft.MixedReality.SpectatorView.SpatialLocalizationSession.Peer
+  nameWithType: SpatialLocalizationSession.Peer
+- uid: Microsoft.MixedReality.SpectatorView.SpatialLocalizationSession.Peer*
+  name: Peer
+  href: api/Microsoft.MixedReality.SpectatorView.SpatialLocalizationSession.html#Microsoft_MixedReality_SpectatorView_SpatialLocalizationSession_Peer_
+  commentId: Overload:Microsoft.MixedReality.SpectatorView.SpatialLocalizationSession.Peer
+  isSpec: "True"
+  fullName: Microsoft.MixedReality.SpectatorView.SpatialLocalizationSession.Peer
+  nameWithType: SpatialLocalizationSession.Peer
 - uid: Microsoft.MixedReality.SpectatorView.SpatialLocalizer`1
   name: SpatialLocalizer<TSpatialLocalizationSettings>
   href: api/Microsoft.MixedReality.SpectatorView.SpatialLocalizer-1.html
@@ -10616,6 +11216,19 @@ references:
   commentId: F:Microsoft.MixedReality.SpectatorView.SpectatorView.spectatorDebugVisualScale
   fullName: Microsoft.MixedReality.SpectatorView.SpectatorView.spectatorDebugVisualScale
   nameWithType: SpectatorView.spectatorDebugVisualScale
+- uid: Microsoft.MixedReality.SpectatorView.SpectatorView.TryResetLocalizationAsync
+  name: TryResetLocalizationAsync()
+  href: api/Microsoft.MixedReality.SpectatorView.SpectatorView.html#Microsoft_MixedReality_SpectatorView_SpectatorView_TryResetLocalizationAsync
+  commentId: M:Microsoft.MixedReality.SpectatorView.SpectatorView.TryResetLocalizationAsync
+  fullName: Microsoft.MixedReality.SpectatorView.SpectatorView.TryResetLocalizationAsync()
+  nameWithType: SpectatorView.TryResetLocalizationAsync()
+- uid: Microsoft.MixedReality.SpectatorView.SpectatorView.TryResetLocalizationAsync*
+  name: TryResetLocalizationAsync
+  href: api/Microsoft.MixedReality.SpectatorView.SpectatorView.html#Microsoft_MixedReality_SpectatorView_SpectatorView_TryResetLocalizationAsync_
+  commentId: Overload:Microsoft.MixedReality.SpectatorView.SpectatorView.TryResetLocalizationAsync
+  isSpec: "True"
+  fullName: Microsoft.MixedReality.SpectatorView.SpectatorView.TryResetLocalizationAsync
+  nameWithType: SpectatorView.TryResetLocalizationAsync
 - uid: Microsoft.MixedReality.SpectatorView.SpectatorView.userDebugVisualPrefab
   name: userDebugVisualPrefab
   href: api/Microsoft.MixedReality.SpectatorView.SpectatorView.html#Microsoft_MixedReality_SpectatorView_SpectatorView_userDebugVisualPrefab
@@ -11107,6 +11720,12 @@ references:
   commentId: F:Microsoft.MixedReality.SpectatorView.StateSynchronizationObserver.PerfCommand
   fullName: Microsoft.MixedReality.SpectatorView.StateSynchronizationObserver.PerfCommand
   nameWithType: StateSynchronizationObserver.PerfCommand
+- uid: Microsoft.MixedReality.SpectatorView.StateSynchronizationObserver.PerfDiagnosticModeEnabledCommand
+  name: PerfDiagnosticModeEnabledCommand
+  href: api/Microsoft.MixedReality.SpectatorView.StateSynchronizationObserver.html#Microsoft_MixedReality_SpectatorView_StateSynchronizationObserver_PerfDiagnosticModeEnabledCommand
+  commentId: F:Microsoft.MixedReality.SpectatorView.StateSynchronizationObserver.PerfDiagnosticModeEnabledCommand
+  fullName: Microsoft.MixedReality.SpectatorView.StateSynchronizationObserver.PerfDiagnosticModeEnabledCommand
+  nameWithType: StateSynchronizationObserver.PerfDiagnosticModeEnabledCommand
 - uid: Microsoft.MixedReality.SpectatorView.StateSynchronizationObserver.port
   name: port
   href: api/Microsoft.MixedReality.SpectatorView.StateSynchronizationObserver.html#Microsoft_MixedReality_SpectatorView_StateSynchronizationObserver_port
@@ -11126,6 +11745,19 @@ references:
   isSpec: "True"
   fullName: Microsoft.MixedReality.SpectatorView.StateSynchronizationObserver.RemotePort
   nameWithType: StateSynchronizationObserver.RemotePort
+- uid: Microsoft.MixedReality.SpectatorView.StateSynchronizationObserver.SetPerformanceMonitoringMode(System.Boolean)
+  name: SetPerformanceMonitoringMode(Boolean)
+  href: api/Microsoft.MixedReality.SpectatorView.StateSynchronizationObserver.html#Microsoft_MixedReality_SpectatorView_StateSynchronizationObserver_SetPerformanceMonitoringMode_System_Boolean_
+  commentId: M:Microsoft.MixedReality.SpectatorView.StateSynchronizationObserver.SetPerformanceMonitoringMode(System.Boolean)
+  fullName: Microsoft.MixedReality.SpectatorView.StateSynchronizationObserver.SetPerformanceMonitoringMode(System.Boolean)
+  nameWithType: StateSynchronizationObserver.SetPerformanceMonitoringMode(Boolean)
+- uid: Microsoft.MixedReality.SpectatorView.StateSynchronizationObserver.SetPerformanceMonitoringMode*
+  name: SetPerformanceMonitoringMode
+  href: api/Microsoft.MixedReality.SpectatorView.StateSynchronizationObserver.html#Microsoft_MixedReality_SpectatorView_StateSynchronizationObserver_SetPerformanceMonitoringMode_
+  commentId: Overload:Microsoft.MixedReality.SpectatorView.StateSynchronizationObserver.SetPerformanceMonitoringMode
+  isSpec: "True"
+  fullName: Microsoft.MixedReality.SpectatorView.StateSynchronizationObserver.SetPerformanceMonitoringMode
+  nameWithType: StateSynchronizationObserver.SetPerformanceMonitoringMode
 - uid: Microsoft.MixedReality.SpectatorView.StateSynchronizationObserver.SyncCommand
   name: SyncCommand
   href: api/Microsoft.MixedReality.SpectatorView.StateSynchronizationObserver.html#Microsoft_MixedReality_SpectatorView_StateSynchronizationObserver_SyncCommand
@@ -11145,6 +11777,133 @@ references:
   isSpec: "True"
   fullName: Microsoft.MixedReality.SpectatorView.StateSynchronizationObserver.Update
   nameWithType: StateSynchronizationObserver.Update
+- uid: Microsoft.MixedReality.SpectatorView.StateSynchronizationPerformanceMonitor
+  name: StateSynchronizationPerformanceMonitor
+  href: api/Microsoft.MixedReality.SpectatorView.StateSynchronizationPerformanceMonitor.html
+  commentId: T:Microsoft.MixedReality.SpectatorView.StateSynchronizationPerformanceMonitor
+  fullName: Microsoft.MixedReality.SpectatorView.StateSynchronizationPerformanceMonitor
+  nameWithType: StateSynchronizationPerformanceMonitor
+- uid: Microsoft.MixedReality.SpectatorView.StateSynchronizationPerformanceMonitor.Awake
+  name: Awake()
+  href: api/Microsoft.MixedReality.SpectatorView.StateSynchronizationPerformanceMonitor.html#Microsoft_MixedReality_SpectatorView_StateSynchronizationPerformanceMonitor_Awake
+  commentId: M:Microsoft.MixedReality.SpectatorView.StateSynchronizationPerformanceMonitor.Awake
+  fullName: Microsoft.MixedReality.SpectatorView.StateSynchronizationPerformanceMonitor.Awake()
+  nameWithType: StateSynchronizationPerformanceMonitor.Awake()
+- uid: Microsoft.MixedReality.SpectatorView.StateSynchronizationPerformanceMonitor.Awake*
+  name: Awake
+  href: api/Microsoft.MixedReality.SpectatorView.StateSynchronizationPerformanceMonitor.html#Microsoft_MixedReality_SpectatorView_StateSynchronizationPerformanceMonitor_Awake_
+  commentId: Overload:Microsoft.MixedReality.SpectatorView.StateSynchronizationPerformanceMonitor.Awake
+  isSpec: "True"
+  fullName: Microsoft.MixedReality.SpectatorView.StateSynchronizationPerformanceMonitor.Awake
+  nameWithType: StateSynchronizationPerformanceMonitor.Awake
+- uid: Microsoft.MixedReality.SpectatorView.StateSynchronizationPerformanceMonitor.IncrementEventCount(System.String,System.String)
+  name: IncrementEventCount(String, String)
+  href: api/Microsoft.MixedReality.SpectatorView.StateSynchronizationPerformanceMonitor.html#Microsoft_MixedReality_SpectatorView_StateSynchronizationPerformanceMonitor_IncrementEventCount_System_String_System_String_
+  commentId: M:Microsoft.MixedReality.SpectatorView.StateSynchronizationPerformanceMonitor.IncrementEventCount(System.String,System.String)
+  fullName: Microsoft.MixedReality.SpectatorView.StateSynchronizationPerformanceMonitor.IncrementEventCount(System.String, System.String)
+  nameWithType: StateSynchronizationPerformanceMonitor.IncrementEventCount(String, String)
+- uid: Microsoft.MixedReality.SpectatorView.StateSynchronizationPerformanceMonitor.IncrementEventCount*
+  name: IncrementEventCount
+  href: api/Microsoft.MixedReality.SpectatorView.StateSynchronizationPerformanceMonitor.html#Microsoft_MixedReality_SpectatorView_StateSynchronizationPerformanceMonitor_IncrementEventCount_
+  commentId: Overload:Microsoft.MixedReality.SpectatorView.StateSynchronizationPerformanceMonitor.IncrementEventCount
+  isSpec: "True"
+  fullName: Microsoft.MixedReality.SpectatorView.StateSynchronizationPerformanceMonitor.IncrementEventCount
+  nameWithType: StateSynchronizationPerformanceMonitor.IncrementEventCount
+- uid: Microsoft.MixedReality.SpectatorView.StateSynchronizationPerformanceMonitor.MeasureEventDuration(System.String,System.String)
+  name: MeasureEventDuration(String, String)
+  href: api/Microsoft.MixedReality.SpectatorView.StateSynchronizationPerformanceMonitor.html#Microsoft_MixedReality_SpectatorView_StateSynchronizationPerformanceMonitor_MeasureEventDuration_System_String_System_String_
+  commentId: M:Microsoft.MixedReality.SpectatorView.StateSynchronizationPerformanceMonitor.MeasureEventDuration(System.String,System.String)
+  fullName: Microsoft.MixedReality.SpectatorView.StateSynchronizationPerformanceMonitor.MeasureEventDuration(System.String, System.String)
+  nameWithType: StateSynchronizationPerformanceMonitor.MeasureEventDuration(String, String)
+- uid: Microsoft.MixedReality.SpectatorView.StateSynchronizationPerformanceMonitor.MeasureEventDuration*
+  name: MeasureEventDuration
+  href: api/Microsoft.MixedReality.SpectatorView.StateSynchronizationPerformanceMonitor.html#Microsoft_MixedReality_SpectatorView_StateSynchronizationPerformanceMonitor_MeasureEventDuration_
+  commentId: Overload:Microsoft.MixedReality.SpectatorView.StateSynchronizationPerformanceMonitor.MeasureEventDuration
+  isSpec: "True"
+  fullName: Microsoft.MixedReality.SpectatorView.StateSynchronizationPerformanceMonitor.MeasureEventDuration
+  nameWithType: StateSynchronizationPerformanceMonitor.MeasureEventDuration
+- uid: Microsoft.MixedReality.SpectatorView.StateSynchronizationPerformanceMonitor.ParsedMessage
+  name: StateSynchronizationPerformanceMonitor.ParsedMessage
+  href: api/Microsoft.MixedReality.SpectatorView.StateSynchronizationPerformanceMonitor.ParsedMessage.html
+  commentId: T:Microsoft.MixedReality.SpectatorView.StateSynchronizationPerformanceMonitor.ParsedMessage
+  fullName: Microsoft.MixedReality.SpectatorView.StateSynchronizationPerformanceMonitor.ParsedMessage
+  nameWithType: StateSynchronizationPerformanceMonitor.ParsedMessage
+- uid: Microsoft.MixedReality.SpectatorView.StateSynchronizationPerformanceMonitor.ParsedMessage.#ctor(System.Boolean,List{System.Tuple{System.String,System.Double}},List{System.Tuple{System.String,System.Int32}})
+  name: ParsedMessage(Boolean, List<Tuple<String, Double>>, List<Tuple<String, Int32>>)
+  href: api/Microsoft.MixedReality.SpectatorView.StateSynchronizationPerformanceMonitor.ParsedMessage.html#Microsoft_MixedReality_SpectatorView_StateSynchronizationPerformanceMonitor_ParsedMessage__ctor_System_Boolean_List_System_Tuple_System_String_System_Double___List_System_Tuple_System_String_System_Int32___
+  commentId: M:Microsoft.MixedReality.SpectatorView.StateSynchronizationPerformanceMonitor.ParsedMessage.#ctor(System.Boolean,List{System.Tuple{System.String,System.Double}},List{System.Tuple{System.String,System.Int32}})
+  name.vb: ParsedMessage(Boolean, List(Of Tuple(Of String, Double)), List(Of Tuple(Of String, Int32)))
+  fullName: Microsoft.MixedReality.SpectatorView.StateSynchronizationPerformanceMonitor.ParsedMessage.ParsedMessage(System.Boolean, List<System.Tuple<System.String, System.Double>>, List<System.Tuple<System.String, System.Int32>>)
+  fullName.vb: Microsoft.MixedReality.SpectatorView.StateSynchronizationPerformanceMonitor.ParsedMessage.ParsedMessage(System.Boolean, List(Of System.Tuple(Of System.String, System.Double)), List(Of System.Tuple(Of System.String, System.Int32)))
+  nameWithType: StateSynchronizationPerformanceMonitor.ParsedMessage.ParsedMessage(Boolean, List<Tuple<String, Double>>, List<Tuple<String, Int32>>)
+  nameWithType.vb: StateSynchronizationPerformanceMonitor.ParsedMessage.ParsedMessage(Boolean, List(Of Tuple(Of String, Double)), List(Of Tuple(Of String, Int32)))
+- uid: Microsoft.MixedReality.SpectatorView.StateSynchronizationPerformanceMonitor.ParsedMessage.#ctor*
+  name: ParsedMessage
+  href: api/Microsoft.MixedReality.SpectatorView.StateSynchronizationPerformanceMonitor.ParsedMessage.html#Microsoft_MixedReality_SpectatorView_StateSynchronizationPerformanceMonitor_ParsedMessage__ctor_
+  commentId: Overload:Microsoft.MixedReality.SpectatorView.StateSynchronizationPerformanceMonitor.ParsedMessage.#ctor
+  isSpec: "True"
+  fullName: Microsoft.MixedReality.SpectatorView.StateSynchronizationPerformanceMonitor.ParsedMessage.ParsedMessage
+  nameWithType: StateSynchronizationPerformanceMonitor.ParsedMessage.ParsedMessage
+- uid: Microsoft.MixedReality.SpectatorView.StateSynchronizationPerformanceMonitor.ParsedMessage.EventCounts
+  name: EventCounts
+  href: api/Microsoft.MixedReality.SpectatorView.StateSynchronizationPerformanceMonitor.ParsedMessage.html#Microsoft_MixedReality_SpectatorView_StateSynchronizationPerformanceMonitor_ParsedMessage_EventCounts
+  commentId: F:Microsoft.MixedReality.SpectatorView.StateSynchronizationPerformanceMonitor.ParsedMessage.EventCounts
+  fullName: Microsoft.MixedReality.SpectatorView.StateSynchronizationPerformanceMonitor.ParsedMessage.EventCounts
+  nameWithType: StateSynchronizationPerformanceMonitor.ParsedMessage.EventCounts
+- uid: Microsoft.MixedReality.SpectatorView.StateSynchronizationPerformanceMonitor.ParsedMessage.EventDurations
+  name: EventDurations
+  href: api/Microsoft.MixedReality.SpectatorView.StateSynchronizationPerformanceMonitor.ParsedMessage.html#Microsoft_MixedReality_SpectatorView_StateSynchronizationPerformanceMonitor_ParsedMessage_EventDurations
+  commentId: F:Microsoft.MixedReality.SpectatorView.StateSynchronizationPerformanceMonitor.ParsedMessage.EventDurations
+  fullName: Microsoft.MixedReality.SpectatorView.StateSynchronizationPerformanceMonitor.ParsedMessage.EventDurations
+  nameWithType: StateSynchronizationPerformanceMonitor.ParsedMessage.EventDurations
+- uid: Microsoft.MixedReality.SpectatorView.StateSynchronizationPerformanceMonitor.ParsedMessage.PerformanceMonitoringEnabled
+  name: PerformanceMonitoringEnabled
+  href: api/Microsoft.MixedReality.SpectatorView.StateSynchronizationPerformanceMonitor.ParsedMessage.html#Microsoft_MixedReality_SpectatorView_StateSynchronizationPerformanceMonitor_ParsedMessage_PerformanceMonitoringEnabled
+  commentId: F:Microsoft.MixedReality.SpectatorView.StateSynchronizationPerformanceMonitor.ParsedMessage.PerformanceMonitoringEnabled
+  fullName: Microsoft.MixedReality.SpectatorView.StateSynchronizationPerformanceMonitor.ParsedMessage.PerformanceMonitoringEnabled
+  nameWithType: StateSynchronizationPerformanceMonitor.ParsedMessage.PerformanceMonitoringEnabled
+- uid: Microsoft.MixedReality.SpectatorView.StateSynchronizationPerformanceMonitor.ReadMessage(BinaryReader,Microsoft.MixedReality.SpectatorView.StateSynchronizationPerformanceMonitor.ParsedMessage@)
+  name: ReadMessage(BinaryReader, out StateSynchronizationPerformanceMonitor.ParsedMessage)
+  href: api/Microsoft.MixedReality.SpectatorView.StateSynchronizationPerformanceMonitor.html#Microsoft_MixedReality_SpectatorView_StateSynchronizationPerformanceMonitor_ReadMessage_BinaryReader_Microsoft_MixedReality_SpectatorView_StateSynchronizationPerformanceMonitor_ParsedMessage__
+  commentId: M:Microsoft.MixedReality.SpectatorView.StateSynchronizationPerformanceMonitor.ReadMessage(BinaryReader,Microsoft.MixedReality.SpectatorView.StateSynchronizationPerformanceMonitor.ParsedMessage@)
+  name.vb: ReadMessage(BinaryReader, ByRef StateSynchronizationPerformanceMonitor.ParsedMessage)
+  fullName: Microsoft.MixedReality.SpectatorView.StateSynchronizationPerformanceMonitor.ReadMessage(BinaryReader, out Microsoft.MixedReality.SpectatorView.StateSynchronizationPerformanceMonitor.ParsedMessage)
+  fullName.vb: Microsoft.MixedReality.SpectatorView.StateSynchronizationPerformanceMonitor.ReadMessage(BinaryReader, ByRef Microsoft.MixedReality.SpectatorView.StateSynchronizationPerformanceMonitor.ParsedMessage)
+  nameWithType: StateSynchronizationPerformanceMonitor.ReadMessage(BinaryReader, out StateSynchronizationPerformanceMonitor.ParsedMessage)
+  nameWithType.vb: StateSynchronizationPerformanceMonitor.ReadMessage(BinaryReader, ByRef StateSynchronizationPerformanceMonitor.ParsedMessage)
+- uid: Microsoft.MixedReality.SpectatorView.StateSynchronizationPerformanceMonitor.ReadMessage*
+  name: ReadMessage
+  href: api/Microsoft.MixedReality.SpectatorView.StateSynchronizationPerformanceMonitor.html#Microsoft_MixedReality_SpectatorView_StateSynchronizationPerformanceMonitor_ReadMessage_
+  commentId: Overload:Microsoft.MixedReality.SpectatorView.StateSynchronizationPerformanceMonitor.ReadMessage
+  isSpec: "True"
+  fullName: Microsoft.MixedReality.SpectatorView.StateSynchronizationPerformanceMonitor.ReadMessage
+  nameWithType: StateSynchronizationPerformanceMonitor.ReadMessage
+- uid: Microsoft.MixedReality.SpectatorView.StateSynchronizationPerformanceMonitor.SetDiagnosticMode(System.Boolean)
+  name: SetDiagnosticMode(Boolean)
+  href: api/Microsoft.MixedReality.SpectatorView.StateSynchronizationPerformanceMonitor.html#Microsoft_MixedReality_SpectatorView_StateSynchronizationPerformanceMonitor_SetDiagnosticMode_System_Boolean_
+  commentId: M:Microsoft.MixedReality.SpectatorView.StateSynchronizationPerformanceMonitor.SetDiagnosticMode(System.Boolean)
+  fullName: Microsoft.MixedReality.SpectatorView.StateSynchronizationPerformanceMonitor.SetDiagnosticMode(System.Boolean)
+  nameWithType: StateSynchronizationPerformanceMonitor.SetDiagnosticMode(Boolean)
+- uid: Microsoft.MixedReality.SpectatorView.StateSynchronizationPerformanceMonitor.SetDiagnosticMode*
+  name: SetDiagnosticMode
+  href: api/Microsoft.MixedReality.SpectatorView.StateSynchronizationPerformanceMonitor.html#Microsoft_MixedReality_SpectatorView_StateSynchronizationPerformanceMonitor_SetDiagnosticMode_
+  commentId: Overload:Microsoft.MixedReality.SpectatorView.StateSynchronizationPerformanceMonitor.SetDiagnosticMode
+  isSpec: "True"
+  fullName: Microsoft.MixedReality.SpectatorView.StateSynchronizationPerformanceMonitor.SetDiagnosticMode
+  nameWithType: StateSynchronizationPerformanceMonitor.SetDiagnosticMode
+- uid: Microsoft.MixedReality.SpectatorView.StateSynchronizationPerformanceMonitor.WriteMessage(BinaryWriter,System.Int32)
+  name: WriteMessage(BinaryWriter, Int32)
+  href: api/Microsoft.MixedReality.SpectatorView.StateSynchronizationPerformanceMonitor.html#Microsoft_MixedReality_SpectatorView_StateSynchronizationPerformanceMonitor_WriteMessage_BinaryWriter_System_Int32_
+  commentId: M:Microsoft.MixedReality.SpectatorView.StateSynchronizationPerformanceMonitor.WriteMessage(BinaryWriter,System.Int32)
+  fullName: Microsoft.MixedReality.SpectatorView.StateSynchronizationPerformanceMonitor.WriteMessage(BinaryWriter, System.Int32)
+  nameWithType: StateSynchronizationPerformanceMonitor.WriteMessage(BinaryWriter, Int32)
+- uid: Microsoft.MixedReality.SpectatorView.StateSynchronizationPerformanceMonitor.WriteMessage*
+  name: WriteMessage
+  href: api/Microsoft.MixedReality.SpectatorView.StateSynchronizationPerformanceMonitor.html#Microsoft_MixedReality_SpectatorView_StateSynchronizationPerformanceMonitor_WriteMessage_
+  commentId: Overload:Microsoft.MixedReality.SpectatorView.StateSynchronizationPerformanceMonitor.WriteMessage
+  isSpec: "True"
+  fullName: Microsoft.MixedReality.SpectatorView.StateSynchronizationPerformanceMonitor.WriteMessage
+  nameWithType: StateSynchronizationPerformanceMonitor.WriteMessage
 - uid: Microsoft.MixedReality.SpectatorView.StateSynchronizationSceneManager
   name: StateSynchronizationSceneManager
   href: api/Microsoft.MixedReality.SpectatorView.StateSynchronizationSceneManager.html
@@ -11224,6 +11983,12 @@ references:
   commentId: T:Microsoft.MixedReality.SpectatorView.TCPConnectionManager
   fullName: Microsoft.MixedReality.SpectatorView.TCPConnectionManager
   nameWithType: TCPConnectionManager
+- uid: Microsoft.MixedReality.SpectatorView.TCPConnectionManager.AttemptReconnectWhenClient
+  name: AttemptReconnectWhenClient
+  href: api/Microsoft.MixedReality.SpectatorView.TCPConnectionManager.html#Microsoft_MixedReality_SpectatorView_TCPConnectionManager_AttemptReconnectWhenClient
+  commentId: F:Microsoft.MixedReality.SpectatorView.TCPConnectionManager.AttemptReconnectWhenClient
+  fullName: Microsoft.MixedReality.SpectatorView.TCPConnectionManager.AttemptReconnectWhenClient
+  nameWithType: TCPConnectionManager.AttemptReconnectWhenClient
 - uid: Microsoft.MixedReality.SpectatorView.TCPConnectionManager.Broadcast(System.Byte[])
   name: Broadcast(Byte[])
   href: api/Microsoft.MixedReality.SpectatorView.TCPConnectionManager.html#Microsoft_MixedReality_SpectatorView_TCPConnectionManager_Broadcast_System_Byte___
@@ -11402,12 +12167,306 @@ references:
   commentId: F:Microsoft.MixedReality.SpectatorView.TCPConnectionManagerTest.timeBetweenBroadcasts
   fullName: Microsoft.MixedReality.SpectatorView.TCPConnectionManagerTest.timeBetweenBroadcasts
   nameWithType: TCPConnectionManagerTest.timeBetweenBroadcasts
+- uid: Microsoft.MixedReality.SpectatorView.Tests
+  name: Microsoft.MixedReality.SpectatorView.Tests
+  href: api/Microsoft.MixedReality.SpectatorView.Tests.html
+  commentId: N:Microsoft.MixedReality.SpectatorView.Tests
+  fullName: Microsoft.MixedReality.SpectatorView.Tests
+  nameWithType: Microsoft.MixedReality.SpectatorView.Tests
+- uid: Microsoft.MixedReality.SpectatorView.Tests.CompositionManagerTests
+  name: CompositionManagerTests
+  href: api/Microsoft.MixedReality.SpectatorView.Tests.CompositionManagerTests.html
+  commentId: T:Microsoft.MixedReality.SpectatorView.Tests.CompositionManagerTests
+  fullName: Microsoft.MixedReality.SpectatorView.Tests.CompositionManagerTests
+  nameWithType: CompositionManagerTests
+- uid: Microsoft.MixedReality.SpectatorView.Tests.CompositionManagerTests.RecordCompositeVideoTest
+  name: RecordCompositeVideoTest()
+  href: api/Microsoft.MixedReality.SpectatorView.Tests.CompositionManagerTests.html#Microsoft_MixedReality_SpectatorView_Tests_CompositionManagerTests_RecordCompositeVideoTest
+  commentId: M:Microsoft.MixedReality.SpectatorView.Tests.CompositionManagerTests.RecordCompositeVideoTest
+  fullName: Microsoft.MixedReality.SpectatorView.Tests.CompositionManagerTests.RecordCompositeVideoTest()
+  nameWithType: CompositionManagerTests.RecordCompositeVideoTest()
+- uid: Microsoft.MixedReality.SpectatorView.Tests.CompositionManagerTests.RecordCompositeVideoTest*
+  name: RecordCompositeVideoTest
+  href: api/Microsoft.MixedReality.SpectatorView.Tests.CompositionManagerTests.html#Microsoft_MixedReality_SpectatorView_Tests_CompositionManagerTests_RecordCompositeVideoTest_
+  commentId: Overload:Microsoft.MixedReality.SpectatorView.Tests.CompositionManagerTests.RecordCompositeVideoTest
+  isSpec: "True"
+  fullName: Microsoft.MixedReality.SpectatorView.Tests.CompositionManagerTests.RecordCompositeVideoTest
+  nameWithType: CompositionManagerTests.RecordCompositeVideoTest
+- uid: Microsoft.MixedReality.SpectatorView.Tests.CompositionManagerTests.RecordMultipleCompositeVideosTest
+  name: RecordMultipleCompositeVideosTest()
+  href: api/Microsoft.MixedReality.SpectatorView.Tests.CompositionManagerTests.html#Microsoft_MixedReality_SpectatorView_Tests_CompositionManagerTests_RecordMultipleCompositeVideosTest
+  commentId: M:Microsoft.MixedReality.SpectatorView.Tests.CompositionManagerTests.RecordMultipleCompositeVideosTest
+  fullName: Microsoft.MixedReality.SpectatorView.Tests.CompositionManagerTests.RecordMultipleCompositeVideosTest()
+  nameWithType: CompositionManagerTests.RecordMultipleCompositeVideosTest()
+- uid: Microsoft.MixedReality.SpectatorView.Tests.CompositionManagerTests.RecordMultipleCompositeVideosTest*
+  name: RecordMultipleCompositeVideosTest
+  href: api/Microsoft.MixedReality.SpectatorView.Tests.CompositionManagerTests.html#Microsoft_MixedReality_SpectatorView_Tests_CompositionManagerTests_RecordMultipleCompositeVideosTest_
+  commentId: Overload:Microsoft.MixedReality.SpectatorView.Tests.CompositionManagerTests.RecordMultipleCompositeVideosTest
+  isSpec: "True"
+  fullName: Microsoft.MixedReality.SpectatorView.Tests.CompositionManagerTests.RecordMultipleCompositeVideosTest
+  nameWithType: CompositionManagerTests.RecordMultipleCompositeVideosTest
+- uid: Microsoft.MixedReality.SpectatorView.Tests.CompositionManagerTests.RecordMultipleQuadVideosTest
+  name: RecordMultipleQuadVideosTest()
+  href: api/Microsoft.MixedReality.SpectatorView.Tests.CompositionManagerTests.html#Microsoft_MixedReality_SpectatorView_Tests_CompositionManagerTests_RecordMultipleQuadVideosTest
+  commentId: M:Microsoft.MixedReality.SpectatorView.Tests.CompositionManagerTests.RecordMultipleQuadVideosTest
+  fullName: Microsoft.MixedReality.SpectatorView.Tests.CompositionManagerTests.RecordMultipleQuadVideosTest()
+  nameWithType: CompositionManagerTests.RecordMultipleQuadVideosTest()
+- uid: Microsoft.MixedReality.SpectatorView.Tests.CompositionManagerTests.RecordMultipleQuadVideosTest*
+  name: RecordMultipleQuadVideosTest
+  href: api/Microsoft.MixedReality.SpectatorView.Tests.CompositionManagerTests.html#Microsoft_MixedReality_SpectatorView_Tests_CompositionManagerTests_RecordMultipleQuadVideosTest_
+  commentId: Overload:Microsoft.MixedReality.SpectatorView.Tests.CompositionManagerTests.RecordMultipleQuadVideosTest
+  isSpec: "True"
+  fullName: Microsoft.MixedReality.SpectatorView.Tests.CompositionManagerTests.RecordMultipleQuadVideosTest
+  nameWithType: CompositionManagerTests.RecordMultipleQuadVideosTest
+- uid: Microsoft.MixedReality.SpectatorView.Tests.CompositionManagerTests.RecordQuadVideoTest
+  name: RecordQuadVideoTest()
+  href: api/Microsoft.MixedReality.SpectatorView.Tests.CompositionManagerTests.html#Microsoft_MixedReality_SpectatorView_Tests_CompositionManagerTests_RecordQuadVideoTest
+  commentId: M:Microsoft.MixedReality.SpectatorView.Tests.CompositionManagerTests.RecordQuadVideoTest
+  fullName: Microsoft.MixedReality.SpectatorView.Tests.CompositionManagerTests.RecordQuadVideoTest()
+  nameWithType: CompositionManagerTests.RecordQuadVideoTest()
+- uid: Microsoft.MixedReality.SpectatorView.Tests.CompositionManagerTests.RecordQuadVideoTest*
+  name: RecordQuadVideoTest
+  href: api/Microsoft.MixedReality.SpectatorView.Tests.CompositionManagerTests.html#Microsoft_MixedReality_SpectatorView_Tests_CompositionManagerTests_RecordQuadVideoTest_
+  commentId: Overload:Microsoft.MixedReality.SpectatorView.Tests.CompositionManagerTests.RecordQuadVideoTest
+  isSpec: "True"
+  fullName: Microsoft.MixedReality.SpectatorView.Tests.CompositionManagerTests.RecordQuadVideoTest
+  nameWithType: CompositionManagerTests.RecordQuadVideoTest
+- uid: Microsoft.MixedReality.SpectatorView.Tests.CompositionManagerTests.TextureInitializationBlackmagicDesignTest
+  name: TextureInitializationBlackmagicDesignTest()
+  href: api/Microsoft.MixedReality.SpectatorView.Tests.CompositionManagerTests.html#Microsoft_MixedReality_SpectatorView_Tests_CompositionManagerTests_TextureInitializationBlackmagicDesignTest
+  commentId: M:Microsoft.MixedReality.SpectatorView.Tests.CompositionManagerTests.TextureInitializationBlackmagicDesignTest
+  fullName: Microsoft.MixedReality.SpectatorView.Tests.CompositionManagerTests.TextureInitializationBlackmagicDesignTest()
+  nameWithType: CompositionManagerTests.TextureInitializationBlackmagicDesignTest()
+- uid: Microsoft.MixedReality.SpectatorView.Tests.CompositionManagerTests.TextureInitializationBlackmagicDesignTest*
+  name: TextureInitializationBlackmagicDesignTest
+  href: api/Microsoft.MixedReality.SpectatorView.Tests.CompositionManagerTests.html#Microsoft_MixedReality_SpectatorView_Tests_CompositionManagerTests_TextureInitializationBlackmagicDesignTest_
+  commentId: Overload:Microsoft.MixedReality.SpectatorView.Tests.CompositionManagerTests.TextureInitializationBlackmagicDesignTest
+  isSpec: "True"
+  fullName: Microsoft.MixedReality.SpectatorView.Tests.CompositionManagerTests.TextureInitializationBlackmagicDesignTest
+  nameWithType: CompositionManagerTests.TextureInitializationBlackmagicDesignTest
+- uid: Microsoft.MixedReality.SpectatorView.Tests.CompositionManagerTests.TextureInitializationElgatoTest
+  name: TextureInitializationElgatoTest()
+  href: api/Microsoft.MixedReality.SpectatorView.Tests.CompositionManagerTests.html#Microsoft_MixedReality_SpectatorView_Tests_CompositionManagerTests_TextureInitializationElgatoTest
+  commentId: M:Microsoft.MixedReality.SpectatorView.Tests.CompositionManagerTests.TextureInitializationElgatoTest
+  fullName: Microsoft.MixedReality.SpectatorView.Tests.CompositionManagerTests.TextureInitializationElgatoTest()
+  nameWithType: CompositionManagerTests.TextureInitializationElgatoTest()
+- uid: Microsoft.MixedReality.SpectatorView.Tests.CompositionManagerTests.TextureInitializationElgatoTest*
+  name: TextureInitializationElgatoTest
+  href: api/Microsoft.MixedReality.SpectatorView.Tests.CompositionManagerTests.html#Microsoft_MixedReality_SpectatorView_Tests_CompositionManagerTests_TextureInitializationElgatoTest_
+  commentId: Overload:Microsoft.MixedReality.SpectatorView.Tests.CompositionManagerTests.TextureInitializationElgatoTest
+  isSpec: "True"
+  fullName: Microsoft.MixedReality.SpectatorView.Tests.CompositionManagerTests.TextureInitializationElgatoTest
+  nameWithType: CompositionManagerTests.TextureInitializationElgatoTest
+- uid: Microsoft.MixedReality.SpectatorView.Tests.CompositorTestsBase
+  name: CompositorTestsBase
+  href: api/Microsoft.MixedReality.SpectatorView.Tests.CompositorTestsBase.html
+  commentId: T:Microsoft.MixedReality.SpectatorView.Tests.CompositorTestsBase
+  fullName: Microsoft.MixedReality.SpectatorView.Tests.CompositorTestsBase
+  nameWithType: CompositorTestsBase
+- uid: Microsoft.MixedReality.SpectatorView.Tests.CompositorTestsBase.AssertAllCompositeTexturesCreated(System.String)
+  name: AssertAllCompositeTexturesCreated(String)
+  href: api/Microsoft.MixedReality.SpectatorView.Tests.CompositorTestsBase.html#Microsoft_MixedReality_SpectatorView_Tests_CompositorTestsBase_AssertAllCompositeTexturesCreated_System_String_
+  commentId: M:Microsoft.MixedReality.SpectatorView.Tests.CompositorTestsBase.AssertAllCompositeTexturesCreated(System.String)
+  fullName: Microsoft.MixedReality.SpectatorView.Tests.CompositorTestsBase.AssertAllCompositeTexturesCreated(System.String)
+  nameWithType: CompositorTestsBase.AssertAllCompositeTexturesCreated(String)
+- uid: Microsoft.MixedReality.SpectatorView.Tests.CompositorTestsBase.AssertAllCompositeTexturesCreated*
+  name: AssertAllCompositeTexturesCreated
+  href: api/Microsoft.MixedReality.SpectatorView.Tests.CompositorTestsBase.html#Microsoft_MixedReality_SpectatorView_Tests_CompositorTestsBase_AssertAllCompositeTexturesCreated_
+  commentId: Overload:Microsoft.MixedReality.SpectatorView.Tests.CompositorTestsBase.AssertAllCompositeTexturesCreated
+  isSpec: "True"
+  fullName: Microsoft.MixedReality.SpectatorView.Tests.CompositorTestsBase.AssertAllCompositeTexturesCreated
+  nameWithType: CompositorTestsBase.AssertAllCompositeTexturesCreated
+- uid: Microsoft.MixedReality.SpectatorView.Tests.CompositorTestsBase.AssertAllQuadTexturesCreated(System.String)
+  name: AssertAllQuadTexturesCreated(String)
+  href: api/Microsoft.MixedReality.SpectatorView.Tests.CompositorTestsBase.html#Microsoft_MixedReality_SpectatorView_Tests_CompositorTestsBase_AssertAllQuadTexturesCreated_System_String_
+  commentId: M:Microsoft.MixedReality.SpectatorView.Tests.CompositorTestsBase.AssertAllQuadTexturesCreated(System.String)
+  fullName: Microsoft.MixedReality.SpectatorView.Tests.CompositorTestsBase.AssertAllQuadTexturesCreated(System.String)
+  nameWithType: CompositorTestsBase.AssertAllQuadTexturesCreated(String)
+- uid: Microsoft.MixedReality.SpectatorView.Tests.CompositorTestsBase.AssertAllQuadTexturesCreated*
+  name: AssertAllQuadTexturesCreated
+  href: api/Microsoft.MixedReality.SpectatorView.Tests.CompositorTestsBase.html#Microsoft_MixedReality_SpectatorView_Tests_CompositorTestsBase_AssertAllQuadTexturesCreated_
+  commentId: Overload:Microsoft.MixedReality.SpectatorView.Tests.CompositorTestsBase.AssertAllQuadTexturesCreated
+  isSpec: "True"
+  fullName: Microsoft.MixedReality.SpectatorView.Tests.CompositorTestsBase.AssertAllQuadTexturesCreated
+  nameWithType: CompositorTestsBase.AssertAllQuadTexturesCreated
+- uid: Microsoft.MixedReality.SpectatorView.Tests.CompositorTestsBase.AssertTexturesInitialize(System.String)
+  name: AssertTexturesInitialize(String)
+  href: api/Microsoft.MixedReality.SpectatorView.Tests.CompositorTestsBase.html#Microsoft_MixedReality_SpectatorView_Tests_CompositorTestsBase_AssertTexturesInitialize_System_String_
+  commentId: M:Microsoft.MixedReality.SpectatorView.Tests.CompositorTestsBase.AssertTexturesInitialize(System.String)
+  fullName: Microsoft.MixedReality.SpectatorView.Tests.CompositorTestsBase.AssertTexturesInitialize(System.String)
+  nameWithType: CompositorTestsBase.AssertTexturesInitialize(String)
+- uid: Microsoft.MixedReality.SpectatorView.Tests.CompositorTestsBase.AssertTexturesInitialize*
+  name: AssertTexturesInitialize
+  href: api/Microsoft.MixedReality.SpectatorView.Tests.CompositorTestsBase.html#Microsoft_MixedReality_SpectatorView_Tests_CompositorTestsBase_AssertTexturesInitialize_
+  commentId: Overload:Microsoft.MixedReality.SpectatorView.Tests.CompositorTestsBase.AssertTexturesInitialize
+  isSpec: "True"
+  fullName: Microsoft.MixedReality.SpectatorView.Tests.CompositorTestsBase.AssertTexturesInitialize
+  nameWithType: CompositorTestsBase.AssertTexturesInitialize
+- uid: Microsoft.MixedReality.SpectatorView.Tests.CompositorTestsBase.AssertTextureSize(Texture,System.Int32,System.Int32)
+  name: AssertTextureSize(Texture, Int32, Int32)
+  href: api/Microsoft.MixedReality.SpectatorView.Tests.CompositorTestsBase.html#Microsoft_MixedReality_SpectatorView_Tests_CompositorTestsBase_AssertTextureSize_Texture_System_Int32_System_Int32_
+  commentId: M:Microsoft.MixedReality.SpectatorView.Tests.CompositorTestsBase.AssertTextureSize(Texture,System.Int32,System.Int32)
+  fullName: Microsoft.MixedReality.SpectatorView.Tests.CompositorTestsBase.AssertTextureSize(Texture, System.Int32, System.Int32)
+  nameWithType: CompositorTestsBase.AssertTextureSize(Texture, Int32, Int32)
+- uid: Microsoft.MixedReality.SpectatorView.Tests.CompositorTestsBase.AssertTextureSize*
+  name: AssertTextureSize
+  href: api/Microsoft.MixedReality.SpectatorView.Tests.CompositorTestsBase.html#Microsoft_MixedReality_SpectatorView_Tests_CompositorTestsBase_AssertTextureSize_
+  commentId: Overload:Microsoft.MixedReality.SpectatorView.Tests.CompositorTestsBase.AssertTextureSize
+  isSpec: "True"
+  fullName: Microsoft.MixedReality.SpectatorView.Tests.CompositorTestsBase.AssertTextureSize
+  nameWithType: CompositorTestsBase.AssertTextureSize
+- uid: Microsoft.MixedReality.SpectatorView.Tests.CompositorTestsBase.CompositionManager
+  name: CompositionManager
+  href: api/Microsoft.MixedReality.SpectatorView.Tests.CompositorTestsBase.html#Microsoft_MixedReality_SpectatorView_Tests_CompositorTestsBase_CompositionManager
+  commentId: P:Microsoft.MixedReality.SpectatorView.Tests.CompositorTestsBase.CompositionManager
+  fullName: Microsoft.MixedReality.SpectatorView.Tests.CompositorTestsBase.CompositionManager
+  nameWithType: CompositorTestsBase.CompositionManager
+- uid: Microsoft.MixedReality.SpectatorView.Tests.CompositorTestsBase.CompositionManager*
+  name: CompositionManager
+  href: api/Microsoft.MixedReality.SpectatorView.Tests.CompositorTestsBase.html#Microsoft_MixedReality_SpectatorView_Tests_CompositorTestsBase_CompositionManager_
+  commentId: Overload:Microsoft.MixedReality.SpectatorView.Tests.CompositorTestsBase.CompositionManager
+  isSpec: "True"
+  fullName: Microsoft.MixedReality.SpectatorView.Tests.CompositorTestsBase.CompositionManager
+  nameWithType: CompositorTestsBase.CompositionManager
+- uid: Microsoft.MixedReality.SpectatorView.Tests.CompositorTestsBase.filesToDelete
+  name: filesToDelete
+  href: api/Microsoft.MixedReality.SpectatorView.Tests.CompositorTestsBase.html#Microsoft_MixedReality_SpectatorView_Tests_CompositorTestsBase_filesToDelete
+  commentId: F:Microsoft.MixedReality.SpectatorView.Tests.CompositorTestsBase.filesToDelete
+  fullName: Microsoft.MixedReality.SpectatorView.Tests.CompositorTestsBase.filesToDelete
+  nameWithType: CompositorTestsBase.filesToDelete
+- uid: Microsoft.MixedReality.SpectatorView.Tests.CompositorTestsBase.SetUp
+  name: SetUp()
+  href: api/Microsoft.MixedReality.SpectatorView.Tests.CompositorTestsBase.html#Microsoft_MixedReality_SpectatorView_Tests_CompositorTestsBase_SetUp
+  commentId: M:Microsoft.MixedReality.SpectatorView.Tests.CompositorTestsBase.SetUp
+  fullName: Microsoft.MixedReality.SpectatorView.Tests.CompositorTestsBase.SetUp()
+  nameWithType: CompositorTestsBase.SetUp()
+- uid: Microsoft.MixedReality.SpectatorView.Tests.CompositorTestsBase.SetUp*
+  name: SetUp
+  href: api/Microsoft.MixedReality.SpectatorView.Tests.CompositorTestsBase.html#Microsoft_MixedReality_SpectatorView_Tests_CompositorTestsBase_SetUp_
+  commentId: Overload:Microsoft.MixedReality.SpectatorView.Tests.CompositorTestsBase.SetUp
+  isSpec: "True"
+  fullName: Microsoft.MixedReality.SpectatorView.Tests.CompositorTestsBase.SetUp
+  nameWithType: CompositorTestsBase.SetUp
+- uid: Microsoft.MixedReality.SpectatorView.Tests.CompositorTestsBase.TearDown
+  name: TearDown()
+  href: api/Microsoft.MixedReality.SpectatorView.Tests.CompositorTestsBase.html#Microsoft_MixedReality_SpectatorView_Tests_CompositorTestsBase_TearDown
+  commentId: M:Microsoft.MixedReality.SpectatorView.Tests.CompositorTestsBase.TearDown
+  fullName: Microsoft.MixedReality.SpectatorView.Tests.CompositorTestsBase.TearDown()
+  nameWithType: CompositorTestsBase.TearDown()
+- uid: Microsoft.MixedReality.SpectatorView.Tests.CompositorTestsBase.TearDown*
+  name: TearDown
+  href: api/Microsoft.MixedReality.SpectatorView.Tests.CompositorTestsBase.html#Microsoft_MixedReality_SpectatorView_Tests_CompositorTestsBase_TearDown_
+  commentId: Overload:Microsoft.MixedReality.SpectatorView.Tests.CompositorTestsBase.TearDown
+  isSpec: "True"
+  fullName: Microsoft.MixedReality.SpectatorView.Tests.CompositorTestsBase.TearDown
+  nameWithType: CompositorTestsBase.TearDown
+- uid: Microsoft.MixedReality.SpectatorView.Tests.TextureManagerTests
+  name: TextureManagerTests
+  href: api/Microsoft.MixedReality.SpectatorView.Tests.TextureManagerTests.html
+  commentId: T:Microsoft.MixedReality.SpectatorView.Tests.TextureManagerTests
+  fullName: Microsoft.MixedReality.SpectatorView.Tests.TextureManagerTests
+  nameWithType: TextureManagerTests
+- uid: Microsoft.MixedReality.SpectatorView.Tests.TextureManagerTests.OverrideColorTextureTest
+  name: OverrideColorTextureTest()
+  href: api/Microsoft.MixedReality.SpectatorView.Tests.TextureManagerTests.html#Microsoft_MixedReality_SpectatorView_Tests_TextureManagerTests_OverrideColorTextureTest
+  commentId: M:Microsoft.MixedReality.SpectatorView.Tests.TextureManagerTests.OverrideColorTextureTest
+  fullName: Microsoft.MixedReality.SpectatorView.Tests.TextureManagerTests.OverrideColorTextureTest()
+  nameWithType: TextureManagerTests.OverrideColorTextureTest()
+- uid: Microsoft.MixedReality.SpectatorView.Tests.TextureManagerTests.OverrideColorTextureTest*
+  name: OverrideColorTextureTest
+  href: api/Microsoft.MixedReality.SpectatorView.Tests.TextureManagerTests.html#Microsoft_MixedReality_SpectatorView_Tests_TextureManagerTests_OverrideColorTextureTest_
+  commentId: Overload:Microsoft.MixedReality.SpectatorView.Tests.TextureManagerTests.OverrideColorTextureTest
+  isSpec: "True"
+  fullName: Microsoft.MixedReality.SpectatorView.Tests.TextureManagerTests.OverrideColorTextureTest
+  nameWithType: TextureManagerTests.OverrideColorTextureTest
+- uid: Microsoft.MixedReality.SpectatorView.Tests.TextureManagerTests.OverrideOutputTextureTest
+  name: OverrideOutputTextureTest()
+  href: api/Microsoft.MixedReality.SpectatorView.Tests.TextureManagerTests.html#Microsoft_MixedReality_SpectatorView_Tests_TextureManagerTests_OverrideOutputTextureTest
+  commentId: M:Microsoft.MixedReality.SpectatorView.Tests.TextureManagerTests.OverrideOutputTextureTest
+  fullName: Microsoft.MixedReality.SpectatorView.Tests.TextureManagerTests.OverrideOutputTextureTest()
+  nameWithType: TextureManagerTests.OverrideOutputTextureTest()
+- uid: Microsoft.MixedReality.SpectatorView.Tests.TextureManagerTests.OverrideOutputTextureTest*
+  name: OverrideOutputTextureTest
+  href: api/Microsoft.MixedReality.SpectatorView.Tests.TextureManagerTests.html#Microsoft_MixedReality_SpectatorView_Tests_TextureManagerTests_OverrideOutputTextureTest_
+  commentId: Overload:Microsoft.MixedReality.SpectatorView.Tests.TextureManagerTests.OverrideOutputTextureTest
+  isSpec: "True"
+  fullName: Microsoft.MixedReality.SpectatorView.Tests.TextureManagerTests.OverrideOutputTextureTest
+  nameWithType: TextureManagerTests.OverrideOutputTextureTest
 - uid: Microsoft.MixedReality.SpectatorView.TextureManager
   name: TextureManager
   href: api/Microsoft.MixedReality.SpectatorView.TextureManager.html
   commentId: T:Microsoft.MixedReality.SpectatorView.TextureManager
   fullName: Microsoft.MixedReality.SpectatorView.TextureManager
   nameWithType: TextureManager
+- uid: Microsoft.MixedReality.SpectatorView.TrackingObserver
+  name: TrackingObserver
+  href: api/Microsoft.MixedReality.SpectatorView.TrackingObserver.html
+  commentId: T:Microsoft.MixedReality.SpectatorView.TrackingObserver
+  fullName: Microsoft.MixedReality.SpectatorView.TrackingObserver
+  nameWithType: TrackingObserver
+- uid: Microsoft.MixedReality.SpectatorView.TrackingObserver.OnDestroy
+  name: OnDestroy()
+  href: api/Microsoft.MixedReality.SpectatorView.TrackingObserver.html#Microsoft_MixedReality_SpectatorView_TrackingObserver_OnDestroy
+  commentId: M:Microsoft.MixedReality.SpectatorView.TrackingObserver.OnDestroy
+  fullName: Microsoft.MixedReality.SpectatorView.TrackingObserver.OnDestroy()
+  nameWithType: TrackingObserver.OnDestroy()
+- uid: Microsoft.MixedReality.SpectatorView.TrackingObserver.OnDestroy*
+  name: OnDestroy
+  href: api/Microsoft.MixedReality.SpectatorView.TrackingObserver.html#Microsoft_MixedReality_SpectatorView_TrackingObserver_OnDestroy_
+  commentId: Overload:Microsoft.MixedReality.SpectatorView.TrackingObserver.OnDestroy
+  isSpec: "True"
+  fullName: Microsoft.MixedReality.SpectatorView.TrackingObserver.OnDestroy
+  nameWithType: TrackingObserver.OnDestroy
+- uid: Microsoft.MixedReality.SpectatorView.TrackingObserver.Start
+  name: Start()
+  href: api/Microsoft.MixedReality.SpectatorView.TrackingObserver.html#Microsoft_MixedReality_SpectatorView_TrackingObserver_Start
+  commentId: M:Microsoft.MixedReality.SpectatorView.TrackingObserver.Start
+  fullName: Microsoft.MixedReality.SpectatorView.TrackingObserver.Start()
+  nameWithType: TrackingObserver.Start()
+- uid: Microsoft.MixedReality.SpectatorView.TrackingObserver.Start*
+  name: Start
+  href: api/Microsoft.MixedReality.SpectatorView.TrackingObserver.html#Microsoft_MixedReality_SpectatorView_TrackingObserver_Start_
+  commentId: Overload:Microsoft.MixedReality.SpectatorView.TrackingObserver.Start
+  isSpec: "True"
+  fullName: Microsoft.MixedReality.SpectatorView.TrackingObserver.Start
+  nameWithType: TrackingObserver.Start
+- uid: Microsoft.MixedReality.SpectatorView.TrackingObserver.TrackingState
+  name: TrackingState
+  href: api/Microsoft.MixedReality.SpectatorView.TrackingObserver.html#Microsoft_MixedReality_SpectatorView_TrackingObserver_TrackingState
+  commentId: P:Microsoft.MixedReality.SpectatorView.TrackingObserver.TrackingState
+  fullName: Microsoft.MixedReality.SpectatorView.TrackingObserver.TrackingState
+  nameWithType: TrackingObserver.TrackingState
+- uid: Microsoft.MixedReality.SpectatorView.TrackingObserver.TrackingState*
+  name: TrackingState
+  href: api/Microsoft.MixedReality.SpectatorView.TrackingObserver.html#Microsoft_MixedReality_SpectatorView_TrackingObserver_TrackingState_
+  commentId: Overload:Microsoft.MixedReality.SpectatorView.TrackingObserver.TrackingState
+  isSpec: "True"
+  fullName: Microsoft.MixedReality.SpectatorView.TrackingObserver.TrackingState
+  nameWithType: TrackingObserver.TrackingState
+- uid: Microsoft.MixedReality.SpectatorView.TrackingState
+  name: TrackingState
+  href: api/Microsoft.MixedReality.SpectatorView.TrackingState.html
+  commentId: T:Microsoft.MixedReality.SpectatorView.TrackingState
+  fullName: Microsoft.MixedReality.SpectatorView.TrackingState
+  nameWithType: TrackingState
+- uid: Microsoft.MixedReality.SpectatorView.TrackingState.LostTracking
+  name: LostTracking
+  href: api/Microsoft.MixedReality.SpectatorView.TrackingState.html#Microsoft_MixedReality_SpectatorView_TrackingState_LostTracking
+  commentId: F:Microsoft.MixedReality.SpectatorView.TrackingState.LostTracking
+  fullName: Microsoft.MixedReality.SpectatorView.TrackingState.LostTracking
+  nameWithType: TrackingState.LostTracking
+- uid: Microsoft.MixedReality.SpectatorView.TrackingState.Tracking
+  name: Tracking
+  href: api/Microsoft.MixedReality.SpectatorView.TrackingState.html#Microsoft_MixedReality_SpectatorView_TrackingState_Tracking
+  commentId: F:Microsoft.MixedReality.SpectatorView.TrackingState.Tracking
+  fullName: Microsoft.MixedReality.SpectatorView.TrackingState.Tracking
+  nameWithType: TrackingState.Tracking
+- uid: Microsoft.MixedReality.SpectatorView.TrackingState.Unknown
+  name: Unknown
+  href: api/Microsoft.MixedReality.SpectatorView.TrackingState.html#Microsoft_MixedReality_SpectatorView_TrackingState_Unknown
+  commentId: F:Microsoft.MixedReality.SpectatorView.TrackingState.Unknown
+  fullName: Microsoft.MixedReality.SpectatorView.TrackingState.Unknown
+  nameWithType: TrackingState.Unknown
 - uid: Microsoft.MixedReality.SpectatorView.TransformBroadcaster
   name: TransformBroadcaster
   href: api/Microsoft.MixedReality.SpectatorView.TransformBroadcaster.html
@@ -11583,6 +12642,35 @@ references:
   isSpec: "True"
   fullName: Microsoft.MixedReality.SpectatorView.TransformBroadcaster.ParentId
   nameWithType: TransformBroadcaster.ParentId
+- uid: Microsoft.MixedReality.SpectatorView.TransformBroadcaster.ProcessConnectionDelta(Microsoft.MixedReality.SpectatorView.SocketEndpointConnectionDelta,IReadOnlyList{Microsoft.MixedReality.SpectatorView.SocketEndpoint}@,IReadOnlyList{Microsoft.MixedReality.SpectatorView.SocketEndpoint}@,IReadOnlyList{Microsoft.MixedReality.SpectatorView.SocketEndpoint}@)
+  name: ProcessConnectionDelta(SocketEndpointConnectionDelta, out IReadOnlyList<SocketEndpoint>, out IReadOnlyList<SocketEndpoint>, out IReadOnlyList<SocketEndpoint>)
+  href: api/Microsoft.MixedReality.SpectatorView.TransformBroadcaster.html#Microsoft_MixedReality_SpectatorView_TransformBroadcaster_ProcessConnectionDelta_Microsoft_MixedReality_SpectatorView_SocketEndpointConnectionDelta_IReadOnlyList_Microsoft_MixedReality_SpectatorView_SocketEndpoint___IReadOnlyList_Microsoft_MixedReality_SpectatorView_SocketEndpoint___IReadOnlyList_Microsoft_MixedReality_SpectatorView_SocketEndpoint___
+  commentId: M:Microsoft.MixedReality.SpectatorView.TransformBroadcaster.ProcessConnectionDelta(Microsoft.MixedReality.SpectatorView.SocketEndpointConnectionDelta,IReadOnlyList{Microsoft.MixedReality.SpectatorView.SocketEndpoint}@,IReadOnlyList{Microsoft.MixedReality.SpectatorView.SocketEndpoint}@,IReadOnlyList{Microsoft.MixedReality.SpectatorView.SocketEndpoint}@)
+  name.vb: ProcessConnectionDelta(SocketEndpointConnectionDelta, ByRef IReadOnlyList(Of SocketEndpoint), ByRef IReadOnlyList(Of SocketEndpoint), ByRef IReadOnlyList(Of SocketEndpoint))
+  fullName: Microsoft.MixedReality.SpectatorView.TransformBroadcaster.ProcessConnectionDelta(Microsoft.MixedReality.SpectatorView.SocketEndpointConnectionDelta, out IReadOnlyList<Microsoft.MixedReality.SpectatorView.SocketEndpoint>, out IReadOnlyList<Microsoft.MixedReality.SpectatorView.SocketEndpoint>, out IReadOnlyList<Microsoft.MixedReality.SpectatorView.SocketEndpoint>)
+  fullName.vb: Microsoft.MixedReality.SpectatorView.TransformBroadcaster.ProcessConnectionDelta(Microsoft.MixedReality.SpectatorView.SocketEndpointConnectionDelta, ByRef IReadOnlyList(Of Microsoft.MixedReality.SpectatorView.SocketEndpoint), ByRef IReadOnlyList(Of Microsoft.MixedReality.SpectatorView.SocketEndpoint), ByRef IReadOnlyList(Of Microsoft.MixedReality.SpectatorView.SocketEndpoint))
+  nameWithType: TransformBroadcaster.ProcessConnectionDelta(SocketEndpointConnectionDelta, out IReadOnlyList<SocketEndpoint>, out IReadOnlyList<SocketEndpoint>, out IReadOnlyList<SocketEndpoint>)
+  nameWithType.vb: TransformBroadcaster.ProcessConnectionDelta(SocketEndpointConnectionDelta, ByRef IReadOnlyList(Of SocketEndpoint), ByRef IReadOnlyList(Of SocketEndpoint), ByRef IReadOnlyList(Of SocketEndpoint))
+- uid: Microsoft.MixedReality.SpectatorView.TransformBroadcaster.ProcessConnectionDelta*
+  name: ProcessConnectionDelta
+  href: api/Microsoft.MixedReality.SpectatorView.TransformBroadcaster.html#Microsoft_MixedReality_SpectatorView_TransformBroadcaster_ProcessConnectionDelta_
+  commentId: Overload:Microsoft.MixedReality.SpectatorView.TransformBroadcaster.ProcessConnectionDelta
+  isSpec: "True"
+  fullName: Microsoft.MixedReality.SpectatorView.TransformBroadcaster.ProcessConnectionDelta
+  nameWithType: TransformBroadcaster.ProcessConnectionDelta
+- uid: Microsoft.MixedReality.SpectatorView.TransformBroadcaster.ResetFrame
+  name: ResetFrame()
+  href: api/Microsoft.MixedReality.SpectatorView.TransformBroadcaster.html#Microsoft_MixedReality_SpectatorView_TransformBroadcaster_ResetFrame
+  commentId: M:Microsoft.MixedReality.SpectatorView.TransformBroadcaster.ResetFrame
+  fullName: Microsoft.MixedReality.SpectatorView.TransformBroadcaster.ResetFrame()
+  nameWithType: TransformBroadcaster.ResetFrame()
+- uid: Microsoft.MixedReality.SpectatorView.TransformBroadcaster.ResetFrame*
+  name: ResetFrame
+  href: api/Microsoft.MixedReality.SpectatorView.TransformBroadcaster.html#Microsoft_MixedReality_SpectatorView_TransformBroadcaster_ResetFrame_
+  commentId: Overload:Microsoft.MixedReality.SpectatorView.TransformBroadcaster.ResetFrame
+  isSpec: "True"
+  fullName: Microsoft.MixedReality.SpectatorView.TransformBroadcaster.ResetFrame
+  nameWithType: TransformBroadcaster.ResetFrame
 - uid: Microsoft.MixedReality.SpectatorView.TransformBroadcaster.SendCompleteChanges(IEnumerable{Microsoft.MixedReality.SpectatorView.SocketEndpoint})
   name: SendCompleteChanges(IEnumerable<SocketEndpoint>)
   href: api/Microsoft.MixedReality.SpectatorView.TransformBroadcaster.html#Microsoft_MixedReality_SpectatorView_TransformBroadcaster_SendCompleteChanges_IEnumerable_Microsoft_MixedReality_SpectatorView_SocketEndpoint__

@@ -1,0 +1,171 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>SpectatorView.Example.Unity | MixedReality-SpectatorView Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="SpectatorView.Example.Unity | MixedReality-SpectatorView Documentation ">
+    <meta name="generator" content="docfx 2.47.0.0">
+    
+    <link rel="shortcut icon" href="../../doc/images/favicon.ico">
+    <link rel="stylesheet" href="../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../styles/docfx.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <meta property="docfx:navrel" content="../../toc.html">
+    <meta property="docfx:tocrel" content="../../toc.html">
+    
+    <meta property="docfx:rel" content="../../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../index.html">
+                <img id="logo" class="svg" src="../../doc/images/spectatorview-logo.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        <div class="article row grid">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="spectatorviewexampleunity">SpectatorView.Example.Unity</h1>
+
+<p>This sample shows how to use <a href="https://docs.microsoft.com/en-us/windows/mixed-reality/qr-code-tracking">QR Code detection</a> to spatially align devices in the physical world.</p>
+<h2 id="sample-project-contents">Sample Project Contents</h2>
+<p>Once connecting a mobile device to the HoloLens experience, the mobile device should display a rotating, transparent cube that contains a sphere. The HoloLens will show its user an additional object that has been tagged as hidden to the mobile device spectator.</p>
+<h2 id="building-and-running-the-sample">Building and Running the Sample</h2>
+<p>In order to run the demo, you will need a HoloLens and an AR capable mobile device. Once you have the devices ready, follow the instructions below.</p>
+<blockquote>
+<p><strong>ARKit Note:</strong> If you wish to run the experience on an iOS device with ARKit, download the <a href="https://bitbucket.org/Unity-Technologies/unity-arkit-plugin/downloads/">ARKit repository</a>, unzip it, and copy the contents of the <code>Unity-Technologies-unity-arkit-plugin-94e47eae5954/Assets</code> folder to <code>/samples/SpectatorView.Example.Unity/Assets/</code>.</p>
+</blockquote>
+<h3 id="instructions">Instructions</h3>
+<p>These instructions assume that a HoloLens device will be used to host the shared experience and that a mobile phone will be used to spectate the shared experience.</p>
+<h4 id="prepare-your-local-codebase">Prepare your local codebase</h4>
+<ol>
+<li>Run <code>tools/Scripts/SetupRepository.bat</code> (<code>tools/Scripts/SetupRepository.sh</code> on Mac) to setup your local version of the code base. This script will obtain the external dependencies required for building this project.</li>
+<li>If you are using a HoloLens 1 device, build the <code>SpectatorView.OpenCV.dll</code> plugin and include it in the SpectatorView.Unity codebase. Instructions for building and adding <code>SpectatorView.OpenCV.dll</code> to the Spectator View codebase can be found <a href="../../src/SpectatorView.Native/README.html">here</a>.</li>
+</ol>
+<h4 id="prepare-your-devices">Prepare your devices</h4>
+<ol>
+<li>Connect your devices to the same WiFi network.</li>
+<li>Obtain and write down your HoloLens's IP Address (This can be found in the settings menu).</li>
+</ol>
+<h4 id="configure-your-project">Configure your project</h4>
+<ol>
+<li>Open the <code>SpectatorView.Example.Unity</code> project in Unity.</li>
+<li>If building for HoloLens 2, ensure that <code>QRCODESTRACKER_BINARY_AVAILABLE</code> has been defined as a Scripting Define Symbols in your WSA Unity Player Settings. If you have made no changes to the SpectatorView.Examples.Unity project definition, this should already be defined (Player settings can be found under <code>Build Settings -&gt; Player Settings</code>).</li>
+<li>If building for HoloLens 1, ensure that <code>SpectatorView.OpenCV.dll</code> exists in the project's Assets folder. It should have been placed under Assets\MixedReality-SpectatorView\SpectatorView.Native\Plugins\WSA\x86 when going through the compilation instructions <a href="../../src/SpectatorView.Native/README.html">here</a>.</li>
+</ol>
+<h4 id="build--deploy">Build &amp; Deploy</h4>
+<h5 id="hololens">HoloLens</h5>
+<ol>
+<li>Select <code>HoloLens</code> as your target platform using Spectator View's <code>PlatformSwitcher</code> (This can be found in the Unity inspector for the <code>SpectatorView</code> prefab GameObject).</li>
+<li>Build UWP Player containing <code>MixedReality-SpectatorView/SpectatorView/Scenes/SpectatorView.HoloLens</code> scene, and deploy this application to the HoloLens device.</li>
+<li>Launch <code>SpectatorView.Example.Unity</code> on the HoloLens and wait for the experience to start.</li>
+</ol>
+<p><img src="../../doc/images/HoloLensSpectatorViewExampleBuildSettings.png" alt="Marker"></p>
+<h5 id="android">Android</h5>
+<ol>
+<li>Select <code>Android</code> as your target platform using Spectator View's <code>PlatformSwitcher</code> (This can be found in the Unity inspector for the <code>SpectatorView</code> prefab GameObject).</li>
+<li>Include and check <code>MixedReality-SpectatorView/SpectatorView/Scenes/SpectatorView.Android.unity</code> as Scene 0 in your Unity Build Settings.</li>
+<li>Include and check <code>MixedReality-SpectatorView/SpectatorView/Scenes/SpectatorView.HoloLens.unity</code> as Scene 1 in your Unity Build Settings.</li>
+<li><code>Build and Run</code> the Android Player through Unity's Build Settings.</li>
+<li>Launch <code>SpectatorView.Example.Unity</code> on the Android device and connect to the HoloLens device by specifying the HoloLens's IP Address.</li>
+</ol>
+<p><img src="../../doc/images/AndroidSpectatorViewExampleBuildSettings.png" alt="Marker"></p>
+<h5 id="ios">iOS</h5>
+<ol>
+<li>Select <code>iOS</code> as your target platform using Spectator View's <code>PlatformSwitcher</code> (This can be found in the Unity inspector for the <code>SpectatorView</code> prefab GameObject).</li>
+<li>Include and check <code>MixedReality-SpectatorView/SpectatorView/Scenes/SpectatorView.iOS.unity</code> as Scene 0 in your Unity Build Settings.</li>
+<li>Include and check <code>MixedReality-SpectatorView/SpectatorView/Scenes/SpectatorView.HoloLens.unity</code> as Scene 1 in your Unity Build Settings.</li>
+<li><code>Build</code> the iOS Player through Unity's Build Settings.</li>
+<li>Launch <code>SpectatorView.Example.Unity</code> on the iOS device and connect to the HoloLens device by specifying the HoloLens's IP Address.</li>
+</ol>
+<p><img src="../../doc/images/iOSSpectatorViewExampleBuildSettings.png" alt="Marker"></p>
+<blockquote>
+<p>Note 1: Additional setup instructions and troubleshooting for spectating with mobile devices can be found <a href="../../doc/SpectatorView.Setup.html#building--deploying">here</a>.</p>
+</blockquote>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="additional-issues"><strong>Additional Issues</strong></h3>
+<p>For more information on troubleshooting other build issues, checkout the <code>Troubleshooting</code> section in our detailed setup steps <a href="../../doc/SpectatorView.Setup.html#troubleshooting">here</a>.</p>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Microsoft/MixedReality-SpectatorView/blob/master/samples/SpectatorView.Example.Unity/README.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
+  </body>
+</html>

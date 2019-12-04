@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class TransformBroadcaster
    | MixedReality-SpectatorView Documentation ">
-    <meta name="generator" content="docfx 2.44.0.0">
+    <meta name="generator" content="docfx 2.47.0.0">
     
     <link rel="shortcut icon" href="../doc/images/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -118,6 +118,9 @@
     </div>
     <div>
       <a class="xref" href="Microsoft.MixedReality.SpectatorView.ComponentBroadcaster-2.html#Microsoft_MixedReality_SpectatorView_ComponentBroadcaster_2_UpdateWhenDisabled">ComponentBroadcaster&lt;TransformBroadcasterService, TransformBroadcasterChangeType&gt;.UpdateWhenDisabled</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.SpectatorView.ComponentBroadcaster-2.html#Microsoft_MixedReality_SpectatorView_ComponentBroadcaster_2_PerformanceComponentName">ComponentBroadcaster&lt;TransformBroadcasterService, TransformBroadcasterChangeType&gt;.PerformanceComponentName</a>
     </div>
     <div>
       <a class="xref" href="Microsoft.MixedReality.SpectatorView.ComponentBroadcaster-2.html#Microsoft_MixedReality_SpectatorView_ComponentBroadcaster_2_ResetFrame">ComponentBroadcaster&lt;TransformBroadcasterService, TransformBroadcasterChangeType&gt;.ResetFrame()</a>
@@ -621,6 +624,60 @@
   </div>
   <h5 class="overrides">Overrides</h5>
   <div><span class="xref">Microsoft.MixedReality.SpectatorView.ComponentBroadcaster&lt;Microsoft.MixedReality.SpectatorView.TransformBroadcasterService, Microsoft.MixedReality.SpectatorView.TransformBroadcasterChangeType&gt;.OnDestroy()</span></div>
+  
+  
+  <a id="Microsoft_MixedReality_SpectatorView_TransformBroadcaster_ProcessConnectionDelta_" data-uid="Microsoft.MixedReality.SpectatorView.TransformBroadcaster.ProcessConnectionDelta*"></a>
+  <h4 id="Microsoft_MixedReality_SpectatorView_TransformBroadcaster_ProcessConnectionDelta_Microsoft_MixedReality_SpectatorView_SocketEndpointConnectionDelta_IReadOnlyList_Microsoft_MixedReality_SpectatorView_SocketEndpoint___IReadOnlyList_Microsoft_MixedReality_SpectatorView_SocketEndpoint___IReadOnlyList_Microsoft_MixedReality_SpectatorView_SocketEndpoint___" data-uid="Microsoft.MixedReality.SpectatorView.TransformBroadcaster.ProcessConnectionDelta(Microsoft.MixedReality.SpectatorView.SocketEndpointConnectionDelta,IReadOnlyList{Microsoft.MixedReality.SpectatorView.SocketEndpoint}@,IReadOnlyList{Microsoft.MixedReality.SpectatorView.SocketEndpoint}@,IReadOnlyList{Microsoft.MixedReality.SpectatorView.SocketEndpoint}@)">ProcessConnectionDelta(SocketEndpointConnectionDelta, out IReadOnlyList&lt;SocketEndpoint&gt;, out IReadOnlyList&lt;SocketEndpoint&gt;, out IReadOnlyList&lt;SocketEndpoint&gt;)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void ProcessConnectionDelta(SocketEndpointConnectionDelta connectionDelta, out IReadOnlyList&lt;SocketEndpoint&gt; needingCompleteChanges, out IReadOnlyList&lt;SocketEndpoint&gt; filteredNeedingDeltaChanged, out IReadOnlyList&lt;SocketEndpoint&gt; filteredNeedingCompleteChanges)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.SpectatorView.SocketEndpointConnectionDelta.html">SocketEndpointConnectionDelta</a></td>
+        <td><span class="parametername">connectionDelta</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">IReadOnlyList</span>&lt;<a class="xref" href="Microsoft.MixedReality.SpectatorView.SocketEndpoint.html">SocketEndpoint</a>&gt;</td>
+        <td><span class="parametername">needingCompleteChanges</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">IReadOnlyList</span>&lt;<a class="xref" href="Microsoft.MixedReality.SpectatorView.SocketEndpoint.html">SocketEndpoint</a>&gt;</td>
+        <td><span class="parametername">filteredNeedingDeltaChanged</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">IReadOnlyList</span>&lt;<a class="xref" href="Microsoft.MixedReality.SpectatorView.SocketEndpoint.html">SocketEndpoint</a>&gt;</td>
+        <td><span class="parametername">filteredNeedingCompleteChanges</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_SpectatorView_TransformBroadcaster_ResetFrame_" data-uid="Microsoft.MixedReality.SpectatorView.TransformBroadcaster.ResetFrame*"></a>
+  <h4 id="Microsoft_MixedReality_SpectatorView_TransformBroadcaster_ResetFrame" data-uid="Microsoft.MixedReality.SpectatorView.TransformBroadcaster.ResetFrame">ResetFrame()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void ResetFrame()</code></pre>
+  </div>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">Microsoft.MixedReality.SpectatorView.ComponentBroadcaster&lt;Microsoft.MixedReality.SpectatorView.TransformBroadcasterService, Microsoft.MixedReality.SpectatorView.TransformBroadcasterChangeType&gt;.ResetFrame()</span></div>
   
   
   <a id="Microsoft_MixedReality_SpectatorView_TransformBroadcaster_SendCompleteChanges_" data-uid="Microsoft.MixedReality.SpectatorView.TransformBroadcaster.SendCompleteChanges*"></a>

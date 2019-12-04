@@ -8,7 +8,7 @@
     <title>Spectator View Samples | MixedReality-SpectatorView Documentation </title>
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Spectator View Samples | MixedReality-SpectatorView Documentation ">
-    <meta name="generator" content="docfx 2.44.0.0">
+    <meta name="generator" content="docfx 2.47.0.0">
     
     <link rel="shortcut icon" href="../doc/images/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -72,21 +72,21 @@
             <article class="content wrap" id="_content" data-uid="">
 <h1 id="spectator-view-samples">Spectator View Samples</h1>
 
-<p>This folder contains sample and demo projects that are maintained by the SpectatorView team. Below you will find the instructions on how to get started, as well as the sample folder structure setup and dependencies.</p>
+<p>This folder contains sample and demo projects that are maintained by Spectator View contributors. Below you will find the instructions on how to get started, as well as the sample folder structure setup and dependencies.</p>
 <h2 id="getting-started">Getting Started</h2>
-<p>Ensure you have all the required software, for detailed instructions see <a href="../doc/SpectatorView.Setup.html">Required Software</a>.</p>
+<p>Ensure you have all the required software, for detailed instructions see <a href="../doc/SpectatorView.Setup.html#software--hardware-requirements">Required Software</a>.</p>
 <ul>
 <li>Git Tools</li>
 <li>Visual Studio</li>
 <li>Unity 2018.3.14f1</li>
-<li><strong>(Optional)</strong> Windows 10.0.18362.0 SDK</li>
+<li>Windows 10.0.18362.0 SDK</li>
 <li><strong>(Optional)</strong> Android Studio</li>
 <li><strong>(Optional)</strong> XCode</li>
 </ul>
 <p>Once you have the required software, follow these steps:</p>
 <ol>
-<li>Using your favorite Git management tool, clone this repository if you haven't yet.</li>
-<li>Then with git, pull the latest version of the code.</li>
+<li>Using your favorite Git management tool, clone this repository.</li>
+<li>Then with git, checkout the latest release of the code. (This will be the <code>release/*.*.</code> branch with the highest version number)</li>
 <li>Run <code>/tools/scripts/SetupRepository.bat</code> as an administrator to get ensure the appropriate submodules for the sample projects are cloned and the correct directories are linked into the sample project.
 <ul>
 <li>On Mac or Linux, you can run <code>/tools/scripts/SetupRepository.sh</code>.</li>
@@ -98,9 +98,20 @@
 </blockquote>
 <h2 id="contents">Contents</h2>
 <p>This repository currently has the following samples:</p>
+<ol>
+<li><a href="Build2019Demo.Unity/README.html">//BUILD 2019 Demo</a>
 <ul>
-<li><a href="Build2019Demo.Unity/README.html">//BUILD 2019 Demo</a></li>
+<li>This sample shows how to use <a href="https://azure.microsoft.com/en-us/services/spatial-anchors/">Azure Spatial Anchors</a> to spatially align devices in the physical world.</li>
+<li>This sample also shows to use Spectator View with the <a href="http://aka.ms/mrtk">Mixed Reality Toolkit</a>.</li>
 </ul>
+</li>
+<li><a href="SpectatorView.Example.Unity/README.html">SpectatorView.Example.Unity</a>
+<ul>
+<li>This sample shows how to use <a href="https://docs.microsoft.com/en-us/windows/mixed-reality/qr-code-tracking">QR Code detection</a> on HoloLens 2 to spatially align devices in the physical world.</li>
+<li>This sample can also use <a href="https://docs.opencv.org/master/d5/dae/tutorial_aruco_detection.html">ArUco marker detection</a> on HoloLens 1 to spatially align devices in the physical world.</li>
+</ul>
+</li>
+</ol>
 <h2 id="troubleshooting">Troubleshooting</h2>
 <p>If you encounter some issues, the first thing to do is to run <code>/tools/scripts/SetupRepository.bat</code> as an administrator. For additional troubleshooting options look below.</p>
 <h3 id="issue-unity-project-folder-structure-broken"><strong>Issue:</strong> Unity Project Folder Structure Broken</h3>

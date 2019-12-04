@@ -8,7 +8,7 @@
     <title>State synchronization | MixedReality-SpectatorView Documentation </title>
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="State synchronization | MixedReality-SpectatorView Documentation ">
-    <meta name="generator" content="docfx 2.44.0.0">
+    <meta name="generator" content="docfx 2.47.0.0">
     
     <link rel="shortcut icon" href="../../../../../../doc/images/favicon.ico">
     <link rel="stylesheet" href="../../../../../../styles/docfx.vendor.css">
@@ -72,7 +72,7 @@
             <article class="content wrap" id="_content" data-uid="">
 <h1 id="state-synchronization">State synchronization</h1>
 
-<h3 id="pre-compilation">Pre-compilation</h3>
+<h2 id="pre-compilation">Pre-compilation</h2>
 <ol>
 <li><p>If you would like to synchronize Text Mesh Pro UI, you will need to add the <code>STATESYNC_TEXTMESHPRO</code> preprocessor directive to your UWP, Android and iOS Player settings (This is located via Build Settings -&gt; Player Settings -&gt; Other Settings -&gt; 'Scripting Defined Symbols').</p>
 </li>
@@ -82,7 +82,45 @@
 <blockquote>
 <p>Note: Adding, updating and removing assets will require updating these asset caches as well as re-compiling each platform.</p>
 </blockquote>
-<h3 id="in-application">In application</h3>
+<h2 id="performance">Performance</h2>
+<h3 id="performance-settings">Performance Settings</h3>
+<p>State Synchronization comes at a computational cost to your HoloLens application. Every update, ComponentBroadcasters assess whether or not their associated content has updated in order to report changes to spectator devices. The more GameObjects you have in your scene, the more expensive content becomes to assess and synchronize. However, Spectator View does offer some built in functionality to try and help improve performance:</p>
+<ol>
+<li>In your BroadcasterSettings (Spectator View -&gt; Edit Settings), you can choose to <strong>not</strong> <code>Automatically Broadcast All Game Objects</code>. By unselecting this option, you can manually add GameObjectHierarchyBroadcaster components to the root GameObjects of the content in your scene that you care about synchronizing. The less content you choose to synchronize, the less performance drop you should see for your application.</li>
+</ol>
+<p><img src="../../../../../../doc/images/AvoidSynchronizingAllContent.png" alt="Marker"></p>
+<ol start="2">
+<li>In addition to specifically tagging what content to synchronize with GameObjectHierarchyBroadcasters, you can hide content from synchronization by adding <code>SpectatorViewHidden</code> and <code>SpectatorViewChildrenHidden</code> tags.</li>
+</ol>
+<p><img src="../../../../../../doc/images/SpectatorViewHidden.png" alt="Marker"></p>
+<ol start="3">
+<li>You can also edit how frequently some content is assessed for changes. There are a couple of ways to do this, but the first method is to edit your global performance parameters:</li>
+</ol>
+<p><img src="../../../../../../doc/images/EditSynchronizationSettings.png" alt="Marker"></p>
+<p>Then change the polling frequency for some different settings:</p>
+<ul>
+<li><strong>Check For Component Broadcasters</strong> - Affects how often a game object is assessed for new components/new component broadcasters. If you dynamically add components to your GameObject, you may need to keep this value as <code>Update Continuously</code>. If most of your GameObject components are created through a prefab or when creating the GameObject, you may be able to improve performance by setting this value to <code>Update Once on Start</code></li>
+<li><strong>Shader Keywords</strong> - Affects how frequently shader keywords are assessed. If you never change shader keywords after material creation, changing this value to <code>Update Once on Start</code> should improve performance.</li>
+<li><strong>Material Properties</strong> - Affects how frequently material properties are assessed. If you never change material properties after material creation, changing this value to <code>Update Once on Start</code> should improve performance.</li>
+<li><strong>Material Property Overrides</strong> - Allows custom assessment behavior for custom material properties. If you only have one or a few material properties that are continually updated, you can specify it here and change the <strong>Material Properties</strong> flag to once on start to improve performance. This will result in only the material properties you have declared getting assessed for changes after start.</li>
+</ul>
+<p>In addition to changing polling frequencies, you can also enable/disable another setting:</p>
+<ul>
+<li><strong>Material Property Blocks</strong> - Enables/disables using material property blocks. Material property blocks can be used when you have different properties for the same shared material for different GameObjects. If you aren't using material property blocks, you will not need to enable this functionality.</li>
+</ul>
+<p><img src="../../../../../../doc/images/GlobalPerformanceSettings.png" alt="Marker"></p>
+<ol start="4">
+<li>You can also define custom StateSynchronizationPerformanceParameters components for specific GameObjects/portions of your scene. Custom StateSynchronizationPerformanceParameters override the global performance settings for the GameObject that they are attached to, as well as for all child GameObjects. This can allow for finer tuning/tagging specific content in the scene to have different performance parameters for synchronizing.</li>
+</ol>
+<h3 id="performance-monitoring">Performance Monitoring</h3>
+<p>Spectator View provides some functionality for performance monitoring/assessing where the largest state synchronization bottlenecks are in your scene. To begin performance monitoring, open the <code>SpectatorViewPerformance</code> scene. Enter playmode, and then connect to the HoloLens device running your application through the performance window. Content in the editor scene will be updated to contain the content synchronized by your HoloLens device. By pressing <code>Enable Performance Monitoring</code>, your HoloLens will start reporting different content synchronization event durations (Note: this impacts performance, so turn off performance monitoring after assessing the biggest bottlenecks).</p>
+<p><img src="../../../../../../doc/images/PerformanceWindow.png" alt="Marker"></p>
+<p>Event durations will vary based on the content you have defined in your scene. When working on improving performance in your application, consider the following:</p>
+<ol>
+<li>A transform broadcaster is created for every GameObject that you synchronize in your scene hierarchy. If you have a lot of empty game objects, consider removing them/flattening your scene hierarchy to decrease the number of transform broadcasters created. This will decrease the performance costs/event durations associated with transform broadcasters.</li>
+<li>When you leave all of the options as <code>Update Continuously</code> in the global performance settings, you will see material property updates reported in the Event Count section of the performance window. Viewing material updates here may better inform what material properties to declare in the <code>Material Property Overrides</code> within your global performance settings when changing <code>Material Properties</code> to only <code>Update Once on Start</code>.</li>
+</ol>
+<h2 id="application-flow">Application Flow</h2>
 <ol>
 <li><p>On the user device, a <code>StateSynchronizationBroadcaster</code> is enabled, while on the spectator device a
 <code>StateSynchronizationObserver</code> is enabled.</p>

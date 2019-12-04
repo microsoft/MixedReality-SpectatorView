@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Interface ISpatialLocalizationSession
    | MixedReality-SpectatorView Documentation ">
-    <meta name="generator" content="docfx 2.44.0.0">
+    <meta name="generator" content="docfx 2.47.0.0">
     
     <link rel="shortcut icon" href="../doc/images/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -97,13 +97,53 @@
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public interface ISpatialLocalizationSession : IDisposable</code></pre>
   </div>
+  <h3 id="properties">Properties
+  </h3>
+  
+  
+  <a id="Microsoft_MixedReality_SpectatorView_ISpatialLocalizationSession_Peer_" data-uid="Microsoft.MixedReality.SpectatorView.ISpatialLocalizationSession.Peer*"></a>
+  <h4 id="Microsoft_MixedReality_SpectatorView_ISpatialLocalizationSession_Peer" data-uid="Microsoft.MixedReality.SpectatorView.ISpatialLocalizationSession.Peer">Peer</h4>
+  <div class="markdown level1 summary"><p>Participant associated with the current localization session</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IPeerConnection Peer { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.SpectatorView.IPeerConnection.html">IPeerConnection</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="methods">Methods
   </h3>
   
   
+  <a id="Microsoft_MixedReality_SpectatorView_ISpatialLocalizationSession_Cancel_" data-uid="Microsoft.MixedReality.SpectatorView.ISpatialLocalizationSession.Cancel*"></a>
+  <h4 id="Microsoft_MixedReality_SpectatorView_ISpatialLocalizationSession_Cancel" data-uid="Microsoft.MixedReality.SpectatorView.ISpatialLocalizationSession.Cancel">Cancel()</h4>
+  <div class="markdown level1 summary"><p>Call to cancel the localization sessions</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">void Cancel()</code></pre>
+  </div>
+  
+  
   <a id="Microsoft_MixedReality_SpectatorView_ISpatialLocalizationSession_LocalizeAsync_" data-uid="Microsoft.MixedReality.SpectatorView.ISpatialLocalizationSession.LocalizeAsync*"></a>
   <h4 id="Microsoft_MixedReality_SpectatorView_ISpatialLocalizationSession_LocalizeAsync_CancellationToken_" data-uid="Microsoft.MixedReality.SpectatorView.ISpatialLocalizationSession.LocalizeAsync(CancellationToken)">LocalizeAsync(CancellationToken)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Call to obtain a spatial coordinate from this localization session</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -145,7 +185,8 @@
   
   <a id="Microsoft_MixedReality_SpectatorView_ISpatialLocalizationSession_OnDataReceived_" data-uid="Microsoft.MixedReality.SpectatorView.ISpatialLocalizationSession.OnDataReceived*"></a>
   <h4 id="Microsoft_MixedReality_SpectatorView_ISpatialLocalizationSession_OnDataReceived_BinaryReader_" data-uid="Microsoft.MixedReality.SpectatorView.ISpatialLocalizationSession.OnDataReceived(BinaryReader)">OnDataReceived(BinaryReader)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Call to provide network information</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -164,7 +205,8 @@
       <tr>
         <td><span class="xref">BinaryReader</span></td>
         <td><span class="parametername">reader</span></td>
-        <td></td>
+        <td><p>reader containing a network payload</p>
+</td>
       </tr>
     </tbody>
   </table>

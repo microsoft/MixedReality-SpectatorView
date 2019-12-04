@@ -8,7 +8,7 @@
     <title>Spectator View Architecture | MixedReality-SpectatorView Documentation </title>
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Spectator View Architecture | MixedReality-SpectatorView Documentation ">
-    <meta name="generator" content="docfx 2.44.0.0">
+    <meta name="generator" content="docfx 2.47.0.0">
     
     <link rel="shortcut icon" href="../doc/images/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -90,7 +90,7 @@
 </ol>
 <h3 id="2-spectating-with-a-video-camera-rig">2. Spectating with a video camera rig</h3>
 <ol>
-<li>A HoloLens is mounted to the video camera. <a href="SpectatorView.Setup.VideoCamera.html">Calibration</a> is then performed to calculate camera intrinsics (Properties such as lens focal length and principal points that are needed for compositing holograms into the video camera feed) and camera extrinsics (The transform of the video camera to the mounted HoloLens). This data is stored on this HoloLens mounted to the video camera.</li>
+<li>A HoloLens is mounted to the video camera. <a href="SpectatorView.Setup.VideoCamera.html#calibration">Calibration</a> is then performed to calculate camera intrinsics (Properties such as lens focal length and principal points that are needed for compositing holograms into the video camera feed) and camera extrinsics (The transform of the video camera to the mounted HoloLens). This data is stored on this HoloLens mounted to the video camera.</li>
 <li>The PC obtains a video camera stream through a capture card.</li>
 <li>The PC connects to sockets open on both the user HoloLens and video camera rig HoloLens through the unity editor.</li>
 <li>The PC obtains camera intrinsic and extrinsic information from the DSLR mounted HoloLens and updates its unity camera to reflect these values.</li>

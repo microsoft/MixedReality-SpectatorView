@@ -1,0 +1,141 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Building with the command line | MixedReality-SpectatorView Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Building with the command line | MixedReality-SpectatorView Documentation ">
+    <meta name="generator" content="docfx 2.47.0.0">
+    
+    <link rel="shortcut icon" href="../doc/images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="../toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../doc/images/spectatorview-logo.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        <div class="article row grid">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="building-with-the-command-line">Building with the command line</h1>
+
+<h2 id="building-native-plugins-via-cmd">Building Native Plugins via cmd</h2>
+<ol>
+<li>Install <a href="https://docs.microsoft.com/en-us/nuget/install-nuget-client-tools">NuGet</a></li>
+<li>Add <code>nuget.exe</code> to your <code>PATH</code> variable
+<ol>
+<li>Go to <code>Edit the system environment variables -&gt; Advanced -&gt; Environment Variables</code></li>
+<li>Add the directory containing nuget.exe to your User variables <code>Path</code> or the System variables <code>Path</code></li>
+</ol>
+</li>
+<li>Restart any command windows to pick up your new <code>Path</code> definition</li>
+<li>Add your downloaded <code>Blackmagic DeckLink SDK 10.9.11</code> folder to a <code>external\dependencies\BlackmagicDesign</code> folder in your MixedReality-SpectatorView repo clone.</li>
+<li>Run <code>tools\ci\scripts\buildNativeProjectLocal.bat</code></li>
+</ol>
+<h2 id="building-unity-projects-via-cmd">Building Unity Projects via cmd</h2>
+<ol>
+<li>Run <code>tools\ci\scripts\buildUnityProjectLocal.bat</code></li>
+</ol>
+<blockquote>
+<p>Note: If you have updated your local SpectatorView.Example.Unity project to contain additional preprocessor directives (for example, STATESYNC_TEXTMESHPRO, etc) and the code no longer compiles upon opening the project, this buildUnityProjectLocal.bat will fail.</p>
+</blockquote>
+<h1 id="running-tests">Running tests</h1>
+<h2 id="running-playmode-tests">Running PlayMode Tests</h2>
+<ol>
+<li>Open the SpectatorView.Example.Unity project in Unity</li>
+<li>Open the Build Settings <code>(File -&gt; Build Settings)</code> and include the <code>SpectatorViewCompositor</code> scene in your build</li>
+<li>Open the Test Runner Window <code>(Window -&gt; General -&gt; Test Runner)</code></li>
+<li>Select <code>Run All</code> for the PlayMode tests</li>
+</ol>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Microsoft/MixedReality-SpectatorView/blob/master/doc/SpectatorView.Automation.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

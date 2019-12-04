@@ -18,7 +18,7 @@
       "output": {
         ".html": {
           "relative_path": "README.html",
-          "hash": "54Lqcw/kUo0W1yRrKZM7Ew=="
+          "hash": "gGC2X37O1yZ965Uhzt9HbA=="
         }
       },
       "is_incremental": false,
@@ -30,7 +30,19 @@
       "output": {
         ".html": {
           "relative_path": "doc/SpectatorView.Architecture.html",
-          "hash": "t/zcBZsyTrSKPMOCQDee7g=="
+          "hash": "ns6Kp9kSNgSq9nxPReBoug=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "doc/SpectatorView.Automation.md",
+      "output": {
+        ".html": {
+          "relative_path": "doc/SpectatorView.Automation.html",
+          "hash": "qqsbEpHhbvpePdyeUo6XUw=="
         }
       },
       "is_incremental": false,
@@ -42,7 +54,7 @@
       "output": {
         ".html": {
           "relative_path": "doc/SpectatorView.Debugging.html",
-          "hash": "SROuodUlSphFDWO8LG0n7w=="
+          "hash": "AS1jASgBva6eELVAhXZSMg=="
         }
       },
       "is_incremental": false,
@@ -54,7 +66,7 @@
       "output": {
         ".html": {
           "relative_path": "doc/SpectatorView.Setup.VideoCamera.html",
-          "hash": "4mnJcoHLHCc0y4g1urdTmg=="
+          "hash": "V6zvjpiJ0Ah5Fhmhk/qWuA=="
         }
       },
       "is_incremental": false,
@@ -66,7 +78,7 @@
       "output": {
         ".html": {
           "relative_path": "doc/SpectatorView.Setup.html",
-          "hash": "q7VIg6DPwx06Z/jdDnK0QQ=="
+          "hash": "QCCVxcrty7qmmW4/edfLJg=="
         }
       },
       "is_incremental": false,
@@ -78,7 +90,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.PhotoCapture.CameraExtrinsics.html",
-          "hash": "UP6MVlKHXPQKipXDDggDHQ=="
+          "hash": "UMtgtqFZoyAe7SPRkh3gvw=="
         }
       },
       "is_incremental": false,
@@ -90,7 +102,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.PhotoCapture.CameraFrame.html",
-          "hash": "scZVLX+qqleOf5gERwYC7g=="
+          "hash": "F84yaTeuost91TIswG5mRA=="
         }
       },
       "is_incremental": false,
@@ -102,7 +114,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.PhotoCapture.CameraIntrinsics.html",
-          "hash": "ibGCSYpDcwdd3zRopHvXqg=="
+          "hash": "yGkCRViRtC3D/bGgChEvbA=="
         }
       },
       "is_incremental": false,
@@ -114,7 +126,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.PhotoCapture.CameraResolution.html",
-          "hash": "1/vIlixxYEeFNYyLUqWecQ=="
+          "hash": "Lp2TVfzMUa/pyZtd64K6Yg=="
         }
       },
       "is_incremental": false,
@@ -126,7 +138,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.PhotoCapture.CameraState.html",
-          "hash": "I97xpdRCpRzcWRIsxEb+/Q=="
+          "hash": "JYnHeXUD9OwF9hquhcvaKw=="
         }
       },
       "is_incremental": false,
@@ -138,7 +150,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.PhotoCapture.CameraType.html",
-          "hash": "60Tw0gU8+0unlvkNwFKogg=="
+          "hash": "bm0rYCboJFGI44tT+LZAHw=="
         }
       },
       "is_incremental": false,
@@ -150,7 +162,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.PhotoCapture.CaptureMode.html",
-          "hash": "pT6oxsiX1BD3P2uyAV/M5Q=="
+          "hash": "EliEOGAMbCrVXFILPVRrqg=="
         }
       },
       "is_incremental": false,
@@ -162,7 +174,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.PhotoCapture.HoloLensCamera.html",
-          "hash": "WX60/T7wMlcnjt8ZLhVNdQ=="
+          "hash": "VcDUBE1wtN8T9XClV3Y4MQ=="
         }
       },
       "is_incremental": false,
@@ -174,7 +186,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.PhotoCapture.OnCameraInitializedHandler.html",
-          "hash": "Lcs15HvKVSTVz+FVLUONeA=="
+          "hash": "oKzvGsP1CXSKUhHn0WwW3g=="
         }
       },
       "is_incremental": false,
@@ -186,7 +198,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.PhotoCapture.OnCameraStartedHandler.html",
-          "hash": "du+ruLlVBGBJtbcsNTBTWg=="
+          "hash": "rFgMPIR376f0NenSNqvwcg=="
         }
       },
       "is_incremental": false,
@@ -198,7 +210,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.PhotoCapture.OnFrameCapturedHandler.html",
-          "hash": "xLtvmlRSbmXWgI9P42My8Q=="
+          "hash": "rvNZP7igEZtN313I7Y02AQ=="
         }
       },
       "is_incremental": false,
@@ -210,7 +222,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.PhotoCapture.PixelFormat.html",
-          "hash": "7MsF7eHPL5mdaWt667r71A=="
+          "hash": "vWtgzHXkvvIUNUhRuYXMGA=="
         }
       },
       "is_incremental": false,
@@ -222,7 +234,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.PhotoCapture.StreamCompare.html",
-          "hash": "l3OqE9y8M9jP8BiLPSO7Xg=="
+          "hash": "pAeW9VQJYSOaZhxR8Qmn+Q=="
         }
       },
       "is_incremental": false,
@@ -234,7 +246,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.PhotoCapture.StreamDescription.html",
-          "hash": "VwBW/33b8NmDk9mUDD+pKw=="
+          "hash": "f5BW3JAzjSieBIY9g+pPnQ=="
         }
       },
       "is_incremental": false,
@@ -246,7 +258,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.PhotoCapture.StreamSelector.html",
-          "hash": "/QlA7P04Z9rHrSvdiBcoSQ=="
+          "hash": "Gritvf/aH/SQ9RGVXVqLTg=="
         }
       },
       "is_incremental": false,
@@ -258,7 +270,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.PhotoCapture.html",
-          "hash": "Zm2du6t7jRI5djf1SW3asQ=="
+          "hash": "FWaPtO2bNeCuyf/Di8onug=="
         }
       },
       "is_incremental": false,
@@ -270,7 +282,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpatialAlignment.DisposableBase.html",
-          "hash": "qVcrn4kq8oDrsf/Nt6ob/Q=="
+          "hash": "XaVCSvywXlsTNVDO6fxoYQ=="
         }
       },
       "is_incremental": false,
@@ -282,7 +294,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpatialAlignment.Extensions.SynchronizationContextAwaiter.html",
-          "hash": "2vLVyP4Nb+P8Uouzp2VDtQ=="
+          "hash": "H8i0vSXkB9+Jzwji2x2LqA=="
         }
       },
       "is_incremental": false,
@@ -294,7 +306,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpatialAlignment.Extensions.html",
-          "hash": "73P+y6WnvzuBM1dl8fjnuw=="
+          "hash": "L055Cg5Fe/jgtB6FTUOJlQ=="
         }
       },
       "is_incremental": false,
@@ -306,7 +318,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpatialAlignment.ISpatialCoordinate.html",
-          "hash": "eNf2INvynFKZtKGhG55w/A=="
+          "hash": "kwqYwaqDay1zpY+6LBXAwQ=="
         }
       },
       "is_incremental": false,
@@ -318,7 +330,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpatialAlignment.ISpatialCoordinateService.html",
-          "hash": "ZNmL/RpowrvEndkJwZmgSA=="
+          "hash": "mMLS0qjyCHfDXIrJ4HRJYQ=="
         }
       },
       "is_incremental": false,
@@ -330,7 +342,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpatialAlignment.LocatedState.html",
-          "hash": "Ot1pJTDYYtIn84bl9rV+Cw=="
+          "hash": "SuDOzCtT/Jj48TOrcoZTVQ=="
         }
       },
       "is_incremental": false,
@@ -342,7 +354,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpatialAlignment.SpatialCoordinateBase-1.html",
-          "hash": "76gVaJBPVr6NxAFWRf0jPA=="
+          "hash": "iMWHC+mTF3LF3N52LnBhgw=="
         }
       },
       "is_incremental": false,
@@ -354,7 +366,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpatialAlignment.SpatialCoordinateLocalizer.html",
-          "hash": "UfbCid7H312vGhrF+ydTvw=="
+          "hash": "xjWIxQ91Ez9vZJJdhEJiOw=="
         }
       },
       "is_incremental": false,
@@ -366,7 +378,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpatialAlignment.SpatialCoordinateRelativeLocalizer.html",
-          "hash": "Xq2PI/Ado2hPVctAgPi5TA=="
+          "hash": "/pD5MUhtkr5g5VExo4cRPg=="
         }
       },
       "is_incremental": false,
@@ -378,7 +390,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpatialAlignment.SpatialCoordinateServiceBase-1.html",
-          "hash": "fPiG+QEaj7ZI1ByKsOpElw=="
+          "hash": "MHRoDkVyWMWUd4y6b47pVA=="
         }
       },
       "is_incremental": false,
@@ -390,7 +402,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpatialAlignment.SpatialCoordinateServiceUnityBase-1.html",
-          "hash": "Asglt+T8CQX/fLVnp8feQQ=="
+          "hash": "2uaxY2yaVhGPFotn1Regog=="
         }
       },
       "is_incremental": false,
@@ -402,7 +414,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpatialAlignment.SpatialCoordinateUnityBase-1.html",
-          "hash": "ApW0XTizQakmjhW6GYn50g=="
+          "hash": "rL/VQQWlf8Q0lMZ1xZMXEw=="
         }
       },
       "is_incremental": false,
@@ -414,7 +426,31 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpatialAlignment.html",
-          "hash": "h5+I9Lqc8am8elzMLbo67w=="
+          "hash": "Kb6iNj81IlGUmAku2J1xmw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "doc/build/api/Microsoft.MixedReality.SpectatorView.ARCoreTrackingObserver.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.SpectatorView.ARCoreTrackingObserver.html",
+          "hash": "37bKYSrTLuFcf5vF5ZcO+A=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "doc/build/api/Microsoft.MixedReality.SpectatorView.ARKitTrackingObserver.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.SpectatorView.ARKitTrackingObserver.html",
+          "hash": "O5efW5rtMryRE/pPo0vZ2g=="
         }
       },
       "is_incremental": false,
@@ -426,7 +462,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.AndroidRecordingService.html",
-          "hash": "ZSxRdDe2KWXUITcpDqC4uA=="
+          "hash": "INfGmsVuK9pw1l49TSQdBA=="
         }
       },
       "is_incremental": false,
@@ -438,7 +474,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.ArUcoMarkerDetector.html",
-          "hash": "te1NoG4BvVd+zTqtrVXGMQ=="
+          "hash": "wGgfHknn+0GbqukGMWCl7A=="
         }
       },
       "is_incremental": false,
@@ -450,7 +486,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.ArUcoMarkerDetectorSpatialLocalizer.html",
-          "hash": "O/BTzB2CJCQN3TCIbPTvow=="
+          "hash": "HedhjswBZLxMtm/+z9HvbA=="
         }
       },
       "is_incremental": false,
@@ -462,7 +498,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.ArUcoMarkerVisual.html",
-          "hash": "2Nqu66mtJy5VxLLjNQEPNw=="
+          "hash": "YwvyJyd+NwUpBOZMUzkgFg=="
         }
       },
       "is_incremental": false,
@@ -474,7 +510,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.ArUcoMarkerVisualDetectorSpatialLocalizer.html",
-          "hash": "cR/b8pN9g3jLtnrLn5sxQg=="
+          "hash": "a3EJpr8E4gsL2EcFh9gpYA=="
         }
       },
       "is_incremental": false,
@@ -486,7 +522,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.ArUcoMarkerVisualSpatialLocalizer.html",
-          "hash": "zbCnjLQ2yArXLsG0prP/NA=="
+          "hash": "weSvNtKqA29mDrnBw0WDZw=="
         }
       },
       "is_incremental": false,
@@ -498,7 +534,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.AudioSourceProperties.html",
-          "hash": "Eu/CRT0euuixHNTGM5P5LQ=="
+          "hash": "Y4SoDthEPFesdDs8dPAQTQ=="
         }
       },
       "is_incremental": false,
@@ -510,7 +546,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.BroadcasterSettings.html",
-          "hash": "hEUbnSc6myZleFjqNua1/Q=="
+          "hash": "EmgKDNLBWYdeZyQutO766w=="
         }
       },
       "is_incremental": false,
@@ -522,7 +558,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.CalculatedCameraCalibration.html",
-          "hash": "d8cLZ25bnqEHqO5mqwdO3w=="
+          "hash": "7A7QoU2HMVZuE14nrZaKIw=="
         }
       },
       "is_incremental": false,
@@ -534,7 +570,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.CalculatedCameraExtrinsics.html",
-          "hash": "168RI/AlLXG6qXKQhopcrA=="
+          "hash": "myPdrwmuUzeZg2iBdNSSgg=="
         }
       },
       "is_incremental": false,
@@ -546,7 +582,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.CalculatedCameraIntrinsics.html",
-          "hash": "RuFpN4I6azCxh8GX5IYqRw=="
+          "hash": "fhmFcaLmfrcg283RTgrHgg=="
         }
       },
       "is_incremental": false,
@@ -558,7 +594,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.CalibrationData.html",
-          "hash": "FsO1bkU4XKkc/acyjsU1sA=="
+          "hash": "f2zkJi8fC0EvXa9xptN64Q=="
         }
       },
       "is_incremental": false,
@@ -570,7 +606,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.CalibrationDataProvider.html",
-          "hash": "uv/eh03x/DVPQyFB80d1/w=="
+          "hash": "gJkE9BQu4OVwip6lLTReWw=="
         }
       },
       "is_incremental": false,
@@ -582,7 +618,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.CameraPoseProvider.html",
-          "hash": "f02xjIRr3Ga1Df4N/wh7eA=="
+          "hash": "8vt2vrqe5Go1eDtGZlXe8g=="
         }
       },
       "is_incremental": false,
@@ -594,7 +630,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.CommandHandler.html",
-          "hash": "GRtXVW1wAdacJmf3u4Om9w=="
+          "hash": "wFj3rLE0HHFm0tJ5YPJVig=="
         }
       },
       "is_incremental": false,
@@ -606,7 +642,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.CommandRegistry-1.html",
-          "hash": "dMOmQWCn8NzEdFv+LDejeA=="
+          "hash": "gZM6HYn2nI4x1uWkFGwCyw=="
         }
       },
       "is_incremental": false,
@@ -618,7 +654,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.ComponentBroadcaster-2.html",
-          "hash": "hvJwHc03iQHN3RfdZNIGVQ=="
+          "hash": "Z3ikK8atnumOUxFKlxj9ww=="
         }
       },
       "is_incremental": false,
@@ -630,7 +666,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.ComponentBroadcasterChangeType.html",
-          "hash": "ShtEpyLuNSaAeS5V2fkL5g=="
+          "hash": "5ABftyr8BwEzjBMOra2XxA=="
         }
       },
       "is_incremental": false,
@@ -642,7 +678,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.ComponentBroadcasterDefinition-1.html",
-          "hash": "V1G6a5XmiCBx9PgEbLyTLQ=="
+          "hash": "faKS7kAF3ffYH+j+M5hjzw=="
         }
       },
       "is_incremental": false,
@@ -654,7 +690,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.ComponentBroadcasterDefinition.html",
-          "hash": "KVHQKJCiQAPQNqiCrDkKtQ=="
+          "hash": "0d5JaGf4wmFfAHytz7Jd4A=="
         }
       },
       "is_incremental": false,
@@ -666,7 +702,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.ComponentBroadcasterService-2.html",
-          "hash": "zwbx00AZtHiA4kHwqQkfvg=="
+          "hash": "qDuPd0elhjU2r1VJfMNSLg=="
         }
       },
       "is_incremental": false,
@@ -678,7 +714,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.ComponentObserver-1.html",
-          "hash": "5ZRBAwVpWGm08lv6+RPmvw=="
+          "hash": "eHlhjJY6EkKhoHvqdv494A=="
         }
       },
       "is_incremental": false,
@@ -690,7 +726,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.ComponentObserver.html",
-          "hash": "dhTsNhRXFsfji/tK1EOoIA=="
+          "hash": "y2Dv7yT1HFWdTVgebFSqhA=="
         }
       },
       "is_incremental": false,
@@ -702,7 +738,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.CompositionManager.AntiAliasingSamples.html",
-          "hash": "Q4dLwHfRCF+oxzcvyBdFsg=="
+          "hash": "Zo/wc98e+Bjz/9WKR53NpQ=="
         }
       },
       "is_incremental": false,
@@ -714,7 +750,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.CompositionManager.Depth.html",
-          "hash": "h+yyOWG7BFHSIBWKzVyPCQ=="
+          "hash": "Shr7lbE0BSoaV0LuW/Q3vQ=="
         }
       },
       "is_incremental": false,
@@ -726,7 +762,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.CompositionManager.html",
-          "hash": "V683izmIoUKDdIkx5oobcA=="
+          "hash": "WW3KVVrUL5jhZDEZ4Hsfiw=="
         }
       },
       "is_incremental": false,
@@ -738,7 +774,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.CompositorWorldAnchorLocalizationManager.html",
-          "hash": "OAqByZFuXpUKfcWkgRpxMA=="
+          "hash": "KIdfGFiIQeaEJluoGm908w=="
         }
       },
       "is_incremental": false,
@@ -750,7 +786,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.ConnectedEventHandler.html",
-          "hash": "F0/NePKc758ZG0Y1N5zRRA=="
+          "hash": "/2DH4OAOW+n1L0SQvaKuCQ=="
         }
       },
       "is_incremental": false,
@@ -762,7 +798,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.DebugVisualHelper.html",
-          "hash": "6h+r1s+IJkOSM7y3/KpFmQ=="
+          "hash": "gsUDQqEhhOgkJPUGK2PybA=="
         }
       },
       "is_incremental": false,
@@ -774,7 +810,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.DeviceInfoBroadcaster.html",
-          "hash": "fuczUNV3e6z4kRvOa+oWXg=="
+          "hash": "QZYmtb8Q+uuAEVnQz/T/FA=="
         }
       },
       "is_incremental": false,
@@ -786,7 +822,19 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.DeviceInfoObserver.html",
-          "hash": "zSCp5f5zrJUrMSgshl4K0w=="
+          "hash": "ppge4ytGEjic1CwMZ+4knw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "doc/build/api/Microsoft.MixedReality.SpectatorView.DeviceTrackingStateVisual.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.SpectatorView.DeviceTrackingStateVisual.html",
+          "hash": "L/PdOQF6w3a5enl0rHu+DA=="
         }
       },
       "is_incremental": false,
@@ -798,7 +846,31 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.DisconnectedEventHandler.html",
-          "hash": "mNH/m2W3G+PH/Jo6Ya5VbA=="
+          "hash": "2ldjCmjBZMzgkkZ4c1g5BQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "doc/build/api/Microsoft.MixedReality.SpectatorView.Dispatcher.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.SpectatorView.Dispatcher.html",
+          "hash": "mCCheLEYQ336cQQXnFMiMg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "doc/build/api/Microsoft.MixedReality.SpectatorView.DispatcherUnity.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.SpectatorView.DispatcherUnity.html",
+          "hash": "fM2SVj7lSOhS4W2vdnOmvA=="
         }
       },
       "is_incremental": false,
@@ -810,7 +882,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.DynamicGameObjectHierarchyBroadcaster-1.ChangeType.html",
-          "hash": "UJyKIBEyyjojFucJJom3Ww=="
+          "hash": "oXA6Z7HoHtToFD2lk5iehQ=="
         }
       },
       "is_incremental": false,
@@ -822,7 +894,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.DynamicGameObjectHierarchyBroadcaster-1.html",
-          "hash": "xVKuLkqGkI3R04WbCEs7OA=="
+          "hash": "3ElGN9j7JGb8AATnv7tc1Q=="
         }
       },
       "is_incremental": false,
@@ -834,7 +906,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.DynamicGameObjectHierarchyObserver-1.TransformObserverInfo.html",
-          "hash": "CdHHV2iPAdxZ4ZyLHupA/A=="
+          "hash": "2kbPWonrUyJbc3MRBPlGqA=="
         }
       },
       "is_incremental": false,
@@ -846,7 +918,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.DynamicGameObjectHierarchyObserver-1.html",
-          "hash": "KfH1RJWurlsg/iUNwtLEKw=="
+          "hash": "NTSd0ABcieUO/fdR2edGhA=="
         }
       },
       "is_incremental": false,
@@ -858,7 +930,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.Editor.CalibrationRecording.html",
-          "hash": "/2KBrbCIUUmmYzwrk+nVzw=="
+          "hash": "AgPNVvgcrA5qa9R2Aqgs9w=="
         }
       },
       "is_incremental": false,
@@ -870,7 +942,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.Editor.CalibrationRecordingPose.html",
-          "hash": "FzD3BKgvpRV3mzGbXG9erg=="
+          "hash": "DBJ7eXxycp/2JRqQNe6qIA=="
         }
       },
       "is_incremental": false,
@@ -882,7 +954,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.Editor.EditorWindowBase-1.html",
-          "hash": "5Jgmng6KNFQrNMDW86eMAw=="
+          "hash": "IFCaNUu7wU1YnGH+SFozDQ=="
         }
       },
       "is_incremental": false,
@@ -894,7 +966,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.Editor.PlatformSwitcherEditor.html",
-          "hash": "VpNnF9BjcyA7kEEtveQ5nA=="
+          "hash": "pg07h1Npu7Xv/7I7cdL/gw=="
         }
       },
       "is_incremental": false,
@@ -906,7 +978,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.Editor.StateSynchronizationMenuItems.html",
-          "hash": "0w1PbRn80xDh8FaNqK7RNw=="
+          "hash": "hKlWaOoUOacgRKjrahhj8g=="
         }
       },
       "is_incremental": false,
@@ -918,7 +990,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.Editor.html",
-          "hash": "4T6ki+9IBji3n+UHGosZfw=="
+          "hash": "SGUMf6pyqqPWowdRUdC1yA=="
         }
       },
       "is_incremental": false,
@@ -930,7 +1002,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.EditorExtrinsicsCalibration.html",
-          "hash": "hHFsYqDMmO1rTFRmS0Z57A=="
+          "hash": "o/peRRlTsHM/VD3fK7C4Vg=="
         }
       },
       "is_incremental": false,
@@ -942,7 +1014,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.EditorIntrinsicsCalibration.html",
-          "hash": "fiR8OtWQJNHDFBpHy/s76g=="
+          "hash": "5cFU1gD6WHI88TMCc1Ye/g=="
         }
       },
       "is_incremental": false,
@@ -954,7 +1026,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.FieldHelper.html",
-          "hash": "xXSCDL5Ahea/a4zQ3+FgeQ=="
+          "hash": "ivef+KhWn15d4+kagO4QKQ=="
         }
       },
       "is_incremental": false,
@@ -966,7 +1038,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.FrameProviderDeviceType.html",
-          "hash": "KNSjI1PTo06H6Fv57rHxMg=="
+          "hash": "jRMZfPoLEnC4o0BIUGpIgA=="
         }
       },
       "is_incremental": false,
@@ -978,7 +1050,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.GameObjectHierarchyBroadcaster.html",
-          "hash": "2P46X/Hu+55kxyuC26XPag=="
+          "hash": "MbMbsD6E7bjsqHzDXYJsYA=="
         }
       },
       "is_incremental": false,
@@ -990,7 +1062,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.HeadsetCalibration.html",
-          "hash": "9XOBe8OzVhVh2ZU3RoybaA=="
+          "hash": "NAJ1/ox5wB1zZiE2jvMHDQ=="
         }
       },
       "is_incremental": false,
@@ -1002,7 +1074,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.HeadsetCalibrationData.html",
-          "hash": "d/VS8dHHHcAW5vvmuvpNdw=="
+          "hash": "mbcUFyMJEUhfP5WvQlsrQw=="
         }
       },
       "is_incremental": false,
@@ -1014,7 +1086,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.HeadsetCalibrationDataRequest.html",
-          "hash": "8Iv8FwQo3M0PiWozyuWWVw=="
+          "hash": "W46Na6QXyCU0G9nmtzaFUQ=="
         }
       },
       "is_incremental": false,
@@ -1026,7 +1098,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.HeadsetCalibrationDataUpdatedHandler.html",
-          "hash": "WQdXvubpCgVsoF0zerVB3Q=="
+          "hash": "Vr8f2wKkJopaANtdgGWhkQ=="
         }
       },
       "is_incremental": false,
@@ -1038,7 +1110,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.HeadsetData.html",
-          "hash": "XIINds8K+RZosIuZhx/eAA=="
+          "hash": "By2aXtLPX71KkML2iyhFCA=="
         }
       },
       "is_incremental": false,
@@ -1050,7 +1122,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.HeadsetRequestHandler.html",
-          "hash": "mCxfNG3TacorXbWPpv25xg=="
+          "hash": "Mh5zYUDrDgPXpIZ8G57z3Q=="
         }
       },
       "is_incremental": false,
@@ -1062,7 +1134,19 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.HoloLensCanvasHelper.html",
-          "hash": "+stCw/hZmGMIQ1onbl5NAQ=="
+          "hash": "ek2AREWXXOBoj5voJh4bsQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "doc/build/api/Microsoft.MixedReality.SpectatorView.HoloLensTrackingObserver.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.SpectatorView.HoloLensTrackingObserver.html",
+          "hash": "FNNBpQOE5CSQPkx1EqPDDg=="
         }
       },
       "is_incremental": false,
@@ -1074,7 +1158,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.HolographicCameraBroadcaster.html",
-          "hash": "9o57GTyO2M+3wkMFLgkaOA=="
+          "hash": "4EcuqmBNY60NCrylf2IbdA=="
         }
       },
       "is_incremental": false,
@@ -1086,7 +1170,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.HolographicCameraObserver.html",
-          "hash": "69HlYocjSI9D5ccdBVdtkA=="
+          "hash": "ixn4e4C6gcui9br1hs06Lw=="
         }
       },
       "is_incremental": false,
@@ -1098,7 +1182,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.IAssetCache.html",
-          "hash": "HTd+Xhg+6ENct5zgGj/Mnw=="
+          "hash": "GlHgFW3Af9wNJ5y0EolXiQ=="
         }
       },
       "is_incremental": false,
@@ -1110,7 +1194,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.ICalibrationData.html",
-          "hash": "HuCPoffyARp6gRDBKbYYZg=="
+          "hash": "7Ts6eJsMSM0GLU3Mf8TqwQ=="
         }
       },
       "is_incremental": false,
@@ -1122,7 +1206,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.ICommandRegistry.html",
-          "hash": "symEEd0fqmvRXB2XuIlnPw=="
+          "hash": "irz+gRtajkqaBBlRQmjERw=="
         }
       },
       "is_incremental": false,
@@ -1134,7 +1218,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.IComponentBroadcaster.html",
-          "hash": "A3RsgBFNkjn0S1jKfD1oWg=="
+          "hash": "EgZIOLI7abxyPIEsgHOQCQ=="
         }
       },
       "is_incremental": false,
@@ -1146,7 +1230,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.IComponentBroadcasterService.html",
-          "hash": "FL7iaR8yrILCXiiYEP3DsQ=="
+          "hash": "knhrM8/W9BXO01N9kbExeg=="
         }
       },
       "is_incremental": false,
@@ -1158,7 +1242,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.IComponentObserver.html",
-          "hash": "NhkSX3jm5aSR0+arF279og=="
+          "hash": "PC13PAbuuEIP45Xy9GWNvQ=="
         }
       },
       "is_incremental": false,
@@ -1170,7 +1254,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.IEditableSpatialLocalizationSettings.html",
-          "hash": "Cmn4wRQbuY36OvzJ8faDWw=="
+          "hash": "HjbkOvzzF4/pRv1nUQQ3AQ=="
         }
       },
       "is_incremental": false,
@@ -1182,7 +1266,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.IMarkerDetector.html",
-          "hash": "CekFgYANbuM494RHrsTKnA=="
+          "hash": "dgIZxnTFxe8cj2Wkt2Uskw=="
         }
       },
       "is_incremental": false,
@@ -1194,7 +1278,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.IMarkerVisual.html",
-          "hash": "NuYUMNGbn8l//xiMSQGfZg=="
+          "hash": "tIFhQe7btycYsT4tqPT/RA=="
         }
       },
       "is_incremental": false,
@@ -1206,7 +1290,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.IMobileOverlayVisualChild.html",
-          "hash": "e+EJob3zHdU/oG3o4Z6RwA=="
+          "hash": "408JhtJ8pv5EImCfVr//mg=="
         }
       },
       "is_incremental": false,
@@ -1218,7 +1302,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.INetworkConfigurationVisual.html",
-          "hash": "NLvZeSQYPaS8zQkBGHboxQ=="
+          "hash": "DtWEIF9EXE2hjT2mYkRU2A=="
         }
       },
       "is_incremental": false,
@@ -1230,7 +1314,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.INetworkManager.html",
-          "hash": "ajQPb4CewQo9IGdI/P/dgQ=="
+          "hash": "ZLT7oLeRMMvQwu9vwmQ76Q=="
         }
       },
       "is_incremental": false,
@@ -1242,7 +1326,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.IPeerConnection.html",
-          "hash": "UB9pJ7yzwDk+FB5126kriQ=="
+          "hash": "rQR036yZlz8LaUr/sItIhA=="
         }
       },
       "is_incremental": false,
@@ -1254,7 +1338,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.IRecordingService.html",
-          "hash": "LsmdR/2IsXL/xlVWgzd5Iw=="
+          "hash": "dkaCQuekEvU2U9z9Cihm7A=="
         }
       },
       "is_incremental": false,
@@ -1266,7 +1350,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.IRecordingServiceVisual.html",
-          "hash": "kJKjDUPntWGXTIVMHBFPmg=="
+          "hash": "UtQJIYowI8vYbd3Y+ZgaYw=="
         }
       },
       "is_incremental": false,
@@ -1278,7 +1362,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.ISpatialLocalizationSession.html",
-          "hash": "2FKBRxconjSMPBTbMBuU9g=="
+          "hash": "8Y+c8X5QJh/U8L/GvJOVyg=="
         }
       },
       "is_incremental": false,
@@ -1290,7 +1374,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.ISpatialLocalizationSettings.html",
-          "hash": "LEri56bd7I6/xGKckDDGEw=="
+          "hash": "sTIlPWM44DG16cpgMCM4YA=="
         }
       },
       "is_incremental": false,
@@ -1302,7 +1386,19 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.ISpatialLocalizer.html",
-          "hash": "GN5MY3bwOz1qgCFBqzE5Zw=="
+          "hash": "HJLtyaCaOfoJMq8R7/uQ6g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "doc/build/api/Microsoft.MixedReality.SpectatorView.ITrackingObserver.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.SpectatorView.ITrackingObserver.html",
+          "hash": "iRs2DEGN3MF4dfdjo4HcsQ=="
         }
       },
       "is_incremental": false,
@@ -1314,7 +1410,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.IncomingMessage.html",
-          "hash": "75PP/6alJbgVHpPKb+H81w=="
+          "hash": "G3hRHFmnXoMFLlEFiNBLJA=="
         }
       },
       "is_incremental": false,
@@ -1326,7 +1422,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.Marker.html",
-          "hash": "JpKz21f+W8LfzLEKP4qx6Q=="
+          "hash": "kK64TcEz3kiMgiitmmxlBA=="
         }
       },
       "is_incremental": false,
@@ -1338,7 +1434,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.MarkerCorners.html",
-          "hash": "jFpHdNSFd0lZLzBRHrIkvQ=="
+          "hash": "GWXOv7Q+IiFu2zWfiUqV6A=="
         }
       },
       "is_incremental": false,
@@ -1350,7 +1446,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.MarkerDetectorCoordinateService.html",
-          "hash": "q+Xhrgyu8UbR6gfjCYcdoQ=="
+          "hash": "RuYBX32Xo02Lra/bDdIkJg=="
         }
       },
       "is_incremental": false,
@@ -1362,7 +1458,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.MarkerDetectorLocalizationSettings.html",
-          "hash": "fOZW9f2Fa9rHEy52BNeixw=="
+          "hash": "u76Q8+C7e2C5B+C3haTTrg=="
         }
       },
       "is_incremental": false,
@@ -1374,7 +1470,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.MarkerDetectorSpatialLocalizer.html",
-          "hash": "3wmI7JPtBtSF0GUhUezyCQ=="
+          "hash": "lnQ2VDbBvVzcZcow6NosKg=="
         }
       },
       "is_incremental": false,
@@ -1386,7 +1482,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.MarkerPair.html",
-          "hash": "44S+MtTqKe3LNEG699/dsg=="
+          "hash": "vz0bkiNLQsjkfGWvMQoGMA=="
         }
       },
       "is_incremental": false,
@@ -1398,7 +1494,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.MarkerPositionBehavior.html",
-          "hash": "B6kGziCA0n5uRc/QY389kQ=="
+          "hash": "PrNpWEeNj49F+382Pn5X7Q=="
         }
       },
       "is_incremental": false,
@@ -1410,7 +1506,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.MarkerVisualCanvasScaleFactorScraper.html",
-          "hash": "IQ8eMH95yEIfcamyTMOi4A=="
+          "hash": "eJD0IlNW/tC4bFikH8GdWw=="
         }
       },
       "is_incremental": false,
@@ -1422,7 +1518,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.MarkerVisualCoordinateService.html",
-          "hash": "4ED+UsmlXzh7f4+p2fFe1g=="
+          "hash": "8SnTy0hlL3nIbJVrenqzNA=="
         }
       },
       "is_incremental": false,
@@ -1434,7 +1530,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.MarkerVisualDetectorLocalizationSettings.html",
-          "hash": "jJDHzWtGnncS6C2PDVQKuQ=="
+          "hash": "BS2k7HGg22AbC2UvxHXbFA=="
         }
       },
       "is_incremental": false,
@@ -1446,7 +1542,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.MarkerVisualDetectorSpatialLocalizer.html",
-          "hash": "5aoSYSS6u1Cz9YWfWlH1/w=="
+          "hash": "afus94Ds8in7xEWVHWjVOQ=="
         }
       },
       "is_incremental": false,
@@ -1458,7 +1554,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.MarkerVisualLocalizationInitializer.html",
-          "hash": "HfMFcJ+C+4/sv/UuY3RnnQ=="
+          "hash": "cAQoixzyImJ1so/ABV9Xkg=="
         }
       },
       "is_incremental": false,
@@ -1470,7 +1566,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.MarkerVisualLocalizationSettings.html",
-          "hash": "I5dWHTUwsHGSaFsLDX2YGw=="
+          "hash": "vbshFZGU6nJSNHdFpOJovQ=="
         }
       },
       "is_incremental": false,
@@ -1482,7 +1578,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.MarkerVisualSpatialLocalizer.html",
-          "hash": "cuvibtfoc02pzo9D7dymwA=="
+          "hash": "Ua70YmG16lamMO1aPbynfQ=="
         }
       },
       "is_incremental": false,
@@ -1494,7 +1590,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.MarkersUpdatedHandler.html",
-          "hash": "8GA1gKAS5coW2T/atAJfpQ=="
+          "hash": "FnLFaeSs98F5spgDw9Jg1w=="
         }
       },
       "is_incremental": false,
@@ -1506,7 +1602,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.MessageEvent.html",
-          "hash": "kB6YRLhBkLLLQlMN0LVz0A=="
+          "hash": "BqOsFhGzUufewewXxc1kSg=="
         }
       },
       "is_incremental": false,
@@ -1518,7 +1614,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.MicrophoneInput.html",
-          "hash": "eoblUY8HAsr97bO2ejfr2w=="
+          "hash": "GA8JLkceZ1GjguAKqYyBYg=="
         }
       },
       "is_incremental": false,
@@ -1530,7 +1626,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.MobileNetworkConfigurationVisual.html",
-          "hash": "GXpC15bJUKSqOrk7pW/0yw=="
+          "hash": "DmbF0I1aHS/Z9Xzip9ObzA=="
         }
       },
       "is_incremental": false,
@@ -1542,7 +1638,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.MobileOverlayVisual.html",
-          "hash": "mhhiL2ZoK4jL3d0eeskS0g=="
+          "hash": "vms33p9SeJCg5h2GnWz5KA=="
         }
       },
       "is_incremental": false,
@@ -1554,7 +1650,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.MobileOverlayVisualChild.html",
-          "hash": "1Sof/RnOs9An00rPMD7QtQ=="
+          "hash": "3hH2FMXDgxVUQK94KSbgVA=="
         }
       },
       "is_incremental": false,
@@ -1566,7 +1662,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.MobileRecordingSettings.html",
-          "hash": "2GDzVEzOlUWiQ6uacYE68A=="
+          "hash": "U9XkE1YBi8+ujADxE1DOPg=="
         }
       },
       "is_incremental": false,
@@ -1578,7 +1674,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.MobileUIScaler.html",
-          "hash": "25v2eNhFOjkuvTUzmYu83w=="
+          "hash": "fTbEjyHDbJC9EQ7pmxQElg=="
         }
       },
       "is_incremental": false,
@@ -1590,7 +1686,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.NetworkConfigurationSettings.html",
-          "hash": "sWbwMiTzA5YeS+uuSQ3OQA=="
+          "hash": "yosSDzmWzOC8SN9lnCQJow=="
         }
       },
       "is_incremental": false,
@@ -1602,7 +1698,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.NetworkExtensions.html",
-          "hash": "znPMylY/lm0V9xNa2+471w=="
+          "hash": "zfyFDM8/54vI5lOA8HfYSQ=="
         }
       },
       "is_incremental": false,
@@ -1614,7 +1710,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.NetworkManager-1.html",
-          "hash": "54Ax2weSKYgp0UJABELRqg=="
+          "hash": "i1lbKAZfYPt67MfHdsTDtA=="
         }
       },
       "is_incremental": false,
@@ -1626,7 +1722,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.OverlayVisibilityRequest.html",
-          "hash": "5sfzg3piLUFlkqgFxFB+RQ=="
+          "hash": "t3Fow6cMQe/CSEcWk5E/vQ=="
         }
       },
       "is_incremental": false,
@@ -1638,7 +1734,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.PlatformSpecificGameObject.html",
-          "hash": "OHWspYZPvzb3o5vhCpq4rg=="
+          "hash": "aFy94y8CvFqgTq7Z66Q4vg=="
         }
       },
       "is_incremental": false,
@@ -1650,7 +1746,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.PlatformSwitcher.html",
-          "hash": "BKsnzB5+i7b+dGxb0/ScbQ=="
+          "hash": "HTTlfMJDY1NYIN9TrOhrww=="
         }
       },
       "is_incremental": false,
@@ -1662,7 +1758,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.QRCodeMarkerDetector.html",
-          "hash": "+EDVDlCLCY3Uc0f4N8HYyA=="
+          "hash": "uGKsj4lzawMtAECCLlqqqA=="
         }
       },
       "is_incremental": false,
@@ -1674,7 +1770,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.QRCodeMarkerDetectorSpatialLocalizer.html",
-          "hash": "TzWmrJuCkEDRlzhwPqhBWA=="
+          "hash": "06EA1ciAe+aDV9/b+Hn42A=="
         }
       },
       "is_incremental": false,
@@ -1686,7 +1782,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.QRCodeMarkerVisual.html",
-          "hash": "APtuFrvULsMyuz+6/aCpzw=="
+          "hash": "/aWlak6rl5wikDfc+uQhQw=="
         }
       },
       "is_incremental": false,
@@ -1698,7 +1794,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.QRCodeMarkerVisualDetectorSpatialLocalizer.html",
-          "hash": "3fv6Xeo19HO8pm0ZwF+kog=="
+          "hash": "q1qyXFWeRZpc6CQJM+BDWQ=="
         }
       },
       "is_incremental": false,
@@ -1710,7 +1806,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.QRCodeMarkerVisualSpatialLocalizer.html",
-          "hash": "nOF/ZBqcAZmE8NU5K7nCEA=="
+          "hash": "FP3ARLjLBBZYS4wHd+2SNg=="
         }
       },
       "is_incremental": false,
@@ -1722,7 +1818,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.RecordingServiceVisual.RecordingState.html",
-          "hash": "4XVGri/Qq1u8t1WeIWLLPA=="
+          "hash": "HI0j/WFNBiZdNls6uHi91A=="
         }
       },
       "is_incremental": false,
@@ -1734,7 +1830,19 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.RecordingServiceVisual.html",
-          "hash": "aOIEkb4jID85QmjiJ678sQ=="
+          "hash": "soaE6k+P1ee8B6NibNadig=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "doc/build/api/Microsoft.MixedReality.SpectatorView.RecordingTestCube.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.SpectatorView.RecordingTestCube.html",
+          "hash": "PfWVo6+OrDYMKrgbrL1xkg=="
         }
       },
       "is_incremental": false,
@@ -1746,7 +1854,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.Role.html",
-          "hash": "NxSBCVjE6a5OubxBxkRVoQ=="
+          "hash": "Qx4Bf0tEYFaReqA39/puLA=="
         }
       },
       "is_incremental": false,
@@ -1758,7 +1866,19 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.ShortID.html",
-          "hash": "uvzeoPzPu0BQyl7EAom3Jw=="
+          "hash": "brocR92jNwY6BNDpBjRa+w=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "doc/build/api/Microsoft.MixedReality.SpectatorView.SimulatedSpatialCoordinate-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.SpectatorView.SimulatedSpatialCoordinate-1.html",
+          "hash": "FgG6FE6IIC2ws6TLb/jEDA=="
         }
       },
       "is_incremental": false,
@@ -1770,7 +1890,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.Singleton-1.html",
-          "hash": "Kvk4P5PN4DF2v4dEbIyWuQ=="
+          "hash": "Ywun8Wuj8/tDgwXoVmX8gg=="
         }
       },
       "is_incremental": false,
@@ -1782,7 +1902,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.SocketEndpoint.html",
-          "hash": "BnTXtRCjK22WwlyVpj7COQ=="
+          "hash": "oOwTSzyFuhwz/xxBCb0i6A=="
         }
       },
       "is_incremental": false,
@@ -1794,7 +1914,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.SocketEndpointConnectionDelta.html",
-          "hash": "Fxhh1/IdR9fe4vAUKpRmLQ=="
+          "hash": "xGYdL2LmSr94QjkcVybIRA=="
         }
       },
       "is_incremental": false,
@@ -1806,7 +1926,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.Socketer.html",
-          "hash": "nBEY+0BGZzZN+WoFYzu2Xg=="
+          "hash": "21mhHEUAc1O8J+dFNXMwRw=="
         }
       },
       "is_incremental": false,
@@ -1818,7 +1938,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.SocketerClient.Protocol.html",
-          "hash": "gBtHklKmx/rRQYAdv1Zvpw=="
+          "hash": "Dky9CtQ7qU+klzCjl2vVcg=="
         }
       },
       "is_incremental": false,
@@ -1830,7 +1950,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.SocketerClient.ProtocolDirection.html",
-          "hash": "yWsFv9thuh3nWTQObR21UA=="
+          "hash": "l2EqmUyd0qghEVVsxhhUQg=="
         }
       },
       "is_incremental": false,
@@ -1842,7 +1962,19 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.SocketerClient.html",
-          "hash": "Qa5dHC/pllIguxPDFV7k6w=="
+          "hash": "zO1Jd3Alz8FjG90pF66Ajg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "doc/build/api/Microsoft.MixedReality.SpectatorView.SpatialAlignmentVisual.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.SpectatorView.SpatialAlignmentVisual.html",
+          "hash": "xiiSZLsypG+P54peJ5nUww=="
         }
       },
       "is_incremental": false,
@@ -1854,7 +1986,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.SpatialAnchorsConfiguration.html",
-          "hash": "5mj6eLEdEDp48JNqweWLTQ=="
+          "hash": "MMZHotJHVF7tlrzrcsXL7g=="
         }
       },
       "is_incremental": false,
@@ -1866,7 +1998,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.SpatialAnchorsCoordinateLocalizationInitializer.html",
-          "hash": "bguHBuJy8F16b/kzrhUZeg=="
+          "hash": "tnOxiRptwDYQhKQVJDuk9A=="
         }
       },
       "is_incremental": false,
@@ -1878,7 +2010,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.SpatialAnchorsLocalizer.html",
-          "hash": "i7/CmUbUvkF6z0nKIh8QiA=="
+          "hash": "7ump0XSxhx6UZTXPNc5aUQ=="
         }
       },
       "is_incremental": false,
@@ -1890,7 +2022,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemManager.html",
-          "hash": "M6qlmAemfqPCo07Updk4Cw=="
+          "hash": "o/yxmi1Ii3z4f9eow9kLGw=="
         }
       },
       "is_incremental": false,
@@ -1902,7 +2034,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.SpatialCoordinateSystemParticipant.html",
-          "hash": "QyTqmNzAB5GVgSDkrs9ypQ=="
+          "hash": "k1x/x3V0Yl9ISwDLxYCb0g=="
         }
       },
       "is_incremental": false,
@@ -1914,7 +2046,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.SpatialCoordinateTransformer.html",
-          "hash": "12K+k6kaz22+qj0bIjMWig=="
+          "hash": "mpywGw+Kh7SbwJgNKktW7g=="
         }
       },
       "is_incremental": false,
@@ -1926,7 +2058,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.SpatialLocalizationInitializationSettings.html",
-          "hash": "n+523jqMGMD2x1AmfbT8JA=="
+          "hash": "KiqOSC4+tvASt54m4IQfTQ=="
         }
       },
       "is_incremental": false,
@@ -1938,7 +2070,19 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.SpatialLocalizationInitializer.html",
-          "hash": "iKWhiO/aI5Q5jWdE8n6vcg=="
+          "hash": "EL8yxLmglaqK2yfr3g3J9Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "doc/build/api/Microsoft.MixedReality.SpectatorView.SpatialLocalizationSession.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.SpectatorView.SpatialLocalizationSession.html",
+          "hash": "nlyTEyyoY+mrfeJOhFc4jA=="
         }
       },
       "is_incremental": false,
@@ -1950,7 +2094,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.SpatialLocalizer-1.html",
-          "hash": "lTKjyyNRxamsQA/ejEIXrw=="
+          "hash": "y83qtbs05e8yPasaie46RQ=="
         }
       },
       "is_incremental": false,
@@ -1962,7 +2106,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.SpectatorView.html",
-          "hash": "SEmWbb50aUFs3ZMCt3jiHQ=="
+          "hash": "5ESGC4n6diVjNnH7boxcXw=="
         }
       },
       "is_incremental": false,
@@ -1974,7 +2118,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.SpectatorViewOpenCVInterface.html",
-          "hash": "4nnk/NLKMjiPEkIwDupqJQ=="
+          "hash": "t5WZc0WKVNLApNwjWxxQjA=="
         }
       },
       "is_incremental": false,
@@ -1986,7 +2130,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.SpectatorViewPoseCache.PoseData.html",
-          "hash": "rmS1x/FJVRCVoRllVbtBYw=="
+          "hash": "udsUibq6MgJztv+ooHwWHg=="
         }
       },
       "is_incremental": false,
@@ -1998,7 +2142,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.SpectatorViewPoseCache.html",
-          "hash": "cjBbGZ7Z+xfEHEl5joKVQg=="
+          "hash": "bYocjvH0QslBQr0Pw2ngQw=="
         }
       },
       "is_incremental": false,
@@ -2010,7 +2154,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.SpectatorViewTimeSynchronizer.html",
-          "hash": "WAgFBihmQNHmt0uaVo5O1g=="
+          "hash": "sMSmnTgFhLxl6LFXJAo4jQ=="
         }
       },
       "is_incremental": false,
@@ -2022,7 +2166,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.StateSynchronizationBroadcaster.html",
-          "hash": "BT5fhXe77DwHTfhXwkDNeA=="
+          "hash": "YYEuERBOlGgTjNdFcA+6AQ=="
         }
       },
       "is_incremental": false,
@@ -2034,7 +2178,31 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.StateSynchronizationObserver.html",
-          "hash": "BGJIDkjL22dGAokkLEeDNA=="
+          "hash": "1W67afIE39hGRq8uxn8gDQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "doc/build/api/Microsoft.MixedReality.SpectatorView.StateSynchronizationPerformanceMonitor.ParsedMessage.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.SpectatorView.StateSynchronizationPerformanceMonitor.ParsedMessage.html",
+          "hash": "/KAJ1qJE+MhRAVYL0VkQkg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "doc/build/api/Microsoft.MixedReality.SpectatorView.StateSynchronizationPerformanceMonitor.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.SpectatorView.StateSynchronizationPerformanceMonitor.html",
+          "hash": "PFGTZheHkFLnT3mSzU95vQ=="
         }
       },
       "is_incremental": false,
@@ -2046,7 +2214,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.StateSynchronizationSceneManager.html",
-          "hash": "F09KANXEHKYPqQzgFoM08w=="
+          "hash": "Ag7mWmIlRz/8YSmg8NN9fw=="
         }
       },
       "is_incremental": false,
@@ -2058,7 +2226,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.TCPConnectionManager.html",
-          "hash": "G0ZUXFGReTst13n27b/MDw=="
+          "hash": "Sy85qrhjYi+ccySwl6YKDg=="
         }
       },
       "is_incremental": false,
@@ -2070,7 +2238,55 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.TCPConnectionManagerTest.html",
-          "hash": "PFtGb3ymNUEkxCO4uivsuw=="
+          "hash": "WiiHatvhmO3PF6iNPXinYg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "doc/build/api/Microsoft.MixedReality.SpectatorView.Tests.CompositionManagerTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.SpectatorView.Tests.CompositionManagerTests.html",
+          "hash": "eeNm3dDbGi1wTymlwQgUdw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "doc/build/api/Microsoft.MixedReality.SpectatorView.Tests.CompositorTestsBase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.SpectatorView.Tests.CompositorTestsBase.html",
+          "hash": "FlNNTKZPnyy8DjqxrFW9vQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "doc/build/api/Microsoft.MixedReality.SpectatorView.Tests.TextureManagerTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.SpectatorView.Tests.TextureManagerTests.html",
+          "hash": "uZ5JBRGdOgJUVzRco5nwjA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "doc/build/api/Microsoft.MixedReality.SpectatorView.Tests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.SpectatorView.Tests.html",
+          "hash": "vSCb+oTqlTve9hVRJqP+Iw=="
         }
       },
       "is_incremental": false,
@@ -2082,7 +2298,31 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.TextureManager.html",
-          "hash": "SQvF9wHAyEPmTxNNcMINhg=="
+          "hash": "5Oqb9W7wOsTsR1nkR1rSHQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "doc/build/api/Microsoft.MixedReality.SpectatorView.TrackingObserver.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.SpectatorView.TrackingObserver.html",
+          "hash": "UYnbcml3BU3FCRosUZHjEg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "doc/build/api/Microsoft.MixedReality.SpectatorView.TrackingState.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.SpectatorView.TrackingState.html",
+          "hash": "qZ0/nJheC6XYYsISufScIg=="
         }
       },
       "is_incremental": false,
@@ -2094,7 +2334,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.TransformBroadcaster.html",
-          "hash": "VrkL0MOn1UseHZPBPNekbw=="
+          "hash": "6Yaws6cmhnUG+P6X1aBXig=="
         }
       },
       "is_incremental": false,
@@ -2106,7 +2346,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.TransformBroadcasterChangeType.html",
-          "hash": "/rmtlfCQdnLYbheXtrxteQ=="
+          "hash": "0nxA0qMWhjYGeYHyFMXIFA=="
         }
       },
       "is_incremental": false,
@@ -2118,7 +2358,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.TransformBroadcasterService.html",
-          "hash": "wstlBTKmmqaoPhd2GrblOQ=="
+          "hash": "vf/PqbeWl98l2yVzjBE31g=="
         }
       },
       "is_incremental": false,
@@ -2130,7 +2370,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.TransformObserver.html",
-          "hash": "Gkk89reivQ/4rCupkpgQcg=="
+          "hash": "YCFZ8oSH+z1BPkKeLw8l2w=="
         }
       },
       "is_incremental": false,
@@ -2142,7 +2382,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.VideoRecordingFrameLayout.html",
-          "hash": "kWKM/jOVk5wqC1AGjFsyeg=="
+          "hash": "rTUP04NqUH7EUf/Jk8Ue8Q=="
         }
       },
       "is_incremental": false,
@@ -2154,7 +2394,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.WorldAnchorCoordinateService.html",
-          "hash": "UU9Xb0mU73Oc6HvY5cCqfA=="
+          "hash": "UcS+BPmGv3ovOp4G5Tq8Fw=="
         }
       },
       "is_incremental": false,
@@ -2166,7 +2406,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.WorldAnchorLocalizationMode.html",
-          "hash": "JUOl3G95l97Xd+n0dUbzlg=="
+          "hash": "9HxA4AbPmaYO37N9YhWPhQ=="
         }
       },
       "is_incremental": false,
@@ -2178,7 +2418,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.WorldAnchorSpatialLocalizationSettings.html",
-          "hash": "MGBx9cAVkbe4w5AMcP9A5g=="
+          "hash": "cN3Qjpp8poOAP+turAsdfg=="
         }
       },
       "is_incremental": false,
@@ -2190,7 +2430,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.WorldAnchorSpatialLocalizer.html",
-          "hash": "Pmmfi6cj5TNpbJmOA9pDIg=="
+          "hash": "Gjdp9CwCp5GAPzyUzvpqCQ=="
         }
       },
       "is_incremental": false,
@@ -2202,7 +2442,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.iOSRecordingService.html",
-          "hash": "JTBv/BSgTpB0WYYHFsemtg=="
+          "hash": "7rNTetaaH3oJfyYEQiX8lA=="
         }
       },
       "is_incremental": false,
@@ -2214,7 +2454,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.SpectatorView.html",
-          "hash": "t9KT1qi1lExvAfPuC1et6w=="
+          "hash": "qg/Icd0ZbX0VEp9cVbIoKg=="
         }
       },
       "is_incremental": false,
@@ -2226,7 +2466,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "hxCbStpPwqISd5uFQWZqpA=="
+          "hash": "JmPOzhEckN+38nqV1eOCJA=="
         }
       },
       "is_incremental": false,
@@ -2267,10 +2507,10 @@
     },
     {
       "type": "Resource",
-      "source_relative_path": "doc/images/AndroidExport.png",
+      "source_relative_path": "doc/images/AndroidBuild2019SampleBuildSettings.png",
       "output": {
         "resource": {
-          "relative_path": "doc/images/AndroidExport.png"
+          "relative_path": "doc/images/AndroidBuild2019SampleBuildSettings.png"
         }
       },
       "is_incremental": false,
@@ -2278,21 +2518,10 @@
     },
     {
       "type": "Resource",
-      "source_relative_path": "doc/images/AndroidManifestActivity.png",
+      "source_relative_path": "doc/images/AndroidDeviceSelectorBuildSettings.png",
       "output": {
         "resource": {
-          "relative_path": "doc/images/AndroidManifestActivity.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "doc/images/AndroidManifestPermission.png",
-      "output": {
-        "resource": {
-          "relative_path": "doc/images/AndroidManifestPermission.png"
+          "relative_path": "doc/images/AndroidDeviceSelectorBuildSettings.png"
         }
       },
       "is_incremental": false,
@@ -2304,6 +2533,39 @@
       "output": {
         "resource": {
           "relative_path": "doc/images/AndroidPlayerSettings.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "doc/images/AndroidSceneSelection.png",
+      "output": {
+        "resource": {
+          "relative_path": "doc/images/AndroidSceneSelection.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "doc/images/AndroidSpectatorViewExampleBuildSettings.png",
+      "output": {
+        "resource": {
+          "relative_path": "doc/images/AndroidSpectatorViewExampleBuildSettings.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "doc/images/AvoidSynchronizingAllContent.png",
+      "output": {
+        "resource": {
+          "relative_path": "doc/images/AvoidSynchronizingAllContent.png"
         }
       },
       "is_incremental": false,
@@ -2531,6 +2793,17 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "doc/images/EditSynchronizationSettings.png",
+      "output": {
+        "resource": {
+          "relative_path": "doc/images/EditSynchronizationSettings.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "doc/images/FixSymbolicLinks.png",
       "output": {
         "resource": {
@@ -2542,10 +2815,87 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "doc/images/FixTransparency.png",
+      "output": {
+        "resource": {
+          "relative_path": "doc/images/FixTransparency.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "doc/images/GlobalPerformanceSettings.png",
+      "output": {
+        "resource": {
+          "relative_path": "doc/images/GlobalPerformanceSettings.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "doc/images/HoloLensBuild2019SampleBuildSettings.png",
+      "output": {
+        "resource": {
+          "relative_path": "doc/images/HoloLensBuild2019SampleBuildSettings.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "doc/images/HoloLensSpectatorViewExampleBuildSettings.png",
+      "output": {
+        "resource": {
+          "relative_path": "doc/images/HoloLensSpectatorViewExampleBuildSettings.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "doc/images/HoloLensTrackingObserver.png",
+      "output": {
+        "resource": {
+          "relative_path": "doc/images/HoloLensTrackingObserver.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "doc/images/OriginQRCode.png",
       "output": {
         "resource": {
           "relative_path": "doc/images/OriginQRCode.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "doc/images/PerformanceMonitoring.png",
+      "output": {
+        "resource": {
+          "relative_path": "doc/images/PerformanceMonitoring.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "doc/images/PerformanceWindow.png",
+      "output": {
+        "resource": {
+          "relative_path": "doc/images/PerformanceWindow.png"
         }
       },
       "is_incremental": false,
@@ -2579,6 +2929,17 @@
       "output": {
         "resource": {
           "relative_path": "doc/images/SetupRepo.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "doc/images/SpectatorViewHidden.png",
+      "output": {
+        "resource": {
+          "relative_path": "doc/images/SpectatorViewHidden.png"
         }
       },
       "is_incremental": false,
@@ -2663,10 +3024,32 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "doc/images/iOSBuild2019SampleBuildSettings.png",
+      "output": {
+        "resource": {
+          "relative_path": "doc/images/iOSBuild2019SampleBuildSettings.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "doc/images/iOSPlayerSettings.png",
       "output": {
         "resource": {
           "relative_path": "doc/images/iOSPlayerSettings.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "doc/images/iOSSpectatorViewExampleBuildSettings.png",
+      "output": {
+        "resource": {
+          "relative_path": "doc/images/iOSSpectatorViewExampleBuildSettings.png"
         }
       },
       "is_incremental": false,
@@ -2700,7 +3083,7 @@
       "output": {
         ".html": {
           "relative_path": "samples/Build2019Demo.Unity/README.html",
-          "hash": "1ki4qGdCa87X8nv1seW9Ng=="
+          "hash": "1qOakxG1LbdIyqnQh16EbA=="
         }
       },
       "is_incremental": false,
@@ -2712,7 +3095,19 @@
       "output": {
         ".html": {
           "relative_path": "samples/README.html",
-          "hash": "L44VoH3+pJjU2x9HBsHIqA=="
+          "hash": "AgdFtOdmeZp5nmKbW+B2vw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "samples/SpectatorView.Example.Unity/README.md",
+      "output": {
+        ".html": {
+          "relative_path": "samples/SpectatorView.Example.Unity/README.html",
+          "hash": "be9WS8yUBN5IMTvwjHvWVA=="
         }
       },
       "is_incremental": false,
@@ -2724,7 +3119,7 @@
       "output": {
         ".html": {
           "relative_path": "src/SpectatorView.Native/EmptyDlls/ARM/README.html",
-          "hash": "8r+ZyVqRFwj55Y767L+O2A=="
+          "hash": "5l5LjMYyFCeLaJisdsTfHA=="
         }
       },
       "is_incremental": false,
@@ -2736,7 +3131,7 @@
       "output": {
         ".html": {
           "relative_path": "src/SpectatorView.Native/README.html",
-          "hash": "mg6lTRA5TUc8wUfkVMIw9w=="
+          "hash": "572cvj1X1qFws4FIYzpJ+A=="
         }
       },
       "is_incremental": false,
@@ -2748,7 +3143,7 @@
       "output": {
         ".html": {
           "relative_path": "src/SpectatorView.Unity/Assets/SpatialAlignment/README.html",
-          "hash": "V4Ku7wMqOsxekY4pFugOIA=="
+          "hash": "q3Dnr+GqnTaqDdyBgij8aQ=="
         }
       },
       "is_incremental": false,
@@ -2760,7 +3155,7 @@
       "output": {
         ".html": {
           "relative_path": "src/SpectatorView.Unity/Assets/SpectatorView/Scripts/Compositor/README.html",
-          "hash": "HECfJ+OReG5Y7Ng/QrGIzQ=="
+          "hash": "FgWkbOu8ml3OuQWEw9FK2g=="
         }
       },
       "is_incremental": false,
@@ -2772,7 +3167,7 @@
       "output": {
         ".html": {
           "relative_path": "src/SpectatorView.Unity/Assets/SpectatorView/Scripts/ScreenRecording/README.html",
-          "hash": "yiVWu65Xyw85t4fIviVQLw=="
+          "hash": "X7zekiWzCSTudhRD3JucXQ=="
         }
       },
       "is_incremental": false,
@@ -2784,7 +3179,7 @@
       "output": {
         ".html": {
           "relative_path": "src/SpectatorView.Unity/Assets/SpectatorView/Scripts/Socketer/README.html",
-          "hash": "UWAl4d6pAen9Mjgc9+Oafw=="
+          "hash": "AGQ6VlGWUYu5WPt7HCWhnw=="
         }
       },
       "is_incremental": false,
@@ -2796,7 +3191,7 @@
       "output": {
         ".html": {
           "relative_path": "src/SpectatorView.Unity/Assets/SpectatorView/Scripts/StateSynchronization/README.html",
-          "hash": "qUjTsFSiof7Gc2Fmhm+rdA=="
+          "hash": "eiq7CZBk8NswLMtL0cwUdA=="
         }
       },
       "is_incremental": false,
@@ -2808,7 +3203,7 @@
       "output": {
         ".html": {
           "relative_path": "src/SpectatorView.Unity/Assets/SpectatorView/Scripts/UI/README.html",
-          "hash": "HRqJePRHhPVlLXbW3CwGKg=="
+          "hash": "Nq6O8Elx4i5RIpSxm0TP9Q=="
         }
       },
       "is_incremental": false,
@@ -2820,7 +3215,7 @@
       "output": {
         ".html": {
           "relative_path": "toc.html",
-          "hash": "KaT3EcGkwrdxVFvI1CTptw=="
+          "hash": "oG5m1bgE6V8y3UG4DOqRUw=="
         }
       },
       "is_incremental": false,
@@ -2841,25 +3236,25 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 179,
+          "total_file_count": 198,
           "skipped_file_count": 0
         },
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 15,
-          "skipped_file_count": 0
-        },
-        "ResourceDocumentProcessor": {
-          "can_incremental": false,
-          "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
-          "incrementalPhase": "build",
-          "total_file_count": 0,
+          "total_file_count": 17,
           "skipped_file_count": 0
         },
         "TocDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
+          "skipped_file_count": 0
+        },
+        "ResourceDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
           "skipped_file_count": 0
