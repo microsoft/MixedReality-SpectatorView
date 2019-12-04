@@ -20,11 +20,6 @@ namespace Microsoft.MixedReality.SpectatorView
         private const int DSPBufferSize = 1024;
         private const AudioSpeakerMode SpeakerMode = AudioSpeakerMode.Stereo;
 
-        protected override void Awake()
-        {
-            base.Awake();
-        }
-
         private void Start()
         {
             StateSynchronizationSceneManager.Instance.RegisterService(this, new ComponentBroadcasterDefinition<AudioSourceBroadcaster>(typeof(AudioSource)));

@@ -65,7 +65,7 @@ namespace Microsoft.MixedReality.SpectatorView
             }
             if (cachedMaterialPropertyAccessors[materialIndex] == null)
             {
-                cachedMaterialPropertyAccessors[materialIndex] = AssetService.Instance.GetMaterialProperties(materials[materialIndex].shader.name).ToArray();
+                cachedMaterialPropertyAccessors[materialIndex] = MaterialPropertyAssetCache.Instance.GetMaterialProperties(materials[materialIndex].shader.name).ToArray();
             }
 
             return cachedMaterialPropertyAccessors[materialIndex];
@@ -158,7 +158,7 @@ namespace Microsoft.MixedReality.SpectatorView
                         message.Write(material.shader.name);
                         message.Write(material.name);
 
-                        MaterialPropertyAsset[] materialProperties = AssetService.Instance.GetMaterialProperties(material.shader.name).Where(shouldSynchronizeMaterialProperty).ToArray();
+                        MaterialPropertyAsset[] materialProperties = MaterialPropertyAssetCache.Instance.GetMaterialProperties(material.shader.name).Where(shouldSynchronizeMaterialProperty).ToArray();
                         message.Write(materialProperties.Length);
                         foreach (MaterialPropertyAsset materialProperty in materialProperties)
                         {

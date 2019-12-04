@@ -69,8 +69,20 @@ namespace Microsoft.MixedReality.SpectatorView
 
         public static bool EnablePerformanceReporting
         {
-            get { return enablePerformanceReporting; }
-            set { enablePerformanceReporting = value; }
+            get
+            {
+                if (BroadcasterSettings.IsInitialized &&
+                    BroadcasterSettings.Instance.ForcePerformanceReporting)
+                {
+                    return true;
+                }
+
+                return enablePerformanceReporting;
+            }
+            set
+            {
+                enablePerformanceReporting = value;
+            }
         }
         private static bool enablePerformanceReporting = false;
 

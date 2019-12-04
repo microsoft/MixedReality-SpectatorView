@@ -12,19 +12,6 @@ namespace Microsoft.MixedReality.SpectatorView
     {
         private readonly Dictionary<ShortID, IAssetSerializer<Texture>> textureSerializers = new Dictionary<ShortID, IAssetSerializer<Texture>>();
 
-        public IEnumerable<MaterialPropertyAsset> GetMaterialProperties(string shaderName)
-        {
-            var cache = MaterialPropertyAssetCache.Instance;
-            if (cache == null)
-            {
-                return Array.Empty<MaterialPropertyAsset>();
-            }
-            else
-            {
-                return cache.GetMaterialProperties(shaderName);
-            }
-        }
-
         public void RegisterTextureSerializer(IAssetSerializer<Texture> textureSerializer)
         {
             textureSerializers.Add(textureSerializer.GetID(), textureSerializer);

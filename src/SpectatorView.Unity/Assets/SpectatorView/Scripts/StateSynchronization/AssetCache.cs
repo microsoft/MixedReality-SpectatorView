@@ -25,7 +25,11 @@ namespace Microsoft.MixedReality.SpectatorView
         protected static TAssetCache LoadAssetCache<TAssetCache>()
             where TAssetCache : AssetCache
         {
-            return Resources.Load<TAssetCache>(typeof(TAssetCache).Name);
+            using (StateSynchronizationPerformanceMonitor.Instance.IncrementEventDuration(typeof(TAssetCache).Name, "LoadAssetCache"))
+            using(StateSynchronizationPerformanceMonitor.Instance.MeasureEventMemoryUsage(typeof(TAssetCache).Name, "LoadingAssets"))
+            {
+                return Resources.Load<TAssetCache>(typeof(TAssetCache).Name);
+            }
         }
 
         public static string GetAssetPath(string assetName, string assetExtension)
@@ -285,27 +289,33 @@ namespace Microsoft.MixedReality.SpectatorView
 
         public TAsset GetAsset(AssetId assetId)
         {
-            TAssetEntry assetEntry;
-            if (LookupByAssetId.TryGetValue(assetId, out assetEntry))
+            using (StateSynchronizationPerformanceMonitor.Instance.IncrementEventDuration(this.GetType().Name, "GetAsset"))
             {
-                return assetEntry.Asset;
-            }
-            else
-            {
-                return default(TAsset);
+                TAssetEntry assetEntry;
+                if (LookupByAssetId.TryGetValue(assetId, out assetEntry))
+                {
+                    return assetEntry.Asset;
+                }
+                else
+                {
+                    return default(TAsset);
+                }
             }
         }
 
         public AssetId GetAssetId(TAsset asset)
         {
-            TAssetEntry assetEntry;
-            if (asset != null && LookupByAsset.TryGetValue(asset, out assetEntry))
+            using (StateSynchronizationPerformanceMonitor.Instance.IncrementEventDuration(this.GetType().Name, "GetAssetId"))
             {
-                return assetEntry.AssetId;
-            }
-            else
-            {
-                return AssetId.Empty;
+                TAssetEntry assetEntry;
+                if (asset != null && LookupByAsset.TryGetValue(asset, out assetEntry))
+                {
+                    return assetEntry.AssetId;
+                }
+                else
+                {
+                    return AssetId.Empty;
+                }
             }
         }
 

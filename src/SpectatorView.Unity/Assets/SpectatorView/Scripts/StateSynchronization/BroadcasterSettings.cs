@@ -24,5 +24,18 @@ namespace Microsoft.MixedReality.SpectatorView
         {
             get { return automaticallyBroadcastAllGameObjects; }
         }
+
+
+        [SerializeField]
+        [Tooltip("Check to force performance reporting at compile time so that measures can be made on startup taken prior to connecting to the broadcaster device. Note: enabling this parameter will decrease the overall performance of the user application.")]
+        private bool forcePerformanceReporting = false;
+
+        /// <summary>
+        /// Forces performance reporting at compile time so that on start up measures can be taken prior to connecting to the broadcaster device.
+        /// </summary>
+        public bool ForcePerformanceReporting
+        {
+            get { return forcePerformanceReporting; }
+        }
     }
 }

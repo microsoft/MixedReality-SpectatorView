@@ -50,7 +50,7 @@ namespace Microsoft.MixedReality.SpectatorView
         private const float heartbeatTimeInterval = 0.1f;
         private float timeSinceLastHeartbeat = 0.0f;
         private HologramSynchronizer hologramSynchronizer = new HologramSynchronizer();
-        private StateSynchronizationPerformanceMonitor.ParsedMessage lastPerfMessage = new StateSynchronizationPerformanceMonitor.ParsedMessage(false, null, null);
+        private StateSynchronizationPerformanceMonitor.ParsedMessage lastPerfMessage = StateSynchronizationPerformanceMonitor.ParsedMessage.Empty;
 
         private AssetBundle currentAssetBundle;
         private string currentAssetBundleIdentity;
@@ -187,7 +187,9 @@ namespace Microsoft.MixedReality.SpectatorView
 
         internal bool PerformanceMonitoringModeEnabled => lastPerfMessage.PerformanceMonitoringEnabled;
         internal IReadOnlyList<Tuple<string, double>> PerformanceEventDurations => lastPerfMessage.EventDurations;
+        internal IReadOnlyList<Tuple<string, double>> PerformanceSummedEventDurations => lastPerfMessage.SummedEventDurations;
         internal IReadOnlyList<Tuple<string, int>> PerformanceEventCounts => lastPerfMessage.EventCounts;
+        internal IReadOnlyList<Tuple<string, StateSynchronizationPerformanceMonitor.MemoryUsage>> PerformanceMemoryUsageEvents => lastPerfMessage.MemoryUsages;
 
         private void HandleAssetBundleInfoCommand(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
         {
