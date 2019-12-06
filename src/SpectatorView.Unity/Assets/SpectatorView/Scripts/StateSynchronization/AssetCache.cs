@@ -57,11 +57,23 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
+        /// <summary>
+        /// Returns a string for the given asset name and extension in the project's Resources directory.
+        /// </summary>
+        /// <param name="assetName">Asset name</param>
+        /// <param name="assetExtension">Asset extension</param>
+        /// <returns>Asset path</returns>
         public static string GetAssetCachePath(string assetName, string assetExtension)
         {
             return $"Assets/{AssetCacheDirectory}/Resources/{assetName}{assetExtension}";
         }
 
+        /// <summary>
+        /// Returns a string for the given asset name and extension in the project's Asset Reference directory, a subfolder of the Resources directory.
+        /// </summary>
+        /// <param name="assetName">Asset name</param>
+        /// <param name="assetExtension">Asset extension</param>
+        /// <returns>Asset path</returns>
         public static string GetAssetCachesContentPath(string assetName, string assetExtension)
         {
             return $"Assets/{AssetCacheDirectory}/Resources/{AssetsFolderName}/{assetName}{assetExtension}";
@@ -225,7 +237,7 @@ namespace Microsoft.MixedReality.SpectatorView
     {
         const string assetContentExtension = ".asset";
 
-#pragma warning disable 414
+#pragma warning disable 414 // The field is assigned but its value is never used
         [SerializeField]
         private NameEntry[] assets = null;
 #pragma warning restore 414
@@ -250,7 +262,7 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
-#pragma warning disable 414
+#pragma warning disable 414 // The field is assigned but its value is never used
         private Dictionary<string, List<AssetId>> lookupByName;
         private Dictionary<AssetId, AssetCacheEntry> lookupByAssetId = new Dictionary<AssetId, AssetCacheEntry>();
         private Dictionary<TAsset, AssetCacheEntry> lookupByAsset = new Dictionary<TAsset, AssetCacheEntry>();
@@ -261,8 +273,8 @@ namespace Microsoft.MixedReality.SpectatorView
             using (StateSynchronizationPerformanceMonitor.Instance.IncrementEventDuration(this.GetType().Name, "GetAsset"))
             {
                 if (assetId == null ||
-                assetId == AssetId.Empty ||
-                assetId.Name == string.Empty)
+                    assetId == AssetId.Empty ||
+                    string.IsNullOrEmpty(assetId.Name))
                 {
                     return default(TAsset);
                 }
@@ -292,8 +304,7 @@ namespace Microsoft.MixedReality.SpectatorView
             using (StateSynchronizationPerformanceMonitor.Instance.IncrementEventDuration(this.GetType().Name, "GetAssetId"))
             {
                 if (asset == null ||
-                    asset.name == null ||
-                    asset.name == string.Empty)
+                    string.IsNullOrEmpty(asset.name))
                 {
                     return AssetId.Empty;
                 }
@@ -344,10 +355,11 @@ namespace Microsoft.MixedReality.SpectatorView
             {
                 if (!LookupByName.TryGetValue(name, out var assetsIds))
                 {
+                    Debug.LogError($"Failed to find asset ids for {name}");
                     return false;
                 }
 
-                string assetPath = $"{AssetsFolderName}/{GetValidAssetName(name)}_{this.GetType().Name}";
+                string assetPath = GetAssetFileName(name);
                 var assetCacheContent = Resources.Load<AssetCacheContent>(assetPath);
                 if (assetCacheContent == null ||
                     assetCacheContent.AssetCacheEntries == null ||
@@ -384,7 +396,8 @@ namespace Microsoft.MixedReality.SpectatorView
             {
                 foreach (var nameEntry in assets)
                 {
-                    string assetName = GetAssetCachesContentPath($"{GetValidAssetName(nameEntry.Name)}_{this.GetType().Name}", assetContentExtension);
+                    string assetFileName = GetAssetFileName(nameEntry.Name);
+                    string assetName = GetAssetCachesContentPath(assetFileName, assetContentExtension);
                     AssetDatabase.DeleteAsset(assetName);
                 }
             }
@@ -419,15 +432,14 @@ namespace Microsoft.MixedReality.SpectatorView
 
             foreach (TAsset asset in EnumerateAllAssets())
             {
-                if (asset.name == null ||
-                    asset.name == string.Empty ||
-                    !AssetDatabase.TryGetGUIDAndLocalFileIdentifier(asset, out string guid, out long localid))
+                if (string.IsNullOrEmpty(asset.name) ||
+                    !AssetDatabase.TryGetGUIDAndLocalFileIdentifier(asset, out string guid, out long localId))
                 {
                     Debug.LogError($"Unable to identify asset: {asset}");
                     continue;
                 }
 
-                var assetId = new AssetId(new Guid(guid), localid, asset.name);
+                var assetId = new AssetId(new Guid(guid), localId, asset.name);
                 unvisitedIds.Remove(new Tuple<string, AssetId>(assetId.Name, assetId));
 
                 if (!oldAssets.ContainsKey(assetId.Name))
@@ -457,6 +469,7 @@ namespace Microsoft.MixedReality.SpectatorView
                     {
                         string assetName = GetAssetCachesContentPath($"{GetValidAssetName(idPair.Item1)}_{this.GetType().Name}", assetContentExtension);
                         AssetDatabase.DeleteAsset(assetName);
+                        oldAssets.Remove(idPair.Item1);
                     }
                 }
             }
@@ -513,7 +526,17 @@ namespace Microsoft.MixedReality.SpectatorView
 #endif
         }
 
-        string GetValidAssetName(string name)
+        private string GetAssetFileName(string name)
+        {
+            return $"{AssetsFolderName}/{GetValidAssetName(name)}_{this.GetType().Name}";
+        }
+
+        /// <summary>
+        /// Returns name stripped of invalid Path characters.
+        /// </summary>
+        /// <param name="name">string that may contain invalid path characters</param>
+        /// <returns></returns>
+        private static string GetValidAssetName(string name)
         {
             if (name == null)
             {
@@ -522,7 +545,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
             var invalidChars = Path.GetInvalidPathChars();
             string updatedName = name;
-            foreach(var invalid in invalidChars)
+            foreach (var invalid in invalidChars)
             {
                 updatedName = updatedName.Replace(invalid.ToString(), "");
             }
