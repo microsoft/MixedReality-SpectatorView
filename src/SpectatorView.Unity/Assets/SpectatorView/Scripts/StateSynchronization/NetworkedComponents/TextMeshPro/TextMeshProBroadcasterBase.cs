@@ -286,7 +286,8 @@ namespace Microsoft.MixedReality.SpectatorView
 
             public void Write(BinaryWriter message)
             {
-                message.Write(TextMeshProService.Instance.GetFontId(font));
+                AssetId fontId = TextMeshProService.Instance.GetFontId(font);
+                message.Write(fontId);
 
                 message.Write(Pack(
                     autoSizeTextContainer,

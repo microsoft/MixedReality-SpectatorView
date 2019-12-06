@@ -14,5 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   assets:
   - AssetId:
-      m_storage: b8b0ae9d-ae02-4a8c-9882-035a946e0da4
+      guid:
+        m_storage: 269b9f0f-a8c9-30b4-ea7a-e2bf7b250820
+      fileIdentifier: 8300000
     Asset: {fileID: 8300000, guid: 269b9f0fa8c930b4ea7ae2bf7b250820, type: 3}

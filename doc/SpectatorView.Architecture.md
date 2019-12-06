@@ -20,7 +20,7 @@
 
 ### 2. Spectating with a video camera rig
 
-1. A HoloLens is mounted to the video camera. [Calibration](SpectatorView.Setup.VideoCamera.md) is then performed to calculate camera intrinsics (Properties such as lens focal length and principal points that are needed for compositing holograms into the video camera feed) and camera extrinsics (The transform of the video camera to the mounted HoloLens). This data is stored on this HoloLens mounted to the video camera.
+1. A HoloLens is mounted to the video camera. [Calibration](SpectatorView.Setup.VideoCamera.md#calibration) is then performed to calculate camera intrinsics (Properties such as lens focal length and principal points that are needed for compositing holograms into the video camera feed) and camera extrinsics (The transform of the video camera to the mounted HoloLens). This data is stored on this HoloLens mounted to the video camera.
 2. The PC obtains a video camera stream through a capture card.
 3. The PC connects to sockets open on both the user HoloLens and video camera rig HoloLens through the unity editor.
 4. The PC obtains camera intrinsic and extrinsic information from the DSLR mounted HoloLens and updates its unity camera to reflect these values.

@@ -18,7 +18,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
         public bool BonesReady { get; private set;}
 
-        public Guid NetworkAssetId
+        public AssetId NetworkAssetId
         {
             get { return AssetService.Instance.GetMeshId(Renderer.sharedMesh); }
         }

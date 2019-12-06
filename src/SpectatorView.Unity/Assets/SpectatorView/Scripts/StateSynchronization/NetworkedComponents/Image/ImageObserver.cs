@@ -15,8 +15,8 @@ namespace Microsoft.MixedReality.SpectatorView
 
             if (ImageBroadcaster.HasFlag(changeType, ImageBroadcaster.ChangeType.Data))
             {
-                attachedComponent.overrideSprite = ImageService.Instance.GetSprite(message.ReadGuid());
-                attachedComponent.sprite = ImageService.Instance.GetSprite(message.ReadGuid());
+                attachedComponent.overrideSprite = ImageService.Instance.GetSprite(message.ReadAssetId());
+                attachedComponent.sprite = ImageService.Instance.GetSprite(message.ReadAssetId());
                 attachedComponent.fillAmount = message.ReadSingle();
                 attachedComponent.color = message.ReadColor();
 
@@ -55,8 +55,8 @@ namespace Microsoft.MixedReality.SpectatorView
             //Only lerp messages with data changes on its own
             if (changeType == ImageBroadcaster.ChangeType.Data)
             {
-                attachedComponent.overrideSprite = ImageService.Instance.GetSprite(message.ReadGuid());
-                attachedComponent.sprite = ImageService.Instance.GetSprite(message.ReadGuid());
+                attachedComponent.overrideSprite = ImageService.Instance.GetSprite(message.ReadAssetId());
+                attachedComponent.sprite = ImageService.Instance.GetSprite(message.ReadAssetId());
                 attachedComponent.fillAmount = Mathf.Lerp(attachedComponent.fillAmount, message.ReadSingle(), lerpVal);
                 attachedComponent.color = Color.Lerp(attachedComponent.color, message.ReadColor(), lerpVal);
 

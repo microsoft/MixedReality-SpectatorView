@@ -14,6 +14,8 @@ namespace Microsoft.MixedReality.SpectatorView
     internal abstract class TextMeshProObserverBase : ComponentObserver
     {
 #if STATESYNC_TEXTMESHPRO
+        private bool needsUpdate = false;
+
         protected TMP_Text TextMeshObserver
         {
             get;
@@ -63,7 +65,8 @@ namespace Microsoft.MixedReality.SpectatorView
 
             if (HasFlag(changeType, TextMeshProBroadcasterChangeType.FontAndPlacement))
             {
-                TextMeshObserver.font = TextMeshProService.Instance.GetFont(message.ReadGuid());
+                AssetId fontId = message.ReadAssetId();
+                TextMeshObserver.font = TextMeshProService.Instance.GetFont(fontId);
 
                 bool[] values = Unpack(message.ReadByte());
                 TextMeshObserver.autoSizeTextContainer = values[0];
@@ -101,7 +104,7 @@ namespace Microsoft.MixedReality.SpectatorView
                 TextMeshObserver.fontSizeMax = message.ReadSingle();
                 TextMeshObserver.fontSizeMin = message.ReadSingle();
                 TextMeshObserver.fontStyle = (FontStyles)message.ReadInt32();
-                TextMeshObserver.fontWeight = message.ReadInt32();
+                TextMeshObserver.fontWeight = (FontWeight)message.ReadInt32();
                 TextMeshObserver.horizontalMapping = (TextureMappingOptions)message.ReadByte();
                 TextMeshObserver.lineSpacing = message.ReadSingle();
                 TextMeshObserver.lineSpacingAdjustment = message.ReadSingle();
@@ -119,8 +122,23 @@ namespace Microsoft.MixedReality.SpectatorView
                 TextMeshObserver.verticalMapping = (TextureMappingOptions)message.ReadByte();
                 TextMeshObserver.wordWrappingRatios = message.ReadSingle();
                 TextMeshObserver.wordSpacing = message.ReadSingle();
+
+                needsUpdate = true;
             }
 #endif
         }
+
+#if STATESYNC_TEXTMESHPRO
+        protected virtual void Update()
+        {
+            if (needsUpdate)
+            {
+                // Applying a font/forcing a mesh update on the same Update pass that the TextMeshObserver is created fails to display things correctly.
+                // Therefore, we force a mesh update on the next Update pass to get things displaying correctly.
+                TextMeshObserver.ForceMeshUpdate();
+                needsUpdate = false;
+            }
+        }
+#endif
     }
 }

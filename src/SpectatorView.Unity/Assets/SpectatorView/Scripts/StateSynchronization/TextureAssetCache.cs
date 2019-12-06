@@ -41,7 +41,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
         public bool CanSerialize(Texture asset)
         {
-            return asset == null || GetAssetId(asset) != Guid.Empty;
+            return asset == null || GetAssetId(asset) != AssetId.Empty;
         }
 
         public void Serialize(BinaryWriter writer, Texture asset)
@@ -51,7 +51,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
         public Texture Deserialize(BinaryReader reader)
         {
-            return GetAsset(reader.ReadGuid());
+            return GetAsset(reader.ReadAssetId());
         }
 
         protected override IEnumerable<Texture> EnumerateAllAssets()

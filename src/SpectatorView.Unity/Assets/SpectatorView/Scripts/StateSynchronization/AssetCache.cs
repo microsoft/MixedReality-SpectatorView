@@ -7,6 +7,7 @@ using System.Linq;
 using UnityEngine;
 using System.IO;
 using UnityEngine.SceneManagement;
+using System.Reflection;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -20,7 +21,11 @@ namespace Microsoft.MixedReality.SpectatorView
         public static TAssetCache LoadAssetCache<TAssetCache>()
             where TAssetCache : AssetCache
         {
-            return Resources.Load<TAssetCache>(typeof(TAssetCache).Name);
+            using (StateSynchronizationPerformanceMonitor.Instance.IncrementEventDuration(typeof(TAssetCache).Name, "LoadAssetCache"))
+            using(StateSynchronizationPerformanceMonitor.Instance.MeasureEventMemoryUsage(typeof(TAssetCache).Name, "LoadingAssets"))
+            {
+                return Resources.Load<TAssetCache>(typeof(TAssetCache).Name);
+            }
         }
 
         public static string GetAssetPath(string assetName, string assetExtension)
@@ -180,10 +185,10 @@ namespace Microsoft.MixedReality.SpectatorView
         [SerializeField]
         private TAssetEntry[] assets = null;
 
-        private Dictionary<Guid, TAssetEntry> lookupByAssetId;
+        private Dictionary<AssetId, TAssetEntry> lookupByAssetId;
         private Dictionary<TAsset, TAssetEntry> lookupByAsset;
 
-        protected IDictionary<Guid, TAssetEntry> LookupByAssetId
+        protected IDictionary<AssetId, TAssetEntry> LookupByAssetId
         {
             get
             {
@@ -191,11 +196,11 @@ namespace Microsoft.MixedReality.SpectatorView
                 {
                     if (assets == null)
                     {
-                        lookupByAssetId = new Dictionary<Guid, TAssetEntry>();
+                        lookupByAssetId = new Dictionary<AssetId, TAssetEntry>();
                     }
                     else
                     {
-                        lookupByAssetId = assets.Where(a => a.Asset != null).ToDictionary(a => (Guid)a.AssetId);
+                        lookupByAssetId = assets.Where(a => a.Asset != null).ToDictionary(a => a.AssetId);
                     }
                 }
                 return lookupByAssetId;
@@ -221,29 +226,35 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
-        public TAsset GetAsset(Guid assetId)
+        public TAsset GetAsset(AssetId assetId)
         {
-            TAssetEntry assetEntry;
-            if (LookupByAssetId.TryGetValue(assetId, out assetEntry))
+            using (StateSynchronizationPerformanceMonitor.Instance.IncrementEventDuration(this.GetType().Name, "GetAsset"))
             {
-                return assetEntry.Asset;
-            }
-            else
-            {
-                return default(TAsset);
+                TAssetEntry assetEntry;
+                if (LookupByAssetId.TryGetValue(assetId, out assetEntry))
+                {
+                    return assetEntry.Asset;
+                }
+                else
+                {
+                    return default(TAsset);
+                }
             }
         }
 
-        public Guid GetAssetId(TAsset asset)
+        public AssetId GetAssetId(TAsset asset)
         {
-            TAssetEntry assetEntry;
-            if (asset != null && LookupByAsset.TryGetValue(asset, out assetEntry))
+            using (StateSynchronizationPerformanceMonitor.Instance.IncrementEventDuration(this.GetType().Name, "GetAssetId"))
             {
-                return assetEntry.AssetId;
-            }
-            else
-            {
-                return Guid.Empty;
+                TAssetEntry assetEntry;
+                if (asset != null && LookupByAsset.TryGetValue(asset, out assetEntry))
+                {
+                    return assetEntry.AssetId;
+                }
+                else
+                {
+                    return AssetId.Empty;
+                }
             }
         }
 
@@ -260,6 +271,9 @@ namespace Microsoft.MixedReality.SpectatorView
 #endif
         }
 
+        /// <summary>
+        /// Assets are ordered in their associated AssetCache by AssetId (first by file identifier, then by guid).
+        /// </summary>
         public override void UpdateAssetCache()
         {
 #if UNITY_EDITOR
@@ -272,16 +286,23 @@ namespace Microsoft.MixedReality.SpectatorView
                 unvisitedAssets.Remove(asset);
                 if (!oldAssets.ContainsKey(asset))
                 {
-                    oldAssets.Add(asset, new TAssetEntry
+                    if (AssetDatabase.TryGetGUIDAndLocalFileIdentifier(asset, out string guid, out long localid))
                     {
-                        AssetId = Guid.NewGuid(),
-                        Asset = asset
-                    });
+                        oldAssets.Add(asset, new TAssetEntry
+                        {
+                            AssetId = new AssetId(new Guid(guid), localid),
+                            Asset = asset
+                        });
+                    }
+                    else
+                    {
+                        Debug.LogError($"Unable to obtain id for Asset: {asset.ToString()}");
+                    }
                 }
             }
 
             CleanUpUnused(oldAssets, unvisitedAssets);
-            assets = oldAssets.Values.ToArray();
+            assets = oldAssets.Values.OrderBy(x => x.AssetId.FileIdentifier).ThenBy(x => x.AssetId.Guid).ToArray();
 
             EditorUtility.SetDirty(this);
 #endif

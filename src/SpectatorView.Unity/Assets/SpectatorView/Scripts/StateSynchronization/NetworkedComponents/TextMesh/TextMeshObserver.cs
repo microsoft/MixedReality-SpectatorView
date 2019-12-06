@@ -36,7 +36,7 @@ namespace Microsoft.MixedReality.SpectatorView
                 textMesh.offsetZ = message.ReadSingle();
                 textMesh.richText = message.ReadBoolean();
                 textMesh.tabSize = message.ReadSingle();
-                textMesh.font = TextMeshService.Instance.GetFont(message.ReadGuid());
+                textMesh.font = TextMeshService.Instance.GetFont(message.ReadAssetId());
 
                 if (textMesh.font != null)
                 {

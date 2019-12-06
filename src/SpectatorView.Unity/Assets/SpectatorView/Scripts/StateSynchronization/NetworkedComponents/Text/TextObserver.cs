@@ -26,7 +26,7 @@ namespace Microsoft.MixedReality.SpectatorView
                 attachedComponent.lineSpacing = message.ReadSingle();
                 attachedComponent.horizontalOverflow = (HorizontalWrapMode)message.ReadByte();
                 attachedComponent.verticalOverflow = (VerticalWrapMode)message.ReadByte();
-                attachedComponent.font = TextService.Instance.GetFont(message.ReadGuid());
+                attachedComponent.font = TextService.Instance.GetFont(message.ReadAssetId());
             }
             if (TextBroadcaster.HasFlag(changeType, TextBroadcaster.ChangeType.Materials))
             {

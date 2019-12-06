@@ -15,8 +15,8 @@ namespace Microsoft.MixedReality.SpectatorView
 
             if (SpriteRendererBroadcaster.HasFlag(changeType, SpriteRendererBroadcaster.SpriteRendererChangeType.Sprite))
             {
-                Guid spriteGuid = message.ReadGuid();
-                Renderer.sprite = ImageService.Instance.GetSprite(spriteGuid);
+                AssetId spriteId = message.ReadAssetId();
+                Renderer.sprite = ImageService.Instance.GetSprite(spriteId);
             }
 
             if (SpriteRendererBroadcaster.HasFlag(changeType, SpriteRendererBroadcaster.SpriteRendererChangeType.Properties))

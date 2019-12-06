@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 5012277379684556187}
   - component: {fileID: 7584775395950471591}
   - component: {fileID: 4690428744344046270}
+  - component: {fileID: 4170170246728063919}
   m_Layer: 0
   m_Name: SpectatorViewSettings
   m_TagString: Untagged
@@ -93,3 +94,17 @@ MonoBehaviour:
     AccountKey: ENTER_ACCOUNT_KEY
     AccessToken: 
     AuthenticationToken: 
+--- !u!114 &4170170246728063919
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8551012926961121577}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f9490c8de72d2d44ac469f8bf46fb39, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enableMobileNetworkConfigurationVisual: 1
+  overrideMobileNetworkConfigurationVisualPrefab: {fileID: 0}

@@ -26,9 +26,9 @@ namespace Microsoft.MixedReality.SpectatorView
             MaterialProperty = 0x8
         }
 
-        public Guid FontAssetId
+        public AssetId FontAssetId
         {
-            get { return textComp.font == null ? Guid.Empty : TextService.Instance.GetFontId(textComp.font); }
+            get { return textComp.font == null ? AssetId.Empty : TextService.Instance.GetFontId(textComp.font); }
         }
 
         protected override void Awake()

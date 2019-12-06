@@ -23,35 +23,29 @@ namespace Microsoft.MixedReality.SpectatorView
         private AudioClipAssetCache audioClipAssets;
         private AudioMixerGroupAssetCache audioMixerGroupAssets;
 
-        protected override void Awake()
-        {
-            base.Awake();
-
-            audioClipAssets = AudioClipAssetCache.LoadAssetCache<AudioClipAssetCache>();
-            audioMixerGroupAssets = AudioMixerGroupAssetCache.LoadAssetCache<AudioMixerGroupAssetCache>();
-        }
-
         private void Start()
         {
+            audioClipAssets = AudioClipAssetCache.LoadAssetCache<AudioClipAssetCache>();
+            audioMixerGroupAssets = AudioMixerGroupAssetCache.LoadAssetCache<AudioMixerGroupAssetCache>();
             StateSynchronizationSceneManager.Instance.RegisterService(this, new ComponentBroadcasterDefinition<AudioSourceBroadcaster>(typeof(AudioSource)));
         }
 
-        public Guid GetAudioClipId(AudioClip clip)
+        public AssetId GetAudioClipId(AudioClip clip)
         {
-            return audioClipAssets?.GetAssetId(clip) ?? Guid.Empty;
+            return audioClipAssets?.GetAssetId(clip) ?? AssetId.Empty;
         }
 
-        public AudioClip GetAudioClip(Guid assetId)
+        public AudioClip GetAudioClip(AssetId assetId)
         {
             return audioClipAssets?.GetAsset(assetId);
         }
 
-        public Guid GetAudioMixerGroupId(AudioMixerGroup group)
+        public AssetId GetAudioMixerGroupId(AudioMixerGroup group)
         {
-            return audioMixerGroupAssets?.GetAssetId(group) ?? Guid.Empty;
+            return audioMixerGroupAssets?.GetAssetId(group) ?? AssetId.Empty;
         }
 
-        public AudioMixerGroup GetAudioMixerGroup(Guid assetId)
+        public AudioMixerGroup GetAudioMixerGroup(AssetId assetId)
         {
             return audioMixerGroupAssets?.GetAsset(assetId);
         }

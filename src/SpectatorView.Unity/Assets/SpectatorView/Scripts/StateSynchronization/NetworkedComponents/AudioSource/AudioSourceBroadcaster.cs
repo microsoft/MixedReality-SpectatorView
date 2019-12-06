@@ -26,12 +26,12 @@ namespace Microsoft.MixedReality.SpectatorView
         private float previousVolume;
         private AudioSourceProperties previousProperties;
 
-        public Guid AudioClipAssetId
+        public AssetId AudioClipAssetId
         {
             get { return AudioSourceService.Instance.GetAudioClipId(audioSource.clip); }
         }
 
-        public Guid AudioMixerGroupAssetId
+        public AssetId AudioMixerGroupAssetId
         {
             get { return AudioSourceService.Instance.GetAudioMixerGroupId(audioSource.outputAudioMixerGroup); }
         }

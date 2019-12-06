@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
             if (SkinnedMeshRendererBroadcaster.HasFlag(changeType, SkinnedMeshRendererBroadcaster.SkinnedMeshRendererChangeType.Mesh))
             {
-                Guid networkAssetId = message.ReadGuid();
+                AssetId networkAssetId = message.ReadAssetId();
                 if (!AssetService.Instance.AttachSkinnedMeshRenderer(this.gameObject, networkAssetId))
                 {
                     Debug.Log("Missing mesh for:" + gameObject.name);
