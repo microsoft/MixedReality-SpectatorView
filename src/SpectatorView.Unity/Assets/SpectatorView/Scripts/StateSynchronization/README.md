@@ -55,7 +55,7 @@ Spectator View state synchronization component events can be viewed in the Unity
 
 ![Marker](../../../../../../doc/images/ForcePerformanceReporting.png)
 
-2) Create a `Development Build` with `Autconnect Profiler` enabled. This will allow the Unity Profiler window to attach to your device.
+2) Create a `Development Build` with `Autoconnect Profiler` enabled. This will allow the Unity Profiler window to attach to your device.
 
 ![Marker](../../../../../../doc/images/BuildSettingsAutoconnectProfiler.png)
 
