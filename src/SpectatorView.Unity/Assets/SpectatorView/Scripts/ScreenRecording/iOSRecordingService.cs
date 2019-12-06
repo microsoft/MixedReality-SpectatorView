@@ -12,8 +12,7 @@ namespace Microsoft.MixedReality.SpectatorView
     /// <summary>
     /// Class implementing <see cref="IRecordingService"/> for the iOS platform
     /// </summary>
-    public class iOSRecordingService : MonoBehaviour,
-        IRecordingService
+    public class iOSRecordingService : IRecordingService
     {
         /// <inheritdoc />
         public void Dispose()
