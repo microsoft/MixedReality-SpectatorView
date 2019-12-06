@@ -36,8 +36,8 @@ namespace Microsoft.MixedReality.SpectatorView
 
     internal abstract class AssetCache : ScriptableObject
     {
-        const string assetCacheDirectory = "Generated.StateSynchronization.AssetCaches";
-        protected const string assetsFolderName = "AssetCacheContent";
+        protected const string AssetCacheDirectory = "Generated.StateSynchronization.AssetCaches";
+        protected const string AssetsFolderName = "AssetCacheContent";
 
         public static TAssetCache LoadAssetCache<TAssetCache>()
             where TAssetCache : AssetCache
@@ -59,28 +59,28 @@ namespace Microsoft.MixedReality.SpectatorView
 
         public static string GetAssetCachePath(string assetName, string assetExtension)
         {
-            return $"Assets/{assetCacheDirectory}/Resources/{assetName}{assetExtension}";
+            return $"Assets/{AssetCacheDirectory}/Resources/{assetName}{assetExtension}";
         }
 
         public static string GetAssetCachesContentPath(string assetName, string assetExtension)
         {
-            return $"Assets/{assetCacheDirectory}/Resources/{assetsFolderName}/{assetName}{assetExtension}";
+            return $"Assets/{AssetCacheDirectory}/Resources/{AssetsFolderName}/{assetName}{assetExtension}";
         }
 
         public static void EnsureAssetDirectoryExists()
         {
 #if UNITY_EDITOR
-            if (!AssetDatabase.IsValidFolder( $"Assets/{assetCacheDirectory}"))
+            if (!AssetDatabase.IsValidFolder( $"Assets/{AssetCacheDirectory}"))
             {
-                AssetDatabase.CreateFolder("Assets", $"{assetCacheDirectory}");
+                AssetDatabase.CreateFolder("Assets", $"{AssetCacheDirectory}");
             }
-            if (!AssetDatabase.IsValidFolder($"Assets/{assetCacheDirectory}/Resources"))
+            if (!AssetDatabase.IsValidFolder($"Assets/{AssetCacheDirectory}/Resources"))
             {
-                AssetDatabase.CreateFolder($"Assets/{assetCacheDirectory}", "Resources");
+                AssetDatabase.CreateFolder($"Assets/{AssetCacheDirectory}", "Resources");
             }
-            if (!AssetDatabase.IsValidFolder($"Assets/{assetCacheDirectory}/Resources/{assetsFolderName}"))
+            if (!AssetDatabase.IsValidFolder($"Assets/{AssetCacheDirectory}/Resources/{AssetsFolderName}"))
             {
-                AssetDatabase.CreateFolder($"Assets/{assetCacheDirectory}/Resources", $"{assetsFolderName}");
+                AssetDatabase.CreateFolder($"Assets/{AssetCacheDirectory}/Resources", $"{AssetsFolderName}");
             }
 #endif
         }
@@ -347,7 +347,7 @@ namespace Microsoft.MixedReality.SpectatorView
                     return false;
                 }
 
-                string assetPath = $"{assetsFolderName}/{GetValidAssetName(name)}_{this.GetType().Name}";
+                string assetPath = $"{AssetsFolderName}/{GetValidAssetName(name)}_{this.GetType().Name}";
                 var assetCacheContent = Resources.Load<AssetCacheContent>(assetPath);
                 if (assetCacheContent == null ||
                     assetCacheContent.AssetCacheEntries == null ||
@@ -399,7 +399,8 @@ namespace Microsoft.MixedReality.SpectatorView
         }
 
         /// <summary>
-        /// Assets are ordered in their associated AssetCache by AssetId (first by file identifier, then by guid).
+        /// Assets are ordered in their associated AssetCache by Asset name.
+        /// Asset references are stored in separate files that can be obtained with the Asset name.
         /// </summary>
         public override void UpdateAssetCache()
         {

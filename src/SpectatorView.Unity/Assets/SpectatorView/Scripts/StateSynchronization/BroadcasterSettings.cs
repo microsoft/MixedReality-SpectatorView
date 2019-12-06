@@ -43,7 +43,7 @@ namespace Microsoft.MixedReality.SpectatorView
         private bool forceLoadAllAssetsDuringInitialization = false;
 
         /// <summary>
-        /// Check to force loading all assets in asset caches on initialization. Note: this will improve the performance of identifying assets for sending asset changes between devices, but it will require using more memory.
+        /// Forces loading all assets in asset caches on initialization. Note: this will improve the performance of identifying assets for sending asset changes between devices, but it will require using more memory.
         /// </summary>
         public bool ForceLoadAllAssetsDuringInitialization
         {

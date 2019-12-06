@@ -55,11 +55,9 @@ Spectator View state synchronization component events can be viewed in the Unity
 
 ![Marker](../../../../../../doc/images/ForcePerformanceReporting.png)
 
-2) Create a `Development Build` with `Autconnect Profiler` enabled. This will allow the Unity Profiler window to attach to your device.
+2) Create a `Development Build` with `Autoconnect Profiler` enabled. This will allow the Unity Profiler window to attach to your device. (For more information on Unity Profiler, including prerequisite setup steps, check out the [Unity documentation](https://docs.unity3d.com/2018.2/Documentation/Manual/windowsstore-profiler.html).
 
 ![Marker](../../../../../../doc/images/BuildSettingsAutoconnectProfiler.png)
-
-3) Run your application on your chosen device and open the Unity Profiler window. The profiler should automatically connect to your device when it is running your application.
 
 ## Application Flow
 1) On the user device, a `StateSynchronizationBroadcaster` is enabled, while on the spectator device a 
