@@ -1,6 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+#define UNITY_EDITOR
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -380,6 +382,16 @@ namespace Microsoft.MixedReality.SpectatorView
         public override void ClearAssetCache()
         {
 #if UNITY_EDITOR
+            if (assets != null)
+            {
+                foreach (var nameEntry in assets)
+                {
+                    string assetName = GetAssetCachesContentPath($"{GetValidAssetName(nameEntry.Name)}_{this.GetType().Name}", assetContentExtension);
+                    AssetDatabase.DeleteAsset(assetName);
+                }
+            }
+
+            assets = null;
             lookupByName = null;
             lookupByAsset = null;
             lookupByAssetId = null;
@@ -400,7 +412,7 @@ namespace Microsoft.MixedReality.SpectatorView
             lookupByAssetId = new Dictionary<AssetId, AssetCacheEntry>();
             foreach (var listPair in oldAssets)
             {
-                foreach(var id in listPair.Value)
+                foreach (var id in listPair.Value)
                 {
                     unvisitedIds.Add(new Tuple<string, AssetId>(listPair.Key, id));
                 }
@@ -436,18 +448,23 @@ namespace Microsoft.MixedReality.SpectatorView
                 lookupByAssetId[assetId] = entry;
             }
 
-            foreach(var idPair in unvisitedIds)
+            foreach (var idPair in unvisitedIds)
             {
                 if (oldAssets.TryGetValue(idPair.Item1, out List<AssetId> ids) &&
                     ids.Contains(idPair.Item2))
                 {
                     ids.Remove(idPair.Item2);
+                    if (ids.Count == 0)
+                    {
+                        string assetName = GetAssetCachesContentPath($"{GetValidAssetName(idPair.Item1)}_{this.GetType().Name}", assetContentExtension);
+                        AssetDatabase.DeleteAsset(assetName);
+                    }
                 }
             }
 
             lookupByName = oldAssets;
             var tempAssets = new List<NameEntry>();
-            foreach(var item in lookupByName)
+            foreach (var item in lookupByName)
             {
                 tempAssets.Add(new NameEntry(item.Key, item.Value.OrderBy(a => a.Guid).ThenBy(a => a.FileIdentifier).ToArray()));
             }
@@ -474,7 +491,7 @@ namespace Microsoft.MixedReality.SpectatorView
                 return;
             }
 
-            foreach(var nameEntry in assets)
+            foreach (var nameEntry in assets)
             {
                 string assetName = GetAssetCachesContentPath($"{GetValidAssetName(nameEntry.Name)}_{this.GetType().Name}", assetContentExtension);
                 AssetCacheContent content = ScriptableObject.CreateInstance<AssetCacheContent>();
@@ -504,7 +521,14 @@ namespace Microsoft.MixedReality.SpectatorView
                 return null;
             }
 
-            return name.Replace(":", "_");
+            var invalidChars = Path.GetInvalidPathChars();
+            string updatedName = name;
+            foreach(var invalid in invalidChars)
+            {
+                updatedName = updatedName.Replace(invalid.ToString(), "");
+            }
+
+            return updatedName;
         }
     }
 }
