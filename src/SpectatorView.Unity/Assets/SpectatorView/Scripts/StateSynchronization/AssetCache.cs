@@ -249,12 +249,17 @@ namespace Microsoft.MixedReality.SpectatorView
                 if (lookupByName == null)
                 {
                     lookupByName = new Dictionary<string, List<AssetId>>();
+
                     if (assets != null)
                     {
                         for (int i = 0; i < assets.Length; i++)
                         {
                             lookupByName[assets[i].Name] = assets[i].Ids.ToList();
                         }
+                    }
+                    else
+                    {
+                        Debug.LogError($"Assets did not exist for {this.GetType().Name}. Assets will fail to synchronize.");
                     }
                 }
 
@@ -422,6 +427,8 @@ namespace Microsoft.MixedReality.SpectatorView
             HashSet<Tuple<string, AssetId>> unvisitedIds = new HashSet<Tuple<string, AssetId>>();
             lookupByAsset = new Dictionary<TAsset, AssetCacheEntry>();
             lookupByAssetId = new Dictionary<AssetId, AssetCacheEntry>();
+
+            // Populate a set of unvisisted assets to test if any declared assets no longer exist in the project.
             foreach (var listPair in oldAssets)
             {
                 foreach (var id in listPair.Value)
@@ -430,8 +437,10 @@ namespace Microsoft.MixedReality.SpectatorView
                 }
             }
 
+            // Enumerate all assets related to this asset cache in the Unity project.
             foreach (TAsset asset in EnumerateAllAssets())
             {
+                // If we can't generate an asset id for the located asset, log an error and continue.
                 if (string.IsNullOrEmpty(asset.name) ||
                     !AssetDatabase.TryGetGUIDAndLocalFileIdentifier(asset, out string guid, out long localId))
                 {
@@ -439,9 +448,11 @@ namespace Microsoft.MixedReality.SpectatorView
                     continue;
                 }
 
+                // Create a new asset id and remove said asset id from the unvisisted asset set.
                 var assetId = new AssetId(new Guid(guid), localId, asset.name);
                 unvisitedIds.Remove(new Tuple<string, AssetId>(assetId.Name, assetId));
 
+                // Add this asset id to the asset name dictionary.
                 if (!oldAssets.ContainsKey(assetId.Name))
                 {
                     oldAssets[assetId.Name] = new List<AssetId>();
@@ -452,6 +463,7 @@ namespace Microsoft.MixedReality.SpectatorView
                     oldAssets[assetId.Name].Add(assetId);
                 }
 
+                // Create a new AssetCacheEntry that references the asset and asset id to use later with synchronization.
                 var entry = new AssetCacheEntry();
                 entry.Asset = asset;
                 entry.AssetId = assetId;
@@ -459,12 +471,15 @@ namespace Microsoft.MixedReality.SpectatorView
                 lookupByAssetId[assetId] = entry;
             }
 
+            // Iterate over the remaining unvisited ids and remove them from the oldAssets dictionary definition.
             foreach (var idPair in unvisitedIds)
             {
                 if (oldAssets.TryGetValue(idPair.Item1, out List<AssetId> ids) &&
                     ids.Contains(idPair.Item2))
                 {
                     ids.Remove(idPair.Item2);
+
+                    // If it's observed that no more assets exist for the previously existing asset name, delete all the associated asset reference files for that asset name.
                     if (ids.Count == 0)
                     {
                         string assetName = GetAssetCachesContentPath($"{GetValidAssetName(idPair.Item1)}_{this.GetType().Name}", assetContentExtension);
@@ -474,13 +489,18 @@ namespace Microsoft.MixedReality.SpectatorView
                 }
             }
 
+            // Populate this asset caches lookup table to consist of assets remaining in teh oldAssets dictionary.
             lookupByName = oldAssets;
             var tempAssets = new List<NameEntry>();
             foreach (var item in lookupByName)
             {
                 tempAssets.Add(new NameEntry(item.Key, item.Value.OrderBy(a => a.Guid).ThenBy(a => a.FileIdentifier).ToArray()));
             }
+
+            // Reorder the assets based on alphabetical order for legibility.
             assets = tempAssets.OrderBy(a => a.Name).ToArray();
+
+            // Set the editor to dirty so that different asset files show up to date content in their inspectors.
             EditorUtility.SetDirty(this);
 #endif
         }
