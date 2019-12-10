@@ -23,5 +23,8 @@ namespace Microsoft.MixedReality.SpectatorView
         {
             get { return customInstanceShaderProperties ?? Array.Empty<MaterialPropertyAsset>(); }
         }
+
+        // TODO - consider if this function should be defined in base class
+        public void SaveAssets() { }
     }
 }

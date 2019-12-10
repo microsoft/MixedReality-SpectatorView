@@ -48,6 +48,17 @@ Event durations will vary based on the content you have defined in your scene. W
 1) A transform broadcaster is created for every GameObject that you synchronize in your scene hierarchy. If you have a lot of empty game objects, consider removing them/flattening your scene hierarchy to decrease the number of transform broadcasters created. This will decrease the performance costs/event durations associated with transform broadcasters. 
 2) When you leave all of the options as `Update Continuously` in the global performance settings, you will see material property updates reported in the Event Count section of the performance window. Viewing material updates here may better inform what material properties to declare in the `Material Property Overrides` within your global performance settings when changing `Material Properties` to only `Update Once on Start`.
 
+### Profiling Performance Bottlenecks
+Spectator View state synchronization component events can be viewed in the Unity Profiler. This can help generate a better understanding of the frame by frame impact associated with state synchronization. To have Spectator View events appear in the profiler, do the following:
+
+1) Open `Spectator View -> Edit Settings` and check `Force Performance Reporting`.
+
+![Marker](../../../../../../doc/images/ForcePerformanceReporting.png)
+
+2) Create a `Development Build` with `Autoconnect Profiler` enabled. This will allow the Unity Profiler window to attach to your device. (For more information on Unity Profiler, including prerequisite setup steps, check out the [Unity documentation](https://docs.unity3d.com/2018.2/Documentation/Manual/windowsstore-profiler.html).
+
+![Marker](../../../../../../doc/images/BuildSettingsAutoconnectProfiler.png)
+
 ## Application Flow
 1) On the user device, a `StateSynchronizationBroadcaster` is enabled, while on the spectator device a 
 `StateSynchronizationObserver` is enabled.

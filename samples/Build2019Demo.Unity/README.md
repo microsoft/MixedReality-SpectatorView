@@ -29,9 +29,10 @@ These instructions assume that a HoloLens 2 device will be used to host the shar
 2. Open the Build2019Demo.Unity project in Unity.
     - If requested, import the TextMeshPro Essentials.
 3. Open the `Finished_Scene` sample scene.
-3. Open SpectatorView settings by going to the menu `SpectatorView > Edit Settings`. \
+4. Run `Spectator View -> Update All Asset Caches` from the Unity toolbar.
+5. Open SpectatorView settings by going to the menu `SpectatorView > Edit Settings`. \
 ![SpectatorView Settings Menu](../../doc/images/SpectatorViewSettingsMenu.png)
-4. Replace `ENTER_ACCOUNT_ID` and `ENTER_ACCOUNT_KEY` with your Account Id and Account Key obtained when setting up your Azure Spatial Anchors account. \
+6. Replace `ENTER_ACCOUNT_ID` and `ENTER_ACCOUNT_KEY` with your Account Id and Account Key obtained when setting up your Azure Spatial Anchors account. \
 ![Spectator View ASA Settings](../../doc/images/SpectatorViewSettingsASA.png)
 
 #### Build & Deploy

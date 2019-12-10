@@ -45,6 +45,7 @@ namespace Microsoft.MixedReality.SpectatorView
     {
         void UpdateAssetCache();
         void ClearAssetCache();
+        void SaveAssets();
     }
 
     /// <summary>

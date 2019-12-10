@@ -8,10 +8,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.SpectatorView
 {
-    [Serializable]
-    internal class TextureAsset : AssetCacheEntry<Texture> { }
-
-    internal class TextureAssetCache : AssetCache<TextureAsset, Texture>, IAssetSerializer<Texture>
+    internal class TextureAssetCache : AssetCache<Texture>, IAssetSerializer<Texture>
     {
         public static readonly ShortID ID = new ShortID("TAC");
 

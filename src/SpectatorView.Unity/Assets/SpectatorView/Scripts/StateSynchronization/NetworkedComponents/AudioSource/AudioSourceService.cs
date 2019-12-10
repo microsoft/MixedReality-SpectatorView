@@ -61,5 +61,11 @@ namespace Microsoft.MixedReality.SpectatorView
             AudioClipAssetCache.GetOrCreateAssetCache<AudioClipAssetCache>().ClearAssetCache();
             AudioMixerGroupAssetCache.GetOrCreateAssetCache<AudioMixerGroupAssetCache>().ClearAssetCache();
         }
+
+        public void SaveAssets()
+        {
+            AudioClipAssetCache.GetOrCreateAssetCache<AudioClipAssetCache>().SaveAssets();
+            AudioMixerGroupAssetCache.GetOrCreateAssetCache<AudioMixerGroupAssetCache>().SaveAssets();
+        }
     }
 }

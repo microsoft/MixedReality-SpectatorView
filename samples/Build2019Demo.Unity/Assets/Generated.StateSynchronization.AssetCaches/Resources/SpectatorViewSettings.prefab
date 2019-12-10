@@ -48,6 +48,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   automaticallyBroadcastAllGameObjects: 1
+  forcePerformanceReporting: 0
+  forceLoadAllAssetsDuringInitialization: 0
 --- !u!114 &5012277379684556187
 MonoBehaviour:
   m_ObjectHideFlags: 0

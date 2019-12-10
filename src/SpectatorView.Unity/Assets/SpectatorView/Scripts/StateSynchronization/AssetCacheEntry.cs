@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.SpectatorView
@@ -9,7 +10,7 @@ namespace Microsoft.MixedReality.SpectatorView
     [Serializable]
     internal class AssetId
     {
-        public static AssetId Empty { get; } = new AssetId(System.Guid.Empty, -1);
+        public static AssetId Empty { get; } = new AssetId(System.Guid.Empty, -1, string.Empty);
 
         /// <summary>
         /// The Unity guid for the Asset
@@ -27,10 +28,16 @@ namespace Microsoft.MixedReality.SpectatorView
         [SerializeField]
         private long fileIdentifier;
 
-        public AssetId(StringGuid guid, long fileIdentifier)
+        public string Name => name;
+
+        [SerializeField]
+        private string name;
+
+        public AssetId(StringGuid guid, long fileIdentifier, string name)
         {
             this.guid = guid;
             this.fileIdentifier = fileIdentifier;
+            this.name = name;
         }
 
         public override bool Equals(object obj)
@@ -68,14 +75,20 @@ namespace Microsoft.MixedReality.SpectatorView
         {
             return !(lhs == rhs);
         }
+
+        public override string ToString()
+        {
+            return $"{guid} {fileIdentifier} {name}";
+        }
     }
 
-    internal class AssetCacheEntry<T> where T : class
+    [Serializable]
+    internal class AssetCacheEntry
     {
         [SerializeField]
         public AssetId AssetId;
 
         [SerializeField]
-        public T Asset;
+        public UnityEngine.Object Asset;
     }
 }

@@ -29,8 +29,9 @@ These instructions assume that a HoloLens device will be used to host the shared
 #### Configure your project
 
 1. Open the `SpectatorView.Example.Unity` project in Unity.
-2. If building for HoloLens 2, ensure that `QRCODESTRACKER_BINARY_AVAILABLE` has been defined as a Scripting Define Symbols in your WSA Unity Player Settings. If you have made no changes to the SpectatorView.Examples.Unity project definition, this should already be defined (Player settings can be found under `Build Settings -> Player Settings`).
-3. If building for HoloLens 1, ensure that `SpectatorView.OpenCV.dll` exists in the project's Assets folder. It should have been placed under Assets\MixedReality-SpectatorView\SpectatorView.Native\Plugins\WSA\x86 when going through the compilation instructions [here](../../src/SpectatorView.Native/README.md).
+2. Run `Spectator View -> Update All Asset Caches` from the Unity toolbar.
+3. If building for HoloLens 2, ensure that `QRCODESTRACKER_BINARY_AVAILABLE` has been defined as a Scripting Define Symbols in your WSA Unity Player Settings. If you have made no changes to the SpectatorView.Examples.Unity project definition, this should already be defined (Player settings can be found under `Build Settings -> Player Settings`).
+4. If building for HoloLens 1, ensure that `SpectatorView.OpenCV.dll` exists in the project's Assets folder. It should have been placed under Assets\MixedReality-SpectatorView\SpectatorView.Native\Plugins\WSA\x86 when going through the compilation instructions [here](../../src/SpectatorView.Native/README.md).
 
 #### Build & Deploy
 
