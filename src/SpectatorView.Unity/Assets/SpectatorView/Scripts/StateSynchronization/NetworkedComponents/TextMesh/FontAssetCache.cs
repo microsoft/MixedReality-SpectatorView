@@ -8,10 +8,7 @@ using UnityEngine.UI;
 
 namespace Microsoft.MixedReality.SpectatorView
 {
-    [Serializable]
-    internal class FontAsset : AssetCacheEntry<Font> { }
-
-    internal class FontAssetCache : AssetCache<FontAsset, Font>
+    internal class FontAssetCache : AssetCache<Font>
     {
         protected override IEnumerable<Font> EnumerateAllAssets()
         {

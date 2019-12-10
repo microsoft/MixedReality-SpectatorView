@@ -131,5 +131,13 @@ namespace Microsoft.MixedReality.SpectatorView
             AssetCache.GetOrCreateAssetCache<MaterialPropertyAssetCache>().ClearAssetCache();
             AssetCache.GetOrCreateAssetCache<CustomShaderPropertyAssetCache>().ClearAssetCache();
         }
+
+        public void SaveAssets()
+        {
+            AssetCache.GetOrCreateAssetCache<TextureAssetCache>().SaveAssets();
+            AssetCache.GetOrCreateAssetCache<MeshAssetCache>().SaveAssets();
+            AssetCache.GetOrCreateAssetCache<MaterialPropertyAssetCache>().SaveAssets();
+            AssetCache.GetOrCreateAssetCache<CustomShaderPropertyAssetCache>().SaveAssets();
+        }
     }
 }

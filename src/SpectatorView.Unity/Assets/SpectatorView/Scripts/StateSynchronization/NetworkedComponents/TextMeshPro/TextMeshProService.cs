@@ -43,5 +43,10 @@ namespace Microsoft.MixedReality.SpectatorView
         {
             TextMeshProFontAssetCache.GetOrCreateAssetCache<TextMeshProFontAssetCache>().ClearAssetCache();
         }
+
+        public void SaveAssets()
+        {
+            TextMeshProFontAssetCache.GetOrCreateAssetCache<TextMeshProFontAssetCache>().SaveAssets();
+        }
     }
 }

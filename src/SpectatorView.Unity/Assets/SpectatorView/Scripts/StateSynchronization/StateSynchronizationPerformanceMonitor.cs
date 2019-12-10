@@ -42,6 +42,11 @@ namespace Microsoft.MixedReality.SpectatorView
                 this.ComponentName = componentName;
                 this.EventName = eventName;
             }
+
+            public override string ToString()
+            {
+                return $"{this.ComponentName}.{this.EventName}";
+            }
         };
 
         public struct ParsedMessage
@@ -89,7 +94,7 @@ namespace Microsoft.MixedReality.SpectatorView
                 incrementEventStopWatches.Add(key, stopwatch);
             }
 
-            return new TimeScope(stopwatch);
+            return new TimeScope(stopwatch, key.ToString());
         }
 
         public IDisposable MeasureEventDuration(string componentName, string eventName)
@@ -106,7 +111,7 @@ namespace Microsoft.MixedReality.SpectatorView
                 eventStopWatches.Add(key, stopwatch);
             }
 
-            return new TimeScope(stopwatch);
+            return new TimeScope(stopwatch, key.ToString());
         }
 
         public void IncrementEventCount(string componentName, string eventName)
@@ -131,7 +136,6 @@ namespace Microsoft.MixedReality.SpectatorView
         {
             if (!StateSynchronizationPerformanceParameters.EnablePerformanceReporting)
             {
-                UnityEngine.Debug.LogWarning($"Performance reporting was not enabled for memory usage event: {componentName}.{eventName}");
                 return null;
             }
 
@@ -279,11 +283,19 @@ namespace Microsoft.MixedReality.SpectatorView
         private struct TimeScope : IDisposable
         {
             private Stopwatch stopwatch;
+            private bool stopSample;
 
-            public TimeScope(Stopwatch stopwatch)
+            public TimeScope(Stopwatch stopwatch, string eventName)
             {
                 this.stopwatch = stopwatch;
                 stopwatch.Start();
+                stopSample = false;
+
+                if (Profiler.enabled)
+                {
+                    Profiler.BeginSample(eventName);
+                    stopSample = true;
+                }
             }
 
             public void Dispose()
@@ -292,6 +304,13 @@ namespace Microsoft.MixedReality.SpectatorView
                 {
                     stopwatch.Stop();
                     stopwatch = null;
+                }
+
+                if (stopSample &&
+                    Profiler.enabled)
+                {
+                    Profiler.EndSample();
+                    stopSample = false;
                 }
             }
         }

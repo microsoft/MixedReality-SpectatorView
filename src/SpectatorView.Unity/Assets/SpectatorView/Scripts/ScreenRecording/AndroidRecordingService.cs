@@ -9,8 +9,7 @@ namespace Microsoft.MixedReality.SpectatorView
     /// <summary>
     /// Class implementing <see cref="IRecordingService"/> for the Android platform
     /// </summary>
-    public class AndroidRecordingService : MonoBehaviour,
-    IRecordingService
+    public class AndroidRecordingService : IRecordingService
     {
         private readonly string _fileNamePrefix = "spectatorView";
         private readonly string _fileNameExt = ".mp4";

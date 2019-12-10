@@ -117,6 +117,8 @@ namespace Microsoft.MixedReality.SpectatorView
 #endif
         }
 
+        public void SaveAssets() { }
+
         private static bool IsMaterialFileExtension(string fileExtension)
         {
             return fileExtension == ".mat";

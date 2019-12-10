@@ -37,5 +37,17 @@ namespace Microsoft.MixedReality.SpectatorView
         {
             get { return forcePerformanceReporting; }
         }
+
+        [SerializeField]
+        [Tooltip("Check to force loading all assets in asset caches on initialization. Note: this will improve the performance of identifying assets for sending asset changes between devices, but it will require using more memory.")]
+        private bool forceLoadAllAssetsDuringInitialization = false;
+
+        /// <summary>
+        /// Forces loading all assets in asset caches on initialization. Note: this will improve the performance of identifying assets for sending asset changes between devices, but it will require using more memory.
+        /// </summary>
+        public bool ForceLoadAllAssetsDuringInitialization
+        {
+            get { return forceLoadAllAssetsDuringInitialization; }
+        }
     }
 }
