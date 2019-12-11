@@ -147,7 +147,8 @@ namespace Microsoft.MixedReality.SpectatorView
                     writer.Flush();
 
                     Debug.Log("Sending headset calibration data payload.");
-                    holographicCameraBroadcaster.Broadcast(memoryStream.ToArray());
+                    var byteArray = memoryStream.ToArray();
+                    holographicCameraBroadcaster.Broadcast(ref byteArray);
                 }
             }
         }
@@ -165,7 +166,8 @@ namespace Microsoft.MixedReality.SpectatorView
                     writer.Flush();
 
                     Debug.Log("Sending upload result message.");
-                    holographicCameraBroadcaster.Broadcast(memoryStream.ToArray());
+                    var byteArray = memoryStream.ToArray();
+                    holographicCameraBroadcaster.Broadcast(ref byteArray);
                 }
             }
         }

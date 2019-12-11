@@ -33,6 +33,12 @@ namespace Microsoft.MixedReality.SpectatorView
         TimeSpan TimeSinceLastUpdate { get; }
 
         /// <summary>
+        /// Starts listening on the given port.
+        /// </summary>
+        /// <param name="port">The port to listen for new connections on.</param>
+        void StartListening(int port);
+
+        /// <summary>
         /// Connect to a remote device on the default port for this network manager.
         /// </summary>
         /// <param name="targetIpString">The IP address of the device to connect to.</param>

@@ -43,7 +43,7 @@ namespace Microsoft.MixedReality.SpectatorView
         /// Starts a listening socket on the given port.
         /// </summary>
         /// <param name="port">The port to listen for new connections on.</param>
-        protected void StartListening(int port)
+        public void StartListening(int port)
         {
             CreateConnectionManager();
             connectionManager.StartListening(port);
