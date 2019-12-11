@@ -60,7 +60,8 @@ namespace Microsoft.MixedReality.SpectatorView
                     message.Write("CalibrationData");
                     message.Write(contents.Length);
                     message.Write(contents);
-                    networkManager.Broadcast(memoryStream.ToArray());
+                    var data = memoryStream.ToArray();
+                    networkManager.Broadcast(ref data);
                 }
             }
         }
