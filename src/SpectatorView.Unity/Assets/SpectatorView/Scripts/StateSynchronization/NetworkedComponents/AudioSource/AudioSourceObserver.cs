@@ -9,7 +9,7 @@ namespace Microsoft.MixedReality.SpectatorView
 {
     internal class AudioSourceObserver : ComponentObserver<AudioSource>
     {
-        public override void Read(SocketEndpoint sendingEndpoint, BinaryReader message)
+        public override void Read(INetworkConnection connection, BinaryReader message)
         {
             AudioSourceBroadcaster.ChangeType changeType = (AudioSourceBroadcaster.ChangeType)message.ReadByte();
 

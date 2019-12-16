@@ -18,23 +18,31 @@ namespace Microsoft.MixedReality.SpectatorView
     /// Loads calibration data from the Pictures library on the device and transfers that data
     /// to the compositor upon connection.
     /// </summary>
-    [RequireComponent(typeof(TCPConnectionManager))]
     public class CalibrationDataProvider : MonoBehaviour
     {
-        private TCPConnectionManager tcpConnectionManager;
+        private INetworkManager networkManager;
 
         private void Awake()
         {
-            tcpConnectionManager = GetComponent<TCPConnectionManager>();
-            tcpConnectionManager.OnConnected += TcpConnectionManager_OnConnected;
+            networkManager = GetComponent<INetworkManager>();
+            if (networkManager == null)
+            {
+                throw new MissingComponentException("Missing network manager component");
+            }
+
+            networkManager.Connected += NetworkManagerConnected;
+            if (networkManager.IsConnected)
+            {
+                SendCalibrationDataAsync();
+            }
         }
 
         private void OnDestroy()
         {
-            tcpConnectionManager.OnConnected -= TcpConnectionManager_OnConnected;
+            networkManager.Connected -= NetworkManagerConnected;
         }
 
-        private void TcpConnectionManager_OnConnected(SocketEndpoint obj)
+        private void NetworkManagerConnected(INetworkConnection obj)
         {
             SendCalibrationDataAsync();
         }
@@ -52,7 +60,7 @@ namespace Microsoft.MixedReality.SpectatorView
                     message.Write("CalibrationData");
                     message.Write(contents.Length);
                     message.Write(contents);
-                    tcpConnectionManager.Broadcast(memoryStream.ToArray());
+                    networkManager.Broadcast(memoryStream.ToArray());
                 }
             }
         }

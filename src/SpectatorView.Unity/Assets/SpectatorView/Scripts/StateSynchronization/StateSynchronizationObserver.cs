@@ -50,18 +50,7 @@ namespace Microsoft.MixedReality.SpectatorView
             // messages even if it loses focus
             Application.runInBackground = true;
 
-            if (connectionManager != null)
-            {
-                DebugLog("Setting up connection manager");
-
-                // Start listening to incoming connections as well.
-                connectionManager.StartListening(port);
-            }
-            else
-            {
-                Debug.LogError("Connection manager not specified for Observer.");
-            }
-
+            StartListening(port);
             RegisterCommandHandler(SyncCommand, HandleSyncCommand);
             RegisterCommandHandler(CameraCommand, HandleCameraCommand);
             RegisterCommandHandler(PerfCommand, HandlePerfCommand);
@@ -82,21 +71,21 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
-        protected override void OnConnected(SocketEndpoint endpoint)
+        protected override void OnConnected(INetworkConnection connection)
         {
-            base.OnConnected(endpoint);
+            base.OnConnected(connection);
 
-            DebugLog($"Observer Connected to endpoint: {endpoint.Address}");
+            DebugLog($"Observer Connected to connection: {connection.ToString()}");
 
             if (StateSynchronizationSceneManager.IsInitialized)
             {
                 StateSynchronizationSceneManager.Instance.MarkSceneDirty();
             }
 
-            hologramSynchronizer.Reset(endpoint);
+            hologramSynchronizer.Reset(connection);
         }
 
-        public void HandleCameraCommand(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
+        public void HandleCameraCommand(INetworkConnection connection, string command, BinaryReader reader, int remainingDataSize)
         {
             float timeStamp = reader.ReadSingle();
             hologramSynchronizer.RegisterCameraUpdate(timeStamp);
@@ -104,21 +93,20 @@ namespace Microsoft.MixedReality.SpectatorView
             transform.rotation = reader.ReadQuaternion();
         }
 
-        public void HandleSyncCommand(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
+        public void HandleSyncCommand(INetworkConnection connection, string command, BinaryReader reader, int remainingDataSize)
         {
             float timeStamp = reader.ReadSingle();
             hologramSynchronizer.RegisterFrameData(reader.ReadBytes(remainingDataSize), timeStamp);
         }
 
-        public void HandlePerfCommand(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
+        public void HandlePerfCommand(INetworkConnection connection, string command, BinaryReader reader, int remainingDataSize)
         {
             StateSynchronizationPerformanceMonitor.ReadMessage(reader, out lastPerfMessage);
         }
 
         public void SetPerformanceMonitoringMode(bool enabled)
         {
-            if (connectionManager != null &&
-                connectionManager.HasConnections)
+            if (IsConnected)
             {
                 byte[] message;
                 using (MemoryStream stream = new MemoryStream())
@@ -130,7 +118,7 @@ namespace Microsoft.MixedReality.SpectatorView
                     message = stream.ToArray();
                 }
 
-                connectionManager.Broadcast(message);
+                connectionManager.Broadcast(ref message);
             }
         }
 
@@ -142,14 +130,15 @@ namespace Microsoft.MixedReality.SpectatorView
 
         private void CheckAndSendHeartbeat()
         {
-            if (connectionManager != null &&
-                connectionManager.HasConnections)
+            if (IsConnected)
             {
                 timeSinceLastHeartbeat += Time.deltaTime;
                 if (timeSinceLastHeartbeat > heartbeatTimeInterval)
                 {
                     timeSinceLastHeartbeat = 0.0f;
-                    connectionManager.Broadcast(heartbeatMessage);
+                    var data = new byte[heartbeatMessage.Length];
+                    heartbeatMessage.CopyTo(data, 0);
+                    connectionManager.Broadcast(ref data);
                 }
             }
         }

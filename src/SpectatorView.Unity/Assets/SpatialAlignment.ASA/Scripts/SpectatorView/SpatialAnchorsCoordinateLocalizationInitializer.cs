@@ -33,9 +33,9 @@ namespace Microsoft.MixedReality.SpectatorView
         private async Task<bool> TryRunLocalizationImplAsync(SpatialCoordinateSystemParticipant participant)
         {
             configuration.IsCoordinateCreator = false;
-            Task<bool> localTask = SpatialCoordinateSystemManager.Instance.LocalizeAsync(participant.SocketEndpoint, SpatialAnchorsLocalizer.Id, configuration);
+            Task<bool> localTask = SpatialCoordinateSystemManager.Instance.LocalizeAsync(participant.NetworkConnection, SpatialAnchorsLocalizer.Id, configuration);
             configuration.IsCoordinateCreator = true;
-            Task<bool> remoteTask = SpatialCoordinateSystemManager.Instance.RunRemoteLocalizationAsync(participant.SocketEndpoint, SpatialAnchorsLocalizer.Id, configuration);
+            Task<bool> remoteTask = SpatialCoordinateSystemManager.Instance.RunRemoteLocalizationAsync(participant.NetworkConnection, SpatialAnchorsLocalizer.Id, configuration);
             await Task.WhenAll(localTask, remoteTask);
             bool localSuccess = await localTask;
             bool remoteSuccess = await remoteTask;

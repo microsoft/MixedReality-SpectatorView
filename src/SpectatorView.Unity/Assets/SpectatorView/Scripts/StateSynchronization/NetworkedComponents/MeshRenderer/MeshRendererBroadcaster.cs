@@ -17,23 +17,23 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
-        protected override void SendDeltaChanges(IEnumerable<SocketEndpoint> endpoints, byte changeFlags)
+        protected override void SendDeltaChanges(IEnumerable<INetworkConnection> connections, byte changeFlags)
         {
             using (StateSynchronizationPerformanceMonitor.Instance.MeasureEventDuration(PerformanceComponentName, "SendDeltaChanges"))
             {
-                base.SendDeltaChanges(endpoints, changeFlags);
+                base.SendDeltaChanges(connections, changeFlags);
             }
         }
 
-        protected override void SendCompleteChanges(IEnumerable<SocketEndpoint> endpoints)
+        protected override void SendCompleteChanges(IEnumerable<INetworkConnection> connections)
         {
             using (StateSynchronizationPerformanceMonitor.Instance.MeasureEventDuration(PerformanceComponentName, "SendCompleteChanges"))
             {
-                base.SendCompleteChanges(endpoints);
+                base.SendCompleteChanges(connections);
             }
         }
 
-        protected override void SendComponentCreation(IEnumerable<SocketEndpoint> newConnections)
+        protected override void SendComponentCreation(IEnumerable<INetworkConnection> newConnections)
         {
             using (StateSynchronizationPerformanceMonitor.Instance.MeasureEventDuration(PerformanceComponentName, "SendComponentCreation"))
             {
@@ -41,11 +41,11 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
-        protected override bool ShouldSendChanges(SocketEndpoint endpoint)
+        protected override bool ShouldSendChanges(INetworkConnection connection)
         {
             using (StateSynchronizationPerformanceMonitor.Instance.MeasureEventDuration(PerformanceComponentName, "ShouldSendChanges"))
             {
-                return base.ShouldSendChanges(endpoint);
+                return base.ShouldSendChanges(connection);
             }
         }
 

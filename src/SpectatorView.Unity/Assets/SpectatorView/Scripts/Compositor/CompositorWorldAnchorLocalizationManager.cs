@@ -37,7 +37,7 @@ namespace Microsoft.MixedReality.SpectatorView
         private void OnParticipantConnected(SpatialCoordinateSystemParticipant participant)
         {
             // When a new participant connects, send a request to re-load the shared spatial coordinate world anchor.
-            participantLocalizationTasks.Add(participant, SpatialCoordinateSystemManager.Instance.RunRemoteLocalizationAsync(participant.SocketEndpoint, WorldAnchorSpatialLocalizer.Id, new WorldAnchorSpatialLocalizationSettings
+            participantLocalizationTasks.Add(participant, SpatialCoordinateSystemManager.Instance.RunRemoteLocalizationAsync(participant.NetworkConnection, WorldAnchorSpatialLocalizer.Id, new WorldAnchorSpatialLocalizationSettings
             {
                 Mode = WorldAnchorLocalizationMode.LocateExistingAnchor,
                 AnchorId = CompositorWorldAnchorId
@@ -66,14 +66,14 @@ namespace Microsoft.MixedReality.SpectatorView
             }
 
             // Request localization using the specific localizer and settings, and wait for that localization to complete.
-            participantLocalizationTasks[participant] = currentTask = SpatialCoordinateSystemManager.Instance.RunRemoteLocalizationAsync(participant.SocketEndpoint, spatialLocalizerId, settings);
+            participantLocalizationTasks[participant] = currentTask = SpatialCoordinateSystemManager.Instance.RunRemoteLocalizationAsync(participant.NetworkConnection, spatialLocalizerId, settings);
             bool localizationSucceeded = await currentTask;
 
             if (localizationSucceeded)
             {
                 // Once the specific localizer has found a shared coordinate, ask the WorldAnchorSpatialLocalizer
                 // to create a WorldAnchor-based coordinate at the same location, and persist that coordinate across sessions.
-                participantLocalizationTasks[participant] = currentTask = SpatialCoordinateSystemManager.Instance.RunRemoteLocalizationAsync(participant.SocketEndpoint, WorldAnchorSpatialLocalizer.Id, new WorldAnchorSpatialLocalizationSettings
+                participantLocalizationTasks[participant] = currentTask = SpatialCoordinateSystemManager.Instance.RunRemoteLocalizationAsync(participant.NetworkConnection, WorldAnchorSpatialLocalizer.Id, new WorldAnchorSpatialLocalizationSettings
                 {
                     Mode = WorldAnchorLocalizationMode.CreateAnchorAtWorldTransform,
                     AnchorId = CompositorWorldAnchorId,
@@ -84,7 +84,7 @@ namespace Microsoft.MixedReality.SpectatorView
             }
             else
             {
-                Debug.LogError($"Remote localization failed on device {participant.SocketEndpoint.Address} for spatial localizer {spatialLocalizerId}");
+                Debug.LogError($"Remote localization failed on device {participant.NetworkConnection} for spatial localizer {spatialLocalizerId}");
             }
         }
     }

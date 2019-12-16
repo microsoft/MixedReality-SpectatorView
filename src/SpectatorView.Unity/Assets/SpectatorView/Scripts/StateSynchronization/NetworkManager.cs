@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
@@ -9,22 +10,20 @@ namespace Microsoft.MixedReality.SpectatorView
 {
     public abstract class NetworkManager<TService> : CommandRegistry<TService>, INetworkManager where TService : Singleton<TService>
     {
-        private float lastReceivedUpdate;
-
+        [Tooltip("Default prefab for creating an INetworkConnectionManager.")]
         [SerializeField]
-        protected TCPConnectionManager connectionManager = null;
+        private GameObject defaultConnectionManagerPrefab = null;
+        private GameObject connectionManagerGameObject = null;
+        protected INetworkConnectionManager connectionManager = null;
 
-        public bool AttemptReconnectWhenClient
-        {
-            get { return attemptReconnectWhenClient; }
-            set { attemptReconnectWhenClient = value; }
-        }
-        private bool attemptReconnectWhenClient = true;
-
-        private SocketEndpoint currentConnection;
+        private float lastReceivedUpdate;
+        private INetworkConnection currentConnection;
 
         /// <inheritdoc />
-        public string ConnectedIPAddress => currentConnection?.Address;
+        public string ConnectedIPAddress => currentConnection?.ToString();
+
+        /// <inheritdoc />
+        public IReadOnlyList<INetworkConnection> Connections => connectionManager == null ? Array.Empty<INetworkConnection>() : connectionManager.Connections;
 
         /// <inheritdoc />
         public bool IsConnected => connectionManager != null && connectionManager.HasConnections;
@@ -40,17 +39,14 @@ namespace Microsoft.MixedReality.SpectatorView
         /// </summary>
         protected abstract int RemotePort { get; }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Starts a listening socket on the given port.
+        /// </summary>
+        /// <param name="port">The port to listen for new connections on.</param>
         public void StartListening(int port)
         {
-            if (connectionManager != null)
-            {
-                connectionManager.StartListening(port);
-            }
-            else
-            {
-                Debug.LogError($"Failed to start listening: {nameof(connectionManager)} was not assigned.");
-            }
+            CreateConnectionManager();
+            connectionManager.StartListening(port);
         }
 
         /// <inheritdoc />
@@ -62,26 +58,16 @@ namespace Microsoft.MixedReality.SpectatorView
         /// <inheritdoc />
         public void ConnectTo(string ipAddress, int port)
         {
-            if (connectionManager != null)
-            {
-                connectionManager.AttemptReconnectWhenClient = AttemptReconnectWhenClient;
-                connectionManager.ConnectTo(ipAddress, port);
-            }
-            else
-            {
-                Debug.LogError($"Failed to start connecting: {nameof(connectionManager)} was not assigned.");
-            }
+            CreateConnectionManager();
+            connectionManager.ConnectTo(ipAddress, port);
         }
 
-        /// <summary>
-        /// Sends data to other connected devices
-        /// </summary>
-        /// <param name="data">payload to send to other devices</param>
-        public void Broadcast(byte[] data)
+        /// <inheritdoc />
+        public void Broadcast(ref byte[] data)
         {
             if (currentConnection != null)
             {
-                currentConnection.Send(data);
+                currentConnection.Send(ref data);
             }
         }
 
@@ -103,17 +89,11 @@ namespace Microsoft.MixedReality.SpectatorView
         protected override void Awake()
         {
             base.Awake();
+            CreateConnectionManager();
 
-            if (connectionManager != null)
-            {
-                connectionManager.OnConnected += OnConnected;
-                connectionManager.OnDisconnected += OnDisconnected;
-                connectionManager.OnReceive += OnReceive;
-            }
-            else
-            {
-                Debug.LogError($"{nameof(connectionManager)} is required but was not assigned.");
-            }
+            connectionManager.OnConnected += OnConnected;
+            connectionManager.OnDisconnected += OnDisconnected;
+            connectionManager.OnReceive += OnReceive;
         }
 
         protected virtual void Start()
@@ -140,6 +120,13 @@ namespace Microsoft.MixedReality.SpectatorView
                 connectionManager.OnConnected -= OnConnected;
                 connectionManager.OnDisconnected -= OnDisconnected;
                 connectionManager.OnReceive -= OnReceive;
+
+                connectionManager = null;
+            }
+
+            if (connectionManagerGameObject != null)
+            {
+                Destroy(connectionManagerGameObject);
             }
 
             if (SpatialCoordinateSystemManager.IsInitialized)
@@ -148,21 +135,21 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
-        protected virtual void OnConnected(SocketEndpoint endpoint)
+        protected virtual void OnConnected(INetworkConnection connection)
         {
-            currentConnection = endpoint;
+            currentConnection = connection;
 
-            NotifyConnected(endpoint);
+            NotifyConnected(connection);
         }
 
-        protected virtual void OnDisconnected(SocketEndpoint endpoint)
+        protected virtual void OnDisconnected(INetworkConnection connection)
         {
-            if (currentConnection == endpoint)
+            if (currentConnection == connection)
             {
                 currentConnection = null;
             }
 
-            NotifyDisconnected(endpoint);
+            NotifyDisconnected(connection);
         }
 
         protected void OnReceive(IncomingMessage data)
@@ -174,7 +161,33 @@ namespace Microsoft.MixedReality.SpectatorView
             {
                 string command = reader.ReadString();
 
-                NotifyCommand(data.Endpoint, command, reader, data.Size - (int)stream.Position);
+                NotifyCommand(data.Connection, command, reader, data.Size - (int)stream.Position);
+            }
+        }
+
+        private void CreateConnectionManager()
+        {
+            if (connectionManagerGameObject == null)
+            {
+                var prefab = defaultConnectionManagerPrefab;
+                if (NetworkConfigurationSettings.IsInitialized &&
+                    NetworkConfigurationSettings.Instance.OverrideConnectionManagerPrefab != null)
+                {
+                    prefab = NetworkConfigurationSettings.Instance.OverrideConnectionManagerPrefab;
+                }
+
+                if (prefab == null)
+                {
+                    throw new MissingComponentException("Network connection manager prefab wasn't specified. NetworkManager will not work correctly.");
+                }
+
+                connectionManagerGameObject = Instantiate(prefab, this.transform);
+                connectionManager = connectionManagerGameObject.GetComponentInChildren<INetworkConnectionManager>();
+
+                if (connectionManager == null)
+                {
+                    throw new MissingComponentException("INetworkConnectionManager wasn't found in instantiated prefab. NetworkManager will not work correctly.");
+                }
             }
         }
     }

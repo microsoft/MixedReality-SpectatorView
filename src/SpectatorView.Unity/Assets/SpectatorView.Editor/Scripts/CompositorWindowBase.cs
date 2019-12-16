@@ -452,9 +452,9 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
 
         protected SpatialCoordinateSystemParticipant GetSpatialCoordinateSystemParticipant(DeviceInfoObserver device)
         {
-            if (device != null && device.ConnectedEndpoint != null && SpatialCoordinateSystemManager.IsInitialized)
+            if (device != null && device.NetworkConnection != null && SpatialCoordinateSystemManager.IsInitialized)
             {
-                if (SpatialCoordinateSystemManager.Instance.TryGetSpatialCoordinateSystemParticipant(device.ConnectedEndpoint, out SpatialCoordinateSystemParticipant participant))
+                if (SpatialCoordinateSystemManager.Instance.TryGetSpatialCoordinateSystemParticipant(device.NetworkConnection, out SpatialCoordinateSystemParticipant participant))
                 {
                     return participant;
                 }

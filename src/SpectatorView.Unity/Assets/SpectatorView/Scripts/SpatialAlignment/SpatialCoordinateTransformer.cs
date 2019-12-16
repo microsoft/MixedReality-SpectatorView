@@ -72,7 +72,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
         private void OnParticipantDisconnected(SpatialCoordinateSystemParticipant participant)
         {
-            DebugLog($"Participant disconnected: {participant?.SocketEndpoint?.Address ?? "IPAddress unknown"}");
+            DebugLog($"Participant disconnected: {participant?.NetworkConnection?.ToString() ?? "Unknown NetworkConnection"}");
             if (currentParticipant == null)
             {
                 DebugLog("No participant was registered when a participant disconnected");
@@ -82,7 +82,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
         private void OnParticipantConnected(SpatialCoordinateSystemParticipant participant)
         {
-            DebugLog($"Participant connected: {participant?.SocketEndpoint?.Address ?? "IPAddress unknown"}");
+            DebugLog($"Participant connected: {participant?.NetworkConnection?.ToString() ?? "Unknown NetworkConnection"}");
             if (currentParticipant != null)
             {
                 DebugLog("Participant was already registered when new participant connected");

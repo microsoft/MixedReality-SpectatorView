@@ -57,22 +57,7 @@ namespace Microsoft.MixedReality.SpectatorView
         protected override void Start()
         {
             base.Start();
-
-            SetupNetworkConnectionManager();
-        }
-
-        protected virtual void SetupNetworkConnectionManager()
-        {
-            if (connectionManager != null)
-            {
-                DebugLog("Setting up connection manager");
-
-                connectionManager.StartListening(Port);
-            }
-            else
-            {
-                Debug.LogWarning("Connection Manager not defined for Broadcaster.");
-            }
+            StartListening(Port);
         }
 
         private void DebugLog(string message)
@@ -83,16 +68,16 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
-        protected override void OnConnected(SocketEndpoint endpoint)
+        protected override void OnConnected(INetworkConnection connection)
         {
-            DebugLog($"Broadcaster received connection from {endpoint.Address}.");
-            base.OnConnected(endpoint);
+            DebugLog($"Broadcaster received connection from {connection.ToString()}.");
+            base.OnConnected(connection);
         }
 
-        protected override void OnDisconnected(SocketEndpoint endpoint)
+        protected override void OnDisconnected(INetworkConnection connection)
         {
-            DebugLog($"Broadcaster received disconnect from {endpoint.Address}"); ;
-            base.OnDisconnected(endpoint);
+            DebugLog($"Broadcaster received disconnect from {connection.ToString()}"); ;
+            base.OnDisconnected(connection);
         }
 
         /// <summary>
@@ -102,7 +87,7 @@ namespace Microsoft.MixedReality.SpectatorView
         {
             get
             {
-                return connectionManager != null && connectionManager.HasConnections;
+                return connectionManager != null && connectionManager.Connections.Count > 0;
             }
         }
 
@@ -181,7 +166,8 @@ namespace Microsoft.MixedReality.SpectatorView
                 message.Write(camTrans != null ? camTrans.rotation : Quaternion.identity);
                 message.Flush();
 
-                connectionManager.Broadcast(memoryStream.ToArray());
+                var data = memoryStream.ToArray();
+                connectionManager.Broadcast(ref data);
             }
 
             //Perf
@@ -195,7 +181,8 @@ namespace Microsoft.MixedReality.SpectatorView
                     message.Write(StateSynchronizationObserver.PerfCommand);
                     StateSynchronizationPerformanceMonitor.Instance.WriteMessage(message, numFrames);
                     message.Flush();
-                    connectionManager.Broadcast(memoryStream.ToArray());
+                    var data = memoryStream.ToArray();
+                    connectionManager.Broadcast(ref data);
                 }
 
                 timeUntilNextPerfUpdate = PerfUpdateTimeSeconds;
@@ -203,13 +190,13 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
-        public void HandleSyncCommand(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
+        public void HandleSyncCommand(INetworkConnection connection, string command, BinaryReader reader, int remainingDataSize)
         {
             reader.ReadSingle(); // float time
-            StateSynchronizationSceneManager.Instance.ReceiveMessage(endpoint, reader);
+            StateSynchronizationSceneManager.Instance.ReceiveMessage(connection, reader);
         }
 
-        private void HandlePerfMonitoringModeEnableRequest(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
+        private void HandlePerfMonitoringModeEnableRequest(INetworkConnection connection, string command, BinaryReader reader, int remainingDataSize)
         {
             bool enabled = reader.ReadBoolean();
             if (StateSynchronizationPerformanceMonitor.Instance != null)

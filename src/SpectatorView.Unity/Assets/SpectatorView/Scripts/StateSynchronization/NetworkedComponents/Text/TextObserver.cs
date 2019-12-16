@@ -9,7 +9,7 @@ namespace Microsoft.MixedReality.SpectatorView
 {
     internal class TextObserver : ComponentObserver<Text>
     {
-        public override void Read(SocketEndpoint sendingEndpoint, BinaryReader message)
+        public override void Read(INetworkConnection connection, BinaryReader message)
         {
             TextBroadcaster.ChangeType changeType = (TextBroadcaster.ChangeType)message.ReadByte();
 

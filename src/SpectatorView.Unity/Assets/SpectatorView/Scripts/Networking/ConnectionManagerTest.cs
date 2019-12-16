@@ -12,9 +12,9 @@ using UnityEditor;
 namespace Microsoft.MixedReality.SpectatorView
 {
     /// <summary>
-    /// Helper class for testing socketer <see cref="TCPConnectionManager"/>
+    /// Helper class for testing <see cref="INetworkConnectionManager"/> prefabs
     /// </summary>
-    public class TCPConnectionManagerTest : MonoBehaviour
+    public class ConnectionManagerTest : MonoBehaviour
     {
         /// <summary>
         /// Check to run as the server
@@ -45,11 +45,13 @@ namespace Microsoft.MixedReality.SpectatorView
         protected float timeBetweenBroadcasts = 1.0f;
 
         /// <summary>
-        /// TCPConnectionManager to use for networking
+        /// INetworkConnectionManager to use for networking
         /// </summary>
-        [Tooltip("TCPConnectionManager to use for networking")]
+        [Tooltip("Prefab that contains INetworkConnectionManager to use for networking")]
         [SerializeField]
-        protected TCPConnectionManager connectionManager;
+        protected GameObject connectionManagerPrefab;
+        private GameObject connectionManagerGameObject;
+        private INetworkConnectionManager connectionManager;
 
         private float lastBroadcast = 0.0f;
         private bool broadcastSent = false;
@@ -65,6 +67,9 @@ namespace Microsoft.MixedReality.SpectatorView
 
         private void Start()
         {
+            connectionManagerGameObject = Instantiate(connectionManagerPrefab);
+            connectionManager = connectionManagerGameObject.GetComponent<INetworkConnectionManager>();
+
             connectionManager.OnConnected += OnNetConnected;
             connectionManager.OnDisconnected += OnNetDisconnected;
             connectionManager.OnReceive += OnNetReceived;
@@ -81,7 +86,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
         private void Update()
         {
-            if (!connectionManager.HasConnections)
+            if (connectionManager.Connections.Count == 0)
             {
                 return;
             }
@@ -91,12 +96,13 @@ namespace Microsoft.MixedReality.SpectatorView
             {
                 Debug.Log("Broadcasts sent and received, attempting to disconnect");
                 connectionManager.DisconnectAll();
-                Debug.Log("TCPConnectionManager has disconnected");
+                Debug.Log("INetworkConnectionManager has disconnected");
             }
             else if ((Time.time - lastBroadcast) > timeBetweenBroadcasts)
             {
                 var message = runAsServer ? "Message from server" : "Message from client";
-                connectionManager.Broadcast(Encoding.ASCII.GetBytes(message));
+                var data = Encoding.ASCII.GetBytes(message);
+                connectionManager.Broadcast(ref data);
                 broadcastSent = true;
 
                 lastBroadcast = Time.time;
@@ -106,21 +112,28 @@ namespace Microsoft.MixedReality.SpectatorView
         private void OnDestroy()
         {
             connectionManager.DisconnectAll();
+            connectionManager.OnConnected -= OnNetConnected;
+            connectionManager.OnDisconnected -= OnNetDisconnected;
+            connectionManager.OnReceive -= OnNetReceived;
+
+            connectionManager = null;
+            Destroy(connectionManagerGameObject);
+            connectionManagerGameObject = null;
         }
 
-        private void OnNetConnected(SocketEndpoint obj)
+        private void OnNetConnected(INetworkConnection obj)
         {
-            Debug.Log($"TCPConnectionManager Connected:{obj.ToString()}");
+            Debug.Log($"INetworkConnectionManager Connected:{obj.ToString()}");
         }
 
-        private void OnNetDisconnected(SocketEndpoint obj)
+        private void OnNetDisconnected(INetworkConnection obj)
         {
-            Debug.Log($"TCPConnectionManager Disconnected:{obj.ToString()}");
+            Debug.Log($"INetworkConnectionManager Disconnected:{obj.ToString()}");
         }
 
         private void OnNetReceived(IncomingMessage obj)
         {
-            Debug.Log($"TCPConnectionManager Received:{obj.ToString()}");
+            Debug.Log($"INetworkConnectionManager Received:{obj.ToString()}");
             broadcastReceived = true;
         }
     }

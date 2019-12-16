@@ -29,7 +29,7 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
-        public void OnFrameCompleted(SocketEndpointConnectionDelta connectionDelta)
+        public void OnFrameCompleted(NetworkConnectionDelta connectionDelta)
         {
             using (StateSynchronizationPerformanceMonitor.Instance.MeasureEventDuration(nameof(GlobalShaderPropertiesBroadcaster), nameof(OnFrameCompleted)))
             {

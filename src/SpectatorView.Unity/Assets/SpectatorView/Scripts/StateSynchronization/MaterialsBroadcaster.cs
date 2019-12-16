@@ -91,7 +91,7 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
-        public void SendMaterialPropertyChanges(IEnumerable<SocketEndpoint> endpoints, Renderer renderer, StateSynchronizationPerformanceParameters performanceParameters, Action<BinaryWriter> writeHeader, Func<MaterialPropertyAsset, bool> shouldSynchronizeMaterialProperty)
+        public void SendMaterialPropertyChanges(IEnumerable<INetworkConnection> connections, Renderer renderer, StateSynchronizationPerformanceParameters performanceParameters, Action<BinaryWriter> writeHeader, Func<MaterialPropertyAsset, bool> shouldSynchronizeMaterialProperty)
         {
             Renderer usedRenderer = performanceParameters.MaterialPropertyBlocks == StateSynchronizationPerformanceParameters.FeatureInclusionType.SynchronizeFeature ? renderer : null;
             using (StateSynchronizationPerformanceMonitor.Instance.MeasureEventDuration(performanceComponentName, "SendMaterialPropertyChanges"))
@@ -110,7 +110,7 @@ namespace Microsoft.MixedReality.SpectatorView
                                 if (!previousValues[i].TryGetValue(propertyAccessor.propertyName, out oldValue) || !AreMaterialValuesEqual(oldValue, newValue))
                                 {
                                     previousValues[i][propertyAccessor.propertyName] = newValue;
-                                    SendMaterialPropertyChange(endpoints, usedRenderer, i, propertyAccessor, writeHeader);
+                                    SendMaterialPropertyChange(connections, usedRenderer, i, propertyAccessor, writeHeader);
 
                                     StateSynchronizationPerformanceMonitor.Instance.IncrementEventCount(performanceComponentName, $"{cachedMaterials[i].name}.{cachedMaterials[i].shader.name}.{propertyAccessor.propertyName}");
                                 }
@@ -170,7 +170,7 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
-        protected void SendMaterialPropertyChange(IEnumerable<SocketEndpoint> endpoints, Renderer renderer, int materialIndex, MaterialPropertyAsset propertyAccessor, Action<BinaryWriter> writeHeader)
+        protected void SendMaterialPropertyChange(IEnumerable<INetworkConnection> connections, Renderer renderer, int materialIndex, MaterialPropertyAsset propertyAccessor, Action<BinaryWriter> writeHeader)
         {
             using (MemoryStream memoryStream = new MemoryStream())
             using (BinaryWriter message = new BinaryWriter(memoryStream))
@@ -180,7 +180,8 @@ namespace Microsoft.MixedReality.SpectatorView
                 propertyAccessor.Write(message, renderer, cachedMaterials[materialIndex]);
 
                 message.Flush();
-                StateSynchronizationSceneManager.Instance.Send(endpoints, memoryStream.ToArray());
+                var data = memoryStream.ToArray();
+                StateSynchronizationSceneManager.Instance.Send(connections, ref data);
             }
         }
     }

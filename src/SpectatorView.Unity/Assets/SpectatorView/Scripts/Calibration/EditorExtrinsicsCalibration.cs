@@ -218,7 +218,8 @@ namespace Microsoft.MixedReality.SpectatorView
                     request.SerializeAndWrite(writer);
 
                     writer.Flush();
-                    holographicCameraObserver.Broadcast(memoryStream.ToArray());
+                    var data = memoryStream.ToArray();
+                    holographicCameraObserver.Broadcast(ref data);
                 }
             }
             else
@@ -291,7 +292,8 @@ namespace Microsoft.MixedReality.SpectatorView
                     writer.Write(payload.Length);
                     writer.Write(payload);
                     writer.Flush();
-                    holographicCameraObserver.Broadcast(memoryStream.ToArray());
+                    var data = memoryStream.ToArray();
+                    holographicCameraObserver.Broadcast(ref data);
                     Debug.Log("Sent calibration data to the hololens device.");
                 }
             }
@@ -301,7 +303,7 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
-        private void OnCalibrationDataReceived(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
+        private void OnCalibrationDataReceived(INetworkConnection connection, string command, BinaryReader reader, int remainingDataSize)
         {
             Debug.Log("Received calibration data payload.");
             HeadsetCalibrationData headsetCalibrationData;
@@ -311,7 +313,7 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
-        private void OnCalibrationResultReceived(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
+        private void OnCalibrationResultReceived(INetworkConnection connection, string command, BinaryReader reader, int remainingDataSize)
         {
             uploadSucceeded = reader.ReadBoolean();
             uploadResultMessage = reader.ReadString();

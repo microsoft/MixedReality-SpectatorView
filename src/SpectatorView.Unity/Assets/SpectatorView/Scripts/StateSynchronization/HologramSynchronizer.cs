@@ -20,10 +20,10 @@ namespace Microsoft.MixedReality.SpectatorView
         private float latestTimeStamp;
         private float localToPackageTimeDelta;
         private int numSamples;
-        private SocketEndpoint currentConnection;
+        private INetworkConnection currentConnection;
         private List<FramePackages> frames = new List<FramePackages>();
 
-        public void Reset(SocketEndpoint newConnection)
+        public void Reset(INetworkConnection newConnection)
         {
             currentConnection = newConnection;
             frames.Clear();

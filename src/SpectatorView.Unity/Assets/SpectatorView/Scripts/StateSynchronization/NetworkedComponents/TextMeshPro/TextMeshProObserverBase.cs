@@ -51,7 +51,7 @@ namespace Microsoft.MixedReality.SpectatorView
             return result;
         }
 
-        public override void Read(SocketEndpoint sendingEndpoint, BinaryReader message)
+        public override void Read(INetworkConnection connection, BinaryReader message)
         {
 #if STATESYNC_TEXTMESHPRO
             EnsureTextComponent();

@@ -2,9 +2,11 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.SpectatorView
@@ -32,12 +34,12 @@ namespace Microsoft.MixedReality.SpectatorView
         /// <summary>
         /// Call to report the current state of network connections.
         /// </summary>
-        void ProcessNewConnections(SocketEndpointConnectionDelta connectionDelta);
+        void ProcessNewConnections(NetworkConnectionDelta connectionDelta);
 
         /// <summary>
         /// Call to signal the end of a frame.
         /// </summary>
-        void OnFrameCompleted(SocketEndpointConnectionDelta connectionDelta);
+        void OnFrameCompleted(NetworkConnectionDelta connectionDelta);
     }
 
     /// <summary>
@@ -46,7 +48,7 @@ namespace Microsoft.MixedReality.SpectatorView
     public abstract class ComponentBroadcaster<TComponentBroadcasterService, TChangeFlags> : MonoBehaviour, IComponentBroadcaster where TComponentBroadcasterService : Singleton<TComponentBroadcasterService>, IComponentBroadcasterService
     {
         protected TransformBroadcaster transformBroadcaster;
-        private List<SocketEndpoint> endpointsNeedingComponentCreation;
+        private List<INetworkConnection> connectionsNeedingComponentCreation;
         private bool isUpdatedThisFrame;
         private bool isInitialized;
         private IDisposable perfMonitoringInstance = null;
@@ -88,13 +90,13 @@ namespace Microsoft.MixedReality.SpectatorView
         }
 
         /// <inheritdoc />
-        protected virtual bool ShouldSendChanges(SocketEndpoint endpoint)
+        protected virtual bool ShouldSendChanges(INetworkConnection connection)
         {
-            return TransformBroadcaster.ShouldSendTransformInHierarchy(endpoint);
+            return TransformBroadcaster.ShouldSendTransformInHierarchy(connection);
         }
 
         /// <inheritdoc />
-        public void ProcessNewConnections(SocketEndpointConnectionDelta connectionDelta)
+        public void ProcessNewConnections(NetworkConnectionDelta connectionDelta)
         {
             if (!isInitialized)
             {
@@ -106,10 +108,10 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
-        protected virtual void ProcessNewConnections(IEnumerable<SocketEndpoint> connectionsRequiringFullUpdate) { }
+        protected virtual void ProcessNewConnections(IEnumerable<INetworkConnection> connectionsRequiringFullUpdate) { }
 
         /// <inheritdoc />
-        public void OnFrameCompleted(SocketEndpointConnectionDelta connectionDelta)
+        public void OnFrameCompleted(NetworkConnectionDelta connectionDelta)
         {
             if (!isUpdatedThisFrame)
             {
@@ -131,18 +133,18 @@ namespace Microsoft.MixedReality.SpectatorView
                     {
                         EnsureComponentInitialized();
 
-                        IReadOnlyList<SocketEndpoint> endpointsNeedingCompleteChanges;
-                        IReadOnlyList<SocketEndpoint> filteredEndpointsNeedingDeltaChanges;
-                        IReadOnlyList<SocketEndpoint> filteredEndpointsNeedingCompleteChanges;
+                        IReadOnlyList<INetworkConnection> connectionsNeedingCompleteChanges;
+                        IReadOnlyList<INetworkConnection> filteredEndpointsNeedingDeltaChanges;
+                        IReadOnlyList<INetworkConnection> filteredEndpointsNeedingCompleteChanges;
                         using (StateSynchronizationPerformanceMonitor.Instance.MeasureEventDuration(PerformanceComponentName, "ProcessConnectionDelta"))
                         {
-                            TransformBroadcaster.ProcessConnectionDelta(connectionDelta, out endpointsNeedingCompleteChanges, out filteredEndpointsNeedingDeltaChanges, out filteredEndpointsNeedingCompleteChanges);
+                            TransformBroadcaster.ProcessConnectionDelta(connectionDelta, out connectionsNeedingCompleteChanges, out filteredEndpointsNeedingDeltaChanges, out filteredEndpointsNeedingCompleteChanges);
                         }
 
-                        if (endpointsNeedingCompleteChanges != null &&
-                            endpointsNeedingCompleteChanges.Count > 0)
+                        if (connectionsNeedingCompleteChanges != null &&
+                            connectionsNeedingCompleteChanges.Count > 0)
                         {
-                            SendComponentCreation(endpointsNeedingCompleteChanges);
+                            SendComponentCreation(connectionsNeedingCompleteChanges);
                         }
 
                         if (filteredEndpointsNeedingDeltaChanges != null &&
@@ -182,56 +184,57 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
-        protected virtual void SendComponentCreation(IEnumerable<SocketEndpoint> newConnections)
+        protected virtual void SendComponentCreation(IEnumerable<INetworkConnection> newConnections)
         {
-            if (endpointsNeedingComponentCreation != null)
+            if (connectionsNeedingComponentCreation == null)
             {
-                for (int i = endpointsNeedingComponentCreation.Count - 1; i >= 0; i--)
-                {
-                    if (ShouldSendChanges(endpointsNeedingComponentCreation[i]))
-                    {
-                        SendComponentCreation(endpointsNeedingComponentCreation[i]);
-                        endpointsNeedingComponentCreation.RemoveAt(i);
-                    }
-                }
+                connectionsNeedingComponentCreation = new List<INetworkConnection>();
+            }
+            else
+            {
+                connectionsNeedingComponentCreation.RemoveAll(x => TrySendComponentCreation(x));
             }
 
-            foreach (SocketEndpoint newConnection in newConnections)
+            foreach (INetworkConnection newConnection in newConnections)
             {
-                if (ShouldSendChanges(newConnection))
+                if (!TrySendComponentCreation(newConnection))
                 {
-                    SendComponentCreation(newConnection);
-                }
-                else
-                {
-                    if (endpointsNeedingComponentCreation == null)
-                    {
-                        endpointsNeedingComponentCreation = new List<SocketEndpoint>();
-                    }
-                    endpointsNeedingComponentCreation.Add(newConnection);
+                    connectionsNeedingComponentCreation.Add(newConnection);
                 }
             }
         }
 
-        private void SendComponentCreation(SocketEndpoint endpoint)
+        private bool TrySendComponentCreation(INetworkConnection connection)
+        {
+            if (ShouldSendChanges(connection))
+            {
+                SendComponentCreation(connection);
+                return true;
+            }
+
+            return false;
+        }
+
+        private void SendComponentCreation(INetworkConnection connection)
         {
             using (MemoryStream memoryStream = new MemoryStream())
             using (BinaryWriter message = new BinaryWriter(memoryStream))
             {
                 this.ComponentBroadcasterService.WriteHeader(message, this, ComponentBroadcasterChangeType.Created);
                 message.Flush();
-                endpoint.Send(memoryStream.ToArray());
+                var data = memoryStream.ToArray();
+                connection.Send(ref data);
             }
         }
 
         protected virtual void OnInitialized() {}
 
-        protected virtual bool ShouldUpdateFrame(SocketEndpoint endpoint)
+        protected virtual bool ShouldUpdateFrame(INetworkConnection connection)
         {
             return this.enabled;
         }
 
-        protected virtual void BeginUpdatingFrame(SocketEndpointConnectionDelta connectionDelta)
+        protected virtual void BeginUpdatingFrame(NetworkConnectionDelta connectionDelta)
         {
             if (PerformanceComponentName != string.Empty &&
                 StateSynchronizationPerformanceMonitor.Instance != null)
@@ -249,14 +252,14 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
-        protected abstract void SendCompleteChanges(IEnumerable<SocketEndpoint> endpoints);
+        protected abstract void SendCompleteChanges(IEnumerable<INetworkConnection> connections);
 
         protected abstract TChangeFlags CalculateDeltaChanges();
 
         protected abstract bool HasChanges(TChangeFlags changeFlags);
 
-        protected abstract void SendDeltaChanges(IEnumerable<SocketEndpoint> endpoints, TChangeFlags changeFlags);
+        protected abstract void SendDeltaChanges(IEnumerable<INetworkConnection> connections, TChangeFlags changeFlags);
 
-        protected virtual void RemoveDisconnectedEndpoints(IEnumerable<SocketEndpoint> endpoints) {}
+        protected virtual void RemoveDisconnectedEndpoints(IEnumerable<INetworkConnection> connections) {}
     }
 }

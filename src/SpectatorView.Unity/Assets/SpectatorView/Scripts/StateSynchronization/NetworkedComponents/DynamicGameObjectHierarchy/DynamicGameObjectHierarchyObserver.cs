@@ -48,17 +48,18 @@ namespace Microsoft.MixedReality.SpectatorView
                 writer.Write(DynamicGameObjectHierarchyBroadcaster<TComponentService>.ChangeType.ObserverObjectCreated);
 
                 writer.Flush();
-                StateSynchronizationObserver.Instance.Broadcast(stream.ToArray());
+                var data = stream.ToArray();
+                StateSynchronizationObserver.Instance.Broadcast(ref data);
             }
         }
 
-        public void Read(SocketEndpoint sendingEndpoint, BinaryReader message)
+        public void Read(INetworkConnection connection, BinaryReader message)
         {
             byte changeType = message.ReadByte();
-            Read(sendingEndpoint, message, changeType);
+            Read(connection, message, changeType);
         }
 
-        protected virtual void Read(SocketEndpoint sendingEndpoint, BinaryReader message, byte changeType)
+        protected virtual void Read(INetworkConnection connection, BinaryReader message, byte changeType)
         {
             switch (changeType)
             {
@@ -86,7 +87,8 @@ namespace Microsoft.MixedReality.SpectatorView
                 writer.Write(DynamicGameObjectHierarchyBroadcaster<TComponentService>.ChangeType.ObserverHierarchyBound);
 
                 writer.Flush();
-                StateSynchronizationObserver.Instance.Broadcast(stream.ToArray());
+                var data = stream.ToArray();
+                StateSynchronizationObserver.Instance.Broadcast(ref data);
             }
         }
 
