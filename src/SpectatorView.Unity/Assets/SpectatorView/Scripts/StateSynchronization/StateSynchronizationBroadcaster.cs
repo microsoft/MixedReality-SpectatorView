@@ -166,8 +166,7 @@ namespace Microsoft.MixedReality.SpectatorView
                 message.Write(camTrans != null ? camTrans.rotation : Quaternion.identity);
                 message.Flush();
 
-                var data = memoryStream.ToArray();
-                connectionManager.Broadcast(ref data);
+                connectionManager.Broadcast(memoryStream.GetBuffer(), 0, memoryStream.Position);
             }
 
             //Perf
@@ -181,8 +180,7 @@ namespace Microsoft.MixedReality.SpectatorView
                     message.Write(StateSynchronizationObserver.PerfCommand);
                     StateSynchronizationPerformanceMonitor.Instance.WriteMessage(message, numFrames);
                     message.Flush();
-                    var data = memoryStream.ToArray();
-                    connectionManager.Broadcast(ref data);
+                    connectionManager.Broadcast(memoryStream.GetBuffer(), 0, memoryStream.Position);
                 }
 
                 timeUntilNextPerfUpdate = PerfUpdateTimeSeconds;

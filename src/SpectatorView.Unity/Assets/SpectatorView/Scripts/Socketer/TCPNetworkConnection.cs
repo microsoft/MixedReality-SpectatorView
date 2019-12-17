@@ -76,7 +76,7 @@ namespace Microsoft.MixedReality.SpectatorView
         }
 
         /// <inheritdoc />
-        public void Send(ref byte[] data)
+        public void Send(byte[] data, long offset, long length)
         {
             if (!IsConnected)
             {
@@ -86,15 +86,15 @@ namespace Microsoft.MixedReality.SpectatorView
             {
                 try
                 {
-                    socketerClient.SendNetworkMessage(data, sourceId);
+                    var payload = new byte[length];
+                    Array.Copy(data, offset, payload, 0, length);
+                    socketerClient.SendNetworkMessage(payload, sourceId);
                 }
                 catch
                 {
                     socketerClient.Disconnect(sourceId);
                 }
             }
-
-            data = null;
         }
 
         /// <inheritdoc />

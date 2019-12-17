@@ -163,12 +163,12 @@ namespace Microsoft.MixedReality.SpectatorView
 
                 message.Write(position);
                 message.Write(rotation);
+                message.Flush();
 
                 byte[] newCoordinateStatusMessage = stream.ToArray();
                 if (previousCoordinateStatusMessage == null || !previousCoordinateStatusMessage.SequenceEqual(newCoordinateStatusMessage))
                 {
-                    previousCoordinateStatusMessage = newCoordinateStatusMessage;
-                    NetworkConnection.Send(ref newCoordinateStatusMessage);
+                    NetworkConnection.Send(newCoordinateStatusMessage, 0, newCoordinateStatusMessage.Length);
                 }
             }
         }
@@ -180,9 +180,8 @@ namespace Microsoft.MixedReality.SpectatorView
             {
                 writer.Write(LocalizationDataExchangeCommand);
                 writeCallback(writer);
-
-                var data = stream.ToArray();
-                NetworkConnection.Send(ref data);
+                writer.Flush();
+                NetworkConnection.Send(stream.GetBuffer(), 0, stream.Position);
             }
         }
 
@@ -211,9 +210,8 @@ namespace Microsoft.MixedReality.SpectatorView
                 {
                     writer.Write(supportedLocalizer);
                 }
-
-                var data = stream.ToArray();
-                connection.Send(ref data);
+                writer.Flush();
+                connection.Send(stream.GetBuffer(), 0, stream.Position);
             }
         }
 

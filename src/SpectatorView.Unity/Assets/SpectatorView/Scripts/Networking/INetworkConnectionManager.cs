@@ -64,8 +64,10 @@ namespace Microsoft.MixedReality.SpectatorView
         /// <summary>
         /// Call to broadcast the provided data to all connected clients/servers
         /// </summary>
-        /// <param name="data">a reference to the data to send, this value will be set to null after ownership is transfered to the INetworkConnectionManager</param>
-        void Broadcast(ref byte[] data);
+        /// <param name="data">A reference to the data to send</param>
+        /// <param name="offset">The offset from the start of the array to use to obtain the data to send</param>
+        /// <param name="length">The length of the data to send</param>
+        void Broadcast(byte[] data, long offset, long length);
 
         /// <summary>
         /// Disconnect all connections
