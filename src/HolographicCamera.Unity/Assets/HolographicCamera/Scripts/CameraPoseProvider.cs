@@ -117,7 +117,7 @@ namespace Microsoft.MixedReality.SpectatorView
                 message.Write(cameraRotation);
 
                 var data = stream.ToArray();
-                networkManager.Broadcast(ref data);
+                networkManager.Broadcast(stream.GetBuffer(), 0, stream.Position);
             }
         }
 
