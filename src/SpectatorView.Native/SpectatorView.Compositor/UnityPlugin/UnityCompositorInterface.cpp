@@ -138,6 +138,12 @@ void UNITY_INTERFACE_API UnityPluginUnload()
     OnGraphicsDeviceEvent(kUnityGfxDeviceEventShutdown);
 
     DeleteCriticalSection(&lock);
+
+	if (ci != nullptr)
+	{
+		delete ci;
+		ci = nullptr;
+	}
 }
 
 UNITYDLL void UpdateCompositor()
