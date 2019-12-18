@@ -169,6 +169,7 @@ namespace Microsoft.MixedReality.SpectatorView
                 if (previousCoordinateStatusMessage == null || !previousCoordinateStatusMessage.SequenceEqual(newCoordinateStatusMessage))
                 {
                     NetworkConnection.Send(newCoordinateStatusMessage, 0, newCoordinateStatusMessage.Length);
+                    previousCoordinateStatusMessage = newCoordinateStatusMessage;
                 }
             }
         }
