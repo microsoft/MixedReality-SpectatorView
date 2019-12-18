@@ -343,6 +343,16 @@ UNITYDLL int GetVideoRecordingFrameHeight(VideoRecordingFrameLayout frameLayout)
     }
 }
 
+UNITYDLL bool IsFrameProviderSupported(int providerId)
+{
+	if (ci == nullptr)
+	{
+		ci = new CompositorInterface();
+	}
+
+	return ci->IsFrameProviderSupported((IFrameProvider::ProviderType) providerId);
+}
+
 UNITYDLL bool InitializeFrameProviderOnDevice(int providerId)
 {
     if (g_outputTexture == nullptr ||

@@ -41,6 +41,7 @@ private:
 public:
     DLLEXPORT CompositorInterface();
     DLLEXPORT void SetFrameProvider(IFrameProvider::ProviderType type);
+	DLLEXPORT bool IsFrameProviderSupported(IFrameProvider::ProviderType providerType);
 
     DLLEXPORT bool Initialize(ID3D11Device* device, ID3D11ShaderResourceView* colorSRV, ID3D11Texture2D* outputTexture);
 

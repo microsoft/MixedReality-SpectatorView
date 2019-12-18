@@ -27,7 +27,7 @@
 
 #pragma once
 
-
+#if defined(INCLUDE_BLACKMAGIC)
 #include <Windows.h>
 #include <vector>
 #include "DeckLinkAPI_h.h"
@@ -166,4 +166,4 @@ public:
     virtual ULONG    STDMETHODCALLTYPE    AddRef ();
     virtual ULONG    STDMETHODCALLTYPE    Release ();
 };
-
+#endif

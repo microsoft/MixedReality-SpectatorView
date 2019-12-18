@@ -27,10 +27,30 @@ void CompositorInterface::SetFrameProvider(IFrameProvider::ProviderType type)
         frameProvider = NULL;
     }
 
+#if defined(INCLUDE_ELGATO)
     if(type == IFrameProvider::ProviderType::Elgato)
         frameProvider = new ElgatoFrameProvider();
+#endif
+
+#if defined(INCLUDE_BLACKMAGIC)
     if (type == IFrameProvider::ProviderType::BlackMagic)
         frameProvider = new DeckLinkManager();
+#endif
+}
+
+bool CompositorInterface::IsFrameProviderSupported(IFrameProvider::ProviderType providerType)
+{
+#if defined(INCLUDE_ELGATO)
+	if (providerType == IFrameProvider::ProviderType::Elgato)
+		return true;
+#endif
+
+#if defined(INCLUDE_BLACKMAGIC)
+	if (providerType == IFrameProvider::ProviderType::BlackMagic)
+		return true;
+#endif
+
+	return false;
 }
 
 bool CompositorInterface::Initialize(ID3D11Device* device, ID3D11ShaderResourceView* colorSRV, ID3D11Texture2D* outputTexture)
@@ -188,7 +208,7 @@ bool CompositorInterface::StartRecording(VideoRecordingFrameLayout frameLayout, 
 	activeVideoEncoder->StartRecording(videoPath.c_str(), ENCODE_AUDIO);
 
 	memcpy_s(lpFileName, inputFileNameLength * _WCHAR_T_SIZE, videoPath.c_str(), videoPath.size() * _WCHAR_T_SIZE);
-	*fileNameLength = videoPath.size();
+	*fileNameLength = static_cast<int>(videoPath.size());
 	return true;
 }
 
