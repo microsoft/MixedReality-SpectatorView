@@ -139,7 +139,12 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
                         {
                             GUI.enabled = compositionManager == null || !compositionManager.IsVideoFrameProviderInitialized;
                             GUIContent label = new GUIContent("Video source", "The video capture card you want to use as input for compositing.");
-                            compositionManager.CaptureDevice = (FrameProviderDeviceType)EditorGUILayout.Popup(label, ((int)compositionManager.CaptureDevice), Enum.GetValues(typeof(FrameProviderDeviceType)).Cast<FrameProviderDeviceType>().Where(provider => compositionManager.IsFrameProviderSupported(provider) || (provider == FrameProviderDeviceType.None)).Select(x => x.ToString()).ToArray());
+                            compositionManager.CaptureDevice = (FrameProviderDeviceType)EditorGUILayout.Popup(label, ((int)compositionManager.CaptureDevice),
+                                Enum.GetValues(typeof(FrameProviderDeviceType))
+                                .Cast<FrameProviderDeviceType>()
+                                .Where(provider => compositionManager.IsFrameProviderSupported(provider) || (provider == FrameProviderDeviceType.None))
+                                .Select(x => x.ToString())
+                                .ToArray());
                             GUI.enabled = true;
                         }
                     }
