@@ -171,7 +171,7 @@ namespace Microsoft.MixedReality.SpectatorView
             {
                 if (captureDeviceIndex == -1)
                 {
-                    captureDeviceIndex = PlayerPrefs.GetInt(nameof(CaptureDevice), (int)FrameProviderDeviceType.BlackMagic);
+                    captureDeviceIndex = PlayerPrefs.GetInt(nameof(CaptureDevice), (int)FrameProviderDeviceType.None);
                 }
                 return (FrameProviderDeviceType)captureDeviceIndex;
             }
@@ -378,6 +378,16 @@ namespace Microsoft.MixedReality.SpectatorView
         {
             return UnityCompositorInterface.GetNumQueuedOutputFrames();
         }
+
+        /// <summary>
+        /// Returns true if the UnityCompositor dll supports the specified provider.
+        /// </summary>
+        /// <param name="providerId">provider to check</param>
+        /// <returns>Returns true if the provider is supported, otherwise false.</returns>
+        public bool IsFrameProviderSupported(FrameProviderDeviceType providerId)
+        {
+            return UnityCompositorInterface.IsFrameProviderSupported(providerId);
+        }
 #endif
 
         /// <summary>
@@ -481,12 +491,19 @@ namespace Microsoft.MixedReality.SpectatorView
 
             if (!isVideoFrameProviderInitialized)
             {
-                isVideoFrameProviderInitialized = UnityCompositorInterface.InitializeFrameProviderOnDevice(CaptureDevice);
-                if (isVideoFrameProviderInitialized)
+                if (UnityCompositorInterface.IsFrameProviderSupported(CaptureDevice))
                 {
-                    CurrentCompositeFrame = 0;
-                    timeSynchronizer.Reset();
-                    poseCache.Reset();
+                    isVideoFrameProviderInitialized = UnityCompositorInterface.InitializeFrameProviderOnDevice(CaptureDevice);
+                    if (isVideoFrameProviderInitialized)
+                    {
+                        CurrentCompositeFrame = 0;
+                        timeSynchronizer.Reset();
+                        poseCache.Reset();
+                    }
+                }
+                else
+                {
+                    Debug.LogWarning($"The current capture device, {CaptureDevice}, is not supported by your build of SpectatorView.Compositor.UnityPlugin.dll.");
                 }
             }
 

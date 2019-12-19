@@ -7,11 +7,22 @@
     <!-- From: https://www.blackmagicdesign.com/support -->
     <DeckLink_inc>C:\Blackmagic DeckLink SDK 10.9.11\Win\include</DeckLink_inc>
     <!-- From: https://github.com/elgatosf/gamecapture -->
-    <Elgato_Filter Condition="$(Elgato_Filter) == ''">C:\gamecapture\VideoCaptureFilter</Elgato_Filter>
+    <Elgato_Filter Condition="$(Elgato_Filter) == ''">C:\elgatosf\gamecapture\VideoCaptureFilter</Elgato_Filter>
   </PropertyGroup>
-  <PropertyGroup />
-  <ItemDefinitionGroup />
-  <ItemGroup />
+  <ItemDefinitionGroup>
+    <ClCompile Condition="Exists('$(DeckLink_inc)') And Exists('$(Elgato_Filter)')">
+      <PreprocessorDefinitions>INCLUDE_BLACKMAGIC;INCLUDE_ELGATO;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <ClCompile Condition="Exists('$(DeckLink_inc)') And !Exists('$(Elgato_Filter)')">
+      <PreprocessorDefinitions>INCLUDE_BLACKMAGIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <ClCompile Condition="!Exists('$(DeckLink_inc)') And Exists('$(Elgato_Filter)')">
+      <PreprocessorDefinitions>INCLUDE_ELGATO;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <Target Name="TestForElgatoAndBlackmagic" BeforeTargets="PrepareForBuild">
+    <Error Condition="!Exists('$(DeckLink_inc)') And !Exists('$(Elgato_Filter)')" Text="No capture card dependencies exist for the paths defined in dependencies.props. At least one dependency must resolve to build this project."/>
+  </Target>
 </Project>
 
 <!--

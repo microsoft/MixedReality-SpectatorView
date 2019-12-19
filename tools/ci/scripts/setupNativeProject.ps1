@@ -4,6 +4,7 @@
 param(
     [switch]$ForceRebuild,
     [switch]$NoDownloads,
+    [switch]$ExcludeBlackmagic,
     [Parameter(Mandatory=$false)][ref]$Succeeded
 )
 
@@ -11,7 +12,11 @@ Import-Module $PSScriptRoot\spectatorViewHelpers.psm1
 
 Write-Host "Setting up Blackmagic design dependencies"
 $BlackMagicResult = "False"
-if ($NoDownloads)
+if ($ExcludeBlackmagic)
+{
+    $BlackmagicResult = $true
+}
+elseif ($NoDownloads)
 {
     SetupExternalDownloads -NoDownloads -Succeeded ([ref]$BlackMagicResult)
 }

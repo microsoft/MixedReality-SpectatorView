@@ -2,6 +2,8 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 #include "stdafx.h"
+
+#if defined(INCLUDE_BLACKMAGIC)
 #include "DeckLinkManager.h"
 
 
@@ -187,4 +189,4 @@ void DeckLinkManager::Dispose()
     SafeRelease(deckLinkDevice);
     SafeRelease(deckLinkDiscovery);
 }
-
+#endif

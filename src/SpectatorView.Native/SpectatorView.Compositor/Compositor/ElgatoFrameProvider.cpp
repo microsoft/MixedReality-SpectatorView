@@ -2,6 +2,8 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 #include "stdafx.h"
+
+#if defined(INCLUDE_ELGATO)
 #include "ElgatoFrameProvider.h"
 
 ElgatoFrameProvider::ElgatoFrameProvider(bool useCPU) :
@@ -489,3 +491,4 @@ HRESULT ElgatoFrameProvider::IsPinDirection(IPin *pPin, PIN_DIRECTION dir, BOOL 
 }
 #pragma endregion
 
+#endif

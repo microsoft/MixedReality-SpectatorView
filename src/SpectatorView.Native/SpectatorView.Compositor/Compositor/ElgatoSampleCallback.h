@@ -2,6 +2,9 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 #pragma once
+
+#if defined(INCLUDE_ELGATO)
+
 #include "qedit.h"
 #include <dshow.h>
 
@@ -86,3 +89,4 @@ private:
     bool isEnabled = false;
 };
 
+#endif

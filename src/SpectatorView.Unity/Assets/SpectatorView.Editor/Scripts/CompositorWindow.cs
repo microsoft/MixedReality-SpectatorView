@@ -7,8 +7,10 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Net;
 using UnityEditor;
+using UnityEditor.VersionControl;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.SpectatorView.Editor
@@ -128,27 +130,52 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
                     RenderTitle(title, Color.green);
                 }
 
-                EditorGUILayout.BeginHorizontal("Box");
+                EditorGUILayout.BeginVertical("Box");
                 {
-                    string[] compositionOptions = new string[] { "Final composite", "Intermediate textures" };
-                    GUIContent renderingModeLabel = new GUIContent("Preview display", "Choose between displaying the composited video texture or seeing intermediate textures displayed in 4 sections (bottom left: input video, top left: opaque hologram, top right: hologram alpha mask, bottom right: hologram alpha-blended onto video)");
-                    textureRenderMode = EditorGUILayout.Popup(renderingModeLabel, textureRenderMode, compositionOptions);
-                    if (compositionManager != null && compositionManager.TextureManager != null)
+                    EditorGUILayout.Space();
+                    EditorGUILayout.BeginHorizontal();
                     {
-                        compositionManager.TextureManager.IsQuadrantVideoFrameNeededForPreviewing = textureRenderMode == (int)VideoRecordingFrameLayout.Quad;
+                        if (compositionManager != null)
+                        {
+                            GUI.enabled = compositionManager == null || !compositionManager.IsVideoFrameProviderInitialized;
+                            GUIContent label = new GUIContent("Video source", "The video capture card you want to use as input for compositing.");
+                            compositionManager.CaptureDevice = (FrameProviderDeviceType)EditorGUILayout.Popup(label, ((int)compositionManager.CaptureDevice),
+                                Enum.GetValues(typeof(FrameProviderDeviceType))
+                                .Cast<FrameProviderDeviceType>()
+                                .Where(provider => compositionManager.IsFrameProviderSupported(provider) || (provider == FrameProviderDeviceType.None))
+                                .Select(x => x.ToString())
+                                .ToArray());
+                            GUI.enabled = true;
+                        }
                     }
-                    FullScreenCompositorWindow fullscreenWindow = FullScreenCompositorWindow.TryGetWindow();
-                    if (fullscreenWindow != null)
-                    {
-                        fullscreenWindow.TextureRenderMode = textureRenderMode;
-                    }
+                    EditorGUILayout.EndHorizontal();
 
-                    if (GUILayout.Button("Fullscreen", GUILayout.Width(120)))
+                    EditorGUILayout.Space();
+
+                    EditorGUILayout.BeginHorizontal();
                     {
-                        FullScreenCompositorWindow.ShowFullscreen();
+                        string[] compositionOptions = new string[] { "Final composite", "Intermediate textures" };
+                        GUIContent renderingModeLabel = new GUIContent("Preview display", "Choose between displaying the composited video texture or seeing intermediate textures displayed in 4 sections (bottom left: input video, top left: opaque hologram, top right: hologram alpha mask, bottom right: hologram alpha-blended onto video)");
+                        textureRenderMode = EditorGUILayout.Popup(renderingModeLabel, textureRenderMode, compositionOptions);
+                        if (compositionManager != null && compositionManager.TextureManager != null)
+                        {
+                            compositionManager.TextureManager.IsQuadrantVideoFrameNeededForPreviewing = textureRenderMode == (int)VideoRecordingFrameLayout.Quad;
+                        }
+                        FullScreenCompositorWindow fullscreenWindow = FullScreenCompositorWindow.TryGetWindow();
+                        if (fullscreenWindow != null)
+                        {
+                            fullscreenWindow.TextureRenderMode = textureRenderMode;
+                        }
+
+                        if (GUILayout.Button("Fullscreen", GUILayout.Width(120)))
+                        {
+                            FullScreenCompositorWindow.ShowFullscreen();
+                        }
                     }
+                    EditorGUILayout.EndHorizontal();
+                    EditorGUILayout.Space();
                 }
-                EditorGUILayout.EndHorizontal();
+                EditorGUILayout.EndVertical();
 
                 // Rendering
                 CompositeTextureGUI(textureRenderMode);
@@ -221,18 +248,6 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
                 EditorGUILayout.BeginVertical("Box");
                 {
                     CompositionManager compositionManager = GetCompositionManager();
-
-                    if (compositionManager != null)
-                    {
-                        EditorGUILayout.Space();
-
-                        GUI.enabled = compositionManager == null || !compositionManager.IsVideoFrameProviderInitialized;
-                        GUIContent label = new GUIContent("Video source", "The video capture card you want to use as input for compositing.");
-                        compositionManager.CaptureDevice = (FrameProviderDeviceType)EditorGUILayout.Popup(label, ((int)compositionManager.CaptureDevice), Enum.GetNames(typeof(FrameProviderDeviceType)));
-                        GUI.enabled = true;
-
-                        EditorGUILayout.Space();
-                    }
 
                     GUIContent alphaLabel = new GUIContent("Alpha", "The alpha value used to blend holographic content with video content. 0 will result in completely transparent holograms, 1 in completely opaque holograms.");
                     float newAlpha = EditorGUILayout.Slider(alphaLabel, this.hologramAlpha, 0, 1);

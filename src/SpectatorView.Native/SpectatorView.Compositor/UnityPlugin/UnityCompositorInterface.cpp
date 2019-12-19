@@ -138,6 +138,12 @@ void UNITY_INTERFACE_API UnityPluginUnload()
     OnGraphicsDeviceEvent(kUnityGfxDeviceEventShutdown);
 
     DeleteCriticalSection(&lock);
+
+	if (ci != nullptr)
+	{
+		delete ci;
+		ci = nullptr;
+	}
 }
 
 UNITYDLL void UpdateCompositor()
@@ -341,6 +347,16 @@ UNITYDLL int GetVideoRecordingFrameHeight(VideoRecordingFrameLayout frameLayout)
     {
         return FRAME_HEIGHT;
     }
+}
+
+UNITYDLL bool IsFrameProviderSupported(int providerId)
+{
+	if (ci == nullptr)
+	{
+		ci = new CompositorInterface();
+	}
+
+	return ci->IsFrameProviderSupported((IFrameProvider::ProviderType) providerId);
 }
 
 UNITYDLL bool InitializeFrameProviderOnDevice(int providerId)
