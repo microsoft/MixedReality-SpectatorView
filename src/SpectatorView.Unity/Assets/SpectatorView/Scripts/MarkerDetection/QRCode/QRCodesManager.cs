@@ -5,9 +5,6 @@
 // identity 'System.Numerics.Vectors, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a' of 'System.Numerics.Vectors', you may need to supply runtime policy
 #pragma warning disable 1701
 
-// Enable this preprocessor directive in your player settings as needed.
-#if QRCODESTRACKER_BINARY_AVAILABLE
-
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -362,4 +359,3 @@ namespace Microsoft.MixedReality.SpectatorView
         }
     }
 }
-#endif // QRCODESTRACKER_BINARY_AVAILABLE
