@@ -30,8 +30,10 @@ namespace Microsoft.MixedReality.SpectatorView
         /// <summary>
         /// Call to send data to the connected peer
         /// </summary>
-        /// <param name="data">a reference to the data to send, data will be set to null after a send/the INetworkConnection will take over ownership of the array</param>
-        void Send(ref byte[] data);
+        /// <param name="data">A reference to the data to send</param>
+        /// <param name="offset">The offset from the start of the array to use to obtain the data to send</param>
+        /// <param name="length">The length of the data to send</param>
+        void Send(byte[] data, long offset, long length);
 
         /// <summary>
         /// Returns a string that can be used to identify the network connection in UI/for logging.

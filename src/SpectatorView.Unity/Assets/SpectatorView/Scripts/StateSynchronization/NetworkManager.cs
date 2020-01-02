@@ -63,11 +63,11 @@ namespace Microsoft.MixedReality.SpectatorView
         }
 
         /// <inheritdoc />
-        public void Broadcast(ref byte[] data)
+        public void Broadcast(byte[] data, long offset, long length)
         {
             if (currentConnection != null)
             {
-                currentConnection.Send(ref data);
+                currentConnection.Send(data, offset, length);
             }
         }
 

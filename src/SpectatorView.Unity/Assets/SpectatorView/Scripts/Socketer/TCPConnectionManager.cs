@@ -216,16 +216,16 @@ namespace Microsoft.MixedReality.SpectatorView
         }
 
         /// <inheritdoc />
-        public void Broadcast(ref byte[] data)
+        public void Broadcast(byte[] data, long offset, long length)
         {
             foreach (TCPNetworkConnection connection in serverConnections.Values)
             {
-                connection.Send(ref data);
+                connection.Send(data, offset, length);
             }
 
             if (clientConnection != null)
             {
-                clientConnection.Send(ref data);
+                clientConnection.Send(data, offset, length);
             }
 
             data = null;

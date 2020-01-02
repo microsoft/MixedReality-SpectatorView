@@ -21,9 +21,9 @@ namespace Microsoft.MixedReality.SpectatorView
 {
     public class DeviceInfoBroadcaster : MonoBehaviour
     {
+#if UNITY_WSA
         private INetworkManager networkManager = null;
 
-#if UNITY_WSA
         private void Awake()
         {
             networkManager = GetComponent<INetworkManager>();
@@ -58,9 +58,9 @@ namespace Microsoft.MixedReality.SpectatorView
                 message.Write(DeviceInfoObserver.DeviceInfoCommand);
                 message.Write(GetMachineName());
                 message.Write(GetIPAddress());
+                message.Flush();
 
-                var data = memoryStream.ToArray();
-                networkManager.Broadcast(ref data);
+                networkManager.Broadcast(memoryStream.GetBuffer(), 0, memoryStream.Position);
             }
         }
 

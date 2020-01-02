@@ -180,8 +180,7 @@ namespace Microsoft.MixedReality.SpectatorView
                 propertyAccessor.Write(message, renderer, cachedMaterials[materialIndex]);
 
                 message.Flush();
-                var data = memoryStream.ToArray();
-                StateSynchronizationSceneManager.Instance.Send(connections, ref data);
+                StateSynchronizationSceneManager.Instance.Send(connections, memoryStream.GetBuffer(), 0, memoryStream.Position);
             }
         }
     }

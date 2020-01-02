@@ -102,7 +102,7 @@ namespace Microsoft.MixedReality.SpectatorView
             {
                 var message = runAsServer ? "Message from server" : "Message from client";
                 var data = Encoding.ASCII.GetBytes(message);
-                connectionManager.Broadcast(ref data);
+                connectionManager.Broadcast(data, 0, data.Length);
                 broadcastSent = true;
 
                 lastBroadcast = Time.time;

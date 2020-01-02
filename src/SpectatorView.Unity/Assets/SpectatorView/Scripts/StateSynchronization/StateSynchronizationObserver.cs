@@ -108,17 +108,14 @@ namespace Microsoft.MixedReality.SpectatorView
         {
             if (IsConnected)
             {
-                byte[] message;
                 using (MemoryStream stream = new MemoryStream())
                 using (BinaryWriter writer = new BinaryWriter(stream))
                 {
                     writer.Write(PerfDiagnosticModeEnabledCommand);
                     writer.Write(enabled);
                     writer.Flush();
-                    message = stream.ToArray();
+                    connectionManager.Broadcast(stream.GetBuffer(), 0, stream.Position);
                 }
-
-                connectionManager.Broadcast(ref message);
             }
         }
 
@@ -136,9 +133,7 @@ namespace Microsoft.MixedReality.SpectatorView
                 if (timeSinceLastHeartbeat > heartbeatTimeInterval)
                 {
                     timeSinceLastHeartbeat = 0.0f;
-                    var data = new byte[heartbeatMessage.Length];
-                    heartbeatMessage.CopyTo(data, 0);
-                    connectionManager.Broadcast(ref data);
+                    connectionManager.Broadcast(heartbeatMessage, 0, heartbeatMessage.Length);
                 }
             }
         }
