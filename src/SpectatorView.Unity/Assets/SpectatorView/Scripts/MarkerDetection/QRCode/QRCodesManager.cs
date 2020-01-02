@@ -5,13 +5,14 @@
 // identity 'System.Numerics.Vectors, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a' of 'System.Numerics.Vectors', you may need to supply runtime policy
 #pragma warning disable 1701
 
+#if UNITY_EDITOR || UNITY_WSA
+using Microsoft.MixedReality.QR;
+using Microsoft.MixedReality.SpatialAlignment;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Threading.Tasks;
 using System.Threading;
-using Microsoft.MixedReality.QR;
-using Microsoft.MixedReality.SpatialAlignment;
 
 #if WINDOWS_UWP
 using Windows.Perception.Spatial;
@@ -25,7 +26,6 @@ namespace Microsoft.MixedReality.SpectatorView
     {
         [Tooltip("Determines if the QR codes scanner should be automatically started.")]
         public bool AutoStartQRWatching = false;
-
         public bool IsWatcherRunning { get; private set; }
         public bool DebugLogging { get; set; }
 
@@ -359,3 +359,4 @@ namespace Microsoft.MixedReality.SpectatorView
         }
     }
 }
+#endif
