@@ -1,0 +1,12 @@
+fileFormatVersion: 2
+guid: 5fc4456d17139e84884c9a4b1846922c
+ScriptedImporter:
+  fileIDToRecycleName:
+    11400000: Microsoft.MixedReality.SpatialAlignment.msb4u
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: 11500000, guid: 0e4dca1acba66fd478b3854f09a32ec7, type: 3}
+  buildEngine: 0
+  profiles: []
