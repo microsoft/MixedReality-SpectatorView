@@ -24,9 +24,10 @@
 ** DEALINGS IN THE SOFTWARE.
 ** -LICENSE-END-
 */
+
 #include "stdafx.h"
 
-
+#if defined(INCLUDE_BLACKMAGIC)
 #include <comutil.h>
 #include "DeckLinkDevice.h"
 
@@ -912,4 +913,4 @@ ULONG STDMETHODCALLTYPE DeckLinkDeviceDiscovery::Release(void)
 
     return newRefValue;
 }
-
+#endif

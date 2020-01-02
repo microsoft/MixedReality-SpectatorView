@@ -2,8 +2,9 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 #include "stdafx.h"
-#include "ElgatoSampleCallback.h"
 
+#if defined(INCLUDE_ELGATO)
+#include "ElgatoSampleCallback.h"
 
 ElgatoSampleCallback::ElgatoSampleCallback(ID3D11Device* device) :
     _device(device)
@@ -63,3 +64,4 @@ void ElgatoSampleCallback::UpdateSRV(ID3D11ShaderResourceView* srv, bool useCPU,
         DirectXHelper::UpdateSRV(_device, srv, srcBuffer, FRAME_WIDTH * FRAME_BPP_RGBA);
     }
 }
+#endif

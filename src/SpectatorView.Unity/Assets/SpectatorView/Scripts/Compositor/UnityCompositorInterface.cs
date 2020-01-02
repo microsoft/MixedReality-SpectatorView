@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Microsoft.MixedReality.SpectatorView
 {
-    public enum FrameProviderDeviceType : int { BlackMagic = 0, Elgato = 1 };
+    public enum FrameProviderDeviceType : int { BlackMagic = 0, Elgato = 1, None = 2 };
     public enum VideoRecordingFrameLayout : int { Composite = 0, Quad = 1 };
 
 #if UNITY_EDITOR
@@ -77,7 +77,10 @@ namespace Microsoft.MixedReality.SpectatorView
 
         [DllImport(CompositorPluginDll)]
         public static extern void StopRecording();
-        
+
+        [DllImport(CompositorPluginDll)]
+        public static extern bool IsFrameProviderSupported([MarshalAs(UnmanagedType.I4)] FrameProviderDeviceType providerId);
+
         [DllImport(CompositorPluginDll)]
         public static extern bool InitializeFrameProviderOnDevice([MarshalAs(UnmanagedType.I4)] FrameProviderDeviceType providerId);
 

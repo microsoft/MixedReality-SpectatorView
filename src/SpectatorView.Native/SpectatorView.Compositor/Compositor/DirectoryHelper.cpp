@@ -123,8 +123,8 @@ void DirectoryHelper::DeleteFiles(std::wstring root, std::wstring extension)
 
 BOOL DirectoryHelper::TestFileExtension(std::wstring& file, std::wstring& ext)
 {
-	int lstr = file.length();
-	int lext = ext.length();
+	auto lstr = file.length();
+	auto lext = ext.length();
 
 	if (lstr < lext)
 	{

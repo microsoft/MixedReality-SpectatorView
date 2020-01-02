@@ -3,6 +3,7 @@
 
 #pragma once
 
+#if defined(INCLUDE_BLACKMAGIC)
 #include "IFrameProvider.h"
 #include "DeckLinkDevice.h"
 
@@ -42,4 +43,5 @@ private:
     bool _useCPU;
     bool _passthroughOutput;
 };
+#endif
 
