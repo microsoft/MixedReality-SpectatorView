@@ -2,8 +2,9 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 #if UNITY_WSA
+#pragma warning disable CS0618 // 'WorldAnchor' is obsolete: 'Support for built-in VR will be removed in Unity 2020.1.
+
 using Microsoft.Azure.SpatialAnchors;
-using Microsoft.MixedReality.SpectatorView;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.XR.WSA;

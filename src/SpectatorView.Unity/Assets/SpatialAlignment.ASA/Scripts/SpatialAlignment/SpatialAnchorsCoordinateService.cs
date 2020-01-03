@@ -30,6 +30,20 @@ namespace Microsoft.MixedReality.SpatialAlignment
         private const string simulatedCoordinateIdPrefix = "SIMULATED:";
         private readonly TimeSpan simulatedCoordinateDetectionDelay = TimeSpan.FromSeconds(5); // Wait 5 seconds before stating a marker was detected.
 
+        public static SpatialAnchorsCoordinateService CreateCoordinateService(SpatialAnchorsConfiguration settings)
+        {
+#if UNITY_WSA
+            return new SpatialAnchorsUWPCoordinateService(settings);
+#elif UNITY_ANDROID
+            return new SpatialAnchorsAndroidCoordinateService(settings);
+#elif UNITY_IOS
+            return new SpatialAnchorsIOSCoordinateService(settings);
+#else
+            Debug.LogError("AzureSpatialAnchors is not supported on the current platform.");
+            return null;
+#endif
+        }
+
         public SpatialAnchorsCoordinateService(SpatialAnchorsConfiguration spatialAnchorsConfiguration)
         {
             this.spatialAnchorsConfiguration = spatialAnchorsConfiguration;
@@ -151,7 +165,7 @@ namespace Microsoft.MixedReality.SpatialAlignment
             Pose pose = args.Anchor.GetPose();
             Debug.Log($"ASA-Android: Creating an anchor at: {pose.position.ToString("G4")}, {pose.rotation.eulerAngles.ToString("G2")}");
             GameObject gameObject = SpawnGameObject(pose.position, pose.rotation);
-            gameObject.AddARAnchor();
+            gameObject.FindOrCreateNativeAnchor();
             return gameObject;
         }
 
@@ -303,14 +317,15 @@ namespace Microsoft.MixedReality.SpatialAlignment
                 GameObject spawnedAnchorObject = SpawnGameObject(worldPosition, worldRotation);
                 try
                 {
-                    spawnedAnchorObject.AddARAnchor();
+                    // Use var here, type varies based on platform
+                    var nativeAnchor = spawnedAnchorObject.FindOrCreateNativeAnchor();
 
                     // Let a frame pass to ensure any AR anchor is properly attached (WorldAnchors used to have issues with this)
                     await Task.Delay(100, cancellationToken);
 
                     CloudSpatialAnchor cloudSpatialAnchor = new CloudSpatialAnchor()
                     {
-                        LocalAnchor = spawnedAnchorObject.GetNativeAnchorPointer(),
+                        LocalAnchor = nativeAnchor.GetPointer(),
                         Expiration = DateTime.Now.AddDays(1)
                     };
 

@@ -5,7 +5,6 @@
 using Microsoft.Azure.SpatialAnchors;
 using System.Threading.Tasks;
 using Microsoft.Azure.SpatialAnchors.Unity.IOS.ARKit;
-using Microsoft.MixedReality.SpectatorView;
 using UnityEngine.XR.iOS;
 
 namespace Microsoft.MixedReality.SpatialAlignment

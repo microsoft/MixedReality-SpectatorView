@@ -62,20 +62,8 @@ namespace Microsoft.MixedReality.SpectatorView
                 return false;
             }
 
-#if UNITY_WSA
-            session = new SpatialCoordinateLocalizationSession(this, new SpatialAnchorsUWPCoordinateService(settings), settings, peerConnection);
-            return true;
-#elif UNITY_ANDROID
-            session = new SpatialCoordinateLocalizationSession(this, new SpatialAnchorsAndroidCoordinateService(settings), settings, peerConnection);
-            return true;
-#elif UNITY_IOS
-            session = new SpatialCoordinateLocalizationSession(this, new SpatialAnchorsIOSCoordinateService(settings), settings, peerConnection);
-            return true;
-#else
-            Debug.LogError("AzureSpatialAnchors is not supported on the current platform.");
-            session = null;
-            return false;
-#endif
+            session = new SpatialCoordinateLocalizationSession(this, SpatialAnchorsCoordinateService.CreateCoordinateService(settings), settings, peerConnection);
+            return session != null;
         }
 
         private event Action Updated;
