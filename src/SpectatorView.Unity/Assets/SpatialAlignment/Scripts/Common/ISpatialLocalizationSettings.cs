@@ -3,7 +3,7 @@
 
 using System.IO;
 
-namespace Microsoft.MixedReality.SpectatorView
+namespace Microsoft.MixedReality.SpatialAlignment
 {
     public interface ISpatialLocalizationSettings
     {

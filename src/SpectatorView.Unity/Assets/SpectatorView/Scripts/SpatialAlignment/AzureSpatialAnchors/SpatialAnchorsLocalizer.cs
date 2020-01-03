@@ -1,13 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.SpatialAlignment;
 using System;
 using System.IO;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
-using Microsoft.MixedReality.SpatialAlignment;
 
 namespace Microsoft.MixedReality.SpectatorView
 {
@@ -40,7 +40,7 @@ namespace Microsoft.MixedReality.SpectatorView
         {
             get
             {
-#if SPATIALALIGNMENT_ASA && (UNITY_WSA || UNITY_ANDROID || UNITY_IOS)
+#if (UNITY_WSA || UNITY_ANDROID || UNITY_IOS)
                 return true;
 #else
                 return false;
@@ -62,17 +62,13 @@ namespace Microsoft.MixedReality.SpectatorView
                 return false;
             }
 
-#if !SPATIALALIGNMENT_ASA
-            Debug.LogError("Attempting to use SpatialAnchorLocalizer but ASA is not enabled for this build");
-            session = null;
-            return false;
-#elif UNITY_WSA && SPATIALALIGNMENT_ASA
+#if UNITY_WSA
             session = new SpatialCoordinateLocalizationSession(this, new SpatialAnchorsUWPCoordinateService(settings), settings, peerConnection);
             return true;
-#elif UNITY_ANDROID && SPATIALALIGNMENT_ASA
+#elif UNITY_ANDROID
             session = new SpatialCoordinateLocalizationSession(this, new SpatialAnchorsAndroidCoordinateService(settings), settings, peerConnection);
             return true;
-#elif UNITY_IOS && SPATIALALIGNMENT_ASA
+#elif UNITY_IOS
             session = new SpatialCoordinateLocalizationSession(this, new SpatialAnchorsIOSCoordinateService(settings), settings, peerConnection);
             return true;
 #else
@@ -82,7 +78,6 @@ namespace Microsoft.MixedReality.SpectatorView
 #endif
         }
 
-#if SPATIALALIGNMENT_ASA
         private event Action Updated;
 
         private void Update()
@@ -181,6 +176,5 @@ namespace Microsoft.MixedReality.SpectatorView
                 coordinateIdentifierTaskSource.TrySetResult(reader.ReadString());
             }
         }
-#endif
     }
 }

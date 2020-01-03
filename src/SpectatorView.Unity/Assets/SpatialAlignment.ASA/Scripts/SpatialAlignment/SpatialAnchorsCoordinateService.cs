@@ -1,10 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-#if SPATIALALIGNMENT_ASA
 using Microsoft.Azure.SpatialAnchors;
 using Microsoft.Azure.SpatialAnchors.Unity;
-using Microsoft.MixedReality.SpectatorView;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -150,7 +148,7 @@ namespace Microsoft.MixedReality.SpatialAlignment
         /// <returns>The newly created <see cref="GameObject"/>.</returns>
         protected virtual GameObject CreateGameObjectFrom(AnchorLocatedEventArgs args)
         {
-            Pose pose = args.Anchor.GetAnchorPose();
+            Pose pose = args.Anchor.GetPose();
             Debug.Log($"ASA-Android: Creating an anchor at: {pose.position.ToString("G4")}, {pose.rotation.eulerAngles.ToString("G2")}");
             GameObject gameObject = SpawnGameObject(pose.position, pose.rotation);
             gameObject.AddARAnchor();
@@ -447,4 +445,3 @@ namespace Microsoft.MixedReality.SpatialAlignment
         }
     }
 }
-#endif
