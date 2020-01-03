@@ -1,10 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using Microsoft.MixedReality.SpatialAlignment;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.SpectatorView
+namespace Microsoft.MixedReality.SpatialAlignment
 {
     /// <summary>
     /// Helper class for creating artificial spatial coordinates in the editor.
