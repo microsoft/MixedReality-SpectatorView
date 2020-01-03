@@ -627,21 +627,24 @@ PlayerSettings:
   webGLLinkerTarget: 1
   webGLThreadsSupport: 0
   scriptingDefineSymbols:
-    1: SPATIALALIGNMENT_ASA;STATESYNC_TEXTMESHPRO
-    4: SPATIALALIGNMENT_ASA;STATESYNC_TEXTMESHPRO
-    7: SPATIALALIGNMENT_ASA;STATESYNC_TEXTMESHPRO
-    14: SPATIALALIGNMENT_ASA;STATESYNC_TEXTMESHPRO
+    1: SPATIALALIGNMENT_ASA
+    4: SPATIALALIGNMENT_ASA
+    7: SPATIALALIGNMENT_ASA
+    14: SPATIALALIGNMENT_ASA
   platformArchitecture:
     iOS: 1
   scriptingBackend:
-    Metro: 2
+    Android: 1
+    Metro: 1
+    Standalone: 1
   il2cppCompilerConfiguration: {}
   managedStrippingLevel: {}
   incrementalIl2cppBuild: {}
   allowUnsafeCode: 0
   additionalIl2CppArgs: 
   scriptingRuntimeVersion: 1
-  apiCompatibilityLevelPerPlatform: {}
+  apiCompatibilityLevelPerPlatform:
+    Android: 3
   m_RenderingPath: 1
   m_MobileRenderingPath: 1
   metroPackageName: SpectatorView.Build2019Demo
