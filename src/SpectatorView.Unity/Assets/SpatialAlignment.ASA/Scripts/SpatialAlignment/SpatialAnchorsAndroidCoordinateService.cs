@@ -4,7 +4,6 @@
 #if UNITY_ANDROID
 using Microsoft.Azure.SpatialAnchors;
 using Microsoft.Azure.SpatialAnchors.Unity.Android;
-using Microsoft.MixedReality.SpectatorView;
 using System;
 using System.Threading.Tasks;
 using UnityEngine;
