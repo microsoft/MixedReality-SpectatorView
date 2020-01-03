@@ -1,11 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-#if STATESYNC_TEXTMESHPRO
 using System;
 using TMPro;
 using UnityEngine;
-#endif
 
 namespace Microsoft.MixedReality.SpectatorView
 {
@@ -13,7 +11,6 @@ namespace Microsoft.MixedReality.SpectatorView
     {
         protected override void EnsureTextComponent()
         {
-#if STATESYNC_TEXTMESHPRO
             if (TextMeshObserver == null)
             {
                 RectTransformBroadcaster srt = new RectTransformBroadcaster();
@@ -22,11 +19,8 @@ namespace Microsoft.MixedReality.SpectatorView
                 TextMeshObserver = ComponentExtensions.EnsureComponent<TextMeshProUGUI>(gameObject);
                 srt.Apply(rectTransform);
             }
-#endif
         }
 
-#if STATESYNC_TEXTMESHPRO
         public override Type ComponentType => typeof(TextMeshProUGUI);
-#endif
     }
 }
