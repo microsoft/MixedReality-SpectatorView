@@ -8,6 +8,8 @@
 .PARAMETER Version
     What version of the artifacts should we build? If unspecified, the highest
     git tag pointing to HEAD is searched. If none is found, an error is reported.
+.PARAMTER UnityDirectory
+    Directory path containing the Unity.exe you would like to use to create Unity binaries.
 #>
 param(
     [string]$OutputDirectory = ".\artifacts",
