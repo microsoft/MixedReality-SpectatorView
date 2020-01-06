@@ -1,9 +1,9 @@
 fileFormatVersion: 2
-guid: 7945d97ef1f124540a56f8cf48a62b75
+guid: 82ab810cfb470c84291e403afa96dfe3
 ScriptedImporter:
-  fileIDToRecycleName:
-    11400000: Microsoft.MixedReality.SpectatorView.Tests.msb4u
+  internalIDToNameTable: []
   externalObjects: {}
+  serializedVersion: 2
   userData: 
   assetBundleName: 
   assetBundleVariant: 

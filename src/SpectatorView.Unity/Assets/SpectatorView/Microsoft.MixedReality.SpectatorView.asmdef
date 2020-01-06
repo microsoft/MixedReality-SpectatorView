@@ -3,14 +3,22 @@
     "references": [
         "Microsoft.MixedReality.PhotoCapture",
         "Microsoft.MixedReality.SpatialAlignment",
-        "Unity.TextMeshPro"
+        "Microsoft.MixedReality.SpatialAlignment.ASA",
+        "Unity.TextMeshPro",
+        "Unity.XR.ARFoundation"
     ],
-    "optionalUnityReferences": [],
-    "includePlatforms": [],
+    "includePlatforms": [
+        "Android",
+        "Editor",
+        "iOS",
+        "WSA"
+    ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": true,
-    "defineConstraints": []
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }
