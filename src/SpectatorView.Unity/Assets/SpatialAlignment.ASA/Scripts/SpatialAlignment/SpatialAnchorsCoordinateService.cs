@@ -34,10 +34,8 @@ namespace Microsoft.MixedReality.SpatialAlignment
         {
 #if UNITY_WSA
             return new SpatialAnchorsUWPCoordinateService(settings);
-#elif UNITY_ANDROID
-            return new SpatialAnchorsAndroidCoordinateService(settings);
-#elif UNITY_IOS
-            return new SpatialAnchorsIOSCoordinateService(settings);
+#elif UNITY_ANDROID || UNITY_IOS
+            return new SpatialAnchorsARFoundationCoordinateService(settings);
 #else
             Debug.LogError("AzureSpatialAnchors is not supported on the current platform.");
             return null;
@@ -377,7 +375,18 @@ namespace Microsoft.MixedReality.SpatialAlignment
         /// Abstract method to be implemented by specific platform implentation that adds additional session configuration.
         /// </summary>
         /// <param name="session">The session that was just constructed and is being configured.</param>
-        protected abstract void OnConfigureSession(CloudSpatialAnchorSession session);
+        protected abstract Task OnConfigureSession(CloudSpatialAnchorSession session);
+
+        /// <summary>
+        /// Called when the <see cref="Session"/> <see cref="CloudSpatialAnchorSession.AnchorLocated">AnchorLocated</see> event is fired.
+        /// </summary>
+        /// <param name="sender">
+        /// The <see cref="Session"/>.
+        /// </param>
+        /// <param name="args">
+        /// The event data.
+        /// </param>
+        protected abstract void OnAnchorLocated(object sender, AnchorLocatedEventArgs args);
 
         private Task EnsureInitializedAsync()
         {
@@ -396,7 +405,7 @@ namespace Microsoft.MixedReality.SpatialAlignment
         {
             await OnInitializeAsync();
 
-            session = CreateSession();
+            session = await CreateSession();
         }
 
         private void SetValue(string configValue, Action<string> setter)
@@ -407,7 +416,7 @@ namespace Microsoft.MixedReality.SpatialAlignment
             }
         }
 
-        private CloudSpatialAnchorSession CreateSession()
+        private async Task<CloudSpatialAnchorSession> CreateSession()
         {
             CloudSpatialAnchorSession toReturn = new CloudSpatialAnchorSession();
 
@@ -426,9 +435,8 @@ namespace Microsoft.MixedReality.SpatialAlignment
             //TODO how to properly use this?
             //toReturn.LocateAnchorsCompleted += OnLocateAnchorsCompleted;
 
-            OnConfigureSession(toReturn);
-
-            return toReturn;
+            await OnConfigureSession(toReturn);
+            return await Task.FromResult(toReturn);
         }
 
         private void HandleSessionStatus(SessionStatus status)

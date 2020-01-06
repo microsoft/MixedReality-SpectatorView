@@ -41,7 +41,12 @@ namespace Microsoft.MixedReality.SpatialAlignment
         }
 
         /// <inheritdoc/>
-        protected override void OnConfigureSession(CloudSpatialAnchorSession session)
+        protected override void OnAnchorLocated(object sender, AnchorLocatedEventArgs args)
+        {
+        }
+
+        /// <inheritdoc/>
+        protected override Task OnConfigureSession(CloudSpatialAnchorSession session)
         {
             // TODO anborod: This is a copy from DemoWrapper (it was commented), figure out what should be done here
 
@@ -53,6 +58,8 @@ namespace Microsoft.MixedReality.SpatialAlignment
             //    args.AuthenticationToken = await AuthenticationHelper.GetAuthenticationTokenAsync();
             //    deferral.Complete();
             //};
+
+            return Task.CompletedTask;
         }
     }
 }

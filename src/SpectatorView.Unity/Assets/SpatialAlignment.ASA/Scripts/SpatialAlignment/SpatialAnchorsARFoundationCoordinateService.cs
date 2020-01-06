@@ -1,9 +1,8 @@
-﻿#if SPATIALALIGNMENT_ASA && (UNITY_ANDROID || UNITY_IOOS)
+﻿#if UNITY_ANDROID || UNITY_IOOS
 
 using Microsoft.Azure.SpatialAnchors;
 using Microsoft.Azure.SpatialAnchors.Unity;
 using Microsoft.Azure.SpatialAnchors.Unity.Android;
-using Microsoft.MixedReality.SpectatorView;
 using System;
 using System.Collections.Generic;
 using System.Threading;
