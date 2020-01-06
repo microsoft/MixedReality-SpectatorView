@@ -17,3 +17,6 @@
 [submodule "external/vcpkg"]
 	path = external/vcpkg
 	url = https://github.com/microsoft/vcpkg.git
+[submodule "external/MSBuildForUnity"]
+	path = external/MSBuildForUnity
+	url = https://github.com/microsoft/MSBuildForUnity.git
