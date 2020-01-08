@@ -1,13 +1,15 @@
 <#
 .SYNOPSIS
-    Builds the Mixed Reality Toolkit nuget packacges.
+    Builds Mixed Reality Spectator View nuget packages.
 .DESCRIPTION
-    Builds nuget packages for the Mixed Reality Toolkit.
+    Builds nuget packages for Mixed Reality Spectator View.
 .PARAMETER OutputDirectory
     Where should we place the output? Defaults to ".\artifacts"
 .PARAMETER Version
     What version of the artifacts should we build? If unspecified, the highest
     git tag pointing to HEAD is searched. If none is found, an error is reported.
+.PARAMTER UnityDirectory
+    Directory path containing the Unity.exe you would like to use to create Unity binaries.
 #>
 param(
     [string]$OutputDirectory = ".\artifacts",
@@ -67,6 +69,8 @@ try {
 
     ## Run MSBuild Generation
     RunUnityTask -taskName "MSBuildGeneration" -methodToExecute "Microsoft.Build.Unity.ProjectGeneration.MSBuildTools.RegenerateSDKProjects"
+
+    # TODO: Uncomment items below as they're enabled.
 
     ## Build both InEditor and Player WindowsStandalone32 binaries to have needed content for asset retargeting.
     # Write-Output "============ Building InEditor BuildWindowsStandalone32InEditor ============ "
@@ -145,12 +149,7 @@ try {
 
     #     nuget pack $_.FullName -OutputDirectory $OutputDirectory -Properties $props -Exclude *.nuspec.meta
         
-    #     # ===
-    #     # https://github.com/microsoft/MixedRealityToolkit-Unity/issues/6276 states that not having a version on the assemblies in our NuGet packages
-    #     # is an issue... commenting the localVersion update
-    #     # ===
-
-    #     # To make debugging the MRTK NuGet packages locally much easier automatically create new packages with version 0.0.0 and then
+    #     # To make debugging the Mixed Reality Spectator View NuGet packages locally much easier automatically create new packages with version 0.0.0 and then
     #     # restore them to the machine NuGet feed. To test changes to the packages developers can run this script and then change their
     #     # project to consume version 0.0.0 and restore. Because the package is in the machine global feed it will resolve properly.
     #     # $localVersion = '0.0.0'
