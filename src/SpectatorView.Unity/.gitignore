@@ -101,6 +101,8 @@ Assets/logos/
 /MSBuildForUnity.Common.props
 /Assets/Dependencies
 /Assets/Dependencies.meta
+!/Assets/**/*.msb4u.*
+!/Packages/**/*.msb4u.*
 
 # Custom MSBuildForUnity NuGet generation entries
 NuGet/*
