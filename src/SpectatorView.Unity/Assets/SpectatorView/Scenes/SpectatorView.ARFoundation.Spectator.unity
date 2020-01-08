@@ -96,7 +96,6 @@ LightmapSettings:
     m_PVRFilteringAtrousPositionSigmaAO: 1
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
-    m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
   m_UseShadowmask: 1
 --- !u!196 &4
@@ -194,7 +193,7 @@ GameObject:
   - component: {fileID: 975206456}
   m_Layer: 0
   m_Name: AR Camera
-  m_TagString: Untagged
+  m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -227,8 +226,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_UseCustomMaterial: 0
   m_CustomMaterial: {fileID: 0}
-  m_UseCustomRendererAsset: 0
-  m_CustomRendererAsset: {fileID: 0}
 --- !u!114 &975206457
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -316,6 +313,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SpectatorView
       objectReference: {fileID: 0}
+    - target: {fileID: 4941633254297953240, guid: aa311d939e452a045b897dcc7c9c36fb,
+        type: 3}
+      propertyPath: m_TagString
+      value: MainCamera
+      objectReference: {fileID: 0}
     - target: {fileID: 4941633254297953242, guid: aa311d939e452a045b897dcc7c9c36fb,
         type: 3}
       propertyPath: Role
@@ -386,6 +388,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8396631008393852441, guid: aa311d939e452a045b897dcc7c9c36fb,
+        type: 3}
+      propertyPath: sharedCoordinateOrigin
+      value: 
+      objectReference: {fileID: 1960325636}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: aa311d939e452a045b897dcc7c9c36fb, type: 3}
 --- !u!1 &1855549803
@@ -430,6 +437,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1960325636}
   - component: {fileID: 1960325637}
+  - component: {fileID: 1960325638}
   m_Layer: 0
   m_Name: AR Session Origin
   m_TagString: Untagged
@@ -465,3 +473,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Camera: {fileID: 975206459}
+--- !u!114 &1960325638
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1960325635}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 728ad7fae8e460a4ba41265c7308d757, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_AnchorPrefab: {fileID: 0}

@@ -23,9 +23,9 @@ namespace Microsoft.MixedReality.SpatialAlignment
 #endif // UNITY_ANDROID
 
         private long lastFrameProcessedTimeStamp;
-        private static Dictionary<string, ARReferencePoint> pointerToReferencePoints = new Dictionary<string, ARReferencePoint>();
+        private static Dictionary<string, ARAnchor> pointerToReferencePoints = new Dictionary<string, ARAnchor>();
         private List<AnchorLocatedEventArgs> pendingEventArgs = new List<AnchorLocatedEventArgs>();
-        internal static ARReferencePointManager arReferencePointManager = null;
+        internal static ARAnchorManager arReferencePointManager = null;
         private ARCameraManager arCameraManager = null;
         private ARSession arSession = null;
         private Camera mainCamera;
@@ -42,10 +42,10 @@ namespace Microsoft.MixedReality.SpatialAlignment
 
             arCameraManager = GameObject.FindObjectOfType<ARCameraManager>();
             arSession = GameObject.FindObjectOfType<ARSession>();
-            arReferencePointManager = GameObject.FindObjectOfType<ARReferencePointManager>();
+            arReferencePointManager = GameObject.FindObjectOfType<ARAnchorManager>();
             if (arReferencePointManager != null)
             {
-                arReferencePointManager.referencePointsChanged += ARReferencePointManager_referencePointsChanged;
+                arReferencePointManager.anchorsChanged += ARReferencePointManager_referencePointsChanged;
             }
             else
             {
@@ -53,11 +53,11 @@ namespace Microsoft.MixedReality.SpatialAlignment
             }
         }
 
-        private void ARReferencePointManager_referencePointsChanged(ARReferencePointsChangedEventArgs obj)
+        private void ARReferencePointManager_referencePointsChanged(ARAnchorsChangedEventArgs obj)
         {
             lock (pointerToReferencePoints)
             {
-                foreach (ARReferencePoint aRReferencePoint in obj.added)
+                foreach (ARAnchor aRReferencePoint in obj.added)
                 {
                     string lookupkey = aRReferencePoint.nativePtr.GetPlatformPointer().GetPlatformKey();
                     if (!pointerToReferencePoints.ContainsKey(lookupkey))
@@ -66,7 +66,7 @@ namespace Microsoft.MixedReality.SpatialAlignment
                     }
                 }
 
-                foreach (ARReferencePoint aRReferencePoint in obj.removed)
+                foreach (ARAnchor aRReferencePoint in obj.removed)
                 {
                     string toremove = null;
                     foreach (var kvp in pointerToReferencePoints)
@@ -84,7 +84,7 @@ namespace Microsoft.MixedReality.SpatialAlignment
                     }
                 }
 
-                foreach (ARReferencePoint aRReferencePoint in obj.updated)
+                foreach (ARAnchor aRReferencePoint in obj.updated)
                 {
                     string lookupKey = aRReferencePoint.nativePtr.GetPlatformPointer().GetPlatformKey();
                     if (!pointerToReferencePoints.ContainsKey(lookupKey))
@@ -204,7 +204,7 @@ namespace Microsoft.MixedReality.SpatialAlignment
         /// </summary>
         /// <param name="intPtr">An ARKit or ARcore anchor pointer</param>
         /// <returns>A reference point if found or null</returns>
-        internal static ARReferencePoint ReferencePointFromPointer(IntPtr intPtr)
+        internal static ARAnchor ReferencePointFromPointer(IntPtr intPtr)
         {
             string key = intPtr.GetPlatformKey();
             if (pointerToReferencePoints.ContainsKey(key))
