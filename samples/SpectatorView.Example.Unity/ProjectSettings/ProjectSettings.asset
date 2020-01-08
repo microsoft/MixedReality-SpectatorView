@@ -633,7 +633,7 @@ PlayerSettings:
   platformArchitecture:
     iOS: 1
   scriptingBackend:
-    Metro: 2
+    Metro: 1
   il2cppCompilerConfiguration: {}
   managedStrippingLevel: {}
   incrementalIl2cppBuild: {}
