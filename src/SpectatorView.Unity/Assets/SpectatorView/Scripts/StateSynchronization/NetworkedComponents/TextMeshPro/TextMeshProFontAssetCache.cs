@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
         protected override IEnumerable<ScriptableObject> EnumerateAllAssets()
         {
-#if UNITY_EDITOR && STATESYNC_TEXTMESHPRO
+#if UNITY_EDITOR
             return EnumerateAllAssetsInAssetDatabase<TMPro.TMP_FontAsset>(IsAssetFileExtension);
 #else
             yield break;
