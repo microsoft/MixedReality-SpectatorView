@@ -2,18 +2,12 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System.IO;
-
-#if STATESYNC_TEXTMESHPRO
 using TMPro;
-#else
-using System;
-#endif
 
 namespace Microsoft.MixedReality.SpectatorView
 {
     internal abstract class TextMeshProObserverBase : ComponentObserver
     {
-#if STATESYNC_TEXTMESHPRO
         private bool needsUpdate = false;
 
         protected TMP_Text TextMeshObserver
@@ -21,15 +15,6 @@ namespace Microsoft.MixedReality.SpectatorView
             get;
             set;
         }
-#else
-        public override Type ComponentType
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
-#endif
 
         public static bool HasFlag(TextMeshProBroadcasterChangeType changeType, TextMeshProBroadcasterChangeType flag)
         {
@@ -53,7 +38,6 @@ namespace Microsoft.MixedReality.SpectatorView
 
         public override void Read(INetworkConnection connection, BinaryReader message)
         {
-#if STATESYNC_TEXTMESHPRO
             EnsureTextComponent();
 
             TextMeshProBroadcasterChangeType changeType = (TextMeshProBroadcasterChangeType)message.ReadByte();
@@ -125,10 +109,8 @@ namespace Microsoft.MixedReality.SpectatorView
 
                 needsUpdate = true;
             }
-#endif
         }
 
-#if STATESYNC_TEXTMESHPRO
         protected virtual void Update()
         {
             if (needsUpdate)
@@ -139,6 +121,5 @@ namespace Microsoft.MixedReality.SpectatorView
                 needsUpdate = false;
             }
         }
-#endif
     }
 }

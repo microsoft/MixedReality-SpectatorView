@@ -3,21 +3,15 @@
 
 using System;
 using System.Collections.Generic;
-
-#if STATESYNC_TEXTMESHPRO
 using System.IO;
 using TMPro;
 using UnityEngine;
-#endif
 
 namespace Microsoft.MixedReality.SpectatorView
 {
     internal abstract class TextMeshProBroadcasterBase<TComponentService> : ComponentBroadcaster<TComponentService, TextMeshProBroadcasterChangeType>
         where TComponentService : Singleton<TComponentService>, IComponentBroadcasterService
     {
-
-#if STATESYNC_TEXTMESHPRO
-
         private TMP_Text textMesh;
         private string previousText;
         private TextMeshProperties previousProperties;
@@ -343,26 +337,5 @@ namespace Microsoft.MixedReality.SpectatorView
                 message.Write(wordSpacing);
             }
         }
-#else
-        protected override bool HasChanges(TextMeshProBroadcasterChangeType changeFlags)
-        {
-            throw new NotImplementedException();
-        }
-
-        protected override TextMeshProBroadcasterChangeType CalculateDeltaChanges()
-        {
-            throw new NotImplementedException();
-        }
-
-        protected override void SendCompleteChanges(IEnumerable<INetworkConnection> connections)
-        {
-            throw new NotImplementedException();
-        }
-
-        protected override void SendDeltaChanges(IEnumerable<INetworkConnection> connections, TextMeshProBroadcasterChangeType changeFlags)
-        {
-            throw new NotImplementedException();
-        }
-#endif
     }
 }
