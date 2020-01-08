@@ -629,7 +629,7 @@ PlayerSettings:
   webGLLinkerTarget: 1
   webGLThreadsSupport: 0
   scriptingDefineSymbols:
-    14: QRCODESTRACKER_BINARY_AVAILABLE
+    14: 
   platformArchitecture:
     iOS: 1
   scriptingBackend:
