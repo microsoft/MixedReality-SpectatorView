@@ -5,7 +5,6 @@ namespace Microsoft.MixedReality.SpectatorView
 {
     internal class TextMeshProBroadcaster : TextMeshProBroadcasterBase<TextMeshProService>
     {
-#if STATESYNC_TEXTMESHPRO
         protected override void Awake()
         {
             base.Awake();
@@ -18,6 +17,5 @@ namespace Microsoft.MixedReality.SpectatorView
                 MeshFilterBroadcaster.enabled = false;
             }
         }
-#endif
     }
 }
