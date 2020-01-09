@@ -6,7 +6,8 @@
         "Microsoft.MixedReality.SpatialAlignment.ASA",
         "Microsoft.MixedReality.SpectatorView.ExternalDependencies",
         "Unity.TextMeshPro",
-        "Unity.XR.ARFoundation"
+        "Unity.XR.ARFoundation",
+        "UnityEngine.UI"
     ],
     "includePlatforms": [
         "Android",
@@ -20,6 +21,5 @@
     "precompiledReferences": [],
     "autoReferenced": true,
     "defineConstraints": [],
-    "versionDefines": [],
-    "noEngineReferences": false
+    "versionDefines": []
 }
