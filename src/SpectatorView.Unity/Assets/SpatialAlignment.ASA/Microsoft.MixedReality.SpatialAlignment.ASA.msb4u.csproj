@@ -21,7 +21,6 @@
   
   <Import Project="$([MSBuild]::GetPathOfFileAbove(MSBuildForUnity.Common.props))" Condition="Exists('$([MSBuild]::GetPathOfFileAbove(MSBuildForUnity.Common.props))')" />
   <PropertyGroup>
-    <DefineConstants>UNITY_INCLUDE_TESTS</DefineConstants>
     <!--anborod: This is a weird thing, it is a required property (even if commented)-->
     <!--<TargetFrameworks>netstandard2.0;uap10.0;net46</TargetFrameworks> -->
   </PropertyGroup>
