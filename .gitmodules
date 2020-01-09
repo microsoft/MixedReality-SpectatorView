@@ -5,7 +5,7 @@
 	ignore = dirty
 [submodule "external/Azure-Spatial-Anchors-Samples"]
 	path = external/Azure-Spatial-Anchors-Samples
-	url = https://github.com/Azure/azure-spatial-anchors-samples
+	url = https://github.com/chrisfromwork/azure-spatial-anchors-samples
 	ignore = dirty
 [submodule "external/gamecapture"]
 	path = external/gamecapture
@@ -15,4 +15,4 @@
 	url = https://github.com/microsoft/vcpkg.git
 [submodule "external/MSBuildForUnity"]
 	path = external/MSBuildForUnity
-	url = https://github.com/microsoft/MSBuildForUnity.git
+	url = https://github.com/chrisfromwork/MSBuildForUnity.git
