@@ -6,11 +6,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.MixedReality.Phot
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.MixedReality.SpatialAlignment.msb4u", "SpatialAlignment\Microsoft.MixedReality.SpatialAlignment.msb4u.csproj", "{396E9E35-90CE-FD44-198C-D1E642263F09}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Unity.Subsystem.Registration.msb4u", "..\MSBuild\Projects\Unity.Subsystem.Registration.msb4u.csproj", "{D03624F0-2FD4-AEF4-AA6B-888A1B059AD7}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Unity.XR.Management.msb4u", "..\MSBuild\Projects\Unity.XR.Management.msb4u.csproj", "{E40BA710-7685-3401-2815-D3193FA296CB}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnityEngine.SpatialTracking.msb4u", "..\MSBuild\Projects\UnityEngine.SpatialTracking.msb4u.csproj", "{BA171B3D-D2A5-1234-AB86-4770F99741A5}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Unity.Subsystem.Registration.msb4u", "..\MSBuild\Projects\Unity.Subsystem.Registration.msb4u.csproj", "{D03624F0-2FD4-AEF4-AA6B-888A1B059AD7}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.MixedReality.SpectatorView.ExternalDependencies.msb4u", "SpectatorView.ExternalDependencies\Microsoft.MixedReality.SpectatorView.ExternalDependencies.msb4u.csproj", "{B14DD205-870C-0654-2A9D-D3D90FD967CB}"
 EndProject
@@ -30,9 +28,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Unity.TextMeshPro.msb4u", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Unity.XR.ARFoundation.msb4u", "..\MSBuild\Projects\Unity.XR.ARFoundation.msb4u.csproj", "{A9420E37-D799-0B54-ABDE-F6688EDBE313}"
 	ProjectSection(ProjectDependencies) = postProject
-		{92703082-F92B-41BA-80F0-D6912DE66115} = {92703082-F92B-41BA-80F0-D6912DE66115}
-		{E40BA710-7685-3401-2815-D3193FA296CB} = {E40BA710-7685-3401-2815-D3193FA296CB}
 		{BA171B3D-D2A5-1234-AB86-4770F99741A5} = {BA171B3D-D2A5-1234-AB86-4770F99741A5}
+		{92703082-F92B-41BA-80F0-D6912DE66115} = {92703082-F92B-41BA-80F0-D6912DE66115}
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.MixedReality.SpatialAlignment.ASA.msb4u", "SpatialAlignment.ASA\Microsoft.MixedReality.SpatialAlignment.ASA.msb4u.csproj", "{10862022-7A2D-2FB4-B85E-BBD9E1CD6188}"
@@ -133,46 +130,6 @@ Global
 		{396E9E35-90CE-FD44-198C-D1E642263F09}.Player|WindowsStandalone64.Build.0 = Player|WindowsStandalone64
 		{396E9E35-90CE-FD44-198C-D1E642263F09}.Player|WSA.ActiveCfg = Player|WSA
 		{396E9E35-90CE-FD44-198C-D1E642263F09}.Player|WSA.Build.0 = Player|WSA
-		{D03624F0-2FD4-AEF4-AA6B-888A1B059AD7}.InEditor|Android.ActiveCfg = InEditor|Android
-		{D03624F0-2FD4-AEF4-AA6B-888A1B059AD7}.InEditor|Android.Build.0 = InEditor|Android
-		{D03624F0-2FD4-AEF4-AA6B-888A1B059AD7}.InEditor|iOS.ActiveCfg = InEditor|iOS
-		{D03624F0-2FD4-AEF4-AA6B-888A1B059AD7}.InEditor|iOS.Build.0 = InEditor|iOS
-		{D03624F0-2FD4-AEF4-AA6B-888A1B059AD7}.InEditor|WindowsStandalone32.ActiveCfg = InEditor|WindowsStandalone32
-		{D03624F0-2FD4-AEF4-AA6B-888A1B059AD7}.InEditor|WindowsStandalone32.Build.0 = InEditor|WindowsStandalone32
-		{D03624F0-2FD4-AEF4-AA6B-888A1B059AD7}.InEditor|WindowsStandalone64.ActiveCfg = InEditor|WindowsStandalone64
-		{D03624F0-2FD4-AEF4-AA6B-888A1B059AD7}.InEditor|WindowsStandalone64.Build.0 = InEditor|WindowsStandalone64
-		{D03624F0-2FD4-AEF4-AA6B-888A1B059AD7}.InEditor|WSA.ActiveCfg = InEditor|WSA
-		{D03624F0-2FD4-AEF4-AA6B-888A1B059AD7}.InEditor|WSA.Build.0 = InEditor|WSA
-		{D03624F0-2FD4-AEF4-AA6B-888A1B059AD7}.Player|Android.ActiveCfg = Player|Android
-		{D03624F0-2FD4-AEF4-AA6B-888A1B059AD7}.Player|Android.Build.0 = Player|Android
-		{D03624F0-2FD4-AEF4-AA6B-888A1B059AD7}.Player|iOS.ActiveCfg = Player|iOS
-		{D03624F0-2FD4-AEF4-AA6B-888A1B059AD7}.Player|iOS.Build.0 = Player|iOS
-		{D03624F0-2FD4-AEF4-AA6B-888A1B059AD7}.Player|WindowsStandalone32.ActiveCfg = Player|WindowsStandalone32
-		{D03624F0-2FD4-AEF4-AA6B-888A1B059AD7}.Player|WindowsStandalone32.Build.0 = Player|WindowsStandalone32
-		{D03624F0-2FD4-AEF4-AA6B-888A1B059AD7}.Player|WindowsStandalone64.ActiveCfg = Player|WindowsStandalone64
-		{D03624F0-2FD4-AEF4-AA6B-888A1B059AD7}.Player|WindowsStandalone64.Build.0 = Player|WindowsStandalone64
-		{D03624F0-2FD4-AEF4-AA6B-888A1B059AD7}.Player|WSA.ActiveCfg = Player|WSA
-		{D03624F0-2FD4-AEF4-AA6B-888A1B059AD7}.Player|WSA.Build.0 = Player|WSA
-		{E40BA710-7685-3401-2815-D3193FA296CB}.InEditor|Android.ActiveCfg = InEditor|Android
-		{E40BA710-7685-3401-2815-D3193FA296CB}.InEditor|Android.Build.0 = InEditor|Android
-		{E40BA710-7685-3401-2815-D3193FA296CB}.InEditor|iOS.ActiveCfg = InEditor|iOS
-		{E40BA710-7685-3401-2815-D3193FA296CB}.InEditor|iOS.Build.0 = InEditor|iOS
-		{E40BA710-7685-3401-2815-D3193FA296CB}.InEditor|WindowsStandalone32.ActiveCfg = InEditor|WindowsStandalone32
-		{E40BA710-7685-3401-2815-D3193FA296CB}.InEditor|WindowsStandalone32.Build.0 = InEditor|WindowsStandalone32
-		{E40BA710-7685-3401-2815-D3193FA296CB}.InEditor|WindowsStandalone64.ActiveCfg = InEditor|WindowsStandalone64
-		{E40BA710-7685-3401-2815-D3193FA296CB}.InEditor|WindowsStandalone64.Build.0 = InEditor|WindowsStandalone64
-		{E40BA710-7685-3401-2815-D3193FA296CB}.InEditor|WSA.ActiveCfg = InEditor|WSA
-		{E40BA710-7685-3401-2815-D3193FA296CB}.InEditor|WSA.Build.0 = InEditor|WSA
-		{E40BA710-7685-3401-2815-D3193FA296CB}.Player|Android.ActiveCfg = Player|Android
-		{E40BA710-7685-3401-2815-D3193FA296CB}.Player|Android.Build.0 = Player|Android
-		{E40BA710-7685-3401-2815-D3193FA296CB}.Player|iOS.ActiveCfg = Player|iOS
-		{E40BA710-7685-3401-2815-D3193FA296CB}.Player|iOS.Build.0 = Player|iOS
-		{E40BA710-7685-3401-2815-D3193FA296CB}.Player|WindowsStandalone32.ActiveCfg = Player|WindowsStandalone32
-		{E40BA710-7685-3401-2815-D3193FA296CB}.Player|WindowsStandalone32.Build.0 = Player|WindowsStandalone32
-		{E40BA710-7685-3401-2815-D3193FA296CB}.Player|WindowsStandalone64.ActiveCfg = Player|WindowsStandalone64
-		{E40BA710-7685-3401-2815-D3193FA296CB}.Player|WindowsStandalone64.Build.0 = Player|WindowsStandalone64
-		{E40BA710-7685-3401-2815-D3193FA296CB}.Player|WSA.ActiveCfg = Player|WSA
-		{E40BA710-7685-3401-2815-D3193FA296CB}.Player|WSA.Build.0 = Player|WSA
 		{BA171B3D-D2A5-1234-AB86-4770F99741A5}.InEditor|Android.ActiveCfg = InEditor|Android
 		{BA171B3D-D2A5-1234-AB86-4770F99741A5}.InEditor|Android.Build.0 = InEditor|Android
 		{BA171B3D-D2A5-1234-AB86-4770F99741A5}.InEditor|iOS.ActiveCfg = InEditor|iOS
@@ -193,6 +150,26 @@ Global
 		{BA171B3D-D2A5-1234-AB86-4770F99741A5}.Player|WindowsStandalone64.Build.0 = Player|WindowsStandalone64
 		{BA171B3D-D2A5-1234-AB86-4770F99741A5}.Player|WSA.ActiveCfg = Player|WSA
 		{BA171B3D-D2A5-1234-AB86-4770F99741A5}.Player|WSA.Build.0 = Player|WSA
+		{D03624F0-2FD4-AEF4-AA6B-888A1B059AD7}.InEditor|Android.ActiveCfg = InEditor|Android
+		{D03624F0-2FD4-AEF4-AA6B-888A1B059AD7}.InEditor|Android.Build.0 = InEditor|Android
+		{D03624F0-2FD4-AEF4-AA6B-888A1B059AD7}.InEditor|iOS.ActiveCfg = InEditor|iOS
+		{D03624F0-2FD4-AEF4-AA6B-888A1B059AD7}.InEditor|iOS.Build.0 = InEditor|iOS
+		{D03624F0-2FD4-AEF4-AA6B-888A1B059AD7}.InEditor|WindowsStandalone32.ActiveCfg = InEditor|WindowsStandalone32
+		{D03624F0-2FD4-AEF4-AA6B-888A1B059AD7}.InEditor|WindowsStandalone32.Build.0 = InEditor|WindowsStandalone32
+		{D03624F0-2FD4-AEF4-AA6B-888A1B059AD7}.InEditor|WindowsStandalone64.ActiveCfg = InEditor|WindowsStandalone64
+		{D03624F0-2FD4-AEF4-AA6B-888A1B059AD7}.InEditor|WindowsStandalone64.Build.0 = InEditor|WindowsStandalone64
+		{D03624F0-2FD4-AEF4-AA6B-888A1B059AD7}.InEditor|WSA.ActiveCfg = InEditor|WSA
+		{D03624F0-2FD4-AEF4-AA6B-888A1B059AD7}.InEditor|WSA.Build.0 = InEditor|WSA
+		{D03624F0-2FD4-AEF4-AA6B-888A1B059AD7}.Player|Android.ActiveCfg = Player|Android
+		{D03624F0-2FD4-AEF4-AA6B-888A1B059AD7}.Player|Android.Build.0 = Player|Android
+		{D03624F0-2FD4-AEF4-AA6B-888A1B059AD7}.Player|iOS.ActiveCfg = Player|iOS
+		{D03624F0-2FD4-AEF4-AA6B-888A1B059AD7}.Player|iOS.Build.0 = Player|iOS
+		{D03624F0-2FD4-AEF4-AA6B-888A1B059AD7}.Player|WindowsStandalone32.ActiveCfg = Player|WindowsStandalone32
+		{D03624F0-2FD4-AEF4-AA6B-888A1B059AD7}.Player|WindowsStandalone32.Build.0 = Player|WindowsStandalone32
+		{D03624F0-2FD4-AEF4-AA6B-888A1B059AD7}.Player|WindowsStandalone64.ActiveCfg = Player|WindowsStandalone64
+		{D03624F0-2FD4-AEF4-AA6B-888A1B059AD7}.Player|WindowsStandalone64.Build.0 = Player|WindowsStandalone64
+		{D03624F0-2FD4-AEF4-AA6B-888A1B059AD7}.Player|WSA.ActiveCfg = Player|WSA
+		{D03624F0-2FD4-AEF4-AA6B-888A1B059AD7}.Player|WSA.Build.0 = Player|WSA
 		{B14DD205-870C-0654-2A9D-D3D90FD967CB}.InEditor|Android.ActiveCfg = InEditor|Android
 		{B14DD205-870C-0654-2A9D-D3D90FD967CB}.InEditor|Android.Build.0 = InEditor|Android
 		{B14DD205-870C-0654-2A9D-D3D90FD967CB}.InEditor|iOS.ActiveCfg = InEditor|iOS
@@ -411,14 +388,14 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{D03624F0-2FD4-AEF4-AA6B-888A1B059AD7} = {91AB2FC0-D1D2-4BF1-8CE8-D160F619250B}
-		{E40BA710-7685-3401-2815-D3193FA296CB} = {91AB2FC0-D1D2-4BF1-8CE8-D160F619250B}
 		{BA171B3D-D2A5-1234-AB86-4770F99741A5} = {91AB2FC0-D1D2-4BF1-8CE8-D160F619250B}
+		{D03624F0-2FD4-AEF4-AA6B-888A1B059AD7} = {91AB2FC0-D1D2-4BF1-8CE8-D160F619250B}
 		{2BAFAC87-E7F4-B9B4-18D9-448D219B01AB} = {2C55BECF-70C1-4F9E-A90C-9E7F7688C9C4}
 		{27619889-B8BA-8C24-980F-49EE34DBB44A} = {91AB2FC0-D1D2-4BF1-8CE8-D160F619250B}
 		{92703082-F92B-41BA-80F0-D6912DE66115} = {91AB2FC0-D1D2-4BF1-8CE8-D160F619250B}
 		{6055BE8E-BEFD-69E4-8B49-212B09B47B2F} = {91AB2FC0-D1D2-4BF1-8CE8-D160F619250B}
 		{A9420E37-D799-0B54-ABDE-F6688EDBE313} = {91AB2FC0-D1D2-4BF1-8CE8-D160F619250B}
+		{E40BA710-7685-3401-2815-D3193FA296CB} = {91AB2FC0-D1D2-4BF1-8CE8-D160F619250B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {043E3C94-EE7E-405D-AF1F-0FD50855F440}
@@ -428,9 +405,8 @@ Global
 		{2C55BECF-70C1-4F9E-A90C-9E7F7688C9C4} = msb4u.generated
 		{055E7751-2989-6F04-9AAA-B953A244DF1C} = msb4u.generated
 		{396E9E35-90CE-FD44-198C-D1E642263F09} = msb4u.generated
-		{D03624F0-2FD4-AEF4-AA6B-888A1B059AD7} = msb4u.generated
-		{E40BA710-7685-3401-2815-D3193FA296CB} = msb4u.generated
 		{BA171B3D-D2A5-1234-AB86-4770F99741A5} = msb4u.generated
+		{D03624F0-2FD4-AEF4-AA6B-888A1B059AD7} = msb4u.generated
 		{B14DD205-870C-0654-2A9D-D3D90FD967CB} = msb4u.generated
 		{2BAFAC87-E7F4-B9B4-18D9-448D219B01AB} = msb4u.generated
 		{27619889-B8BA-8C24-980F-49EE34DBB44A} = msb4u.generated
