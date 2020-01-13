@@ -62,7 +62,7 @@ namespace Microsoft.MixedReality.SpectatorView
                 return false;
             }
 
-            session = new SpatialCoordinateLocalizationSession(this, new SpatialAnchorsCoordinateService2(this.gameObject, settings), settings, peerConnection);
+            session = new SpatialCoordinateLocalizationSession(this, new SpatialAnchorsCoordinateService(this.gameObject, settings), settings, peerConnection);
             return session != null;
         }
 
@@ -79,12 +79,12 @@ namespace Microsoft.MixedReality.SpectatorView
             public override IPeerConnection Peer => peerConnection;
 
             private readonly IPeerConnection peerConnection;
-            private readonly SpatialAnchorsCoordinateService2 coordinateService;
+            private readonly SpatialAnchorsCoordinateService coordinateService;
             private readonly SpatialAnchorsConfiguration configuration;
             private readonly SpatialAnchorsLocalizer localizer;
             private readonly TaskCompletionSource<string> coordinateIdentifierTaskSource;
 
-            public SpatialCoordinateLocalizationSession(SpatialAnchorsLocalizer localizer, SpatialAnchorsCoordinateService2 coordinateService, SpatialAnchorsConfiguration configuration, IPeerConnection peerConnection) : base()
+            public SpatialCoordinateLocalizationSession(SpatialAnchorsLocalizer localizer, SpatialAnchorsCoordinateService coordinateService, SpatialAnchorsConfiguration configuration, IPeerConnection peerConnection) : base()
             {
                 this.localizer = localizer;
                 this.coordinateService = coordinateService;

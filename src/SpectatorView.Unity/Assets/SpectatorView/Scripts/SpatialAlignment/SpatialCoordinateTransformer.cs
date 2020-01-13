@@ -23,7 +23,6 @@ namespace Microsoft.MixedReality.SpectatorView
         public Transform SharedCoordinateOrigin => sharedCoordinateOrigin;
 
         private SpatialCoordinateSystemParticipant currentParticipant;
-        private bool applied = false;
 
         private void Start()
         {
@@ -43,7 +42,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
         private void Update()
         {
-            if (!applied && currentParticipant != null && sharedCoordinateOrigin != null && currentParticipant.Coordinate != null && currentParticipant.PeerSpatialCoordinateIsLocated)
+            if (currentParticipant != null && sharedCoordinateOrigin != null && currentParticipant.Coordinate != null && currentParticipant.PeerSpatialCoordinateIsLocated)
             {
                 // Obtain a position and rotation that transforms this application's local world origin to the shared spatial coordinate space.
                 var localWorldToCoordinatePosition = currentParticipant.Coordinate.WorldToCoordinateSpace(Vector3.zero);
@@ -67,8 +66,6 @@ namespace Microsoft.MixedReality.SpectatorView
                     sharedCoordinateOrigin.rotation = rotation;
                     sharedCoordinateOrigin.position = position;
                     DebugLog($"Updated transform, Position: {sharedCoordinateOrigin.position.ToString("G4")}, Rotation: {sharedCoordinateOrigin.rotation.ToString("G4")}");
-
-                    applied = true;
                 }
             }
         }
@@ -81,7 +78,6 @@ namespace Microsoft.MixedReality.SpectatorView
                 DebugLog("No participant was registered when a participant disconnected");
             }
             currentParticipant = null;
-            applied = false;
         }
 
         private void OnParticipantConnected(SpatialCoordinateSystemParticipant participant)
