@@ -66,13 +66,6 @@ namespace Microsoft.MixedReality.SpectatorView
             return session != null;
         }
 
-        private event Action Updated;
-
-        private void Update()
-        {
-            Updated?.Invoke();
-        }
-
         private class SpatialCoordinateLocalizationSession : SpatialLocalizationSession
         {
             /// <inheritdoc/>
@@ -91,13 +84,6 @@ namespace Microsoft.MixedReality.SpectatorView
                 this.configuration = configuration;
                 this.coordinateIdentifierTaskSource = new TaskCompletionSource<string>();
                 this.peerConnection = peerConnection;
-
-                localizer.Updated += OnUpdated;
-            }
-
-            private void OnUpdated()
-            {
-                //coordinateService.FrameUpdate();
             }
 
             /// <inheritdoc/>
@@ -155,7 +141,6 @@ namespace Microsoft.MixedReality.SpectatorView
                 base.OnManagedDispose();
 
                 this.coordinateService.Dispose();
-                localizer.Updated -= OnUpdated;
             }
 
             /// <inheritdoc/>
