@@ -207,7 +207,7 @@ bool CompositorInterface::StartRecording(VideoRecordingFrameLayout frameLayout, 
 
 	activeVideoEncoder->StartRecording(videoPath.c_str(), ENCODE_AUDIO);
 
-	memcpy_s(lpFileName, inputFileNameLength * _WCHAR_T_SIZE, videoPath.c_str(), videoPath.size() * _WCHAR_T_SIZE);
+	memcpy_s(lpFileName, inputFileNameLength * sizeof(wchar_t), videoPath.c_str(), videoPath.size() * sizeof(wchar_t));
 	*fileNameLength = static_cast<int>(videoPath.size());
 	return true;
 }
