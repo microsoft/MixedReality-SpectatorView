@@ -26,7 +26,7 @@
     </ClCompile>
   </ItemDefinitionGroup>
   <Target Name="TestForElgatoAndBlackmagic" BeforeTargets="PrepareForBuild">
-    <Error Condition="!Exists('$(DeckLink_inc)') And !Exists('$(Elgato_Filter) And !Exists('$(AzureKinectIncludeDirectory)')" Text="No capture card dependencies exist for the paths defined in dependencies.props. At least one dependency must resolve to build this project."/>
+    <Error Condition="!Exists('$(DeckLink_inc)') And !Exists('$(Elgato_Filter)') And !Exists('$(AzureKinectIncludeDirectory)')" Text="No capture card dependencies exist for the paths defined in dependencies.props. At least one dependency must resolve to build this project."/>
   </Target>
 </Project>
 
