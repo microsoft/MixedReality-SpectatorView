@@ -13,7 +13,7 @@ public:
     DeckLinkManager(bool useCPU = false, bool passthroughOutput = false);
     ~DeckLinkManager();
 
-    HRESULT Initialize(ID3D11ShaderResourceView* colorSRV, ID3D11Texture2D* outputTexture);
+    HRESULT Initialize(ID3D11ShaderResourceView* colorSRV, ID3D11ShaderResourceView* depthSRV, ID3D11Texture2D* outputTexture);
     ProviderType GetProviderType() { return BlackMagic; }
 
     // Get the timestamp of the earliest (and currently rendered) cached frame.

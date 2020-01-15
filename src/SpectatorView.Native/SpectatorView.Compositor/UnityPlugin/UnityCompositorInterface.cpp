@@ -22,6 +22,7 @@ static bool isRecording = false;
 static bool videoInitialized = false;
 
 static BYTE* colorBytes = new BYTE[FRAME_BUFSIZE_RGBA];
+static BYTE* depthBytes = new BYTE[FRAME_BUFSIZE_DEPTH16];
 static BYTE* holoBytes = new BYTE[FRAME_BUFSIZE_RGBA];
 
 #define NUM_VIDEO_BUFFERS 10
@@ -77,11 +78,13 @@ void FreeVideoBuffers()
 static ID3D11Texture2D* g_holoRenderTexture = nullptr;
 
 static ID3D11Texture2D* g_colorTexture = nullptr;
+static ID3D11Texture2D* g_depthTexture = nullptr;
 static ID3D11Texture2D* g_compositeTexture = nullptr;
 static ID3D11Texture2D* g_videoTexture = nullptr;
 static ID3D11Texture2D* g_outputTexture = nullptr;
 
 static ID3D11ShaderResourceView* g_UnityColorSRV = nullptr;
+static ID3D11ShaderResourceView* g_UnityDepthSRV = nullptr;
 
 static ID3D11Device* g_pD3D11Device = NULL;
 
@@ -363,6 +366,7 @@ UNITYDLL bool InitializeFrameProviderOnDevice(int providerId)
 {
     if (g_outputTexture == nullptr ||
         g_UnityColorSRV == nullptr ||
+        g_UnityDepthSRV == nullptr ||
         g_pD3D11Device == nullptr)
     {
         return false;
@@ -379,7 +383,7 @@ UNITYDLL bool InitializeFrameProviderOnDevice(int providerId)
     }
 
     ci->SetFrameProvider((IFrameProvider::ProviderType) providerId);
-    isInitialized = ci->Initialize(g_pD3D11Device, g_UnityColorSRV, g_outputTexture);
+    isInitialized = ci->Initialize(g_pD3D11Device, g_UnityColorSRV, g_UnityDepthSRV, g_outputTexture);
 
     return isInitialized;
 }
@@ -475,6 +479,7 @@ UNITYDLL void Reset()
 {
     EnterCriticalSection(&lock);
     g_colorTexture = nullptr;
+    g_depthTexture = nullptr;
     g_compositeTexture = nullptr;
     g_videoTexture = nullptr;
     g_outputTexture = nullptr;
@@ -482,6 +487,7 @@ UNITYDLL void Reset()
     g_holoRenderTexture = nullptr;
 
     g_UnityColorSRV = nullptr;
+    g_UnityDepthSRV = nullptr;
 
     isInitialized = false;
 
@@ -563,6 +569,28 @@ UNITYDLL bool CreateUnityColorTexture(ID3D11ShaderResourceView*& srv)
     }
 
     srv = g_UnityColorSRV;
+    return true;
+}
+
+UNITYDLL bool CreateUnityDepthTexture(ID3D11ShaderResourceView*& srv)
+{
+    if (g_UnityDepthSRV == nullptr && g_pD3D11Device != nullptr)
+    {
+        g_depthTexture = DirectXHelper::CreateTexture(g_pD3D11Device, depthBytes, FRAME_WIDTH, FRAME_HEIGHT, FRAME_BPP_DEPTH16, DXGI_FORMAT_R16_UNORM);
+
+        if (g_depthTexture == nullptr)
+        {
+            return false;
+        }
+
+        g_UnityDepthSRV = DirectXHelper::CreateShaderResourceView(g_pD3D11Device, g_depthTexture, DXGI_FORMAT_R16_UNORM);
+        if (g_UnityDepthSRV == nullptr)
+        {
+            return false;
+        }
+    }
+
+    srv = g_UnityDepthSRV;
     return true;
 }
 #pragma endregion CreateExternalTextures

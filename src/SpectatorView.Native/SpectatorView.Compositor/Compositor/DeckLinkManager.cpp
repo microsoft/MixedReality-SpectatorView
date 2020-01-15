@@ -32,7 +32,7 @@ void DeckLinkManager::Update(int compositeFrameIndex)
     }
 }
 
-HRESULT DeckLinkManager::Initialize(ID3D11ShaderResourceView* colorSRV, ID3D11Texture2D* outputTexture)
+HRESULT DeckLinkManager::Initialize(ID3D11ShaderResourceView* colorSRV, ID3D11ShaderResourceView* depthSRV, ID3D11Texture2D* outputTexture)
 {
     if (deckLinkDiscovery == nullptr)
     {

@@ -7,8 +7,11 @@
 #include "AzureKinectFrameProvider.h"
 #include <k4a/k4a.h>
 
-HRESULT AzureKinectFrameProvider::Initialize(ID3D11ShaderResourceView* colorSRV, ID3D11Texture2D* outputTexture)
+HRESULT AzureKinectFrameProvider::Initialize(ID3D11ShaderResourceView* colorSRV, ID3D11ShaderResourceView* depthSRV, ID3D11Texture2D* outputTexture)
 {
+    InitializeCriticalSection(&lock);
+
+    _depthSRV = depthSRV;
     _colorSRV = colorSRV;
     _colorSRV->GetDevice(&d3d11Device);
 
@@ -31,6 +34,8 @@ HRESULT AzureKinectFrameProvider::Initialize(ID3D11ShaderResourceView* colorSRV,
 
     k4a_device_get_calibration(k4aDevice, config.depth_mode, config.color_resolution, &calibration);
     transformation = k4a_transformation_create(&calibration);
+
+    k4a_image_create(K4A_IMAGE_FORMAT_DEPTH16, calibration.color_camera_calibration.resolution_width, calibration.color_camera_calibration.resolution_height, 2 * calibration.color_camera_calibration.resolution_width, &transformedDepthImage);
     return S_OK;
 
 FailedExit:
@@ -68,15 +73,26 @@ void AzureKinectFrameProvider::Update(int compositeFrameIndex)
     }
 
     auto colorImage = k4a_capture_get_color_image(capture);
+    auto depthImage = k4a_capture_get_depth_image(capture);
+    if (colorImage == nullptr || depthImage == nullptr)
+    {
+        return;
+    }
 
     auto height = k4a_image_get_height_pixels(colorImage);
     auto width = k4a_image_get_width_pixels(colorImage);
     auto stride = k4a_image_get_stride_bytes(colorImage);
-    auto bpp = stride / width;
     auto buffer = k4a_image_get_buffer(colorImage);
 
     DirectXHelper::UpdateSRV(d3d11Device, _colorSRV, buffer, stride);
 
+    k4a_transformation_depth_image_to_color_camera(transformation, depthImage, transformedDepthImage);
+
+    stride = k4a_image_get_stride_bytes(transformedDepthImage);
+    buffer = k4a_image_get_buffer(transformedDepthImage);
+    DirectXHelper::UpdateSRV(d3d11Device, _depthSRV, buffer, stride);
+
+    k4a_image_release(depthImage);
     k4a_image_release(colorImage);
     k4a_capture_release(capture);
 }
@@ -98,11 +114,19 @@ bool AzureKinectFrameProvider::SupportsOutput()
 
 void AzureKinectFrameProvider::Dispose()
 {
+    if (transformedDepthImage != nullptr)
+    {
+        k4a_image_release(transformedDepthImage);
+        transformedDepthImage = nullptr;
+    }
+
     if (k4aDevice != nullptr)
     {
         k4a_device_close(k4aDevice);
         k4aDevice = nullptr;
     }
+
+    DeleteCriticalSection(&lock);
 }
 
 bool AzureKinectFrameProvider::OutputYUV()

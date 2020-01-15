@@ -62,6 +62,11 @@ namespace Microsoft.MixedReality.SpectatorView
         private Texture2D colorTexture = null;
 
         /// <summary>
+        /// The raw depth buffer from cameras that support depth
+        /// </summary>
+        private Texture2D depthTexture = null;
+
+        /// <summary>
         /// An override texture for testing calibration
         /// </summary>
         private Texture2D overrideColorTexture = null;
@@ -209,6 +214,7 @@ namespace Microsoft.MixedReality.SpectatorView
             SetHologramShaderAlpha(Compositor.DefaultAlpha);
 
             CreateColorTexture();
+            CreateDepthTexture();
             CreateOutputTextures();
 
             SetupCameraAndRenderTextures();
@@ -463,6 +469,18 @@ namespace Microsoft.MixedReality.SpectatorView
                     colorTexture = Texture2D.CreateExternalTexture(frameWidth, frameHeight, TextureFormat.ARGB32, false, false, colorSRV);
                     colorTexture.filterMode = FilterMode.Point;
                     colorTexture.anisoLevel = 0;
+                }
+            }
+        }
+
+        private void CreateDepthTexture()
+        {
+            if (depthTexture == null)
+            {
+                IntPtr depthSRV;
+                if (UnityCompositorInterface.CreateUnityDepthTexture(out depthSRV))
+                {
+                    depthTexture = Texture2D.CreateExternalTexture(frameWidth, frameHeight, TextureFormat.R16, false, false, depthSRV);
                 }
             }
         }
