@@ -37,6 +37,11 @@ void CompositorInterface::SetFrameProvider(IFrameProvider::ProviderType type)
     if (type == IFrameProvider::ProviderType::BlackMagic)
         frameProvider = new DeckLinkManager();
 #endif
+
+#if defined(INCLUDE_AZUREKINECT)
+    if (type == IFrameProvider::ProviderType::AzureKinect)
+        frameProvider = new AzureKinectFrameProvider();
+#endif
 }
 
 bool CompositorInterface::IsFrameProviderSupported(IFrameProvider::ProviderType providerType)
@@ -49,6 +54,11 @@ bool CompositorInterface::IsFrameProviderSupported(IFrameProvider::ProviderType 
 #if defined(INCLUDE_BLACKMAGIC)
 	if (providerType == IFrameProvider::ProviderType::BlackMagic)
 		return true;
+#endif
+
+#if defined(INCLUDE_AZUREKINECT)
+    if (providerType == IFrameProvider::ProviderType::AzureKinect)
+        return true;
 #endif
 
 	return false;

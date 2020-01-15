@@ -12,18 +12,21 @@
     <AzureKinectLibraryDirectory>C:\Program Files\Azure Kinect SDK v1.3.0\sdk\windows-desktop\amd64\release\lib</AzureKinectLibraryDirectory>
   </PropertyGroup>
   <ItemDefinitionGroup>
-    <ClCompile Condition="Exists('$(DeckLink_inc)') And Exists('$(Elgato_Filter)')">
+    <!--<ClCompile Condition="Exists('$(DeckLink_inc)') And Exists('$(Elgato_Filter)')">
       <PreprocessorDefinitions>INCLUDE_BLACKMAGIC;INCLUDE_ELGATO;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-    </ClCompile>
-    <ClCompile Condition="Exists('$(DeckLink_inc)') And !Exists('$(Elgato_Filter)')">
+    </ClCompile>-->
+    <ClCompile Condition="Exists('$(DeckLink_inc)')">
       <PreprocessorDefinitions>INCLUDE_BLACKMAGIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
-    <ClCompile Condition="!Exists('$(DeckLink_inc)') And Exists('$(Elgato_Filter)')">
+    <ClCompile Condition="!Exists('$(DeckLink_inc)')">
       <PreprocessorDefinitions>INCLUDE_ELGATO;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <ClCompile Condition="Exists('$(AzureKinectIncludeDirectory)')">
+      <PreprocessorDefinitions>INCLUDE_AZUREKINECT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
   </ItemDefinitionGroup>
   <Target Name="TestForElgatoAndBlackmagic" BeforeTargets="PrepareForBuild">
-    <Error Condition="!Exists('$(DeckLink_inc)') And !Exists('$(Elgato_Filter)')" Text="No capture card dependencies exist for the paths defined in dependencies.props. At least one dependency must resolve to build this project."/>
+    <Error Condition="!Exists('$(DeckLink_inc)') And !Exists('$(Elgato_Filter) And !Exists('$(AzureKinectIncludeDirectory)')" Text="No capture card dependencies exist for the paths defined in dependencies.props. At least one dependency must resolve to build this project."/>
   </Target>
 </Project>
 

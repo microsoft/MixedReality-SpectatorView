@@ -2,6 +2,8 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 #include "stdafx.h"
+
+#if defined(INCLUDE_AZUREKINECT)
 #include "AzureKinectFrameProvider.h"
 #include <k4a/k4a.h>
 
@@ -107,3 +109,4 @@ bool AzureKinectFrameProvider::OutputYUV()
 {
     return false;
 }
+#endif
