@@ -8,6 +8,8 @@
     <DeckLink_inc>C:\Blackmagic DeckLink SDK 10.9.11\Win\include</DeckLink_inc>
     <!-- From: https://github.com/elgatosf/gamecapture -->
     <Elgato_Filter Condition="$(Elgato_Filter) == ''">C:\gamecapture\VideoCaptureFilter</Elgato_Filter>
+    <AzureKinectIncludeDirectory>c:\Program Files\Azure Kinect SDK v1.3.0\sdk\include</AzureKinectIncludeDirectory>
+    <AzureKinectLibraryDirectory>C:\Program Files\Azure Kinect SDK v1.3.0\sdk\windows-desktop\amd64\release\lib</AzureKinectLibraryDirectory>
   </PropertyGroup>
   <PropertyGroup />
   <ItemDefinitionGroup />

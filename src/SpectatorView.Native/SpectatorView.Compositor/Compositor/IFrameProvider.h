@@ -11,6 +11,7 @@ public:
     {
         BlackMagic,
         Elgato,
+        AzureKinect,
     };
 
     // Set up the FrameProvider to start delivering frames.

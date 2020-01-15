@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include "CompositorInterface.h"
 #include "codecapi.h"
+#include "AzureKinectFrameProvider.h"
 
 CompositorInterface::CompositorInterface()
 {
@@ -27,10 +28,18 @@ void CompositorInterface::SetFrameProvider(IFrameProvider::ProviderType type)
         frameProvider = NULL;
     }
 
-    if(type == IFrameProvider::ProviderType::Elgato)
+    if (type == IFrameProvider::ProviderType::Elgato)
+    {
         frameProvider = new ElgatoFrameProvider();
-    if (type == IFrameProvider::ProviderType::BlackMagic)
+    }
+    else if (type == IFrameProvider::ProviderType::BlackMagic)
+    {
         frameProvider = new DeckLinkManager();
+    }
+    else if (type == IFrameProvider::ProviderType::AzureKinect)
+    {
+        frameProvider = new AzureKinectFrameProvider();
+    }
 }
 
 bool CompositorInterface::Initialize(ID3D11Device* device, ID3D11ShaderResourceView* colorSRV, ID3D11Texture2D* outputTexture)
