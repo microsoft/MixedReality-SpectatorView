@@ -16,15 +16,9 @@ namespace Microsoft.MixedReality.SpectatorView
 
         private SpriteAssetCache spriteAssets;
 
-        protected override void Awake()
-        {
-            base.Awake();
-
-            spriteAssets = SpriteAssetCache.LoadAssetCache<SpriteAssetCache>();
-        }
-
         private void Start()
         {
+            spriteAssets = SpriteAssetCache.LoadAssetCache<SpriteAssetCache>();
             StateSynchronizationSceneManager.Instance.RegisterService(this, new ComponentBroadcasterDefinition<ImageBroadcaster>(typeof(Image)));
         }
 
@@ -36,14 +30,14 @@ namespace Microsoft.MixedReality.SpectatorView
         }
 
 
-        public Guid GetSpriteId(Sprite sprite)
+        public AssetId GetSpriteId(Sprite sprite)
         {
-            return spriteAssets?.GetAssetId(sprite) ?? Guid.Empty;
+            return spriteAssets?.GetAssetId(sprite) ?? AssetId.Empty;
         }
 
-        public Sprite GetSprite(Guid guid)
+        public Sprite GetSprite(AssetId assetId)
         {
-            return spriteAssets?.GetAsset(guid);
+            return spriteAssets?.GetAsset(assetId);
         }
 
         public void UpdateAssetCache()
@@ -54,6 +48,11 @@ namespace Microsoft.MixedReality.SpectatorView
         public void ClearAssetCache()
         {
             SpriteAssetCache.GetOrCreateAssetCache<SpriteAssetCache>().ClearAssetCache();
+        }
+
+        public void SaveAssets()
+        {
+            SpriteAssetCache.GetOrCreateAssetCache<SpriteAssetCache>().SaveAssets();
         }
     }
 }

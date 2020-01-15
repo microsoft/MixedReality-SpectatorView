@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
             if (SkinnedMeshRendererBroadcaster.HasFlag(changeType, SkinnedMeshRendererBroadcaster.SkinnedMeshRendererChangeType.Mesh))
             {
-                Guid networkAssetId = message.ReadGuid();
+                AssetId networkAssetId = message.ReadAssetId();
                 if (!AssetService.Instance.AttachSkinnedMeshRenderer(this.gameObject, networkAssetId))
                 {
                     Debug.Log("Missing mesh for:" + gameObject.name);
@@ -25,9 +25,9 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
-        protected override void Read(SocketEndpoint sendingEndpoint, BinaryReader message, byte changeType)
+        protected override void Read(INetworkConnection connection, BinaryReader message, byte changeType)
         {
-            base.Read(sendingEndpoint, message, changeType);
+            base.Read(connection, message, changeType);
 
             if (SkinnedMeshRendererBroadcaster.HasFlag(changeType, SkinnedMeshRendererBroadcaster.SkinnedMeshRendererChangeType.Bones) && Renderer != null)
             {

@@ -9,7 +9,7 @@ namespace Microsoft.MixedReality.SpectatorView
 {
     internal class TextObserver : ComponentObserver<Text>
     {
-        public override void Read(SocketEndpoint sendingEndpoint, BinaryReader message)
+        public override void Read(INetworkConnection connection, BinaryReader message)
         {
             TextBroadcaster.ChangeType changeType = (TextBroadcaster.ChangeType)message.ReadByte();
 
@@ -26,11 +26,16 @@ namespace Microsoft.MixedReality.SpectatorView
                 attachedComponent.lineSpacing = message.ReadSingle();
                 attachedComponent.horizontalOverflow = (HorizontalWrapMode)message.ReadByte();
                 attachedComponent.verticalOverflow = (VerticalWrapMode)message.ReadByte();
-                attachedComponent.font = TextService.Instance.GetFont(message.ReadGuid());
+                attachedComponent.font = TextService.Instance.GetFont(message.ReadAssetId());
             }
             if (TextBroadcaster.HasFlag(changeType, TextBroadcaster.ChangeType.Materials))
             {
-                attachedComponent.material = MaterialPropertyAsset.ReadMaterials(message, null)?[0];
+                var materials = MaterialPropertyAsset.ReadMaterials(message, null);
+                if (materials != null &&
+                    materials.Length > 0)
+                {
+                    attachedComponent.material = materials[0];
+                }
             }
             if (TextBroadcaster.HasFlag(changeType, TextBroadcaster.ChangeType.MaterialProperty))
             {

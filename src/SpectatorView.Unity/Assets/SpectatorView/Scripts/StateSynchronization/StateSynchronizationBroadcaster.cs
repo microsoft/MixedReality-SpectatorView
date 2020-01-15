@@ -28,6 +28,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
         private const float PerfUpdateTimeSeconds = 1.0f;
         private float timeUntilNextPerfUpdate = PerfUpdateTimeSeconds;
+        private int numFrames = 0;
 
         private GameObject dontDestroyOnLoadGameObject;
         
@@ -39,38 +40,24 @@ namespace Microsoft.MixedReality.SpectatorView
             base.Awake();
 
             RegisterCommandHandler(StateSynchronizationObserver.SyncCommand, HandleSyncCommand);
+            RegisterCommandHandler(StateSynchronizationObserver.PerfDiagnosticModeEnabledCommand, HandlePerfMonitoringModeEnableRequest);
 
             // Ensure that runInBackground is set to true so that the app continues to send network
             // messages even if it loses focus
             Application.runInBackground = true;
         }
-
         protected override void OnDestroy()
         {
             base.OnDestroy();
 
             UnregisterCommandHandler(StateSynchronizationObserver.SyncCommand, HandleSyncCommand);
+            UnregisterCommandHandler(StateSynchronizationObserver.PerfDiagnosticModeEnabledCommand, HandlePerfMonitoringModeEnableRequest);
         }
 
         protected override void Start()
         {
             base.Start();
-
-            SetupNetworkConnectionManager();
-        }
-
-        protected virtual void SetupNetworkConnectionManager()
-        {
-            if (connectionManager != null)
-            {
-                DebugLog("Setting up connection manager");
-
-                connectionManager.StartListening(Port);
-            }
-            else
-            {
-                Debug.LogWarning("Connection Manager not defined for Broadcaster.");
-            }
+            StartListening(Port);
         }
 
         private void DebugLog(string message)
@@ -81,16 +68,16 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
-        protected override void OnConnected(SocketEndpoint endpoint)
+        protected override void OnConnected(INetworkConnection connection)
         {
-            DebugLog($"Broadcaster received connection from {endpoint.Address}.");
-            base.OnConnected(endpoint);
+            DebugLog($"Broadcaster received connection from {connection.ToString()}.");
+            base.OnConnected(connection);
         }
 
-        protected override void OnDisconnected(SocketEndpoint endpoint)
+        protected override void OnDisconnected(INetworkConnection connection)
         {
-            DebugLog($"Broadcaster received disconnect from {endpoint.Address}"); ;
-            base.OnDisconnected(endpoint);
+            DebugLog($"Broadcaster received disconnect from {connection.ToString()}"); ;
+            base.OnDisconnected(connection);
         }
 
         /// <summary>
@@ -100,7 +87,7 @@ namespace Microsoft.MixedReality.SpectatorView
         {
             get
             {
-                return connectionManager != null && connectionManager.HasConnections;
+                return connectionManager != null && connectionManager.Connections.Count > 0;
             }
         }
 
@@ -163,42 +150,58 @@ namespace Microsoft.MixedReality.SpectatorView
         public void OnFrameCompleted()
         {
             //Camera update
+            using (MemoryStream memoryStream = new MemoryStream())
+            using (BinaryWriter message = new BinaryWriter(memoryStream))
             {
-                using (MemoryStream memoryStream = new MemoryStream())
-                using (BinaryWriter message = new BinaryWriter(memoryStream))
+                Transform camTrans = null;
+                if (Camera.main != null &&
+                    Camera.main.transform != null)
                 {
-                    message.Write(StateSynchronizationObserver.CameraCommand);
-                    Transform camTrans = Camera.main.transform;
-                    message.Write(Time.time);
-                    message.Write(camTrans.position);
-                    message.Write(camTrans.rotation);
-                    message.Flush();
-
-                    connectionManager.Broadcast(memoryStream.ToArray());
+                    camTrans = Camera.main.transform;
                 }
+
+                message.Write(StateSynchronizationObserver.CameraCommand);
+                message.Write(Time.time);
+                message.Write(camTrans != null ? camTrans.position : Vector3.zero);
+                message.Write(camTrans != null ? camTrans.rotation : Quaternion.identity);
+                message.Flush();
+
+                connectionManager.Broadcast(memoryStream.GetBuffer(), 0, memoryStream.Position);
             }
 
             //Perf
             timeUntilNextPerfUpdate -= Time.deltaTime;
+            numFrames++;
             if (timeUntilNextPerfUpdate < 0)
             {
-                timeUntilNextPerfUpdate = PerfUpdateTimeSeconds;
-
                 using (MemoryStream memoryStream = new MemoryStream())
                 using (BinaryWriter message = new BinaryWriter(memoryStream))
                 {
                     message.Write(StateSynchronizationObserver.PerfCommand);
-                    StateSynchronizationPerformanceMonitor.Instance.WriteMessage(message);
+                    StateSynchronizationPerformanceMonitor.Instance.WriteMessage(message, numFrames);
                     message.Flush();
-                    connectionManager.Broadcast(memoryStream.ToArray());
+                    connectionManager.Broadcast(memoryStream.GetBuffer(), 0, memoryStream.Position);
                 }
+
+                timeUntilNextPerfUpdate = PerfUpdateTimeSeconds;
+                numFrames = 0;
             }
         }
 
-        public void HandleSyncCommand(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
+        public void HandleSyncCommand(INetworkConnection connection, string command, BinaryReader reader, int remainingDataSize)
         {
             reader.ReadSingle(); // float time
-            StateSynchronizationSceneManager.Instance.ReceiveMessage(endpoint, reader);
+            StateSynchronizationSceneManager.Instance.ReceiveMessage(connection, reader);
         }
+
+        private void HandlePerfMonitoringModeEnableRequest(INetworkConnection connection, string command, BinaryReader reader, int remainingDataSize)
+        {
+            bool enabled = reader.ReadBoolean();
+            if (StateSynchronizationPerformanceMonitor.Instance != null)
+            {
+                StateSynchronizationPerformanceMonitor.Instance.SetDiagnosticMode(enabled);
+            }
+        }
+
     }
 }

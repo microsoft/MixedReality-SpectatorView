@@ -1,8 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.SpectatorView
@@ -13,7 +12,7 @@ namespace Microsoft.MixedReality.SpectatorView
     public class HolographicCameraBroadcaster : NetworkManager<HolographicCameraBroadcaster>
     {
         [SerializeField]
-        [Tooltip("The TCP port that the listening socket should be bound to.")]
+        [Tooltip("The port that the listening socket should be bound to.")]
         private int listeningPort = 7502;
 
         protected override int RemotePort => listeningPort;
@@ -21,7 +20,6 @@ namespace Microsoft.MixedReality.SpectatorView
         protected override void Awake()
         {
             base.Awake();
-
             connectionManager.StartListening(listeningPort);
         }
     }

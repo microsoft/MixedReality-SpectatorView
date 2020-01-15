@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.SpectatorView
     public abstract class DynamicGameObjectHierarchyBroadcaster<TComponentService> : ComponentBroadcaster<TComponentService, byte> where TComponentService : Singleton<TComponentService>, IComponentBroadcasterService
     {
         private GameObject dynamicObject;
-        private Dictionary<SocketEndpoint, PerConnectionInstantiationState> perConnectionInstantiationState = new Dictionary<SocketEndpoint, PerConnectionInstantiationState>();
+        private Dictionary<INetworkConnection, PerConnectionInstantiationState> perConnectionInstantiationState = new Dictionary<INetworkConnection, PerConnectionInstantiationState>();
 
         private class PerConnectionInstantiationState
         {
@@ -64,15 +64,15 @@ namespace Microsoft.MixedReality.SpectatorView
             return true;
         }
 
-        protected override bool ShouldSendChanges(SocketEndpoint endpoint)
+        protected override bool ShouldSendChanges(INetworkConnection connection)
         {
             // We always need to send changes for dynamic components to negotiate the observer instantiation
             return true;
         }
 
-        protected override void ProcessNewConnections(IEnumerable<SocketEndpoint> connectionsRequiringFullUpdate)
+        protected override void ProcessNewConnections(IEnumerable<INetworkConnection> connectionsRequiringFullUpdate)
         {
-            foreach (SocketEndpoint newConnection in connectionsRequiringFullUpdate)
+            foreach (INetworkConnection newConnection in connectionsRequiringFullUpdate)
             {
                 if (DynamicObject == null)
                 {
@@ -85,14 +85,13 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
-        protected override void SendCompleteChanges(IEnumerable<SocketEndpoint> endpoints)
+        protected override void SendCompleteChanges(IEnumerable<INetworkConnection> connections)
         {
-            foreach (SocketEndpoint endpoint in endpoints)
+            foreach (INetworkConnection connection in connections)
             {
-                PerConnectionInstantiationState state;
-                if (!perConnectionInstantiationState.TryGetValue(endpoint, out state))
+                if (!perConnectionInstantiationState.ContainsKey(connection))
                 {
-                    perConnectionInstantiationState.Add(endpoint, new PerConnectionInstantiationState
+                    perConnectionInstantiationState.Add(connection, new PerConnectionInstantiationState
                     {
                         observerObjectCreated = false,
                         sendInstantiationRequest = true
@@ -100,15 +99,15 @@ namespace Microsoft.MixedReality.SpectatorView
                 }
             }
 
-            SendDeltaChanges(endpoints, 0);
+            SendDeltaChanges(connections, 0);
         }
 
-        protected override void SendDeltaChanges(IEnumerable<SocketEndpoint> endpoints, byte changeFlags)
+        protected override void SendDeltaChanges(IEnumerable<INetworkConnection> connections, byte changeFlags)
         {
-            foreach (SocketEndpoint endpoint in endpoints)
+            foreach (INetworkConnection connection in connections)
             {
                 PerConnectionInstantiationState state;
-                if (perConnectionInstantiationState.TryGetValue(endpoint, out state))
+                if (perConnectionInstantiationState.TryGetValue(connection, out state))
                 {
                     if (state.sendInstantiationRequest)
                     {
@@ -122,24 +121,24 @@ namespace Microsoft.MixedReality.SpectatorView
                             WriteInstantiationRequestParameters(message);
 
                             message.Flush();
-                            endpoint.Send(memoryStream.ToArray());
+                            connection.Send(memoryStream.GetBuffer(), 0, memoryStream.Position);
                         }
                     }
 
                     if (state.sendTransformHierarchyBinding)
                     {
                         state.sendTransformHierarchyBinding = false;
-                        SendTransformHierarchyBinding(endpoint);
+                        SendTransformHierarchyBinding(connection);
                     }
                 }
             }
         }
 
-        protected override void RemoveDisconnectedEndpoints(IEnumerable<SocketEndpoint> endpoints)
+        protected override void RemoveDisconnectedEndpoints(IEnumerable<INetworkConnection> connections)
         {
-            foreach (SocketEndpoint endpoint in endpoints)
+            foreach (INetworkConnection connection in connections)
             {
-                perConnectionInstantiationState.Remove(endpoint);
+                perConnectionInstantiationState.Remove(connection);
             }
         }
 
@@ -147,11 +146,11 @@ namespace Microsoft.MixedReality.SpectatorView
         
         private void OnDynamicObjectConstructed()
         {
-            foreach (SocketEndpoint endpoint in perConnectionInstantiationState.Keys)
+            foreach (INetworkConnection connection in perConnectionInstantiationState.Keys)
             {
-                if (TransformBroadcaster.BlockedConnections.Remove(endpoint))
+                if (TransformBroadcaster.BlockedConnections.Remove(connection))
                 {
-                    DynamicObject.GetComponent<TransformBroadcaster>().BlockedConnections.Add(endpoint);
+                    DynamicObject.GetComponent<TransformBroadcaster>().BlockedConnections.Add(connection);
                 }
                 else
                 {
@@ -159,7 +158,7 @@ namespace Microsoft.MixedReality.SpectatorView
                 }
             }
 
-            foreach (KeyValuePair<SocketEndpoint, PerConnectionInstantiationState> state in perConnectionInstantiationState)
+            foreach (KeyValuePair<INetworkConnection, PerConnectionInstantiationState> state in perConnectionInstantiationState)
             {
                 if (state.Value.observerObjectCreated)
                 {
@@ -170,7 +169,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
         protected void SendInstantiationRequest()
         {
-            foreach (KeyValuePair<SocketEndpoint, PerConnectionInstantiationState> state in perConnectionInstantiationState)
+            foreach (KeyValuePair<INetworkConnection, PerConnectionInstantiationState> state in perConnectionInstantiationState)
             {
                 TransformBroadcaster.BlockedConnections.Add(state.Key);
                 state.Value.observerObjectCreated = false;
@@ -178,21 +177,21 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
-        public void Read(SocketEndpoint sendingEndpoint, BinaryReader message)
+        public void Read(INetworkConnection connection, BinaryReader message)
         {
             byte changeType = message.ReadByte();
 
-            Read(sendingEndpoint, message, changeType);
+            Read(connection, message, changeType);
         }
 
-        protected virtual void Read(SocketEndpoint sendingEndpoint, BinaryReader message, byte changeType)
+        protected virtual void Read(INetworkConnection connection, BinaryReader message, byte changeType)
         {
             switch (changeType)
             {
                 case ChangeType.ObserverObjectCreated:
                     {
                         PerConnectionInstantiationState state;
-                        if (perConnectionInstantiationState.TryGetValue(sendingEndpoint, out state))
+                        if (perConnectionInstantiationState.TryGetValue(connection, out state))
                         {
                             state.observerObjectCreated = true;
 
@@ -206,13 +205,13 @@ namespace Microsoft.MixedReality.SpectatorView
                 case ChangeType.ObserverHierarchyBound:
                     if (DynamicObject != null)
                     {
-                        DynamicObject.GetComponent<TransformBroadcaster>().BlockedConnections.Remove(sendingEndpoint);
+                        DynamicObject.GetComponent<TransformBroadcaster>().BlockedConnections.Remove(connection);
                     }
                     break;
             }
         }
 
-        private void SendTransformHierarchyBinding(SocketEndpoint sendingEndpoint)
+        private void SendTransformHierarchyBinding(INetworkConnection connection)
         {
             using (MemoryStream memoryStream = new MemoryStream())
             using (BinaryWriter message = new BinaryWriter(memoryStream))
@@ -224,7 +223,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
                 message.Flush();
 
-                sendingEndpoint.Send(memoryStream.ToArray());
+                connection.Send(memoryStream.GetBuffer(), 0, memoryStream.Position);
             }
         }
     }

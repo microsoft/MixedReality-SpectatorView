@@ -8,7 +8,7 @@ namespace Microsoft.MixedReality.SpectatorView
 {
     internal class CanvasGroupObserver : ComponentObserver<CanvasGroup>
     {
-        public override void Read(SocketEndpoint sendingEndpoint, BinaryReader message)
+        public override void Read(INetworkConnection connection, BinaryReader message)
         {
             CanvasGroupBroadcaster.ChangeType changeType = (CanvasGroupBroadcaster.ChangeType)message.ReadByte();
 

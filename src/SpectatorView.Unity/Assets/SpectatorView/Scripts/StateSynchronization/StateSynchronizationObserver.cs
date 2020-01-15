@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -15,6 +16,7 @@ namespace Microsoft.MixedReality.SpectatorView
         public const string SyncCommand = "SYNC";
         public const string CameraCommand = "Camera";
         public const string PerfCommand = "Perf";
+        public const string PerfDiagnosticModeEnabledCommand = "PERFDIAG";
 
         /// <summary>
         /// Check to enable debug logging.
@@ -30,10 +32,10 @@ namespace Microsoft.MixedReality.SpectatorView
         [SerializeField]
         protected int port = 7410;
 
-        private double[] averageTimePerFeature;
         private const float heartbeatTimeInterval = 0.1f;
         private float timeSinceLastHeartbeat = 0.0f;
         private HologramSynchronizer hologramSynchronizer = new HologramSynchronizer();
+        private StateSynchronizationPerformanceMonitor.ParsedMessage lastPerfMessage = StateSynchronizationPerformanceMonitor.ParsedMessage.Empty;
 
         private static readonly byte[] heartbeatMessage = GenerateHeartbeatMessage();
 
@@ -48,18 +50,7 @@ namespace Microsoft.MixedReality.SpectatorView
             // messages even if it loses focus
             Application.runInBackground = true;
 
-            if (connectionManager != null)
-            {
-                DebugLog("Setting up connection manager");
-
-                // Start listening to incoming connections as well.
-                connectionManager.StartListening(port);
-            }
-            else
-            {
-                Debug.LogError("Connection manager not specified for Observer.");
-            }
-
+            StartListening(port);
             RegisterCommandHandler(SyncCommand, HandleSyncCommand);
             RegisterCommandHandler(CameraCommand, HandleCameraCommand);
             RegisterCommandHandler(PerfCommand, HandlePerfCommand);
@@ -80,21 +71,21 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
-        protected override void OnConnected(SocketEndpoint endpoint)
+        protected override void OnConnected(INetworkConnection connection)
         {
-            base.OnConnected(endpoint);
+            base.OnConnected(connection);
 
-            DebugLog($"Observer Connected to endpoint: {endpoint.Address}");
+            DebugLog($"Observer Connected to connection: {connection.ToString()}");
 
             if (StateSynchronizationSceneManager.IsInitialized)
             {
                 StateSynchronizationSceneManager.Instance.MarkSceneDirty();
             }
 
-            hologramSynchronizer.Reset(endpoint);
+            hologramSynchronizer.Reset(connection);
         }
 
-        public void HandleCameraCommand(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
+        public void HandleCameraCommand(INetworkConnection connection, string command, BinaryReader reader, int remainingDataSize)
         {
             float timeStamp = reader.ReadSingle();
             hologramSynchronizer.RegisterCameraUpdate(timeStamp);
@@ -102,47 +93,47 @@ namespace Microsoft.MixedReality.SpectatorView
             transform.rotation = reader.ReadQuaternion();
         }
 
-        public void HandleSyncCommand(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
+        public void HandleSyncCommand(INetworkConnection connection, string command, BinaryReader reader, int remainingDataSize)
         {
             float timeStamp = reader.ReadSingle();
             hologramSynchronizer.RegisterFrameData(reader.ReadBytes(remainingDataSize), timeStamp);
         }
 
-        public void HandlePerfCommand(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
+        public void HandlePerfCommand(INetworkConnection connection, string command, BinaryReader reader, int remainingDataSize)
         {
-            int featureCount = reader.ReadInt32();
+            StateSynchronizationPerformanceMonitor.ReadMessage(reader, out lastPerfMessage);
+        }
 
-            if (averageTimePerFeature == null)
+        public void SetPerformanceMonitoringMode(bool enabled)
+        {
+            if (IsConnected)
             {
-                averageTimePerFeature = new double[featureCount];
+                using (MemoryStream stream = new MemoryStream())
+                using (BinaryWriter writer = new BinaryWriter(stream))
+                {
+                    writer.Write(PerfDiagnosticModeEnabledCommand);
+                    writer.Write(enabled);
+                    writer.Flush();
+                    connectionManager.Broadcast(stream.GetBuffer(), 0, stream.Position);
+                }
             }
-
-            for (int i = 0; i < featureCount; i++)
-            {
-                averageTimePerFeature[i] = reader.ReadSingle();
-            }
         }
 
-        internal int PerformanceFeatureCount
-        {
-            get { return averageTimePerFeature?.Length ?? 0; }
-        }
-
-        internal IReadOnlyList<double> AverageTimePerFeature
-        {
-            get { return averageTimePerFeature; }
-        }
+        internal bool PerformanceMonitoringModeEnabled => lastPerfMessage.PerformanceMonitoringEnabled;
+        internal IReadOnlyList<Tuple<string, double>> PerformanceEventDurations => lastPerfMessage.EventDurations;
+        internal IReadOnlyList<Tuple<string, double>> PerformanceSummedEventDurations => lastPerfMessage.SummedEventDurations;
+        internal IReadOnlyList<Tuple<string, int>> PerformanceEventCounts => lastPerfMessage.EventCounts;
+        internal IReadOnlyList<Tuple<string, StateSynchronizationPerformanceMonitor.MemoryUsage>> PerformanceMemoryUsageEvents => lastPerfMessage.MemoryUsages;
 
         private void CheckAndSendHeartbeat()
         {
-            if (connectionManager != null &&
-                connectionManager.HasConnections)
+            if (IsConnected)
             {
                 timeSinceLastHeartbeat += Time.deltaTime;
                 if (timeSinceLastHeartbeat > heartbeatTimeInterval)
                 {
                     timeSinceLastHeartbeat = 0.0f;
-                    connectionManager.Broadcast(heartbeatMessage);
+                    connectionManager.Broadcast(heartbeatMessage, 0, heartbeatMessage.Length);
                 }
             }
         }

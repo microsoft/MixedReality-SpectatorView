@@ -7,6 +7,10 @@ namespace Microsoft.MixedReality.SpectatorView
 {
     public class NetworkConfigurationSettings : Singleton<NetworkConfigurationSettings>
     {
+        [Tooltip("Specify a custom prefab containing an INetworkConnectionManager")]
+        [SerializeField]
+        private GameObject overrideConnectionManagerPrefab = null;
+
         [Tooltip("Check to enable a mobile network configuration visual to obtain the user IP Address.")]
         [SerializeField]
         private bool enableMobileNetworkConfigurationVisual = true;
@@ -14,6 +18,11 @@ namespace Microsoft.MixedReality.SpectatorView
         [Tooltip("Prefab for creating amobile network configuration visual, which replaces the defaultMobileNetworkConfigurationVisualPrefab on the SpectatorView component if set.")]
         [SerializeField]
         private GameObject overrideMobileNetworkConfigurationVisualPrefab = null;
+
+        /// <summary>
+        /// Prefab for creating an INetworkConnectionManager.
+        /// </summary>
+        public GameObject OverrideConnectionManagerPrefab => overrideConnectionManagerPrefab;
 
         /// <summary>
         /// When true, a mobile network configuration visual is used to obtain the user IP Address.

@@ -27,13 +27,13 @@ namespace Microsoft.MixedReality.SpectatorView
         private bool showDebugVisuals;
         private readonly TaskCompletionSource<ISet<Guid>> peerSupportedLocalizersTaskSource = new TaskCompletionSource<ISet<Guid>>();
 
-        public SocketEndpoint SocketEndpoint { get; }
+        public INetworkConnection NetworkConnection { get; }
 
-        public SpatialCoordinateSystemParticipant(SocketEndpoint endpoint, GameObject debugVisualPrefab, float debugVisualScale)
+        public SpatialCoordinateSystemParticipant(INetworkConnection connection, GameObject debugVisualPrefab, float debugVisualScale)
         {
             this.debugVisualPrefab = debugVisualPrefab;
             this.debugVisualScale = debugVisualScale;
-            SocketEndpoint = endpoint;
+            NetworkConnection = connection;
         }
 
         public ISpatialCoordinate Coordinate
@@ -121,7 +121,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
         public void EnsureStateChangesAreBroadcast()
         {
-            if (SocketEndpoint != null && SocketEndpoint.IsConnected)
+            if (NetworkConnection != null && NetworkConnection.IsConnected)
             {
                 SendCoordinateStateMessage();
             }
@@ -163,12 +163,13 @@ namespace Microsoft.MixedReality.SpectatorView
 
                 message.Write(position);
                 message.Write(rotation);
+                message.Flush();
 
                 byte[] newCoordinateStatusMessage = stream.ToArray();
                 if (previousCoordinateStatusMessage == null || !previousCoordinateStatusMessage.SequenceEqual(newCoordinateStatusMessage))
                 {
+                    NetworkConnection.Send(newCoordinateStatusMessage, 0, newCoordinateStatusMessage.Length);
                     previousCoordinateStatusMessage = newCoordinateStatusMessage;
-                    SocketEndpoint.Send(newCoordinateStatusMessage);
                 }
             }
         }
@@ -180,8 +181,8 @@ namespace Microsoft.MixedReality.SpectatorView
             {
                 writer.Write(LocalizationDataExchangeCommand);
                 writeCallback(writer);
-
-                SocketEndpoint.Send(stream.ToArray());
+                writer.Flush();
+                NetworkConnection.Send(stream.GetBuffer(), 0, stream.Position);
             }
         }
 
@@ -199,7 +200,7 @@ namespace Microsoft.MixedReality.SpectatorView
             PeerSpatialCoordinateWorldRotation = reader.ReadQuaternion();
         }
 
-        internal void SendSupportedLocalizersMessage(SocketEndpoint endpoint, ICollection<Guid> supportedLocalizers)
+        internal void SendSupportedLocalizersMessage(INetworkConnection connection, ICollection<Guid> supportedLocalizers)
         {
             using (MemoryStream stream = new MemoryStream())
             using (BinaryWriter writer = new BinaryWriter(stream))
@@ -210,8 +211,8 @@ namespace Microsoft.MixedReality.SpectatorView
                 {
                     writer.Write(supportedLocalizer);
                 }
-
-                endpoint.Send(stream.ToArray());
+                writer.Flush();
+                connection.Send(stream.GetBuffer(), 0, stream.Position);
             }
         }
 

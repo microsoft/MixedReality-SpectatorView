@@ -15,26 +15,20 @@ namespace Microsoft.MixedReality.SpectatorView
 
         private FontAssetCache fontAssets;
 
-        protected override void Awake()
-        {
-            base.Awake();
-
-            fontAssets = FontAssetCache.LoadAssetCache<FontAssetCache>();
-        }
-
         private void Start()
         {
+            fontAssets = FontAssetCache.LoadAssetCache<FontAssetCache>();
             StateSynchronizationSceneManager.Instance.RegisterService(this, new ComponentBroadcasterDefinition<TextBroadcaster>(typeof(Text)));
         }
 
-        public Guid GetFontId(Font font)
+        public AssetId GetFontId(Font font)
         {
-            return fontAssets?.GetAssetId(font) ?? Guid.Empty;
+            return fontAssets?.GetAssetId(font) ?? AssetId.Empty;
         }
 
-        public Font GetFont(Guid guid)
+        public Font GetFont(AssetId assetId)
         {
-            return fontAssets?.GetAsset(guid);
+            return fontAssets?.GetAsset(assetId);
         }
     }
 }

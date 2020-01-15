@@ -59,14 +59,14 @@ namespace Microsoft.MixedReality.SpectatorView
             return changeType;
         }
 
-        protected override void SendCompleteChanges(IEnumerable<SocketEndpoint> endpoints)
+        protected override void SendCompleteChanges(IEnumerable<INetworkConnection> connections)
         {
             previousEnabled = canvas.enabled;
             previousProperties = new CanvasProperties(canvas);
-            SendDeltaChanges(endpoints, ChangeType.Enabled | ChangeType.Properties);
+            SendDeltaChanges(connections, ChangeType.Enabled | ChangeType.Properties);
         }
 
-        protected override void SendDeltaChanges(IEnumerable<SocketEndpoint> endpoints, ChangeType changeType)
+        protected override void SendDeltaChanges(IEnumerable<INetworkConnection> connections, ChangeType changeType)
         {
             using (MemoryStream memoryStream = new MemoryStream())
             using (BinaryWriter message = new BinaryWriter(memoryStream))
@@ -89,7 +89,7 @@ namespace Microsoft.MixedReality.SpectatorView
                 }
 
                 message.Flush();
-                StateSynchronizationSceneManager.Instance.Send(endpoints, memoryStream.ToArray());
+                StateSynchronizationSceneManager.Instance.Send(connections, memoryStream.GetBuffer(), 0, memoryStream.Position);
             }
         }
 

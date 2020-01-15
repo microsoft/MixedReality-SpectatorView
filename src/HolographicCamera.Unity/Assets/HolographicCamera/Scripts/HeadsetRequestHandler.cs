@@ -12,28 +12,21 @@ namespace Microsoft.MixedReality.SpectatorView
     public class HeadsetRequestHandler : MonoBehaviour
     {
         /// <summary>
-        /// Used to receive network messages.
-        /// </summary>
-        [Tooltip("Used to receive network messages.")]
-        [SerializeField]
-        private HolographicCameraBroadcaster holographicCameraBroadcaster = null;
-
-        /// <summary>
-        /// Used to send network messages.
-        /// </summary>
-        [Tooltip("Used to send network messages.")]
-        [SerializeField]
-        private TCPConnectionManager connectionManager = null;
-
-        /// <summary>
         /// Used to obtain marker and headset data.
         /// </summary>
         [Tooltip("Used to obtain marker and headset data.")]
         [SerializeField]
         private HeadsetCalibration headsetCalibration = null;
 
+        /// <summary>
+        /// Holographic camera broadcaster used for sending and receiving network messages.
+        /// </summary>
+        [Tooltip(" Holographic camera broadcaster used for sending and receiving network messages.")]
+        [SerializeField]
+        private HolographicCameraBroadcaster holographicCameraBroadcaster = null;
+
         private bool initialized = false;
-        private string editorAddress = string.Empty;
+        private INetworkConnection editorConnection = null;
         private bool updateData = false;
         private HeadsetCalibrationDataRequest request = null;
 
@@ -71,17 +64,17 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
-        private void OnDisconnect(SocketEndpoint endpoint)
+        private void OnDisconnect(INetworkConnection connection)
         {
-            if (endpoint.Address == editorAddress)
+            if (connection == editorConnection)
             {
                 DisableChildren();
             }
         }
 
-        private void CalibrationDataRequested(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
+        private void CalibrationDataRequested(INetworkConnection connection, string command, BinaryReader reader, int remainingDataSize)
         {
-            editorAddress = endpoint.Address;
+            editorConnection = connection;
             EnableChildren();
 
             if (HeadsetCalibrationDataRequest.TryDeserialize(reader, out request))
@@ -97,7 +90,7 @@ namespace Microsoft.MixedReality.SpectatorView
         }
 
 #if WINDOWS_UWP
-        private async void UploadCalibrationDataAsync(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
+        private async void UploadCalibrationDataAsync(INetworkConnection connection, string command, BinaryReader reader, int remainingDataSize)
         {
             bool succeeded = true;
             string uploadMessage = "Successfully uploaded calibration data.";
@@ -120,7 +113,7 @@ namespace Microsoft.MixedReality.SpectatorView
             SendUploadResult(succeeded, uploadMessage);
         }
 #else
-        private void UploadCalibrationDataAsync(SocketEndpoint endpoint, string command, BinaryReader reader, int remainingDataSize)
+        private void UploadCalibrationDataAsync(INetworkConnection connection, string command, BinaryReader reader, int remainingDataSize)
         {
             SendUploadResult(false, "Uploading calibration data not supported for current platform.");
         }
@@ -154,7 +147,7 @@ namespace Microsoft.MixedReality.SpectatorView
                     writer.Flush();
 
                     Debug.Log("Sending headset calibration data payload.");
-                    connectionManager.Broadcast(memoryStream.ToArray());
+                    holographicCameraBroadcaster.Broadcast(memoryStream.GetBuffer(), 0, memoryStream.Position);
                 }
             }
         }
@@ -172,7 +165,7 @@ namespace Microsoft.MixedReality.SpectatorView
                     writer.Flush();
 
                     Debug.Log("Sending upload result message.");
-                    connectionManager.Broadcast(memoryStream.ToArray());
+                    holographicCameraBroadcaster.Broadcast(memoryStream.GetBuffer(), 0, memoryStream.Position);
                 }
             }
         }

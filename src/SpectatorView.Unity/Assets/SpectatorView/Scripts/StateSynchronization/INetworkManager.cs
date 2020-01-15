@@ -8,6 +8,11 @@ namespace Microsoft.MixedReality.SpectatorView
     public interface INetworkManager : ICommandRegistry
     {
         /// <summary>
+        /// Readonly list of all current network connections.
+        /// </summary>
+        IReadOnlyList<INetworkConnection> Connections { get; }
+
+        /// <summary>
         /// Gets whether or not a network connection to the device is established.
         /// </summary>
         bool IsConnected { get; }
@@ -28,11 +33,11 @@ namespace Microsoft.MixedReality.SpectatorView
         TimeSpan TimeSinceLastUpdate { get; }
 
         /// <summary>
-        /// Starts a listening socket on the given port.
+        /// Starts listening on the given port.
         /// </summary>
         /// <param name="port">The port to listen for new connections on.</param>
         void StartListening(int port);
-        
+
         /// <summary>
         /// Connect to a remote device on the default port for this network manager.
         /// </summary>
@@ -54,7 +59,9 @@ namespace Microsoft.MixedReality.SpectatorView
         /// <summary>
         /// Send a packet of data to all connected devices.
         /// </summary>
-        /// <param name="data">The data to send to each connected device.</param>
-        void Broadcast(byte[] data);
+        /// <param name="data">A reference to the data to send</param>
+        /// <param name="offset">The offset from the start of the array to use to obtain the data to send</param>
+        /// <param name="length">The length of the data to send</param>
+        void Broadcast(byte[] data, long offset, long length);
     }
 }

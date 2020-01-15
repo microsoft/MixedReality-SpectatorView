@@ -1,22 +1,17 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-// Enable this preprocessor directive (QRCODESTRACKER_BINARY_AVAILABLE) in your player settings as needed.
-#if QRCODESTRACKER_BINARY_AVAILABLE && WINDOWS_UWP && UNITY_WSA
+#if WINDOWS_UWP && UNITY_WSA
 #define ENABLE_QRCODES
-#endif
-
-using UnityEngine;
-
-#if ENABLE_QRCODES
-using Microsoft.MixedReality.QR;
 #endif
 
 using System;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using UnityEngine;
 
 #if ENABLE_QRCODES
+using Microsoft.MixedReality.QR;
 using Windows.Perception.Spatial;
 using Windows.Perception.Spatial.Preview;
 #endif

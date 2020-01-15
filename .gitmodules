@@ -11,3 +11,12 @@
 	path = external/Azure-Spatial-Anchors-Samples
 	url = https://github.com/Azure/azure-spatial-anchors-samples
 	ignore = dirty
+[submodule "external/gamecapture"]
+	path = external/gamecapture
+	url = https://github.com/elgatosf/gamecapture.git
+[submodule "external/vcpkg"]
+	path = external/vcpkg
+	url = https://github.com/microsoft/vcpkg.git
+[submodule "external/MSBuildForUnity"]
+	path = external/MSBuildForUnity
+	url = https://github.com/microsoft/MSBuildForUnity.git

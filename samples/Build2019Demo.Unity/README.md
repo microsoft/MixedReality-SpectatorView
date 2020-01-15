@@ -1,6 +1,6 @@
 # //BUILD 2019 Demo
 
-This sample of using SpectatorView is very similar to the live code demo presented at //BUILD 2019 conference.
+This sample of using SpectatorView is very similar to the live code demo presented at //BUILD 2019 conference. It showcases the [Azure Spatial Anchors](https://azure.microsoft.com/en-us/services/spatial-anchors/) alignment strategy.
 
 [![//BUILD 2019 Video](../../doc/images/Build2019DemoVideo.png)](https://www.youtube.com/watch?v=P8og3nC5FaQ&t=2255 "//BUILD 2019 Video")
 
@@ -12,7 +12,7 @@ In order to run the demo, you will need at least two MR/AR capable devices. You 
 
 ### Instructions
 
-These instructions assume that a HoloLens 2 device will be used to host the shared experience and that an Android phone will be used to spectate the shared experience. For iOS, replace references to Android with iOS.
+These instructions assume that a HoloLens 2 device will be used to host the shared experience and that a mobile device will be used to spectate the shared experience.
 
 #### Prepare your local codebase
 
@@ -29,27 +29,40 @@ These instructions assume that a HoloLens 2 device will be used to host the shar
 2. Open the Build2019Demo.Unity project in Unity.
     - If requested, import the TextMeshPro Essentials.
 3. Open the `Finished_Scene` sample scene.
-3. Open SpectatorView settings by going to the menu `SpectatorView > Edit Settings`. \
+4. Run `Spectator View -> Update All Asset Caches` from the Unity toolbar.
+5. Open SpectatorView settings by going to the menu `SpectatorView > Edit Settings`. \
 ![SpectatorView Settings Menu](../../doc/images/SpectatorViewSettingsMenu.png)
-4. Replace `ENTER_ACCOUNT_ID` and `ENTER_ACCOUNT_KEY` with your Account Id and Account Key obtained when setting up your Azure Spatial Anchors account. \
+6. Replace `ENTER_ACCOUNT_ID` and `ENTER_ACCOUNT_KEY` with your Account Id and Account Key obtained when setting up your Azure Spatial Anchors account. \
 ![Spectator View ASA Settings](../../doc/images/SpectatorViewSettingsASA.png)
 
 #### Build & Deploy
 
 ##### HoloLens 2
-1. Build UWP Player containing `Demo/Scenes/Finished_Scene.unity` scene, and deploy this application to the HoloLens 2 device.
-2. Launch the `SpectatorView.Build2019Demo` on the HoloLens 2, and wait for the experience to start.
+
+1. Select `HoloLens` as your target platform using Spectator View's `PlatformSwitcher` (This can be found in the Unity inspector for the `SpectatorView` prefab GameObject).
+2. Build UWP Player containing `Demo/Scenes/Finished_Scene.unity` scene, and deploy this application to the HoloLens 2 device.
+3. Launch the `SpectatorView.Build2019Demo` on the HoloLens 2, and wait for the experience to start.
+
+![Marker](./../../doc/images/HoloLensBuild2019SampleBuildSettings.png)
 
 ##### Android
-1. Export Android Player containing `MixedReality-SpectatorView/SpectatorView/Scenes/SpectatorView.Android.unity` scene to an Android Studio solution.
-2. Open the Android Studio solution and change the main activity in the AndroidManifest.xml file to `Microsoft.MixedReality.SpectatorView.Unity.ScreenRecorderActivity`.
-3. Update the AndroidManifest.xml in Android Studio to contain `android.permission.CAMERA`, `android.permission.INTERNET`, `android.permission.RECORD_AUDIO` and `android.permission.WRITE_EXTERNAL_STORAGE` uses-permissions.
-4. Build the Android Studio solution and deploy this application to the spectating Android device.
-5. Launch the `SpectatorView.Build2019Demo` on the Android device and connect to the HoloLens device by specifying the HoloLens's IP Address.
 
-> Note 1: Building iOS version requires an special step after exporting the Unity project to xCode, see the [official instructions](https://docs.microsoft.com/en-us/azure/spatial-anchors/quickstarts/get-started-unity-ios#open-the-xcode-project). You will need to use the `SpectatorView.iOS.unity` scene compared to the `SpectatorView.Android.unity`.
+1. Select `Android` as your target platform using Spectator View's `PlatformSwitcher` (This can be found in the Unity inspector for the `SpectatorView` prefab GameObject).
+2. `Build and Run` the Android Player containing `MixedReality-SpectatorView/SpectatorView/Scenes/SpectatorView.Android.unity`.
+3. Launch the `SpectatorView.Build2019Demo` on the Android device and connect to the HoloLens device by specifying the HoloLens's IP Address.
 
-> Note 2: Additional setup instructions for spectating with mobile devices can be found [here](../../doc/SpectatorView.Setup.md).
+![Marker](./../../doc/images/AndroidBuild2019SampleBuildSettings.png)
+
+##### iOS
+
+1. Select `iOS` as your target platform using Spectator View's `PlatformSwitcher` (This can be found in the Unity inspector for the `SpectatorView` prefab GameObject).
+2. Build the iOS Player containing `MixedReality-SpectatorView/SpectatorView/Scenes/SpectatorView.iOS.unity` scene.
+3. Follow the Azure Spatial Anchors [official instructions](https://docs.microsoft.com/en-us/azure/spatial-anchors/quickstarts/get-started-unity-ios#open-the-xcode-project).
+4. Launch the `SpectatorView.Build2019Demo` on the iOS device and connect to the HoloLens device by specifying the HoloLens's IP Address.
+
+![Marker](./../../doc/images/iOSBuild2019SampleBuildSettings.png)
+
+> Note 1: Additional setup instructions and troubleshooting for spectating with mobile devices can be found [here](../../doc/SpectatorView.Setup.md#building--deploying).
 
 ## Sample Project Contents
 
@@ -69,4 +82,4 @@ The demo consists of a simple experience with a buttons panel and a slider, conf
 The MixedRealityToolkit-Unity project introduces some dependencies on System.Numerics.* types that can cause errors when building the UWP player. That going said, although these errors are generated during the build, they do not prevent the build from succeeding. Its suggested to ignore these errors when building the sample application for the time being.
 
 ### __Additional Issues__
-For more information on troubleshooting other build issues, checkout the `Troubleshooting` section in our detailed setup steps [here](../../doc/SpectatorView.Setup.md).
+For more information on troubleshooting other build issues, checkout the `Troubleshooting` section in our detailed setup steps [here](../../doc/SpectatorView.Setup.md#troubleshooting).

@@ -8,9 +8,9 @@ namespace Microsoft.MixedReality.SpectatorView
 {
     internal class LineRendererObserver : RendererObserver<LineRenderer, LineRendererService>
     {
-        protected override void Read(SocketEndpoint sendingEndpoint, BinaryReader message, byte changeType)
+        protected override void Read(INetworkConnection connection, BinaryReader message, byte changeType)
         {
-            base.Read(sendingEndpoint, message, changeType);
+            base.Read(connection, message, changeType);
 
             if (LineRendererBroadcaster.HasFlag(changeType, LineRendererBroadcaster.LineRendererChangeType.StaticProperties))
             {

@@ -20,7 +20,7 @@ namespace Microsoft.MixedReality.SpectatorView
             {
                 StateSynchronizationBroadcaster.Instance.Connected += OnConnected;
 
-                // If we have connted to other devices, make sure we immediately
+                // If we have connected to other devices, make sure we immediately
                 // add a new TransformBroadcaster.
                 if (StateSynchronizationBroadcaster.Instance.HasConnections)
                 {
@@ -37,7 +37,7 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
-        private void OnConnected(SocketEndpoint endpoint)
+        private void OnConnected(INetworkConnection connection)
         {
             if (TransformBroadcaster != null)
             {

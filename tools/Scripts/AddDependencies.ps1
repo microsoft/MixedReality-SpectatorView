@@ -78,7 +78,6 @@ Else
 	cmd /c mklink /D "ARKit-Unity-Plugin" "$relativePath\external\ARKit-Unity-Plugin"
 	cmd /c mklink /D "AzureSpatialAnchorsPlugin" "$relativePath\external\Azure-Spatial-Anchors-Samples\Unity\Assets\AzureSpatialAnchorsPlugin"
 	cmd /c mklink /D "GoogleARCore" "$relativePath\external\ARCore-Unity-SDK\Assets\GoogleARCore"
-	cmd /c mklink /D "MixedReality-QRCodePlugin" "$relativePath\external\MixedReality-QRCodePlugin"
 
 	cmd /c mkdir "AzureSpatialAnchors.Resources"
     Set-Location "AzureSpatialAnchors.Resources"

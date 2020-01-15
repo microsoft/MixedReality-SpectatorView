@@ -1,6 +1,7 @@
 param(
     $MSBuild,
     [switch]$ForceRebuild,
+    [switch]$ExcludeBlackmagic,
     [Parameter(Mandatory=$false)][ref]$Succeeded
 )
 
@@ -30,9 +31,18 @@ $86Result = "False"
 $64Result = "False"
 $CopyResult = "False"
 
-if ($ForceRebuild)
+$Arg1 = "-None"
+if ($ForceRebuild -And $ExcludeBlackmagic)
+{
+    . $PSScriptRoot\setupNativeProject.ps1 -ForceRebuild -ExcludeBlackmagic -Succeeded ([ref]$SetupResult)
+}
+elseif ($ForceRebuild)
 {
     . $PSScriptRoot\setupNativeProject.ps1 -ForceRebuild -Succeeded ([ref]$SetupResult)
+}
+elseif ($ExcludeBlackmagic)
+{
+    . $PSScriptRoot\setupNativeProject.ps1 -ExcludeBlackmagic -Succeeded ([ref]$SetupResult)
 }
 else
 {
@@ -52,6 +62,8 @@ if ($SetupResult -eq $true)
     BuildProject -MSBuild $MSBuild -VSSolution $PSScriptRoot\..\..\..\src\SpectatorView.Native\SpectatorView.Native.sln -Configuration "Release" -Platform "x86" -Includes $86Includes -LibDirs $86LibDirs -Libs $86Libs -Succeeded ([ref]$86Result)
     # Building in visual studio automatically copies these binaries
     Copy-Item $PSScriptRoot\..\..\..\external\vcpkg\installed\x86-uwp\bin\* $PSScriptRoot\..\..\..\src\SpectatorView.Native\Release\SpectatorView.OpenCV.UWP\ -Force
+
+    Copy-Item $PSScriptRoot\dependencies.props $PSScriptRoot\..\..\..\src\SpectatorView.Native\SpectatorView.Compositor\dependencies.props
 
     $64Includes = "`"$PSScriptRoot\..\..\..\external\vcpkg\installed\x64-windows\include`""
     $64LibDirs = "`"$PSScriptRoot\..\..\..\external\vcpkg\installed\x64-windows\lib`""

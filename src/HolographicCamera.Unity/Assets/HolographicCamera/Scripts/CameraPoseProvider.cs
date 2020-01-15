@@ -7,6 +7,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.XR.WSA;
@@ -23,27 +24,44 @@ namespace Microsoft.MixedReality.SpectatorView
     /// <summary>
     /// Component that provides time-adjusted holographic poses to the compositor.
     /// </summary>
-    [RequireComponent(typeof(TCPConnectionManager))]
     public class CameraPoseProvider : MonoBehaviour
     {
-        private TCPConnectionManager tcpConnectionManager;
+        private INetworkManager networkManager;
         private Stopwatch timestampStopwatch;
         private SpatialCoordinateSystemParticipant sharedCoordinateParticipant;
-        private SocketEndpoint currentConnection;
+        private INetworkConnection currentConnection;
 
 #if !UNITY_EDITOR && UNITY_WSA
         private Calendar timeConversionCalendar;
 #endif
-
         private void Awake()
         {
-            tcpConnectionManager = GetComponent<TCPConnectionManager>();
-            tcpConnectionManager.OnConnected += TcpConnectionManager_OnConnected;
+            networkManager = GetComponent<INetworkManager>();
+            if (networkManager == null)
+            {
+                throw new MissingComponentException("Missing network manager component");
+            }
+
+            networkManager.Connected += NetworkManagerConnected;
+
+            if (networkManager.IsConnected)
+            {
+                var connections = networkManager.Connections;
+                if (connections.Count > 1)
+                {
+                    Debug.LogWarning("More than one connection was found, CameraPoseProvider only expects one network connection");
+                }
+
+                foreach (var connection in connections)
+                {
+                    NetworkManagerConnected(connection);
+                }
+            }
         }
 
         private void OnDestroy()
         {
-            tcpConnectionManager.OnConnected -= TcpConnectionManager_OnConnected;
+            networkManager.Connected -= NetworkManagerConnected;
         }
 
         private void Update()
@@ -80,12 +98,12 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
-        private void TcpConnectionManager_OnConnected(SocketEndpoint endpoint)
+        private void NetworkManagerConnected(INetworkConnection connection)
         {
             // Restart the timeline at 0 each time we reconnect to the HoloLens
             timestampStopwatch = Stopwatch.StartNew();
             sharedCoordinateParticipant = null;
-            currentConnection = endpoint;
+            currentConnection = connection;
         }
 
         private void SendCameraPose(float timestamp, Vector3 cameraPosition, Quaternion cameraRotation)
@@ -97,8 +115,9 @@ namespace Microsoft.MixedReality.SpectatorView
                 message.Write(timestamp);
                 message.Write(cameraPosition);
                 message.Write(cameraRotation);
+                message.Flush();
 
-                tcpConnectionManager.Broadcast(stream.ToArray());
+                networkManager.Broadcast(stream.GetBuffer(), 0, stream.Position);
             }
         }
 

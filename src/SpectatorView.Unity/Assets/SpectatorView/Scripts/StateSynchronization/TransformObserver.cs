@@ -20,7 +20,7 @@ namespace Microsoft.MixedReality.SpectatorView
         /// </summary>
         /// <param name="sendingEndpoint">Sender endpoint</param>
         /// <param name="message">Received payload</param>
-        public override void Read(SocketEndpoint sendingEndpoint, BinaryReader message)
+        public override void Read(INetworkConnection connection, BinaryReader message)
         {
             short id = message.ReadInt16();
 

@@ -3,6 +3,8 @@
 
 #pragma once
 
+#if defined(INCLUDE_ELGATO)
+
 #include "IFrameProvider.h"
 #include "DirectXHelper.h"
 #include "IVideoCaptureFilterTypes.h"
@@ -106,3 +108,5 @@ private:
     ElgatoSampleCallback *frameCallback = NULL;
     IElgatoVideoCaptureFilter6 *filter = NULL;
 };
+
+#endif

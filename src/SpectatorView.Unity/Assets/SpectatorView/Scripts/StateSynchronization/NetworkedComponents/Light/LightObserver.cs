@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.SpectatorView
     /// </summary>
     internal class LightObserver : ComponentObserver<Light>
     {
-        public override void Read(SocketEndpoint sendingEndpoint, BinaryReader message)
+        public override void Read(INetworkConnection connection, BinaryReader message)
         {
             LightBroadcaster.ChangeType changeType = (LightBroadcaster.ChangeType)message.ReadByte();
 

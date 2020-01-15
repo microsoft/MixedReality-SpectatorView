@@ -18,7 +18,7 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
-        protected override void Read(SocketEndpoint sendingEndpoint, BinaryReader message, byte changeType)
+        protected override void Read(INetworkConnection connection, BinaryReader message, byte changeType)
         {
             if (TextMeshBroadcaster.HasFlag(changeType, TextMeshBroadcaster.TextMeshChangeType.Text))
             {
@@ -36,7 +36,7 @@ namespace Microsoft.MixedReality.SpectatorView
                 textMesh.offsetZ = message.ReadSingle();
                 textMesh.richText = message.ReadBoolean();
                 textMesh.tabSize = message.ReadSingle();
-                textMesh.font = TextMeshService.Instance.GetFont(message.ReadGuid());
+                textMesh.font = TextMeshService.Instance.GetFont(message.ReadAssetId());
 
                 if (textMesh.font != null)
                 {
@@ -44,7 +44,7 @@ namespace Microsoft.MixedReality.SpectatorView
                 }
             }
 
-            base.Read(sendingEndpoint, message, changeType);
+            base.Read(connection, message, changeType);
         }
     }
 }

@@ -9,14 +9,14 @@ namespace Microsoft.MixedReality.SpectatorView
 {
     internal class SpriteRendererObserver : RendererObserver<SpriteRenderer, SpriteRendererService>
     {
-        protected override void Read(SocketEndpoint sendingEndpoint, BinaryReader message, byte changeType)
+        protected override void Read(INetworkConnection connection, BinaryReader message, byte changeType)
         {
-            base.Read(sendingEndpoint, message, changeType);
+            base.Read(connection, message, changeType);
 
             if (SpriteRendererBroadcaster.HasFlag(changeType, SpriteRendererBroadcaster.SpriteRendererChangeType.Sprite))
             {
-                Guid spriteGuid = message.ReadGuid();
-                Renderer.sprite = ImageService.Instance.GetSprite(spriteGuid);
+                AssetId spriteId = message.ReadAssetId();
+                Renderer.sprite = ImageService.Instance.GetSprite(spriteId);
             }
 
             if (SpriteRendererBroadcaster.HasFlag(changeType, SpriteRendererBroadcaster.SpriteRendererChangeType.Properties))

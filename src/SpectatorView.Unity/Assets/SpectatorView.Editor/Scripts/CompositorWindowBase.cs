@@ -19,6 +19,18 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
         protected const string AppDeviceTypeLabel = "App";
         protected string holographicCameraIPAddress;
 
+        /// <summary>
+        /// This list contains localizers that can't be used in the compositor window for video camera filming.
+        /// </summary>
+        private readonly List<Guid> unsupportedLocalizers = new List<Guid>
+        {
+            ArUcoMarkerVisualSpatialLocalizer.Id,
+            ArUcoMarkerVisualDetectorSpatialLocalizer.Id,
+            QRCodeMarkerVisualSpatialLocalizer.Id,
+            QRCodeMarkerVisualDetectorSpatialLocalizer.Id,
+            new Guid("FB077E49-B855-453F-9FB5-77187B1AF784") // SpatialAnchorsLocalizer (There is no asmdef to reference for ASA)
+        };
+
         private CompositionManager cachedCompositionManager;
         private HolographicCameraObserver cachedHolographicCameraObserver;
 
@@ -180,7 +192,8 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
                 var supportedPeerLocalizers = spatialCoordinateSystemParticipant?.GetPeerSupportedLocalizersAsync();
                 if (supportedPeerLocalizers.IsCompleted)
                 {
-                    localizers = SpatialCoordinateSystemManager.Instance.Localizers.Where(localizer => supportedPeerLocalizers.Result.Contains(localizer.SpatialLocalizerId)).ToArray();
+                    // Only use localizers that are supported by both the device and the compositor window
+                    localizers = SpatialCoordinateSystemManager.Instance.Localizers.Where(localizer => !unsupportedLocalizers.Contains(localizer.SpatialLocalizerId) && supportedPeerLocalizers.Result.Contains(localizer.SpatialLocalizerId)).ToArray();
                     localizerNames = localizers.Select(localizer => localizer.DisplayName).ToArray();
                     if (localizerNames.Length == 0)
                     {
@@ -439,9 +452,9 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
 
         protected SpatialCoordinateSystemParticipant GetSpatialCoordinateSystemParticipant(DeviceInfoObserver device)
         {
-            if (device != null && device.ConnectedEndpoint != null && SpatialCoordinateSystemManager.IsInitialized)
+            if (device != null && device.NetworkConnection != null && SpatialCoordinateSystemManager.IsInitialized)
             {
-                if (SpatialCoordinateSystemManager.Instance.TryGetSpatialCoordinateSystemParticipant(device.ConnectedEndpoint, out SpatialCoordinateSystemParticipant participant))
+                if (SpatialCoordinateSystemManager.Instance.TryGetSpatialCoordinateSystemParticipant(device.NetworkConnection, out SpatialCoordinateSystemParticipant participant))
                 {
                     return participant;
                 }

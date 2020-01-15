@@ -26,12 +26,12 @@ namespace Microsoft.MixedReality.SpectatorView
         private float previousVolume;
         private AudioSourceProperties previousProperties;
 
-        public Guid AudioClipAssetId
+        public AssetId AudioClipAssetId
         {
             get { return AudioSourceService.Instance.GetAudioClipId(audioSource.clip); }
         }
 
-        public Guid AudioMixerGroupAssetId
+        public AssetId AudioMixerGroupAssetId
         {
             get { return AudioSourceService.Instance.GetAudioMixerGroupId(audioSource.outputAudioMixerGroup); }
         }
@@ -85,15 +85,15 @@ namespace Microsoft.MixedReality.SpectatorView
             return changeType;
         }
 
-        protected override void SendCompleteChanges(IEnumerable<SocketEndpoint> endpoints)
+        protected override void SendCompleteChanges(IEnumerable<INetworkConnection> connections)
         {
             if (previousIsPlaying)
             {
-                SendDeltaChanges(endpoints, ChangeType.PlayStarted | ChangeType.Properties | ChangeType.Volume);
+                SendDeltaChanges(connections, ChangeType.PlayStarted | ChangeType.Properties | ChangeType.Volume);
             }
         }
 
-        protected override void SendDeltaChanges(IEnumerable<SocketEndpoint> endpoints, ChangeType changeFlags)
+        protected override void SendDeltaChanges(IEnumerable<INetworkConnection> connections, ChangeType changeFlags)
         {
             using (MemoryStream memoryStream = new MemoryStream())
             using (BinaryWriter message = new BinaryWriter(memoryStream))
@@ -134,7 +134,7 @@ namespace Microsoft.MixedReality.SpectatorView
                 }
 
                 message.Flush();
-                StateSynchronizationSceneManager.Instance.Send(endpoints, memoryStream.ToArray());
+                StateSynchronizationSceneManager.Instance.Send(connections, memoryStream.GetBuffer(), 0, memoryStream.Position);
             }
         }
 

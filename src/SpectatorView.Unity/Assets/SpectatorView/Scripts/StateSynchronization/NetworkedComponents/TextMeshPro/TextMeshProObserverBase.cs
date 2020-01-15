@@ -2,32 +2,19 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System.IO;
-
-#if STATESYNC_TEXTMESHPRO
 using TMPro;
-#else
-using System;
-#endif
 
 namespace Microsoft.MixedReality.SpectatorView
 {
     internal abstract class TextMeshProObserverBase : ComponentObserver
     {
-#if STATESYNC_TEXTMESHPRO
+        private bool needsUpdate = false;
+
         protected TMP_Text TextMeshObserver
         {
             get;
             set;
         }
-#else
-        public override Type ComponentType
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
-#endif
 
         public static bool HasFlag(TextMeshProBroadcasterChangeType changeType, TextMeshProBroadcasterChangeType flag)
         {
@@ -49,9 +36,8 @@ namespace Microsoft.MixedReality.SpectatorView
             return result;
         }
 
-        public override void Read(SocketEndpoint sendingEndpoint, BinaryReader message)
+        public override void Read(INetworkConnection connection, BinaryReader message)
         {
-#if STATESYNC_TEXTMESHPRO
             EnsureTextComponent();
 
             TextMeshProBroadcasterChangeType changeType = (TextMeshProBroadcasterChangeType)message.ReadByte();
@@ -63,7 +49,8 @@ namespace Microsoft.MixedReality.SpectatorView
 
             if (HasFlag(changeType, TextMeshProBroadcasterChangeType.FontAndPlacement))
             {
-                TextMeshObserver.font = TextMeshProService.Instance.GetFont(message.ReadGuid());
+                AssetId fontId = message.ReadAssetId();
+                TextMeshObserver.font = TextMeshProService.Instance.GetFont(fontId);
 
                 bool[] values = Unpack(message.ReadByte());
                 TextMeshObserver.autoSizeTextContainer = values[0];
@@ -101,7 +88,7 @@ namespace Microsoft.MixedReality.SpectatorView
                 TextMeshObserver.fontSizeMax = message.ReadSingle();
                 TextMeshObserver.fontSizeMin = message.ReadSingle();
                 TextMeshObserver.fontStyle = (FontStyles)message.ReadInt32();
-                TextMeshObserver.fontWeight = message.ReadInt32();
+                TextMeshObserver.fontWeight = (FontWeight)message.ReadInt32();
                 TextMeshObserver.horizontalMapping = (TextureMappingOptions)message.ReadByte();
                 TextMeshObserver.lineSpacing = message.ReadSingle();
                 TextMeshObserver.lineSpacingAdjustment = message.ReadSingle();
@@ -119,8 +106,20 @@ namespace Microsoft.MixedReality.SpectatorView
                 TextMeshObserver.verticalMapping = (TextureMappingOptions)message.ReadByte();
                 TextMeshObserver.wordWrappingRatios = message.ReadSingle();
                 TextMeshObserver.wordSpacing = message.ReadSingle();
+
+                needsUpdate = true;
             }
-#endif
+        }
+
+        protected virtual void Update()
+        {
+            if (needsUpdate)
+            {
+                // Applying a font/forcing a mesh update on the same Update pass that the TextMeshObserver is created fails to display things correctly.
+                // Therefore, we force a mesh update on the next Update pass to get things displaying correctly.
+                TextMeshObserver.ForceMeshUpdate();
+                needsUpdate = false;
+            }
         }
     }
 }

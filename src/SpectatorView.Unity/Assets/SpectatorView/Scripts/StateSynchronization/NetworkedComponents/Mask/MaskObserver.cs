@@ -8,7 +8,7 @@ namespace Microsoft.MixedReality.SpectatorView
 {
     internal class MaskObserver : ComponentObserver<Mask>
     {
-        public override void Read(SocketEndpoint sendingEndpoint, BinaryReader message)
+        public override void Read(INetworkConnection connection, BinaryReader message)
         {
             MaskBroadcaster.ChangeType changeType = (MaskBroadcaster.ChangeType)message.ReadByte();
 

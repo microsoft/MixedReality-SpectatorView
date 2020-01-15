@@ -3,20 +3,15 @@
 
 using System;
 using System.Collections.Generic;
-
-#if STATESYNC_TEXTMESHPRO
 using System.IO;
 using TMPro;
 using UnityEngine;
-#endif
 
 namespace Microsoft.MixedReality.SpectatorView
 {
     internal abstract class TextMeshProBroadcasterBase<TComponentService> : ComponentBroadcaster<TComponentService, TextMeshProBroadcasterChangeType>
         where TComponentService : Singleton<TComponentService>, IComponentBroadcasterService
     {
-#if STATESYNC_TEXTMESHPRO
-
         private TMP_Text textMesh;
         private string previousText;
         private TextMeshProperties previousProperties;
@@ -56,12 +51,14 @@ namespace Microsoft.MixedReality.SpectatorView
             return change;
         }
 
-        protected override void SendCompleteChanges(IEnumerable<SocketEndpoint> endpoints)
+        protected override void SendCompleteChanges(IEnumerable<INetworkConnection> connections)
         {
-            SendDeltaChanges(endpoints, TextMeshProBroadcasterChangeType.FontAndPlacement | TextMeshProBroadcasterChangeType.Text);
+            previousText = this.textMesh.text;
+            previousProperties = new TextMeshProperties(textMesh);
+            SendDeltaChanges(connections, TextMeshProBroadcasterChangeType.FontAndPlacement | TextMeshProBroadcasterChangeType.Text);
         }
 
-        protected override void SendDeltaChanges(IEnumerable<SocketEndpoint> endpoints, TextMeshProBroadcasterChangeType changeFlags)
+        protected override void SendDeltaChanges(IEnumerable<INetworkConnection> connections, TextMeshProBroadcasterChangeType changeFlags)
         {
             using (MemoryStream memoryStream = new MemoryStream())
             using (BinaryWriter message = new BinaryWriter(memoryStream))
@@ -72,7 +69,7 @@ namespace Microsoft.MixedReality.SpectatorView
                 WriteText(changeFlags, message);
 
                 message.Flush();
-                StateSynchronizationSceneManager.Instance.Send(endpoints, memoryStream.ToArray());
+                StateSynchronizationSceneManager.Instance.Send(connections, memoryStream.GetBuffer(), 0, memoryStream.Position);
             }
         }
 
@@ -282,7 +279,8 @@ namespace Microsoft.MixedReality.SpectatorView
 
             public void Write(BinaryWriter message)
             {
-                message.Write(TextMeshProService.Instance.GetFontId(font));
+                AssetId fontId = TextMeshProService.Instance.GetFontId(font);
+                message.Write(fontId);
 
                 message.Write(Pack(
                     autoSizeTextContainer,
@@ -339,26 +337,5 @@ namespace Microsoft.MixedReality.SpectatorView
                 message.Write(wordSpacing);
             }
         }
-#else
-        protected override bool HasChanges(TextMeshProBroadcasterChangeType changeFlags)
-        {
-            throw new NotImplementedException();
-        }
-
-        protected override TextMeshProBroadcasterChangeType CalculateDeltaChanges()
-        {
-            throw new NotImplementedException();
-        }
-
-        protected override void SendCompleteChanges(IEnumerable<SocketEndpoint> endpoints)
-        {
-            throw new NotImplementedException();
-        }
-
-        protected override void SendDeltaChanges(IEnumerable<SocketEndpoint> endpoints, TextMeshProBroadcasterChangeType changeFlags)
-        {
-            throw new NotImplementedException();
-        }
-#endif
     }
 }

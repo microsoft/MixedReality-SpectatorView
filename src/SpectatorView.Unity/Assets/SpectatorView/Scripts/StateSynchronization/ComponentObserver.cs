@@ -20,9 +20,9 @@ namespace Microsoft.MixedReality.SpectatorView
         /// <summary>
         /// Interprets data received from another device.
         /// </summary>
-        /// <param name="sendingEndpoint">sender</param>
+        /// <param name="connection">sender</param>
         /// <param name="message">data received</param>
-        public abstract void Read(SocketEndpoint sendingEndpoint, BinaryReader message);
+        public abstract void Read(INetworkConnection connection, BinaryReader message);
 
         protected virtual void Awake()
         {

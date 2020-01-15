@@ -21,7 +21,7 @@ namespace Microsoft.MixedReality.SpectatorView
     /// </summary>
     public interface IComponentObserver
     {
-        void Read(SocketEndpoint sendingEndpoint, BinaryReader message);
+        void Read(INetworkConnection connection, BinaryReader message);
     }
 
     /// <summary>
@@ -31,7 +31,7 @@ namespace Microsoft.MixedReality.SpectatorView
     {
         void Create(GameObject mirror);
         void Destroy(GameObject mirror);
-        void Read(SocketEndpoint sendingEndpoint, BinaryReader message, GameObject mirror);
+        void Read(INetworkConnection connection, BinaryReader message, GameObject mirror);
         void LerpRead(BinaryReader message, GameObject mirror, float lerpVal);
         ShortID GetID();
         void WriteHeader(BinaryWriter message, IComponentBroadcaster component, ComponentBroadcasterChangeType changeType = ComponentBroadcasterChangeType.Updated);
@@ -45,6 +45,7 @@ namespace Microsoft.MixedReality.SpectatorView
     {
         void UpdateAssetCache();
         void ClearAssetCache();
+        void SaveAssets();
     }
 
     /// <summary>
@@ -79,13 +80,13 @@ namespace Microsoft.MixedReality.SpectatorView
         /// <summary>
         /// Ensures an <see cref="IComponentObserver"/> exists on the provided game object and relays it a network message
         /// </summary>
-        /// <param name="sendingEndpoint">Endpoint that sent the message</param>
+        /// <param name="connection">Connection that sent the message</param>
         /// <param name="message">network message</param>
         /// <param name="mirror">game object to broadcast</param>
-        public virtual void Read(SocketEndpoint sendingEndpoint, BinaryReader message, GameObject mirror)
+        public virtual void Read(INetworkConnection connection, BinaryReader message, GameObject mirror)
         {
             ObserverType comp = ComponentExtensions.EnsureComponent<ObserverType>(mirror);
-            comp.Read(sendingEndpoint, message);
+            comp.Read(connection, message);
         }
 
         /// <summary>

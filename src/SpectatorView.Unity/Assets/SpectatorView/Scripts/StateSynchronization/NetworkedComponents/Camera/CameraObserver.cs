@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.SpectatorView
             // Don't attach a camera component
         }
 
-        public override void Read(SocketEndpoint sendingEndpoint, BinaryReader message)
+        public override void Read(INetworkConnection connection, BinaryReader message)
         {
             CameraBroadcaster.ChangeType changeType = (CameraBroadcaster.ChangeType)message.ReadByte();
 

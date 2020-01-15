@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using TMPro;
 using Microsoft.MixedReality.Toolkit.UI;
 
@@ -15,6 +13,7 @@ public class ShowSliderValue : MonoBehaviour
             textMeshPro = GetComponent<TextMeshPro>();
         }
     }
+
     public void OnSliderUpdated(SliderEventData eventData)
     {
         if (textMeshPro != null)
