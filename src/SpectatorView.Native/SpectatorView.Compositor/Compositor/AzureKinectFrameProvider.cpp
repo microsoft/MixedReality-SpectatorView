@@ -11,6 +11,7 @@ HRESULT AzureKinectFrameProvider::Initialize(ID3D11ShaderResourceView* colorSRV,
 {
     InitializeCriticalSection(&lock);
 
+    _captureFrameIndex = 0;
     _depthSRV = depthSRV;
     _colorSRV = colorSRV;
     _colorSRV->GetDevice(&d3d11Device);
@@ -63,6 +64,7 @@ void AzureKinectFrameProvider::Update(int compositeFrameIndex)
     switch (k4a_device_get_capture(k4aDevice, &capture, 0))
     {
     case K4A_WAIT_RESULT_SUCCEEDED:
+        _captureFrameIndex++;
         break;
     case K4A_WAIT_RESULT_TIMEOUT:
         OutputDebugString(L"Timed out waiting for AzureKinect capture");

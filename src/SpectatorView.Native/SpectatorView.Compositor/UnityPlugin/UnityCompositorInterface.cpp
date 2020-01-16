@@ -78,7 +78,7 @@ void FreeVideoBuffers()
 static ID3D11Texture2D* g_holoRenderTexture = nullptr;
 
 static ID3D11Texture2D* g_colorTexture = nullptr;
-static ID3D11Texture2D* g_depthTexture = nullptr;
+static ID3D11Texture2D* g_depthCameraTexture = nullptr;
 static ID3D11Texture2D* g_compositeTexture = nullptr;
 static ID3D11Texture2D* g_videoTexture = nullptr;
 static ID3D11Texture2D* g_outputTexture = nullptr;
@@ -479,7 +479,7 @@ UNITYDLL void Reset()
 {
     EnterCriticalSection(&lock);
     g_colorTexture = nullptr;
-    g_depthTexture = nullptr;
+    g_depthCameraTexture = nullptr;
     g_compositeTexture = nullptr;
     g_videoTexture = nullptr;
     g_outputTexture = nullptr;
@@ -572,18 +572,18 @@ UNITYDLL bool CreateUnityColorTexture(ID3D11ShaderResourceView*& srv)
     return true;
 }
 
-UNITYDLL bool CreateUnityDepthTexture(ID3D11ShaderResourceView*& srv)
+UNITYDLL bool CreateUnityDepthCameraTexture(ID3D11ShaderResourceView*& srv)
 {
     if (g_UnityDepthSRV == nullptr && g_pD3D11Device != nullptr)
     {
-        g_depthTexture = DirectXHelper::CreateTexture(g_pD3D11Device, depthBytes, FRAME_WIDTH, FRAME_HEIGHT, FRAME_BPP_DEPTH16, DXGI_FORMAT_R16_UNORM);
+        g_depthCameraTexture = DirectXHelper::CreateTexture(g_pD3D11Device, depthBytes, FRAME_WIDTH, FRAME_HEIGHT, FRAME_BPP_DEPTH16, DXGI_FORMAT_R16_UNORM);
 
-        if (g_depthTexture == nullptr)
+        if (g_depthCameraTexture == nullptr)
         {
             return false;
         }
 
-        g_UnityDepthSRV = DirectXHelper::CreateShaderResourceView(g_pD3D11Device, g_depthTexture, DXGI_FORMAT_R16_UNORM);
+        g_UnityDepthSRV = DirectXHelper::CreateShaderResourceView(g_pD3D11Device, g_depthCameraTexture, DXGI_FORMAT_R16_UNORM);
         if (g_UnityDepthSRV == nullptr)
         {
             return false;

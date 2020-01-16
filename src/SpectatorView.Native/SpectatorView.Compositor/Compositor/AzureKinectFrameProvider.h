@@ -20,7 +20,13 @@ public:
     virtual void Dispose() override;
     virtual bool OutputYUV() override;
 
+    virtual int GetCaptureFrameIndex() override
+    {
+        return _captureFrameIndex;
+    }
+
 private:
+    int _captureFrameIndex;
     ID3D11ShaderResourceView* _colorSRV;
     ID3D11ShaderResourceView* _depthSRV;
     ID3D11Device* d3d11Device;

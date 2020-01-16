@@ -7,6 +7,7 @@ Shader "SV/HoloAlpha"
     {
         _BackTex("BackTex", 2D) = "white" {}
         _FronTex("FrontTex", 2D) = "white" {}
+        _DepthCameraTexture("DepthCameraTexture", 2D) = "white" {}
         _Alpha("Alpha", float) = 0.9
     }
     SubShader
@@ -37,6 +38,9 @@ Shader "SV/HoloAlpha"
             sampler2D _BackTex;
             sampler2D _FrontTex;
             float _Alpha;
+            sampler2D_float _LastCameraDepthTexture;
+            Texture2D _DepthCameraTexture;
+            SamplerState sampler_point_clamp;
 
             v2f vert (appdata v)
             {
@@ -45,13 +49,20 @@ Shader "SV/HoloAlpha"
                 o.uv = v.uv;
                 return o;
             }
-            
+
             fixed4 frag (v2f i) : SV_Target
             {
                 fixed4 backCol = tex2D(_BackTex, i.uv);
                 fixed4 frontCol = tex2D(_FrontTex, i.uv);
-            
-                fixed4 composite = backCol * (1 - _Alpha) + frontCol * _Alpha;
+
+                float rawHologramDepth = SAMPLE_DEPTH_TEXTURE(_LastCameraDepthTexture, i.uv);
+                float hologramDepth = LinearEyeDepth(rawHologramDepth);
+                float kinectDepth = _DepthCameraTexture.Sample(sampler_point_clamp, float2(i.uv[0], 1-i.uv[1])).r * 65535 * 0.001; // Incoming texture is R16
+                
+                float isHologramOccluded = kinectDepth > 0.0f && rawHologramDepth < 1.0f && kinectDepth < hologramDepth;
+                float alpha = min(1.0f - isHologramOccluded, _Alpha);
+
+                fixed4 composite = backCol * (1 - alpha) + frontCol * alpha;
                 composite.a = 1.0f;
                 return composite;
             }

@@ -40,7 +40,7 @@ namespace Microsoft.MixedReality.SpectatorView
         public static extern bool CreateUnityColorTexture(out IntPtr srv);
 
         [DllImport(CompositorPluginDll)]
-        public static extern bool CreateUnityDepthTexture(out IntPtr srv);
+        public static extern bool CreateUnityDepthCameraTexture(out IntPtr srv);
 
         [DllImport(CompositorPluginDll)]
         public static extern bool CreateUnityHoloTexture(out IntPtr srv);

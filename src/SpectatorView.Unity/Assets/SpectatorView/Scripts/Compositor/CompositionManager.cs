@@ -232,7 +232,6 @@ namespace Microsoft.MixedReality.SpectatorView
         private void Start()
         {
             spectatorCamera = GetComponent<Camera>();
-            spectatorCamera.depthTextureMode = DepthTextureMode.Depth;
 
 #if UNITY_EDITOR
             IsCalibrationDataLoaded = false;

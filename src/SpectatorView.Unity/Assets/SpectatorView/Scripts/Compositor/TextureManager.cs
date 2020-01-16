@@ -62,9 +62,9 @@ namespace Microsoft.MixedReality.SpectatorView
         private Texture2D colorTexture = null;
 
         /// <summary>
-        /// The raw depth buffer from cameras that support depth
+        /// The depth image from cameras with a depth camera
         /// </summary>
-        private Texture2D depthTexture = null;
+        private Texture2D depthCameraTexture = null;
 
         /// <summary>
         /// An override texture for testing calibration
@@ -214,7 +214,7 @@ namespace Microsoft.MixedReality.SpectatorView
             SetHologramShaderAlpha(Compositor.DefaultAlpha);
 
             CreateColorTexture();
-            CreateDepthTexture();
+            CreateDepthCameraTexture();
             CreateOutputTextures();
 
             SetupCameraAndRenderTextures();
@@ -251,6 +251,7 @@ namespace Microsoft.MixedReality.SpectatorView
             spectatorViewCamera.clearFlags = CameraClearFlags.Depth;
             spectatorViewCamera.nearClipPlane = 0.01f;
             spectatorViewCamera.backgroundColor = new Color(0, 0, 0, 0);
+            spectatorViewCamera.depthTextureMode = DepthTextureMode.Depth;
 
             supersampleBuffers = new RenderTexture[Compositor.SuperSampleLevel];
             downsampleMats = new Material[supersampleBuffers.Length];
@@ -338,7 +339,11 @@ namespace Microsoft.MixedReality.SpectatorView
                 // Render the real-world video back onto the composited frame to reduce the opacity
                 // of the hologram by the appropriate amount.
                 holoAlphaMat.SetTexture("_FrontTex", renderTexture);
+                holoAlphaMat.SetTexture("_DepthCameraTexture", depthCameraTexture);
                 Graphics.Blit(sourceTexture, compositeTexture, holoAlphaMat);
+
+                //var color = depthTexture.GetPixel(900, 400);
+                //Debug.Log(color);
             }
 
             // If an output texture override has been specified, use it instead of the composited texture
@@ -473,14 +478,16 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
-        private void CreateDepthTexture()
+        private void CreateDepthCameraTexture()
         {
-            if (depthTexture == null)
+            if (depthCameraTexture == null)
             {
                 IntPtr depthSRV;
-                if (UnityCompositorInterface.CreateUnityDepthTexture(out depthSRV))
+                if (UnityCompositorInterface.CreateUnityDepthCameraTexture(out depthSRV))
                 {
-                    depthTexture = Texture2D.CreateExternalTexture(frameWidth, frameHeight, TextureFormat.R16, false, false, depthSRV);
+                    depthCameraTexture = Texture2D.CreateExternalTexture(frameWidth, frameHeight, TextureFormat.R16, false, false, depthSRV);
+                    depthCameraTexture.filterMode = FilterMode.Point;
+                    depthCameraTexture.anisoLevel = 0;
                 }
             }
         }
