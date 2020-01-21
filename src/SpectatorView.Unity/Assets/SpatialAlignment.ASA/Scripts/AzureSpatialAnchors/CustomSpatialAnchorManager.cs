@@ -8,10 +8,10 @@ namespace Microsoft.Azure.SpatialAnchors.Unity
     public static class CustomSpatialAnchorManagerExtensions
     {
         /// <summary>
-        /// Extension method that allows adding a SpatialAnchorManager with a custon SpatialAnchorConfig to a GameObject
+        /// Extension method that allows adding a CustomSpatialAnchorManager with a SpatialAnchorConfig to a GameObject
         /// </summary>
-        /// <param name="gameObject"></param>
-        /// <param name="spatialAnchorConfig"></param>
+        /// <param name="gameObject">GameObject for created CustomSpatialAnchorManager</param>
+        /// <param name="spatialAnchorConfig">SpatialAnchorConfig used by the created CustomSpatialAnchorManager</param>
         /// <returns></returns>
         public static SpatialAnchorManager AddCustomSpatialAnchorManager(this GameObject gameObject, SpatialAnchorConfig spatialAnchorConfig)
         {
@@ -28,7 +28,7 @@ namespace Microsoft.Azure.SpatialAnchors.Unity
         /// <summary>
         /// Call to apply a custom SpatialAnchorConfig to the SpatialAnchorManager
         /// </summary>
-        /// <param name="config"></param>
+        /// <param name="config">SpatialAnchorConfig used by the created CustomSpatialAnchorManager</param>
         public void ApplyCustomConfiguration(SpatialAnchorConfig config)
         {
             if (config != null)
