@@ -5,7 +5,7 @@ using System;
 using System.IO;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.SpectatorView
+namespace Microsoft.MixedReality.SpatialAlignment
 {
     /// <summary>
     /// Azure Spatial Anchors configuration.

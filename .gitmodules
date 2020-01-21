@@ -3,13 +3,9 @@
 	url = https://github.com/microsoft/MixedRealityToolkit-Unity
 	branch = mrtk_development
 	ignore = dirty
-[submodule "external/ARCore-Unity-SDK"]
-	path = external/ARCore-Unity-SDK
-	url = https://github.com/google-ar/arcore-unity-sdk
-	ignore = dirty
 [submodule "external/Azure-Spatial-Anchors-Samples"]
 	path = external/Azure-Spatial-Anchors-Samples
-	url = https://github.com/Azure/azure-spatial-anchors-samples
+	url = https://github.com/chrisfromwork/azure-spatial-anchors-samples
 	ignore = dirty
 [submodule "external/gamecapture"]
 	path = external/gamecapture

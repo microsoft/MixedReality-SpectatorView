@@ -51,7 +51,6 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
                 PlayerSettings.Android.minSdkVersion = AndroidSdkVersions.AndroidApiLevel24;
                 PlayerSettings.Android.forceInternetPermission = true;
                 PlayerSettings.Android.forceSDCardPermission = true;
-                PlayerSettings.Android.ARCoreEnabled = true;
 
                 DeployAndValidateAndroidManifest();
             }

@@ -1,6 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+#pragma warning disable CS0618 // 'WorldManager' is obsolete: 'Support for built-in VR will be removed in Unity 2020.1.
+
 using UnityEngine;
 
 namespace Microsoft.MixedReality.SpectatorView
