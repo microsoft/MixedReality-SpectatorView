@@ -26,18 +26,37 @@ namespace Microsoft.MixedReality.SpatialAlignment
         /// <inheritdoc/>
         public override LocatedState State => LocatedState.Tracking;
 
+#if UNITY_ANDROID || UNITY_IOS
+        protected Camera CachedCamera
+        {
+            get
+            {
+                if (cachedCamera == null)
+                {
+                    if (Camera.main == null)
+                    {
+                        Debug.LogError("Camera.main was not set for this application. The used SpatialAnchorsCoordinate will have an invalid transform.");
+                    }
+                    else
+                    {
+                        cachedCamera = Camera.main;
+                    }
+                }
+
+                return cachedCamera;
+            }
+        }
+        private Camera cachedCamera = null;
+#endif
+
         private Matrix4x4 CoordinateTransform
         {
             get
             {
 #if UNITY_ANDROID || UNITY_IOS
-                if (Camera.main == null)
-                {
-                    Debug.LogError("Camera.main was not set for this application. The used SpatialAnchorsCoordinate will have an invalid transform.");
-                    return this.anchorGO.transform.localToWorldMatrix;
-                }
-
-                Matrix4x4 cameraParentTransform = Camera.main.transform.parent == null ? Matrix4x4.identity : Camera.main.transform.parent.localToWorldMatrix;
+                // ARFoundation reference points move when parent transforms are applied to ARCameras.
+                // Therefore, we need to account for any parent tranforms we apply to the ARCamera when determining this coordinate's true location in the non-moving Unity application space.
+                Matrix4x4 cameraParentTransform = (CachedCamera == null) || (CachedCamera.transform.parent == null) ? Matrix4x4.identity : CachedCamera.transform.parent.localToWorldMatrix;
                 Matrix4x4 anchorTransform = this.anchorGO.transform.localToWorldMatrix;
                 return cameraParentTransform.inverse * anchorTransform;
 #else
