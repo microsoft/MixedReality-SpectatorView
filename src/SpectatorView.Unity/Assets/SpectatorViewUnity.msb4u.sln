@@ -39,11 +39,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.MixedReality.Spat
 		{92703082-F92B-41BA-80F0-D6912DE66115} = {92703082-F92B-41BA-80F0-D6912DE66115}
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.MixedReality.SpatialAlignment.ASA.Editor.msb4u", "SpatialAlignment.ASA.Editor\Microsoft.MixedReality.SpatialAlignment.ASA.Editor.msb4u.csproj", "{4ECF9FA3-92C9-4A74-F9FF-BC7B017EF850}"
-	ProjectSection(ProjectDependencies) = postProject
-		{10862022-7A2D-2FB4-B85E-BBD9E1CD6188} = {10862022-7A2D-2FB4-B85E-BBD9E1CD6188}
-	EndProjectSection
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.MixedReality.SpectatorView.msb4u", "SpectatorView\Microsoft.MixedReality.SpectatorView.msb4u.csproj", "{CDB3C7B2-A792-97B4-B836-472544D312E6}"
 	ProjectSection(ProjectDependencies) = postProject
 		{055E7751-2989-6F04-9AAA-B953A244DF1C} = {055E7751-2989-6F04-9AAA-B953A244DF1C}
@@ -301,21 +296,6 @@ Global
 		{10862022-7A2D-2FB4-B85E-BBD9E1CD6188}.Player|WindowsStandalone64.ActiveCfg = Player|WindowsStandalone64
 		{10862022-7A2D-2FB4-B85E-BBD9E1CD6188}.Player|WSA.ActiveCfg = Player|WSA
 		{10862022-7A2D-2FB4-B85E-BBD9E1CD6188}.Player|WSA.Build.0 = Player|WSA
-		{4ECF9FA3-92C9-4A74-F9FF-BC7B017EF850}.InEditor|Android.ActiveCfg = InEditor|Android
-		{4ECF9FA3-92C9-4A74-F9FF-BC7B017EF850}.InEditor|Android.Build.0 = InEditor|Android
-		{4ECF9FA3-92C9-4A74-F9FF-BC7B017EF850}.InEditor|iOS.ActiveCfg = InEditor|iOS
-		{4ECF9FA3-92C9-4A74-F9FF-BC7B017EF850}.InEditor|iOS.Build.0 = InEditor|iOS
-		{4ECF9FA3-92C9-4A74-F9FF-BC7B017EF850}.InEditor|WindowsStandalone32.ActiveCfg = InEditor|WindowsStandalone32
-		{4ECF9FA3-92C9-4A74-F9FF-BC7B017EF850}.InEditor|WindowsStandalone32.Build.0 = InEditor|WindowsStandalone32
-		{4ECF9FA3-92C9-4A74-F9FF-BC7B017EF850}.InEditor|WindowsStandalone64.ActiveCfg = InEditor|WindowsStandalone64
-		{4ECF9FA3-92C9-4A74-F9FF-BC7B017EF850}.InEditor|WindowsStandalone64.Build.0 = InEditor|WindowsStandalone64
-		{4ECF9FA3-92C9-4A74-F9FF-BC7B017EF850}.InEditor|WSA.ActiveCfg = InEditor|WSA
-		{4ECF9FA3-92C9-4A74-F9FF-BC7B017EF850}.InEditor|WSA.Build.0 = InEditor|WSA
-		{4ECF9FA3-92C9-4A74-F9FF-BC7B017EF850}.Player|Android.ActiveCfg = Player|Android
-		{4ECF9FA3-92C9-4A74-F9FF-BC7B017EF850}.Player|iOS.ActiveCfg = Player|iOS
-		{4ECF9FA3-92C9-4A74-F9FF-BC7B017EF850}.Player|WindowsStandalone32.ActiveCfg = Player|WindowsStandalone32
-		{4ECF9FA3-92C9-4A74-F9FF-BC7B017EF850}.Player|WindowsStandalone64.ActiveCfg = Player|WindowsStandalone64
-		{4ECF9FA3-92C9-4A74-F9FF-BC7B017EF850}.Player|WSA.ActiveCfg = Player|WSA
 		{CDB3C7B2-A792-97B4-B836-472544D312E6}.InEditor|Android.ActiveCfg = InEditor|Android
 		{CDB3C7B2-A792-97B4-B836-472544D312E6}.InEditor|Android.Build.0 = InEditor|Android
 		{CDB3C7B2-A792-97B4-B836-472544D312E6}.InEditor|iOS.ActiveCfg = InEditor|iOS
@@ -408,7 +388,6 @@ Global
 		{6055BE8E-BEFD-69E4-8B49-212B09B47B2F} = msb4u.generated
 		{A9420E37-D799-0B54-ABDE-F6688EDBE313} = msb4u.generated
 		{10862022-7A2D-2FB4-B85E-BBD9E1CD6188} = msb4u.generated
-		{4ECF9FA3-92C9-4A74-F9FF-BC7B017EF850} = msb4u.generated
 		{CDB3C7B2-A792-97B4-B836-472544D312E6} = msb4u.generated
 		{5CD06987-0390-6034-CB45-6604ECF8919F} = msb4u.generated
 		{2426A099-181D-F8F4-0A73-894ABE74AA70} = msb4u.generated
