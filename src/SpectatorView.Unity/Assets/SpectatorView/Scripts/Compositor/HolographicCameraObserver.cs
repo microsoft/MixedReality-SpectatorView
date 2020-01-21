@@ -90,7 +90,7 @@ namespace Microsoft.MixedReality.SpectatorView
                         sharedSpatialCoordinateProxy.transform.rotation = participant.PeerSpatialCoordinateWorldRotation;
                     }
                 }
-                compositionManager.EnableHolographicCamera(sharedSpatialCoordinateProxy.transform, new CalibrationData(calibration.Intrinsics, calibration.Extrinsics));
+                compositionManager.EnableHolographicCamera(sharedSpatialCoordinateProxy.transform, new HeadsetRigCalibrationData(calibration.Intrinsics, calibration.Extrinsics));
             }
             else
             {

@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include "CompositorInterface.h"
 #include "IFrameProvider.h"
 #include <k4a/k4a.h>
 
@@ -24,6 +25,13 @@ public:
     {
         return _captureFrameIndex;
     }
+
+    virtual bool IsCameraCalibrationInformationAvailable() override
+    {
+        return true;
+    }
+
+    virtual void GetCameraCalibrationInformation(CameraIntrinsics* calibration) override;
 
 private:
     int _captureFrameIndex;

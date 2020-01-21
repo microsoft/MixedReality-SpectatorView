@@ -135,4 +135,12 @@ bool AzureKinectFrameProvider::OutputYUV()
 {
     return false;
 }
+
+void AzureKinectFrameProvider::GetCameraCalibrationInformation(CameraIntrinsics* calibration)
+{
+    calibration->focalLength = { this->calibration.color_camera_calibration.intrinsics.parameters.param.fx, this->calibration.color_camera_calibration.intrinsics.parameters.param.fy };
+    calibration->principalPoint = { this->calibration.color_camera_calibration.intrinsics.parameters.param.cx, this->calibration.color_camera_calibration.intrinsics.parameters.param.cy };
+    calibration->imageWidth = this->calibration.color_camera_calibration.resolution_width;
+    calibration->imageHeight = this->calibration.color_camera_calibration.resolution_height;
+}
 #endif

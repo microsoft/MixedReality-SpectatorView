@@ -4,6 +4,7 @@
 using System;
 using System.Runtime.InteropServices;
 using System.Text;
+using UnityEngine;
 
 namespace Microsoft.MixedReality.SpectatorView
 {
@@ -11,6 +12,30 @@ namespace Microsoft.MixedReality.SpectatorView
     public enum VideoRecordingFrameLayout : int { Composite = 0, Quad = 1 };
 
 #if UNITY_EDITOR
+    internal struct CompositorCameraIntrinsics
+    {
+        public float fx;
+        public float fy;
+        public float cx;
+        public float cy;
+        public int imageWidth;
+        public int imageHeight;
+
+        public CalculatedCameraIntrinsics AsCalculatedCameraIntrinsics()
+        {
+            return new CalculatedCameraIntrinsics(
+                reprojectionError: 0.0f,
+                focalLength: new Vector2(fx, fy),
+                imageWidth: (uint)imageWidth,
+                imageHeight: (uint)imageHeight,
+                principalPoint: new Vector2(cx, cy),
+                radialDistortion: Vector3.zero,
+                tangentialDistortion: Vector2.zero,
+                undistortedProjectionTransform: Matrix4x4.identity
+            );
+        }
+    }
+
     internal static class UnityCompositorInterface
     {
         private const string CompositorPluginDll = "SpectatorView.Compositor.UnityPlugin";
@@ -110,6 +135,12 @@ namespace Microsoft.MixedReality.SpectatorView
 
         [DllImport(CompositorPluginDll)]
         public static extern void SetCompositeFrameIndex(int index);
+
+        [DllImport(CompositorPluginDll)]
+        public static extern bool IsCameraCalibrationInformationAvailable();
+
+        [DllImport(CompositorPluginDll)]
+        public static extern void GetCameraCalibrationInformation(out CompositorCameraIntrinsics cameraIntrinsics);
     }
 #endif
 }

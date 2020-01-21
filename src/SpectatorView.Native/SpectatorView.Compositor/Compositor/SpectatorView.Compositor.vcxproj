@@ -176,6 +176,7 @@ if EXIST "$(Elgato_Filter)" xcopy /y "$(Elgato_Filter)"</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="AzureKinectFrameProvider.h" />
+    <ClInclude Include="CameraIntrinsics.h" />
     <ClInclude Include="CompositorInterface.h" />
     <ClInclude Include="DeckLinkDevice.h" />
     <ClInclude Include="DeckLinkManager.h" />
