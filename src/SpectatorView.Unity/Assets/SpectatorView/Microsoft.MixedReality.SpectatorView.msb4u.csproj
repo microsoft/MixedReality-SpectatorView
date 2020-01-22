@@ -28,8 +28,7 @@
   <Import Project="$(MSBuildForUnityGeneratedOutputDirectory)\$(MSBuildProjectName).g.props" />
 
   <ItemGroup>
-  <!-- Add your references here -->
-
+    <!-- Add your references here -->
   </ItemGroup>
 
   <Import Project="$(MSBuildForUnityGeneratedOutputDirectory)\$(MSBuildProjectName).g.targets" />

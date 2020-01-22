@@ -7,12 +7,41 @@ using System.Linq;
 using System.IO;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
+using System.Collections;
 
 namespace Microsoft.MixedReality.SpectatorView.Editor
 {
     public static class StateSynchronizationMenuItems
     {
         private static IEqualityComparer<IAssetCache> assetTypeComparer = new AssetCacheTypeEqualityComparer();
+
+        private const string disableSpectatorViewPreBuild = "Spectator View/Disable Spectator View Pre-build steps";
+        public static bool DisablePreBuildSteps
+        {
+            get
+            {
+                return PlayerPrefs.GetInt(disableSpectatorViewPreBuild, 0) > 0;
+            }
+            private set
+            {
+                PlayerPrefs.SetInt(disableSpectatorViewPreBuild, value ? 1 : 0);
+                PlayerPrefs.Save();
+            }
+        }
+
+        private const string disableUpdatingMenuItem = "Spectator View/Disable updating asset caches when building";
+        public static bool DisableUpdatingAssetCaches
+        {
+            get
+            {
+                return PlayerPrefs.GetInt(disableUpdatingMenuItem, 0) > 0;
+            }
+            private set
+            {
+                PlayerPrefs.SetInt(disableUpdatingMenuItem, value ? 1 : 0);
+                PlayerPrefs.Save();
+            }
+        }
 
         private class AssetCacheTypeEqualityComparer : IEqualityComparer<IAssetCache>
         {
@@ -42,18 +71,50 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
             return assetCaches.Distinct(assetTypeComparer);
         }
 
-        [MenuItem("Spectator View/Update All Asset Caches", priority = 100)]
+        [MenuItem(disableSpectatorViewPreBuild, priority = 100)]
+        public static void DisableSpectatorViewPreBuild()
+        {
+            DisablePreBuildSteps = !DisablePreBuildSteps;
+            Menu.SetChecked(disableSpectatorViewPreBuild, DisablePreBuildSteps);
+        }
+
+        [MenuItem(disableSpectatorViewPreBuild, true, priority = 100)]
+        public static bool DisableSpectatorViewPreBuild_Validate()
+        {
+            Menu.SetChecked(disableSpectatorViewPreBuild, DisablePreBuildSteps);
+            return true;
+        }
+
+        [MenuItem(disableUpdatingMenuItem, priority = 101)]
+        public static void DisableUpdatingAssetCachesWhenBuilding()
+        {
+            DisableUpdatingAssetCaches = !DisableUpdatingAssetCaches;
+            Menu.SetChecked(disableUpdatingMenuItem, DisableUpdatingAssetCaches);
+        }
+
+        [MenuItem(disableUpdatingMenuItem, true, priority = 101)]
+        public static bool DisableUpdatingAssetCachesWhenBuilding_Validate()
+        {
+            Menu.SetChecked(disableUpdatingMenuItem, DisableUpdatingAssetCaches);
+            return true;
+        }
+
+        [MenuItem("Spectator View/Update All Asset Caches", priority = 102)]
         public static void UpdateAllAssetCaches()
         {
             bool assetCacheFound = false;
 
-            foreach (IAssetCache assetCache in GetAllAssetCaches())
+            IEnumerable<IAssetCache> assetCaches = GetAllAssetCaches();
+            int numCaches = assetCaches.Count();
+            for (int i = 0; i < numCaches; i++)
             {
-                Debug.Log($"Updating asset cache {assetCache.GetType().Name}...");
+                IAssetCache assetCache = assetCaches.ElementAt(i);
+                EditorUtility.DisplayProgressBar($"Updating {numCaches} Asset Caches...", $"Updating the {assetCache.GetType().Name}'s Asset Caches.", i / (float)numCaches);
                 assetCache.UpdateAssetCache();
                 assetCache.SaveAssets();
                 assetCacheFound = true;
             }
+            EditorUtility.ClearProgressBar();
 
             if (!assetCacheFound)
             {
@@ -65,7 +126,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
             Debug.Log("Asset caches updated.");
         }
 
-        [MenuItem("Spectator View/Clear All Asset Caches", priority = 101)]
+        [MenuItem("Spectator View/Clear All Asset Caches", priority = 103)]
         public static void ClearAllAssetCaches()
         {
             bool assetCacheFound = false;
