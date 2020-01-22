@@ -502,6 +502,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
                         if (UnityCompositorInterface.IsCameraCalibrationInformationAvailable())
                         {
+                            UnityCompositorInterface.ConfigureArUcoMarkerDetector(0.1f);
                             UnityCompositorInterface.GetCameraCalibrationInformation(out CompositorCameraIntrinsics cameraIntrinsics);
                             GameObject cameraPose = new GameObject("Video Camera Transform");
                             cameraPose.transform.SetParent(HolographicCameraObserver.Instance.transform, worldPositionStays: true);
@@ -518,6 +519,18 @@ namespace Microsoft.MixedReality.SpectatorView
             }
 
             UnityCompositorInterface.UpdateCompositor();
+
+            if (UnityCompositorInterface.IsCameraCalibrationInformationAvailable())
+            {
+                if (UnityCompositorInterface.TryGetLatestArUcoMarkerPose(0, out CompositorVector3 position, out CompositorVector3 rotation))
+                {
+                    Marker marker = SpectatorViewOpenCVInterface.CreateMarkerFromPositionAndRotation(0, position.AsPosition(), rotation.AsRodriguesRotation(), Matrix4x4.identity);
+                    Matrix4x4 markerWorldMatrix = Matrix4x4.TRS(marker.Position, marker.Rotation, Vector3.one);
+
+                    transform.parent.localPosition = markerWorldMatrix.inverse.MultiplyPoint(Vector3.zero);
+                    transform.parent.localRotation = markerWorldMatrix.inverse.rotation;
+                }
+            }
 #endif
         }
 

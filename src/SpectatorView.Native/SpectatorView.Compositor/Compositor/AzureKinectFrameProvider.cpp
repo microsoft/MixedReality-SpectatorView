@@ -7,6 +7,21 @@
 #include "AzureKinectFrameProvider.h"
 #include <k4a/k4a.h>
 
+AzureKinectFrameProvider::AzureKinectFrameProvider()
+    : detectMarkers(false)
+    , markerSize(0.0f)
+    , _captureFrameIndex(0)
+    , markerDetector(new ArUcoMarkerDetector())
+    , _colorSRV(nullptr)
+    , _depthSRV(nullptr)
+    , calibration()
+    , d3d11Device(nullptr)
+    , k4aDevice(nullptr)
+    , lock()
+    , transformation(nullptr)
+    , transformedDepthImage(nullptr)
+{}
+
 HRESULT AzureKinectFrameProvider::Initialize(ID3D11ShaderResourceView* colorSRV, ID3D11ShaderResourceView* depthSRV, ID3D11Texture2D* outputTexture)
 {
     InitializeCriticalSection(&lock);
@@ -88,6 +103,15 @@ void AzureKinectFrameProvider::Update(int compositeFrameIndex)
 
     DirectXHelper::UpdateSRV(d3d11Device, _colorSRV, buffer, stride);
 
+    if (detectMarkers)
+    {
+        float focalLength[2] = { calibration.color_camera_calibration.intrinsics.parameters.param.fx, calibration.color_camera_calibration.intrinsics.parameters.param.fy };
+        float principalPoint[2] = { calibration.color_camera_calibration.intrinsics.parameters.param.cx, calibration.color_camera_calibration.intrinsics.parameters.param.cy };
+        float radialDistortion[3] = { calibration.color_camera_calibration.intrinsics.parameters.param.k1, calibration.color_camera_calibration.intrinsics.parameters.param.k2, calibration.color_camera_calibration.intrinsics.parameters.param.k3 };
+        float tangentialDistortion[2] = { calibration.color_camera_calibration.intrinsics.parameters.param.p1, calibration.color_camera_calibration.intrinsics.parameters.param.p2 };
+        markerDetector->DetectMarkers(buffer, width, height, focalLength, principalPoint, radialDistortion, tangentialDistortion, markerSize, cv::aruco::DICT_6X6_250);
+    }
+
     k4a_transformation_depth_image_to_color_camera(transformation, depthImage, transformedDepthImage);
 
     stride = k4a_image_get_stride_bytes(transformedDepthImage);
@@ -142,5 +166,16 @@ void AzureKinectFrameProvider::GetCameraCalibrationInformation(CameraIntrinsics*
     calibration->principalPoint = { this->calibration.color_camera_calibration.intrinsics.parameters.param.cx, this->calibration.color_camera_calibration.intrinsics.parameters.param.cy };
     calibration->imageWidth = this->calibration.color_camera_calibration.resolution_width;
     calibration->imageHeight = this->calibration.color_camera_calibration.resolution_height;
+}
+
+void AzureKinectFrameProvider::ConfigureArUcoMarkerDetector(float markerSize)
+{
+    this->detectMarkers = true;
+    this->markerSize = markerSize;
+}
+
+bool AzureKinectFrameProvider::TryGetLatestArUcoMarkerPose(int markerId, Vector3* position, Vector3* rotation)
+{
+    return this->markerDetector->GetDetectedMarkerPose(markerId, reinterpret_cast<float*>(position), reinterpret_cast<float*>(rotation));
 }
 #endif

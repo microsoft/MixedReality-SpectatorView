@@ -612,4 +612,24 @@ UNITYDLL bool CreateUnityDepthCameraTexture(ID3D11ShaderResourceView*& srv)
     srv = g_UnityDepthSRV;
     return true;
 }
+
+UNITYDLL void ConfigureArUcoMarkerDetector(float markerSize)
+{
+    if (ci != nullptr)
+    {
+        ci->ConfigureArUcoMarkerDetector(markerSize);
+    }
+}
+
+UNITYDLL bool TryGetLatestArUcoMarkerPose(int markerId, Vector3* position, Vector3* rotation)
+{
+    if (ci != nullptr)
+    {
+        return ci->TryGetLatestArUcoMarkerPose(markerId, position, rotation);
+    }
+    else
+    {
+        return false;
+    }
+}
 #pragma endregion CreateExternalTextures

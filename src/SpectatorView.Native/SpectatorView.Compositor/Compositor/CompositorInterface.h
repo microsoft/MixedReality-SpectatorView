@@ -46,6 +46,9 @@ public:
     DLLEXPORT bool IsCameraCalibrationInformationAvailable();
     DLLEXPORT void GetCameraCalibrationInformation(CameraIntrinsics* cameraIntrinsics);
 
+    DLLEXPORT void ConfigureArUcoMarkerDetector(float markerSize);
+    DLLEXPORT bool TryGetLatestArUcoMarkerPose(int markerId, Vector3* position, Vector3* rotation);
+
     DLLEXPORT bool Initialize(ID3D11Device* device, ID3D11ShaderResourceView* colorSRV, ID3D11ShaderResourceView* depthSRV, ID3D11Texture2D* outputTexture);
 
     DLLEXPORT void UpdateFrameProvider();

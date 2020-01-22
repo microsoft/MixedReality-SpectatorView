@@ -5,11 +5,14 @@
 
 #include "CompositorInterface.h"
 #include "IFrameProvider.h"
+#include "ArUcoMarkerDetector.h"
 #include <k4a/k4a.h>
 
 class AzureKinectFrameProvider : public IFrameProvider
 {
 public:
+    AzureKinectFrameProvider();
+
     // Inherited via IFrameProvider
     virtual HRESULT Initialize(ID3D11ShaderResourceView* colorSRV, ID3D11ShaderResourceView* depthSRV, ID3D11Texture2D* outputTexture) override;
     virtual LONGLONG GetTimestamp(int frame) override;
@@ -33,6 +36,9 @@ public:
 
     virtual void GetCameraCalibrationInformation(CameraIntrinsics* calibration) override;
 
+    virtual void ConfigureArUcoMarkerDetector(float markerSize) override;
+    virtual bool TryGetLatestArUcoMarkerPose(int markerId, Vector3* position, Vector3* rotation) override;
+
 private:
     int _captureFrameIndex;
     ID3D11ShaderResourceView* _colorSRV;
@@ -44,4 +50,9 @@ private:
     k4a_transformation_t transformation;
     k4a_image_t transformedDepthImage;
     CRITICAL_SECTION lock;
+
+    bool detectMarkers;
+    float markerSize;
+
+    std::shared_ptr<ArUcoMarkerDetector> markerDetector;
 };

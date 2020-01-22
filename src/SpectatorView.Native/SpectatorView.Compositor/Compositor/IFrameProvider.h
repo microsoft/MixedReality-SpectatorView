@@ -44,4 +44,7 @@ public:
     virtual int GetNumQueuedOutputFrames() { return 0; }
     virtual bool IsCameraCalibrationInformationAvailable() { return false; }
     virtual void GetCameraCalibrationInformation(CameraIntrinsics* calibration) {}
+
+    virtual void ConfigureArUcoMarkerDetector(float markerSize) {}
+    virtual bool TryGetLatestArUcoMarkerPose(int markerId, Vector3* position, Vector3* rotation) { return false; }
 };

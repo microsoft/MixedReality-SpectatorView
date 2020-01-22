@@ -99,6 +99,26 @@ bool CompositorInterface::Initialize(ID3D11Device* device, ID3D11ShaderResourceV
     return SUCCEEDED(frameProvider->Initialize(colorSRV, depthSRV, outputTexture));
 }
 
+void CompositorInterface::ConfigureArUcoMarkerDetector(float markerSize)
+{
+    if (frameProvider != nullptr)
+    {
+        frameProvider->ConfigureArUcoMarkerDetector(markerSize);
+    }
+}
+
+bool CompositorInterface::TryGetLatestArUcoMarkerPose(int markerId, Vector3* position, Vector3* rotation)
+{
+    if (frameProvider == nullptr)
+    {
+        return false;
+    }
+    else
+    {
+        return frameProvider->TryGetLatestArUcoMarkerPose(markerId, position, rotation);
+    }
+}
+
 void CompositorInterface::UpdateFrameProvider()
 {
     if (frameProvider != nullptr)

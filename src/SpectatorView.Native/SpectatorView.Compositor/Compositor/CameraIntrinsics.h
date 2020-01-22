@@ -6,6 +6,19 @@ struct Vector2
     float y;
 };
 
+struct Vector3
+{
+    float x;
+    float y;
+    float z;
+};
+
+struct Pose
+{
+    Vector3 position;
+    Vector3 rotation;
+};
+
 struct CameraIntrinsics
 {
     Vector2 focalLength;

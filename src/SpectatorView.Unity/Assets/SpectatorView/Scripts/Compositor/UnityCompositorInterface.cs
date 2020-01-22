@@ -12,6 +12,23 @@ namespace Microsoft.MixedReality.SpectatorView
     public enum VideoRecordingFrameLayout : int { Composite = 0, Quad = 1 };
 
 #if UNITY_EDITOR
+    internal struct CompositorVector3
+    {
+        public float x;
+        public float y;
+        public float z;
+
+        public Vector3 AsPosition()
+        {
+            return new Vector3(x, -y, z);
+        }
+
+        public Vector3 AsRodriguesRotation()
+        {
+            return new Vector3(x, y, z);
+        }
+    }
+
     internal struct CompositorCameraIntrinsics
     {
         public float fx;
@@ -141,6 +158,12 @@ namespace Microsoft.MixedReality.SpectatorView
 
         [DllImport(CompositorPluginDll)]
         public static extern void GetCameraCalibrationInformation(out CompositorCameraIntrinsics cameraIntrinsics);
+
+        [DllImport(CompositorPluginDll)]
+        public static extern void ConfigureArUcoMarkerDetector(float markerSize);
+
+        [DllImport(CompositorPluginDll)]
+        public static extern bool TryGetLatestArUcoMarkerPose(int markerId, out CompositorVector3 position, out CompositorVector3 rotation);
     }
 #endif
 }
