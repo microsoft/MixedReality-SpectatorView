@@ -177,7 +177,11 @@ namespace Microsoft.MixedReality.SpectatorView
         public void SetMarkerSize(float size)
         {
             _markerSize = size;
-            _api.SetMarkerSize(size);
+
+            if (_api != null)
+            {
+                _api.SetMarkerSize(size);
+            }
         }
 
         /// <inheritdoc />
