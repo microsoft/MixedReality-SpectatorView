@@ -43,7 +43,7 @@ public:
     DLLEXPORT void SetFrameProvider(IFrameProvider::ProviderType type);
 	DLLEXPORT bool IsFrameProviderSupported(IFrameProvider::ProviderType providerType);
 
-    DLLEXPORT bool Initialize(ID3D11Device* device, ID3D11ShaderResourceView* colorSRV, ID3D11ShaderResourceView* depthSRV, ID3D11Texture2D* outputTexture);
+    DLLEXPORT bool Initialize(ID3D11Device* device, ID3D11ShaderResourceView* colorSRV, ID3D11ShaderResourceView* depthSRV, ID3D11ShaderResourceView* bodySRV, ID3D11Texture2D* outputTexture);
 
     DLLEXPORT void UpdateFrameProvider();
     DLLEXPORT void Update();

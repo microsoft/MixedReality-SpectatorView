@@ -64,7 +64,7 @@ bool CompositorInterface::IsFrameProviderSupported(IFrameProvider::ProviderType 
 	return false;
 }
 
-bool CompositorInterface::Initialize(ID3D11Device* device, ID3D11ShaderResourceView* colorSRV, ID3D11ShaderResourceView* depthSRV, ID3D11Texture2D* outputTexture)
+bool CompositorInterface::Initialize(ID3D11Device* device, ID3D11ShaderResourceView* colorSRV, ID3D11ShaderResourceView* depthSRV, ID3D11ShaderResourceView* bodySRV, ID3D11Texture2D* outputTexture)
 {
     if (frameProvider == nullptr)
     {
@@ -78,7 +78,7 @@ bool CompositorInterface::Initialize(ID3D11Device* device, ID3D11ShaderResourceV
 
     _device = device;
 
-    return SUCCEEDED(frameProvider->Initialize(colorSRV, depthSRV, outputTexture));
+    return SUCCEEDED(frameProvider->Initialize(colorSRV, depthSRV, bodySRV, outputTexture));
 }
 
 void CompositorInterface::UpdateFrameProvider()
