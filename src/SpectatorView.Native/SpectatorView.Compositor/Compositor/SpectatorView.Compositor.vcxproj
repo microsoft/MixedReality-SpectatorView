@@ -117,12 +117,12 @@ if EXIST "$(Elgato_Filter)" xcopy /y "$(Elgato_Filter)"</Command>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_USRDLL;COMPOSITORDLL_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\SharedHeaders\;$(AzureKinectIncludeDirectory)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(AzureKinectBodyTrackingIncludeDirectory);..\SharedHeaders\;$(AzureKinectIncludeDirectory)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(AzureKinectLibraryDirectory)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(AzureKinectBodyTrackingLibraryDirectory);$(AzureKinectLibraryDirectory)</AdditionalLibraryDirectories>
       <AdditionalDependencies>k4a.lib;k4abt.lib;shell32.lib;$(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
