@@ -64,6 +64,24 @@ bool CompositorInterface::IsFrameProviderSupported(IFrameProvider::ProviderType 
 	return false;
 }
 
+bool CompositorInterface::IsCameraCalibrationInformationAvailable()
+{
+    if (frameProvider == nullptr)
+    {
+        return false;
+    }
+
+    return frameProvider->IsCameraCalibrationInformationAvailable();
+}
+
+void CompositorInterface::GetCameraCalibrationInformation(CameraIntrinsics* calibration)
+{
+    if (frameProvider != nullptr)
+    {
+        frameProvider->GetCameraCalibrationInformation(calibration);
+    }
+}
+
 bool CompositorInterface::Initialize(ID3D11Device* device, ID3D11ShaderResourceView* colorSRV, ID3D11ShaderResourceView* depthSRV, ID3D11ShaderResourceView* bodySRV, ID3D11Texture2D* outputTexture)
 {
     if (frameProvider == nullptr)

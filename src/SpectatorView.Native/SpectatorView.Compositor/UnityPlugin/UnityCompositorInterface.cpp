@@ -313,6 +313,25 @@ UNITYDLL void SetCompositeFrameIndex(int index)
         return ci->SetCompositeFrameIndex(index);
 }
 
+UNITYDLL bool IsCameraCalibrationInformationAvailable()
+{
+    if (ci != nullptr)
+    {
+        return ci->IsCameraCalibrationInformationAvailable();
+    }
+    else
+    {
+        return false;
+    }
+}
+
+UNITYDLL void GetCameraCalibrationInformation(CameraIntrinsics* cameraIntrinsics)
+{
+    if (ci != nullptr)
+    {
+        ci->GetCameraCalibrationInformation(cameraIntrinsics);
+    }
+}
 
 // Function to pass a callback to plugin-specific scripts
 EXTERN_C UnityRenderingEvent __declspec(dllexport) __stdcall GetRenderEventFunc()

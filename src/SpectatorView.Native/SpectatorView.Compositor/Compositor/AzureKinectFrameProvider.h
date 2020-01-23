@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include "CompositorInterface.h"
 #include "IFrameProvider.h"
 #include <k4a/k4a.h>
 #include <k4abt.h>
@@ -25,12 +26,19 @@ public:
     {
         return _captureFrameIndex;
     }
+   
+   virtual bool IsCameraCalibrationInformationAvailable() override
+    {
+        return true;
+    }
 
+    virtual void GetCameraCalibrationInformation(CameraIntrinsics* calibration) override;
+
+private:
     uint8_t* GetBodyIndexBuffer(k4a_capture_t capture);
     void UpdateSRV(k4a_image_t bodyDepthImage, ID3D11ShaderResourceView* _srv);
     void SetBodyDepthBuffer(uint16_t* bodyDepthBuffer, uint16_t* depthBuffer, uint8_t* bodyIndexBuffer, int bufferSize);
-
-private:
+    
     int _captureFrameIndex;
     ID3D11ShaderResourceView* _colorSRV;
     ID3D11ShaderResourceView* _depthSRV;
@@ -45,5 +53,5 @@ private:
     k4a_image_t bodyDepthImage;
     k4abt_tracker_t k4abtTracker;
     k4abt_tracker_configuration_t tracker_config = K4ABT_TRACKER_CONFIG_DEFAULT;
-    CRITICAL_SECTION lock;
+    CRITICAL_SECTION lock;    
 };

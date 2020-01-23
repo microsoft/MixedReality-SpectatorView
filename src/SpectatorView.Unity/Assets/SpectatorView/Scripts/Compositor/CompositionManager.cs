@@ -499,6 +499,16 @@ namespace Microsoft.MixedReality.SpectatorView
                         CurrentCompositeFrame = 0;
                         timeSynchronizer.Reset();
                         poseCache.Reset();
+
+                        if (UnityCompositorInterface.IsCameraCalibrationInformationAvailable())
+                        {
+                            UnityCompositorInterface.GetCameraCalibrationInformation(out CompositorCameraIntrinsics cameraIntrinsics);
+                            GameObject cameraPose = new GameObject("Video Camera Transform");
+                            cameraPose.transform.SetParent(HolographicCameraObserver.Instance.transform, worldPositionStays: true);
+                            EnableHolographicCamera(cameraPose.transform, new VideoCameraCalibrationData(cameraIntrinsics.AsCalculatedCameraIntrinsics()));
+
+                            Debug.Log($"Camera calibration information: FocalPoint = {cameraIntrinsics.fx},{cameraIntrinsics.fy} Center = {cameraIntrinsics.cx},{cameraIntrinsics.cy} Dimensions = {cameraIntrinsics.imageWidth}x{cameraIntrinsics.imageHeight}");
+                        }
                     }
                 }
                 else
