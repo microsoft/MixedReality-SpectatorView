@@ -22,18 +22,25 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
 
         public int callbackOrder => 0; // Execute this first
 
-        private static string pluginsDirectory { get; } = Path.Combine(Application.dataPath, "Plugins/Android");
+        private static string androidPluginsDirectory { get; } = Path.Combine(Application.dataPath, "Plugins", "Android");
+
+        private const string YesDialogOption = "Yes";
+        private const string NoDialogOption = "No";
+        private const string SpectatorViewBuildToolsTitle = "Spectator View Build Tools";
+        private const string AndroidManifestDialogMessage = "An existing AndroidManifest.xml was detected with conflicting content.\n\nShould Spectator View build tools overwrite your AndroidManifest.xml?";
+        private const string AndroidGradleDialogMessage = "An existing mainTemplate.gradle file was detected with conflicting content.\n\nShould Spectator View build tools overwrite your mainTemplate.gradle file?";
+        private const string AndroidGradleBackupDialogMessage = "An existing mainTemplate.gradle.backup file was detected.\n\nShould Spectator View build tools delete your mainTemplate.gradle.backup file? Note: choosing not deleting this file may result in the Unity Editor generating IOExceptions.";
 
         public void OnPreprocessBuild(BuildReport report)
         {
-            if (!StateSynchronizationMenuItems.DisableUpdatingAssetCaches)
-            {
-                StateSynchronizationMenuItems.UpdateAllAssetCaches();
-            }
-
             if (!StateSynchronizationMenuItems.DisablePreBuildSteps)
             {
                 RunPreBuildSteps();
+            }
+
+            if (!StateSynchronizationMenuItems.DisableUpdatingAssetCaches)
+            {
+                StateSynchronizationMenuItems.UpdateAllAssetCaches();
             }
         }
 
@@ -62,6 +69,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
                 PlayerSettings.Android.forceSDCardPermission = true;
                 PlayerSettings.Android.ARCoreEnabled = false;
 
+                EnsureAndroidPluginsDirectory();
                 SetupAndroidManifestFiles();
                 SetupAndroidGradleFiles();
                 AssetDatabase.Refresh();
@@ -73,6 +81,14 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
                 PlayerSettings.iOS.targetOSVersionString = "11.0";
                 // TODO: figure out how to programmatically check the "Requires ARKit Support" box (corresponding to "iOSRequireARKit" in ProjectSettings.asset).
                 PlayerSettings.iOS.cameraUsageDescription = "Camera required for AR Foundation";
+            }
+        }
+
+        private void EnsureAndroidPluginsDirectory()
+        {
+            if (!Directory.Exists(androidPluginsDirectory.ToString()))
+            {
+                Directory.CreateDirectory(androidPluginsDirectory);
             }
         }
 
@@ -123,20 +139,14 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
                 manifestData = memoryStream.ToArray();
             }
 
-            if (Directory.Exists(pluginsDirectory.ToString()))
-            {
-                Directory.CreateDirectory(pluginsDirectory);
-            }
-
-            string outputManifestFilePath = Path.Combine(pluginsDirectory, "AndroidManifest.xml");
+            string outputManifestFilePath = Path.Combine(androidPluginsDirectory, "AndroidManifest.xml");
             bool saveManifest = false;
             if (File.Exists(outputManifestFilePath))
             {
                 byte[] existingManifestFile = File.ReadAllBytes(outputManifestFilePath);
                 if (existingManifestFile != null &&
                     !existingManifestFile.SequenceEqual(manifestData) &&
-                    EditorUtility.DisplayDialog("Spectator View Build Tools", "An existing AndroidManifest.xml was detected with conflicting content.\n\n" +
-                        "Should Spectator View build tools overwrite your AndroidManifest.xml?", "Yes", "No"))
+                    EditorUtility.DisplayDialog(SpectatorViewBuildToolsTitle, AndroidManifestDialogMessage, YesDialogOption, NoDialogOption))
                 {
                     Debug.Log("User chose to overwrite an existing AndroidManifest.xml.");
                     File.Delete(outputManifestFilePath);
@@ -170,25 +180,23 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
                 return;
             }
 
-            string outputGradleBackupFilePath = Path.Combine(pluginsDirectory, "mainTemplate.gradle.backup");
-            string outputGradleBackupMetaFilePath = Path.Combine(pluginsDirectory, "mainTemplate.gradle.backup.meta");
+            string outputGradleBackupFilePath = Path.Combine(androidPluginsDirectory, "mainTemplate.gradle.backup");
+            string outputGradleBackupMetaFilePath = Path.Combine(androidPluginsDirectory, "mainTemplate.gradle.backup.meta");
             if (File.Exists(outputGradleBackupFilePath) &&
-                EditorUtility.DisplayDialog("Spectator View Build Tools", "An existing mainTemplate.gradle.backup file was detected.\n\n" +
-                        "Should Spectator View build tools delete your mainTemplate.gradle.backup file? Note: choosing not deleting this file may result in the Unity Editor generating IOExceptions.", "Yes", "No"))
+                EditorUtility.DisplayDialog(SpectatorViewBuildToolsTitle, AndroidGradleBackupDialogMessage, YesDialogOption, NoDialogOption))
             {
                 File.Delete(outputGradleBackupFilePath);
                 File.Delete(outputGradleBackupMetaFilePath);
             }
 
-            string outputGradleFilePath = Path.Combine(pluginsDirectory, "mainTemplate.gradle");
+            string outputGradleFilePath = Path.Combine(androidPluginsDirectory, "mainTemplate.gradle");
             bool copyGradle = false;
             if (File.Exists(outputGradleFilePath))
             {
                 byte[] newGradle = File.ReadAllBytes(gradleFiles.First());
                 byte[] existingGradle = File.ReadAllBytes(outputGradleFilePath);
                 if (!newGradle.SequenceEqual(existingGradle) &&
-                    EditorUtility.DisplayDialog("Spectator View Build Tools", "An existing mainTemplate.gradle file was detected with conflicting content.\n\n" +
-                        "Should Spectator View build tools overwrite your mainTemplate.gradle file?", "Yes", "No"))
+                    EditorUtility.DisplayDialog(SpectatorViewBuildToolsTitle, AndroidGradleDialogMessage, YesDialogOption, NoDialogOption))
                 {
                     Debug.Log("User chose to overwrite an existin mainTemplate.gradle file.");
                     File.Delete(outputGradleFilePath);
