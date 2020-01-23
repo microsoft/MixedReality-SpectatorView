@@ -85,7 +85,9 @@ namespace Microsoft.MixedReality.SpectatorView
         {
             string ipAddress = "Unknown IP";
 
-#if !UNITY_EDITOR && WINDOWS_UWP
+#if UNITY_EDITOR
+            ipAddress = "localhost";
+#elif WINDOWS_UWP
             var icp = NetworkInformation.GetInternetConnectionProfile();
             if (icp != null && icp.NetworkAdapter != null)
             {

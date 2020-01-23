@@ -29,6 +29,18 @@ namespace Microsoft.MixedReality.SpectatorView
         }
     }
 
+    internal struct CompositorMarker
+    {
+        public int id;
+        public CompositorVector3 position;
+        public CompositorVector3 rotation;
+
+        public Marker AsMarker()
+        {
+            return SpectatorViewOpenCVInterface.CreateMarkerFromPositionAndRotation(id, position.AsPosition(), rotation.AsRodriguesRotation(), Matrix4x4.identity);
+        }
+    }
+
     internal struct CompositorCameraIntrinsics
     {
         public float fx;
@@ -160,7 +172,19 @@ namespace Microsoft.MixedReality.SpectatorView
         public static extern void GetCameraCalibrationInformation(out CompositorCameraIntrinsics cameraIntrinsics);
 
         [DllImport(CompositorPluginDll)]
-        public static extern void ConfigureArUcoMarkerDetector(float markerSize);
+        public static extern bool IsArUcoMarkerDetectorSupported();
+
+        [DllImport(CompositorPluginDll)]
+        public static extern void StartArUcoMarkerDetector(float markerSize);
+
+        [DllImport(CompositorPluginDll)]
+        public static extern void StopArUcoMarkerDetector();
+
+        [DllImport(CompositorPluginDll)]
+        public static extern int GetLatestArUcoMarkerCount();
+
+        [DllImport(CompositorPluginDll)]
+        public static extern void GetLatestArUcoMarkers(int size, CompositorMarker[] markers);
 
         [DllImport(CompositorPluginDll)]
         public static extern bool TryGetLatestArUcoMarkerPose(int markerId, out CompositorVector3 position, out CompositorVector3 rotation);

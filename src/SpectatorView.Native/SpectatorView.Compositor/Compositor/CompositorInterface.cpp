@@ -99,23 +99,51 @@ bool CompositorInterface::Initialize(ID3D11Device* device, ID3D11ShaderResourceV
     return SUCCEEDED(frameProvider->Initialize(colorSRV, depthSRV, outputTexture));
 }
 
-void CompositorInterface::ConfigureArUcoMarkerDetector(float markerSize)
+bool CompositorInterface::IsArUcoMarkerDetectorSupported()
 {
     if (frameProvider != nullptr)
     {
-        frameProvider->ConfigureArUcoMarkerDetector(markerSize);
-    }
-}
-
-bool CompositorInterface::TryGetLatestArUcoMarkerPose(int markerId, Vector3* position, Vector3* rotation)
-{
-    if (frameProvider == nullptr)
-    {
-        return false;
+        return frameProvider->IsArUcoMarkerDetectorSupported();
     }
     else
     {
-        return frameProvider->TryGetLatestArUcoMarkerPose(markerId, position, rotation);
+        return false;
+    }
+}
+
+void CompositorInterface::StartArUcoMarkerDetector(float markerSize)
+{
+    if (frameProvider != nullptr)
+    {
+        frameProvider->StartArUcoMarkerDetector(markerSize);
+    }
+}
+
+void CompositorInterface::StopArUcoMarkerDetector()
+{
+    if (frameProvider != nullptr)
+    {
+        frameProvider->StopArUcoMarkerDetector();
+    }
+}
+
+int CompositorInterface::GetLatestArUcoMarkerCount()
+{
+    if (frameProvider == nullptr)
+    {
+        return 0;
+    }
+    else
+    {
+        return frameProvider->GetLatestArUcoMarkerCount();
+    }
+}
+
+void CompositorInterface::GetLatestArUcoMarkers(int size, Marker* markers)
+{
+    if (frameProvider != nullptr)
+    {
+        return frameProvider->GetLatestArUcoMarkers(size, markers);
     }
 }
 

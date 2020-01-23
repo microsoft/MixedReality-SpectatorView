@@ -19,6 +19,13 @@ struct Pose
     Vector3 rotation;
 };
 
+struct Marker
+{
+    int id;
+    Vector3 position; // vector
+    Vector3 rotation; // rodrigues vector
+};
+
 struct CameraIntrinsics
 {
     Vector2 focalLength;

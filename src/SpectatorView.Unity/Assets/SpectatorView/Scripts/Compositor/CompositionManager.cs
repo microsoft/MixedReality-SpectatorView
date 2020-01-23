@@ -26,11 +26,15 @@ namespace Microsoft.MixedReality.SpectatorView
         /// </summary>
         public TextureManager TextureManager => textureManager;
 
+        [Header("Stationary Camera Settings")]
+        [Tooltip("The broadcaster used to provide calibration and pose information for stationary cameras connected directly to the compositor.")]
+        public GameObject stationaryCameraBroadcaster = null;
+
         /// <summary>
         /// Gets or sets the texture depth used for the RenderTextures used during compositing.
         /// </summary>
         [Header("Hologram Settings")]
-        [Tooltip("Texture depth for the RenderTexture used by the compositor")]
+        [Tooltip("Texture depth for the RenderTexture used by the compositor.")]
         public Depth TextureDepth = Depth.TwentyFour;
 
         /// <summary>
@@ -502,13 +506,8 @@ namespace Microsoft.MixedReality.SpectatorView
 
                         if (UnityCompositorInterface.IsCameraCalibrationInformationAvailable())
                         {
-                            UnityCompositorInterface.ConfigureArUcoMarkerDetector(0.1f);
-                            UnityCompositorInterface.GetCameraCalibrationInformation(out CompositorCameraIntrinsics cameraIntrinsics);
-                            GameObject cameraPose = new GameObject("Video Camera Transform");
-                            cameraPose.transform.SetParent(HolographicCameraObserver.Instance.transform, worldPositionStays: true);
-                            EnableHolographicCamera(cameraPose.transform, new VideoCameraCalibrationData(cameraIntrinsics.AsCalculatedCameraIntrinsics()));
-
-                            Debug.Log($"Camera calibration information: FocalPoint = {cameraIntrinsics.fx},{cameraIntrinsics.fy} Center = {cameraIntrinsics.cx},{cameraIntrinsics.cy} Dimensions = {cameraIntrinsics.imageWidth}x{cameraIntrinsics.imageHeight}");
+                            stationaryCameraBroadcaster.SetActive(true);
+                            HolographicCameraObserver.Instance.ConnectTo("127.0.0.1");
                         }
                     }
                 }
@@ -519,18 +518,6 @@ namespace Microsoft.MixedReality.SpectatorView
             }
 
             UnityCompositorInterface.UpdateCompositor();
-
-            if (UnityCompositorInterface.IsCameraCalibrationInformationAvailable())
-            {
-                if (UnityCompositorInterface.TryGetLatestArUcoMarkerPose(0, out CompositorVector3 position, out CompositorVector3 rotation))
-                {
-                    Marker marker = SpectatorViewOpenCVInterface.CreateMarkerFromPositionAndRotation(0, position.AsPosition(), rotation.AsRodriguesRotation(), Matrix4x4.identity);
-                    Matrix4x4 markerWorldMatrix = Matrix4x4.TRS(marker.Position, marker.Rotation, Vector3.one);
-
-                    transform.parent.localPosition = markerWorldMatrix.inverse.MultiplyPoint(Vector3.zero);
-                    transform.parent.localRotation = markerWorldMatrix.inverse.rotation;
-                }
-            }
 #endif
         }
 

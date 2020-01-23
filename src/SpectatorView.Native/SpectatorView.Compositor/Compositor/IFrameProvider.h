@@ -45,6 +45,9 @@ public:
     virtual bool IsCameraCalibrationInformationAvailable() { return false; }
     virtual void GetCameraCalibrationInformation(CameraIntrinsics* calibration) {}
 
-    virtual void ConfigureArUcoMarkerDetector(float markerSize) {}
-    virtual bool TryGetLatestArUcoMarkerPose(int markerId, Vector3* position, Vector3* rotation) { return false; }
+    virtual bool IsArUcoMarkerDetectorSupported() { return false; }
+    virtual void StartArUcoMarkerDetector(float markerSize) {}
+    virtual void StopArUcoMarkerDetector() {}
+    virtual int GetLatestArUcoMarkerCount() { return 0; }
+    virtual void GetLatestArUcoMarkers(int size, Marker* markers) { }
 };

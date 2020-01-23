@@ -437,7 +437,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
                     CalculatedCameraCalibration calibration;
                     if (CalculatedCameraCalibration.TryDeserialize(calibrationDataPayload, out calibration))
                     {
-                        calibrationDataForPlayback = new HeadsetRigCalibrationData(calibration.Intrinsics, calibration.Extrinsics);
+                        calibrationDataForPlayback = new CalibrationData(calibration.Intrinsics, calibration.Extrinsics);
 
                         isCalibrationDataParsed = true;
                     }

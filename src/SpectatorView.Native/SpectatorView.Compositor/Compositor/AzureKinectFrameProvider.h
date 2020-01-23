@@ -36,8 +36,15 @@ public:
 
     virtual void GetCameraCalibrationInformation(CameraIntrinsics* calibration) override;
 
-    virtual void ConfigureArUcoMarkerDetector(float markerSize) override;
-    virtual bool TryGetLatestArUcoMarkerPose(int markerId, Vector3* position, Vector3* rotation) override;
+    virtual bool IsArUcoMarkerDetectorSupported() override
+    {
+        return true;
+    }
+
+    virtual void StartArUcoMarkerDetector(float markerSize) override;
+    virtual void StopArUcoMarkerDetector() override;
+    virtual int GetLatestArUcoMarkerCount() override { return markerDetector->GetDetectedMarkersCount(); }
+    virtual void GetLatestArUcoMarkers(int size, Marker* markers) override;
 
 private:
     int _captureFrameIndex;

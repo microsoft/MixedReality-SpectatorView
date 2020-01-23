@@ -168,14 +168,32 @@ void AzureKinectFrameProvider::GetCameraCalibrationInformation(CameraIntrinsics*
     calibration->imageHeight = this->calibration.color_camera_calibration.resolution_height;
 }
 
-void AzureKinectFrameProvider::ConfigureArUcoMarkerDetector(float markerSize)
+void AzureKinectFrameProvider::StartArUcoMarkerDetector(float markerSize)
 {
-    this->detectMarkers = true;
+    this->markerDetector->Reset();
     this->markerSize = markerSize;
+    this->detectMarkers = true;
 }
 
-bool AzureKinectFrameProvider::TryGetLatestArUcoMarkerPose(int markerId, Vector3* position, Vector3* rotation)
+void AzureKinectFrameProvider::StopArUcoMarkerDetector()
 {
-    return this->markerDetector->GetDetectedMarkerPose(markerId, reinterpret_cast<float*>(position), reinterpret_cast<float*>(rotation));
+    this->detectMarkers = false;
+}
+
+void AzureKinectFrameProvider::GetLatestArUcoMarkers(int size, Marker* markers)
+{
+    if (this->detectMarkers)
+    {
+        int localSize = markerDetector->GetDetectedMarkersCount();
+        std::vector<int> markerIds;
+        markerIds.resize(localSize);
+        markerDetector->GetDetectedMarkerIds(markerIds.data(), localSize);
+
+        for (int i = 0; i < localSize && i < size; i++)
+        {
+            markers[i].id = markerIds[i];
+            markerDetector->GetDetectedMarkerPose(markerIds[i], &markers[i].position, &markers[i].rotation);
+        }
+    }
 }
 #endif
