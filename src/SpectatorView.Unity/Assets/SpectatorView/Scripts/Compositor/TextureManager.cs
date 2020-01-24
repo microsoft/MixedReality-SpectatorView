@@ -219,8 +219,16 @@ namespace Microsoft.MixedReality.SpectatorView
             SetHologramShaderAlpha(Compositor.DefaultAlpha);
 
             CreateColorTexture();
-            CreateDepthCameraTexture();
-            CreateBodyDepthTexture();
+            
+            if(Compositor.OcclusionMode == OcclusionMode.RawDepthCamera && Compositor.OcclusionMode == OcclusionMode.BodyTracking)
+            {
+                CreateDepthCameraTexture();
+            }
+            else if(Compositor.OcclusionMode == OcclusionMode.BodyTracking)
+            {
+                CreateBodyDepthTexture();
+            }
+
             CreateOutputTextures();
 
             SetupCameraAndRenderTextures();

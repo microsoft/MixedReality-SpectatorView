@@ -35,24 +35,30 @@ HRESULT AzureKinectFrameProvider::Initialize(ID3D11ShaderResourceView* colorSRV,
         goto FailedExit;
     }
 
-    if (K4A_RESULT_SUCCEEDED != k4a_device_get_calibration(k4aDevice, config.depth_mode, config.color_resolution, &calibration))
+    if (depthSRV != nullptr)
     {
-        OutputDebugString(L"Failed to get depth camera calibration");
-        goto FailedExit;
+        if (K4A_RESULT_SUCCEEDED != k4a_device_get_calibration(k4aDevice, config.depth_mode, config.color_resolution, &calibration))
+        {
+            OutputDebugString(L"Failed to get depth camera calibration");
+            goto FailedExit;
+        }
+
+        transformation = k4a_transformation_create(&calibration);
+        k4a_image_create(K4A_IMAGE_FORMAT_DEPTH16, calibration.color_camera_calibration.resolution_width, calibration.color_camera_calibration.resolution_height, 2 * calibration.color_camera_calibration.resolution_width, &transformedDepthImage);
+
+        if(bodySRV != nullptr)
+        {
+            k4abt_tracker_configuration_t tracker_config = K4ABT_TRACKER_CONFIG_DEFAULT;
+            if (K4A_RESULT_SUCCEEDED != k4abt_tracker_create(&calibration, tracker_config, &k4abtTracker))
+            {
+                OutputDebugString(L"Body tracker initialization failed!\n");
+                goto FailedExit;
+            }
+            
+            k4a_image_create(K4A_IMAGE_FORMAT_DEPTH16, calibration.color_camera_calibration.resolution_width, calibration.color_camera_calibration.resolution_height, 2 * calibration.color_camera_calibration.resolution_width, &transformedBodyDepthImage);
+        }
     }
 
-    k4abt_tracker_configuration_t tracker_config = K4ABT_TRACKER_CONFIG_DEFAULT;
-    if (K4A_RESULT_SUCCEEDED != k4abt_tracker_create(&calibration, tracker_config, &k4abtTracker))
-    {
-        OutputDebugString(L"Body tracker initialization failed!\n");
-        goto FailedExit;
-    }
-
-    transformation = k4a_transformation_create(&calibration);
-
-    k4a_image_create(K4A_IMAGE_FORMAT_DEPTH16, calibration.color_camera_calibration.resolution_width, calibration.color_camera_calibration.resolution_height, 2 * calibration.color_camera_calibration.resolution_width, &transformedDepthImage);
-    k4a_image_create(K4A_IMAGE_FORMAT_DEPTH16, calibration.color_camera_calibration.resolution_width, calibration.color_camera_calibration.resolution_height, 2 * calibration.color_camera_calibration.resolution_width, &transformedBodyDepthImage);
-    
     return S_OK;
 
 FailedExit:
@@ -91,37 +97,47 @@ void AzureKinectFrameProvider::Update(int compositeFrameIndex)
     }
    
     auto colorImage = k4a_capture_get_color_image(capture);
-    auto depthImage = k4a_capture_get_depth_image(capture);
-    if (colorImage == nullptr || depthImage == nullptr)
+    if (colorImage == nullptr)
     {
         return;
     }
     
     UpdateSRV(colorImage, _colorSRV);
 
-    k4a_transformation_depth_image_to_color_camera(transformation, depthImage, transformedDepthImage);
+    if (_depthSRV != nullptr)
+    {
+        auto depthImage = k4a_capture_get_depth_image(capture);
+        if (depthImage == nullptr)
+        {
+            return;
+        }
 
-    UpdateSRV(transformedDepthImage, _depthSRV);
+        k4a_transformation_depth_image_to_color_camera(transformation, depthImage, transformedDepthImage);
 
-    auto height = k4a_image_get_height_pixels(depthImage);
-    auto width = k4a_image_get_width_pixels(depthImage);
-    auto stride = k4a_image_get_stride_bytes(depthImage);
+        UpdateSRV(transformedDepthImage, _depthSRV);
 
-    // Create new depth texture for body depth only
-    k4a_image_create(K4A_IMAGE_FORMAT_DEPTH16, width, height, stride, &bodyDepthImage);
+        if (_bodySRV != nullptr)
+        {
+            auto height = k4a_image_get_height_pixels(depthImage);
+            auto width = k4a_image_get_width_pixels(depthImage);
+            auto stride = k4a_image_get_stride_bytes(depthImage);
 
-    uint16_t* bodyDepthBuffer = reinterpret_cast<uint16_t*>(k4a_image_get_buffer(bodyDepthImage));
-    uint16_t* depthBuffer = reinterpret_cast<uint16_t*>(k4a_image_get_buffer(depthImage));
-    uint8_t* bodyIndexBuffer = GetBodyIndexBuffer(capture);
+            // Create new depth texture for body depth only
+            k4a_image_create(K4A_IMAGE_FORMAT_DEPTH16, width, height, stride, &bodyDepthImage);
 
-    // Set body depth buffer to depth values where a body is identified 
-    SetBodyDepthBuffer(bodyDepthBuffer, depthBuffer, bodyIndexBuffer, height * width);
+            uint16_t* bodyDepthBuffer = reinterpret_cast<uint16_t*>(k4a_image_get_buffer(bodyDepthImage));
+            uint16_t* depthBuffer = reinterpret_cast<uint16_t*>(k4a_image_get_buffer(depthImage));
+            uint8_t* bodyIndexBuffer = GetBodyIndexBuffer(capture);
 
-    k4a_result_t result = k4a_transformation_depth_image_to_color_camera(transformation, bodyDepthImage, transformedBodyDepthImage);
-    
-    UpdateSRV(transformedBodyDepthImage, _bodySRV);
+            // Set body depth buffer to depth values where a body is identified 
+            SetBodyDepthBuffer(bodyDepthBuffer, depthBuffer, bodyIndexBuffer, height * width);
 
-    k4a_image_release(depthImage);
+            k4a_result_t result = k4a_transformation_depth_image_to_color_camera(transformation, bodyDepthImage, transformedBodyDepthImage);
+
+            UpdateSRV(transformedBodyDepthImage, _bodySRV);
+        }
+        k4a_image_release(depthImage);
+    }
     k4a_image_release(colorImage);
     k4a_capture_release(capture);
 }

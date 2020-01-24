@@ -387,8 +387,6 @@ UNITYDLL bool InitializeFrameProviderOnDevice(int providerId)
 {
     if (g_outputTexture == nullptr ||
         g_UnityColorSRV == nullptr ||
-        g_UnityDepthSRV == nullptr ||
-        g_UnityBodySRV == nullptr ||
         g_pD3D11Device == nullptr)
     {
         return false;
