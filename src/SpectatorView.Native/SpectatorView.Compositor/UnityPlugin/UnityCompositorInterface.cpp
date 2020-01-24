@@ -79,12 +79,14 @@ static ID3D11Texture2D* g_holoRenderTexture = nullptr;
 
 static ID3D11Texture2D* g_colorTexture = nullptr;
 static ID3D11Texture2D* g_depthCameraTexture = nullptr;
+static ID3D11Texture2D* g_bodyDepthTexture = nullptr;
 static ID3D11Texture2D* g_compositeTexture = nullptr;
 static ID3D11Texture2D* g_videoTexture = nullptr;
 static ID3D11Texture2D* g_outputTexture = nullptr;
 
 static ID3D11ShaderResourceView* g_UnityColorSRV = nullptr;
 static ID3D11ShaderResourceView* g_UnityDepthSRV = nullptr;
+static ID3D11ShaderResourceView* g_UnityBodySRV = nullptr;
 
 static ID3D11Device* g_pD3D11Device = NULL;
 
@@ -386,6 +388,7 @@ UNITYDLL bool InitializeFrameProviderOnDevice(int providerId)
     if (g_outputTexture == nullptr ||
         g_UnityColorSRV == nullptr ||
         g_UnityDepthSRV == nullptr ||
+        g_UnityBodySRV == nullptr ||
         g_pD3D11Device == nullptr)
     {
         return false;
@@ -402,7 +405,7 @@ UNITYDLL bool InitializeFrameProviderOnDevice(int providerId)
     }
 
     ci->SetFrameProvider((IFrameProvider::ProviderType) providerId);
-    isInitialized = ci->Initialize(g_pD3D11Device, g_UnityColorSRV, g_UnityDepthSRV, g_outputTexture);
+    isInitialized = ci->Initialize(g_pD3D11Device, g_UnityColorSRV, g_UnityDepthSRV, g_UnityBodySRV, g_outputTexture);
 
     return isInitialized;
 }
@@ -499,6 +502,7 @@ UNITYDLL void Reset()
     EnterCriticalSection(&lock);
     g_colorTexture = nullptr;
     g_depthCameraTexture = nullptr;
+    g_bodyDepthTexture = nullptr;
     g_compositeTexture = nullptr;
     g_videoTexture = nullptr;
     g_outputTexture = nullptr;
@@ -507,6 +511,7 @@ UNITYDLL void Reset()
 
     g_UnityColorSRV = nullptr;
     g_UnityDepthSRV = nullptr;
+    g_UnityBodySRV = nullptr;
 
     isInitialized = false;
 
@@ -612,6 +617,29 @@ UNITYDLL bool CreateUnityDepthCameraTexture(ID3D11ShaderResourceView*& srv)
     srv = g_UnityDepthSRV;
     return true;
 }
+
+UNITYDLL bool CreateUnityBodyDepthTexture(ID3D11ShaderResourceView*& srv)
+{
+    if (g_UnityBodySRV == nullptr && g_pD3D11Device != nullptr)
+    {
+        g_bodyDepthTexture = DirectXHelper::CreateTexture(g_pD3D11Device, depthBytes, FRAME_WIDTH, FRAME_HEIGHT, FRAME_BPP_DEPTH16, DXGI_FORMAT_R16_UNORM);
+
+        if (g_bodyDepthTexture == nullptr)
+        {
+            return false;
+        }
+
+        g_UnityBodySRV = DirectXHelper::CreateShaderResourceView(g_pD3D11Device, g_bodyDepthTexture, DXGI_FORMAT_R16_UNORM);
+        if (g_UnityBodySRV == nullptr)
+        {
+            return false;
+        }
+    }
+
+    srv = g_UnityBodySRV;
+    return true;
+}
+
 
 UNITYDLL bool IsArUcoMarkerDetectorSupported()
 {

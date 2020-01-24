@@ -17,7 +17,7 @@ public:
     };
 
     // Set up the FrameProvider to start delivering frames.
-    virtual HRESULT Initialize(ID3D11ShaderResourceView* colorSRV, ID3D11ShaderResourceView* depthSRV, ID3D11Texture2D* outputTexture) = 0;
+    virtual HRESULT Initialize(ID3D11ShaderResourceView* colorSRV, ID3D11ShaderResourceView* depthSRV, ID3D11ShaderResourceView* bodySRV, ID3D11Texture2D* outputTexture) = 0;
 
     // 4 frames are caches for reliable hologram stability:
     // Get the timestamp of the currently rendered cached frame.

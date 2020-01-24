@@ -67,6 +67,11 @@ namespace Microsoft.MixedReality.SpectatorView
         private Texture2D depthCameraTexture = null;
 
         /// <summary>
+        /// The body index map texture from the Kinect Body Tracking SDK 
+        /// </summary>
+        private Texture2D bodyDepthTexture = null;
+
+        /// <summary>
         /// An override texture for testing calibration
         /// </summary>
         private Texture2D overrideColorTexture = null;
@@ -215,6 +220,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
             CreateColorTexture();
             CreateDepthCameraTexture();
+            CreateBodyDepthTexture();
             CreateOutputTextures();
 
             SetupCameraAndRenderTextures();
@@ -340,6 +346,7 @@ namespace Microsoft.MixedReality.SpectatorView
                 // of the hologram by the appropriate amount.
                 holoAlphaMat.SetTexture("_FrontTex", renderTexture);
                 holoAlphaMat.SetTexture("_DepthCameraTexture", depthCameraTexture);
+                holoAlphaMat.SetTexture("_BodyIndexTexture", bodyDepthTexture);
                 Graphics.Blit(sourceTexture, compositeTexture, holoAlphaMat);
 
                 //var color = depthTexture.GetPixel(900, 400);
@@ -488,6 +495,20 @@ namespace Microsoft.MixedReality.SpectatorView
                     depthCameraTexture = Texture2D.CreateExternalTexture(frameWidth, frameHeight, TextureFormat.R16, false, false, depthSRV);
                     depthCameraTexture.filterMode = FilterMode.Point;
                     depthCameraTexture.anisoLevel = 0;
+                }
+            }
+        }
+
+        private void CreateBodyDepthTexture()
+        {        
+            if (bodyDepthTexture == null)
+            {
+                IntPtr bodySRV;
+                if (UnityCompositorInterface.CreateUnityBodyDepthTexture(out bodySRV))
+                {
+                    bodyDepthTexture = Texture2D.CreateExternalTexture(frameWidth, frameHeight, TextureFormat.R16, false, false, bodySRV);
+                    bodyDepthTexture.filterMode = FilterMode.Point;
+                    bodyDepthTexture.anisoLevel = 0;
                 }
             }
         }
