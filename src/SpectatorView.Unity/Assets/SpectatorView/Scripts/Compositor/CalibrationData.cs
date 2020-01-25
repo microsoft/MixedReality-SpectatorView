@@ -10,12 +10,12 @@ namespace Microsoft.MixedReality.SpectatorView
     /// Used for loading/applying camera intrinsics and camera extrinsics obtained through Spectator View's default calibration process for a
     /// camera attached to a head-mounted display.
     /// </summary>
-    public abstract class CalibrationData : ICalibrationData
+    public class CalibrationData : ICalibrationData
     {
         private CalculatedCameraIntrinsics cameraIntrinsics;
         private CalculatedCameraExtrinsics cameraExtrinsics;
 
-        protected CalibrationData(string cameraIntrinsicsPath, string cameraExtrinsicsPath)
+        public CalibrationData(string cameraIntrinsicsPath, string cameraExtrinsicsPath)
         {
             if (File.Exists(cameraIntrinsicsPath) &&
                 File.Exists(cameraExtrinsicsPath))
@@ -35,14 +35,14 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
-        protected CalibrationData(CalculatedCameraIntrinsics intrinsics, CalculatedCameraExtrinsics extrinsics)
+        public CalibrationData(CalculatedCameraIntrinsics intrinsics, CalculatedCameraExtrinsics extrinsics)
         {
             cameraIntrinsics = intrinsics;
             cameraExtrinsics = extrinsics;
         }
 
         /// <inheritdoc />
-        public virtual void SetUnityCameraExtrinstics(Transform cameraTransform)
+        public void SetUnityCameraExtrinstics(Transform cameraTransform)
         {
             Matrix4x4 headFromCamera = cameraExtrinsics.ViewFromWorld;
             cameraTransform.transform.localPosition = cameraExtrinsics.ViewFromWorld.GetColumn(3);
@@ -50,7 +50,7 @@ namespace Microsoft.MixedReality.SpectatorView
         }
 
         /// <inheritdoc />
-        public virtual void SetUnityCameraIntrinsics(Camera camera)
+        public void SetUnityCameraIntrinsics(Camera camera)
         {
             // D3D projection matrix (ProjectionMatrixToUnity accounts for it)
             Matrix4x4 projection = Matrix4x4.zero;

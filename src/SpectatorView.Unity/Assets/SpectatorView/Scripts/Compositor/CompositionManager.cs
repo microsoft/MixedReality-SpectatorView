@@ -26,11 +26,15 @@ namespace Microsoft.MixedReality.SpectatorView
         /// </summary>
         public TextureManager TextureManager => textureManager;
 
+        [Header("Stationary Camera Settings")]
+        [Tooltip("The broadcaster used to provide calibration and pose information for stationary cameras connected directly to the compositor.")]
+        public GameObject stationaryCameraBroadcaster = null;
+
         /// <summary>
         /// Gets or sets the texture depth used for the RenderTextures used during compositing.
         /// </summary>
         [Header("Hologram Settings")]
-        [Tooltip("Texture depth for the RenderTexture used by the compositor")]
+        [Tooltip("Texture depth for the RenderTexture used by the compositor.")]
         public Depth TextureDepth = Depth.TwentyFour;
 
         /// <summary>
@@ -525,12 +529,8 @@ namespace Microsoft.MixedReality.SpectatorView
 
                         if (UnityCompositorInterface.IsCameraCalibrationInformationAvailable())
                         {
-                            UnityCompositorInterface.GetCameraCalibrationInformation(out CompositorCameraIntrinsics cameraIntrinsics);
-                            GameObject cameraPose = new GameObject("Video Camera Transform");
-                            cameraPose.transform.SetParent(HolographicCameraObserver.Instance.transform, worldPositionStays: true);
-                            EnableHolographicCamera(cameraPose.transform, new VideoCameraCalibrationData(cameraIntrinsics.AsCalculatedCameraIntrinsics()));
-
-                            Debug.Log($"Camera calibration information: FocalPoint = {cameraIntrinsics.fx},{cameraIntrinsics.fy} Center = {cameraIntrinsics.cx},{cameraIntrinsics.cy} Dimensions = {cameraIntrinsics.imageWidth}x{cameraIntrinsics.imageHeight}");
+                            stationaryCameraBroadcaster.SetActive(true);
+                            HolographicCameraObserver.Instance.ConnectTo("127.0.0.1");
                         }
                     }
                 }

@@ -183,20 +183,30 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
+#if UNITY_EDITOR
         private async Task OnDiscoverCoordinatesEditorAsync(CancellationToken cancellationToken, int[] idsToLocate = null)
         {
-            if (idsToLocate == null ||
-                idsToLocate.Length != 1)
+            if (UnityCompositorInterface.IsArUcoMarkerDetectorSupported())
             {
-                DebugLog("Running the MarkerDetectorCoordinateService in the editor only supports one coordinate id");
+                await OnDiscoverCoordinatesImplAsync(cancellationToken, idsToLocate);
                 return;
             }
+            else
+            {
+                if (idsToLocate == null ||
+                    idsToLocate.Length != 1)
+                {
+                    DebugLog("Running the MarkerDetectorCoordinateService in the editor only supports one coordinate id");
+                    return;
+                }
 
-            var coordinate = new SimulatedSpatialCoordinate<int>(idsToLocate[0], Vector3.zero, Quaternion.Euler(0, 180, 0));
-            DebugLog("Created artificial coordinate for debugging in the editor, waiting five seconds to fire detection event.");
-            await Task.Delay(simulatedMarkerDetectionDelay, cancellationToken).IgnoreCancellation();
-            OnNewCoordinate(coordinate.Id, coordinate);
-            await Task.CompletedTask;
+                var coordinate = new SimulatedSpatialCoordinate<int>(idsToLocate[0], Vector3.zero, Quaternion.Euler(0, 180, 0));
+                DebugLog("Created artificial coordinate for debugging in the editor, waiting five seconds to fire detection event.");
+                await Task.Delay(simulatedMarkerDetectionDelay, cancellationToken).IgnoreCancellation();
+                OnNewCoordinate(coordinate.Id, coordinate);
+                await Task.CompletedTask;
+            }
         }
+#endif
     }
 }

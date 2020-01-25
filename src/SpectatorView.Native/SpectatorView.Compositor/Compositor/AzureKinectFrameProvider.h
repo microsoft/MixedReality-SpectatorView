@@ -5,12 +5,15 @@
 
 #include "CompositorInterface.h"
 #include "IFrameProvider.h"
+#include "ArUcoMarkerDetector.h"
 #include <k4a/k4a.h>
 #include <k4abt.h>
 
 class AzureKinectFrameProvider : public IFrameProvider
 {
 public:
+    AzureKinectFrameProvider();
+
     // Inherited via IFrameProvider
     virtual HRESULT Initialize(ID3D11ShaderResourceView* colorSRV, ID3D11ShaderResourceView* depthSRV, ID3D11ShaderResourceView* bodySRV, ID3D11Texture2D* outputTexture) override;
     virtual LONGLONG GetTimestamp(int frame) override;
@@ -34,9 +37,20 @@ public:
 
     virtual void GetCameraCalibrationInformation(CameraIntrinsics* calibration) override;
 
+    virtual bool IsArUcoMarkerDetectorSupported() override
+    {
+        return true;
+    }
+
+    virtual void StartArUcoMarkerDetector(float markerSize) override;
+    virtual void StopArUcoMarkerDetector() override;
+    virtual int GetLatestArUcoMarkerCount() override { return markerDetector->GetDetectedMarkersCount(); }
+    virtual void GetLatestArUcoMarkers(int size, Marker* markers) override;
+
 private:
     uint8_t* GetBodyIndexBuffer(k4a_capture_t capture);
     void UpdateSRV(k4a_image_t bodyDepthImage, ID3D11ShaderResourceView* _srv);
+    void UpdateArUcoMarkers(k4a_image_t image);
     void SetBodyDepthBuffer(uint16_t* bodyDepthBuffer, uint16_t* depthBuffer, uint8_t* bodyIndexBuffer, int bufferSize);
     
     int _captureFrameIndex;
@@ -53,5 +67,9 @@ private:
     k4a_image_t bodyDepthImage;
     k4abt_tracker_t k4abtTracker;
     k4abt_tracker_configuration_t tracker_config = K4ABT_TRACKER_CONFIG_DEFAULT;
-    CRITICAL_SECTION lock;    
+    CRITICAL_SECTION lock;
+    bool detectMarkers;
+    float markerSize;
+
+    std::shared_ptr<ArUcoMarkerDetector> markerDetector;
 };

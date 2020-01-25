@@ -643,4 +643,52 @@ UNITYDLL bool CreateUnityBodyDepthTexture(ID3D11ShaderResourceView*& srv)
     return true;
 }
 
+
+UNITYDLL bool IsArUcoMarkerDetectorSupported()
+{
+    if (ci != nullptr)
+    {
+        return ci->IsArUcoMarkerDetectorSupported();
+    }
+    else
+    {
+        return false;
+    }
+}
+
+UNITYDLL void StartArUcoMarkerDetector(float markerSize)
+{
+    if (ci != nullptr)
+    {
+        ci->StartArUcoMarkerDetector(markerSize);
+    }
+}
+
+UNITYDLL void StopArUcoMarkerDetector()
+{
+    if (ci != nullptr)
+    {
+        ci->StopArUcoMarkerDetector();
+    }
+}
+
+UNITYDLL int GetLatestArUcoMarkerCount()
+{
+    if (ci != nullptr)
+    {
+        return ci->GetLatestArUcoMarkerCount();
+    }
+    else
+    {
+        return 0;
+    }
+}
+
+UNITYDLL void GetLatestArUcoMarkers(int size, Marker* markers)
+{
+    if (ci != nullptr)
+    {
+        ci->GetLatestArUcoMarkers(size, markers);
+    }
+}
 #pragma endregion CreateExternalTextures

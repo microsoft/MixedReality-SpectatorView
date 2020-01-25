@@ -74,6 +74,11 @@ namespace Microsoft.MixedReality.SpectatorView
         [HideInInspector]
         public float MarkerInlierStandardDeviationThreshold = 1.5f;
 
+#if UNITY_EDITOR
+        private CompositorMarker[] compositorMarkers;
+        private Dictionary<int, Marker> compositorMarkersToProcess = new Dictionary<int, Marker>();
+#endif
+
         /// <inheritdoc />
         public MarkerPositionBehavior MarkerPositionBehavior
         {
@@ -96,13 +101,14 @@ namespace Microsoft.MixedReality.SpectatorView
         {
             UpdateDetectionCompletionStrategy();
 
-#if UNITY_WSA && !UNITY_EDITOR
+#if UNITY_WSA
+#if !UNITY_EDITOR
             _api = new SpectatorViewOpenCVInterface();
             if (!_api.Initialize(_markerSize))
             {
                 Debug.LogError("Issue loading SpectatorView.OpenCV dll");
             }
-
+#endif
             _markerObservations = new Dictionary<int, List<Marker>>();
 #endif
         }
@@ -116,11 +122,28 @@ namespace Microsoft.MixedReality.SpectatorView
         {
             if (_detecting)
             {
+#if UNITY_EDITOR
+                int markerCount = UnityCompositorInterface.GetLatestArUcoMarkerCount();
+                if (compositorMarkers == null || compositorMarkers.Length < markerCount)
+                {
+                    compositorMarkers = new CompositorMarker[markerCount];
+                }
+
+                UnityCompositorInterface.GetLatestArUcoMarkers(markerCount, compositorMarkers);
+                compositorMarkersToProcess.Clear();
+                for (int i = 0; i < markerCount; i++)
+                {
+                    compositorMarkersToProcess.Add(compositorMarkers[i].id, compositorMarkers[i].AsMarker());
+                }
+
+                ProcessMarkersFromFrame(compositorMarkersToProcess);
+#else
                 if (_holoLensCamera.State == CameraState.Ready &&
                     !_holoLensCamera.TakeSingle())
                 {
                     Debug.LogError("Failed to take photo with HoloLensCamera, Camera State: " + _holoLensCamera.State.ToString());
                 }
+#endif
             }
 
             if (_nextMarkerUpdate != null)
@@ -177,7 +200,11 @@ namespace Microsoft.MixedReality.SpectatorView
         public void SetMarkerSize(float size)
         {
             _markerSize = size;
-            _api.SetMarkerSize(size);
+
+            if (_api != null)
+            {
+                _api.SetMarkerSize(size);
+            }
         }
 
         /// <inheritdoc />
@@ -191,6 +218,10 @@ namespace Microsoft.MixedReality.SpectatorView
         {
             lock (lockObj)
             {
+#if UNITY_EDITOR
+                UnityCompositorInterface.StartArUcoMarkerDetector(_markerSize);
+                return Task.CompletedTask;
+#else
                 if (setupCameraTask != null)
                 {
                     DebugLog("Returning existing setup camera task");
@@ -207,6 +238,7 @@ namespace Microsoft.MixedReality.SpectatorView
                 }
 
                 return setupCameraTask = _holoLensCamera.Initialize();
+#endif
             }
         }
 
@@ -214,6 +246,9 @@ namespace Microsoft.MixedReality.SpectatorView
         {
             lock (lockObj)
             {
+#if UNITY_EDITOR
+                UnityCompositorInterface.StopArUcoMarkerDetector();
+#else
                 if (setupCameraTask == null)
                 {
                     DebugLog("CleanupCameraAsync was called when no start task had been created.");
@@ -231,6 +266,7 @@ namespace Microsoft.MixedReality.SpectatorView
                 }
 
                 setupCameraTask = null;
+#endif
             }
 
             return Task.CompletedTask;
@@ -271,37 +307,42 @@ namespace Microsoft.MixedReality.SpectatorView
                 var extrinsics = frame.Extrinsics;
 
                 var dictionary = _api.ProcessImage(imageData, imageWidth, imageHeight, pixelFormat, intrinsics, extrinsics);
-                if (_markerObservations != null)
-                {
-                    foreach (var markerPair in dictionary)
-                    {
-                        if (!_markerObservations.ContainsKey(markerPair.Key))
-                        {
-                            _markerObservations.Add(markerPair.Key, new List<Marker>());
-                        }
-
-                        _markerObservations[markerPair.Key].Add(markerPair.Value);
-                        if (_markerObservations[markerPair.Key].Count > _detectionCompletionStrategy.MaximumMarkerSampleCount)
-                        {
-                            _markerObservations[markerPair.Key].RemoveAt(0);
-                        }
-                    }
-
-                    var validMarkers = new Dictionary<int, Marker>();
-                    foreach (var observationPair in _markerObservations)
-                    {
-                        Marker completedMarker;
-                        if (_detectionCompletionStrategy.TryCompleteDetection(observationPair.Value, out completedMarker))
-                        {
-                            validMarkers[completedMarker.Id] = completedMarker;
-                            observationPair.Value.Clear();
-                        }
-                    }
-
-                    _nextMarkerUpdate = validMarkers;
-                }
+                ProcessMarkersFromFrame(dictionary);
             }
 #endif
+        }
+
+        private void ProcessMarkersFromFrame(Dictionary<int, Marker> dictionary)
+        {
+            if (_markerObservations != null)
+            {
+                foreach (var markerPair in dictionary)
+                {
+                    if (!_markerObservations.ContainsKey(markerPair.Key))
+                    {
+                        _markerObservations.Add(markerPair.Key, new List<Marker>());
+                    }
+
+                    _markerObservations[markerPair.Key].Add(markerPair.Value);
+                    if (_markerObservations[markerPair.Key].Count > _detectionCompletionStrategy.MaximumMarkerSampleCount)
+                    {
+                        _markerObservations[markerPair.Key].RemoveAt(0);
+                    }
+                }
+
+                var validMarkers = new Dictionary<int, Marker>();
+                foreach (var observationPair in _markerObservations)
+                {
+                    Marker completedMarker;
+                    if (_detectionCompletionStrategy.TryCompleteDetection(observationPair.Value, out completedMarker))
+                    {
+                        validMarkers[completedMarker.Id] = completedMarker;
+                        observationPair.Value.Clear();
+                    }
+                }
+
+                _nextMarkerUpdate = validMarkers;
+            }
         }
 
         private void UpdateDetectionCompletionStrategy()

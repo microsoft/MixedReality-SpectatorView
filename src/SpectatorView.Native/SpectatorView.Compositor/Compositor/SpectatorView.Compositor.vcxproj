@@ -175,6 +175,7 @@ if EXIST "$(Elgato_Filter)" xcopy /y "$(Elgato_Filter)"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="ArUcoMarkerDetector.h" />
     <ClInclude Include="AzureKinectFrameProvider.h" />
     <ClInclude Include="CameraIntrinsics.h" />
     <ClInclude Include="CompositorInterface.h" />
@@ -196,6 +197,7 @@ if EXIST "$(Elgato_Filter)" xcopy /y "$(Elgato_Filter)"</Command>
     <ClInclude Include="qedit.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ArUcoMarkerDetector.cpp" />
     <ClCompile Include="AzureKinectFrameProvider.cpp" />
     <ClCompile Include="CompositorInterface.cpp" />
     <ClCompile Include="DeckLinkDevice.cpp" />

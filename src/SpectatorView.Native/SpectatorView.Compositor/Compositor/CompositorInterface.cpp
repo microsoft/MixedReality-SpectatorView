@@ -99,6 +99,54 @@ bool CompositorInterface::Initialize(ID3D11Device* device, ID3D11ShaderResourceV
     return SUCCEEDED(frameProvider->Initialize(colorSRV, depthSRV, bodySRV, outputTexture));
 }
 
+bool CompositorInterface::IsArUcoMarkerDetectorSupported()
+{
+    if (frameProvider != nullptr)
+    {
+        return frameProvider->IsArUcoMarkerDetectorSupported();
+    }
+    else
+    {
+        return false;
+    }
+}
+
+void CompositorInterface::StartArUcoMarkerDetector(float markerSize)
+{
+    if (frameProvider != nullptr)
+    {
+        frameProvider->StartArUcoMarkerDetector(markerSize);
+    }
+}
+
+void CompositorInterface::StopArUcoMarkerDetector()
+{
+    if (frameProvider != nullptr)
+    {
+        frameProvider->StopArUcoMarkerDetector();
+    }
+}
+
+int CompositorInterface::GetLatestArUcoMarkerCount()
+{
+    if (frameProvider == nullptr)
+    {
+        return 0;
+    }
+    else
+    {
+        return frameProvider->GetLatestArUcoMarkerCount();
+    }
+}
+
+void CompositorInterface::GetLatestArUcoMarkers(int size, Marker* markers)
+{
+    if (frameProvider != nullptr)
+    {
+        return frameProvider->GetLatestArUcoMarkers(size, markers);
+    }
+}
+
 void CompositorInterface::UpdateFrameProvider()
 {
     if (frameProvider != nullptr)

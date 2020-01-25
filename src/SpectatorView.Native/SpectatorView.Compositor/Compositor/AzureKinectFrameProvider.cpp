@@ -8,6 +8,24 @@
 #include <k4a/k4a.h>
 #include <k4abt.h>
 
+AzureKinectFrameProvider::AzureKinectFrameProvider()
+    : detectMarkers(false)
+    , markerSize(0.0f)
+    , _captureFrameIndex(0)
+    , markerDetector(new ArUcoMarkerDetector())
+    , _colorSRV(nullptr)
+    , _depthSRV(nullptr)
+    , _bodySRV(nullptr)
+    , calibration()
+    , d3d11Device(nullptr)
+    , k4aDevice(nullptr)
+    , lock()
+    , transformation(nullptr)
+    , transformedDepthImage(nullptr)
+    , transformedBodyDepthImage(nullptr)
+    , bodyDepthImage(nullptr)
+{}
+
 HRESULT AzureKinectFrameProvider::Initialize(ID3D11ShaderResourceView* colorSRV, ID3D11ShaderResourceView* depthSRV, ID3D11ShaderResourceView* bodySRV, ID3D11Texture2D* outputTexture)
 {
     InitializeCriticalSection(&lock);
@@ -103,6 +121,7 @@ void AzureKinectFrameProvider::Update(int compositeFrameIndex)
     }
     
     UpdateSRV(colorImage, _colorSRV);
+    UpdateArUcoMarkers(colorImage);
 
     if (_depthSRV != nullptr)
     {
@@ -150,6 +169,21 @@ void AzureKinectFrameProvider::UpdateSRV(k4a_image_t image, ID3D11ShaderResource
     DirectXHelper::UpdateSRV(d3d11Device, _srv, buffer, stride);
 }
 
+void AzureKinectFrameProvider::UpdateArUcoMarkers(k4a_image_t image)
+{
+    if (detectMarkers)
+    {
+        auto height = k4a_image_get_height_pixels(image);
+        auto width = k4a_image_get_width_pixels(image);
+        auto buffer = k4a_image_get_buffer(image);
+
+        float focalLength[2] = { calibration.color_camera_calibration.intrinsics.parameters.param.fx, calibration.color_camera_calibration.intrinsics.parameters.param.fy };
+        float principalPoint[2] = { calibration.color_camera_calibration.intrinsics.parameters.param.cx, calibration.color_camera_calibration.intrinsics.parameters.param.cy };
+        float radialDistortion[3] = { calibration.color_camera_calibration.intrinsics.parameters.param.k1, calibration.color_camera_calibration.intrinsics.parameters.param.k2, calibration.color_camera_calibration.intrinsics.parameters.param.k3 };
+        float tangentialDistortion[2] = { calibration.color_camera_calibration.intrinsics.parameters.param.p1, calibration.color_camera_calibration.intrinsics.parameters.param.p2 };
+        markerDetector->DetectMarkers(buffer, width, height, focalLength, principalPoint, radialDistortion, tangentialDistortion, markerSize, cv::aruco::DICT_6X6_250);
+    }
+}
 
 uint8_t* AzureKinectFrameProvider::GetBodyIndexBuffer(k4a_capture_t capture)
 {
@@ -212,6 +246,12 @@ bool AzureKinectFrameProvider::SupportsOutput()
 
 void AzureKinectFrameProvider::Dispose()
 {
+    if (bodyDepthImage != nullptr)
+    {
+        k4a_image_release(bodyDepthImage);
+        bodyDepthImage = nullptr;
+    }
+
     if (transformedDepthImage != nullptr)
     {
         k4a_image_release(transformedDepthImage);
@@ -245,5 +285,34 @@ void AzureKinectFrameProvider::GetCameraCalibrationInformation(CameraIntrinsics*
     calibration->principalPoint = { this->calibration.color_camera_calibration.intrinsics.parameters.param.cx, this->calibration.color_camera_calibration.intrinsics.parameters.param.cy };
     calibration->imageWidth = this->calibration.color_camera_calibration.resolution_width;
     calibration->imageHeight = this->calibration.color_camera_calibration.resolution_height;
+}
+
+void AzureKinectFrameProvider::StartArUcoMarkerDetector(float markerSize)
+{
+    this->markerDetector->Reset();
+    this->markerSize = markerSize;
+    this->detectMarkers = true;
+}
+
+void AzureKinectFrameProvider::StopArUcoMarkerDetector()
+{
+    this->detectMarkers = false;
+}
+
+void AzureKinectFrameProvider::GetLatestArUcoMarkers(int size, Marker* markers)
+{
+    if (this->detectMarkers)
+    {
+        int localSize = markerDetector->GetDetectedMarkersCount();
+        std::vector<int> markerIds;
+        markerIds.resize(localSize);
+        markerDetector->GetDetectedMarkerIds(markerIds.data(), localSize);
+
+        for (int i = 0; i < localSize && i < size; i++)
+        {
+            markers[i].id = markerIds[i];
+            markerDetector->GetDetectedMarkerPose(markerIds[i], &markers[i].position, &markers[i].rotation);
+        }
+    }
 }
 #endif

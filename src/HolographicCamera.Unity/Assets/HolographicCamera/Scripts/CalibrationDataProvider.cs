@@ -57,10 +57,23 @@ namespace Microsoft.MixedReality.SpectatorView
                 if (file != null)
                 {
                     byte[] contents = (await FileIO.ReadBufferAsync(file)).ToArray();
+                    if (CalculatedCameraCalibration.TryDeserialize(contents, out CalculatedCameraCalibration calibration))
+                    {
+                        // Magic offset from Unity's underlying coordinate frame (WorldManager.GetNativeISpatialCoordinateSystemPtr()) and the head pose used for the camera.
+                        // Poses are sent in the coordinate frame space because the Unity camera position uses prediction.
+                        Matrix4x4 viewFromWorld = calibration.Extrinsics.ViewFromWorld;
+                        Vector3 position = viewFromWorld.GetColumn(3);
+                        position += new Vector3(0f, 0.08f, 0.08f);
+                        viewFromWorld.SetColumn(3, position);
+
+                        calibration.Extrinsics.ViewFromWorld = viewFromWorld;
+                        contents = calibration.Serialize();
+                    }
+
                     message.Write("CalibrationData");
                     message.Write(contents.Length);
                     message.Write(contents);
-                    networkManager.Broadcast(memoryStream.ToArray());
+                    networkManager.Broadcast(memoryStream.GetBuffer(), 0, memoryStream.Position);
                 }
             }
         }
