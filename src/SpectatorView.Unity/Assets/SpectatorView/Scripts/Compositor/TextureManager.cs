@@ -220,11 +220,12 @@ namespace Microsoft.MixedReality.SpectatorView
 
             CreateColorTexture();
             
-            if(Compositor.OcclusionMode == OcclusionMode.RawDepthCamera && Compositor.OcclusionMode == OcclusionMode.BodyTracking)
+            if(Compositor.OcclusionMode == OcclusionMode.RawDepthCamera || Compositor.OcclusionMode == OcclusionMode.BodyTracking)
             {
                 CreateDepthCameraTexture();
             }
-            else if(Compositor.OcclusionMode == OcclusionMode.BodyTracking)
+            
+            if(Compositor.OcclusionMode == OcclusionMode.BodyTracking)
             {
                 CreateBodyDepthTexture();
             }
@@ -508,7 +509,7 @@ namespace Microsoft.MixedReality.SpectatorView
         }
 
         private void CreateBodyDepthTexture()
-        {        
+        {
             if (bodyDepthTexture == null)
             {
                 IntPtr bodySRV;
