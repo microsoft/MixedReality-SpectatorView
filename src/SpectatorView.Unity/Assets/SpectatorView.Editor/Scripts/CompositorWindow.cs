@@ -164,8 +164,8 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
 
                                 GUIContent occlusionLabel = new GUIContent("Occlusion Mode", "The occlusion mode used for compositing.");
 
-                                var occlusionModes = Enum.GetValues(typeof(OcclusionMode))
-                                    .Cast<OcclusionMode>()
+                                var occlusionModes = Enum.GetValues(typeof(OcclusionSetting))
+                                    .Cast<OcclusionSetting>()
                                     .ToList();
 
                                 selectedIndex = occlusionModes.IndexOf(compositionManager.OcclusionMode);

@@ -618,6 +618,11 @@ UNITYDLL bool CreateUnityDepthCameraTexture(ID3D11ShaderResourceView*& srv)
 
 UNITYDLL bool CreateUnityBodyDepthTexture(ID3D11ShaderResourceView*& srv)
 {
+    if (!CreateUnityDepthCameraTexture(srv))
+    {
+        return false;
+    }
+    
     if (g_UnityBodySRV == nullptr && g_pD3D11Device != nullptr)
     {
         g_bodyDepthTexture = DirectXHelper::CreateTexture(g_pD3D11Device, depthBytes, FRAME_WIDTH, FRAME_HEIGHT, FRAME_BPP_DEPTH16, DXGI_FORMAT_R16_UNORM);
