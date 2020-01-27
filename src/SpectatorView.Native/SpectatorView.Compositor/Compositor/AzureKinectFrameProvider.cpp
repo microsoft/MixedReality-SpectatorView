@@ -53,7 +53,7 @@ HRESULT AzureKinectFrameProvider::Initialize(ID3D11ShaderResourceView* colorSRV,
         goto FailedExit;
     }
 
-    if (depthSRV != nullptr)
+    if (depthSRV != nullptr || bodySRV != nullptr)
     {
         if (K4A_RESULT_SUCCEEDED != k4a_device_get_calibration(k4aDevice, config.depth_mode, config.color_resolution, &calibration))
         {
@@ -63,7 +63,7 @@ HRESULT AzureKinectFrameProvider::Initialize(ID3D11ShaderResourceView* colorSRV,
 
         transformation = k4a_transformation_create(&calibration);
         k4a_image_create(K4A_IMAGE_FORMAT_DEPTH16, calibration.color_camera_calibration.resolution_width, calibration.color_camera_calibration.resolution_height, 2 * calibration.color_camera_calibration.resolution_width, &transformedDepthImage);
-
+        
         if(bodySRV != nullptr)
         {
             k4abt_tracker_configuration_t tracker_config = K4ABT_TRACKER_CONFIG_DEFAULT;
@@ -125,7 +125,7 @@ void AzureKinectFrameProvider::Update(int compositeFrameIndex)
     UpdateSRV(colorImage, _colorSRV);
     UpdateArUcoMarkers(colorImage);
 
-    if (_depthSRV != nullptr)
+    if (_depthSRV != nullptr || _bodySRV != nullptr)
     {
         auto depthImage = k4a_capture_get_depth_image(capture);
         if (depthImage == nullptr)
@@ -133,11 +133,12 @@ void AzureKinectFrameProvider::Update(int compositeFrameIndex)
             return;
         }
 
-        k4a_transformation_depth_image_to_color_camera(transformation, depthImage, transformedDepthImage);
-
-        UpdateSRV(transformedDepthImage, _depthSRV);
-
-        if (_bodySRV != nullptr)
+        if (_depthSRV != nullptr)
+        {
+            k4a_transformation_depth_image_to_color_camera(transformation, depthImage, transformedDepthImage);
+            UpdateSRV(transformedDepthImage, _depthSRV);
+        }
+        else if (_bodySRV != nullptr)
         {
             auto height = k4a_image_get_height_pixels(depthImage);
             auto width = k4a_image_get_width_pixels(depthImage);

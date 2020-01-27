@@ -7,7 +7,7 @@ Shader "SV/HoloAlpha"
     {
         _BackTex("BackTex", 2D) = "white" {}
         _FronTex("FrontTex", 2D) = "white" {}
-        _DepthCameraTexture("OcclusionTexture", 2D) = "white" {}
+        _OcclusionTexture("OcclusionTexture", 2D) = "white" {}
         _Alpha("Alpha", float) = 0.9
     }
     SubShader
