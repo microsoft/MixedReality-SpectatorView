@@ -9,6 +9,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.SpectatorView
 {
     public enum FrameProviderDeviceType : int { BlackMagic = 0, Elgato = 1, AzureKinect = 2, None = 3 };
+    public enum OcclusionSetting : int { NoOcclusion = 0, RawDepthCamera = 1, BodyTracking = 2};
     public enum VideoRecordingFrameLayout : int { Composite = 0, Quad = 1 };
 
 #if UNITY_EDITOR

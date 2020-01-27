@@ -62,14 +62,9 @@ namespace Microsoft.MixedReality.SpectatorView
         private Texture2D colorTexture = null;
 
         /// <summary>
-        /// The depth image from cameras with a depth camera
+        /// The texture used to occlude holograms with the real world
         /// </summary>
-        private Texture2D depthCameraTexture = null;
-
-        /// <summary>
-        /// The body index map texture from the Kinect Body Tracking SDK 
-        /// </summary>
-        private Texture2D bodyDepthTexture = null;
+        private Texture2D occlusionTexture = null;
 
         /// <summary>
         /// An override texture for testing calibration
@@ -219,8 +214,16 @@ namespace Microsoft.MixedReality.SpectatorView
             SetHologramShaderAlpha(Compositor.DefaultAlpha);
 
             CreateColorTexture();
-            CreateDepthCameraTexture();
-            CreateBodyDepthTexture();
+            
+           if(Compositor.OcclusionMode == OcclusionSetting.RawDepthCamera)
+            {
+                CreateDepthCameraTexture();
+            }
+            else if(Compositor.OcclusionMode == OcclusionSetting.BodyTracking)
+            {
+                CreateBodyDepthTexture();
+            }
+
             CreateOutputTextures();
 
             SetupCameraAndRenderTextures();
@@ -345,8 +348,7 @@ namespace Microsoft.MixedReality.SpectatorView
                 // Render the real-world video back onto the composited frame to reduce the opacity
                 // of the hologram by the appropriate amount.
                 holoAlphaMat.SetTexture("_FrontTex", renderTexture);
-                holoAlphaMat.SetTexture("_DepthCameraTexture", depthCameraTexture);
-                holoAlphaMat.SetTexture("_BodyIndexTexture", bodyDepthTexture);
+                holoAlphaMat.SetTexture("_OcclusionTexture", occlusionTexture);
                 Graphics.Blit(sourceTexture, compositeTexture, holoAlphaMat);
 
                 //var color = depthTexture.GetPixel(900, 400);
@@ -487,28 +489,28 @@ namespace Microsoft.MixedReality.SpectatorView
 
         private void CreateDepthCameraTexture()
         {
-            if (depthCameraTexture == null)
+            if (occlusionTexture == null)
             {
                 IntPtr depthSRV;
                 if (UnityCompositorInterface.CreateUnityDepthCameraTexture(out depthSRV))
                 {
-                    depthCameraTexture = Texture2D.CreateExternalTexture(frameWidth, frameHeight, TextureFormat.R16, false, false, depthSRV);
-                    depthCameraTexture.filterMode = FilterMode.Point;
-                    depthCameraTexture.anisoLevel = 0;
+                    occlusionTexture = Texture2D.CreateExternalTexture(frameWidth, frameHeight, TextureFormat.R16, false, false, depthSRV);
+                    occlusionTexture.filterMode = FilterMode.Point;
+                    occlusionTexture.anisoLevel = 0;
                 }
             }
         }
 
         private void CreateBodyDepthTexture()
-        {        
-            if (bodyDepthTexture == null)
+        {
+            if (occlusionTexture == null)
             {
                 IntPtr bodySRV;
                 if (UnityCompositorInterface.CreateUnityBodyDepthTexture(out bodySRV))
                 {
-                    bodyDepthTexture = Texture2D.CreateExternalTexture(frameWidth, frameHeight, TextureFormat.R16, false, false, bodySRV);
-                    bodyDepthTexture.filterMode = FilterMode.Point;
-                    bodyDepthTexture.anisoLevel = 0;
+                    occlusionTexture = Texture2D.CreateExternalTexture(frameWidth, frameHeight, TextureFormat.R16, false, false, bodySRV);
+                    occlusionTexture.filterMode = FilterMode.Point;
+                    occlusionTexture.anisoLevel = 0;
                 }
             }
         }

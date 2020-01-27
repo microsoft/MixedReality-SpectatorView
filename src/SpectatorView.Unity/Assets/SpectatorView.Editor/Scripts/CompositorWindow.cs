@@ -155,13 +155,34 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
                                 .ToArray());
 
                             compositionManager.CaptureDevice = supportedDevices[selectedIndex];
+
+                            if (supportedDevices[selectedIndex] != FrameProviderDeviceType.AzureKinect)
+                            {
+                                GUI.enabled = false;
+                            }
+
+                            EditorGUILayout.EndHorizontal();
+                            EditorGUILayout.Space();
+                            EditorGUILayout.BeginHorizontal();
+
+                            GUIContent occlusionLabel = new GUIContent("Occlusion Mode", "The occlusion mode used to determine if real-world or holographic content is displayed using depth information from supported cameras.");
+
+                            var occlusionModes = Enum.GetValues(typeof(OcclusionSetting))
+                                .Cast<OcclusionSetting>()
+                                .ToList();
+
+                            selectedIndex = occlusionModes.IndexOf(compositionManager.OcclusionMode);
+                            selectedIndex = EditorGUILayout.Popup(occlusionLabel, selectedIndex, occlusionModes
+                                .Select(x => x.ToString())
+                                .ToArray());
+
+                            compositionManager.OcclusionMode = occlusionModes[selectedIndex];
+
                             GUI.enabled = true;
                         }
                     }
                     EditorGUILayout.EndHorizontal();
-
                     EditorGUILayout.Space();
-
                     EditorGUILayout.BeginHorizontal();
                     {
                         string[] compositionOptions = new string[] { "Final composite", "Intermediate textures" };

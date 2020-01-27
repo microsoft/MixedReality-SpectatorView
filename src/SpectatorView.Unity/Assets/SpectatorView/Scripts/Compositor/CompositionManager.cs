@@ -81,6 +81,7 @@ namespace Microsoft.MixedReality.SpectatorView
         private float videoTimestampToHolographicTimestampOffset = -10.0f;
         private int captureDeviceIndex = -1;
         private int videoRecordingLayout = -1;
+        private int occlusionMode = -1;
         private TextureManager textureManager = null;
         private MicrophoneInput microphoneInput;
 
@@ -210,6 +211,28 @@ namespace Microsoft.MixedReality.SpectatorView
                 }
             }
         }
+
+        public OcclusionSetting OcclusionMode
+        {
+            get
+            {
+                if (occlusionMode == -1)
+                {
+                    occlusionMode = PlayerPrefs.GetInt(nameof(OcclusionMode), (int)OcclusionSetting.NoOcclusion);
+                }
+                return (OcclusionSetting)occlusionMode;
+            }
+            set
+            {
+                if (occlusionMode != (int)value)
+                {
+                    occlusionMode = (int)value;
+                    PlayerPrefs.SetInt(nameof(OcclusionMode), occlusionMode);
+                    PlayerPrefs.Save();
+                }
+            }
+        }
+
 
         #region AudioData
         private BinaryWriter audioStreamWriter;
