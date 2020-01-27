@@ -62,7 +62,7 @@ namespace Microsoft.MixedReality.SpectatorView
         private Texture2D colorTexture = null;
 
         /// <summary>
-        /// The texture used to occluse holograms with the real world
+        /// The texture used to occlude holograms with the real world
         /// </summary>
         private Texture2D occlusionTexture = null;
 

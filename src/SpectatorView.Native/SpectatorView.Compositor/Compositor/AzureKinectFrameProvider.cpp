@@ -73,6 +73,8 @@ HRESULT AzureKinectFrameProvider::Initialize(ID3D11ShaderResourceView* colorSRV,
                 goto FailedExit;
             }
             
+            // Create new depth texture for body depth only
+            k4a_image_create(K4A_IMAGE_FORMAT_DEPTH16, calibration.depth_camera_calibration.resolution_width, calibration.depth_camera_calibration.resolution_height, 2 * calibration.depth_camera_calibration.resolution_width, &bodyDepthImage);
             k4a_image_create(K4A_IMAGE_FORMAT_DEPTH16, calibration.color_camera_calibration.resolution_width, calibration.color_camera_calibration.resolution_height, 2 * calibration.color_camera_calibration.resolution_width, &transformedBodyDepthImage);
         }
     }
@@ -140,9 +142,6 @@ void AzureKinectFrameProvider::Update(int compositeFrameIndex)
             auto height = k4a_image_get_height_pixels(depthImage);
             auto width = k4a_image_get_width_pixels(depthImage);
             auto stride = k4a_image_get_stride_bytes(depthImage);
-
-            // Create new depth texture for body depth only
-            k4a_image_create(K4A_IMAGE_FORMAT_DEPTH16, width, height, stride, &bodyDepthImage);
 
             uint16_t* bodyDepthBuffer = reinterpret_cast<uint16_t*>(k4a_image_get_buffer(bodyDepthImage));
             uint16_t* depthBuffer = reinterpret_cast<uint16_t*>(k4a_image_get_buffer(depthImage));
