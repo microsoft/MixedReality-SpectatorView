@@ -18,7 +18,7 @@ namespace Microsoft.MixedReality.SpectatorView
     /// </summary>
     public class CompositorWorldAnchorLocalizationManager : Singleton<CompositorWorldAnchorLocalizationManager>
     {
-        private const string CompositorWorldAnchorId = "Compositor_SharedSpatialCoordinate";
+        public const string CompositorWorldAnchorId = "Compositor_SharedSpatialCoordinate";
 
         private readonly Dictionary<SpatialCoordinateSystemParticipant, Task<bool>> participantLocalizationTasks = new Dictionary<SpatialCoordinateSystemParticipant, Task<bool>>();
 
