@@ -31,7 +31,7 @@ namespace Microsoft.MixedReality.SpectatorView
         {
             get
             {
-#if UNITY_WSA && !UNITY_EDITOR
+#if UNITY_WSA
                 return true;
 #else
                 return false;
@@ -88,7 +88,6 @@ namespace Microsoft.MixedReality.SpectatorView
                     return null;
                 }
 
-                ISpatialCoordinate spatialCoordinate = null;
                 using (var cancellableCTS = CancellationTokenSource.CreateLinkedTokenSource(defaultCancellationToken, cancellationToken))
                 {
                     WorldAnchorCoordinateService coordinateService = await localizer.coordinateServiceTask.Unless(cancellationToken);
@@ -97,24 +96,70 @@ namespace Microsoft.MixedReality.SpectatorView
                         return null;
                     }
 
-                    if (settings.Mode == WorldAnchorLocalizationMode.LocateExistingAnchor)
+#if UNITY_EDITOR
+                    return await GetOrCreateCoordinateEditor(coordinateService, cancellationToken);
+#else
+                    return await GetOrCreateCoordinate(coordinateService, cancellationToken);
+#endif
+                }
+            }
+
+            private async Task<ISpatialCoordinate> GetOrCreateCoordinateEditor(WorldAnchorCoordinateService coordinateService, CancellationToken cancellationToken)
+            {
+                if (settings.Mode == WorldAnchorLocalizationMode.LocateExistingAnchor)
+                {
+                    if (HasVectorProperty($"{nameof(WorldAnchorSpatialLocalizer)}_{settings.AnchorId}_position") && HasVectorProperty($"{nameof(WorldAnchorSpatialLocalizer)}_{settings.AnchorId}_rotation"))
                     {
-                        if (coordinateService.TryGetKnownCoordinate(settings.AnchorId, out ISpatialCoordinate coordinate))
-                        {
-                            return coordinate;
-                        }
-                        else
-                        {
-                            return null;
-                        }
+                        return await coordinateService.CreateCoordinateAsync(settings.AnchorId, GetVectorProperty($"{nameof(WorldAnchorSpatialLocalizer)}_{settings.AnchorId}_position"), Quaternion.Euler(GetVectorProperty($"{nameof(WorldAnchorSpatialLocalizer)}_{settings.AnchorId}_rotation")), cancellationToken);
                     }
                     else
                     {
-                        spatialCoordinate = await coordinateService.CreateCoordinateAsync(settings.AnchorId, settings.AnchorPosition, settings.AnchorRotation, cancellationToken);
+                        return null;
                     }
                 }
+                else
+                {
+                    SetVectorProperty($"{nameof(WorldAnchorSpatialLocalizer)}_{settings.AnchorId}_position", settings.AnchorPosition);
+                    SetVectorProperty($"{nameof(WorldAnchorSpatialLocalizer)}_{settings.AnchorId}_rotation", settings.AnchorRotation.eulerAngles);
+                    return await coordinateService.CreateCoordinateAsync(settings.AnchorId, settings.AnchorPosition, settings.AnchorRotation, cancellationToken);
+                }
+            }
 
-                return await Task.FromResult(spatialCoordinate);
+            private bool HasVectorProperty(string key)
+            {
+                return PlayerPrefs.HasKey($"{key}_x") && PlayerPrefs.HasKey($"{key}_y") && PlayerPrefs.HasKey($"{key}_z");
+            }
+
+            private Vector3 GetVectorProperty(string key)
+            {
+                return new Vector3(PlayerPrefs.GetFloat($"{key}_x"), PlayerPrefs.GetFloat($"{key}_y"), PlayerPrefs.GetFloat($"{key}_z"));
+            }
+
+            private void SetVectorProperty(string key, Vector3 value)
+            {
+                PlayerPrefs.SetFloat($"{key}_x", value.x);
+                PlayerPrefs.SetFloat($"{key}_y", value.y);
+                PlayerPrefs.SetFloat($"{key}_z", value.z);
+                PlayerPrefs.Save();
+            }
+
+            private async Task<ISpatialCoordinate> GetOrCreateCoordinate(WorldAnchorCoordinateService coordinateService, CancellationToken cancellationToken)
+            {
+                if (settings.Mode == WorldAnchorLocalizationMode.LocateExistingAnchor)
+                {
+                    if (coordinateService.TryGetKnownCoordinate(settings.AnchorId, out ISpatialCoordinate coordinate))
+                    {
+                        return coordinate;
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                }
+                else
+                {
+                    return await coordinateService.CreateCoordinateAsync(settings.AnchorId, settings.AnchorPosition, settings.AnchorRotation, cancellationToken);
+                }
             }
         }
     }

@@ -33,7 +33,7 @@ namespace Microsoft.MixedReality.SpectatorView
         private WorldAnchorCoordinateService()
         {
         }
-        
+
         protected override bool SupportsDiscovery => false;
 
         public static Task<WorldAnchorCoordinateService> GetSharedCoordinateServiceAsync()
@@ -190,6 +190,9 @@ namespace Microsoft.MixedReality.SpectatorView
             {
                 get
                 {
+#if UNITY_EDITOR
+                    return LocatedState.Tracking;
+#else
                     if (worldAnchor == null)
                     {
                         // Once the WorldAnchor has been destroyed,
@@ -209,6 +212,7 @@ namespace Microsoft.MixedReality.SpectatorView
                         // so report the state of the coordinate as Tracking.
                         return LocatedState.Tracking;
                     }
+#endif
                 }
             }
 

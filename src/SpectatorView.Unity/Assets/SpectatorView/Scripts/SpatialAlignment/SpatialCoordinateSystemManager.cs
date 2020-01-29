@@ -491,7 +491,7 @@ namespace Microsoft.MixedReality.SpectatorView
             {
                 if (currentLocalizationSession != null)
                 {
-                    if (currentLocalizationSession.Participant == participant)
+                    if (currentLocalizationSession.Participant == participant || currentLocalizationSession.CompletionSource.Task.IsCompleted)
                     {
                         sessionToCancel = currentLocalizationSession;
                         currentLocalizationSession = null;
