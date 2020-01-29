@@ -28,6 +28,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
             ArUcoMarkerVisualDetectorSpatialLocalizer.Id,
             QRCodeMarkerVisualSpatialLocalizer.Id,
             QRCodeMarkerVisualDetectorSpatialLocalizer.Id,
+            WorldAnchorSpatialLocalizer.Id,
             new Guid("FB077E49-B855-453F-9FB5-77187B1AF784") // SpatialAnchorsLocalizer (There is no asmdef to reference for ASA)
         };
 
@@ -57,7 +58,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
         private const int settingsButtonWidth = 24;
         private Dictionary<string, Rect> buttonRects = new Dictionary<string, Rect>();
 
-        protected Guid selectedLocalizerId = Guid.Empty;
+        protected Dictionary<string, Guid> selectedLocalizerIds = new Dictionary<string, Guid>();
 
         protected virtual void OnEnable()
         {
@@ -65,12 +66,21 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
             renderFrameHeight = CompositionManager.GetVideoFrameHeight();
             aspect = ((float)renderFrameWidth) / renderFrameHeight;
 
-            Guid.TryParse(PlayerPrefs.GetString(nameof(selectedLocalizerId)), out selectedLocalizerId);
+            foreach (string appLabel in new[] { AppDeviceTypeLabel, HolographicCameraDeviceTypeLabel })
+            {
+                if (Guid.TryParse(PlayerPrefs.GetString($"{appLabel}_{nameof(selectedLocalizerIds)}"), out Guid localizerId))
+                {
+                    selectedLocalizerIds[appLabel] = localizerId;
+                }
+            }
         }
 
         protected virtual void OnDisable()
         {
-            PlayerPrefs.SetString(nameof(selectedLocalizerId), selectedLocalizerId.ToString());
+            foreach (var pair in selectedLocalizerIds)
+            {
+                PlayerPrefs.SetString($"{pair.Key}_{nameof(selectedLocalizerIds)}", pair.Value.ToString());
+            }
             PlayerPrefs.Save();
         }
 
@@ -187,6 +197,9 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
             ISpatialLocalizer[] localizers = null;
             bool wasEnabled = GUI.enabled;
 
+            Guid selectedLocalizerId = Guid.Empty;
+            selectedLocalizerIds.TryGetValue(deviceTypeLabel, out selectedLocalizerId);
+
             if (SpatialCoordinateSystemManager.IsInitialized && spatialCoordinateSystemParticipant != null)
             {
                 var supportedPeerLocalizers = spatialCoordinateSystemParticipant?.GetPeerSupportedLocalizersAsync();
@@ -231,6 +244,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
                     selectedLocalizerIndex < localizers.Length)
                 {
                     selectedLocalizerId = localizers[selectedLocalizerIndex].SpatialLocalizerId;
+                    selectedLocalizerIds[deviceTypeLabel] = selectedLocalizerId;
                     SpatialLocalizationSettingsGUI(deviceTypeLabel, selectedLocalizerIndex, localizers);
                 }
             }
