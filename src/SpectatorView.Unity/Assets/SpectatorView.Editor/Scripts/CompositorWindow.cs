@@ -28,6 +28,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
 
         private bool compositorStatsFoldout;
         private bool recordingFoldout;
+        private bool colorCorrectionFoldout;
         private bool hologramSettingsFoldout;
 
         private float hologramAlpha;
@@ -77,6 +78,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
                 NetworkConnectionGUI();
                 CompositeGUI();
                 RecordingGUI();
+                ColorCorrectionGUI();
                 HologramSettingsGUI();
                 CompositorStatsGUI();
             }
@@ -301,6 +303,120 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
                     }
                 }
                 EditorGUILayout.EndVertical();
+            }
+        }
+
+        private void ColorCorrectionGUI()
+        {
+            colorCorrectionFoldout = EditorGUILayout.Foldout(colorCorrectionFoldout, "Color Correction Settings");
+            if (colorCorrectionFoldout)
+            {
+                RenderTitle("Video Camera Color Correction", Color.clear);
+                CompositionManager compositionManager = GetCompositionManager();
+                bool running = compositionManager != null && compositionManager.TextureManager != null && compositionManager.TextureManager.videoFeedColorCorrection != null;
+                if (running)
+                {
+                    EditorGUILayout.BeginVertical("Box");
+                    {
+                        EditorGUILayout.BeginHorizontal();
+                        {
+                            GUIContent label = new GUIContent("Enabled");
+                            compositionManager.TextureManager.videoFeedColorCorrection.Enabled = EditorGUILayout.Toggle(
+                                label,
+                                compositionManager.TextureManager.videoFeedColorCorrection.Enabled);
+                        }
+                        EditorGUILayout.EndHorizontal();
+                        if (GUI.enabled &&
+                            !compositionManager.TextureManager.videoFeedColorCorrection.Enabled)
+                        {
+                            GUI.enabled = false;
+                        }
+
+                        EditorGUILayout.Space();
+                        EditorGUILayout.BeginHorizontal();
+                        {
+                            GUIContent label = new GUIContent("R Scale");
+                            compositionManager.TextureManager.videoFeedColorCorrection.RScale = EditorGUILayout.Slider(
+                                label,
+                                compositionManager.TextureManager.videoFeedColorCorrection.RScale, 0, 4);
+                        }
+                        EditorGUILayout.EndHorizontal();
+                        EditorGUILayout.BeginHorizontal();
+                        {
+                            GUIContent label = new GUIContent("G Scale");
+                            compositionManager.TextureManager.videoFeedColorCorrection.GScale = EditorGUILayout.Slider(
+                                label,
+                                compositionManager.TextureManager.videoFeedColorCorrection.GScale, 0, 4);
+                        }
+                        EditorGUILayout.EndHorizontal();
+                        EditorGUILayout.BeginHorizontal();
+                        {
+                            GUIContent label = new GUIContent("B Scale");
+                            compositionManager.TextureManager.videoFeedColorCorrection.BScale = EditorGUILayout.Slider(
+                                label,
+                                compositionManager.TextureManager.videoFeedColorCorrection.BScale, 0, 4);
+                        }
+                        EditorGUILayout.EndHorizontal();
+
+                        EditorGUILayout.Space();
+                        EditorGUILayout.BeginHorizontal();
+                        {
+                            GUIContent label = new GUIContent("H Offset");
+                            compositionManager.TextureManager.videoFeedColorCorrection.HOffset = EditorGUILayout.Slider(
+                                label,
+                                compositionManager.TextureManager.videoFeedColorCorrection.HOffset, -1, 1);
+                        }
+                        EditorGUILayout.EndHorizontal();
+                        EditorGUILayout.BeginHorizontal();
+                        {
+                            GUIContent label = new GUIContent("S Offset");
+                            compositionManager.TextureManager.videoFeedColorCorrection.SOffset = EditorGUILayout.Slider(
+                                label,
+                                compositionManager.TextureManager.videoFeedColorCorrection.SOffset, -1, 1);
+                        }
+                        EditorGUILayout.EndHorizontal();
+                        EditorGUILayout.BeginHorizontal();
+                        {
+                            GUIContent label = new GUIContent("V Offset");
+                            compositionManager.TextureManager.videoFeedColorCorrection.VOffset = EditorGUILayout.Slider(
+                                label,
+                                compositionManager.TextureManager.videoFeedColorCorrection.VOffset, -1, 1);
+                        }
+                        EditorGUILayout.EndHorizontal();
+
+                        EditorGUILayout.Space();
+                        EditorGUILayout.BeginHorizontal();
+                        {
+                            GUIContent label = new GUIContent("Brightness");
+                            compositionManager.TextureManager.videoFeedColorCorrection.Brightness = EditorGUILayout.Slider(
+                                label,
+                                compositionManager.TextureManager.videoFeedColorCorrection.Brightness, -1, 1);
+                        }
+                        EditorGUILayout.EndHorizontal();
+                        EditorGUILayout.BeginHorizontal();
+                        {
+                            GUIContent label = new GUIContent("Contrast");
+                            compositionManager.TextureManager.videoFeedColorCorrection.Contrast = EditorGUILayout.Slider(
+                                label,
+                                compositionManager.TextureManager.videoFeedColorCorrection.Contrast, 0, 2);
+                        }
+                        EditorGUILayout.EndHorizontal();
+                        EditorGUILayout.BeginHorizontal();
+                        {
+                            GUIContent label = new GUIContent("Gamma");
+                            compositionManager.TextureManager.videoFeedColorCorrection.Gamma = EditorGUILayout.Slider(
+                                label,
+                                compositionManager.TextureManager.videoFeedColorCorrection.Gamma, 0.1f, 4);
+                        }
+                        EditorGUILayout.EndHorizontal();
+                    }
+                    EditorGUILayout.EndVertical();
+                }
+                else
+                {
+                    RenderTitle("Updating color correction is not possible when the compositor isn't running.", Color.green);
+                }
+                GUI.enabled = true;
             }
         }
 
