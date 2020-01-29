@@ -231,7 +231,17 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
                         GUI.enabled = compositionManager != null && !compositionManager.IsRecording();
                         string[] compositionOptions = new string[] { "Normal", "Split channels" };
                         GUIContent renderingModeLabel = new GUIContent("Video output mode", "Choose between recording the composited video texture or recording intermediate textures displayed in 4 sections (bottom left: input video, top left: opaque hologram, top right: hologram alpha mask, bottom right: hologram alpha-blended onto video)");
-                        compositionManager.VideoRecordingLayout = (VideoRecordingFrameLayout)EditorGUILayout.Popup(renderingModeLabel, (int)compositionManager.VideoRecordingLayout, compositionOptions);
+                        int layout = 0;
+                        if (compositionManager != null)
+                        {
+                            layout = (int)compositionManager.VideoRecordingLayout;
+                        }
+
+                        layout = EditorGUILayout.Popup(renderingModeLabel, layout, compositionOptions);
+                        if (compositionManager != null)
+                        {
+                            compositionManager.VideoRecordingLayout = (VideoRecordingFrameLayout)layout;
+                        }
                         GUI.enabled = wasEnabled;
                     }
                     EditorGUILayout.EndHorizontal();
