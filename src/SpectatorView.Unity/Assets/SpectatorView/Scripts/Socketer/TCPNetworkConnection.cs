@@ -87,7 +87,7 @@ namespace Microsoft.MixedReality.SpectatorView
                 try
                 {
                     var payload = new byte[length];
-                    Array.Copy(data, offset, payload, 0, length);
+                    Array.Copy(data, (int)offset, payload, 0, (int)length);
                     socketerClient.SendNetworkMessage(payload, sourceId);
                 }
                 catch
