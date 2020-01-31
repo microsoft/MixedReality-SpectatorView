@@ -59,7 +59,6 @@ public class KeepDeviceActive : MonoBehaviour
                         // the screen is guaranteed not to turn off automatically due to user inactivity. 
                         displayRequest.RequestActive();
                     Debug.Log("Display request activated. Device won't go inactive until closing this scene.");
-                    displayRequestSucceeded = true;
                 }
                 catch (Exception e)
                 {
