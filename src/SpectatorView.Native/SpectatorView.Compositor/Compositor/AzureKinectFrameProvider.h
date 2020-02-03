@@ -51,8 +51,9 @@ private:
     uint8_t* GetBodyIndexBuffer(k4a_capture_t capture);
     void UpdateSRV(k4a_image_t bodyDepthImage, ID3D11ShaderResourceView* _srv);
     void UpdateArUcoMarkers(k4a_image_t image);
-    void SetBodyDepthBuffer(uint16_t* bodyDepthBuffer, uint16_t* depthBuffer, uint8_t* bodyIndexBuffer, int bufferSize);
-    
+    void SetBodyMaskBuffer(uint16_t* bodyMaskBuffer, uint8_t* bodyIndexBuffer, int bufferSize);
+    void SetTransformedBodyMaskBuffer(uint16_t* transformedBodyMaskBuffer, int bufferSize);
+
     int _captureFrameIndex;
     ID3D11ShaderResourceView* _colorSRV;
     ID3D11ShaderResourceView* _depthSRV;
@@ -63,8 +64,8 @@ private:
     k4a_calibration_t calibration;
     k4a_transformation_t transformation;
     k4a_image_t transformedDepthImage;
-    k4a_image_t transformedBodyDepthImage;
-    k4a_image_t bodyDepthImage;
+    k4a_image_t transformedBodyMaskImage;
+    k4a_image_t bodyMaskImage;
     k4abt_tracker_t k4abtTracker;
     k4abt_tracker_configuration_t tracker_config = K4ABT_TRACKER_CONFIG_DEFAULT;
     CRITICAL_SECTION lock;

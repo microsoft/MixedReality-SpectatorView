@@ -79,7 +79,7 @@ static ID3D11Texture2D* g_holoRenderTexture = nullptr;
 
 static ID3D11Texture2D* g_colorTexture = nullptr;
 static ID3D11Texture2D* g_depthCameraTexture = nullptr;
-static ID3D11Texture2D* g_bodyDepthTexture = nullptr;
+static ID3D11Texture2D* g_bodyMaskTexture = nullptr;
 static ID3D11Texture2D* g_compositeTexture = nullptr;
 static ID3D11Texture2D* g_videoTexture = nullptr;
 static ID3D11Texture2D* g_outputTexture = nullptr;
@@ -500,7 +500,7 @@ UNITYDLL void Reset()
     EnterCriticalSection(&lock);
     g_colorTexture = nullptr;
     g_depthCameraTexture = nullptr;
-    g_bodyDepthTexture = nullptr;
+    g_bodyMaskTexture = nullptr;
     g_compositeTexture = nullptr;
     g_videoTexture = nullptr;
     g_outputTexture = nullptr;
@@ -616,18 +616,18 @@ UNITYDLL bool CreateUnityDepthCameraTexture(ID3D11ShaderResourceView*& srv)
     return true;
 }
 
-UNITYDLL bool CreateUnityBodyDepthTexture(ID3D11ShaderResourceView*& srv)
+UNITYDLL bool CreateUnityBodyMaskTexture(ID3D11ShaderResourceView*& srv)
 {
     if (g_UnityBodySRV == nullptr && g_pD3D11Device != nullptr)
     {
-        g_bodyDepthTexture = DirectXHelper::CreateTexture(g_pD3D11Device, depthBytes, FRAME_WIDTH, FRAME_HEIGHT, FRAME_BPP_DEPTH16, DXGI_FORMAT_R16_UNORM);
+        g_bodyMaskTexture = DirectXHelper::CreateTexture(g_pD3D11Device, depthBytes, FRAME_WIDTH, FRAME_HEIGHT, FRAME_BPP_DEPTH16, DXGI_FORMAT_R16_UNORM);
 
-        if (g_bodyDepthTexture == nullptr)
+        if (g_bodyMaskTexture == nullptr)
         {
             return false;
         }
 
-        g_UnityBodySRV = DirectXHelper::CreateShaderResourceView(g_pD3D11Device, g_bodyDepthTexture, DXGI_FORMAT_R16_UNORM);
+        g_UnityBodySRV = DirectXHelper::CreateShaderResourceView(g_pD3D11Device, g_bodyMaskTexture, DXGI_FORMAT_R16_UNORM);
         if (g_UnityBodySRV == nullptr)
         {
             return false;
