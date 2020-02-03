@@ -133,6 +133,9 @@ void AzureKinectFrameProvider::Update(int compositeFrameIndex)
             return;
         }
 
+        k4a_transformation_depth_image_to_color_camera(transformation, depthImage, transformedDepthImage);
+        UpdateSRV(transformedDepthImage, _depthSRV);
+
         if (_bodySRV != nullptr)
         {
             auto height = k4a_image_get_height_pixels(depthImage);
@@ -155,10 +158,9 @@ void AzureKinectFrameProvider::Update(int compositeFrameIndex)
             SetTransformedBodyMaskBuffer(bodyMaskBuffer, height * width);
 
             UpdateSRV(transformedBodyMaskImage, _bodySRV);
-            }
+        }
 
         k4a_image_release(depthImage);
-        }
     }
     k4a_image_release(colorImage);
     k4a_capture_release(capture);
@@ -221,12 +223,12 @@ void AzureKinectFrameProvider::SetBodyMaskBuffer(uint16_t* bodyMaskBuffer, uint8
     {
         if (bodyIndexBuffer[bufferIndex] != K4ABT_BODY_INDEX_MAP_BACKGROUND)
         {
-            bodyMaskBuffer[bufferIndex] = 0;
+            // Using 1000 to ensure value is not truncated to 0 by depth to color transformation
+            bodyMaskBuffer[bufferIndex] = 1000;
         }
         else
         {
-            // Using max short value to ensure value is not truncated to 0 by depth to color transformation
-            bodyMaskBuffer[bufferIndex] = USHRT_MAX;
+            bodyMaskBuffer[bufferIndex] = 0;
         }
 
         bufferIndex++;
@@ -241,7 +243,7 @@ void AzureKinectFrameProvider::SetTransformedBodyMaskBuffer(uint16_t* transforme
     {
         if (transformedBodyMaskBuffer[bufferIndex] > 0)
         {
-            bodyMaskBuffer[bufferIndex] = 1;
+            transformedBodyMaskBuffer[bufferIndex] = 1;
         }
 
         bufferIndex++;

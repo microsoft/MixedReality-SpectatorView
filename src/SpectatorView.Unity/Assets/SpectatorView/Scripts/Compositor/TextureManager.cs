@@ -74,7 +74,12 @@ namespace Microsoft.MixedReality.SpectatorView
         /// <summary>
         /// The texture used to occlude holograms with the real world
         /// </summary>
-        private RenderTexture occlusionTexture = null;
+        private RenderTexture occlusionMaskTexture = null;
+
+        /// <summary>
+        /// The texture used to contain result of running Blur shader over the occulsion mask
+        /// </summary>
+        private RenderTexture blurOcclusionTexture = null;
 
         /// <summary>
         /// An override texture for testing calibration
@@ -116,7 +121,8 @@ namespace Microsoft.MixedReality.SpectatorView
         private Material NV12VideoMat;
         private Material BGRVideoMat;
         private Material holoAlphaMat;
-        private Material depthBlurMat;
+        private Material blurMat;
+        private Material occlusionMaskMat;
         private Material quadViewMat;
         private Material alphaBlendMat;
         private Material textureClearMat;
@@ -216,7 +222,8 @@ namespace Microsoft.MixedReality.SpectatorView
             NV12VideoMat = LoadMaterial("RGBToNV12");
             BGRVideoMat = LoadMaterial("BGRToRGB");
             holoAlphaMat = LoadMaterial("HoloAlpha");
-            depthBlurMat = LoadMaterial("DepthBlur");
+            blurMat = LoadMaterial("Blur");
+            occlusionMaskMat = LoadMaterial("OcclusionMask");
             extractAlphaMat = LoadMaterial("ExtractAlpha");
             ignoreAlphaMat = LoadMaterial("IgnoreAlpha");
             quadViewMat = LoadMaterial("QuadView");
@@ -287,7 +294,8 @@ namespace Microsoft.MixedReality.SpectatorView
             colorRGBTexture = new RenderTexture(frameWidth, frameHeight, (int)Compositor.TextureDepth);
             alphaTexture = new RenderTexture(frameWidth, frameHeight, (int)Compositor.TextureDepth);
             compositeTexture = new RenderTexture(frameWidth, frameHeight, (int)Compositor.TextureDepth);
-            occlusionTexture = new RenderTexture(frameWidth, frameHeight, (int)Compositor.TextureDepth);
+            occlusionMaskTexture = new RenderTexture(frameWidth, frameHeight, (int)Compositor.TextureDepth);
+            blurOcclusionTexture = new RenderTexture(frameWidth, frameHeight, (int)Compositor.TextureDepth);
 
             if (supersampleBuffers.Length > 0)
             {
@@ -359,14 +367,17 @@ namespace Microsoft.MixedReality.SpectatorView
             }
             else
             {
-                depthBlurMat.SetTexture("_DepthTexture", depthTexture);
-                depthBlurMat.SetTexture("_BodyMaskTexture", bodyMaskTexture);
-                Graphics.Blit(sourceTexture, occlusionTexture, depthBlurMat);
+                occlusionMaskMat.SetTexture("_DepthTexture", depthTexture);
+                occlusionMaskMat.SetTexture("_BodyMaskTexture", bodyMaskTexture);
+                Graphics.Blit(sourceTexture, occlusionMaskTexture, occlusionMaskMat);
+
+                blurMat.SetTexture("_MaskTexture", occlusionMaskTexture);
+                Graphics.Blit(sourceTexture, blurOcclusionTexture, blurMat);
 
                 // Render the real-world video back onto the composited frame to reduce the opacity
                 // of the hologram by the appropriate amount.
                 holoAlphaMat.SetTexture("_FrontTex", renderTexture);
-                holoAlphaMat.SetTexture("_OcclusionTexture", occlusionTexture);
+                holoAlphaMat.SetTexture("_OcclusionTexture", blurOcclusionTexture);
                 Graphics.Blit(sourceTexture, compositeTexture, holoAlphaMat);
 
                 //var color = depthTexture.GetPixel(900, 400);
