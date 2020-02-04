@@ -217,36 +217,28 @@ uint8_t* AzureKinectFrameProvider::GetBodyIndexBuffer(k4a_capture_t capture)
 
 void AzureKinectFrameProvider::SetBodyMaskBuffer(uint16_t* bodyMaskBuffer, uint8_t* bodyIndexBuffer, int bufferSize)
 {
-    int bufferIndex = 0;
-
-    while (bufferIndex < bufferSize)
+    for (int i = 0; i < bufferSize; i++)
     {
-        if (bodyIndexBuffer[bufferIndex] != K4ABT_BODY_INDEX_MAP_BACKGROUND)
+        if (bodyIndexBuffer[i] != K4ABT_BODY_INDEX_MAP_BACKGROUND)
         {
             // Using 1000 to ensure value is not truncated to 0 by depth to color transformation
-            bodyMaskBuffer[bufferIndex] = 1000;
+            bodyMaskBuffer[i] = 1000;
         }
         else
         {
-            bodyMaskBuffer[bufferIndex] = 0;
+            bodyMaskBuffer[i] = 0;
         }
-
-        bufferIndex++;
     }
 }
 
 void AzureKinectFrameProvider::SetTransformedBodyMaskBuffer(uint16_t* transformedBodyMaskBuffer, int bufferSize)
 {
-    int bufferIndex = 0;
-
-    while (bufferIndex < bufferSize)
+    for (int i = 0; i < bufferSize; i++)
     {
-        if (transformedBodyMaskBuffer[bufferIndex] > 0)
+        if (transformedBodyMaskBuffer[i] > 0)
         {
-            transformedBodyMaskBuffer[bufferIndex] = 1;
+            transformedBodyMaskBuffer[i] = 1;
         }
-
-        bufferIndex++;
     }
 }
 

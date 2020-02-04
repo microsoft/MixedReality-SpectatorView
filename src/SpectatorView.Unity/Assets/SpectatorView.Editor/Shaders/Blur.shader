@@ -47,6 +47,7 @@
                 half4 blurVal = fixed4(0,0,0,0);
                 float sumX = 0.0;
 
+                // Sample +/- 5 pixels from origin in X direction with assigned weight to generate average
                 sumX += _MaskTexture.Sample(sampler_point_clamp, float2(i.uv[0] - 5.0 * _BlurIntensity, i.uv[1])).r * 0.025;
                 sumX += _MaskTexture.Sample(sampler_point_clamp, float2(i.uv[0] - 4.0 * _BlurIntensity, i.uv[1])).r * 0.05;
                 sumX += _MaskTexture.Sample(sampler_point_clamp, float2(i.uv[0] - 3.0 * _BlurIntensity, i.uv[1])).r * 0.085;
@@ -61,6 +62,7 @@
 
                 float sumY = 0.0;
                 
+                // Sample +/- 5 pixels from origin in Y direction with assigned weight to generate average
                 sumY += _MaskTexture.Sample(sampler_point_clamp, float2(i.uv[0], i.uv[1] - 5.0 * _BlurIntensity)).r * 0.025;
                 sumY += _MaskTexture.Sample(sampler_point_clamp, float2(i.uv[0], i.uv[1] - 4.0 * _BlurIntensity)).r * 0.05;
                 sumY += _MaskTexture.Sample(sampler_point_clamp, float2(i.uv[0], i.uv[1] - 3.0 * _BlurIntensity)).r * 0.085;
