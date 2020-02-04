@@ -7,7 +7,7 @@ Shader "SV/HoloAlpha"
     {
         _BackTex("BackTex", 2D) = "white" {}
         _FronTex("FrontTex", 2D) = "white" {}
-        _OcclusionTexture("OcclusionTexture", 2D) = "black" {} // Set to black as default, which is read as a depth of 0
+        _OcclusionTexture("OcclusionTexture", 2D) = "black" {} // Set to black as default, which is read as a alpha value of 1
         _Alpha("Alpha", float) = 0.9
     }
     SubShader
@@ -38,7 +38,6 @@ Shader "SV/HoloAlpha"
             sampler2D _BackTex;
             sampler2D _FrontTex;
             float _Alpha;
-            sampler2D_float _LastCameraDepthTexture;
             Texture2D _OcclusionTexture;
             SamplerState sampler_point_clamp;
 
@@ -55,12 +54,9 @@ Shader "SV/HoloAlpha"
                 fixed4 backCol = tex2D(_BackTex, i.uv);
                 fixed4 frontCol = tex2D(_FrontTex, i.uv);
 
-                float rawHologramDepth = SAMPLE_DEPTH_TEXTURE(_LastCameraDepthTexture, i.uv);
-                float hologramDepth = LinearEyeDepth(rawHologramDepth);
-                float kinectDepth = _OcclusionTexture.Sample(sampler_point_clamp, float2(i.uv[0], 1-i.uv[1])).r * 65535 * 0.001; // Incoming texture is R16
+                float occlusionAlpha = _OcclusionTexture.Sample(sampler_point_clamp, float2(i.uv[0], 1-i.uv[1])).r;
 
-                float isHologramOccluded = kinectDepth > 0.0f && rawHologramDepth < 1.0f && kinectDepth < hologramDepth;
-                float alpha = min(1.0f - isHologramOccluded, _Alpha);
+                float alpha = occlusionAlpha * _Alpha;
 
                 fixed4 composite = backCol * (1 - alpha) + frontCol * alpha;
                 composite.a = 1.0f;

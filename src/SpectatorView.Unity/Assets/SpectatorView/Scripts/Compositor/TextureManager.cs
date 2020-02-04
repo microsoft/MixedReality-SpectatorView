@@ -62,9 +62,24 @@ namespace Microsoft.MixedReality.SpectatorView
         private Texture2D colorTexture = null;
 
         /// <summary>
+        /// The texture used to occlude holograms with the real world via depth comparison
+        /// </summary>
+        private Texture2D depthTexture = null;
+
+        /// <summary>
+        /// The texture used to occlude holograms with a body mask
+        /// </summary>
+        private Texture2D bodyMaskTexture = null;
+
+        /// <summary>
         /// The texture used to occlude holograms with the real world
         /// </summary>
-        private Texture2D occlusionTexture = null;
+        private RenderTexture occlusionMaskTexture = null;
+
+        /// <summary>
+        /// The texture used to contain result of running Blur shader over the occulsion mask
+        /// </summary>
+        private RenderTexture blurOcclusionTexture = null;
 
         /// <summary>
         /// An override texture for testing calibration
@@ -106,6 +121,8 @@ namespace Microsoft.MixedReality.SpectatorView
         private Material NV12VideoMat;
         private Material BGRVideoMat;
         private Material holoAlphaMat;
+        private Material blurMat;
+        private Material occlusionMaskMat;
         private Material quadViewMat;
         private Material alphaBlendMat;
         private Material textureClearMat;
@@ -205,6 +222,8 @@ namespace Microsoft.MixedReality.SpectatorView
             NV12VideoMat = LoadMaterial("RGBToNV12");
             BGRVideoMat = LoadMaterial("BGRToRGB");
             holoAlphaMat = LoadMaterial("HoloAlpha");
+            blurMat = LoadMaterial("Blur");
+            occlusionMaskMat = LoadMaterial("OcclusionMask");
             extractAlphaMat = LoadMaterial("ExtractAlpha");
             ignoreAlphaMat = LoadMaterial("IgnoreAlpha");
             quadViewMat = LoadMaterial("QuadView");
@@ -221,6 +240,7 @@ namespace Microsoft.MixedReality.SpectatorView
             }
             else if(Compositor.OcclusionMode == OcclusionSetting.BodyTracking)
             {
+                CreateDepthCameraTexture();
                 CreateBodyDepthTexture();
             }
 
@@ -274,6 +294,8 @@ namespace Microsoft.MixedReality.SpectatorView
             colorRGBTexture = new RenderTexture(frameWidth, frameHeight, (int)Compositor.TextureDepth);
             alphaTexture = new RenderTexture(frameWidth, frameHeight, (int)Compositor.TextureDepth);
             compositeTexture = new RenderTexture(frameWidth, frameHeight, (int)Compositor.TextureDepth);
+            occlusionMaskTexture = new RenderTexture(frameWidth, frameHeight, (int)Compositor.TextureDepth);
+            blurOcclusionTexture = new RenderTexture(frameWidth, frameHeight, (int)Compositor.TextureDepth);
 
             if (supersampleBuffers.Length > 0)
             {
@@ -345,10 +367,17 @@ namespace Microsoft.MixedReality.SpectatorView
             }
             else
             {
+                occlusionMaskMat.SetTexture("_DepthTexture", depthTexture);
+                occlusionMaskMat.SetTexture("_BodyMaskTexture", bodyMaskTexture);
+                Graphics.Blit(sourceTexture, occlusionMaskTexture, occlusionMaskMat);
+
+                blurMat.SetTexture("_MaskTexture", occlusionMaskTexture);
+                Graphics.Blit(sourceTexture, blurOcclusionTexture, blurMat);
+
                 // Render the real-world video back onto the composited frame to reduce the opacity
                 // of the hologram by the appropriate amount.
                 holoAlphaMat.SetTexture("_FrontTex", renderTexture);
-                holoAlphaMat.SetTexture("_OcclusionTexture", occlusionTexture);
+                holoAlphaMat.SetTexture("_OcclusionTexture", blurOcclusionTexture);
                 Graphics.Blit(sourceTexture, compositeTexture, holoAlphaMat);
 
                 //var color = depthTexture.GetPixel(900, 400);
@@ -489,28 +518,28 @@ namespace Microsoft.MixedReality.SpectatorView
 
         private void CreateDepthCameraTexture()
         {
-            if (occlusionTexture == null)
+            if (depthTexture == null)
             {
                 IntPtr depthSRV;
                 if (UnityCompositorInterface.CreateUnityDepthCameraTexture(out depthSRV))
                 {
-                    occlusionTexture = Texture2D.CreateExternalTexture(frameWidth, frameHeight, TextureFormat.R16, false, false, depthSRV);
-                    occlusionTexture.filterMode = FilterMode.Point;
-                    occlusionTexture.anisoLevel = 0;
+                    depthTexture = Texture2D.CreateExternalTexture(frameWidth, frameHeight, TextureFormat.R16, false, false, depthSRV);
+                    depthTexture.filterMode = FilterMode.Point;
+                    depthTexture.anisoLevel = 0;
                 }
             }
         }
 
         private void CreateBodyDepthTexture()
         {
-            if (occlusionTexture == null)
+            if (bodyMaskTexture == null)
             {
                 IntPtr bodySRV;
-                if (UnityCompositorInterface.CreateUnityBodyDepthTexture(out bodySRV))
+                if (UnityCompositorInterface.CreateUnityBodyMaskTexture(out bodySRV))
                 {
-                    occlusionTexture = Texture2D.CreateExternalTexture(frameWidth, frameHeight, TextureFormat.R16, false, false, bodySRV);
-                    occlusionTexture.filterMode = FilterMode.Point;
-                    occlusionTexture.anisoLevel = 0;
+                    bodyMaskTexture = Texture2D.CreateExternalTexture(frameWidth, frameHeight, TextureFormat.R16, false, false, bodySRV);
+                    bodyMaskTexture.filterMode = FilterMode.Point;
+                    bodyMaskTexture.anisoLevel = 0;
                 }
             }
         }
