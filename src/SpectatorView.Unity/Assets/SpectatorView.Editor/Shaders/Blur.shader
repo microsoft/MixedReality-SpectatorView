@@ -55,7 +55,7 @@
                     half4 sum = half4(0,0,0,0);
                     float sumX = 0.0;
 
-                    #define MASKSAMPLE(weight, kernalx) _MaskTexture.Sample(sampler_point_clamp, float2(i.uv[0] - kernalx * _BlurSize * _MaskTexture_TexelSize.x, i.uv[1])).r * weight;
+                    #define MASKSAMPLE(weight, kernelx) _MaskTexture.Sample(sampler_point_clamp, float2(i.uv[0] - kernelx * _BlurSize * _MaskTexture_TexelSize.x, i.uv[1])).r * weight;
 
                     sumX += MASKSAMPLE(0.025, -5.0);
                     sumX += MASKSAMPLE(0.05, -4.0);
