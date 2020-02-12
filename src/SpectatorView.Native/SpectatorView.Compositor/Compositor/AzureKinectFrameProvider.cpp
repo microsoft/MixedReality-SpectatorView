@@ -248,18 +248,14 @@ IFrameProvider::ProviderType AzureKinectFrameProvider::GetProviderType()
 {
     switch (depthCameraMode)
     {
-    case K4A_DEPTH_MODE_OFF:
-
-        return IFrameProvider::ProviderType::AzureKinect_DepthCamera_Off;
-
-    case K4A_DEPTH_MODE_NFOV_UNBINNED:
-
-        return IFrameProvider::ProviderType::AzureKinect_DepthCamera_NFOV;
-
-    case K4A_DEPTH_MODE_WFOV_2X2BINNED:
-
-        return IFrameProvider::ProviderType::AzureKinect_DepthCamera_WFOV;
-
+        case K4A_DEPTH_MODE_OFF:
+            return IFrameProvider::ProviderType::AzureKinect_DepthCamera_Off;
+        case K4A_DEPTH_MODE_NFOV_UNBINNED:
+            return IFrameProvider::ProviderType::AzureKinect_DepthCamera_NFOV;
+        case K4A_DEPTH_MODE_WFOV_2X2BINNED:
+            return IFrameProvider::ProviderType::AzureKinect_DepthCamera_WFOV;
+        default:
+            return IFrameProvider::ProviderType::AzureKinect_DepthCamera_Off;
     }
 }
 
