@@ -39,8 +39,12 @@ void CompositorInterface::SetFrameProvider(IFrameProvider::ProviderType type)
 #endif
 
 #if defined(INCLUDE_AZUREKINECT)
-    if (type == IFrameProvider::ProviderType::AzureKinect)
-        frameProvider = new AzureKinectFrameProvider();
+    if (type == IFrameProvider::ProviderType::AzureKinect_DepthCamera_Off)
+        frameProvider = new AzureKinectFrameProvider(IFrameProvider::ProviderType::AzureKinect_DepthCamera_Off);
+    else if (type == IFrameProvider::ProviderType::AzureKinect_DepthCamera_NFOV)
+        frameProvider = new AzureKinectFrameProvider(IFrameProvider::ProviderType::AzureKinect_DepthCamera_NFOV);
+    else if (type == IFrameProvider::ProviderType::AzureKinect_DepthCamera_WFOV)
+        frameProvider = new AzureKinectFrameProvider(IFrameProvider::ProviderType::AzureKinect_DepthCamera_WFOV);
 #endif
 }
 
@@ -57,7 +61,9 @@ bool CompositorInterface::IsFrameProviderSupported(IFrameProvider::ProviderType 
 #endif
 
 #if defined(INCLUDE_AZUREKINECT)
-    if (providerType == IFrameProvider::ProviderType::AzureKinect)
+    if (providerType == IFrameProvider::ProviderType::AzureKinect_DepthCamera_Off
+        || providerType == IFrameProvider::ProviderType::AzureKinect_DepthCamera_NFOV
+        || providerType == IFrameProvider::ProviderType::AzureKinect_DepthCamera_WFOV)
         return true;
 #endif
 
