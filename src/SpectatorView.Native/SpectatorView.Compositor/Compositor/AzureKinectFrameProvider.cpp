@@ -8,7 +8,7 @@
 #include <k4a/k4a.h>
 #include <k4abt.h>
 
-AzureKinectFrameProvider::AzureKinectFrameProvider()
+AzureKinectFrameProvider::AzureKinectFrameProvider(DepthCameraMode depthMode)
     : detectMarkers(false)
     , markerSize(0.0f)
     , _captureFrameIndex(0)
@@ -24,6 +24,8 @@ AzureKinectFrameProvider::AzureKinectFrameProvider()
     , transformedDepthImage(nullptr)
     , transformedBodyMaskImage(nullptr)
     , bodyMaskImage(nullptr)
+    , depthCameraMode((k4a_depth_mode_t)depthMode)
+
 {}
 
 HRESULT AzureKinectFrameProvider::Initialize(ID3D11ShaderResourceView* colorSRV, ID3D11ShaderResourceView* depthSRV, ID3D11ShaderResourceView* bodySRV, ID3D11Texture2D* outputTexture)
@@ -44,7 +46,7 @@ HRESULT AzureKinectFrameProvider::Initialize(ID3D11ShaderResourceView* colorSRV,
 
     config.color_format = K4A_IMAGE_FORMAT_COLOR_BGRA32;
     config.color_resolution = K4A_COLOR_RESOLUTION_1080P;
-    config.depth_mode = K4A_DEPTH_MODE_WFOV_2X2BINNED;
+    config.depth_mode = depthCameraMode;
     config.camera_fps = K4A_FRAMES_PER_SECOND_30;
 
     if (K4A_RESULT_SUCCEEDED != k4a_device_start_cameras(k4aDevice, &config))
@@ -244,7 +246,21 @@ void AzureKinectFrameProvider::SetTransformedBodyMaskBuffer(uint16_t* transforme
 
 IFrameProvider::ProviderType AzureKinectFrameProvider::GetProviderType()
 {
-    return IFrameProvider::ProviderType::AzureKinect;
+    switch (depthCameraMode)
+    {
+    case K4A_DEPTH_MODE_OFF:
+
+        return IFrameProvider::ProviderType::AzureKinect_DepthCamera_Off;
+
+    case K4A_DEPTH_MODE_NFOV_UNBINNED:
+
+        return IFrameProvider::ProviderType::AzureKinect_DepthCamera_NFOV;
+
+    case K4A_DEPTH_MODE_WFOV_2X2BINNED:
+
+        return IFrameProvider::ProviderType::AzureKinect_DepthCamera_WFOV;
+
+    }
 }
 
 bool AzureKinectFrameProvider::IsEnabled()

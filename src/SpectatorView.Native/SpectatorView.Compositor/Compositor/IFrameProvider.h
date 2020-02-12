@@ -13,7 +13,9 @@ public:
     {
         BlackMagic,
         Elgato,
-        AzureKinect,
+        AzureKinect_DepthCamera_Off,
+        AzureKinect_DepthCamera_NFOV,
+        AzureKinect_DepthCamera_WFOV
     };
 
     // Set up the FrameProvider to start delivering frames.

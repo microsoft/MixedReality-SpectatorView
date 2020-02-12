@@ -12,7 +12,15 @@
 class AzureKinectFrameProvider : public IFrameProvider
 {
 public:
-    AzureKinectFrameProvider();
+
+    enum DepthCameraMode
+    {
+        Off = 0, 
+        NFOV_UNBINNED = 3,
+        WFOV_2X2BINNED = 4, 
+    };
+
+    AzureKinectFrameProvider(DepthCameraMode depthMode);
 
     // Inherited via IFrameProvider
     virtual HRESULT Initialize(ID3D11ShaderResourceView* colorSRV, ID3D11ShaderResourceView* depthSRV, ID3D11ShaderResourceView* bodySRV, ID3D11Texture2D* outputTexture) override;
@@ -71,6 +79,7 @@ private:
     CRITICAL_SECTION lock;
     bool detectMarkers;
     float markerSize;
+    k4a_depth_mode_t depthCameraMode = K4A_DEPTH_MODE_OFF;
 
     std::shared_ptr<ArUcoMarkerDetector> markerDetector;
 };

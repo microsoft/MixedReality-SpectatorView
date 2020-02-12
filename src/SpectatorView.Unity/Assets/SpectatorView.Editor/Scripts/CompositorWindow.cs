@@ -156,7 +156,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
 
                             compositionManager.CaptureDevice = supportedDevices[selectedIndex];
 
-                            if (supportedDevices[selectedIndex] != FrameProviderDeviceType.AzureKinect)
+                            if (supportedDevices[selectedIndex] != FrameProviderDeviceType.AzureKinect_DepthCamera_NFOV && supportedDevices[selectedIndex] != FrameProviderDeviceType.AzureKinect_DepthCamera_WFOV)
                             {
                                 GUI.enabled = false;
                             }
