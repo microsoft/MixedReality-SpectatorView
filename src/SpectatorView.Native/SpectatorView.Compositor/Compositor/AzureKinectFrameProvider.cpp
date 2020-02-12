@@ -8,7 +8,7 @@
 #include <k4a/k4a.h>
 #include <k4abt.h>
 
-AzureKinectFrameProvider::AzureKinectFrameProvider(DepthCameraMode depthMode)
+AzureKinectFrameProvider::AzureKinectFrameProvider(ProviderType providerType)
     : detectMarkers(false)
     , markerSize(0.0f)
     , _captureFrameIndex(0)
@@ -24,9 +24,23 @@ AzureKinectFrameProvider::AzureKinectFrameProvider(DepthCameraMode depthMode)
     , transformedDepthImage(nullptr)
     , transformedBodyMaskImage(nullptr)
     , bodyMaskImage(nullptr)
-    , depthCameraMode((k4a_depth_mode_t)depthMode)
-
-{}
+{
+    switch (providerType)
+    {
+        case AzureKinect_DepthCamera_Off:
+            depthCameraMode = K4A_DEPTH_MODE_OFF;
+            break;
+        case AzureKinect_DepthCamera_NFOV:
+            depthCameraMode = K4A_DEPTH_MODE_NFOV_UNBINNED;
+            break;
+        case AzureKinect_DepthCamera_WFOV:
+            depthCameraMode = K4A_DEPTH_MODE_WFOV_2X2BINNED;
+            break;
+        default:
+            depthCameraMode = K4A_DEPTH_MODE_OFF;
+            break;
+    }
+}
 
 HRESULT AzureKinectFrameProvider::Initialize(ID3D11ShaderResourceView* colorSRV, ID3D11ShaderResourceView* depthSRV, ID3D11ShaderResourceView* bodySRV, ID3D11Texture2D* outputTexture)
 {

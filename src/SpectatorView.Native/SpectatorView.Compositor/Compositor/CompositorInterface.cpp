@@ -40,11 +40,11 @@ void CompositorInterface::SetFrameProvider(IFrameProvider::ProviderType type)
 
 #if defined(INCLUDE_AZUREKINECT)
     if (type == IFrameProvider::ProviderType::AzureKinect_DepthCamera_Off)
-        frameProvider = new AzureKinectFrameProvider(AzureKinectFrameProvider::DepthCameraMode::Off);
+        frameProvider = new AzureKinectFrameProvider(IFrameProvider::ProviderType::AzureKinect_DepthCamera_Off);
     else if (type == IFrameProvider::ProviderType::AzureKinect_DepthCamera_NFOV)
-        frameProvider = new AzureKinectFrameProvider(AzureKinectFrameProvider::DepthCameraMode::NFOV_UNBINNED);
+        frameProvider = new AzureKinectFrameProvider(IFrameProvider::ProviderType::AzureKinect_DepthCamera_NFOV);
     else if (type == IFrameProvider::ProviderType::AzureKinect_DepthCamera_WFOV)
-        frameProvider = new AzureKinectFrameProvider(AzureKinectFrameProvider::DepthCameraMode::WFOV_2X2BINNED);
+        frameProvider = new AzureKinectFrameProvider(IFrameProvider::ProviderType::AzureKinect_DepthCamera_WFOV);
 #endif
 }
 

@@ -13,14 +13,7 @@ class AzureKinectFrameProvider : public IFrameProvider
 {
 public:
 
-    enum DepthCameraMode
-    {
-        Off = 0, 
-        NFOV_UNBINNED = 3,
-        WFOV_2X2BINNED = 4, 
-    };
-
-    AzureKinectFrameProvider(DepthCameraMode depthMode);
+    AzureKinectFrameProvider(ProviderType providerType);
 
     // Inherited via IFrameProvider
     virtual HRESULT Initialize(ID3D11ShaderResourceView* colorSRV, ID3D11ShaderResourceView* depthSRV, ID3D11ShaderResourceView* bodySRV, ID3D11Texture2D* outputTexture) override;
