@@ -111,6 +111,7 @@ For more information on setting up a Spectator View project, see the following p
 
 * [Spectating with an Android, an iOS or a HoloLens device](doc/SpectatorView.Setup.md)
 * [Spectating with a video camera](doc/SpectatorView.Setup.VideoCamera.md)
+* [Spectating with an Azure Kinect DK](doc/SpectatorView.Setup.AzureKinect.md)
 
 ## Architecture
 
