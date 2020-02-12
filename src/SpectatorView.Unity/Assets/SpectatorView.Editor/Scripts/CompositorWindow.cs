@@ -35,7 +35,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
         private float statisticsUpdateTimeSeconds = 0.0f;
         private string appIPAddress;
 
-        private bool? isAzureKinectBodyTrackingSdkInstalledToUnity;
+        private bool? isAzureKinectBodyTrackingSdkInstalledInUnity;
         private static readonly string[] azureKinectBodyTrackingSdkComponents = new[] { "onnxruntime.dll", "dnn_model_2_0.onnx", "cudnn64_7.dll", "cublas64_100.dll", "cudart64_100.dll" };
 
         private static string holographicCameraIPAddressKey = $"{nameof(CompositorWindow)}.{nameof(holographicCameraIPAddress)}";
@@ -183,7 +183,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
 
                             GUI.enabled = true;
 
-                            if (!IsAzureKinectBodyTrackingSDKInstalledForUnity() && compositionManager.CaptureDevice == FrameProviderDeviceType.AzureKinect && compositionManager.OcclusionMode == OcclusionSetting.BodyTracking)
+                            if (compositionManager.CaptureDevice == FrameProviderDeviceType.AzureKinect && compositionManager.OcclusionMode == OcclusionSetting.BodyTracking && !IsAzureKinectBodyTrackingSDKInstalledInUnity())
                             {
                                 var previousColor = GUI.backgroundColor;
                                 GUI.backgroundColor = Color.red;
@@ -395,16 +395,16 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
             return GetStatsString("Compositor framerate", compositionManager.FramerateStatistics, out average);
         }
 
-        private bool IsAzureKinectBodyTrackingSDKInstalledForUnity()
+        private bool IsAzureKinectBodyTrackingSDKInstalledInUnity()
         {
-            if (isAzureKinectBodyTrackingSdkInstalledToUnity == null)
+            if (isAzureKinectBodyTrackingSdkInstalledInUnity == null)
             {
                 var unityInstallDirectory = AppDomain.CurrentDomain.BaseDirectory;
                 var componentPaths = azureKinectBodyTrackingSdkComponents.Select(component => Path.Combine(unityInstallDirectory, component));
-                isAzureKinectBodyTrackingSdkInstalledToUnity = componentPaths.All(path => File.Exists(path));
+                isAzureKinectBodyTrackingSdkInstalledInUnity = componentPaths.All(path => File.Exists(path));
             }
 
-            return isAzureKinectBodyTrackingSdkInstalledToUnity.Value;
+            return isAzureKinectBodyTrackingSdkInstalledInUnity.Value;
         }
 
         private void InstallAzureKinectBodyTrackingComponents()
@@ -444,7 +444,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
             psi.Verb = "runas";
             Process.Start(psi).WaitForExit();
 
-            isAzureKinectBodyTrackingSdkInstalledToUnity = null;
+            isAzureKinectBodyTrackingSdkInstalledInUnity = null;
         }
     }
 }
