@@ -183,7 +183,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
 
                             GUI.enabled = true;
 
-                            if (compositionManager.CaptureDevice == FrameProviderDeviceType.AzureKinect && compositionManager.OcclusionMode == OcclusionSetting.BodyTracking && !IsAzureKinectBodyTrackingSDKInstalledInUnity())
+                            if (IsAzureKinectFrameProvider(compositionManager.CaptureDevice) && compositionManager.OcclusionMode == OcclusionSetting.BodyTracking && !IsAzureKinectBodyTrackingSDKInstalledInUnity())
                             {
                                 var previousColor = GUI.backgroundColor;
                                 GUI.backgroundColor = Color.red;
@@ -395,6 +395,13 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
             return GetStatsString("Compositor framerate", compositionManager.FramerateStatistics, out average);
         }
 
+        private static bool IsAzureKinectFrameProvider(FrameProviderDeviceType captureDevice)
+        {
+            return captureDevice == FrameProviderDeviceType.AzureKinect_DepthCamera_Off ||
+                captureDevice == FrameProviderDeviceType.AzureKinect_DepthCamera_NFOV ||
+                captureDevice == FrameProviderDeviceType.AzureKinect_DepthCamera_WFOV;
+        }
+
         private bool IsAzureKinectBodyTrackingSDKInstalledInUnity()
         {
             if (isAzureKinectBodyTrackingSdkInstalledInUnity == null)
@@ -438,12 +445,16 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
                 }
             }
 
+            // Run robocopy to perform a file copy operation in an elevated process that can write to Unity's install directory
             var arguments = $"\"{componentSourceDirectory}\" \"{AppDomain.CurrentDomain.BaseDirectory}\" {string.Join(" ", azureKinectBodyTrackingSdkComponents)}";
             ProcessStartInfo psi = new ProcessStartInfo("robocopy.exe", arguments);
             psi.UseShellExecute = true;
             psi.Verb = "runas";
             Process.Start(psi).WaitForExit();
 
+            // Setting this value back to null will cause a re-evaluation next update about whether or not these
+            // components were actually copied (e.g. if the user accepted the elevation prompt and the copies
+            // succeeded).
             isAzureKinectBodyTrackingSdkInstalledInUnity = null;
         }
     }
