@@ -143,6 +143,9 @@ namespace Microsoft.MixedReality.SpectatorView
         public static extern bool IsFrameProviderSupported([MarshalAs(UnmanagedType.I4)] FrameProviderDeviceType providerId);
 
         [DllImport(CompositorPluginDll)]
+        public static extern bool IsOcclusionSettingSupported([MarshalAs(UnmanagedType.I4)] OcclusionSetting setting);
+
+        [DllImport(CompositorPluginDll)]
         public static extern bool InitializeFrameProviderOnDevice([MarshalAs(UnmanagedType.I4)] FrameProviderDeviceType providerId);
 
         [DllImport(CompositorPluginDll)]

@@ -43,6 +43,7 @@ public:
     DLLEXPORT CompositorInterface();
     DLLEXPORT void SetFrameProvider(IFrameProvider::ProviderType type);
 	DLLEXPORT bool IsFrameProviderSupported(IFrameProvider::ProviderType providerType);
+    DLLEXPORT bool IsOcclusionSettingSupported(IFrameProvider::OcclusionSetting setting);
     DLLEXPORT bool IsCameraCalibrationInformationAvailable();
     DLLEXPORT void GetCameraCalibrationInformation(CameraIntrinsics* cameraIntrinsics);
 

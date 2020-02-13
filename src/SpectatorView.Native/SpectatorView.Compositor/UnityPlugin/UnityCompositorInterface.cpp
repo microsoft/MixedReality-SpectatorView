@@ -383,6 +383,16 @@ UNITYDLL bool IsFrameProviderSupported(int providerId)
 	return ci->IsFrameProviderSupported((IFrameProvider::ProviderType) providerId);
 }
 
+UNITYDLL bool IsOcclusionSettingSupported(int setting)
+{
+    if (ci == nullptr)
+    {
+        ci = new CompositorInterface();
+    }
+
+    return ci->IsOcclusionSettingSupported((IFrameProvider::OcclusionSetting) setting);
+}
+
 UNITYDLL bool InitializeFrameProviderOnDevice(int providerId)
 {
     if (g_outputTexture == nullptr ||

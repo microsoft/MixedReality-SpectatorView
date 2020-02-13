@@ -169,6 +169,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
 
                             var occlusionModes = Enum.GetValues(typeof(OcclusionSetting))
                                 .Cast<OcclusionSetting>()
+                                .Where(setting => compositionManager.IsOcclusionSettingSupported(setting))
                                 .ToList();
 
                             selectedIndex = occlusionModes.IndexOf(compositionManager.OcclusionMode);
