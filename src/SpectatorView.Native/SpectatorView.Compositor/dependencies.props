@@ -19,6 +19,9 @@
     <AzureKinectLibraryDirectory>$(AzureKinectSDK)\sdk\windows-desktop\amd64\release\lib</AzureKinectLibraryDirectory>
     <AzureKinectBodyTrackingIncludeDirectory>$(AzureKinectBodyTrackingSDK)\sdk\include</AzureKinectBodyTrackingIncludeDirectory>
     <AzureKinectBodyTrackingLibraryDirectory>$(AzureKinectBodyTrackingSDK)\sdk\windows-desktop\amd64\release\lib</AzureKinectBodyTrackingLibraryDirectory>
+
+    <AdditionalAzureLibraries Condition="Exists('$(AzureKinectSDK)')">k4a.lib</AdditionalAzureLibraries>
+    <AdditionalAzureBodyTrackingLibraries Condition="Exists('$(AzureKinectBodyTrackingSDK)')">k4abt.lib</AdditionalAzureBodyTrackingLibraries>
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile Condition="Exists('$(DeckLink_inc)')">

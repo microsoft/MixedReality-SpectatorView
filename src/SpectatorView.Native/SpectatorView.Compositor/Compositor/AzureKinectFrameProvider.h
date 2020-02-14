@@ -6,9 +6,11 @@
 #include "CompositorInterface.h"
 #include "IFrameProvider.h"
 #include "ArUcoMarkerDetector.h"
+#if defined(INCLUDE_AZUREKINECT)
 #include <k4a/k4a.h>
+#if defined(INCLUDE_AZUREKINECT_BODYTRACKING)
 #include <k4abt.h>
-
+#endif
 class AzureKinectFrameProvider : public IFrameProvider
 {
 public:
@@ -67,12 +69,16 @@ private:
     k4a_image_t transformedDepthImage;
     k4a_image_t transformedBodyMaskImage;
     k4a_image_t bodyMaskImage;
-    k4abt_tracker_t k4abtTracker;
-    k4abt_tracker_configuration_t tracker_config = K4ABT_TRACKER_CONFIG_DEFAULT;
     CRITICAL_SECTION lock;
     bool detectMarkers;
     float markerSize;
     k4a_depth_mode_t depthCameraMode = K4A_DEPTH_MODE_OFF;
 
+#if defined(INCLUDE_AZUREKINECT_BODYTRACKING)
+    k4abt_tracker_t k4abtTracker;
+    k4abt_tracker_configuration_t tracker_config = K4ABT_TRACKER_CONFIG_DEFAULT;
+#endif
+
     std::shared_ptr<ArUcoMarkerDetector> markerDetector;
 };
+#endif
