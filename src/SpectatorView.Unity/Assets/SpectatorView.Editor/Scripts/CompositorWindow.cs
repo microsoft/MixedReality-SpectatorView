@@ -159,7 +159,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
 
                             compositionManager.CaptureDevice = supportedDevices[selectedIndex];
 
-                            if (supportedDevices[selectedIndex] != FrameProviderDeviceType.AzureKinect_DepthCamera_NFOV && supportedDevices[selectedIndex] != FrameProviderDeviceType.AzureKinect_DepthCamera_WFOV)
+                            if ((supportedDevices[selectedIndex] != FrameProviderDeviceType.AzureKinect_DepthCamera_NFOV && supportedDevices[selectedIndex] != FrameProviderDeviceType.AzureKinect_DepthCamera_WFOV) || compositionManager.VideoRecordingLayout == VideoRecordingFrameLayout.Quad)
                             {
                                 GUI.enabled = false;
                             }
