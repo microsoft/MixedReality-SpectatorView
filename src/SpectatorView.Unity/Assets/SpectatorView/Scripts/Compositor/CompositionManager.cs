@@ -218,7 +218,7 @@ namespace Microsoft.MixedReality.SpectatorView
             {
                 if (occlusionMode == -1)
                 {
-                    occlusionMode = PlayerPrefs.GetInt(nameof(OcclusionMode), (int)OcclusionSetting.NoOcclusion);
+                    occlusionMode = PlayerPrefs.GetInt(nameof(OcclusionMode), (int)OcclusionSetting.RawDepthCamera);
                 }
                 return (OcclusionSetting)occlusionMode;
             }

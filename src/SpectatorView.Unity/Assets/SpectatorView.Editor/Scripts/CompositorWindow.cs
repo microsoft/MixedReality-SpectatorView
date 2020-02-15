@@ -35,6 +35,9 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
         private float statisticsUpdateTimeSeconds = 0.0f;
         private string appIPAddress;
 
+        private bool? isAzureKinectBodyTrackingSdkInstalledInUnity;
+        private static readonly string[] azureKinectBodyTrackingSdkComponents = new[] { "onnxruntime.dll", "dnn_model_2_0.onnx", "cudnn64_7.dll", "cublas64_100.dll", "cudart64_100.dll" };
+
         private static string holographicCameraIPAddressKey = $"{nameof(CompositorWindow)}.{nameof(holographicCameraIPAddress)}";
         private static string appIPAddressKey = $"{nameof(CompositorWindow)}.{nameof(appIPAddress)}";
 
@@ -156,7 +159,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
 
                             compositionManager.CaptureDevice = supportedDevices[selectedIndex];
 
-                            if (supportedDevices[selectedIndex] != FrameProviderDeviceType.AzureKinect)
+                            if ((supportedDevices[selectedIndex] != FrameProviderDeviceType.AzureKinect_DepthCamera_NFOV && supportedDevices[selectedIndex] != FrameProviderDeviceType.AzureKinect_DepthCamera_WFOV) || compositionManager.VideoRecordingLayout == VideoRecordingFrameLayout.Quad)
                             {
                                 GUI.enabled = false;
                             }
@@ -179,6 +182,17 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
                             compositionManager.OcclusionMode = occlusionModes[selectedIndex];
 
                             GUI.enabled = true;
+
+                            if (IsAzureKinectFrameProvider(compositionManager.CaptureDevice) && compositionManager.OcclusionMode == OcclusionSetting.BodyTracking && !IsAzureKinectBodyTrackingSDKInstalledInUnity())
+                            {
+                                var previousColor = GUI.backgroundColor;
+                                GUI.backgroundColor = Color.red;
+                                if (GUILayout.Button(new GUIContent("Install Required Components", "Copies components needed for the Azure Kinect Body Tracking into your Unity installation directory (requires elevation)"), GUILayout.Width(250.0f)))
+                                {
+                                    InstallAzureKinectBodyTrackingComponents();
+                                }
+                                GUI.backgroundColor = previousColor;
+                            }
                         }
                     }
                     EditorGUILayout.EndHorizontal();
@@ -379,6 +393,69 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
         private string GetFramerateStatistics(CompositionManager compositionManager, out float average)
         {
             return GetStatsString("Compositor framerate", compositionManager.FramerateStatistics, out average);
+        }
+
+        private static bool IsAzureKinectFrameProvider(FrameProviderDeviceType captureDevice)
+        {
+            return captureDevice == FrameProviderDeviceType.AzureKinect_DepthCamera_Off ||
+                captureDevice == FrameProviderDeviceType.AzureKinect_DepthCamera_NFOV ||
+                captureDevice == FrameProviderDeviceType.AzureKinect_DepthCamera_WFOV;
+        }
+
+        private bool IsAzureKinectBodyTrackingSDKInstalledInUnity()
+        {
+            if (isAzureKinectBodyTrackingSdkInstalledInUnity == null)
+            {
+                var unityInstallDirectory = AppDomain.CurrentDomain.BaseDirectory;
+                var componentPaths = azureKinectBodyTrackingSdkComponents.Select(component => Path.Combine(unityInstallDirectory, component));
+                isAzureKinectBodyTrackingSdkInstalledInUnity = componentPaths.All(path => File.Exists(path));
+            }
+
+            return isAzureKinectBodyTrackingSdkInstalledInUnity.Value;
+        }
+
+        private void InstallAzureKinectBodyTrackingComponents()
+        {
+            var rootPath = Path.GetDirectoryName(Application.dataPath.Replace(@"/", @"\"));
+            string componentSourceDirectory = null;
+
+            var assets = AssetDatabase.FindAssets(Path.GetFileNameWithoutExtension(azureKinectBodyTrackingSdkComponents[0]));
+            if (assets.Length == 1)
+            {
+                var assetPath = AssetDatabase.GUIDToAssetPath(assets[0]).Replace(@"/", @"\");
+                componentSourceDirectory = Path.GetDirectoryName(Path.Combine(rootPath, assetPath));
+            }
+            else if (assets.Length == 0)
+            {
+                UnityEngine.Debug.LogError($"Failed to find the source components to copy in your Unity installation");
+                return;
+            }
+            else
+            {
+                UnityEngine.Debug.LogError($"Failed to find source directory to install {azureKinectBodyTrackingSdkComponents[0]}: multiple copies were found in the Unity assets directory");
+                return;
+            }
+
+            foreach (var component in azureKinectBodyTrackingSdkComponents)
+            {
+                if (!File.Exists(Path.Combine(componentSourceDirectory, component)))
+                {
+                    UnityEngine.Debug.LogError($"Failed to find component {component}: it is missing from the Unity assets directory {componentSourceDirectory}");
+                    return;
+                }
+            }
+
+            // Run robocopy to perform a file copy operation in an elevated process that can write to Unity's install directory
+            var arguments = $"\"{componentSourceDirectory}\" \"{AppDomain.CurrentDomain.BaseDirectory}\" {string.Join(" ", azureKinectBodyTrackingSdkComponents)}";
+            ProcessStartInfo psi = new ProcessStartInfo("robocopy.exe", arguments);
+            psi.UseShellExecute = true;
+            psi.Verb = "runas";
+            Process.Start(psi).WaitForExit();
+
+            // Setting this value back to null will cause a re-evaluation next update about whether or not these
+            // components were actually copied (e.g. if the user accepted the elevation prompt and the copies
+            // succeeded).
+            isAzureKinectBodyTrackingSdkInstalledInUnity = null;
         }
     }
 }
