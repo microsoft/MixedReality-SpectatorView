@@ -18,6 +18,12 @@ public:
         AzureKinect_DepthCamera_WFOV
     };
 
+    enum OcclusionSetting
+    {
+        RawDepthCamera,
+        BodyTracking
+    };
+
     // Set up the FrameProvider to start delivering frames.
     virtual HRESULT Initialize(ID3D11ShaderResourceView* colorSRV, ID3D11ShaderResourceView* depthSRV, ID3D11ShaderResourceView* bodySRV, ID3D11Texture2D* outputTexture) = 0;
 

@@ -415,6 +415,16 @@ namespace Microsoft.MixedReality.SpectatorView
         {
             return UnityCompositorInterface.IsFrameProviderSupported(providerId);
         }
+
+        /// <summary>
+        /// Returns true if the UnityCompositor dll supports the specified occlusion setting.
+        /// </summary>
+        /// <param name="setting">occlusion setting to check</param>
+        /// <returns>Returns true if the occlusion setting is supported, otherwise false.</returns>
+        public bool IsOcclusionSettingSupported(OcclusionSetting setting)
+        {
+            return UnityCompositorInterface.IsOcclusionSettingSupported(setting);
+        }
 #endif
 
         /// <summary>

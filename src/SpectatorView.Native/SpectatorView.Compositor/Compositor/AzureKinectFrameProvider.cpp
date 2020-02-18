@@ -6,7 +6,9 @@
 #if defined(INCLUDE_AZUREKINECT)
 #include "AzureKinectFrameProvider.h"
 #include <k4a/k4a.h>
+#if defined(INCLUDE_AZUREKINECT_BODYTRACKING)
 #include <k4abt.h>
+#endif
 
 AzureKinectFrameProvider::AzureKinectFrameProvider(ProviderType providerType)
     : detectMarkers(false)
@@ -80,6 +82,7 @@ HRESULT AzureKinectFrameProvider::Initialize(ID3D11ShaderResourceView* colorSRV,
         transformation = k4a_transformation_create(&calibration);
         k4a_image_create(K4A_IMAGE_FORMAT_DEPTH16, calibration.color_camera_calibration.resolution_width, calibration.color_camera_calibration.resolution_height, 2 * calibration.color_camera_calibration.resolution_width, &transformedDepthImage);
 
+#if defined(INCLUDE_AZUREKINECT_BODYTRACKING)
         if(bodySRV != nullptr)
         {
             k4abt_tracker_configuration_t tracker_config = K4ABT_TRACKER_CONFIG_DEFAULT;
@@ -93,6 +96,8 @@ HRESULT AzureKinectFrameProvider::Initialize(ID3D11ShaderResourceView* colorSRV,
             k4a_image_create(K4A_IMAGE_FORMAT_DEPTH16, calibration.depth_camera_calibration.resolution_width, calibration.depth_camera_calibration.resolution_height, 2 * calibration.depth_camera_calibration.resolution_width, &bodyMaskImage);
             k4a_image_create(K4A_IMAGE_FORMAT_DEPTH16, calibration.color_camera_calibration.resolution_width, calibration.color_camera_calibration.resolution_height, 2 * calibration.color_camera_calibration.resolution_width, &transformedBodyMaskImage);
         }
+#endif
+
     }
 
     return S_OK;
@@ -152,6 +157,7 @@ void AzureKinectFrameProvider::Update(int compositeFrameIndex)
         k4a_transformation_depth_image_to_color_camera(transformation, depthImage, transformedDepthImage);
         UpdateSRV(transformedDepthImage, _depthSRV);
 
+#if defined(INCLUDE_AZUREKINECT_BODYTRACKING)
         if (_bodySRV != nullptr)
         {
             auto height = k4a_image_get_height_pixels(depthImage);
@@ -175,6 +181,7 @@ void AzureKinectFrameProvider::Update(int compositeFrameIndex)
 
             UpdateSRV(transformedBodyMaskImage, _bodySRV);
         }
+#endif
 
         k4a_image_release(depthImage);
     }
@@ -206,6 +213,7 @@ void AzureKinectFrameProvider::UpdateArUcoMarkers(k4a_image_t image)
     }
 }
 
+#if defined(INCLUDE_AZUREKINECT_BODYTRACKING)
 uint8_t* AzureKinectFrameProvider::GetBodyIndexBuffer(k4a_capture_t capture)
 {
     uint8_t* bodyIndexBuffer;
@@ -257,6 +265,7 @@ void AzureKinectFrameProvider::SetTransformedBodyMaskBuffer(uint16_t* transforme
         }
     }
 }
+#endif
 
 IFrameProvider::ProviderType AzureKinectFrameProvider::GetProviderType()
 {
@@ -310,11 +319,13 @@ void AzureKinectFrameProvider::Dispose()
         k4aDevice = nullptr;
     }
 
+#if defined(INCLUDE_AZUREKINECT_BODYTRACKING)
     if (k4abtTracker != nullptr)
     {
         k4abt_tracker_shutdown(k4abtTracker);
         k4abt_tracker_destroy(k4abtTracker);
     }
+#endif
 
     DeleteCriticalSection(&lock);
 }

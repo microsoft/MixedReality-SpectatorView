@@ -123,7 +123,7 @@ if EXIST "$(Elgato_Filter)" xcopy /y "$(Elgato_Filter)"</Command>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(AzureKinectBodyTrackingLibraryDirectory);$(AzureKinectLibraryDirectory)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>k4a.lib;k4abt.lib;shell32.lib;$(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>$(AdditionalAzureLibraries);$(AdditionalAzureBodyTrackingLibraries);shell32.lib;$(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
       <Command>if EXIST "$(DeckLink_inc)" xcopy /y "$(DeckLink_inc)"
@@ -167,7 +167,7 @@ if EXIST "$(Elgato_Filter)" xcopy /y "$(Elgato_Filter)"</Command>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(AzureKinectBodyTrackingLibraryDirectory);$(AzureKinectLibraryDirectory)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>k4a.lib;k4abt.lib;shell32.lib;$(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>$(AdditionalAzureLibraries);$(AdditionalAzureBodyTrackingLibraries);shell32.lib;$(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
       <Command>if EXIST "$(DeckLink_inc)" xcopy /y "$(DeckLink_inc)"

@@ -19,6 +19,9 @@
     <AzureKinectLibraryDirectory>$(AzureKinectSDK)\sdk\windows-desktop\amd64\release\lib</AzureKinectLibraryDirectory>
     <AzureKinectBodyTrackingIncludeDirectory>$(AzureKinectBodyTrackingSDK)\sdk\include</AzureKinectBodyTrackingIncludeDirectory>
     <AzureKinectBodyTrackingLibraryDirectory>$(AzureKinectBodyTrackingSDK)\sdk\windows-desktop\amd64\release\lib</AzureKinectBodyTrackingLibraryDirectory>
+
+    <AdditionalAzureLibraries Condition="Exists('$(AzureKinectSDK)')">k4a.lib</AdditionalAzureLibraries>
+    <AdditionalAzureBodyTrackingLibraries Condition="Exists('$(AzureKinectBodyTrackingSDK)')">k4abt.lib</AdditionalAzureBodyTrackingLibraries>
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile Condition="Exists('$(DeckLink_inc)')">
@@ -29,6 +32,9 @@
     </ClCompile>
     <ClCompile Condition="Exists('$(AzureKinectSDK)')">
       <PreprocessorDefinitions>INCLUDE_AZUREKINECT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <ClCompile Condition="Exists('$(AzureKinectBodyTrackingSDK)')">
+      <PreprocessorDefinitions>INCLUDE_AZUREKINECT_BODYTRACKING;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
   </ItemDefinitionGroup>
   <Target Name="TestForElgatoAndBlackmagic" BeforeTargets="PrepareForBuild">

@@ -70,6 +70,20 @@ bool CompositorInterface::IsFrameProviderSupported(IFrameProvider::ProviderType 
 	return false;
 }
 
+bool CompositorInterface::IsOcclusionSettingSupported(IFrameProvider::OcclusionSetting setting)
+{
+#if defined(INCLUDE_AZUREKINECT)
+    if (setting == IFrameProvider::OcclusionSetting::RawDepthCamera)
+        return true;
+
+#if defined(INCLUDE_AZUREKINECT_BODYTRACKING)
+    if (setting == IFrameProvider::OcclusionSetting::BodyTracking)
+        return true;
+#endif
+#endif
+    return false;
+}
+
 bool CompositorInterface::IsCameraCalibrationInformationAvailable()
 {
     if (frameProvider == nullptr)

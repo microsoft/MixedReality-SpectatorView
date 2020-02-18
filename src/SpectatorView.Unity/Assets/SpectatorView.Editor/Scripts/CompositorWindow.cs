@@ -172,14 +172,24 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
 
                             var occlusionModes = Enum.GetValues(typeof(OcclusionSetting))
                                 .Cast<OcclusionSetting>()
+                                .Where(setting => compositionManager.IsOcclusionSettingSupported(setting))
                                 .ToList();
 
-                            selectedIndex = occlusionModes.IndexOf(compositionManager.OcclusionMode);
-                            selectedIndex = EditorGUILayout.Popup(occlusionLabel, selectedIndex, occlusionModes
-                                .Select(x => x.ToString())
-                                .ToArray());
+                            if (occlusionModes.Count > 0)
+                            {
+                                selectedIndex = occlusionModes.IndexOf(compositionManager.OcclusionMode);
 
-                            compositionManager.OcclusionMode = occlusionModes[selectedIndex];
+                                if (selectedIndex < 0)
+                                {
+                                    selectedIndex = 0;
+                                }
+
+                                selectedIndex = EditorGUILayout.Popup(occlusionLabel, selectedIndex, occlusionModes
+                                    .Select(x => x.ToString())
+                                    .ToArray());
+
+                                compositionManager.OcclusionMode = occlusionModes[selectedIndex];
+                            }
 
                             GUI.enabled = true;
 
