@@ -48,10 +48,10 @@ If you are using Azure Kinect and want to utilize body tracking dependent featur
 
 If installing from NuGet: 
 - Open Windows PowerShell in administrator mode.
-- Navigate to a folder in which you would like to store your repositories (ex: c:\git)
+- Navigate to a folder in which you would like to store your repositories (ex: c:\git).
 - Install-Package Microsoft.Azure.Kinect.BodyTracking -Version 1.0.0 
 - Update the AzureKinectBodyTrackingSDK user macro in `dependencies.props` with the corresponding path on your computer.
-- Restart Visual Studio
+- Restart Visual Studio.
 
 **OpenCV**
 
