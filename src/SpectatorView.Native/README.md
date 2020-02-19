@@ -3,7 +3,7 @@
 The following Dlls are built out of the `SpectatorView.Native.sln`.
 
 - **SpectatorView.Compositor.dll** is needed for DSLR camera calibration and DSLR camera spectating experiences.
-- **SpectatorView.Compositor.UnityPlugin.dll** is needed for DSLR camera calibartion and DSLR camera spectating experiences.
+- **SpectatorView.Compositor.UnityPlugin.dll** is needed for DSLR camera calibration and DSLR camera spectating experiences.
 - **SpectatorView.OpenCV.dll** is used in both ArUco marker detection and DSLR camera calibration.
 - **SpectatorView.WinRTExtensions.dll** is used for ArUco marker detection and QR code detection.
 
@@ -22,10 +22,10 @@ If you are using a Blackmagic design capture card, you will need to install the 
 
 - Extract the SDK anywhere on your computer.
 - Update the DeckLink_inc user macro in `dependencies.props` with the corresponding path on your computer.
-- Restart Visual Studio
+- Restart Visual Studio.
 
 **Elgato Capture Card**
-If you are using an Elgato capture card, you will need to clone Elgato's [gamecapture github repo](https://github.com/elgatosf/gamecapture).
+If you are using an Elgato capture card, you will need to clone Elgato's [gamecapture GitHub repo](https://github.com/elgatosf/gamecapture).
 
 - Open a Command Prompt in administrator mode
 - Navigate to a folder in which you would like to store your repositories (ex: c:\git)
@@ -34,9 +34,9 @@ If you are using an Elgato capture card, you will need to clone Elgato's [gameca
 - Restart Visual Studio
 
 **Azure Kinect**
-If you are using an Azure Kinect, you will need to download or clone the Azure Kinect Sensor SDK with [Microsoft installer](https://download.microsoft.com/download/e/6/6/e66482b2-b6c1-4e34-bfee-95294163fc40/Azure%20Kinect%20SDK%201.3.0.exe) or [github repo](https://github.com/microsoft/Azure-Kinect-Sensor-SDK)
+If you are using an Azure Kinect, you will need to download or clone the Azure Kinect Sensor SDK with [Microsoft installer](https://download.microsoft.com/download/e/6/6/e66482b2-b6c1-4e34-bfee-95294163fc40/Azure%20Kinect%20SDK%201.3.0.exe) or [GitHub repo](https://github.com/microsoft/Azure-Kinect-Sensor-SDK)
 
-If cloning from Github: 
+If cloning from GitHub: 
 - Open a Command Prompt in administrator mode
 - Navigate to a folder in which you would like to store your repositories (ex: c:\git)
 - git clone <https://github.com/microsoft/Azure-Kinect-Sensor-SDK>
@@ -44,10 +44,10 @@ If cloning from Github:
 - Restart Visual Studio
 
 **Azure Kinect Body Tracking**
-If you are using Azure Kinect and want to utilize body tracking dependent features (ie. people-only occlusion), you will you will need to download or install the Azure Kinect Body Tracking SDK here: [Windows download links](https://docs.microsoft.com/en-us/azure/kinect-dk/body-sdk-download)
+If you are using Azure Kinect and want to utilize body tracking dependent features (ie. people-only occlusion), you will you will need to download and install the Azure Kinect Body Tracking SDK here: [Windows download links](https://docs.microsoft.com/en-us/azure/kinect-dk/body-sdk-download)
 
-If installing from Nuget: 
-- Open a Command Prompt in administrator mode
+If installing from NuGet: 
+- Open Windows PowerShell in administrator mode.
 - Navigate to a folder in which you would like to store your repositories (ex: c:\git)
 - Install-Package Microsoft.Azure.Kinect.BodyTracking -Version 1.0.0 
 - Update the AzureKinectBodyTrackingSDK user macro in `dependencies.props` with the corresponding path on your computer.
@@ -62,7 +62,7 @@ If installing from Nuget:
 
 ###### 1. Install [Vcpkg](https://github.com/microsoft/vcpkg)
 
-- Open a Command Prompt in administrator mode
+- Open a Command Prompt in administrator mode.
 - Navigate to a folder in which you would like to store your repositories (ex: c:\git)
 - git clone <https://github.com/Microsoft/vcpkg>
 - cd vcpkg
@@ -107,4 +107,4 @@ If installing opencv with vcpkg succeeded, a few things could still occur that p
 After compiling the above binaries, run `tools/Scripts/CopyPluginsToUnity.bat` to add said binaries to the SpectatorView.Unity project. This script will also add .meta files for the binaries to the Unity project.
 >Note: The Unity editor does not currently dynamically unload binaries. Errors may occur when trying to copy binaries into your Unity project if the unity editor has loaded said binaries. If errors are encountered with this script, close your Unity editor and try again.
 
->Note: Azure Kinect Body Tracking SDK has dependencies ("dnn_model_2_0.onnx","k4abt.dll", "onnxruntime.dll", "cublas64_100.dll", "cudart64_100.dll", "cudnn64_7.dll") that must be located in the same folder as your Unity executable. If body tracking based occlusion is selected and these dependencies are not located in the correct folder, a button enabling the copy of these dependencies will appear and must be executed  prior to playing the scene. 
+>Note: Azure Kinect Body Tracking SDK has dependencies ("dnn_model_2_0.onnx","k4abt.dll", "onnxruntime.dll", "cublas64_100.dll", "cudart64_100.dll", "cudnn64_7.dll") that must be located in the same folder as your Unity executable. If body tracking based occlusion is selected and these dependencies are not located in the correct folder, a button enabling the copy of these dependencies will appear and must be executed prior to playing the scene. 

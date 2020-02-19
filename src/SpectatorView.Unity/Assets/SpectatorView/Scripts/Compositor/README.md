@@ -24,9 +24,9 @@ Follow the instructions documented in [SpectatorView.Native](../../../../../Spec
 
 The HolographicCamera app is a UWP application that runs on the HoloLens 2 attached to your video camera. This app reads calibration data stored on the HoloLens and communicates that data to the Unity compositor. This app also transmits the position and rotation of the camera to the Unity compositor. If you have gone through the calibration process described [here](../../../../../../doc/SpectatorView.Setup.VideoCamera.md), you may already have this application installed on your device.
 
-1. Open the `src/HolographicCamera.Unity` project in Unity
-2. Open the Build window and switch platforms to the Universal Windows Platform
-3. Build the Unity project to create a Visual Studio solution
+1. Open the `src/HolographicCamera.Unity` project in Unity.
+2. Open the Build window and switch platforms to the Universal Windows Platform.
+3. Build the Unity project to create a Visual Studio solution.
 4. Open the generated Visual Studio solution.
 5. Change the Solution Configuration to Release and the Architecture to ARM.
 6. Deploy the application to the HoloLens 2 attached to your video camera.
@@ -47,16 +47,16 @@ Follow the instructions at [SpectatorView.Setup](../../../../../../doc/Spectator
 
 1. Open the `SpectatorViewCompositor` scene in your application's Unity project (with your build platform set to Universal Windows Platform).
 2. Open the Compositor Window from the Spectator View -> Compositor menu.
-3. Select your desired Video Source from the dropdown list 
-4. If the selected Video Source enables occlusion, select desired occlusion mode
+3. Select your desired Video Source from the dropdown list. 
+4. If the selected Video Source enables depth-based occlusion, select desired occlusion mode.
 
->Note: "RawDepthCamera" occludes utilizing only the depth image provided by the camera. "BodyTracking" combines the depth image and body mask provided by Azure Body Tracking SDK to occlude only recognized people
+>Note: "RawDepthCamera" occludes utilizing only the depth image provided by the camera. "BodyTracking" combines the depth image and body mask provided by Azure Body Tracking SDK to occlude only recognized people.
 
-6. Select your desired preview display
->Note: Occlusion masks are not included in "intermediate textures" preview display type
+6. Select your desired preview display.
+>Note: Depth-based occlusion masks are not included in "intermediate textures" preview display type.
 5. Press Play to run the scene.
 
->Note: Azure Kinect Body Tracking SDK has dependencies ("dnn_model_2_0.onnx","k4abt.dll", "onnxruntime.dll", "cublas64_100.dll", "cudart64_100.dll", "cudnn64_7.dll") that must be located in the same folder as your Unity executable. If body tracking based occlusion is selected and these dependencies are not located in the correct folder, a button enabling the copy of these dependencies will appear and must be executed  prior to playing the scene. 
+>Note: Azure Kinect Body Tracking SDK has dependencies ("dnn_model_2_0.onnx","k4abt.dll", "onnxruntime.dll", "cublas64_100.dll", "cudart64_100.dll", "cudnn64_7.dll") that must be located in the same folder as your Unity executable. If body tracking based occlusion is selected and these dependencies are not located in the correct folder, a button enabling the copy of these dependencies will appear and must be executed prior to playing the scene. 
 
 You should now see video output from your camera in the Compositor window. If you don't, here are some troubleshooting suggestions:
 
