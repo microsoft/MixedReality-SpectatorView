@@ -67,6 +67,8 @@ You should now see video output from your camera in the Compositor window. If yo
 
 ### Connect the compositor to the HolographicCamera
 
+**Instructions for HoloLens-based camera**
+
 Connecting the compositor to the HolographicCamera app running on your camera's HoloLens will provide calibration and pose information for the camera to the compositor.
 
 1. Find the IP address for your HoloLens and enter it inside the first text area in the Holographic Camera box inside the Compositor window.
@@ -75,14 +77,30 @@ Connecting the compositor to the HolographicCamera app running on your camera's 
 
 You should now see the status change from "Not connected" to "Connected to &lt;your HoloLens name&gt; (&lt;your HoloLens IP address&gt;)". You should also see the Calibration status change from "Not loaded" to "Loaded".
 
+**Instructions for the Azure Kinect camera**
+
+The Azure Kinect camera will automatically be connected when you start the compositor, and will restore any previously-located position for the camera's world pose.
+
 ### Locate a shared spatial coordinate for the HolographicCamera
+
+**Instructions for HoloLens-based camera** 
 
 Shared spatial coordinates let the HoloLens on the camera and the HoloLens running your application refer to real-world coordinates in a coordinate space shared between both devices. See [SpectatorView.SpatialAlignment](../../../SpatialAlignment/README.md) for more information about shared spatial coordinates.
 
-In Preview the Compositor window uses an ArUco marker detector to detect ArUco marker 0 at a printed size of 10cm by 10cm. In future releases, the Compositor window will allow you to choose which type of spatial coordinate sharing to use.
+The Compositor window allows you to choose which type of spatial coordinate sharing to use. From the Spatial Alignment drop-down, choose the type of spatial alignment strategy used. Some strategies support additional options from the gear drop-down to the right of the box.
 
-1. Click the "Located Shared Spatial Coordinate" button inside the Holographic Camera box. This should cause the video camera light on your HoloLens to come on, and cause the HoloLens to start searching fo the ArUco marker.
-2. Aim the HoloLens at the ArUco marker you've printed out. Once the HoloLens detects the marker, the Compositor window's status should change from "Locating shared spatial coordinate..." to "Located".
+1. Choose the type of spatial alignment strategy from the drop-down within the Holographic Camera box.
+1. Click the "Located Shared Spatial Coordinate" button inside the Holographic Camera box. This should cause the video camera light on your HoloLens to come on, and cause the HoloLens to start searching for the coordinate.
+2. For marker-based strategies, aim the HoloLens at the marker you've printed out. Once the HoloLens detects the marker, the Compositor window's status should change from "Locating shared spatial coordinate..." to "Located".
+
+**Instructions for Azure Kinect camera**
+
+The Shared Spatial Coordinate feature allows placing the stationary Azure Kinect camera relative to a stationary marker. Azure Kinect supports locating an ArUco marker as its only supported strategy.
+
+1. Choose ArUco as the spatial alignment strategy from the drop-down within the Holographic Camera box.
+2. Place an ArUco marker within view of the Azure Kinect camera.
+3. Click the "Located Shared Spatial Coordinate" button inside the Holographic Camera box.
+4. Once the marker detector has located the ArUco marker, the status should change from "Locating shared spatial coordinate..." to "Located".
 
 ### Connect the compositor to your application
 
