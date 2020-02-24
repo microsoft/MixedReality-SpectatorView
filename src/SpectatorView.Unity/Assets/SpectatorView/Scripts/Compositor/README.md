@@ -6,7 +6,7 @@
 | Input Resolution:        | 1920x1080 (1080p)                                              |
 | Output Resolution:       | 1920x1080 (1080p)                                              |
 | Recording Resolutions:   | 1920x1080 (1080p) Hologram Composited Frame, 4K Quadrant Frame (see note) |
-| Capture Cards:           | Blackmagic Design Intensity Pro 4K, Elgato HD 60S                         |
+| Capture Cards:           | Blackmagic Design Intensity Pro 4K, Elgato HD 60S, Azure Kinect DK                         |
 | Platform:                | PC                                                             |
 
 >Note: A 4K Quadrant Frame does not generate a 4K recording of the hologram composited feed. It actually contains four streams that are each 1920x1080: The unprocessed video camera feed, the hologram feed on a black background, the hologram alpha channel feed and the composited hologram feed.
@@ -19,13 +19,14 @@ Spectator View renders holograms from Unity over a color frame from a capture ca
 
 Follow the instructions documented in [SpectatorView.Native](../../../../../SpectatorView.Native/README.md) for installing the correct SDK for your capture card, and for building and installing the Unity plugins used by the SpectatorView compositor.
 
+>Note: The following steps are setup specific to using a video camera with a mounted HoloLens. If using any other capture device (ie. Azure Kinect) skip to "Running the Compositor". 
 ### Build and install the HolographicCamera App
 
 The HolographicCamera app is a UWP application that runs on the HoloLens 2 attached to your video camera. This app reads calibration data stored on the HoloLens and communicates that data to the Unity compositor. This app also transmits the position and rotation of the camera to the Unity compositor. If you have gone through the calibration process described [here](../../../../../../doc/SpectatorView.Setup.VideoCamera.md), you may already have this application installed on your device.
 
-1. Open the `src/HolographicCamera.Unity` project in Unity
-2. Open the Build window and switch platforms to the Universal Windows Platform
-3. Build the Unity project to create a Visual Studio solution
+1. Open the `src/HolographicCamera.Unity` project in Unity.
+2. Open the Build window and switch platforms to the Universal Windows Platform.
+3. Build the Unity project to create a Visual Studio solution.
 4. Open the generated Visual Studio solution.
 5. Change the Solution Configuration to Release and the Architecture to ARM.
 6. Deploy the application to the HoloLens 2 attached to your video camera.
@@ -46,13 +47,23 @@ Follow the instructions at [SpectatorView.Setup](../../../../../../doc/Spectator
 
 1. Open the `SpectatorViewCompositor` scene in your application's Unity project (with your build platform set to Universal Windows Platform).
 2. Open the Compositor Window from the Spectator View -> Compositor menu.
-3. Press Play to run the scene.
+3. Select your desired Video Source from the dropdown list. 
+4. If the selected Video Source enables depth-based occlusion, select desired occlusion mode.
+
+>Note: "RawDepthCamera" occludes utilizing only the depth image provided by the camera. "BodyTracking" combines the depth image and body mask provided by Azure Body Tracking SDK to occlude only recognized people.
+
+6. Select your desired preview display.
+>Note: Depth-based occlusion masks are not included in "intermediate textures" preview display type.
+5. Press Play to run the scene.
+
+>Note: Azure Kinect Body Tracking SDK has dependencies ("dnn_model_2_0.onnx","k4abt.dll", "onnxruntime.dll", "cublas64_100.dll", "cudart64_100.dll", "cudnn64_7.dll") that must be located in the same folder as your Unity executable. If body tracking based occlusion is selected and these dependencies are not located in the correct folder, a button enabling the copy of these dependencies will appear and must be executed prior to playing the scene. 
 
 You should now see video output from your camera in the Compositor window. If you don't, here are some troubleshooting suggestions:
 
 - Make sure the camera is turned on and that the lens cap is off.
 - Make sure the camera is connected to the input port of the capture card.
-- Try using software for your capture card (e.g. Blackmagic Media Express) to validate that camera input is coming into your computer.
+- Make sure the firmware is up to date on the Azure Kinect (https://docs.microsoft.com/en-us/azure/kinect-dk/update-device-firmware)
+- Try using software for your capture card (e.g. Blackmagic Media Express, K4aviewer.exe) to validate that camera input is coming into your computer.
 
 ### Connect the compositor to the HolographicCamera
 
