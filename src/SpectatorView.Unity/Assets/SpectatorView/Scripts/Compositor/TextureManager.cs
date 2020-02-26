@@ -427,8 +427,12 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
-        private void OnPostRender()
+        private IEnumerator OnPostRender()
         {
+            // Wait until the end of the frame so that all rendering has completed.
+            // We need this wait in order to support post processing effects applied to the camera.
+            yield return new WaitForEndOfFrame();
+
             displayOutputTexture.DiscardContents();
 
             RenderTexture sourceTexture = spectatorViewCamera.targetTexture;
