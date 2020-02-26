@@ -30,6 +30,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
         private bool recordingFoldout;
         private bool colorCorrectionFoldout;
         private bool hologramSettingsFoldout;
+        private bool occlusionSettingsFoldout;
 
         private float hologramAlpha;
 
@@ -77,6 +78,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
             {
                 NetworkConnectionGUI();
                 CompositeGUI();
+                OcclusionSettingsGUI();
                 RecordingGUI();
                 ColorCorrectionGUI();
                 HologramSettingsGUI();
@@ -303,6 +305,52 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
                     }
                 }
                 EditorGUILayout.EndVertical();
+            }
+        }
+
+        private void OcclusionSettingsGUI()
+        {
+            occlusionSettingsFoldout = EditorGUILayout.Foldout(occlusionSettingsFoldout, "Occlusion Settings");
+            if (occlusionSettingsFoldout)
+            {
+                CompositionManager compositionManager = GetCompositionManager();
+                bool running = compositionManager != null && compositionManager.TextureManager != null && compositionManager.TextureManager.videoFeedColorCorrection != null;
+                if (running)
+                {
+                    if (!compositionManager.IsOcclusionSettingSupported(compositionManager.OcclusionMode))
+                    {
+                        RenderTitle("The current camera does not support occlusion.", Color.clear);
+                    }
+                    else if (compositionManager.OcclusionMode == OcclusionSetting.BodyTracking)
+                    {
+                        RenderTitle("Body Tracking does not currently have any configurable settings.", Color.clear);
+                    }
+                    else if (compositionManager.OcclusionMode == OcclusionSetting.RawDepthCamera)
+                    {
+                        RenderTitle("Raw Depth Camera Settings", Color.clear);
+                        EditorGUILayout.BeginHorizontal();
+                        {
+                            GUIContent label = new GUIContent("Minimum Depth");
+                            compositionManager.TextureManager.occlusionMinDepth = EditorGUILayout.Slider(
+                                label,
+                                compositionManager.TextureManager.occlusionMinDepth, 0, 10);
+                        }
+                        EditorGUILayout.EndHorizontal();
+                        EditorGUILayout.BeginHorizontal();
+                        {
+                            GUIContent label = new GUIContent("Maximum Depth");
+                            compositionManager.TextureManager.occlusionMaxDepth = EditorGUILayout.Slider(
+                                label,
+                                compositionManager.TextureManager.occlusionMaxDepth, 0, 10);
+                        }
+                        EditorGUILayout.EndHorizontal();
+                    }
+                }
+                else
+                {
+                    RenderTitle("Updating occlusion settings is not possible when the compositor isn't running.", Color.green);
+                }
+                GUI.enabled = true;
             }
         }
 

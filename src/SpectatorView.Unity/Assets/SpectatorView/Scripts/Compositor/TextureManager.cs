@@ -213,6 +213,8 @@ namespace Microsoft.MixedReality.SpectatorView
         public event Action TextureRenderCompleted;
 
         public ColorCorrection videoFeedColorCorrection { get; set; }
+        public float occlusionMinDepth { get; set; } = 0;
+        public float occlusionMaxDepth { get; set; } = 10;
 
         private Material ignoreAlphaMat;
         private Material BGRToRGBMat;
@@ -337,6 +339,8 @@ namespace Microsoft.MixedReality.SpectatorView
             colorCorrectionMat = LoadMaterial("ColorCorrection");
 
             videoFeedColorCorrection = ColorCorrection.GetColorCorrection(VideoFeedColorCorrectionPlayerPrefName);
+            occlusionMinDepth = PlayerPrefs.GetFloat($"{nameof(TextureManager)}.{nameof(occlusionMinDepth)}", 0);
+            occlusionMaxDepth = PlayerPrefs.GetFloat($"{nameof(TextureManager)}.{nameof(occlusionMaxDepth)}", 10);
 
             SetHologramShaderAlpha(Compositor.DefaultAlpha);
 
@@ -374,6 +378,8 @@ namespace Microsoft.MixedReality.SpectatorView
         private void OnDestroy()
         {
             ColorCorrection.StoreColorCorrection(VideoFeedColorCorrectionPlayerPrefName, videoFeedColorCorrection);
+            PlayerPrefs.SetFloat($"{nameof(TextureManager)}.{nameof(occlusionMinDepth)}", occlusionMinDepth);
+            PlayerPrefs.SetFloat($"{nameof(TextureManager)}.{nameof(occlusionMaxDepth)}", occlusionMaxDepth);
         }
 
         private void SetupCameraAndRenderTextures()
@@ -496,6 +502,8 @@ namespace Microsoft.MixedReality.SpectatorView
             {
                 occlusionMaskMat.SetTexture("_DepthTexture", depthTexture);
                 occlusionMaskMat.SetTexture("_BodyMaskTexture", bodyMaskTexture);
+                occlusionMaskMat.SetFloat("_MinDepth", occlusionMinDepth);
+                occlusionMaskMat.SetFloat("_MaxDepth", occlusionMaxDepth);
                 Graphics.Blit(sourceTexture, occlusionMaskTexture, occlusionMaskMat);
 
                 blurMat.SetTexture("_MaskTexture", occlusionMaskTexture);
