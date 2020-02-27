@@ -22,7 +22,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
         private const float statisticsUpdateCooldownTimeSeconds = 0.1f;
         private const int lowQueuedOutputFrameWarningMark = 6;
         private Vector2 scrollPosition;
-        private int textureRenderMode;
+        private PreviewTextureMode previewTextureMode;
         private string framerateStatisticsMessage;
         private Color framerateStatisticsColor = Color.green;
 
@@ -213,17 +213,18 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
                     EditorGUILayout.Space();
                     EditorGUILayout.BeginHorizontal();
                     {
-                        string[] compositionOptions = new string[] { "Final composite", "Intermediate textures" };
-                        GUIContent renderingModeLabel = new GUIContent("Preview display", "Choose between displaying the composited video texture or seeing intermediate textures displayed in 4 sections (bottom left: input video, top left: opaque hologram, top right: hologram alpha mask, bottom right: hologram alpha-blended onto video)");
-                        textureRenderMode = EditorGUILayout.Popup(renderingModeLabel, textureRenderMode, compositionOptions);
+                        string[] compositionOptions = new string[] { "Final composite", "Intermediate textures", "Occlusion Mask" };
+                        GUIContent renderingModeLabel = new GUIContent("Preview display", "Choose between displaying the composited video texture, seeing intermediate textures displayed in 4 sections (bottom left: input video, top left: opaque hologram, top right: hologram alpha mask, bottom right: hologram alpha-blended onto video), or viewing the occlusion mask.");
+                        previewTextureMode = (PreviewTextureMode)EditorGUILayout.Popup(renderingModeLabel, (int)previewTextureMode, compositionOptions);
                         if (compositionManager != null && compositionManager.TextureManager != null)
                         {
-                            compositionManager.TextureManager.IsQuadrantVideoFrameNeededForPreviewing = textureRenderMode == (int)VideoRecordingFrameLayout.Quad;
+                            // Make sure the textures required for quadrant viewing are created if needed.
+                            compositionManager.TextureManager.IsQuadrantVideoFrameNeededForPreviewing = (previewTextureMode == PreviewTextureMode.Quad);
                         }
                         FullScreenCompositorWindow fullscreenWindow = FullScreenCompositorWindow.TryGetWindow();
                         if (fullscreenWindow != null)
                         {
-                            fullscreenWindow.TextureRenderMode = textureRenderMode;
+                            fullscreenWindow.PreviewTextureMode = previewTextureMode;
                         }
 
                         if (GUILayout.Button("Fullscreen", GUILayout.Width(120)))
@@ -237,7 +238,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
                 EditorGUILayout.EndVertical();
 
                 // Rendering
-                CompositeTextureGUI(textureRenderMode);
+                CompositeTextureGUI(previewTextureMode);
             }
             EditorGUILayout.EndVertical();
         }
@@ -323,22 +324,38 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
                     }
                     else if (compositionManager.OcclusionMode == OcclusionSetting.BodyTracking)
                     {
-                        RenderTitle("Body Tracking does not currently have any configurable settings.", Color.clear);
+                        RenderTitle("Body Tracking Settings", Color.clear);
+                        EditorGUILayout.BeginHorizontal();
+                        {
+                            GUIContent label = new GUIContent("Blur Size");
+                            compositionManager.TextureManager.blurSize = EditorGUILayout.Slider(
+                                label,
+                                compositionManager.TextureManager.blurSize, 0, 10);
+                        }
+                        EditorGUILayout.EndHorizontal();
                     }
                     else if (compositionManager.OcclusionMode == OcclusionSetting.RawDepthCamera)
                     {
                         RenderTitle("Raw Depth Camera Settings", Color.clear);
                         EditorGUILayout.BeginHorizontal();
                         {
-                            GUIContent label = new GUIContent("Minimum Depth");
-                            compositionManager.TextureManager.occlusionMinDepth = EditorGUILayout.Slider(
+                            GUIContent label = new GUIContent("Blur Size");
+                            compositionManager.TextureManager.blurSize = EditorGUILayout.Slider(
                                 label,
-                                compositionManager.TextureManager.occlusionMinDepth, 0, 10);
+                                compositionManager.TextureManager.blurSize, 0, 10);
                         }
                         EditorGUILayout.EndHorizontal();
                         EditorGUILayout.BeginHorizontal();
                         {
-                            GUIContent label = new GUIContent("Maximum Depth");
+                            GUIContent label = new GUIContent("Minimum Hologram Depth");
+                            compositionManager.TextureManager.occlusionMinHologramDepth = EditorGUILayout.Slider(
+                                label,
+                                compositionManager.TextureManager.occlusionMinHologramDepth, 0, 10);
+                        }
+                        EditorGUILayout.EndHorizontal();
+                        EditorGUILayout.BeginHorizontal();
+                        {
+                            GUIContent label = new GUIContent("Maximum Occlusion Depth");
                             compositionManager.TextureManager.occlusionMaxDepth = EditorGUILayout.Slider(
                                 label,
                                 compositionManager.TextureManager.occlusionMaxDepth, 0, 10);

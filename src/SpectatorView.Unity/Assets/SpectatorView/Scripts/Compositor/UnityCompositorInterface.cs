@@ -11,6 +11,7 @@ namespace Microsoft.MixedReality.SpectatorView
     public enum FrameProviderDeviceType : int { BlackMagic = 0, Elgato = 1, AzureKinect_DepthCamera_Off = 2, AzureKinect_DepthCamera_NFOV = 3, AzureKinect_DepthCamera_WFOV = 4, None = 5 };
     public enum OcclusionSetting : int { RawDepthCamera = 0, BodyTracking = 1};
     public enum VideoRecordingFrameLayout : int { Composite = 0, Quad = 1 };
+    public enum PreviewTextureMode : int { Composite = 0, Quad = 1, OcclusionMask = 2 }
 
 #if UNITY_EDITOR
     internal struct CompositorVector3
