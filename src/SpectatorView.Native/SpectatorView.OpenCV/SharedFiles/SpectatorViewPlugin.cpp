@@ -1,4 +1,7 @@
-﻿#include "..\SharedFiles\pch.h"
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+#include "..\SharedFiles\pch.h"
 
 #include "SpectatorViewPlugin.h"
 #include "ArUcoMarkerDetector.h"
