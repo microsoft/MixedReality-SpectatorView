@@ -37,7 +37,7 @@ namespace Microsoft.MixedReality.SpectatorView
             SendCalibrationData();
         }
 
-#if UNITY_EDITOR && UNITY_WSA
+#if UNITY_EDITOR
         private void SendCalibrationData()
         {
             if (UnityCompositorInterface.IsCameraCalibrationInformationAvailable())
@@ -64,6 +64,7 @@ namespace Microsoft.MixedReality.SpectatorView
 #else
         private void SendCalibrationData()
         {
+            Debug.LogError("The current platform is not supported for sendind stationary camera calibration data.");
         }
 #endif
     }
