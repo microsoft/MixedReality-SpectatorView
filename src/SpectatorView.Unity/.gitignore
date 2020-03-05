@@ -55,8 +55,8 @@ ExportedObj/
 sysinfo.txt
 
 # Custom - Generated Asset Caches
-Assets/Generated.StateSynchronization.AssetCaches.meta
-Assets/Generated.StateSynchronization.AssetCaches/
+Assets/Generated.SpectatorView.AssetCaches.meta
+Assets/Generated.SpectatorView.AssetCaches/
 
 # Builds
 *.apk

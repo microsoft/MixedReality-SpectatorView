@@ -36,7 +36,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
     internal abstract class AssetCache : ScriptableObject
     {
-        protected const string AssetCacheDirectory = "Generated.StateSynchronization.AssetCaches";
+        protected const string AssetCacheDirectory = "Generated.SpectatorView.AssetCaches";
         protected const string AssetsFolderName = "AssetCacheContent";
 
         public static TAssetCache LoadAssetCache<TAssetCache>()
@@ -512,17 +512,17 @@ namespace Microsoft.MixedReality.SpectatorView
             if (assets == null ||
                 assets.Length == 0)
             {
-                Debug.Log("Assets was null or empty, rerunning asset cache update");
                 UpdateAssetCache();
             }
 
             if (assets == null ||
                 assets.Length == 0)
             {
-                Debug.Log("No assets were found.");
+                Debug.Log($"No assets were found for the {this.GetType().Name}.");
                 return;
             }
 
+            int createdAssets = 0;
             foreach (var nameEntry in assets)
             {
                 string assetName = GetAssetCachesContentPath($"{GetValidAssetName(nameEntry.Name)}_{this.GetType().Name}", assetContentExtension);
@@ -540,9 +540,11 @@ namespace Microsoft.MixedReality.SpectatorView
                 }
 
                 content.AssetCacheEntries = assetCacheEntries.ToArray();
-                Debug.Log($"Creating asset: {content} {assetName}");
                 AssetDatabase.CreateAsset(content, assetName);
+                createdAssets++;
             }
+
+            Debug.Log($"Created {createdAssets} asset(s) for the {this.GetType().Name} asset cache.");
 #endif
         }
 
