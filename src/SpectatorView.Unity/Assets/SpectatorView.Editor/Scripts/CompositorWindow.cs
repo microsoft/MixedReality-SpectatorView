@@ -345,22 +345,6 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
                                 compositionManager.TextureManager.blurSize, 0, 10);
                         }
                         EditorGUILayout.EndHorizontal();
-                        EditorGUILayout.BeginHorizontal();
-                        {
-                            GUIContent label = new GUIContent("Minimum Hologram Depth");
-                            compositionManager.TextureManager.occlusionMinHologramDepth = EditorGUILayout.Slider(
-                                label,
-                                compositionManager.TextureManager.occlusionMinHologramDepth, 0, 10);
-                        }
-                        EditorGUILayout.EndHorizontal();
-                        EditorGUILayout.BeginHorizontal();
-                        {
-                            GUIContent label = new GUIContent("Maximum Occlusion Depth");
-                            compositionManager.TextureManager.occlusionMaxDepth = EditorGUILayout.Slider(
-                                label,
-                                compositionManager.TextureManager.occlusionMaxDepth, 0, 10);
-                        }
-                        EditorGUILayout.EndHorizontal();
                     }
                 }
                 else

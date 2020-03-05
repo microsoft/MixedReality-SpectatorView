@@ -219,8 +219,6 @@ namespace Microsoft.MixedReality.SpectatorView
         public event Action TextureRenderCompleted;
 
         public ColorCorrection videoFeedColorCorrection { get; set; }
-        public float occlusionMinHologramDepth { get; set; } = 0;
-        public float occlusionMaxDepth { get; set; } = 10;
         public float blurSize { get; set; } = 5;
 
         private Material ignoreAlphaMat;
@@ -346,8 +344,6 @@ namespace Microsoft.MixedReality.SpectatorView
             colorCorrectionMat = LoadMaterial("ColorCorrection");
 
             videoFeedColorCorrection = ColorCorrection.GetColorCorrection(VideoFeedColorCorrectionPlayerPrefName);
-            occlusionMinHologramDepth = PlayerPrefs.GetFloat($"{nameof(TextureManager)}.{nameof(occlusionMinHologramDepth)}", 0);
-            occlusionMaxDepth = PlayerPrefs.GetFloat($"{nameof(TextureManager)}.{nameof(occlusionMaxDepth)}", 10);
             blurSize = PlayerPrefs.GetFloat($"{nameof(TextureManager)}.{nameof(blurSize)}", 5);
 
             SetHologramShaderAlpha(Compositor.DefaultAlpha);
@@ -386,8 +382,6 @@ namespace Microsoft.MixedReality.SpectatorView
         private void OnDestroy()
         {
             ColorCorrection.StoreColorCorrection(VideoFeedColorCorrectionPlayerPrefName, videoFeedColorCorrection);
-            PlayerPrefs.SetFloat($"{nameof(TextureManager)}.{nameof(occlusionMinHologramDepth)}", occlusionMinHologramDepth);
-            PlayerPrefs.SetFloat($"{nameof(TextureManager)}.{nameof(occlusionMaxDepth)}", occlusionMaxDepth);
             PlayerPrefs.SetFloat($"{nameof(TextureManager)}.{nameof(blurSize)}", blurSize);
         }
 
@@ -491,8 +485,6 @@ namespace Microsoft.MixedReality.SpectatorView
             {
                 occlusionMaskMat.SetTexture("_DepthTexture", depthTexture);
                 occlusionMaskMat.SetTexture("_BodyMaskTexture", bodyMaskTexture);
-                occlusionMaskMat.SetFloat("_MinHologramDepth", occlusionMinHologramDepth);
-                occlusionMaskMat.SetFloat("_MaxOcclusionDepth", occlusionMaxDepth);
                 Graphics.Blit(sourceTexture, occlusionMaskTexture, occlusionMaskMat);
 
                 blurMat.SetTexture("_MaskTexture", occlusionMaskTexture);

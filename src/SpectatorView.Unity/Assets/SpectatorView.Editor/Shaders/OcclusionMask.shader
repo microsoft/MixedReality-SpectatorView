@@ -4,8 +4,6 @@
     {
         _BodyMaskTexture("BodyMaskTexture", 2D) = "white" {}
         _DepthTexture("DepthTexture", 2D) = "white" {}
-		_MinHologramDepth("Starting Hologram Depth", Float) = 0
-        _MaxOcclusionDepth("Maximum Occlusion Depth", Float) = 10.0
     }
     SubShader
     {
@@ -44,8 +42,6 @@
             Texture2D _DepthTexture;
             sampler2D_float _LastCameraDepthTexture;
             SamplerState sampler_point_clamp;
-            float _MinHologramDepth;
-            float _MaxOcclusionDepth;
 
             fixed4 frag (v2f i) : SV_Target
             {
@@ -55,8 +51,8 @@
                 float hologramDepth = LinearEyeDepth(rawHologramDepth);
                 float kinectDepth = _DepthTexture.Sample(sampler_point_clamp, float2(i.uv[0], 1-i.uv[1])).r * 65535 * 0.001; // Incoming texture is R16
 
-				bool useKinectDepth = (kinectDepth > 0.0f) && (kinectDepth < _MaxOcclusionDepth);
-				bool useHologramDepth = (hologramDepth > _MinHologramDepth) && (rawHologramDepth < 1.0f);
+				bool useKinectDepth = kinectDepth > 0.0f;
+				bool useHologramDepth = rawHologramDepth < 1.0f;
 
 				float isHologramOccluded = 0.0f;
 				if (!useHologramDepth || 
