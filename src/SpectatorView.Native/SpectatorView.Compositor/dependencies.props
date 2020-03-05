@@ -7,7 +7,7 @@
     <!-- From: https://www.blackmagicdesign.com/support -->
     <DeckLink_inc>C:\Blackmagic DeckLink SDK 10.9.11\Win\include</DeckLink_inc>
     <!-- From: https://github.com/elgatosf/gamecapture -->
-    <Elgato_Filter Condition="$(Elgato_Filter) == ''">C:\gamecapture\VideoCaptureFilter</Elgato_Filter>
+    <Elgato_Filter Condition="$(Elgato_Filter) == ''">$(SolutionDir)\..\..\external\elgatosf\gamecapture\VideoCaptureFilter</Elgato_Filter>
     
     <!-- From: https://docs.microsoft.com/en-us/azure/kinect-dk/sensor-sdk-download -->
     <AzureKinectSDK>C:\Program Files\Azure Kinect SDK v1.3.0</AzureKinectSDK>
