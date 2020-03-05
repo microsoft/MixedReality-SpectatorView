@@ -333,6 +333,14 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
                                 compositionManager.TextureManager.blurSize, 0, 10);
                         }
                         EditorGUILayout.EndHorizontal();
+                        EditorGUILayout.BeginHorizontal();
+                        {
+                            GUIContent label = new GUIContent("Number of Blur Passes");
+                            compositionManager.TextureManager.numBlurPasses = (int) EditorGUILayout.Slider(
+                                label,
+                                compositionManager.TextureManager.numBlurPasses, 1, 5);
+                        }
+                        EditorGUILayout.EndHorizontal();
                     }
                     else if (compositionManager.OcclusionMode == OcclusionSetting.RawDepthCamera)
                     {
@@ -343,6 +351,14 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
                             compositionManager.TextureManager.blurSize = EditorGUILayout.Slider(
                                 label,
                                 compositionManager.TextureManager.blurSize, 0, 10);
+                        }
+                        EditorGUILayout.EndHorizontal();
+                        EditorGUILayout.BeginHorizontal();
+                        {
+                            GUIContent label = new GUIContent("Number of Blur Passes");
+                            compositionManager.TextureManager.numBlurPasses = (int) EditorGUILayout.Slider(
+                                label,
+                                compositionManager.TextureManager.numBlurPasses, 1, 5);
                         }
                         EditorGUILayout.EndHorizontal();
                     }

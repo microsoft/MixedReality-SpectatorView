@@ -167,6 +167,11 @@ namespace Microsoft.MixedReality.SpectatorView
         public RenderTexture blurOcclusionTexture { get; private set; }
 
         /// <summary>
+        /// A helper texture used to create the occlusion mask
+        /// </summary>
+        private RenderTexture blurOcclusionHelperTexture = null;
+
+        /// <summary>
         /// The raw color image data coming from the capture card
         /// </summary>
         private Texture2D colorTexture = null;
@@ -220,6 +225,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
         public ColorCorrection videoFeedColorCorrection { get; set; }
         public float blurSize { get; set; } = 5;
+        public int numBlurPasses { get; set; } = 1;
 
         private Material ignoreAlphaMat;
         private Material BGRToRGBMat;
@@ -345,6 +351,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
             videoFeedColorCorrection = ColorCorrection.GetColorCorrection(VideoFeedColorCorrectionPlayerPrefName);
             blurSize = PlayerPrefs.GetFloat($"{nameof(TextureManager)}.{nameof(blurSize)}", 5);
+            numBlurPasses = PlayerPrefs.GetInt($"{nameof(TextureManager)}.{nameof(numBlurPasses)}", 1);
 
             SetHologramShaderAlpha(Compositor.DefaultAlpha);
 
@@ -383,6 +390,7 @@ namespace Microsoft.MixedReality.SpectatorView
         {
             ColorCorrection.StoreColorCorrection(VideoFeedColorCorrectionPlayerPrefName, videoFeedColorCorrection);
             PlayerPrefs.SetFloat($"{nameof(TextureManager)}.{nameof(blurSize)}", blurSize);
+            PlayerPrefs.SetInt($"{nameof(TextureManager)}.{nameof(numBlurPasses)}", numBlurPasses);
         }
 
         private void SetupCameraAndRenderTextures()
@@ -419,6 +427,7 @@ namespace Microsoft.MixedReality.SpectatorView
             compositeTexture = new RenderTexture(frameWidth, frameHeight, (int)Compositor.TextureDepth);
             occlusionMaskTexture = new RenderTexture(frameWidth, frameHeight, (int)Compositor.TextureDepth);
             blurOcclusionTexture = new RenderTexture(frameWidth, frameHeight, (int)Compositor.TextureDepth);
+            blurOcclusionHelperTexture = new RenderTexture(frameWidth, frameHeight, (int)Compositor.TextureDepth);
 
             if (supersampleBuffers.Length > 0)
             {
@@ -487,9 +496,19 @@ namespace Microsoft.MixedReality.SpectatorView
                 occlusionMaskMat.SetTexture("_BodyMaskTexture", bodyMaskTexture);
                 Graphics.Blit(sourceTexture, occlusionMaskTexture, occlusionMaskMat);
 
-                blurMat.SetTexture("_MaskTexture", occlusionMaskTexture);
                 blurMat.SetFloat("_BlurSize", blurSize);
-                Graphics.Blit(sourceTexture, blurOcclusionTexture, blurMat);
+                for (int i = 0; i < numBlurPasses || i < 1; i++)
+                {
+                    var source = i % 2 == 0 ? occlusionMaskTexture : blurOcclusionTexture;
+                    var dest = i % 2 == 0 ? blurOcclusionTexture : occlusionMaskTexture;
+                    blurMat.SetTexture("_MaskTexture", source);
+                    Graphics.Blit(source, dest, blurMat);
+                }
+
+                if (numBlurPasses % 2 == 0)
+                {
+                    Graphics.Blit(occlusionMaskTexture, blurOcclusionTexture);
+                }
             }
 
             yield return new WaitForEndOfFrame();
