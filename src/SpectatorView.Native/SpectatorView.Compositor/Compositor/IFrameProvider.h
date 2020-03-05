@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include "CameraIntrinsics.h"
+#include "DataStructures.h"
 
 class IFrameProvider
 {

@@ -7,7 +7,7 @@
 #include "DirectoryHelper.h"
 #include "Shlobj.h" // To get MyDocuments path
 #include "ScreenGrab.h"
-#include "CameraIntrinsics.h"
+#include "DataStructures.h"
 #include "wincodec.h"
 
 #define DLLEXPORT __declspec(dllexport)

@@ -16,12 +16,6 @@ struct Vector3
     float z;
 };
 
-struct Pose
-{
-    Vector3 position;
-    Vector3 rotation;
-};
-
 struct Marker
 {
     int id;

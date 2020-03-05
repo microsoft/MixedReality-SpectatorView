@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-#include "..\SharedFiles\pch.h"
+#include "pch.h"
 
 #include "ArUcoMarkerDetector.h"
 
@@ -106,12 +106,12 @@ bool ArUcoMarkerDetector::DetectMarkers(
 
         Marker marker;
         marker.id = id;
-        marker.position[0] = static_cast<float>(translationVecs[i][0]);
-        marker.position[1] = static_cast<float>(translationVecs[i][1]);
-        marker.position[2] = static_cast<float>(translationVecs[i][2]);
-        marker.rotation[0] = static_cast<float>(rotationVecs[i][0]);
-        marker.rotation[1] = static_cast<float>(rotationVecs[i][1]);
-        marker.rotation[2] = static_cast<float>(rotationVecs[i][2]);
+        marker.position.x = static_cast<float>(translationVecs[i][0]);
+        marker.position.y = static_cast<float>(translationVecs[i][1]);
+        marker.position.z = static_cast<float>(translationVecs[i][2]);
+        marker.rotation.x = static_cast<float>(rotationVecs[i][0]);
+        marker.rotation.y = static_cast<float>(rotationVecs[i][1]);
+        marker.rotation.z = static_cast<float>(rotationVecs[i][2]);
         _detectedMarkers[id] = marker;
     }
 
@@ -136,7 +136,7 @@ bool ArUcoMarkerDetector::GetDetectedMarkerIds(int* _detectedIds, int size)
     return true;
 }
 
-bool ArUcoMarkerDetector::GetDetectedMarkerPose(int _detectedId, float* position, float* rotation)
+bool ArUcoMarkerDetector::GetDetectedMarkerPose(int _detectedId, Vector3* position, Vector3* rotation)
 {
     if (_detectedMarkers.find(_detectedId) == _detectedMarkers.end())
     {
@@ -145,11 +145,8 @@ bool ArUcoMarkerDetector::GetDetectedMarkerPose(int _detectedId, float* position
 
     auto marker = _detectedMarkers.at(_detectedId);
 
-    // Note: this isn't the safest memory copy.
-    // There's an assumption that the dll caller will provide arrays of length 3 for position and rotation.
-    // If the caller fails to do so, this copy will corrupt memory or throw an access violation.
-    memcpy(position, marker.position, sizeof(marker.position));
-    memcpy(rotation, marker.rotation, sizeof(marker.rotation));
+    memcpy_s(position, sizeof(*position), &marker.position, sizeof(marker.position));
+    memcpy_s(rotation, sizeof(*rotation), &marker.rotation, sizeof(marker.rotation));
 
     return true;
 }

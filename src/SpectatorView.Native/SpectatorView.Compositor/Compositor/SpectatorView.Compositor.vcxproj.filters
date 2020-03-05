@@ -63,13 +63,13 @@
     <ClInclude Include="AzureKinectFrameProvider.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CameraIntrinsics.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ArUcoMarkerDetector.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="pch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SpectatorView.OpenCV\SharedFiles\ArUcoMarkerDetector.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SpectatorView.OpenCV\SharedFiles\DataStructures.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -104,10 +104,10 @@
     <ClCompile Include="AzureKinectFrameProvider.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ArUcoMarkerDetector.cpp">
+    <ClCompile Include="pch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="pch.cpp">
+    <ClCompile Include="..\..\SpectatorView.OpenCV\SharedFiles\ArUcoMarkerDetector.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
