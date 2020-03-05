@@ -157,8 +157,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
                 GameObject hierarchyPrefab = new GameObject(StateSynchronizationSceneManager.DefaultStateSynchronizationPerformanceParametersPrefabName);
                 hierarchyPrefab.AddComponent<DefaultStateSynchronizationPerformanceParameters>();
 
-                AssetCache.EnsureAssetDirectoryExists();
-                prefab = PrefabUtility.SaveAsPrefabAsset(hierarchyPrefab, AssetCache.GetAssetCachePath(StateSynchronizationSceneManager.DefaultStateSynchronizationPerformanceParametersPrefabName, ".prefab"));
+                prefab = PrefabUtility.SaveAsPrefabAsset(hierarchyPrefab, SpectatorViewSettings.GetSettingsPath(StateSynchronizationSceneManager.DefaultStateSynchronizationPerformanceParametersPrefabName, ".prefab"));
                 Object.DestroyImmediate(hierarchyPrefab);
             }
 
@@ -173,8 +172,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
             {
                 GameObject hierarchyPrefab = new GameObject(StateSynchronizationSceneManager.CustomBroadcasterServicesPrefabName);
 
-                AssetCache.EnsureAssetDirectoryExists();
-                prefab = PrefabUtility.SaveAsPrefabAsset(hierarchyPrefab, AssetCache.GetAssetCachePath(StateSynchronizationSceneManager.CustomBroadcasterServicesPrefabName, ".prefab"));
+                prefab = PrefabUtility.SaveAsPrefabAsset(hierarchyPrefab, SpectatorViewSettings.GetSettingsPath(StateSynchronizationSceneManager.CustomBroadcasterServicesPrefabName, ".prefab"));
                 Object.DestroyImmediate(hierarchyPrefab);
             }
 
@@ -194,18 +192,17 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
                 hierarchyPrefab.AddComponent<MobileRecordingSettings>();
                 hierarchyPrefab.AddComponent<NetworkConfigurationSettings>();
 
-                AssetCache.EnsureAssetDirectoryExists();
-                prefab = PrefabUtility.SaveAsPrefabAsset(hierarchyPrefab, AssetCache.GetAssetCachePath(SpectatorView.SettingsPrefabName, ".prefab"));
+                prefab = PrefabUtility.SaveAsPrefabAsset(hierarchyPrefab, SpectatorViewSettings.GetSettingsPath(SpectatorView.SettingsPrefabName, ".prefab"));
                 Object.DestroyImmediate(hierarchyPrefab);
             }
             else
             {
-                GameObject editablePrefab = PrefabUtility.LoadPrefabContents(AssetCache.GetAssetCachePath(SpectatorView.SettingsPrefabName, ".prefab"));
+                GameObject editablePrefab = PrefabUtility.LoadPrefabContents(SpectatorViewSettings.GetSettingsPath(SpectatorView.SettingsPrefabName, ".prefab"));
                 EnsureComponent<BroadcasterSettings>(editablePrefab);
                 EnsureComponent<SpatialLocalizationInitializationSettings>(editablePrefab);
                 EnsureComponent<MobileRecordingSettings>(editablePrefab);
                 EnsureComponent<NetworkConfigurationSettings>(editablePrefab);
-                PrefabUtility.SaveAsPrefabAsset(editablePrefab, AssetCache.GetAssetCachePath(SpectatorView.SettingsPrefabName, ".prefab"));
+                PrefabUtility.SaveAsPrefabAsset(editablePrefab, SpectatorViewSettings.GetSettingsPath(SpectatorView.SettingsPrefabName, ".prefab"));
                 PrefabUtility.UnloadPrefabContents(editablePrefab);
             }
 
