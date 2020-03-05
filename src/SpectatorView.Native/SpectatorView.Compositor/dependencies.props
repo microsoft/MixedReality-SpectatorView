@@ -13,7 +13,7 @@
     <AzureKinectSDK>C:\Program Files\Azure Kinect SDK v1.3.0</AzureKinectSDK>
 
     <!-- From: https://docs.microsoft.com/en-us/azure/kinect-dk/body-sdk-download -->
-    <AzureKinectBodyTrackingSDK>C:\Program Files\Azure Kinect Body Tracking SDK</AzureKinectBodyTrackingSDK>
+    <AzureKinectBodyTrackingSDK>C:\Program Files\Azure Kinect Body Tracking SDK 1.0.0</AzureKinectBodyTrackingSDK>
     
     <AzureKinectIncludeDirectory>$(AzureKinectSDK)\sdk\include</AzureKinectIncludeDirectory>
     <AzureKinectLibraryDirectory>$(AzureKinectSDK)\sdk\windows-desktop\amd64\release\lib</AzureKinectLibraryDirectory>
@@ -27,7 +27,7 @@
     <ClCompile Condition="Exists('$(DeckLink_inc)')">
       <PreprocessorDefinitions>INCLUDE_BLACKMAGIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
-    <ClCompile Condition="!Exists('$(DeckLink_inc)')">
+    <ClCompile Condition="Exists('$(Elgato_Filter)')">
       <PreprocessorDefinitions>INCLUDE_ELGATO;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <ClCompile Condition="Exists('$(AzureKinectSDK)')">
