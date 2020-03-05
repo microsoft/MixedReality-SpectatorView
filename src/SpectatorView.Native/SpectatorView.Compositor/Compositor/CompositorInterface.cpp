@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-#include "stdafx.h"
+#include "pch.h"
 #include "CompositorInterface.h"
 #include "codecapi.h"
 #include "AzureKinectFrameProvider.h"
@@ -36,7 +36,7 @@ void CompositorInterface::SetFrameProvider(IFrameProvider::ProviderType type)
 #if defined(INCLUDE_BLACKMAGIC)
     if (type == IFrameProvider::ProviderType::BlackMagic)
         frameProvider = new DeckLinkManager();
-#end
+#endif
 
 #if defined(INCLUDE_AZUREKINECT)
     if (type == IFrameProvider::ProviderType::AzureKinect_DepthCamera_Off)
