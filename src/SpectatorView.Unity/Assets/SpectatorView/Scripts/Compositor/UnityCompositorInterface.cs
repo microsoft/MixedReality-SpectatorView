@@ -205,7 +205,7 @@ namespace Microsoft.MixedReality.SpectatorView
         public static extern bool IsArUcoMarkerDetectorSupported();
 
         [DllImport(CompositorPluginDll)]
-        public static extern void StartArUcoMarkerDetector(float markerSize);
+        public static extern void StartArUcoMarkerDetector(int markerDictionaryName, float markerSize);
 
         [DllImport(CompositorPluginDll)]
         public static extern void StopArUcoMarkerDetector();

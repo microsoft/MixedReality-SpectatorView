@@ -131,11 +131,11 @@ bool CompositorInterface::IsArUcoMarkerDetectorSupported()
     }
 }
 
-void CompositorInterface::StartArUcoMarkerDetector(float markerSize)
+void CompositorInterface::StartArUcoMarkerDetector(cv::aruco::PREDEFINED_DICTIONARY_NAME markerDictionaryName, float markerSize)
 {
     if (frameProvider != nullptr)
     {
-        frameProvider->StartArUcoMarkerDetector(markerSize);
+        frameProvider->StartArUcoMarkerDetector(markerDictionaryName, markerSize);
     }
 }
 

@@ -7,6 +7,7 @@
 #include "IFrameProvider.h"
 #include "ArUcoMarkerDetector.h"
 #if defined(INCLUDE_AZUREKINECT)
+#include <opencv2\aruco.hpp>
 #include <k4a/k4a.h>
 #if defined(INCLUDE_AZUREKINECT_BODYTRACKING)
 #include <k4abt.h>
@@ -45,7 +46,7 @@ public:
         return true;
     }
 
-    virtual void StartArUcoMarkerDetector(float markerSize) override;
+    virtual void StartArUcoMarkerDetector(cv::aruco::PREDEFINED_DICTIONARY_NAME markerDictionaryName, float markerSize) override;
     virtual void StopArUcoMarkerDetector() override;
     virtual int GetLatestArUcoMarkerCount() override { return markerDetector->GetDetectedMarkersCount(); }
     virtual void GetLatestArUcoMarkers(int size, Marker* markers) override;
@@ -72,6 +73,7 @@ private:
     CRITICAL_SECTION lock;
     bool detectMarkers;
     float markerSize;
+    cv::aruco::PREDEFINED_DICTIONARY_NAME markerDictionaryName;
     k4a_depth_mode_t depthCameraMode = K4A_DEPTH_MODE_OFF;
 
 #if defined(INCLUDE_AZUREKINECT_BODYTRACKING)

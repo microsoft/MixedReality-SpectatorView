@@ -48,7 +48,7 @@ public:
     DLLEXPORT void GetCameraCalibrationInformation(CameraIntrinsics* cameraIntrinsics);
 
     DLLEXPORT bool IsArUcoMarkerDetectorSupported();
-    DLLEXPORT void StartArUcoMarkerDetector(float markerSize);
+    DLLEXPORT void StartArUcoMarkerDetector(cv::aruco::PREDEFINED_DICTIONARY_NAME markerDictionaryName, float markerSize);
     DLLEXPORT void StopArUcoMarkerDetector();
     DLLEXPORT int GetLatestArUcoMarkerCount();
     DLLEXPORT void GetLatestArUcoMarkers(int size, Marker* markers);
