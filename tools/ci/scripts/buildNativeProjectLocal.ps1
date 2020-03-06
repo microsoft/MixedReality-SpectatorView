@@ -5,10 +5,11 @@ param(
     [Parameter(Mandatory=$false)][ref]$Succeeded
 )
 
+$MSBuildPath = "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\amd64\MSBuild.exe"
 # Setup Build Tools, change this for your local environment
-if ((!$MSBuild) -And (Test-Path -Path "C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\MSBuild\15.0\Bin\amd64\MSBuild.exe"))
+if ((!$MSBuild) -And (Test-Path -Path $MSBuildPath))
 {
-    $MSBuild = "C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\MSBuild\15.0\Bin\amd64\MSBuild.exe"
+    $MSBuild = $MSBuildPath
 }
 elseif (!$MSBuild)
 {
@@ -63,8 +64,6 @@ if ($SetupResult -eq $true)
     # Building in visual studio automatically copies these binaries
     Copy-Item $PSScriptRoot\..\..\..\external\vcpkg\installed\x86-uwp\bin\* $PSScriptRoot\..\..\..\src\SpectatorView.Native\Release\SpectatorView.OpenCV.UWP\ -Force
 
-    Copy-Item $PSScriptRoot\dependencies.props $PSScriptRoot\..\..\..\src\SpectatorView.Native\SpectatorView.Compositor\dependencies.props
-
     $64Includes = "`"$PSScriptRoot\..\..\..\external\vcpkg\installed\x64-windows\include`""
     $64LibDirs = "`"$PSScriptRoot\..\..\..\external\vcpkg\installed\x64-windows\lib`""
     $64Libs = "`"$PSScriptRoot\..\..\..\external\vcpkg\installed\x64-windows\lib\*.lib`""
@@ -83,11 +82,17 @@ if ($SetupResult -eq $true)
 }
 
 Write-Host "`n`nSpectatorView.Native Build Results:"
-Write-Host "    Setup Succeeded: $SetupResult"
-Write-Host "    x86 Build Succeeded: $86Result"
-Write-Host "    x64 Build Succeeded: $64Result"
-Write-Host "    ARM Build Succeeded: $ARMResult"
+Write-Host "    Setup Succeeded:               $SetupResult"
+Write-Host "    x86 Build Succeeded:           $86Result"
+Write-Host "    x64 Build Succeeded:           $64Result"
+Write-Host "    ARM Build Succeeded:           $ARMResult"
 Write-Host "    Copy Native Plugins Succeeded: $CopyResult"
+
+Write-Host "`nIncluded External Dependencies:"
+Write-Host "    Blackmagic Decklink:            " (Test-Path "$PSScriptRoot\..\..\..\external\Blackmagic DeckLink SDK 10.9.11")
+Write-Host "    Elgato:                         " (Test-Path "$PSScriptRoot\..\..\..\external\gamecapture")
+Write-Host "    Azure Kinect SDK:               " (Test-Path "$PSScriptRoot\..\..\..\external\Azure Kinect SDK v1.3.0")
+Write-Host "    Azure Kinect Body Tracking SDK: " (Test-Path "$PSScriptRoot\..\..\..\external\Azure Kinect Body Tracking SDK 1.0.0")
 
 $success = ($SetupResult -eq $true) -And ($86Result -eq $true) -And ($64Result -eq $true) -And ($ARMResult -eq $true) -And ($CopyResult -eq $true)
 if ($Succeeded)
