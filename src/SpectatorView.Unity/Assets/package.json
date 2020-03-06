@@ -16,5 +16,10 @@
     "name": "Microsoft",
     "email": "chriba@microsoft.com",
     "url": "https://www.aka.ms/spectatorview"
+  },
+  "dependencies": {
+    "com.unity.xr.arcore": "2.2.0-preview.2",
+    "com.unity.xr.arfoundation": "2.1.4",
+    "com.unity.xr.arkit": "2.1.1"
   }
-} 
+}
