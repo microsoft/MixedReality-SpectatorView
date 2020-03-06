@@ -18,7 +18,7 @@ ElgatoFrameProvider::~ElgatoFrameProvider()
     SafeRelease(frameCallback);
 }
 
-HRESULT ElgatoFrameProvider::Initialize(ID3D11ShaderResourceView* colorSRV, ID3D11ShaderResourceView* depthSRV, ID3D11Texture2D* outputTexture)
+HRESULT ElgatoFrameProvider::Initialize(ID3D11ShaderResourceView* colorSRV, ID3D11ShaderResourceView* depthSRV, ID3D11ShaderResourceView* bodySRV, ID3D11Texture2D* outputTexture)
 {
     //If we failed once lets not keep trying since this hangs the machine
     if (FAILED(errorCode))

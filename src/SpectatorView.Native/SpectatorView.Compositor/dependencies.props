@@ -27,7 +27,7 @@
     <ClCompile Condition="Exists('$(DeckLink_inc)')">
       <PreprocessorDefinitions>INCLUDE_BLACKMAGIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
-    <ClCompile Condition="!Exists('$(DeckLink_inc)')">
+    <ClCompile Condition="Exists('$(Elgato_Filter)')">
       <PreprocessorDefinitions>INCLUDE_ELGATO;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <ClCompile Condition="Exists('$(AzureKinectSDK)')">
