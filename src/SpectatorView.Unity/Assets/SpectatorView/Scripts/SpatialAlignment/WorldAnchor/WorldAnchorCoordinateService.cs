@@ -22,6 +22,7 @@ namespace Microsoft.MixedReality.SpectatorView
     public class WorldAnchorCoordinateService : SpatialCoordinateServiceUnityBase<string>
     {
         private static Task<WorldAnchorCoordinateService> sharedCoordinateService;
+        private readonly Transform parentTransform;
 #if UNITY_WSA
         private Task<WorldAnchorStore> worldAnchorStoreTask;
 #endif
@@ -30,25 +31,26 @@ namespace Microsoft.MixedReality.SpectatorView
         /// Constructs the coordinate service. Access to the coordinate service
         /// should be done through GetSharedCoordinateServiceAsync.
         /// </summary>
-        private WorldAnchorCoordinateService()
+        private WorldAnchorCoordinateService(Transform parentTransform)
         {
+            this.parentTransform = parentTransform;
         }
 
         protected override bool SupportsDiscovery => false;
 
-        public static Task<WorldAnchorCoordinateService> GetSharedCoordinateServiceAsync()
+        public static Task<WorldAnchorCoordinateService> GetSharedCoordinateServiceAsync(Transform parentTransform)
         {
             if (sharedCoordinateService == null)
             {
-                sharedCoordinateService = InitializeSharedCoordinateServiceAsync();
+                sharedCoordinateService = InitializeSharedCoordinateServiceAsync(parentTransform);
             }
 
             return sharedCoordinateService;
         }
 
-        private static async Task<WorldAnchorCoordinateService> InitializeSharedCoordinateServiceAsync()
+        private static async Task<WorldAnchorCoordinateService> InitializeSharedCoordinateServiceAsync(Transform parentTransform)
         {
-            WorldAnchorCoordinateService service = new WorldAnchorCoordinateService();
+            WorldAnchorCoordinateService service = new WorldAnchorCoordinateService(parentTransform);
             await service.InitializeKnownCoordinatesAsync();
             return service;
         }
@@ -72,6 +74,7 @@ namespace Microsoft.MixedReality.SpectatorView
             foreach (string knownId in store.GetAllIds())
             {
                 GameObject anchorGameObject = new GameObject(knownId);
+                anchorGameObject.transform.parent = parentTransform;
                 WorldAnchor anchor = store.Load(knownId, anchorGameObject);
 
                 if (anchor == null)
@@ -93,6 +96,7 @@ namespace Microsoft.MixedReality.SpectatorView
             await TryDeleteCoordinateAsync(id, cancellationToken);
 
             GameObject gameObject = new GameObject(id);
+            gameObject.transform.parent = parentTransform;
             gameObject.transform.position = worldPosition;
             gameObject.transform.rotation = worldRotation;
             WorldAnchor anchor = gameObject.AddComponent<WorldAnchor>();

@@ -47,7 +47,7 @@ namespace Microsoft.MixedReality.SpectatorView
             // can be located and tracking even before a connection is formed to the device.
             // This will reduce the amount of time needed to located anchors once a client
             // does connect to the device.
-            coordinateServiceTask = WorldAnchorCoordinateService.GetSharedCoordinateServiceAsync();
+            coordinateServiceTask = WorldAnchorCoordinateService.GetSharedCoordinateServiceAsync(transform);
         }
 
         /// <inheritdoc />
