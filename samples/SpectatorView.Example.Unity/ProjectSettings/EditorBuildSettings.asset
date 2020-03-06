@@ -5,14 +5,14 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
-    path: Assets/MixedReality-SpectatorView/SpectatorView/Scenes/SpectatorView.HoloLens.unity
-    guid: aaaef5009f203534696f812a2010313e
   - enabled: 0
-    path: Assets/MixedReality-SpectatorView/SpectatorView/Scenes/SpectatorView.ARFoundation.Spectator.unity
+    path: Packages/com.microsoft.mixedreality.spectatorview/Runtime/SpectatorView/Scenes/SpectatorView.HoloLens.unity
+    guid: aaaef5009f203534696f812a2010313e
+  - enabled: 1
+    path: Packages/com.microsoft.mixedreality.spectatorview/Runtime/SpectatorView/Scenes/SpectatorView.ARFoundation.Spectator.unity
     guid: 1e6ff34bb8b2cbb468b958b46f1aa620
   - enabled: 0
-    path: Assets/MixedReality-SpectatorView/SpectatorView.Editor/Scenes/SpectatorViewCompositor.unity
+    path: Packages/com.microsoft.mixedreality.spectatorview/Editor/SpectatorView.Editor/Scenes/SpectatorViewCompositor.unity
     guid: 4b7532bb75e238f49b6f062cf8a58d9e
   - enabled: 0
     path: Assets/Scenes/SpectatorView.HoloLens.MultiScene.unity
