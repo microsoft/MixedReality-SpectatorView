@@ -315,7 +315,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
             if (occlusionSettingsFoldout)
             {
                 CompositionManager compositionManager = GetCompositionManager();
-                bool running = compositionManager != null && compositionManager.TextureManager != null && compositionManager.TextureManager.videoFeedColorCorrection != null;
+                bool running = compositionManager != null && compositionManager.TextureManager != null;
                 if (running)
                 {
                     if (!compositionManager.IsOcclusionSettingSupported(compositionManager.OcclusionMode))
