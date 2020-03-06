@@ -68,7 +68,30 @@ namespace Microsoft.MixedReality.SpectatorView
 
     internal static class UnityCompositorInterface
     {
+        private static bool? isSupported;
+
         private const string CompositorPluginDll = "SpectatorView.Compositor.UnityPlugin";
+
+        public static bool IsSupported
+        {
+            get
+            {
+                if (isSupported == null)
+                {
+                    try
+                    {
+                        GetFrameHeight();
+                        isSupported = true;
+                    }
+                    catch
+                    {
+                        isSupported = false;
+                    }
+                }
+
+                return isSupported.Value;
+            }
+        }
 
         [DllImport(CompositorPluginDll)]
         public static extern int GetFrameWidth();
