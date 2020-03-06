@@ -1,0 +1,20 @@
+{
+  "name": "com.microsoft.mixedreality.spectatorview",
+  "version": "0.0.1",
+  "displayName": "Spectator View",
+  "description": "This is package is used for filming HoloLens 2 experiences",
+  "unity": "2019.2",
+  "unityRelease": "17f1",
+  "keywords": [
+    "SpectatorView",
+    "HoloLens",
+    "Filming",
+    "MRTK",
+    "MixedReality"
+  ],
+  "author": {
+    "name": "Microsoft",
+    "email": "chriba@microsoft.com",
+    "url": "https://www.aka.ms/spectatorview"
+  }
+} 
