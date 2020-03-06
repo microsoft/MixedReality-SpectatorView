@@ -7,6 +7,7 @@
 #include "DirectoryHelper.h"
 #include "Shlobj.h" // To get MyDocuments path
 #include "ScreenGrab.h"
+#include "CameraIntrinsics.h"
 #include "wincodec.h"
 
 #define DLLEXPORT __declspec(dllexport)
@@ -42,8 +43,17 @@ public:
     DLLEXPORT CompositorInterface();
     DLLEXPORT void SetFrameProvider(IFrameProvider::ProviderType type);
 	DLLEXPORT bool IsFrameProviderSupported(IFrameProvider::ProviderType providerType);
+    DLLEXPORT bool IsOcclusionSettingSupported(IFrameProvider::OcclusionSetting setting);
+    DLLEXPORT bool IsCameraCalibrationInformationAvailable();
+    DLLEXPORT void GetCameraCalibrationInformation(CameraIntrinsics* cameraIntrinsics);
 
-    DLLEXPORT bool Initialize(ID3D11Device* device, ID3D11ShaderResourceView* colorSRV, ID3D11Texture2D* outputTexture);
+    DLLEXPORT bool IsArUcoMarkerDetectorSupported();
+    DLLEXPORT void StartArUcoMarkerDetector(float markerSize);
+    DLLEXPORT void StopArUcoMarkerDetector();
+    DLLEXPORT int GetLatestArUcoMarkerCount();
+    DLLEXPORT void GetLatestArUcoMarkers(int size, Marker* markers);
+
+    DLLEXPORT bool Initialize(ID3D11Device* device, ID3D11ShaderResourceView* colorSRV, ID3D11ShaderResourceView* depthSRV, ID3D11ShaderResourceView* bodySRV, ID3D11Texture2D* outputTexture);
 
     DLLEXPORT void UpdateFrameProvider();
     DLLEXPORT void Update();

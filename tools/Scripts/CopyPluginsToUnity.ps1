@@ -4,6 +4,7 @@ param(
 
 $RootDirectory = Join-Path -Path $PSScriptRoot -ChildPath "\..\..\src\SpectatorView.Native"
 $MetaFiles = Join-Path -Path $RootDirectory -ChildPath "UnityMetaFiles"
+$DependenciesPropsFile = Join-Path -Path $RootDirectory -ChildPath "SpectatorView.Compositor\dependencies.props"
 
 $PluginDirectory = Join-Path -Path $PSScriptRoot -ChildPath "\..\..\src\SpectatorView.Unity\Assets\SpectatorView.Native\Plugins"
 $DesktopDirectory = Join-Path -Path $PluginDirectory -ChildPath "x64"
@@ -132,6 +133,45 @@ foreach ($Dll in $WinRTARMExtensionDlls )
   {
     Copy-Item -Force $Dll -Destination $WSAARMDirectory
   }
+}
+
+$AzureKinectDlls = @( "sdk\windows-desktop\amd64\release\bin\depthengine_2_0.dll",
+                      "sdk\windows-desktop\amd64\release\bin\k4a.dll",
+                      "sdk\windows-desktop\amd64\release\bin\k4arecord.dll")
+
+$AzureKinectBodyTrackingDlls = @( "sdk\windows-desktop\amd64\release\bin\dnn_model_2_0.onnx",
+                                  "sdk\windows-desktop\amd64\release\bin\k4abt.dll",
+                                  "sdk\windows-desktop\amd64\release\bin\onnxruntime.dll"
+                                  "tools\cublas64_100.dll",
+                                  "tools\cudart64_100.dll",
+                                  "tools\cudnn64_7.dll" )
+
+if (Test-Path -Path $DependenciesPropsFile -PathType Leaf) {
+  [xml]$DependenciesPropsContent = Get-Content $DependenciesPropsFile
+
+  if (Test-Path -Path $DependenciesPropsContent.Project.PropertyGroup.AzureKinectSDK -PathType Container) {
+    Write-Host "Copying Azure Kinect SDK dlls to $DesktopDirectory"
+
+    foreach ($Dll in $AzureKinectDlls) {
+      $DllFullPath = Join-Path -Path $DependenciesPropsContent.Project.PropertyGroup.AzureKinectSDK -ChildPath $Dll
+      Copy-Item -Force $DllFullPath -Destination $DesktopDirectory
+    }
+  } else {
+    Write-Host "Azure Kinect SDK is not specified, skipping plugins"
+  }
+
+  if (Test-Path -Path $DependenciesPropsContent.Project.PropertyGroup.AzureKinectBodyTrackingSDK -PathType Container) {
+     Write-Host "Copying Azure Kinect Body Tracking SDK dlls to $DesktopDirectory"
+
+    foreach ($Dll in $AzureKinectBodyTrackingDlls) {
+      $DllFullPath = Join-Path -Path $DependenciesPropsContent.Project.PropertyGroup.AzureKinectBodyTrackingSDK -ChildPath $Dll
+      Copy-Item -Force $DllFullPath -Destination $DesktopDirectory
+    }
+  } else {
+    Write-Host "Azure Kinect Body Tracking SDK is not specified, skipping plugins"
+  }
+} else {
+  Write-Error "Dependencies.props could not be located"
 }
 
 Write-Host "Copying .meta files"

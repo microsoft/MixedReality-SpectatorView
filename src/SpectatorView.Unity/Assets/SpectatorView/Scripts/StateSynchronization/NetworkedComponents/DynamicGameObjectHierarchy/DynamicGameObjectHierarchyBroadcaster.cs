@@ -121,7 +121,8 @@ namespace Microsoft.MixedReality.SpectatorView
                             WriteInstantiationRequestParameters(message);
 
                             message.Flush();
-                            connection.Send(memoryStream.GetBuffer(), 0, memoryStream.Position);
+                            memoryStream.TryGetBuffer(out var buffer);
+                            connection.Send(buffer.Array, buffer.Offset, buffer.Count);
                         }
                     }
 
@@ -223,7 +224,8 @@ namespace Microsoft.MixedReality.SpectatorView
 
                 message.Flush();
 
-                connection.Send(memoryStream.GetBuffer(), 0, memoryStream.Position);
+                memoryStream.TryGetBuffer(out var buffer);
+                connection.Send(buffer.Array, buffer.Offset, buffer.Count);
             }
         }
     }

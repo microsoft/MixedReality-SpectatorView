@@ -219,7 +219,8 @@ namespace Microsoft.MixedReality.SpectatorView
                 message.Write(spatialLocalizerID);
                 settings.Serialize(message);
                 message.Flush();
-                connection.Send(stream.GetBuffer(), 0, stream.Position);
+                stream.TryGetBuffer(out var buffer);
+                connection.Send(buffer.Array, buffer.Offset, buffer.Count);
             }
 
             return taskCompletionSource.Task;
@@ -270,7 +271,8 @@ namespace Microsoft.MixedReality.SpectatorView
                 message.Write(LocalizationCompleteCommand);
                 message.Write(localizationSuccessful);
                 message.Flush();
-                socketEndpoint.Send(stream.GetBuffer(), 0, stream.Position);
+                stream.TryGetBuffer(out var buffer);
+                socketEndpoint.Send(buffer.Array, buffer.Offset, buffer.Count);
             }
         }
 
@@ -491,7 +493,7 @@ namespace Microsoft.MixedReality.SpectatorView
             {
                 if (currentLocalizationSession != null)
                 {
-                    if (currentLocalizationSession.Participant == participant)
+                    if (currentLocalizationSession.Participant == participant || currentLocalizationSession.CompletionSource.Task.IsCompleted)
                     {
                         sessionToCancel = currentLocalizationSession;
                         currentLocalizationSession = null;

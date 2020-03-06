@@ -3,6 +3,8 @@
 
 #pragma once
 
+#include "CameraIntrinsics.h"
+
 class IFrameProvider
 {
 public:
@@ -11,10 +13,19 @@ public:
     {
         BlackMagic,
         Elgato,
+        AzureKinect_DepthCamera_Off,
+        AzureKinect_DepthCamera_NFOV,
+        AzureKinect_DepthCamera_WFOV
+    };
+
+    enum OcclusionSetting
+    {
+        RawDepthCamera,
+        BodyTracking
     };
 
     // Set up the FrameProvider to start delivering frames.
-    virtual HRESULT Initialize(ID3D11ShaderResourceView* colorSRV, ID3D11Texture2D* outputTexture) = 0;
+    virtual HRESULT Initialize(ID3D11ShaderResourceView* colorSRV, ID3D11ShaderResourceView* depthSRV, ID3D11ShaderResourceView* bodySRV, ID3D11Texture2D* outputTexture) = 0;
 
     // 4 frames are caches for reliable hologram stability:
     // Get the timestamp of the currently rendered cached frame.
@@ -39,4 +50,12 @@ public:
     virtual int GetCaptureFrameIndex() { return 0; }
     virtual int GetPixelChange(int frame) { return 0; }
     virtual int GetNumQueuedOutputFrames() { return 0; }
+    virtual bool IsCameraCalibrationInformationAvailable() { return false; }
+    virtual void GetCameraCalibrationInformation(CameraIntrinsics* calibration) {}
+
+    virtual bool IsArUcoMarkerDetectorSupported() { return false; }
+    virtual void StartArUcoMarkerDetector(float markerSize) {}
+    virtual void StopArUcoMarkerDetector() {}
+    virtual int GetLatestArUcoMarkerCount() { return 0; }
+    virtual void GetLatestArUcoMarkers(int size, Marker* markers) { }
 };

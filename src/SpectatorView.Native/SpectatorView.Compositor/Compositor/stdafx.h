@@ -12,6 +12,15 @@
 // Windows Header Files:
 #include <windows.h>
 
+#include <opencv2\aruco.hpp>
+#include <opencv2\calib3d.hpp>
+#include <opencv2\core.hpp>
+#include <opencv2\imgproc.hpp>
+#include <opencv2\highgui.hpp>
+
+#include <unordered_map>
+#include <memory>
+
 #include "DirectXHelper.h"
 
 #include "CompositorShared.h"

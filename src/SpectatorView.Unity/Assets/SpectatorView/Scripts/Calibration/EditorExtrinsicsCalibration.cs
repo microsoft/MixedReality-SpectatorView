@@ -218,7 +218,8 @@ namespace Microsoft.MixedReality.SpectatorView
                     request.SerializeAndWrite(writer);
 
                     writer.Flush();
-                    holographicCameraObserver.Broadcast(memoryStream.GetBuffer(), 0, memoryStream.Position);
+                    memoryStream.TryGetBuffer(out var buffer);
+                    holographicCameraObserver.Broadcast(buffer.Array, buffer.Offset, buffer.Count);
                 }
             }
             else
@@ -291,7 +292,8 @@ namespace Microsoft.MixedReality.SpectatorView
                     writer.Write(payload.Length);
                     writer.Write(payload);
                     writer.Flush();
-                    holographicCameraObserver.Broadcast(memoryStream.GetBuffer(), 0, memoryStream.Position);
+                    memoryStream.TryGetBuffer(out var buffer);
+                    holographicCameraObserver.Broadcast(buffer.Array, buffer.Offset, buffer.Count);
                     Debug.Log("Sent calibration data to the hololens device.");
                 }
             }

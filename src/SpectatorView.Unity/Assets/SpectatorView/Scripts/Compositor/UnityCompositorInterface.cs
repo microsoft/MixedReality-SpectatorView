@@ -4,13 +4,69 @@
 using System;
 using System.Runtime.InteropServices;
 using System.Text;
+using UnityEngine;
 
 namespace Microsoft.MixedReality.SpectatorView
 {
-    public enum FrameProviderDeviceType : int { BlackMagic = 0, Elgato = 1, None = 2 };
+    public enum FrameProviderDeviceType : int { BlackMagic = 0, Elgato = 1, AzureKinect_DepthCamera_Off = 2, AzureKinect_DepthCamera_NFOV = 3, AzureKinect_DepthCamera_WFOV = 4, None = 5 };
+    public enum OcclusionSetting : int { RawDepthCamera = 0, BodyTracking = 1};
     public enum VideoRecordingFrameLayout : int { Composite = 0, Quad = 1 };
+    public enum PreviewTextureMode : int { Composite = 0, Quad = 1, OcclusionMask = 2 }
 
 #if UNITY_EDITOR
+    internal struct CompositorVector3
+    {
+        public float x;
+        public float y;
+        public float z;
+
+        public Vector3 AsPosition()
+        {
+            return new Vector3(x, -y, z);
+        }
+
+        public Vector3 AsRodriguesRotation()
+        {
+            return new Vector3(x, y, z);
+        }
+    }
+
+    internal struct CompositorMarker
+    {
+        public int id;
+        public CompositorVector3 position;
+        public CompositorVector3 rotation;
+
+        public Marker AsMarker()
+        {
+            return SpectatorViewOpenCVInterface.CreateMarkerFromPositionAndRotation(id, position.AsPosition(), rotation.AsRodriguesRotation(), Matrix4x4.identity);
+        }
+    }
+
+    internal struct CompositorCameraIntrinsics
+    {
+        public float fx;
+        public float fy;
+        public float cx;
+        public float cy;
+        public int imageWidth;
+        public int imageHeight;
+
+        public CalculatedCameraIntrinsics AsCalculatedCameraIntrinsics()
+        {
+            return new CalculatedCameraIntrinsics(
+                reprojectionError: 0.0f,
+                focalLength: new Vector2(fx, fy),
+                imageWidth: (uint)imageWidth,
+                imageHeight: (uint)imageHeight,
+                principalPoint: new Vector2(cx, cy),
+                radialDistortion: Vector3.zero,
+                tangentialDistortion: Vector2.zero,
+                undistortedProjectionTransform: Matrix4x4.identity
+            );
+        }
+    }
+
     internal static class UnityCompositorInterface
     {
         private const string CompositorPluginDll = "SpectatorView.Compositor.UnityPlugin";
@@ -38,6 +94,12 @@ namespace Microsoft.MixedReality.SpectatorView
 
         [DllImport(CompositorPluginDll)]
         public static extern bool CreateUnityColorTexture(out IntPtr srv);
+
+        [DllImport(CompositorPluginDll)]
+        public static extern bool CreateUnityDepthCameraTexture(out IntPtr srv);
+
+        [DllImport(CompositorPluginDll)]
+        public static extern bool CreateUnityBodyMaskTexture(out IntPtr srv);
 
         [DllImport(CompositorPluginDll)]
         public static extern bool CreateUnityHoloTexture(out IntPtr srv);
@@ -82,6 +144,9 @@ namespace Microsoft.MixedReality.SpectatorView
         public static extern bool IsFrameProviderSupported([MarshalAs(UnmanagedType.I4)] FrameProviderDeviceType providerId);
 
         [DllImport(CompositorPluginDll)]
+        public static extern bool IsOcclusionSettingSupported([MarshalAs(UnmanagedType.I4)] OcclusionSetting setting);
+
+        [DllImport(CompositorPluginDll)]
         public static extern bool InitializeFrameProviderOnDevice([MarshalAs(UnmanagedType.I4)] FrameProviderDeviceType providerId);
 
         [DllImport(CompositorPluginDll)]
@@ -107,6 +172,30 @@ namespace Microsoft.MixedReality.SpectatorView
 
         [DllImport(CompositorPluginDll)]
         public static extern void SetCompositeFrameIndex(int index);
+
+        [DllImport(CompositorPluginDll)]
+        public static extern bool IsCameraCalibrationInformationAvailable();
+
+        [DllImport(CompositorPluginDll)]
+        public static extern void GetCameraCalibrationInformation(out CompositorCameraIntrinsics cameraIntrinsics);
+
+        [DllImport(CompositorPluginDll)]
+        public static extern bool IsArUcoMarkerDetectorSupported();
+
+        [DllImport(CompositorPluginDll)]
+        public static extern void StartArUcoMarkerDetector(float markerSize);
+
+        [DllImport(CompositorPluginDll)]
+        public static extern void StopArUcoMarkerDetector();
+
+        [DllImport(CompositorPluginDll)]
+        public static extern int GetLatestArUcoMarkerCount();
+
+        [DllImport(CompositorPluginDll)]
+        public static extern void GetLatestArUcoMarkers(int size, CompositorMarker[] markers);
+
+        [DllImport(CompositorPluginDll)]
+        public static extern bool TryGetLatestArUcoMarkerPose(int markerId, out CompositorVector3 position, out CompositorVector3 rotation);
     }
 #endif
 }

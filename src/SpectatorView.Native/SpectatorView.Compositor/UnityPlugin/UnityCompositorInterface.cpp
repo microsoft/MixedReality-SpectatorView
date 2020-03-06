@@ -22,6 +22,7 @@ static bool isRecording = false;
 static bool videoInitialized = false;
 
 static BYTE* colorBytes = new BYTE[FRAME_BUFSIZE_RGBA];
+static BYTE* depthBytes = new BYTE[FRAME_BUFSIZE_DEPTH16];
 static BYTE* holoBytes = new BYTE[FRAME_BUFSIZE_RGBA];
 
 #define NUM_VIDEO_BUFFERS 10
@@ -77,11 +78,15 @@ void FreeVideoBuffers()
 static ID3D11Texture2D* g_holoRenderTexture = nullptr;
 
 static ID3D11Texture2D* g_colorTexture = nullptr;
+static ID3D11Texture2D* g_depthCameraTexture = nullptr;
+static ID3D11Texture2D* g_bodyMaskTexture = nullptr;
 static ID3D11Texture2D* g_compositeTexture = nullptr;
 static ID3D11Texture2D* g_videoTexture = nullptr;
 static ID3D11Texture2D* g_outputTexture = nullptr;
 
 static ID3D11ShaderResourceView* g_UnityColorSRV = nullptr;
+static ID3D11ShaderResourceView* g_UnityDepthSRV = nullptr;
+static ID3D11ShaderResourceView* g_UnityBodySRV = nullptr;
 
 static ID3D11Device* g_pD3D11Device = NULL;
 
@@ -308,6 +313,25 @@ UNITYDLL void SetCompositeFrameIndex(int index)
         return ci->SetCompositeFrameIndex(index);
 }
 
+UNITYDLL bool IsCameraCalibrationInformationAvailable()
+{
+    if (ci != nullptr)
+    {
+        return ci->IsCameraCalibrationInformationAvailable();
+    }
+    else
+    {
+        return false;
+    }
+}
+
+UNITYDLL void GetCameraCalibrationInformation(CameraIntrinsics* cameraIntrinsics)
+{
+    if (ci != nullptr)
+    {
+        ci->GetCameraCalibrationInformation(cameraIntrinsics);
+    }
+}
 
 // Function to pass a callback to plugin-specific scripts
 EXTERN_C UnityRenderingEvent __declspec(dllexport) __stdcall GetRenderEventFunc()
@@ -359,6 +383,16 @@ UNITYDLL bool IsFrameProviderSupported(int providerId)
 	return ci->IsFrameProviderSupported((IFrameProvider::ProviderType) providerId);
 }
 
+UNITYDLL bool IsOcclusionSettingSupported(int setting)
+{
+    if (ci == nullptr)
+    {
+        ci = new CompositorInterface();
+    }
+
+    return ci->IsOcclusionSettingSupported((IFrameProvider::OcclusionSetting) setting);
+}
+
 UNITYDLL bool InitializeFrameProviderOnDevice(int providerId)
 {
     if (g_outputTexture == nullptr ||
@@ -379,7 +413,7 @@ UNITYDLL bool InitializeFrameProviderOnDevice(int providerId)
     }
 
     ci->SetFrameProvider((IFrameProvider::ProviderType) providerId);
-    isInitialized = ci->Initialize(g_pD3D11Device, g_UnityColorSRV, g_outputTexture);
+    isInitialized = ci->Initialize(g_pD3D11Device, g_UnityColorSRV, g_UnityDepthSRV, g_UnityBodySRV, g_outputTexture);
 
     return isInitialized;
 }
@@ -475,6 +509,8 @@ UNITYDLL void Reset()
 {
     EnterCriticalSection(&lock);
     g_colorTexture = nullptr;
+    g_depthCameraTexture = nullptr;
+    g_bodyMaskTexture = nullptr;
     g_compositeTexture = nullptr;
     g_videoTexture = nullptr;
     g_outputTexture = nullptr;
@@ -482,6 +518,8 @@ UNITYDLL void Reset()
     g_holoRenderTexture = nullptr;
 
     g_UnityColorSRV = nullptr;
+    g_UnityDepthSRV = nullptr;
+    g_UnityBodySRV = nullptr;
 
     isInitialized = false;
 
@@ -564,5 +602,98 @@ UNITYDLL bool CreateUnityColorTexture(ID3D11ShaderResourceView*& srv)
 
     srv = g_UnityColorSRV;
     return true;
+}
+
+UNITYDLL bool CreateUnityDepthCameraTexture(ID3D11ShaderResourceView*& srv)
+{
+    if (g_UnityDepthSRV == nullptr && g_pD3D11Device != nullptr)
+    {
+        g_depthCameraTexture = DirectXHelper::CreateTexture(g_pD3D11Device, depthBytes, FRAME_WIDTH, FRAME_HEIGHT, FRAME_BPP_DEPTH16, DXGI_FORMAT_R16_UNORM);
+
+        if (g_depthCameraTexture == nullptr)
+        {
+            return false;
+        }
+
+        g_UnityDepthSRV = DirectXHelper::CreateShaderResourceView(g_pD3D11Device, g_depthCameraTexture, DXGI_FORMAT_R16_UNORM);
+        if (g_UnityDepthSRV == nullptr)
+        {
+            return false;
+        }
+    }
+
+    srv = g_UnityDepthSRV;
+    return true;
+}
+
+UNITYDLL bool CreateUnityBodyMaskTexture(ID3D11ShaderResourceView*& srv)
+{
+    if (g_UnityBodySRV == nullptr && g_pD3D11Device != nullptr)
+    {
+        g_bodyMaskTexture = DirectXHelper::CreateTexture(g_pD3D11Device, depthBytes, FRAME_WIDTH, FRAME_HEIGHT, FRAME_BPP_DEPTH16, DXGI_FORMAT_R16_UNORM);
+
+        if (g_bodyMaskTexture == nullptr)
+        {
+            return false;
+        }
+
+        g_UnityBodySRV = DirectXHelper::CreateShaderResourceView(g_pD3D11Device, g_bodyMaskTexture, DXGI_FORMAT_R16_UNORM);
+        if (g_UnityBodySRV == nullptr)
+        {
+            return false;
+        }
+    }
+
+    srv = g_UnityBodySRV;
+    return true;
+}
+
+
+UNITYDLL bool IsArUcoMarkerDetectorSupported()
+{
+    if (ci != nullptr)
+    {
+        return ci->IsArUcoMarkerDetectorSupported();
+    }
+    else
+    {
+        return false;
+    }
+}
+
+UNITYDLL void StartArUcoMarkerDetector(float markerSize)
+{
+    if (ci != nullptr)
+    {
+        ci->StartArUcoMarkerDetector(markerSize);
+    }
+}
+
+UNITYDLL void StopArUcoMarkerDetector()
+{
+    if (ci != nullptr)
+    {
+        ci->StopArUcoMarkerDetector();
+    }
+}
+
+UNITYDLL int GetLatestArUcoMarkerCount()
+{
+    if (ci != nullptr)
+    {
+        return ci->GetLatestArUcoMarkerCount();
+    }
+    else
+    {
+        return 0;
+    }
+}
+
+UNITYDLL void GetLatestArUcoMarkers(int size, Marker* markers)
+{
+    if (ci != nullptr)
+    {
+        ci->GetLatestArUcoMarkers(size, markers);
+    }
 }
 #pragma endregion CreateExternalTextures

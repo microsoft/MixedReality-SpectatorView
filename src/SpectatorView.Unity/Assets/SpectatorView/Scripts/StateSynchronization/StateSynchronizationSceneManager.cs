@@ -210,7 +210,8 @@ namespace Microsoft.MixedReality.SpectatorView
                 message.Flush();
                 foreach (INetworkConnection connection in connections)
                 {
-                    connection.Send(memoryStream.GetBuffer(), 0, memoryStream.Position);
+                    memoryStream.TryGetBuffer(out var buffer);
+                    connection.Send(buffer.Array, buffer.Offset, buffer.Count);
                 }
             }
         }
@@ -475,7 +476,8 @@ namespace Microsoft.MixedReality.SpectatorView
             {
                 component.ComponentBroadcasterService.WriteHeader(message, component, ComponentBroadcasterChangeType.Destroyed);
                 message.Flush();
-                Send(connections, memoryStream.GetBuffer(), 0, memoryStream.Position);
+                memoryStream.TryGetBuffer(out var buffer);
+                Send(connections, buffer.Array, buffer.Offset, buffer.Count);
             }
         }
 

@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
     [Description("Compositor Preview")]
     internal class FullScreenCompositorWindow : CompositorWindowBase<FullScreenCompositorWindow>
     {
-        public int TextureRenderMode { get; set; }
+        public PreviewTextureMode PreviewTextureMode { get; set; }
 
         protected override Rect ComputeCompositeGUIRect(float frameWidth, float frameHeight)
         {
@@ -45,7 +45,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
 
         private void OnGUI()
         {
-            CompositeTextureGUI(TextureRenderMode);
+            CompositeTextureGUI(PreviewTextureMode);
         }
 
 #if UNITY_EDITOR_WIN

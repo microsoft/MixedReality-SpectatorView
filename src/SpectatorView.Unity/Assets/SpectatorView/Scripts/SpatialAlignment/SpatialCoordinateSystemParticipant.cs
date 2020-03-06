@@ -182,7 +182,8 @@ namespace Microsoft.MixedReality.SpectatorView
                 writer.Write(LocalizationDataExchangeCommand);
                 writeCallback(writer);
                 writer.Flush();
-                NetworkConnection.Send(stream.GetBuffer(), 0, stream.Position);
+                stream.TryGetBuffer(out var buffer);
+                NetworkConnection.Send(buffer.Array, buffer.Offset, buffer.Count);
             }
         }
 
@@ -212,7 +213,8 @@ namespace Microsoft.MixedReality.SpectatorView
                     writer.Write(supportedLocalizer);
                 }
                 writer.Flush();
-                connection.Send(stream.GetBuffer(), 0, stream.Position);
+                stream.TryGetBuffer(out var buffer);
+                connection.Send(buffer.Array, buffer.Offset, buffer.Count);
             }
         }
 
