@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &2929832388891410874
+--- !u!1 &2912788017436087975
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,12 +8,11 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1142001103920059233}
-  - component: {fileID: 8817127207551674330}
-  - component: {fileID: 3390207267290998871}
-  - component: {fileID: 3946007032460335880}
-  - component: {fileID: 8557300901145373707}
-  - component: {fileID: 837158114543160490}
+  - component: {fileID: 2030528803305831114}
+  - component: {fileID: 8174691401959098851}
+  - component: {fileID: 4175127086783234664}
+  - component: {fileID: 1222213691222984268}
+  - component: {fileID: 6451531895194217352}
   m_Layer: 0
   m_Name: SpectatorViewSettings
   m_TagString: Untagged
@@ -21,13 +20,13 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1142001103920059233
+--- !u!4 &2030528803305831114
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2929832388891410874}
+  m_GameObject: {fileID: 2912788017436087975}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -35,13 +34,13 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8817127207551674330
+--- !u!114 &8174691401959098851
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2929832388891410874}
+  m_GameObject: {fileID: 2912788017436087975}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 98b6067df2adcbd4c977f3d14b77239c, type: 3}
@@ -50,26 +49,26 @@ MonoBehaviour:
   automaticallyBroadcastAllGameObjects: 0
   forcePerformanceReporting: 0
   forceLoadAllAssetsDuringInitialization: 0
---- !u!114 &3390207267290998871
+--- !u!114 &4175127086783234664
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2929832388891410874}
+  m_GameObject: {fileID: 2912788017436087975}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7ec336b47b3a517468767a9a595153e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   prioritizedInitializers: []
---- !u!114 &3946007032460335880
+--- !u!114 &1222213691222984268
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2929832388891410874}
+  m_GameObject: {fileID: 2912788017436087975}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e7b4d5c48f786a54fb34ca53054971cf, type: 3}
@@ -77,35 +76,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enableMobileRecordingService: 1
   overrideMobileRecordingServiceVisualPrefab: {fileID: 0}
---- !u!114 &8557300901145373707
+--- !u!114 &6451531895194217352
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2929832388891410874}
+  m_GameObject: {fileID: 2912788017436087975}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1f9490c8de72d2d44ac469f8bf46fb39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  overrideConnectionManagerPrefab: {fileID: 0}
   enableMobileNetworkConfigurationVisual: 1
   overrideMobileNetworkConfigurationVisualPrefab: {fileID: 0}
---- !u!114 &837158114543160490
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2929832388891410874}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b31b38d11c2c8dc4487ec945d77e000c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  configuration:
-    AccountDomain: 
-    AccountId: ENTER_ACCOUNT_ID
-    AccountKey: ENTER_ACCOUNT_KEY
-    AccessToken: 
-    AuthenticationToken: 
