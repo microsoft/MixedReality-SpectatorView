@@ -493,6 +493,10 @@ namespace Microsoft.MixedReality.SpectatorView
             {
                 if (currentLocalizationSession != null)
                 {
+                    // When connecting to the StationaryCameraBroadcaster within the editor and performing spatial coordinate sharing through it,
+                    // both sessions are running within the editor. Completing one part of the session will leave a completed task assigned to
+                    // the remote participant within the same session. That session should be cleaned up here to allow the local session
+                    // to start.
                     if (currentLocalizationSession.Participant == participant || currentLocalizationSession.CompletionSource.Task.IsCompleted)
                     {
                         sessionToCancel = currentLocalizationSession;
