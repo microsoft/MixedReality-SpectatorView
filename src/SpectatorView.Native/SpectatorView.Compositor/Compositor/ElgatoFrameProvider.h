@@ -19,8 +19,6 @@
 #include <bdaiface.h>
 #include "qedit.h"
 
-#include <atlcomcli.h>
-
 #pragma comment(lib, "wmcodecdspuuid")    
 #pragma comment(lib, "dxguid")
 #pragma comment(lib, "strmbase")
@@ -43,7 +41,7 @@ public:
     ElgatoFrameProvider(bool useCPU = false);
     ~ElgatoFrameProvider();
 
-    virtual HRESULT Initialize(ID3D11ShaderResourceView* colorSRV, ID3D11ShaderResourceView* depthSRV, ID3D11Texture2D* outputTexture);
+    virtual HRESULT Initialize(ID3D11ShaderResourceView* colorSRV, ID3D11ShaderResourceView* depthSRV, ID3D11ShaderResourceView* bodySRV, ID3D11Texture2D* outputTexture);
     virtual LONGLONG GetTimestamp(int frame);
 
     virtual LONGLONG GetDurationHNS();
