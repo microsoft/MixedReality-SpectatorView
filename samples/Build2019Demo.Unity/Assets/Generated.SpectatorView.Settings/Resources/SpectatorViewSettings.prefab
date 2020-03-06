@@ -108,5 +108,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f9490c8de72d2d44ac469f8bf46fb39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  overrideConnectionManagerPrefab: {fileID: 0}
   enableMobileNetworkConfigurationVisual: 1
   overrideMobileNetworkConfigurationVisualPrefab: {fileID: 0}
