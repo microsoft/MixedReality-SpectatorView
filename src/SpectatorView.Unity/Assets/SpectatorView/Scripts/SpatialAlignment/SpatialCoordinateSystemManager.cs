@@ -253,6 +253,11 @@ namespace Microsoft.MixedReality.SpectatorView
             }
 
             CleanUpParticipants();
+
+            if (currentLocalizationSession != null)
+            {
+                currentLocalizationSession.Session.Cancel();
+            }
         }
 
         private void Update()
