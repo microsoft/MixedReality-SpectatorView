@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+#if UNITY_EDITOR
 using NUnit.Framework;
 using System.Collections;
 using UnityEngine;
@@ -192,3 +193,4 @@ namespace Microsoft.MixedReality.SpectatorView.Tests
         }
     }
 }
+#endif

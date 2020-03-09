@@ -25,7 +25,7 @@
 ** -LICENSE-END-
 */
 
-#include "stdafx.h"
+#include "pch.h"
 
 #if defined(INCLUDE_BLACKMAGIC)
 #include <comutil.h>

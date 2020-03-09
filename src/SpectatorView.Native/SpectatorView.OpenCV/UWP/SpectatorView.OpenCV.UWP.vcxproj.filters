@@ -30,5 +30,8 @@
       <Filter>Shared Files</Filter>
     </ClInclude>
     <ClInclude Include="..\SharedFiles\SpectatorViewPlugin.h" />
+    <ClInclude Include="..\SharedFiles\DataStructures.h">
+      <Filter>Shared Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -28,6 +28,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
             ArUcoMarkerVisualDetectorSpatialLocalizer.Id,
             QRCodeMarkerVisualSpatialLocalizer.Id,
             QRCodeMarkerVisualDetectorSpatialLocalizer.Id,
+            WorldAnchorSpatialLocalizer.Id,
             new Guid("FB077E49-B855-453F-9FB5-77187B1AF784") // SpatialAnchorsLocalizer (There is no asmdef to reference for ASA)
         };
 
@@ -51,13 +52,12 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
         private const string calibrationNotLoadedMessage = "No camera calibration received";
         private const int horizontalFrameRectangleMargin = 50;
         protected const int textureRenderModeComposite = 0;
-        protected const int textureRenderModeSplit = 1;
         private const float quadPadding = 4;
         protected const int connectAndDisconnectButtonWidth = 90;
         private const int settingsButtonWidth = 24;
         private Dictionary<string, Rect> buttonRects = new Dictionary<string, Rect>();
 
-        protected Guid selectedLocalizerId = Guid.Empty;
+        protected Dictionary<string, Guid> selectedLocalizerIds = new Dictionary<string, Guid>();
 
         protected virtual void OnEnable()
         {
@@ -65,12 +65,21 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
             renderFrameHeight = CompositionManager.GetVideoFrameHeight();
             aspect = ((float)renderFrameWidth) / renderFrameHeight;
 
-            Guid.TryParse(PlayerPrefs.GetString(nameof(selectedLocalizerId)), out selectedLocalizerId);
+            foreach (string appLabel in new[] { AppDeviceTypeLabel, HolographicCameraDeviceTypeLabel })
+            {
+                if (Guid.TryParse(PlayerPrefs.GetString($"{appLabel}_{nameof(selectedLocalizerIds)}"), out Guid localizerId))
+                {
+                    selectedLocalizerIds[appLabel] = localizerId;
+                }
+            }
         }
 
         protected virtual void OnDisable()
         {
-            PlayerPrefs.SetString(nameof(selectedLocalizerId), selectedLocalizerId.ToString());
+            foreach (var pair in selectedLocalizerIds)
+            {
+                PlayerPrefs.SetString($"{pair.Key}_{nameof(selectedLocalizerIds)}", pair.Value.ToString());
+            }
             PlayerPrefs.Save();
         }
 
@@ -187,6 +196,9 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
             ISpatialLocalizer[] localizers = null;
             bool wasEnabled = GUI.enabled;
 
+            Guid selectedLocalizerId = Guid.Empty;
+            selectedLocalizerIds.TryGetValue(deviceTypeLabel, out selectedLocalizerId);
+
             if (SpatialCoordinateSystemManager.IsInitialized && spatialCoordinateSystemParticipant != null)
             {
                 var supportedPeerLocalizers = spatialCoordinateSystemParticipant?.GetPeerSupportedLocalizersAsync();
@@ -231,6 +243,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
                     selectedLocalizerIndex < localizers.Length)
                 {
                     selectedLocalizerId = localizers[selectedLocalizerIndex].SpatialLocalizerId;
+                    selectedLocalizerIds[deviceTypeLabel] = selectedLocalizerId;
                     SpatialLocalizationSettingsGUI(deviceTypeLabel, selectedLocalizerIndex, localizers);
                 }
             }
@@ -288,7 +301,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
             return GUILayoutUtility.GetRect(frameWidth, frameHeight);
         }
 
-        protected void CompositeTextureGUI(int textureRenderMode)
+        protected void CompositeTextureGUI(PreviewTextureMode previewTextureMode)
         {
             UpdateFrameDimensions();
 
@@ -299,13 +312,17 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
                 CompositionManager compositionManager = GetCompositionManager();
                 if (compositionManager != null && compositionManager.TextureManager != null)
                 {
-                    if (textureRenderMode == textureRenderModeSplit)
+                    switch (previewTextureMode)
                     {
-                        Graphics.DrawTexture(framesRect, compositionManager.TextureManager.quadViewOutputTexture, compositionManager.TextureManager.IgnoreAlphaMaterial);
-                    }
-                    else
-                    {
-                        Graphics.DrawTexture(framesRect, compositionManager.TextureManager.previewTexture);
+                        case PreviewTextureMode.Composite:
+                            Graphics.DrawTexture(framesRect, compositionManager.TextureManager.previewTexture);
+                            break;
+                        case PreviewTextureMode.Quad:
+                            Graphics.DrawTexture(framesRect, compositionManager.TextureManager.quadViewOutputTexture, compositionManager.TextureManager.IgnoreAlphaMaterial);
+                            break;
+                        case PreviewTextureMode.OcclusionMask:
+                            Graphics.DrawTexture(framesRect, compositionManager.TextureManager.blurOcclusionTexture, compositionManager.TextureManager.IgnoreAlphaMaterial);
+                            break;
                     }
                 }
             }

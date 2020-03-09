@@ -18,7 +18,7 @@ namespace Microsoft.MixedReality.SpectatorView
     /// </summary>
     public class CompositorWorldAnchorLocalizationManager : Singleton<CompositorWorldAnchorLocalizationManager>
     {
-        private const string CompositorWorldAnchorId = "Compositor_SharedSpatialCoordinate";
+        public const string CompositorWorldAnchorId = "Compositor_SharedSpatialCoordinate";
 
         private readonly Dictionary<SpatialCoordinateSystemParticipant, Task<bool>> participantLocalizationTasks = new Dictionary<SpatialCoordinateSystemParticipant, Task<bool>>();
 
@@ -37,11 +37,22 @@ namespace Microsoft.MixedReality.SpectatorView
         private void OnParticipantConnected(SpatialCoordinateSystemParticipant participant)
         {
             // When a new participant connects, send a request to re-load the shared spatial coordinate world anchor.
-            participantLocalizationTasks.Add(participant, SpatialCoordinateSystemManager.Instance.RunRemoteLocalizationAsync(participant.NetworkConnection, WorldAnchorSpatialLocalizer.Id, new WorldAnchorSpatialLocalizationSettings
+            participantLocalizationTasks.Add(participant, ConditionallyRunWorldAnchorLocalizationAsync(participant));
+        }
+
+        private async Task<bool> ConditionallyRunWorldAnchorLocalizationAsync(SpatialCoordinateSystemParticipant participant)
+        {
+            var supportedLocalizers = await participant.GetPeerSupportedLocalizersAsync();
+            if (!supportedLocalizers.Contains(WorldAnchorSpatialLocalizer.Id))
+            {
+                return false;
+            }
+
+            return await SpatialCoordinateSystemManager.Instance.RunRemoteLocalizationAsync(participant.NetworkConnection, WorldAnchorSpatialLocalizer.Id, new WorldAnchorSpatialLocalizationSettings
             {
                 Mode = WorldAnchorLocalizationMode.LocateExistingAnchor,
                 AnchorId = CompositorWorldAnchorId
-            }));
+            });
         }
 
         private void OnParticipantDisconnected(SpatialCoordinateSystemParticipant participant)
@@ -71,16 +82,20 @@ namespace Microsoft.MixedReality.SpectatorView
 
             if (localizationSucceeded)
             {
-                // Once the specific localizer has found a shared coordinate, ask the WorldAnchorSpatialLocalizer
-                // to create a WorldAnchor-based coordinate at the same location, and persist that coordinate across sessions.
-                participantLocalizationTasks[participant] = currentTask = SpatialCoordinateSystemManager.Instance.RunRemoteLocalizationAsync(participant.NetworkConnection, WorldAnchorSpatialLocalizer.Id, new WorldAnchorSpatialLocalizationSettings
+                var supportedLocalizers = await participant.GetPeerSupportedLocalizersAsync();
+                if (supportedLocalizers.Contains(WorldAnchorSpatialLocalizer.Id))
                 {
-                    Mode = WorldAnchorLocalizationMode.CreateAnchorAtWorldTransform,
-                    AnchorId = CompositorWorldAnchorId,
-                    AnchorPosition = participant.PeerSpatialCoordinateWorldPosition,
-                    AnchorRotation = participant.PeerSpatialCoordinateWorldRotation
-                });
-                await currentTask;
+                    // Once the specific localizer has found a shared coordinate, ask the WorldAnchorSpatialLocalizer
+                    // to create a WorldAnchor-based coordinate at the same location, and persist that coordinate across sessions.
+                    participantLocalizationTasks[participant] = currentTask = SpatialCoordinateSystemManager.Instance.RunRemoteLocalizationAsync(participant.NetworkConnection, WorldAnchorSpatialLocalizer.Id, new WorldAnchorSpatialLocalizationSettings
+                    {
+                        Mode = WorldAnchorLocalizationMode.CreateAnchorAtWorldTransform,
+                        AnchorId = CompositorWorldAnchorId,
+                        AnchorPosition = participant.PeerSpatialCoordinateWorldPosition,
+                        AnchorRotation = participant.PeerSpatialCoordinateWorldRotation
+                    });
+                    await currentTask;
+                }
             }
             else
             {

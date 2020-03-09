@@ -63,7 +63,7 @@
       <CompileAsWinRT>false</CompileAsWinRT>
       <!-- Keep $(PropertyGroup) values for Build CI -->
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PrecompiledHeaderFile>..\SharedFiles\pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -80,7 +80,7 @@
       <CompileAsWinRT>false</CompileAsWinRT>
       <!-- Keep $(PropertyGroup) values for Build CI -->
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PrecompiledHeaderFile>..\SharedFiles\pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -94,6 +94,7 @@
   <ItemGroup>
     <ClInclude Include="..\SharedFiles\ArUcoMarkerDetector.h" />
     <ClInclude Include="..\SharedFiles\Calibration.h" />
+    <ClInclude Include="..\SharedFiles\DataStructures.h" />
     <ClInclude Include="..\SharedFiles\pch.h" />
     <ClInclude Include="..\SharedFiles\SpectatorViewPlugin.h" />
   </ItemGroup>

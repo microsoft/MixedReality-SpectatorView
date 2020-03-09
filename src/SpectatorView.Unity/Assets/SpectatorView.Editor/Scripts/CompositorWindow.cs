@@ -22,7 +22,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
         private const float statisticsUpdateCooldownTimeSeconds = 0.1f;
         private const int lowQueuedOutputFrameWarningMark = 6;
         private Vector2 scrollPosition;
-        private int textureRenderMode;
+        private PreviewTextureMode previewTextureMode;
         private string framerateStatisticsMessage;
         private Color framerateStatisticsColor = Color.green;
 
@@ -30,11 +30,15 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
         private bool recordingFoldout;
         private bool colorCorrectionFoldout;
         private bool hologramSettingsFoldout;
+        private bool occlusionSettingsFoldout;
 
         private float hologramAlpha;
 
         private float statisticsUpdateTimeSeconds = 0.0f;
         private string appIPAddress;
+
+        private bool? isAzureKinectBodyTrackingSdkInstalledInUnity;
+        private static readonly string[] azureKinectBodyTrackingSdkComponents = new[] { "onnxruntime.dll", "dnn_model_2_0.onnx", "cudnn64_7.dll", "cublas64_100.dll", "cudart64_100.dll" };
 
         private static string holographicCameraIPAddressKey = $"{nameof(CompositorWindow)}.{nameof(holographicCameraIPAddress)}";
         private static string appIPAddressKey = $"{nameof(CompositorWindow)}.{nameof(appIPAddress)}";
@@ -74,6 +78,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
             {
                 NetworkConnectionGUI();
                 CompositeGUI();
+                OcclusionSettingsGUI();
                 RecordingGUI();
                 ColorCorrectionGUI();
                 HologramSettingsGUI();
@@ -141,32 +146,85 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
                         {
                             GUI.enabled = compositionManager == null || !compositionManager.IsVideoFrameProviderInitialized;
                             GUIContent label = new GUIContent("Video source", "The video capture card you want to use as input for compositing.");
-                            compositionManager.CaptureDevice = (FrameProviderDeviceType)EditorGUILayout.Popup(label, ((int)compositionManager.CaptureDevice),
-                                Enum.GetValues(typeof(FrameProviderDeviceType))
+
+                            var supportedDevices = Enum.GetValues(typeof(FrameProviderDeviceType))
                                 .Cast<FrameProviderDeviceType>()
-                                .Where(provider => compositionManager.IsFrameProviderSupported(provider) || (provider == FrameProviderDeviceType.None))
+                                .Where(provider => compositionManager.IsFrameProviderSupported(provider) || (provider == FrameProviderDeviceType.None)).ToList();
+                            var selectedIndex = supportedDevices.IndexOf(compositionManager.CaptureDevice);
+                            if (selectedIndex < 0)
+                            {
+                                selectedIndex = supportedDevices.Count - 1;
+                            }
+
+                            selectedIndex = EditorGUILayout.Popup(label, selectedIndex,
+                                supportedDevices
                                 .Select(x => x.ToString())
                                 .ToArray());
+
+                            compositionManager.CaptureDevice = supportedDevices[selectedIndex];
+
+                            if ((supportedDevices[selectedIndex] != FrameProviderDeviceType.AzureKinect_DepthCamera_NFOV && supportedDevices[selectedIndex] != FrameProviderDeviceType.AzureKinect_DepthCamera_WFOV) || compositionManager.VideoRecordingLayout == VideoRecordingFrameLayout.Quad)
+                            {
+                                GUI.enabled = false;
+                            }
+
+                            EditorGUILayout.EndHorizontal();
+                            EditorGUILayout.Space();
+                            EditorGUILayout.BeginHorizontal();
+
+                            GUIContent occlusionLabel = new GUIContent("Occlusion Mode", "The occlusion mode used to determine if real-world or holographic content is displayed using depth information from supported cameras.");
+
+                            var occlusionModes = Enum.GetValues(typeof(OcclusionSetting))
+                                .Cast<OcclusionSetting>()
+                                .Where(setting => compositionManager.IsOcclusionSettingSupported(setting))
+                                .ToList();
+
+                            if (occlusionModes.Count > 0)
+                            {
+                                selectedIndex = occlusionModes.IndexOf(compositionManager.OcclusionMode);
+
+                                if (selectedIndex < 0)
+                                {
+                                    selectedIndex = 0;
+                                }
+
+                                selectedIndex = EditorGUILayout.Popup(occlusionLabel, selectedIndex, occlusionModes
+                                    .Select(x => x.ToString())
+                                    .ToArray());
+
+                                compositionManager.OcclusionMode = occlusionModes[selectedIndex];
+                            }
+
                             GUI.enabled = true;
+
+                            if (IsAzureKinectFrameProvider(compositionManager.CaptureDevice) && compositionManager.OcclusionMode == OcclusionSetting.BodyTracking && !IsAzureKinectBodyTrackingSDKInstalledInUnity())
+                            {
+                                var previousColor = GUI.backgroundColor;
+                                GUI.backgroundColor = Color.red;
+                                if (GUILayout.Button(new GUIContent("Install Required Components", "Copies components needed for the Azure Kinect Body Tracking into your Unity installation directory (requires elevation)"), GUILayout.Width(250.0f)))
+                                {
+                                    InstallAzureKinectBodyTrackingComponents();
+                                }
+                                GUI.backgroundColor = previousColor;
+                            }
                         }
                     }
                     EditorGUILayout.EndHorizontal();
-
                     EditorGUILayout.Space();
-
                     EditorGUILayout.BeginHorizontal();
                     {
-                        string[] compositionOptions = new string[] { "Final composite", "Intermediate textures" };
-                        GUIContent renderingModeLabel = new GUIContent("Preview display", "Choose between displaying the composited video texture or seeing intermediate textures displayed in 4 sections (bottom left: input video, top left: opaque hologram, top right: hologram alpha mask, bottom right: hologram alpha-blended onto video)");
-                        textureRenderMode = EditorGUILayout.Popup(renderingModeLabel, textureRenderMode, compositionOptions);
+                        string[] compositionOptions = new string[] { "Final composite", "Intermediate textures", "Occlusion Mask" };
+                        GUIContent renderingModeLabel = new GUIContent("Preview display", "Choose between displaying the composited video texture, seeing intermediate textures displayed in 4 sections (bottom left: input video, top left: opaque hologram, top right: hologram alpha mask, bottom right: hologram alpha-blended onto video), or viewing the occlusion mask.");
+                        previewTextureMode = (PreviewTextureMode)EditorGUILayout.Popup(renderingModeLabel, (int)previewTextureMode, compositionOptions);
                         if (compositionManager != null && compositionManager.TextureManager != null)
                         {
-                            compositionManager.TextureManager.IsQuadrantVideoFrameNeededForPreviewing = textureRenderMode == (int)VideoRecordingFrameLayout.Quad;
+                            // Make sure the textures required for quadrant viewing are created if needed.
+                            compositionManager.TextureManager.IsQuadrantVideoFrameNeededForPreviewing = (previewTextureMode == PreviewTextureMode.Quad);
                         }
                         FullScreenCompositorWindow fullscreenWindow = FullScreenCompositorWindow.TryGetWindow();
                         if (fullscreenWindow != null)
                         {
-                            fullscreenWindow.TextureRenderMode = textureRenderMode;
+                            fullscreenWindow.PreviewTextureMode = previewTextureMode;
                         }
 
                         if (GUILayout.Button("Fullscreen", GUILayout.Width(120)))
@@ -180,7 +238,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
                 EditorGUILayout.EndVertical();
 
                 // Rendering
-                CompositeTextureGUI(textureRenderMode);
+                CompositeTextureGUI(previewTextureMode);
             }
             EditorGUILayout.EndVertical();
         }
@@ -202,7 +260,17 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
                         GUI.enabled = compositionManager != null && !compositionManager.IsRecording();
                         string[] compositionOptions = new string[] { "Normal", "Split channels" };
                         GUIContent renderingModeLabel = new GUIContent("Video output mode", "Choose between recording the composited video texture or recording intermediate textures displayed in 4 sections (bottom left: input video, top left: opaque hologram, top right: hologram alpha mask, bottom right: hologram alpha-blended onto video)");
-                        compositionManager.VideoRecordingLayout = (VideoRecordingFrameLayout)EditorGUILayout.Popup(renderingModeLabel, (int)compositionManager.VideoRecordingLayout, compositionOptions);
+                        int layout = 0;
+                        if (compositionManager != null)
+                        {
+                            layout = (int)compositionManager.VideoRecordingLayout;
+                        }
+
+                        layout = EditorGUILayout.Popup(renderingModeLabel, layout, compositionOptions);
+                        if (compositionManager != null)
+                        {
+                            compositionManager.VideoRecordingLayout = (VideoRecordingFrameLayout)layout;
+                        }
                         GUI.enabled = wasEnabled;
                     }
                     EditorGUILayout.EndHorizontal();
@@ -238,6 +306,68 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
                     }
                 }
                 EditorGUILayout.EndVertical();
+            }
+        }
+
+        private void OcclusionSettingsGUI()
+        {
+            occlusionSettingsFoldout = EditorGUILayout.Foldout(occlusionSettingsFoldout, "Occlusion Settings");
+            if (occlusionSettingsFoldout)
+            {
+                CompositionManager compositionManager = GetCompositionManager();
+                bool running = compositionManager != null && compositionManager.TextureManager != null;
+                if (running)
+                {
+                    if (!compositionManager.IsOcclusionSettingSupported(compositionManager.OcclusionMode))
+                    {
+                        RenderTitle("The current camera does not support occlusion.", Color.clear);
+                    }
+                    else if (compositionManager.OcclusionMode == OcclusionSetting.BodyTracking)
+                    {
+                        RenderTitle("Body Tracking Settings", Color.clear);
+                        EditorGUILayout.BeginHorizontal();
+                        {
+                            GUIContent label = new GUIContent("Blur Size");
+                            compositionManager.TextureManager.blurSize = EditorGUILayout.Slider(
+                                label,
+                                compositionManager.TextureManager.blurSize, 0, 10);
+                        }
+                        EditorGUILayout.EndHorizontal();
+                        EditorGUILayout.BeginHorizontal();
+                        {
+                            GUIContent label = new GUIContent("Number of Blur Passes");
+                            compositionManager.TextureManager.numBlurPasses = (int) EditorGUILayout.Slider(
+                                label,
+                                compositionManager.TextureManager.numBlurPasses, 1, 5);
+                        }
+                        EditorGUILayout.EndHorizontal();
+                    }
+                    else if (compositionManager.OcclusionMode == OcclusionSetting.RawDepthCamera)
+                    {
+                        RenderTitle("Raw Depth Camera Settings", Color.clear);
+                        EditorGUILayout.BeginHorizontal();
+                        {
+                            GUIContent label = new GUIContent("Blur Size");
+                            compositionManager.TextureManager.blurSize = EditorGUILayout.Slider(
+                                label,
+                                compositionManager.TextureManager.blurSize, 0, 10);
+                        }
+                        EditorGUILayout.EndHorizontal();
+                        EditorGUILayout.BeginHorizontal();
+                        {
+                            GUIContent label = new GUIContent("Number of Blur Passes");
+                            compositionManager.TextureManager.numBlurPasses = (int) EditorGUILayout.Slider(
+                                label,
+                                compositionManager.TextureManager.numBlurPasses, 1, 5);
+                        }
+                        EditorGUILayout.EndHorizontal();
+                    }
+                }
+                else
+                {
+                    RenderTitle("Updating occlusion settings is not possible when the compositor isn't running.", Color.green);
+                }
+                GUI.enabled = true;
             }
         }
 
@@ -454,6 +584,69 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
         private string GetFramerateStatistics(CompositionManager compositionManager, out float average)
         {
             return GetStatsString("Compositor framerate", compositionManager.FramerateStatistics, out average);
+        }
+
+        private static bool IsAzureKinectFrameProvider(FrameProviderDeviceType captureDevice)
+        {
+            return captureDevice == FrameProviderDeviceType.AzureKinect_DepthCamera_Off ||
+                captureDevice == FrameProviderDeviceType.AzureKinect_DepthCamera_NFOV ||
+                captureDevice == FrameProviderDeviceType.AzureKinect_DepthCamera_WFOV;
+        }
+
+        private bool IsAzureKinectBodyTrackingSDKInstalledInUnity()
+        {
+            if (isAzureKinectBodyTrackingSdkInstalledInUnity == null)
+            {
+                var unityInstallDirectory = AppDomain.CurrentDomain.BaseDirectory;
+                var componentPaths = azureKinectBodyTrackingSdkComponents.Select(component => Path.Combine(unityInstallDirectory, component));
+                isAzureKinectBodyTrackingSdkInstalledInUnity = componentPaths.All(path => File.Exists(path));
+            }
+
+            return isAzureKinectBodyTrackingSdkInstalledInUnity.Value;
+        }
+
+        private void InstallAzureKinectBodyTrackingComponents()
+        {
+            var rootPath = Path.GetDirectoryName(Application.dataPath.Replace(@"/", @"\"));
+            string componentSourceDirectory = null;
+
+            var assets = AssetDatabase.FindAssets(Path.GetFileNameWithoutExtension(azureKinectBodyTrackingSdkComponents[0]));
+            if (assets.Length == 1)
+            {
+                var assetPath = AssetDatabase.GUIDToAssetPath(assets[0]).Replace(@"/", @"\");
+                componentSourceDirectory = Path.GetDirectoryName(Path.Combine(rootPath, assetPath));
+            }
+            else if (assets.Length == 0)
+            {
+                UnityEngine.Debug.LogError($"Failed to find the source components to copy in your Unity installation");
+                return;
+            }
+            else
+            {
+                UnityEngine.Debug.LogError($"Failed to find source directory to install {azureKinectBodyTrackingSdkComponents[0]}: multiple copies were found in the Unity assets directory");
+                return;
+            }
+
+            foreach (var component in azureKinectBodyTrackingSdkComponents)
+            {
+                if (!File.Exists(Path.Combine(componentSourceDirectory, component)))
+                {
+                    UnityEngine.Debug.LogError($"Failed to find component {component}: it is missing from the Unity assets directory {componentSourceDirectory}");
+                    return;
+                }
+            }
+
+            // Run robocopy to perform a file copy operation in an elevated process that can write to Unity's install directory
+            var arguments = $"\"{componentSourceDirectory}\" \"{AppDomain.CurrentDomain.BaseDirectory}\" {string.Join(" ", azureKinectBodyTrackingSdkComponents)}";
+            ProcessStartInfo psi = new ProcessStartInfo("robocopy.exe", arguments);
+            psi.UseShellExecute = true;
+            psi.Verb = "runas";
+            Process.Start(psi).WaitForExit();
+
+            // Setting this value back to null will cause a re-evaluation next update about whether or not these
+            // components were actually copied (e.g. if the user accepted the elevation prompt and the copies
+            // succeeded).
+            isAzureKinectBodyTrackingSdkInstalledInUnity = null;
         }
     }
 }

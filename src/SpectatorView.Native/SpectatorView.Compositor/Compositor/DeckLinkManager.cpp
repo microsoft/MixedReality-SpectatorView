@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-#include "stdafx.h"
+#include "pch.h"
 
 #if defined(INCLUDE_BLACKMAGIC)
 #include "DeckLinkManager.h"
@@ -32,7 +32,7 @@ void DeckLinkManager::Update(int compositeFrameIndex)
     }
 }
 
-HRESULT DeckLinkManager::Initialize(ID3D11ShaderResourceView* colorSRV, ID3D11Texture2D* outputTexture)
+HRESULT DeckLinkManager::Initialize(ID3D11ShaderResourceView* colorSRV, ID3D11ShaderResourceView* depthSRV, ID3D11ShaderResourceView* bodySRV, ID3D11Texture2D* outputTexture)
 {
     if (deckLinkDiscovery == nullptr)
     {

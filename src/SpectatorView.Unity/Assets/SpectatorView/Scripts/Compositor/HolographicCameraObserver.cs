@@ -30,6 +30,19 @@ namespace Microsoft.MixedReality.SpectatorView
 
         protected override int RemotePort => remotePort;
 
+        public GameObject SharedSpatialCoordinateProxy
+        {
+            get
+            {
+                if (sharedSpatialCoordinateProxy == null)
+                {
+                    sharedSpatialCoordinateProxy = new GameObject("App HMD Shared Spatial Coordinate");
+                    sharedSpatialCoordinateProxy.transform.SetParent(transform, worldPositionStays: true);
+                }
+
+                return sharedSpatialCoordinateProxy;
+            }
+        }
         private GameObject sharedSpatialCoordinateProxy;
 
         protected override void Awake()

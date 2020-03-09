@@ -1,9 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-#include "stdafx.h"
+#include "pch.h"
 #include "CompositorInterface.h"
 #include "codecapi.h"
+#include "AzureKinectFrameProvider.h"
 
 CompositorInterface::CompositorInterface()
 {
@@ -36,6 +37,15 @@ void CompositorInterface::SetFrameProvider(IFrameProvider::ProviderType type)
     if (type == IFrameProvider::ProviderType::BlackMagic)
         frameProvider = new DeckLinkManager();
 #endif
+
+#if defined(INCLUDE_AZUREKINECT)
+    if (type == IFrameProvider::ProviderType::AzureKinect_DepthCamera_Off)
+        frameProvider = new AzureKinectFrameProvider(IFrameProvider::ProviderType::AzureKinect_DepthCamera_Off);
+    else if (type == IFrameProvider::ProviderType::AzureKinect_DepthCamera_NFOV)
+        frameProvider = new AzureKinectFrameProvider(IFrameProvider::ProviderType::AzureKinect_DepthCamera_NFOV);
+    else if (type == IFrameProvider::ProviderType::AzureKinect_DepthCamera_WFOV)
+        frameProvider = new AzureKinectFrameProvider(IFrameProvider::ProviderType::AzureKinect_DepthCamera_WFOV);
+#endif
 }
 
 bool CompositorInterface::IsFrameProviderSupported(IFrameProvider::ProviderType providerType)
@@ -50,10 +60,49 @@ bool CompositorInterface::IsFrameProviderSupported(IFrameProvider::ProviderType 
 		return true;
 #endif
 
+#if defined(INCLUDE_AZUREKINECT)
+    if (providerType == IFrameProvider::ProviderType::AzureKinect_DepthCamera_Off
+        || providerType == IFrameProvider::ProviderType::AzureKinect_DepthCamera_NFOV
+        || providerType == IFrameProvider::ProviderType::AzureKinect_DepthCamera_WFOV)
+        return true;
+#endif
+
 	return false;
 }
 
-bool CompositorInterface::Initialize(ID3D11Device* device, ID3D11ShaderResourceView* colorSRV, ID3D11Texture2D* outputTexture)
+bool CompositorInterface::IsOcclusionSettingSupported(IFrameProvider::OcclusionSetting setting)
+{
+#if defined(INCLUDE_AZUREKINECT)
+    if (setting == IFrameProvider::OcclusionSetting::RawDepthCamera)
+        return true;
+
+#if defined(INCLUDE_AZUREKINECT_BODYTRACKING)
+    if (setting == IFrameProvider::OcclusionSetting::BodyTracking)
+        return true;
+#endif
+#endif
+    return false;
+}
+
+bool CompositorInterface::IsCameraCalibrationInformationAvailable()
+{
+    if (frameProvider == nullptr)
+    {
+        return false;
+    }
+
+    return frameProvider->IsCameraCalibrationInformationAvailable();
+}
+
+void CompositorInterface::GetCameraCalibrationInformation(CameraIntrinsics* calibration)
+{
+    if (frameProvider != nullptr)
+    {
+        frameProvider->GetCameraCalibrationInformation(calibration);
+    }
+}
+
+bool CompositorInterface::Initialize(ID3D11Device* device, ID3D11ShaderResourceView* colorSRV, ID3D11ShaderResourceView* depthSRV, ID3D11ShaderResourceView* bodySRV, ID3D11Texture2D* outputTexture)
 {
     if (frameProvider == nullptr)
     {
@@ -67,7 +116,55 @@ bool CompositorInterface::Initialize(ID3D11Device* device, ID3D11ShaderResourceV
 
     _device = device;
 
-    return SUCCEEDED(frameProvider->Initialize(colorSRV, outputTexture));
+    return SUCCEEDED(frameProvider->Initialize(colorSRV, depthSRV, bodySRV, outputTexture));
+}
+
+bool CompositorInterface::IsArUcoMarkerDetectorSupported()
+{
+    if (frameProvider != nullptr)
+    {
+        return frameProvider->IsArUcoMarkerDetectorSupported();
+    }
+    else
+    {
+        return false;
+    }
+}
+
+void CompositorInterface::StartArUcoMarkerDetector(cv::aruco::PREDEFINED_DICTIONARY_NAME markerDictionaryName, float markerSize)
+{
+    if (frameProvider != nullptr)
+    {
+        frameProvider->StartArUcoMarkerDetector(markerDictionaryName, markerSize);
+    }
+}
+
+void CompositorInterface::StopArUcoMarkerDetector()
+{
+    if (frameProvider != nullptr)
+    {
+        frameProvider->StopArUcoMarkerDetector();
+    }
+}
+
+int CompositorInterface::GetLatestArUcoMarkerCount()
+{
+    if (frameProvider == nullptr)
+    {
+        return 0;
+    }
+    else
+    {
+        return frameProvider->GetLatestArUcoMarkerCount();
+    }
+}
+
+void CompositorInterface::GetLatestArUcoMarkers(int size, Marker* markers)
+{
+    if (frameProvider != nullptr)
+    {
+        return frameProvider->GetLatestArUcoMarkers(size, markers);
+    }
 }
 
 void CompositorInterface::UpdateFrameProvider()
