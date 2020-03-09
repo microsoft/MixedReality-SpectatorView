@@ -4,8 +4,8 @@ Import-Module "$PSScriptRoot\ExternalDependencyHelpers.psm1"
 function SetupRepository
 {
     param(
-        [switch] $iOS,
-        [switch] $NoDownloads
+        [switch] $NoDownloads,
+        [switch] $NoBuilds
     )
     
     $origLoc = Get-Location
@@ -17,17 +17,19 @@ function SetupRepository
     If (!$NoDownloads)
     {
         DownloadQRCodePlugin
-    
-        If ($iOS)
-        {
-            DownloadARKitPlugin
-        }
     }
-        
+
     # Ensure that submodules are initialized and cloned.
     Write-Output "Updating spectator view related submodules."
+    git submodule sync
     git submodule update --init
     
-    FixSymbolicLinks
+    FixSymbolicLinksForDirectory -Directory "$PSScriptRoot\..\..\src\SpectatorView.Unity\"
+
+    If (!$NoBuilds)
+    {
+      & "$PSScriptRoot\..\ci\scripts\buildNativeProjectLocal.ps1"
+    }
+
     Set-Location $origLoc
 }

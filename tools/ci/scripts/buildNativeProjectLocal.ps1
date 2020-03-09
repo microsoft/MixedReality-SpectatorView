@@ -88,7 +88,7 @@ Write-Host "    x64 Build Succeeded:           $64Result"
 Write-Host "    ARM Build Succeeded:           $ARMResult"
 Write-Host "    Copy Native Plugins Succeeded: $CopyResult"
 
-Write-Host "`nIncluded External Dependencies:"
+Write-Host "`nIncluded Compositor Components:"
 Write-Host "    Blackmagic Decklink:            " (Test-Path "$PSScriptRoot\..\..\..\external\Blackmagic DeckLink SDK 10.9.11")
 Write-Host "    Elgato:                         " (Test-Path "$PSScriptRoot\..\..\..\external\gamecapture")
 Write-Host "    Azure Kinect SDK:               " (Test-Path "$PSScriptRoot\..\..\..\external\Azure Kinect SDK v1.3.0")
