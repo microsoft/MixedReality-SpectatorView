@@ -167,11 +167,6 @@ namespace Microsoft.MixedReality.SpectatorView
         public RenderTexture blurOcclusionTexture { get; private set; }
 
         /// <summary>
-        /// A helper texture used to create the occlusion mask
-        /// </summary>
-        private RenderTexture blurOcclusionHelperTexture = null;
-
-        /// <summary>
         /// The raw color image data coming from the capture card
         /// </summary>
         private Texture2D colorTexture = null;
@@ -427,7 +422,6 @@ namespace Microsoft.MixedReality.SpectatorView
             compositeTexture = new RenderTexture(frameWidth, frameHeight, (int)Compositor.TextureDepth);
             occlusionMaskTexture = new RenderTexture(frameWidth, frameHeight, (int)Compositor.TextureDepth);
             blurOcclusionTexture = new RenderTexture(frameWidth, frameHeight, (int)Compositor.TextureDepth);
-            blurOcclusionHelperTexture = new RenderTexture(frameWidth, frameHeight, (int)Compositor.TextureDepth);
 
             if (supersampleBuffers.Length > 0)
             {

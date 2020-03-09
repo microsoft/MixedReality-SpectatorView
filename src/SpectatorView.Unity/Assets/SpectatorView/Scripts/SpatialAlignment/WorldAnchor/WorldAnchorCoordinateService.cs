@@ -73,7 +73,6 @@ namespace Microsoft.MixedReality.SpectatorView
             {
                 GameObject anchorGameObject = new GameObject(knownId);
                 WorldAnchor anchor = store.Load(knownId, anchorGameObject);
-                UnityEngine.Object.DontDestroyOnLoad(anchorGameObject);
 
                 if (anchor == null)
                 {
@@ -97,7 +96,6 @@ namespace Microsoft.MixedReality.SpectatorView
             gameObject.transform.position = worldPosition;
             gameObject.transform.rotation = worldRotation;
             WorldAnchor anchor = gameObject.AddComponent<WorldAnchor>();
-            UnityEngine.Object.DontDestroyOnLoad(gameObject);
 
             if (anchor.isLocated)
             {
