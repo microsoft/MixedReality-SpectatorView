@@ -54,7 +54,7 @@ Shader "SV/HoloAlpha"
                 fixed4 backCol = tex2D(_BackTex, i.uv);
                 fixed4 frontCol = tex2D(_FrontTex, i.uv);
 
-                float occlusionAlpha = _OcclusionTexture.Sample(sampler_point_clamp, float2(i.uv[0], 1-i.uv[1])).r;
+                float occlusionAlpha = _OcclusionTexture.Sample(sampler_point_clamp, float2(i.uv[0], i.uv[1])).r;
 
                 float alpha = occlusionAlpha * _Alpha;
 

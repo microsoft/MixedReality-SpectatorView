@@ -52,9 +52,17 @@ Shader "SV/OcclusionMask"
 
                 float rawHologramDepth = SAMPLE_DEPTH_TEXTURE(_LastCameraDepthTexture, i.uv);
                 float hologramDepth = LinearEyeDepth(rawHologramDepth);
-                float kinectDepth = _DepthTexture.Sample(sampler_point_clamp, float2(i.uv[0], i.uv[1])).r * 65535 * 0.001; // Incoming texture is R16
+                float kinectDepth = _DepthTexture.Sample(sampler_point_clamp, float2(i.uv[0], 1-i.uv[1])).r * 65535 * 0.001; // Incoming texture is R16
 
-                float isHologramOccluded = kinectDepth > 0.0f && rawHologramDepth < 1.0f && kinectDepth < hologramDepth;
+				bool useKinectDepth = kinectDepth > 0.0f;
+				bool useHologramDepth = rawHologramDepth < 1.0f;
+
+				float isHologramOccluded = 0.0f;
+				if (!useHologramDepth || 
+					(useHologramDepth && useKinectDepth && (kinectDepth < hologramDepth)))
+				{
+					isHologramOccluded = 1.0f;
+				}
 
                 float bodyMask = _BodyMaskTexture.Sample(sampler_point_clamp, float2(i.uv[0], i.uv[1])).r * 65535;
 

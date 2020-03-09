@@ -90,7 +90,7 @@ namespace Microsoft.MixedReality.SpectatorView
         private SpectatorViewTimeSynchronizer timeSynchronizer = new SpectatorViewTimeSynchronizer();
 
         private Camera spectatorCamera;
-        private GameObject videoCameraPose;
+        public GameObject VideoCameraPose { get; private set; }
 
         /// <summary>
         /// Gets the index of the video frame currently being composited.
@@ -581,16 +581,16 @@ namespace Microsoft.MixedReality.SpectatorView
         {
 #if UNITY_EDITOR
             this.calibrationData = calibrationData;
-            if (videoCameraPose == null)
+            if (VideoCameraPose == null)
             {
-                videoCameraPose = new GameObject("Camera HMD Pose");
+                VideoCameraPose = new GameObject("Camera HMD Pose");
             }
 
-            videoCameraPose.transform.SetParent(parent);
-            videoCameraPose.transform.localPosition = Vector3.zero;
-            videoCameraPose.transform.localRotation = Quaternion.identity;
+            VideoCameraPose.transform.SetParent(parent);
+            VideoCameraPose.transform.localPosition = Vector3.zero;
+            VideoCameraPose.transform.localRotation = Quaternion.identity;
 
-            gameObject.transform.parent = videoCameraPose.transform;
+            gameObject.transform.parent = VideoCameraPose.transform;
 
             calibrationData.SetUnityCameraExtrinstics(transform);
             calibrationData.SetUnityCameraIntrinsics(GetComponent<Camera>());
