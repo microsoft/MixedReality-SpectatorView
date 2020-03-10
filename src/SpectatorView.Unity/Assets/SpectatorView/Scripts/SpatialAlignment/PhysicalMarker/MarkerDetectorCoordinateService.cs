@@ -186,7 +186,7 @@ namespace Microsoft.MixedReality.SpectatorView
 #if UNITY_EDITOR
         private async Task OnDiscoverCoordinatesEditorAsync(CancellationToken cancellationToken, int[] idsToLocate = null)
         {
-            if (UnityCompositorInterface.IsArUcoMarkerDetectorSupported())
+            if (UnityCompositorInterface.IsSupported && UnityCompositorInterface.IsArUcoMarkerDetectorSupported())
             {
                 await OnDiscoverCoordinatesImplAsync(cancellationToken, idsToLocate);
                 return;

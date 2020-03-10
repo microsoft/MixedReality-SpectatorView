@@ -1,4 +1,7 @@
-﻿Shader "SV/OcclusionMask"
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+Shader "SV/OcclusionMask"
 {
     Properties
     {
@@ -61,7 +64,7 @@
 					isHologramOccluded = 1.0f;
 				}
 
-                float bodyMask = _BodyMaskTexture.Sample(sampler_point_clamp, float2(i.uv[0], i.uv[1])).r * 65535;
+                float bodyMask = _BodyMaskTexture.Sample(sampler_point_clamp, float2(i.uv[0], 1-i.uv[1])).r * 65535;
 
                 maskVal.r = max(1 - isHologramOccluded, 1 - bodyMask);
                 

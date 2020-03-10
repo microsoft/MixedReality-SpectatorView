@@ -2,12 +2,12 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 #pragma once
-#include "stdafx.h"
+#include "pch.h"
 #include "VideoEncoder.h"
 #include "DirectoryHelper.h"
 #include "Shlobj.h" // To get MyDocuments path
 #include "ScreenGrab.h"
-#include "CameraIntrinsics.h"
+#include "DataStructures.h"
 #include "wincodec.h"
 
 #define DLLEXPORT __declspec(dllexport)
@@ -48,7 +48,7 @@ public:
     DLLEXPORT void GetCameraCalibrationInformation(CameraIntrinsics* cameraIntrinsics);
 
     DLLEXPORT bool IsArUcoMarkerDetectorSupported();
-    DLLEXPORT void StartArUcoMarkerDetector(float markerSize);
+    DLLEXPORT void StartArUcoMarkerDetector(cv::aruco::PREDEFINED_DICTIONARY_NAME markerDictionaryName, float markerSize);
     DLLEXPORT void StopArUcoMarkerDetector();
     DLLEXPORT int GetLatestArUcoMarkerCount();
     DLLEXPORT void GetLatestArUcoMarkers(int size, Marker* markers);

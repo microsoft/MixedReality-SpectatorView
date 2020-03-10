@@ -1,7 +1,7 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-#include "stdafx.h"
+#include "pch.h"
 
 #if defined(INCLUDE_AZUREKINECT)
 #include "AzureKinectFrameProvider.h"
@@ -13,6 +13,7 @@
 AzureKinectFrameProvider::AzureKinectFrameProvider(ProviderType providerType)
     : detectMarkers(false)
     , markerSize(0.0f)
+    , markerDictionaryName(cv::aruco::DICT_6X6_250)
     , _captureFrameIndex(0)
     , markerDetector(new ArUcoMarkerDetector())
     , _colorSRV(nullptr)
@@ -209,7 +210,7 @@ void AzureKinectFrameProvider::UpdateArUcoMarkers(k4a_image_t image)
         float principalPoint[2] = { calibration.color_camera_calibration.intrinsics.parameters.param.cx, calibration.color_camera_calibration.intrinsics.parameters.param.cy };
         float radialDistortion[3] = { calibration.color_camera_calibration.intrinsics.parameters.param.k1, calibration.color_camera_calibration.intrinsics.parameters.param.k2, calibration.color_camera_calibration.intrinsics.parameters.param.k3 };
         float tangentialDistortion[2] = { calibration.color_camera_calibration.intrinsics.parameters.param.p1, calibration.color_camera_calibration.intrinsics.parameters.param.p2 };
-        markerDetector->DetectMarkers(buffer, width, height, focalLength, principalPoint, radialDistortion, tangentialDistortion, markerSize, cv::aruco::DICT_6X6_250);
+        markerDetector->DetectMarkers(buffer, width, height, focalLength, principalPoint, radialDistortion, tangentialDistortion, markerSize, markerDictionaryName);
     }
 }
 
@@ -343,9 +344,10 @@ void AzureKinectFrameProvider::GetCameraCalibrationInformation(CameraIntrinsics*
     calibration->imageHeight = this->calibration.color_camera_calibration.resolution_height;
 }
 
-void AzureKinectFrameProvider::StartArUcoMarkerDetector(float markerSize)
+void AzureKinectFrameProvider::StartArUcoMarkerDetector(cv::aruco::PREDEFINED_DICTIONARY_NAME markerDictionaryName, float markerSize)
 {
     this->markerDetector->Reset();
+    this->markerDictionaryName = markerDictionaryName;
     this->markerSize = markerSize;
     this->detectMarkers = true;
 }

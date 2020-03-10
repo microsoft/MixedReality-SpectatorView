@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-#include "stdafx.h"
+#include "pch.h"
 #include "CompositorInterface.h"
 #include "codecapi.h"
 #include "AzureKinectFrameProvider.h"
@@ -131,11 +131,11 @@ bool CompositorInterface::IsArUcoMarkerDetectorSupported()
     }
 }
 
-void CompositorInterface::StartArUcoMarkerDetector(float markerSize)
+void CompositorInterface::StartArUcoMarkerDetector(cv::aruco::PREDEFINED_DICTIONARY_NAME markerDictionaryName, float markerSize)
 {
     if (frameProvider != nullptr)
     {
-        frameProvider->StartArUcoMarkerDetector(markerSize);
+        frameProvider->StartArUcoMarkerDetector(markerDictionaryName, markerSize);
     }
 }
 

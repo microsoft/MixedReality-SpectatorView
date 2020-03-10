@@ -661,11 +661,11 @@ UNITYDLL bool IsArUcoMarkerDetectorSupported()
     }
 }
 
-UNITYDLL void StartArUcoMarkerDetector(float markerSize)
+UNITYDLL void StartArUcoMarkerDetector(cv::aruco::PREDEFINED_DICTIONARY_NAME markerDictionaryName, float markerSize)
 {
     if (ci != nullptr)
     {
-        ci->StartArUcoMarkerDetector(markerSize);
+        ci->StartArUcoMarkerDetector(markerDictionaryName, markerSize);
     }
 }
 

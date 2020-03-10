@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include "CameraIntrinsics.h"
+#include "DataStructures.h"
 
 class IFrameProvider
 {
@@ -54,7 +54,7 @@ public:
     virtual void GetCameraCalibrationInformation(CameraIntrinsics* calibration) {}
 
     virtual bool IsArUcoMarkerDetectorSupported() { return false; }
-    virtual void StartArUcoMarkerDetector(float markerSize) {}
+    virtual void StartArUcoMarkerDetector(cv::aruco::PREDEFINED_DICTIONARY_NAME markerDictionaryName, float markerSize) {}
     virtual void StopArUcoMarkerDetector() {}
     virtual int GetLatestArUcoMarkerCount() { return 0; }
     virtual void GetLatestArUcoMarkers(int size, Marker* markers) { }

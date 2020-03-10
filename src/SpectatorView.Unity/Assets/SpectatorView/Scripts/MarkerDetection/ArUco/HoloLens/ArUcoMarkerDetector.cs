@@ -40,6 +40,8 @@ namespace Microsoft.MixedReality.SpectatorView
         [SerializeField]
         private float _markerSize = 0.03f;
 
+        private const int _markerDictionaryName = 10; // equivalent to cv::aruco::DICT_6X6_250
+
         [Tooltip("Whether or not the marker is stationary or moving during detection")]
         [SerializeField]
         private MarkerPositionBehavior _markerPositionBehavior = MarkerPositionBehavior.Moving;
@@ -219,7 +221,7 @@ namespace Microsoft.MixedReality.SpectatorView
             lock (lockObj)
             {
 #if UNITY_EDITOR
-                UnityCompositorInterface.StartArUcoMarkerDetector(_markerSize);
+                UnityCompositorInterface.StartArUcoMarkerDetector(_markerDictionaryName, _markerSize);
                 return Task.CompletedTask;
 #else
                 if (setupCameraTask != null)

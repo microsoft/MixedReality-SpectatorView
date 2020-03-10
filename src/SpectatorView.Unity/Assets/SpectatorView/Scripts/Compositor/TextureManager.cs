@@ -167,11 +167,6 @@ namespace Microsoft.MixedReality.SpectatorView
         public RenderTexture blurOcclusionTexture { get; private set; }
 
         /// <summary>
-        /// A helper texture used to create the occlusion mask
-        /// </summary>
-        private RenderTexture blurOcclusionHelperTexture = null;
-
-        /// <summary>
         /// The raw color image data coming from the capture card
         /// </summary>
         private Texture2D colorTexture = null;
@@ -427,7 +422,6 @@ namespace Microsoft.MixedReality.SpectatorView
             compositeTexture = new RenderTexture(frameWidth, frameHeight, (int)Compositor.TextureDepth);
             occlusionMaskTexture = new RenderTexture(frameWidth, frameHeight, (int)Compositor.TextureDepth);
             blurOcclusionTexture = new RenderTexture(frameWidth, frameHeight, (int)Compositor.TextureDepth);
-            blurOcclusionHelperTexture = new RenderTexture(frameWidth, frameHeight, (int)Compositor.TextureDepth);
 
             if (supersampleBuffers.Length > 0)
             {
@@ -541,9 +535,6 @@ namespace Microsoft.MixedReality.SpectatorView
                 holoAlphaMat.SetTexture("_FrontTex", renderTexture);
                 holoAlphaMat.SetTexture("_OcclusionTexture", blurOcclusionTexture);
                 Graphics.Blit(sourceTexture, compositeTexture, holoAlphaMat);
-
-                //var color = depthTexture.GetPixel(900, 400);
-                //Debug.Log(color);
             }
 
             // If an output texture override has been specified, use it instead of the composited texture
