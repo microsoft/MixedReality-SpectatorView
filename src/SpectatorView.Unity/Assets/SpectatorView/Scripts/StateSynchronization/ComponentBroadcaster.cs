@@ -6,7 +6,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.SpectatorView
@@ -222,7 +221,9 @@ namespace Microsoft.MixedReality.SpectatorView
             {
                 this.ComponentBroadcasterService.WriteHeader(message, this, ComponentBroadcasterChangeType.Created);
                 message.Flush();
-                connection.Send(memoryStream.GetBuffer(), 0, memoryStream.Position);
+
+                memoryStream.TryGetBuffer(out var buffer);
+                connection.Send(buffer.Array, buffer.Offset, buffer.Count);
             }
         }
 

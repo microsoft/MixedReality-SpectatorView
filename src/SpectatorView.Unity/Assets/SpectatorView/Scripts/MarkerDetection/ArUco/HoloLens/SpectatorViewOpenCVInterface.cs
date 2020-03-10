@@ -156,22 +156,7 @@ namespace Microsoft.MixedReality.SpectatorView
                                 // Positive y axis is in the upward direction of the observed marker
                                 // Positive z axis is facing outward from the observed marker
                                 Vector3 rodriguesVector = new Vector3(rotation[0], rotation[1], rotation[2]);
-                                var angle = Mathf.Rad2Deg * rodriguesVector.magnitude;
-                                var axis = rodriguesVector.normalized;
-                                Quaternion rotationInOpenCVCameraSpace = Quaternion.AngleAxis(angle, axis);
-                                rotationInOpenCVCameraSpace = Quaternion.Euler(
-                                    -1.0f * rotationInOpenCVCameraSpace.eulerAngles.x,
-                                    rotationInOpenCVCameraSpace.eulerAngles.y,
-                                    -1.0f * rotationInOpenCVCameraSpace.eulerAngles.z) * Quaternion.Euler(0, 0, 180);
-
-                                var transformInOpenCVCameraSpace = Matrix4x4.TRS(positionInOpenCVCameraSpace, rotationInOpenCVCameraSpace, Vector3.one);
-
-                                var transformInUnityWorld = cameraToWorldMatrix * transformInOpenCVCameraSpace;
-
-                                var positionInUnityWorld = transformInUnityWorld.GetColumn(3);
-                                var rotationInUnityWorld = Quaternion.LookRotation(transformInUnityWorld.GetColumn(2), transformInUnityWorld.GetColumn(1));
-
-                                var marker = new Marker(id, positionInUnityWorld, rotationInUnityWorld);
+                                Marker marker = CreateMarkerFromPositionAndRotation(id, positionInOpenCVCameraSpace, rodriguesVector, cameraToWorldMatrix);
                                 Debug.Log("Marker detected: " + marker.ToString());
 
                                 dictionary[id] = marker;
@@ -194,6 +179,27 @@ namespace Microsoft.MixedReality.SpectatorView
             }
 
             return dictionary;
+        }
+
+        public static Marker CreateMarkerFromPositionAndRotation(int id, Vector3 openCVPosition, Vector3 openCVRodriguesRotation, Matrix4x4 cameraToWorldMatrix)
+        {
+            var angle = Mathf.Rad2Deg * openCVRodriguesRotation.magnitude;
+            var axis = openCVRodriguesRotation.normalized;
+            Quaternion rotationInOpenCVCameraSpace = Quaternion.AngleAxis(angle, axis);
+            rotationInOpenCVCameraSpace = Quaternion.Euler(
+                -1.0f * rotationInOpenCVCameraSpace.eulerAngles.x,
+                rotationInOpenCVCameraSpace.eulerAngles.y,
+                -1.0f * rotationInOpenCVCameraSpace.eulerAngles.z) * Quaternion.Euler(0, 0, 180);
+
+            var transformInOpenCVCameraSpace = Matrix4x4.TRS(openCVPosition, rotationInOpenCVCameraSpace, Vector3.one);
+
+            var transformInUnityWorld = cameraToWorldMatrix * transformInOpenCVCameraSpace;
+
+            var positionInUnityWorld = transformInUnityWorld.GetColumn(3);
+            var rotationInUnityWorld = Quaternion.LookRotation(transformInUnityWorld.GetColumn(2), transformInUnityWorld.GetColumn(1));
+
+            var marker = new Marker(id, positionInUnityWorld, rotationInUnityWorld);
+            return marker;
         }
 
         private bool IsValidPixelFormat(PixelFormat pixelFormat)
