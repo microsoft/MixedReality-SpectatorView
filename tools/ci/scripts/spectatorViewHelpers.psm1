@@ -158,9 +158,45 @@ function SetupDependencyRepoBuildCI
     [Parameter(Mandatory=$true)][ref]$Succeeded
 )
 
-  Copy-Item -Recurse -Path "$PSScriptRoot\..\..\..\external\dependencies\MixedReality-QRCodePlugin\*" -Destination "$PSScriptRoot\..\..\..\external\MixedReality-QRCodePlugin" -Force
-  Copy-Item -Recurse -Path "$PSScriptRoot\..\..\..\external\dependencies\Azure Kinect Body Tracking SDK 1.0.0\*" -Destination "$PSScriptRoot\..\..\..\external\Azure Kinect Body Tracking SDK 1.0.0" -Force
-  Copy-Item -Recurse -Path "$PSScriptRoot\..\..\..\external\dependencies\Azure Kinect SDK v1.3.0\*" -Destination "$PSScriptRoot\..\..\..\external\Azure Kinect SDK v1.3.0" -Force
-  Copy-Item -Recurse -Path "$PSScriptRoot\dependencies.props" -Destination "$PSScriptRoot\..\..\..\src\SpectatorView.Native\SpectatorView.Compositor\dependencies.props" -Force
+  $QRCodePath = "$PSScriptRoot\..\..\..\external\dependencies\MixedReality-QRCodePlugin\"
+  if (Test-Path $QRCodePath)
+  {
+    Copy-Item -Recurse -Path "$QRCodePath\*" -Destination "$PSScriptRoot\..\..\..\external\MixedReality-QRCodePlugin" -Force
+  }
+  else
+  {
+    Write-Host "QR Code Dependencies not found, QR Code detection excluded from the build."
+  }
+
+  $AzureSDKPath = "$PSScriptRoot\..\..\..\external\dependencies\Azure Kinect SDK v1.3.0\"
+  if (Test-Path $AzureSDKPath)
+  {
+      Copy-Item -Recurse -Path "$AzureSDKPath\*" -Destination "$PSScriptRoot\..\..\..\external\Azure Kinect SDK v1.3.0" -Force
+  }
+  else
+  {
+    Write-Host "Azure kinect sdk not found. Azure kinect sdk excluded from the build."
+  }
+
+  $AzureBodyTrackingPath = "$PSScriptRoot\..\..\..\external\dependencies\Azure Kinect Body Tracking SDK 1.0.0\"
+  if (Test-Path $AzureBodyTrackingPath)
+  {
+    Copy-Item -Recurse -Path "$AzureBodyTrackingPath\*" -Destination "$PSScriptRoot\..\..\..\external\Azure Kinect Body Tracking SDK 1.0.0" -Force
+  }
+  else
+  {
+    Write-Host "Azure kinect body tracking sdk not found. Azure kinect body tracking sdk excluded from the build."
+  }
+
+  if (Test-Path "$PSScriptRoot\dependencies.props")
+  {
+    Copy-Item -Recurse -Path "$PSScriptRoot\dependencies.props" -Destination "$PSScriptRoot\..\..\..\src\SpectatorView.Native\SpectatorView.Compositor\dependencies.props" -Force
+  }
+  else
+  {
+    Write-Host "dependencies.props not found in ci script directory. Build may fail."
+    $Succeeded.Value = $false
+  }
+
   $Succeeded.Value = $?
 }
