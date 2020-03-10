@@ -7,16 +7,16 @@ function SetupRepository
         [switch] $NoDownloads,
         [switch] $NoBuilds,
         $MSBuild,
-        [Parameter(Mandatory=$false)][ref]$Succeeded
+        [Parameter(Mandatory=$true)][bool][ref]$Succeeded
     )
-    
+
     $origLoc = Get-Location
     Set-Location $PSScriptRoot
     Write-Host "`n"
     
     ConfigureRepo
 
-    If (!$NoDownloads)
+    If (!$NoDownloads -And $NoBuilds)
     {
         DownloadQRCodePlugin
     }
@@ -28,16 +28,23 @@ function SetupRepository
     
     FixSymbolicLinksForDirectory -Directory "$PSScriptRoot\..\..\src\SpectatorView.Unity\"
 
-    If (!$MSBuild)
+    If (!$NoBuilds)
     {
+        $nativeBuildSuccess = $false
         if ($MSBuild)
         {
-            & "$PSScriptRoot\..\ci\scripts\buildNativeProjectLocal.ps1" -MSBuild $MSBuild -Succeeded $Succeeded
+            . "$PSScriptRoot\..\ci\scripts\buildNativeProjectLocal.ps1" -MSBuild $MSBuild -Succeeded ([ref]$nativeBuildSuccess)
         }
         else
         {
-            & "$PSScriptRoot\..\ci\scripts\buildNativeProjectLocal.ps1" -Succeeded $Succeeded
+            . "$PSScriptRoot\..\ci\scripts\buildNativeProjectLocal.ps1" -Succeeded ([ref]$nativeBuildSuccess)
         }
+
+        $Succeeded.Value = $nativeBuildSuccess
+    }
+    else
+    {
+        $Succeeded.Value = $true
     }
 
     Set-Location $origLoc
