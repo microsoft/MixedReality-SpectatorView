@@ -5,7 +5,9 @@ function SetupRepository
 {
     param(
         [switch] $NoDownloads,
-        [switch] $NoBuilds
+        [switch] $NoBuilds,
+        $MSBuild,
+        [Parameter(Mandatory=$false)][ref]$Succeeded
     )
     
     $origLoc = Get-Location
@@ -26,9 +28,16 @@ function SetupRepository
     
     FixSymbolicLinksForDirectory -Directory "$PSScriptRoot\..\..\src\SpectatorView.Unity\"
 
-    If (!$NoBuilds)
+    If (!$MSBuild)
     {
-      & "$PSScriptRoot\..\ci\scripts\buildNativeProjectLocal.ps1"
+        if ($MSBuild)
+        {
+            & "$PSScriptRoot\..\ci\scripts\buildNativeProjectLocal.ps1" -MSBuild $MSBuild -Succeeded $Succeeded
+        }
+        else
+        {
+            & "$PSScriptRoot\..\ci\scripts\buildNativeProjectLocal.ps1" -Succeeded $Succeeded
+        }
     }
 
     Set-Location $origLoc

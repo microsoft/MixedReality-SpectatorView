@@ -14,12 +14,15 @@ if ((!$MSBuild) -And (Test-Path -Path $MSBuildPath))
 elseif (!$MSBuild)
 {
     Write-Error Unable to locate MSBuild.exe
+    Write-Host "You can specify a -MSBuild variable specifying the path for MSBuild.exe if it isn't found at $MSBuildPath"
+    $Succeeded = $false
     exit 1;
 }
 
 if (!(Get-Command "nuget"))
 {
     Write-Error "NuGet.exe does not seem to be installed as a command on this computer."
+    $Succeeded = $false
     exit 1;
 }
 
@@ -78,7 +81,7 @@ if ($SetupResult -eq $true)
         $CopyResult = $?
     }
 
-    $SetupResult = "True"
+    $SetupResult = $true
 }
 
 Write-Host "`n`nSpectatorView.Native Build Results:"

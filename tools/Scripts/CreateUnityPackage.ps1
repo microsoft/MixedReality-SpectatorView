@@ -1,6 +1,24 @@
+param(
+    $MSBuild
+)
+
 Write-Host "Setting up the repository..."
 Import-Module "$PSScriptRoot\SetupRepositoryFunc.psm1"
-SetupRepository
+$succeeded = $false;
+if ($MSBuild)
+{
+    SetupRepository -MSBuild $MSBuild -Succeeded ([ref]$succeeded)
+}
+else
+{
+    SetupRepository -Succeeded ([ref]$succeeded)
+}
+
+if ($succeeded -eq $false)
+{
+    Write-Error "Failed to build native plugins, package not created."
+    return 1;
+}
 
 $PackageProps = Get-Content "$PSScriptRoot\..\..\src\SpectatorView.Unity\Assets\package.json" | ConvertFrom-Json
 $PackageName = $PackageProps.name
