@@ -26,11 +26,15 @@ namespace Microsoft.MixedReality.SpectatorView
         /// </summary>
         public TextureManager TextureManager => textureManager;
 
+        [Header("Stationary Camera Settings")]
+        [Tooltip("The broadcaster used to provide calibration and pose information for stationary cameras connected directly to the compositor.")]
+        public GameObject stationaryCameraBroadcaster = null;
+
         /// <summary>
         /// Gets or sets the texture depth used for the RenderTextures used during compositing.
         /// </summary>
         [Header("Hologram Settings")]
-        [Tooltip("Texture depth for the RenderTexture used by the compositor")]
+        [Tooltip("Texture depth for the RenderTexture used by the compositor.")]
         public Depth TextureDepth = Depth.TwentyFour;
 
         /// <summary>
@@ -77,6 +81,7 @@ namespace Microsoft.MixedReality.SpectatorView
         private float videoTimestampToHolographicTimestampOffset = -10.0f;
         private int captureDeviceIndex = -1;
         private int videoRecordingLayout = -1;
+        private int occlusionMode = -1;
         private TextureManager textureManager = null;
         private MicrophoneInput microphoneInput;
 
@@ -85,7 +90,7 @@ namespace Microsoft.MixedReality.SpectatorView
         private SpectatorViewTimeSynchronizer timeSynchronizer = new SpectatorViewTimeSynchronizer();
 
         private Camera spectatorCamera;
-        private GameObject videoCameraPose;
+        public GameObject VideoCameraPose { get; private set; }
 
         /// <summary>
         /// Gets the index of the video frame currently being composited.
@@ -206,6 +211,28 @@ namespace Microsoft.MixedReality.SpectatorView
                 }
             }
         }
+
+        public OcclusionSetting OcclusionMode
+        {
+            get
+            {
+                if (occlusionMode == -1)
+                {
+                    occlusionMode = PlayerPrefs.GetInt(nameof(OcclusionMode), (int)OcclusionSetting.RawDepthCamera);
+                }
+                return (OcclusionSetting)occlusionMode;
+            }
+            set
+            {
+                if (occlusionMode != (int)value)
+                {
+                    occlusionMode = (int)value;
+                    PlayerPrefs.SetInt(nameof(OcclusionMode), occlusionMode);
+                    PlayerPrefs.Save();
+                }
+            }
+        }
+
 
         #region AudioData
         private BinaryWriter audioStreamWriter;
@@ -388,6 +415,16 @@ namespace Microsoft.MixedReality.SpectatorView
         {
             return UnityCompositorInterface.IsFrameProviderSupported(providerId);
         }
+
+        /// <summary>
+        /// Returns true if the UnityCompositor dll supports the specified occlusion setting.
+        /// </summary>
+        /// <param name="setting">occlusion setting to check</param>
+        /// <returns>Returns true if the occlusion setting is supported, otherwise false.</returns>
+        public bool IsOcclusionSettingSupported(OcclusionSetting setting)
+        {
+            return UnityCompositorInterface.IsOcclusionSettingSupported(setting);
+        }
 #endif
 
         /// <summary>
@@ -499,6 +536,12 @@ namespace Microsoft.MixedReality.SpectatorView
                         CurrentCompositeFrame = 0;
                         timeSynchronizer.Reset();
                         poseCache.Reset();
+
+                        if (UnityCompositorInterface.IsCameraCalibrationInformationAvailable())
+                        {
+                            stationaryCameraBroadcaster.SetActive(true);
+                            HolographicCameraObserver.Instance.ConnectTo("127.0.0.1");
+                        }
                     }
                 }
                 else
@@ -538,16 +581,16 @@ namespace Microsoft.MixedReality.SpectatorView
         {
 #if UNITY_EDITOR
             this.calibrationData = calibrationData;
-            if (videoCameraPose == null)
+            if (VideoCameraPose == null)
             {
-                videoCameraPose = new GameObject("Camera HMD Pose");
+                VideoCameraPose = new GameObject("Camera HMD Pose");
             }
 
-            videoCameraPose.transform.SetParent(parent);
-            videoCameraPose.transform.localPosition = Vector3.zero;
-            videoCameraPose.transform.localRotation = Quaternion.identity;
+            VideoCameraPose.transform.SetParent(parent);
+            VideoCameraPose.transform.localPosition = Vector3.zero;
+            VideoCameraPose.transform.localRotation = Quaternion.identity;
 
-            gameObject.transform.parent = videoCameraPose.transform;
+            gameObject.transform.parent = VideoCameraPose.transform;
 
             calibrationData.SetUnityCameraExtrinstics(transform);
             calibrationData.SetUnityCameraIntrinsics(GetComponent<Camera>());

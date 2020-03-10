@@ -7,7 +7,8 @@ using UnityEngine;
 namespace Microsoft.MixedReality.SpectatorView
 {
     /// <summary>
-    /// Used for loading/applying camera intrinsics and camera extrinsics obtained through Spectator View's default calibration process.
+    /// Used for loading/applying camera intrinsics and camera extrinsics obtained through Spectator View's default calibration process for a
+    /// camera attached to a head-mounted display.
     /// </summary>
     public class CalibrationData : ICalibrationData
     {
@@ -46,10 +47,6 @@ namespace Microsoft.MixedReality.SpectatorView
             Matrix4x4 headFromCamera = cameraExtrinsics.ViewFromWorld;
             cameraTransform.transform.localPosition = cameraExtrinsics.ViewFromWorld.GetColumn(3);
             cameraTransform.transform.localRotation = Quaternion.LookRotation(cameraExtrinsics.ViewFromWorld.GetColumn(2), cameraExtrinsics.ViewFromWorld.GetColumn(1));
-
-            // Magic offset from Unity's underlying coordinate frame (WorldManager.GetNativeISpatialCoordinateSystemPtr()) and the head pose used for the camera.
-            // Poses are sent in the coordinate frame space because the Unity camera position uses prediction.
-            cameraTransform.localPosition += new Vector3(0f, 0.08f, 0.08f);
         }
 
         /// <inheritdoc />

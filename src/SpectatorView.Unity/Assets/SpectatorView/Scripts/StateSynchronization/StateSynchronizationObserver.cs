@@ -114,7 +114,8 @@ namespace Microsoft.MixedReality.SpectatorView
                     writer.Write(PerfDiagnosticModeEnabledCommand);
                     writer.Write(enabled);
                     writer.Flush();
-                    connectionManager.Broadcast(stream.GetBuffer(), 0, stream.Position);
+                    stream.TryGetBuffer(out var buffer);
+                    connectionManager.Broadcast(buffer.Array, buffer.Offset, buffer.Count);
                 }
             }
         }

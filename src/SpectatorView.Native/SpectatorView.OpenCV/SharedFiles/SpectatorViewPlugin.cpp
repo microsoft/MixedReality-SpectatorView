@@ -1,4 +1,7 @@
-﻿#include "..\SharedFiles\pch.h"
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+#include "pch.h"
 
 #include "SpectatorViewPlugin.h"
 #include "ArUcoMarkerDetector.h"
@@ -90,8 +93,8 @@ extern "C" __declspec(dllexport) bool __stdcall GetDetectedMarkerIds(
 // rotation - float[] with 3 elements populated with marker's rotation (rodrigues vector not euler angles)
 extern "C" __declspec(dllexport) bool __stdcall GetDetectedMarkerPose(
     int detectedId,
-    float* position,
-    float* rotation)
+    Vector3* position,
+    Vector3* rotation)
 {
     if (detector)
     {

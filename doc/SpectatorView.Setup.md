@@ -125,7 +125,7 @@ If you are building Azure Spatial Anchors on iOS, you will need to take some add
 ### HoloLens 2 & HoloLens as the Host/User
 
 1. Make sure your Unity project contains the asset caches that were created in the 'Before building' steps.
-2. Open the project scene that you intend to use with SpectatorView. (**Note:** For spectating with a HoloLens device, use `SpectatorView.HoloLens.Spectator` scene.)
+2. Open the project scene that you intend to use with SpectatorView. 
 3. Add the `SpectatorView` prefab to the scene.
 4. Setup your scene to synchronize content. You can either have all content synchronized by checking 'Automatically Broadcast All Game Objects' in BroadcasterSettings located in your SpectatorViewSettings prefab. Or, you can manually add GameObjectHierarchyBroadcaster components to all parent game objects in the scene that you want synchronized.
 
