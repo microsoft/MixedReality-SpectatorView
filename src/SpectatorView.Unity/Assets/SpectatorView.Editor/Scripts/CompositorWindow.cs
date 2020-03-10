@@ -145,25 +145,46 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
                         if (compositionManager != null)
                         {
                             GUI.enabled = compositionManager == null || !compositionManager.IsVideoFrameProviderInitialized;
-                            GUIContent label = new GUIContent("Video source", "The video capture card you want to use as input for compositing.");
+                            GUIContent captureLabel = new GUIContent("Video source", "The video capture card you want to use as input for compositing.");
+                            GUIContent outputLabel = new GUIContent("Video output", "The video capture card you want to use as output after compositing.");
 
-                            var supportedDevices = Enum.GetValues(typeof(FrameProviderDeviceType))
+                            var supportedCaptureDevices = Enum.GetValues(typeof(FrameProviderDeviceType))
                                 .Cast<FrameProviderDeviceType>()
                                 .Where(provider => compositionManager.IsFrameProviderSupported(provider) || (provider == FrameProviderDeviceType.None)).ToList();
-                            var selectedIndex = supportedDevices.IndexOf(compositionManager.CaptureDevice);
+                            var selectedIndex = supportedCaptureDevices.IndexOf(compositionManager.CaptureDevice);
                             if (selectedIndex < 0)
                             {
-                                selectedIndex = supportedDevices.Count - 1;
+                                selectedIndex = supportedCaptureDevices.Count - 1;
                             }
 
-                            selectedIndex = EditorGUILayout.Popup(label, selectedIndex,
-                                supportedDevices
+                            selectedIndex = EditorGUILayout.Popup(captureLabel, selectedIndex,
+                                supportedCaptureDevices
                                 .Select(x => x.ToString())
                                 .ToArray());
 
-                            compositionManager.CaptureDevice = supportedDevices[selectedIndex];
+                            compositionManager.CaptureDevice = supportedCaptureDevices[selectedIndex];
 
-                            if ((supportedDevices[selectedIndex] != FrameProviderDeviceType.AzureKinect_DepthCamera_NFOV && supportedDevices[selectedIndex] != FrameProviderDeviceType.AzureKinect_DepthCamera_WFOV) || compositionManager.VideoRecordingLayout == VideoRecordingFrameLayout.Quad)
+                            EditorGUILayout.EndHorizontal();
+                            EditorGUILayout.Space();
+                            EditorGUILayout.BeginHorizontal();
+
+                            var supportedOutputDevices = Enum.GetValues(typeof(FrameProviderDeviceType))
+                                .Cast<FrameProviderDeviceType>()
+                                .Where(provider => compositionManager.IsOutputFrameProviderSupported(provider) || (provider == FrameProviderDeviceType.None)).ToList();
+                            selectedIndex = supportedOutputDevices.IndexOf(compositionManager.OutputDevice);
+                            if (selectedIndex < 0)
+                            {
+                                selectedIndex = supportedOutputDevices.Count - 1;
+                            }
+
+                            selectedIndex = EditorGUILayout.Popup(outputLabel, selectedIndex,
+                                supportedOutputDevices
+                                .Select(x => x.ToString())
+                                .ToArray());
+
+                            compositionManager.OutputDevice = supportedOutputDevices[selectedIndex];
+
+                            if ((supportedCaptureDevices[selectedIndex] != FrameProviderDeviceType.AzureKinect_DepthCamera_NFOV && supportedCaptureDevices[selectedIndex] != FrameProviderDeviceType.AzureKinect_DepthCamera_WFOV) || compositionManager.VideoRecordingLayout == VideoRecordingFrameLayout.Quad)
                             {
                                 GUI.enabled = false;
                             }

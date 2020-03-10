@@ -383,6 +383,16 @@ UNITYDLL bool IsFrameProviderSupported(int providerId)
 	return ci->IsFrameProviderSupported((IFrameProvider::ProviderType) providerId);
 }
 
+UNITYDLL bool IsOutputFrameProviderSupported(int providerId)
+{
+	if (ci == nullptr)
+	{
+		ci = new CompositorInterface();
+	}
+
+	return ci->IsOutputFrameProviderSupported((IFrameProvider::ProviderType) providerId);
+}
+
 UNITYDLL bool IsOcclusionSettingSupported(int setting)
 {
     if (ci == nullptr)
@@ -393,7 +403,7 @@ UNITYDLL bool IsOcclusionSettingSupported(int setting)
     return ci->IsOcclusionSettingSupported((IFrameProvider::OcclusionSetting) setting);
 }
 
-UNITYDLL bool InitializeFrameProviderOnDevice(int providerId)
+UNITYDLL bool InitializeFrameProviderOnDevice(int providerId, int outputProviderId)
 {
     if (g_outputTexture == nullptr ||
         g_UnityColorSRV == nullptr ||
@@ -413,6 +423,7 @@ UNITYDLL bool InitializeFrameProviderOnDevice(int providerId)
     }
 
     ci->SetFrameProvider((IFrameProvider::ProviderType) providerId);
+    ci->SetOutputFrameProvider((IFrameProvider::ProviderType) outputProviderId);
     isInitialized = ci->Initialize(g_pD3D11Device, g_UnityColorSRV, g_UnityDepthSRV, g_UnityBodySRV, g_outputTexture);
 
     return isInitialized;

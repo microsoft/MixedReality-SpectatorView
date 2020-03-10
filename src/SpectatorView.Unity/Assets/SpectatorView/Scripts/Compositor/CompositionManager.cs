@@ -80,6 +80,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
         private float videoTimestampToHolographicTimestampOffset = -10.0f;
         private int captureDeviceIndex = -1;
+        private int outputDeviceIndex = -1;
         private int videoRecordingLayout = -1;
         private int occlusionMode = -1;
         private TextureManager textureManager = null;
@@ -186,6 +187,30 @@ namespace Microsoft.MixedReality.SpectatorView
                 {
                     captureDeviceIndex = (int)value;
                     PlayerPrefs.SetInt(nameof(CaptureDevice), captureDeviceIndex);
+                    PlayerPrefs.Save();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the type of output device to write video content to.
+        /// </summary>
+        public FrameProviderDeviceType OutputDevice
+        {
+            get
+            {
+                if (outputDeviceIndex == -1)
+                {
+                    outputDeviceIndex = PlayerPrefs.GetInt(nameof(OutputDevice), (int)FrameProviderDeviceType.None);
+                }
+                return (FrameProviderDeviceType)outputDeviceIndex;
+            }
+            set
+            {
+                if (outputDeviceIndex != (int)value)
+                {
+                    outputDeviceIndex = (int)value;
+                    PlayerPrefs.SetInt(nameof(OutputDevice), outputDeviceIndex);
                     PlayerPrefs.Save();
                 }
             }
@@ -407,13 +432,23 @@ namespace Microsoft.MixedReality.SpectatorView
         }
 
         /// <summary>
-        /// Returns true if the UnityCompositor dll supports the specified provider.
+        /// Returns true if the UnityCompositor dll supports the specified capture provider.
         /// </summary>
         /// <param name="providerId">provider to check</param>
         /// <returns>Returns true if the provider is supported, otherwise false.</returns>
         public bool IsFrameProviderSupported(FrameProviderDeviceType providerId)
         {
             return UnityCompositorInterface.IsFrameProviderSupported(providerId);
+        }
+
+        /// <summary>
+        /// Returns true if the UnityCompositor dll supports the specified output provider.
+        /// </summary>
+        /// <param name="providerId">provider to check</param>
+        /// <returns>Returns true if the provider is supported, otherwise false.</returns>
+        public bool IsOutputFrameProviderSupported(FrameProviderDeviceType providerId)
+        {
+            return UnityCompositorInterface.IsOutputFrameProviderSupported(providerId);
         }
 
         /// <summary>
@@ -528,9 +563,9 @@ namespace Microsoft.MixedReality.SpectatorView
 
             if (!isVideoFrameProviderInitialized)
             {
-                if (UnityCompositorInterface.IsFrameProviderSupported(CaptureDevice))
+                if (UnityCompositorInterface.IsFrameProviderSupported(CaptureDevice) && UnityCompositorInterface.IsOutputFrameProviderSupported(OutputDevice))
                 {
-                    isVideoFrameProviderInitialized = UnityCompositorInterface.InitializeFrameProviderOnDevice(CaptureDevice);
+                    isVideoFrameProviderInitialized = UnityCompositorInterface.InitializeFrameProviderOnDevice(CaptureDevice, OutputDevice);
                     if (isVideoFrameProviderInitialized)
                     {
                         CurrentCompositeFrame = 0;
@@ -546,7 +581,7 @@ namespace Microsoft.MixedReality.SpectatorView
                 }
                 else
                 {
-                    Debug.LogWarning($"The current capture device, {CaptureDevice}, is not supported by your build of SpectatorView.Compositor.UnityPlugin.dll.");
+                    Debug.LogWarning($"The current device selection, Capture: {CaptureDevice}, Output: {OutputDevice}, is not supported by your build of SpectatorView.Compositor.UnityPlugin.dll.");
                 }
             }
 

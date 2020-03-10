@@ -463,11 +463,13 @@ bool DeckLinkDevice::Init(ID3D11ShaderResourceView* colorSRV, ID3D11Texture2D* o
     if (colorSRV != nullptr)
     {
         colorSRV->GetDevice(&device);
-    }
 
-    // Get input interface
-    if (m_deckLink->QueryInterface(IID_IDeckLinkInput, (void**)&m_deckLinkInput) != S_OK)
-        return false;
+        // Get input interface
+        if (m_deckLink->QueryInterface(IID_IDeckLinkInput, (void**)&m_deckLinkInput) != S_OK)
+            return false;
+    }
+    if (device == nullptr && outputTexture != nullptr)
+        outputTexture->GetDevice(&device);
 
     if (m_deckLink->QueryInterface(IID_IDeckLinkOutput, (void**)&m_deckLinkOutput) != S_OK)
     {
@@ -524,8 +526,6 @@ bool DeckLinkDevice::StartCapture(BMDDisplayMode videoDisplayMode)
     }
 
     m_currentlyCapturing = true;
-
-    SetupVideoOutputFrame(videoDisplayMode);
 
     return true;
 }
@@ -744,36 +744,36 @@ void DeckLinkDevice::Update(int compositeFrameIndex)
         {
             DirectXHelper::UpdateSRV(device, _colorSRV, buffer.buffer, FRAME_WIDTH * FRAME_BPP_RGBA);
         }
+    }
 
-        if (!_passthroughOutput && compositeFrameIndex != lastCompositorFrameIndex)
+    if (!_passthroughOutput && compositeFrameIndex != lastCompositorFrameIndex)
+    {
+        lastCompositorFrameIndex = compositeFrameIndex;
+        //Output to video recording screen
+        if (supportsOutput && device != nullptr && _outputTexture != nullptr && s_outputScheduler.enabled)
         {
-            lastCompositorFrameIndex = compositeFrameIndex;
-            //Output to video recording screen
-            if (supportsOutput && device != nullptr && _outputTexture != nullptr && s_outputScheduler.enabled)
-            {
-                unsigned char* outBytes = NULL;
-                EnterCriticalSection(&m_outputCriticalSection);
+            unsigned char* outBytes = NULL;
+            EnterCriticalSection(&m_outputCriticalSection);
 
-                if (outputTextureBuffer.IsDataAvailable())
+            if (outputTextureBuffer.IsDataAvailable())
+            {
+                IDeckLinkMutableVideoFrame* videoFrame = s_outputScheduler.GetAvailableVideoFrame();
+                if (videoFrame)
                 {
-                    IDeckLinkMutableVideoFrame* videoFrame = s_outputScheduler.GetAvailableVideoFrame();
-                    if (videoFrame)
+                    videoFrame->GetBytes((void**)&outBytes);
+                    if (pixelFormat == PixelFormat::YUV)
                     {
-                        videoFrame->GetBytes((void**)&outBytes);
-                        if (pixelFormat == PixelFormat::YUV)
-                        {
-                            outputTextureBuffer.FetchTextureData(device, outBytes, FRAME_BPP_YUV);
-                        }
-                        else if (pixelFormat == PixelFormat::BGRA)
-                        {
-                            outputTextureBuffer.FetchTextureData(device, outBytes, FRAME_BPP_RGBA);
-                        }
-                        s_outputScheduler.QueueFrame(videoFrame);
+                        outputTextureBuffer.FetchTextureData(device, outBytes, FRAME_BPP_YUV);
                     }
+                    else if (pixelFormat == PixelFormat::BGRA)
+                    {
+                        outputTextureBuffer.FetchTextureData(device, outBytes, FRAME_BPP_RGBA);
+                    }
+                    s_outputScheduler.QueueFrame(videoFrame);
                 }
-                outputTextureBuffer.PrepareTextureFetch(device, _outputTexture);
-                LeaveCriticalSection(&m_outputCriticalSection);
             }
+            outputTextureBuffer.PrepareTextureFetch(device, _outputTexture);
+            LeaveCriticalSection(&m_outputCriticalSection);
         }
     }
 }

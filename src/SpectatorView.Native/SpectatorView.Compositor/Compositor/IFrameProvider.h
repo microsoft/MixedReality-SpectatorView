@@ -15,7 +15,8 @@ public:
         Elgato,
         AzureKinect_DepthCamera_Off,
         AzureKinect_DepthCamera_NFOV,
-        AzureKinect_DepthCamera_WFOV
+        AzureKinect_DepthCamera_WFOV,
+        None
     };
 
     enum OcclusionSetting
