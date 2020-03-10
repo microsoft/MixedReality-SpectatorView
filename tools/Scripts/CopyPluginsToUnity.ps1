@@ -149,22 +149,28 @@ $AzureKinectBodyTrackingDlls = @( "sdk\windows-desktop\amd64\release\bin\dnn_mod
 if (Test-Path -Path $DependenciesPropsFile -PathType Leaf) {
   [xml]$DependenciesPropsContent = Get-Content $DependenciesPropsFile
 
-  if (Test-Path -Path $DependenciesPropsContent.Project.PropertyGroup.AzureKinectSDK -PathType Container) {
+  $SolutionDirVariable = "`$(SolutionDir)"
+  $SolutionDir = "$PSScriptRoot\..\..\src\SpectatorView.Native\"
+  $AzureKinectSDKFolder = $DependenciesPropsContent.Project.PropertyGroup.AzureKinectSDK.replace($SolutionDirVariable, $SolutionDir)
+  Write-Host "Looking for Azure Kinect SDK: $AzureKinectSDKFolder"
+  if (Test-Path -Path $AzureKinectSDKFolder -PathType Container) {
     Write-Host "Copying Azure Kinect SDK dlls to $DesktopDirectory"
 
     foreach ($Dll in $AzureKinectDlls) {
-      $DllFullPath = Join-Path -Path $DependenciesPropsContent.Project.PropertyGroup.AzureKinectSDK -ChildPath $Dll
+      $DllFullPath = Join-Path -Path $AzureKinectSDKFolder -ChildPath $Dll
       Copy-Item -Force $DllFullPath -Destination $DesktopDirectory
     }
   } else {
     Write-Host "Azure Kinect SDK is not specified, skipping plugins"
   }
 
-  if (Test-Path -Path $DependenciesPropsContent.Project.PropertyGroup.AzureKinectBodyTrackingSDK -PathType Container) {
+  $AzureKinectBodyTrackingSDKFolder = $DependenciesPropsContent.Project.PropertyGroup.AzureKinectBodyTrackingSDK.replace($SolutionDirVariable, $SolutionDir)
+  Write-Host "Looking for Azure Kinect Body Tracking SDK: $AzureKinectBodyTrackingSDKFolder"
+  if (Test-Path -Path $AzureKinectBodyTrackingSDKFolder -PathType Container) {
      Write-Host "Copying Azure Kinect Body Tracking SDK dlls to $DesktopDirectory"
 
     foreach ($Dll in $AzureKinectBodyTrackingDlls) {
-      $DllFullPath = Join-Path -Path $DependenciesPropsContent.Project.PropertyGroup.AzureKinectBodyTrackingSDK -ChildPath $Dll
+      $DllFullPath = Join-Path -Path $AzureKinectBodyTrackingSDKFolder -ChildPath $Dll
       Copy-Item -Force $DllFullPath -Destination $DesktopDirectory
     }
   } else {
