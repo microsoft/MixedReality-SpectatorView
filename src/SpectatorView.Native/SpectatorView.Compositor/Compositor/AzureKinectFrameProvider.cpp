@@ -139,54 +139,50 @@ void AzureKinectFrameProvider::Update(int compositeFrameIndex)
     }
    
     auto colorImage = k4a_capture_get_color_image(capture);
-    if (colorImage == nullptr)
+    if (colorImage != nullptr)
     {
-        return;
-    }
-    
-    UpdateSRV(colorImage, _colorSRV);
-    UpdateArUcoMarkers(colorImage);
+        UpdateSRV(colorImage, _colorSRV);
+        UpdateArUcoMarkers(colorImage);
 
-    if (_depthSRV != nullptr)
-    {
-        auto depthImage = k4a_capture_get_depth_image(capture);
-        if (depthImage == nullptr)
+        if (_depthSRV != nullptr)
         {
-            return;
-        }
-
-        k4a_transformation_depth_image_to_color_camera(transformation, depthImage, transformedDepthImage);
-        UpdateSRV(transformedDepthImage, _depthSRV);
+            auto depthImage = k4a_capture_get_depth_image(capture);
+            if (depthImage != nullptr)
+            {
+                k4a_transformation_depth_image_to_color_camera(transformation, depthImage, transformedDepthImage);
+                UpdateSRV(transformedDepthImage, _depthSRV);
 
 #if defined(INCLUDE_AZUREKINECT_BODYTRACKING)
-        if (_bodySRV != nullptr)
-        {
-            auto height = k4a_image_get_height_pixels(depthImage);
-            auto width = k4a_image_get_width_pixels(depthImage);
+                if (_bodySRV != nullptr)
+                {
+                    auto height = k4a_image_get_height_pixels(depthImage);
+                    auto width = k4a_image_get_width_pixels(depthImage);
 
-            uint16_t* bodyMaskBuffer = reinterpret_cast<uint16_t*>(k4a_image_get_buffer(bodyMaskImage));
-            uint8_t* bodyIndexBuffer = GetBodyIndexBuffer(capture);
+                    uint16_t* bodyMaskBuffer = reinterpret_cast<uint16_t*>(k4a_image_get_buffer(bodyMaskImage));
+                    uint8_t* bodyIndexBuffer = GetBodyIndexBuffer(capture);
 
-            // Set body mask buffer to 0 where bodies are recognized  
-            SetBodyMaskBuffer(bodyMaskBuffer, bodyIndexBuffer, height * width);
+                    // Set body mask buffer to 0 where bodies are recognized  
+                    SetBodyMaskBuffer(bodyMaskBuffer, bodyIndexBuffer, height * width);
 
-            k4a_result_t result = k4a_transformation_depth_image_to_color_camera(transformation, bodyMaskImage, transformedBodyMaskImage);
+                    k4a_result_t result = k4a_transformation_depth_image_to_color_camera(transformation, bodyMaskImage, transformedBodyMaskImage);
 
-            height = k4a_image_get_height_pixels(transformedBodyMaskImage);
-            width = k4a_image_get_width_pixels(transformedBodyMaskImage);
+                    height = k4a_image_get_height_pixels(transformedBodyMaskImage);
+                    width = k4a_image_get_width_pixels(transformedBodyMaskImage);
 
-            bodyMaskBuffer = reinterpret_cast<uint16_t*>(k4a_image_get_buffer(transformedBodyMaskImage));
+                    bodyMaskBuffer = reinterpret_cast<uint16_t*>(k4a_image_get_buffer(transformedBodyMaskImage));
 
-            // Set transformed body mask buffer to 1 where bodies are not recognized  
-            SetTransformedBodyMaskBuffer(bodyMaskBuffer, height * width);
+                    // Set transformed body mask buffer to 1 where bodies are not recognized  
+                    SetTransformedBodyMaskBuffer(bodyMaskBuffer, height * width);
 
-            UpdateSRV(transformedBodyMaskImage, _bodySRV);
-        }
+                    UpdateSRV(transformedBodyMaskImage, _bodySRV);
+                }
 #endif
 
-        k4a_image_release(depthImage);
+                k4a_image_release(depthImage);
+            }
+        }
+        k4a_image_release(colorImage);
     }
-    k4a_image_release(colorImage);
     k4a_capture_release(capture);
 }
 
