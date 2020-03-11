@@ -23,7 +23,7 @@ steps:
   displayName: 'Building Native Plugins ARM Release'
   inputs:
     solution: src\SpectatorView.Native\SpectatorView.Native.sln
-    msbuildVersion: 15.0
+    msbuildVersion: 16.0
     msbuildArchitecture: x64
     platform: ARM
     configuration: Release

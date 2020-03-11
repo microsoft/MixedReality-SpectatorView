@@ -80,7 +80,7 @@ function BuildOpenCV
   Write-Host "`n`nOpenCV Build Completed:"
   Write-Host "x86 Dependencies Succeeded: $86Dependencies"
   Write-Host "x86 UWP OpenCV Succeeded: $86UWP"
-  Write-Host "x86 Desktop OpenCV Succeeded: $64Windows"
+  Write-Host "x64 Desktop OpenCV Succeeded: $64Windows"
   $Succeeded.Value = ($86Dependencies -eq $true) -And ($86UWP -eq $true) -And ($64Windows -eq $true)
 
   Set-Location $origLoc
