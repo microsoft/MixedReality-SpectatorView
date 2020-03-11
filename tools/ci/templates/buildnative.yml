@@ -25,7 +25,9 @@ steps:
     solution: src\SpectatorView.Native\SpectatorView.Native.sln
     platform: ARM
     configuration: Release
-    msbuildArgs: '/p:PlatformToolset=v142' # Allows 2019 toolchain with 2017 projects
+    vsVersion: 16.0
+    msbuildArgs: /p:PlatformToolset="v142" # Allows 2019 toolchain with 2017 projects
+    msbuildArchitecture: x64
   timeoutInMinutes: 20
 
 - task: MSBuild@1
