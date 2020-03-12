@@ -159,10 +159,18 @@ void AzureKinectFrameProvider::Update(int compositeFrameIndex)
                     auto width = k4a_image_get_width_pixels(depthImage);
 
                     uint16_t* bodyMaskBuffer = reinterpret_cast<uint16_t*>(k4a_image_get_buffer(bodyMaskImage));
-                    uint8_t* bodyIndexBuffer = GetBodyIndexBuffer(capture);
 
-                    // Set body mask buffer to 0 where bodies are recognized  
-                    SetBodyMaskBuffer(bodyMaskBuffer, bodyIndexBuffer, height * width);
+                    k4abt_frame_t bodyFrame;
+                    k4a_image_t bodyMap;
+                    uint8_t* bodyIndexBuffer;
+                    GetBodyIndexMap(capture, &bodyFrame, &bodyMap, &bodyIndexBuffer);
+
+                    if (bodyIndexBuffer != nullptr)
+                    {
+                        // Set body mask buffer to 0 where bodies are recognized  
+                        SetBodyMaskBuffer(bodyMaskBuffer, bodyIndexBuffer, height * width);
+                    }
+                    ReleaseBodyIndexMap(bodyFrame, bodyMap);
 
                     k4a_result_t result = k4a_transformation_depth_image_to_color_camera(transformation, bodyMaskImage, transformedBodyMaskImage);
 
@@ -211,29 +219,44 @@ void AzureKinectFrameProvider::UpdateArUcoMarkers(k4a_image_t image)
 }
 
 #if defined(INCLUDE_AZUREKINECT_BODYTRACKING)
-uint8_t* AzureKinectFrameProvider::GetBodyIndexBuffer(k4a_capture_t capture)
+void AzureKinectFrameProvider::GetBodyIndexMap(k4a_capture_t capture, k4abt_frame_t* bodyFrame, k4a_image_t* bodyIndexMap, uint8_t** bodyIndexBuffer)
 {
-    uint8_t* bodyIndexBuffer;
-
     k4a_wait_result_t queue_capture_result = k4abt_tracker_enqueue_capture(k4abtTracker, capture, K4A_WAIT_INFINITE);
 
     if (queue_capture_result == K4A_WAIT_RESULT_FAILED)
     {
         printf("Error! Adding capture to tracker process queue failed!\n");
-        return NULL;
+        *bodyFrame = nullptr;
+        *bodyIndexMap = nullptr;
+        *bodyIndexBuffer = nullptr;
     }
-
-    k4abt_frame_t body_frame = NULL;
-    k4a_wait_result_t pop_frame_result = k4abt_tracker_pop_result(k4abtTracker, &body_frame, K4A_WAIT_INFINITE);
-    if (pop_frame_result == K4A_WAIT_RESULT_SUCCEEDED)
+    else
     {
-        auto bodyIndexMap = k4abt_frame_get_body_index_map(body_frame);
-        bodyIndexBuffer = k4a_image_get_buffer(bodyIndexMap);
+        k4a_wait_result_t pop_frame_result = k4abt_tracker_pop_result(k4abtTracker, bodyFrame, K4A_WAIT_INFINITE);
+        if (pop_frame_result == K4A_WAIT_RESULT_SUCCEEDED)
+        {
+            *bodyIndexMap = k4abt_frame_get_body_index_map(*bodyFrame);
+            *bodyIndexBuffer = k4a_image_get_buffer(*bodyIndexMap);
+        }
+        else
+        {
+            *bodyIndexMap = nullptr;
+            *bodyIndexBuffer = nullptr;
+        }
+    }
+}
+
+void AzureKinectFrameProvider::ReleaseBodyIndexMap(k4abt_frame_t bodyFrame, k4a_image_t bodyIndexMap) 
+{
+    if (bodyIndexMap != nullptr)
+    {
         k4a_image_release(bodyIndexMap);
     }
-   
-    k4abt_frame_release(body_frame);
-    return bodyIndexBuffer;
+
+    if (bodyFrame != nullptr)
+    {
+        k4abt_frame_release(bodyFrame);
+    }
 }
 
 void AzureKinectFrameProvider::SetBodyMaskBuffer(uint16_t* bodyMaskBuffer, uint8_t* bodyIndexBuffer, int bufferSize)

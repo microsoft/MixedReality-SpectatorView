@@ -52,7 +52,8 @@ public:
     virtual void GetLatestArUcoMarkers(int size, Marker* markers) override;
 
 private:
-    uint8_t* GetBodyIndexBuffer(k4a_capture_t capture);
+    void GetBodyIndexMap(k4a_capture_t capture, k4abt_frame_t* bodyFrame, k4a_image_t* bodyIndexMap, uint8_t** bodyIndexBuffer);
+    void ReleaseBodyIndexMap(k4abt_frame_t bodyFrame, k4a_image_t bodyIndexMap);
     void UpdateSRV(k4a_image_t bodyDepthImage, ID3D11ShaderResourceView* _srv);
     void UpdateArUcoMarkers(k4a_image_t image);
     void SetBodyMaskBuffer(uint16_t* bodyMaskBuffer, uint8_t* bodyIndexBuffer, int bufferSize);
