@@ -210,11 +210,14 @@ void AzureKinectFrameProvider::UpdateArUcoMarkers(k4a_image_t image)
         auto width = k4a_image_get_width_pixels(image);
         auto buffer = k4a_image_get_buffer(image);
 
+        const int radialDistortionCount = 6;
+        const int tangentialDistortionCount = 2;
+
         float focalLength[2] = { calibration.color_camera_calibration.intrinsics.parameters.param.fx, calibration.color_camera_calibration.intrinsics.parameters.param.fy };
         float principalPoint[2] = { calibration.color_camera_calibration.intrinsics.parameters.param.cx, calibration.color_camera_calibration.intrinsics.parameters.param.cy };
-        float radialDistortion[3] = { calibration.color_camera_calibration.intrinsics.parameters.param.k1, calibration.color_camera_calibration.intrinsics.parameters.param.k2, calibration.color_camera_calibration.intrinsics.parameters.param.k3 };
-        float tangentialDistortion[2] = { calibration.color_camera_calibration.intrinsics.parameters.param.p1, calibration.color_camera_calibration.intrinsics.parameters.param.p2 };
-        markerDetector->DetectMarkers(buffer, width, height, focalLength, principalPoint, radialDistortion, tangentialDistortion, markerSize, markerDictionaryName);
+        float radialDistortion[radialDistortionCount] = { calibration.color_camera_calibration.intrinsics.parameters.param.k1, calibration.color_camera_calibration.intrinsics.parameters.param.k2, calibration.color_camera_calibration.intrinsics.parameters.param.k3, calibration.color_camera_calibration.intrinsics.parameters.param.k4, calibration.color_camera_calibration.intrinsics.parameters.param.k5, calibration.color_camera_calibration.intrinsics.parameters.param.k6 };
+        float tangentialDistortion[tangentialDistortionCount] = { calibration.color_camera_calibration.intrinsics.parameters.param.p1, calibration.color_camera_calibration.intrinsics.parameters.param.p2 };
+        markerDetector->DetectMarkers(buffer, width, height, focalLength, principalPoint, radialDistortion, radialDistortionCount, tangentialDistortion, tangentialDistortionCount, markerSize, markerDictionaryName);
     }
 }
 
