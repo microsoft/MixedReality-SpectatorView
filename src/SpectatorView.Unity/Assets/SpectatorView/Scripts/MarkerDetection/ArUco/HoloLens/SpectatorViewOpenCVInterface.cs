@@ -26,7 +26,9 @@ namespace Microsoft.MixedReality.SpectatorView
             float[] focalLength,
             float[] principalPoint,
             float[] radialDistortion,
+            int radialDistortionCount,
             float[] tangentialDistortion,
+            int tangentialDistortionCount,
             float markerSize,
             int arUcoMarkerDictionaryId);
 
@@ -130,7 +132,9 @@ namespace Microsoft.MixedReality.SpectatorView
                 focalLength,
                 principalPoint,
                 radialDistortion,
+                radialDistortion.Length,
                 tangentialDistortion,
+                tangentialDistortion.Length,
                 _markerSize,
                 _arucoDictionaryId))
             {
