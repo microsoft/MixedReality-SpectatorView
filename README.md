@@ -4,110 +4,47 @@ Spectator View is an augmented reality product that enables viewing HoloLens exp
 
 ## Samples
 
-The Spectator View repository contains multiple sample projects. **The instructions for building and running samples will differ from instructions for adding the Spectator View codebase to your own project.** To see how to set up samples go [here](samples/README.md). To add Spectator View to your own project, see below.
+The Spectator View repository contains multiple sample projects. To see how to set up samples go [here](samples/README.md). To add Spectator View to your own project, see below.
 
 ## Getting started with your own project
 
 ### Obtaining the code
 
-**Currently, the supported process for obtaining and consuming Spectator View code is by adding the repository as a submodule to your project** Downloading source code from the releases tab is possible, but helper scripts and sample projects may break if you choose not to reference the codebase as a submodule. Steps for cloning and using the git repository are as follows:
+To build the Microsoft.MixedReality.SpectatorView Unity package, you will need the following:
 
-1. Download [git](https://git-scm.com/downloads)
-2. Setup a repository for your project. For more information on how to setup a repository, see [here](https://help.github.com/en/articles/create-a-repo).
-3. Open an administrator command window.
-4. Clone your project's repository.
+1. Windows PC
+3. [Visual Studio 2019](https://visualstudio.microsoft.com/vs/) installed on the PC
+4. [Windows 10 SDK (10.0.18362.0)](https://developer.microsoft.com/en-us/windows/downloads/windows-10-sdk)
+5. [Git](https://git-scm.com/downloads) installed on the PC and added to your `PATH` variable
+6. [NuGet](https://www.nuget.org/downloads) installed on the PC and added to your `PATH` variable
 
-![Marker](doc/images/CloneRepo.png)
+#### Grab external dependencies (optional)
+The below dependencies are optional but should be obtained if they are desired for video camera filming.
+1. Download the [Azure Kinect Sensor SDK](https://docs.microsoft.com/en-us/azure/kinect-dk/sensor-sdk-download)
+2. Download the [Azure Kinect Body Tracking SDK](https://docs.microsoft.com/en-us/azure/kinect-dk/body-sdk-download)
+3. Download Blackmagic design's Desktop Video & Desktop Video SDK from [here](https://www.blackmagicdesign.com/support)
+    * Search for Desktop Video & Desktop Video SDK in "Latest Downloads" (Note: **10.9.11** is the current version used in the SpectatorView.Compositor.dll. Newer versions may contain breaks.)
+    * Extract downloaded content to a `external\Blackmagic DeckLink SDK 10.9.11` (make sure this path matches the path found in )
 
-5. Change directories to that of your project's repository.
-6. Add the MixedReality-SpectatorView codebase as a submodule for your project by running `git submodule add https://github.com/microsoft/MixedReality-SpectatorView.git sv`
+There are currently two ways to consume the com.microsoft.mixedreality.spectatorview.* Unity package. You can either build the package and generate a *.zip file to share with your team or you can add the MixedReality-SpectatorView codebase as a submodule to your project.
 
->Note: If you are anticipating contributing to the MixedReality-SpectatorView project, you should fork your own version of the repository and add it as a submodule instead of the Microsoft repository. Your forked repository url will look something like this: `https://github.com/YourGitHubAliasHere/MixedReality-SpectatorView.git`.
+### Build a package to share with your team
+1. Clone the MixedReality-SpectatorView repository.
+2. Checkout your desired branch (`master`).
+3. Run `tools\scripts\CreateUnityPackage.bat` in an administrator cmd window.
+    > Note: It may take a while to build external dependencies for Spectator View's native components the first time this script is run.
+4. Extract the generated packages\com.microsoft.mixedreality.spectatorview.*.zip somewhere in/near your project (don't place the package inside your Unity project's Assets folder).
+5. Add a reference to the com.microsoft.mixedreality.spectatorview.* folder to your Unity project's Package/manifest.json file.
 
-![Marker](doc/images/AddSubmodule.png)
-
-7. Change directories to the MixedReality-SpectatorView submodule.
-8. Choose the appropriate branch that you would like to use for the MixedReality-SpectatorView submodule. By default, the submodule will be directed at master, which may not be the most stable branch for consumption. To change branches run the following commands:
-
-    1. Change directories into the submodule.
-    2. Run `git fetch origin release/1.1.0`
-    3. Run `git checkout release/1.1.0`
-    4. Run `git branch` to make sure you are using the release/1.1.0 branch
-
-
-After running these git commands, you will have a local copy of the MixedReality-SpectatorView codebase. Next, you will need to follow the instructions in `Setup your local environment` to obtain external dependencies.
-
-### Setting up your local environment
-
-The MixedReality-SpectatorView repository uses Unity packages, git submodules and symbolic linked directories for obtaining and referencing external dependencies. Prior to opening any Unity projects, you will need to run a setup script.
-
-* The setup script will configure your git repository to use clrf line endings and support symbolic linked directories.
-* The setup script will obtain and update all git submodules declared in the MixedReality-SpectatorView repository.
-* The setup script will fix any symbolic linked directories in the MixedReality-SpectatorView repository.
-
-> Note: Some of the external repositories we reference through git submodules may not have the same MIT `LICENSE` as the MixedReality-SpectatorView repository. Submodules in this project currently include: [MixedRealityToolkit-Unity](https://github.com/microsoft/MixedRealityToolkit-Unity), [Azure-Spatial-Anchors-Samples](https://github.com/Azure/azure-spatial-anchors-samples) and [ARCore-Unity-SDK](https://github.com/google-ar/arcore-unity-sdk). You should review the license of each of those repositories. These repositories will be pulled down to your computer when you run `tools/Scripts/SetupRepository.bat` script, or any of the `git submodule` related commands directly.
-
-Depending on what release you are using the correct setup script may vary. Choose the appropriate script below based on the git branch that you have checked out in your clone of the MixedReality-SpectatorView repository.
-
-1. Run `'tools/Scripts/SetupRepository.bat'` as an administrator on your PC (On Mac or Linux, you can run `'sh /tools/scripts/SetupRepository.sh'`). These scripts are located within your MixedReality-SpectatorView submodule.
-
-![Marker](doc/images/SetupRepo.png)
-
-### Adding references to your own project
-
-After setting up a submodule for the MixedReality-SpectatorView repository and resolving its external dependencies (see above), the suggested mechanism for referencing the code is by adding symbolic linked directories to your Unity project's Assets folder. You can do this with the following:
-
-> Note: Symbolic linked directories should be setup as relative paths. Using relative paths should allow directories to resolve correctly regardless of where you or your team members clone your project repository in their local file systems. The instructions below demonstrate setting up symbolic linked directories based on the following paths:
->* **Project repository directory:** c:\Your\Unity\Project
->* **Project Assets directory:** c:\Your\Unity\Project\Assets
->* **MixedReality-SpectatorView submodule directory:** c:\Your\Unity\Project\sv
-
-1. Close any instances of Unity.
-2. Open an administrator command window.
-3. Run `tools\Scripts\AddDependencies.bat -AssetPath "Assets" -SVPath "sv"` (These paths are the relative paths to your project Assets folder and your MixedReality-SpectatorView submodule from the root directory of your repository).  This script is located within your MixedReality-SpectatorView submodule.
-
-Now, when you reopen your project in Unity, folders should appear in your project's Assets folder.
-
-![Marker](doc/images/AddDependencies.png)
-
-### Sharing the project
-
-After adding the MixedReality-SpectatorView repository as a submodule, you can commit the symbolic linked directories and submodule meta files to your repository to share with your team. If a team member wants to then use this repository they should do the following:
-
-1. Clone the project repository.
-2. Run `tools\Scripts\SetupRepository.ps1` in the MixedReality-SpectatorView submodule.
-3. Run `tools\Scripts\FixSymbolicLinks.ps1` from the root directory of your project's repository.
-
-![Marker](doc/images/FixSymbolicLinks.png)
-
-### Basic Unity Setup
-
-Below are quick instructions for adding Spectator View to your project:
-
-1. Ensure you have all of the [Software & Hardware](doc/SpectatorView.Setup.md) required for building and using Spectator View.
-
-2. Go through the `Getting Started` steps above to obtain and reference the MixedReality-SpectatorView codebase in your project.
-
-3. Add the `MixedReality.SpectatorView/SpectatorView/Prefabs/SpectatorView.prefab` to the primary scene that will run on your HoloLens device. This prefab contains the bulk of Spectator View code for synchronizing and aligning holograms across multiple devices.
-
-4. Choose a [Spatial Alignment Strategy](src/SpectatorView.Unity/Assets/SpatialAlignment/README.md) that will allow multiple devices to view holograms in the same location in the physical world. There are different mechanisms for achieving alignment, such as [Azure Spatial Anchors](https://azure.microsoft.com/en-us/services/spatial-anchors/) and marker detector based approaches. Not all approaches work for all devices, so you will need to pick the strategy that best addresses your needs.
-
-5. Add the [dependencies](doc/SpectatorView.Setup.md) required for your Spatial Alignment Strategy to your Unity project. This may involve updating git submodules, adding symbolic linked directories, and manually downloading and extracting zip files. With the end of this step, you will have all of the needed code from external projects included in your Unity project.
-
-6. Update your Unity project and player settings based on the [requirements](doc/SpectatorView.Setup.md) of your Spatial Alignment Strategy. This often involves adding preprocessor directives to different platform player settings to enable code paths specific to your desired Spatial Alignment Strategy.
-
-7. Generate and check-in Asset Caches to your project repository. These Asset Caches act as GameObject registries and will allow different devices running your application to understand what Unity GameObjects are being created, destroyed and updated throughout the application life cycle. To generate these asset caches, run [Spectator View -> Update All Asset Caches](doc/SpectatorView.Setup.md) in the Unity Editor toolbar.
-
-8. Build & Deploy your primary scene to the HoloLens device.
-
-9. Open the example spectating scene appropriate for your mobile device type. This should either be `SpectatorView.Android.unity`, `SpectatorView.iOS.unity` or `SpectatorView.HoloLens.Spectator.unity`.
-
-    > Note: If you are creating your own spectating scene, ensure that the `Role` property of the `SpectatorView` game object is set to `Spectator`; and the property `Shared Coordinate Origin` on `SpectatorView > SpatialCoordinateSystem > CameraTransform` game object is set to the parent game object of the main camera.
-
-10. Build & Deploy your spectating scene onto your mobile device. Be sure to include the `SpectatorView.Android.unity`, `SpectatorView.iOS.unity` or `SpectatorView.HoloLens.Spectator.unity` scene in your build through the Build Settings. Platform specific build instructions can be found [here](doc/SpectatorView.Setup.md) for Android and iOS.
+### Referencing MixedReality-SpectatorView as a submodule
+1. Add the MixedReality-SpectatorView repository as a submodule to your preexisting git repository.
+2. Checkout your desired branch (`master`).
+    > Note: It may take a while to build external dependencies for Spectator View's native components the first time this script is run.
+3. Run `tools\scripts\CreateUnityPackage.bat` in an administrator cmd window.
+4. Add a reference to the submodule folder src/SpectatorView.Unity/Assets in your Unity project's Package/manifest.json file.
 
 ### Detailed Unity Setup
-For more information on setting up a Spectator View project, see the following pages:
+For more information on setting up a Spectator View project after obtaining the com.microsoft.mixedreality.spectatorview.* Unity package, see the following pages:
 
 * [Spectating with an Android, an iOS or a HoloLens device](doc/SpectatorView.Setup.md)
 * [Spectating with a video camera](doc/SpectatorView.Setup.VideoCamera.md)

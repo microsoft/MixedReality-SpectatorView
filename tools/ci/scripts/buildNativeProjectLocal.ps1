@@ -1,7 +1,6 @@
 param(
     $MSBuild,
     [switch]$ForceRebuild,
-    [switch]$ExcludeBlackmagic,
     [Parameter(Mandatory=$true)][ref]$Succeeded
 )
 
@@ -36,17 +35,9 @@ $64Result = "False"
 $CopyResult = "False"
 
 $Arg1 = "-None"
-if ($ForceRebuild -And $ExcludeBlackmagic)
-{
-    . $PSScriptRoot\setupNativeProject.ps1 -ForceRebuild -ExcludeBlackmagic -Succeeded ([ref]$SetupResult)
-}
-elseif ($ForceRebuild)
+if ($ForceRebuild)
 {
     . $PSScriptRoot\setupNativeProject.ps1 -ForceRebuild -Succeeded ([ref]$SetupResult)
-}
-elseif ($ExcludeBlackmagic)
-{
-    . $PSScriptRoot\setupNativeProject.ps1 -ExcludeBlackmagic -Succeeded ([ref]$SetupResult)
 }
 else
 {
