@@ -9,7 +9,7 @@ using UnityMaterialPropertyBlock = UnityEngine.MaterialPropertyBlock;
 
 namespace Microsoft.MixedReality.SpectatorView
 {
-    internal class MaterialPropertyBlock
+    public class MaterialPropertyBlock
     {
         private PropertyData propertyData;
 
@@ -134,7 +134,7 @@ namespace Microsoft.MixedReality.SpectatorView
                 unityPropertySetter(propertyId, value);
             }
 
-            public bool HasValue(int propertyId, MaterialPropertyType materialPropertyType)
+            internal bool HasValue(int propertyId, MaterialPropertyType materialPropertyType)
             {
                 switch (materialPropertyType)
                 {
@@ -181,7 +181,7 @@ namespace Microsoft.MixedReality.SpectatorView
         }
     }
 
-    internal static class MaterialPropertyBlockExtensions
+    public static class MaterialPropertyBlockExtensions
     {
         private static readonly ConditionalWeakTable<Renderer, MaterialPropertyBlock.PropertyData> propertyBlockTable = new ConditionalWeakTable<Renderer, MaterialPropertyBlock.PropertyData>();
 
