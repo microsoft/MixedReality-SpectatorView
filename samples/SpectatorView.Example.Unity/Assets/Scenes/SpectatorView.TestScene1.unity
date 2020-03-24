@@ -144,7 +144,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 752516157f98aca44a5200d4b157deed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  material: {fileID: 2100000, guid: 989bfc72d2caf3549aaf0b353b6164d8, type: 2}
+  targetRenderer: {fileID: 223683575}
 --- !u!135 &223683574
 SphereCollider:
   m_ObjectHideFlags: 0
