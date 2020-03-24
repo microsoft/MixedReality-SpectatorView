@@ -37,7 +37,15 @@ function DownloadQRCodePlugin
   $contentFolder = "$mainFolder\UnityFiles\"
 
   Remove-Item -Path "$mainFolder\*Microsoft.*" -Recurse
-  Remove-Item -Path "$mainFolder\UnityFiles\*" -Recurse
+  if (Test-Path $contentFolder)
+  {
+    Remove-Item -Path "$contentFolder*" -Recurse
+  }
+  else
+  {
+    New-Item -ItemType Directory -Force -Path $contentFolder
+  }
+
   DownloadNuGetPackage -PackageName "Microsoft.MixedReality.QR" -Version "0.5.2092" -IntermediateFolder $mainFolder -OutputFolder "$contentFolder"
   DownloadNuGetPackage -PackageName "Microsoft.VCRTForwarders" -Version "140.1.0.5" -IntermediateFolder $mainFolder -OutputFolder "$contentFolder"
 }

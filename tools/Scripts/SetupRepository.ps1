@@ -4,15 +4,16 @@ param(
 
 Import-Module "$PSScriptRoot\SetupRepositoryFunc.psm1"
 
+$repoSetupSucceeded = $false
 if ($NoDownloads)
 {
     Write-Host "Running setup with no downloads"
-    SetupRepository -NoDownloads -NoBuilds
+    SetupRepository -NoDownloads -NoBuilds -Succeeded ([ref]$repoSetupSucceeded)
 }
 else
 {
     Write-Host "Running default repo setup"
-    SetupRepository -NoBuilds
+    SetupRepository -NoBuilds -Succeeded ([ref]$repoSetupSucceeded)
 }
  
 Write-Host "`n"

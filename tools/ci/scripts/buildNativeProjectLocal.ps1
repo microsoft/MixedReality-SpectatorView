@@ -2,7 +2,7 @@ param(
     $MSBuild,
     [switch]$ForceRebuild,
     [switch]$ExcludeBlackmagic,
-    [Parameter(Mandatory=$true)][bool][ref]$Succeeded
+    [Parameter(Mandatory=$true)][ref]$Succeeded
 )
 
 $MSBuildPath = "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\amd64\MSBuild.exe"
@@ -56,8 +56,9 @@ else
 if ($SetupResult -eq $true)
 {
     Write-Host "Attempting to restore NuGet packages for SpectatorView.Native.sln"
-    & nuget restore $PSScriptRoot\..\..\..\src\SpectatorView.Native\SpectatorView.Native.sln
-    
+    $msbuildpath = Split-Path $MSBuild -parent
+    & nuget restore $PSScriptRoot\..\..\..\src\SpectatorView.Native\SpectatorView.Native.sln -verbosity detail -MSBuildPath $msbuildpath
+
     BuildProject -MSBuild $MSBuild -VSSolution $PSScriptRoot\..\..\..\src\SpectatorView.Native\SpectatorView.Native.sln -Configuration "Release" -Platform "ARM" -Succeeded ([ref]$ARMResult)
     
     $86Includes = "`"$PSScriptRoot\..\..\..\external\vcpkg\installed\x86-uwp\include`""

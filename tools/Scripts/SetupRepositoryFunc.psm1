@@ -7,7 +7,7 @@ function SetupRepository
         [switch] $NoDownloads,
         [switch] $NoBuilds,
         $MSBuild,
-        [Parameter(Mandatory=$true)][bool][ref]$Succeeded
+        [Parameter(Mandatory=$true)][ref]$Succeeded
     )
 
     $origLoc = Get-Location
