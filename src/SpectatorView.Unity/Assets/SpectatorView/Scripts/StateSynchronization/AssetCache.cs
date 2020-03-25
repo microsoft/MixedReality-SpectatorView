@@ -444,7 +444,7 @@ namespace Microsoft.MixedReality.SpectatorView
                 if (string.IsNullOrEmpty(asset.name) ||
                     !AssetDatabase.TryGetGUIDAndLocalFileIdentifier(asset, out string guid, out long localId))
                 {
-                    Debug.LogError($"Unable to identify asset: {asset}");
+                    Debug.LogWarning($"Unable to identify asset: {asset}");
                     continue;
                 }
 

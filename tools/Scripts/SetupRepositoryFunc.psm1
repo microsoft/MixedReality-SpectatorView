@@ -27,6 +27,7 @@ function SetupRepository
     git submodule update --init
     
     FixSymbolicLinksForDirectory -Directory "$PSScriptRoot\..\..\src\SpectatorView.Unity\"
+    FixSymbolicLinksForDirectory -Directory "$PSScriptRoot\..\..\samples\Build2019Demo.Unity\"
 
     If (!$NoBuilds)
     {

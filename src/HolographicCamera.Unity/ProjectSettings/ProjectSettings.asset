@@ -571,7 +571,7 @@ PlayerSettings:
   m_MobileRenderingPath: 1
   metroPackageName: Microsoft.MixedReality.HolographicCamera
   metroPackageVersion: 1.0.0.0
-  metroCertificatePath: C:\Users\chriba\Documents\git\MixedReality-SpectatorView\src\HolographicCamera.Unity\Assets\WSATestCertificate.pfx
+  metroCertificatePath: Assets/WSATestCertificate.pfx
   metroCertificatePassword: 
   metroCertificateSubject: Microsoft
   metroCertificateIssuer: Microsoft
