@@ -100,7 +100,7 @@ The Shared Spatial Coordinate feature allows placing the stationary Azure Kinect
 1. Print out the [ArUco Three Marker](../../../../../../doc/images/ArUcoThreeMarkerBoard.pdf) board on legal sized paper.
 ![ArUco Three Marker Board](../../../../../../doc/images/ArUcoThreeMarkerBoard.png)
 2. Choose "ArUco Three Marker" as the spatial alignment strategy from the drop-down within the Holographic Camera box.
-3. Measure the physical length of one side of one of the printed ArUco markers, and ensure that that size is input into the settings drop-down next to the spatial alignment strategy as the Marker Size (m).
+3. Measure the physical length of one side of one of the printed ArUco markers, and ensure that that size is input into the settings drop-down next to the spatial alignment strategy as the Marker Size (m). Each marker should be approximately 10cm when printed on legal sized paper (8.5" x 14").
 4. Place the printed ArUco three marker board within view of the Azure Kinect camera.
 5. Click the "Located Shared Spatial Coordinate" button inside the Holographic Camera box.
 6. Once the marker detector has located the ArUco markers, the status should change from "Locating shared spatial coordinate..." to "Located".
