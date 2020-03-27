@@ -32,7 +32,9 @@ bool ArUcoMarkerDetector::DetectMarkers(
     float* focalLength,
     float* principalPoint,
     float* radialDistortion,
+    int radialDistortionCount,
     float* tangentialDistortion,
+    int tangentialDistortionCount,
     float markerSize,
     int arUcoMarkerDictionaryId)
 {
@@ -75,12 +77,21 @@ bool ArUcoMarkerDetector::DetectMarkers(
     cameraMatrix.at<double>(2, 2) = 1.0; // Default value for camera intrinsic matrix
     OutputDebugMatrix<double>(L"Camera Matrix: ", cameraMatrix);
 
-    cv::Mat distCoeffMatrix(1, 5, CV_64F, cv::Scalar(0));
-    distCoeffMatrix.at<double>(0, 0) = radialDistortion[0]; // r1 radial distortion
-    distCoeffMatrix.at<double>(0, 1) = radialDistortion[1]; // r2 radial distortion
-    distCoeffMatrix.at<double>(0, 2) = tangentialDistortion[0]; // t1 tangential distortion
-    distCoeffMatrix.at<double>(0, 3) = tangentialDistortion[1]; // t2 tangential distortion
-    distCoeffMatrix.at<double>(0, 4) = radialDistortion[2]; // r3 radial distortion
+    cv::Mat distCoeffMatrix(1, radialDistortionCount + tangentialDistortionCount, CV_64F, cv::Scalar(0));
+    int coefficientIndex = 0;
+    for (int i = 0; i < 2 && i < radialDistortionCount; i++, coefficientIndex++) 
+    {
+        distCoeffMatrix.at<double>(0, coefficientIndex) = radialDistortion[i];
+    }
+    for (int i = 0; i < tangentialDistortionCount; i++, coefficientIndex++)
+    {
+        distCoeffMatrix.at<double>(0, coefficientIndex) = tangentialDistortion[i];
+    }
+    for (int i = 2; i < radialDistortionCount; i++, coefficientIndex++)
+    {
+        distCoeffMatrix.at<double>(0, coefficientIndex) = radialDistortion[i];
+    }
+
     OutputDebugMatrix<double>(L"Distortion Coefficients: ", distCoeffMatrix);
 
     std::vector<cv::Vec3d> rotationVecs;

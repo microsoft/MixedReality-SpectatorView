@@ -672,9 +672,9 @@ PlayerSettings:
   metroPackageVersion: 1.0.0.0
   metroCertificatePath: Assets\WSATestCertificate.pfx
   metroCertificatePassword: 
-  metroCertificateSubject: DefaultCompany
-  metroCertificateIssuer: DefaultCompany
-  metroCertificateNotAfter: 007a5ac41245d601
+  metroCertificateSubject: Microsoft
+  metroCertificateIssuer: Microsoft
+  metroCertificateNotAfter: 0044e5263d21d701
   metroApplicationDescription: Mixed-reality spectator view for third person perspective
     viewing of mixed-reality applications
   wsaImages: {}

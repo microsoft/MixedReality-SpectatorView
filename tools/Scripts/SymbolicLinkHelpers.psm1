@@ -67,8 +67,8 @@ Function FixSymbolicLinksForDirectory {
     Process {
 	# If any links were created to the submodules but were broken,
 	# restore those symlinks now that the submodules are cloned.
-	Write-Output "Fixing all symbolic links."
-	$RootDirectory | dir -Recurse -File | ?{$_.LinkType -eq "SymbolicLink" } | Restore-SymbolicLink
+	Write-Output "Fixing symbolic links for the following directory: $Directory"
+	$Directory | dir -Recurse -File | ?{$_.LinkType -eq "SymbolicLink" } | Restore-SymbolicLink
 
 	# If any links were created before the repository was configured to use
 	# symlinks, those links need to be restored.

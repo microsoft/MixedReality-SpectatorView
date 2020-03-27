@@ -21,13 +21,13 @@ function DownloadNuGetPackage
   if (Test-Path -Path "$zipOutputFolder\Unity")
   {
     New-Item -Path "$OutputFolder\$PackageName.$Version\Unity" -ItemType Directory
-    Copy-Item -Path "$zipOutputFolder\Unity\*" -Destination "$OutputFolder\$PackageName.$Version\Unity" -Recurse
+    Copy-Item -Path "$zipOutputFolder\Unity\*" -Destination "$OutputFolder\$PackageName.$Version\" -Recurse
   }
 
-  if (Test-Path -Path "$zipOutputFolder\lib\net46")
+  if (Test-Path -Path "$zipOutputFolder\lib\unity")
   {
     New-Item -Path "$OutputFolder\$PackageName.$Version\lib\net46" -ItemType Directory
-    Copy-Item -Path "$zipOutputFolder\lib\net46\*" -Destination "$OutputFolder\$PackageName.$Version\lib\net46" -Recurse
+    Copy-Item -Path "$zipOutputFolder\lib\unity\*" -Destination "$OutputFolder\$PackageName.$Version\" -Recurse
   }
 }
 
@@ -37,7 +37,15 @@ function DownloadQRCodePlugin
   $contentFolder = "$mainFolder\UnityFiles\"
 
   Remove-Item -Path "$mainFolder\*Microsoft.*" -Recurse
-  Remove-Item -Path "$mainFolder\UnityFiles\*" -Recurse
-  DownloadNuGetPackage -PackageName "Microsoft.MixedReality.QR" -Version "0.5.2092" -IntermediateFolder $mainFolder -OutputFolder "$contentFolder"
+  if (Test-Path $contentFolder)
+  {
+    Remove-Item -Path "$contentFolder*" -Recurse
+  }
+  else
+  {
+    New-Item -ItemType Directory -Force -Path $contentFolder
+  }
+
+  DownloadNuGetPackage -PackageName "Microsoft.MixedReality.QR" -Version "0.5.2100" -IntermediateFolder $mainFolder -OutputFolder "$contentFolder"
   DownloadNuGetPackage -PackageName "Microsoft.VCRTForwarders" -Version "140.1.0.5" -IntermediateFolder $mainFolder -OutputFolder "$contentFolder"
 }

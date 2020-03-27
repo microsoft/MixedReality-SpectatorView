@@ -14,7 +14,9 @@ public:
         float* focalLength,
         float* principalPoint,
         float* radialDistortion,
+        int radialDistortionCount,
         float* tangentialDistortion,
+        int tangentialDistortionCount,
         float markerSize,
         int arUcoMarkerDictionaryId);
     inline int GetDetectedMarkersCount() { return static_cast<int>(_detectedMarkers.size()); }

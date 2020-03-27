@@ -33,4 +33,4 @@ Copy-Item -Path "$PSScriptRoot\..\..\src\SpectatorView.Unity\Assets\*" -Destinat
 Compress-Archive -path $PackagePath -destinationpath "$PackagePath.zip" -Force
 
 Write-Host "Created package: packages/$PackageName.$PackageVersion.zip"
-Write-Host "Unzip and reference this package for your project as needed."
+Write-Host "Unzip and reference this package in your project as needed."

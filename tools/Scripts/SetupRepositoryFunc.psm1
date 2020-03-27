@@ -7,7 +7,7 @@ function SetupRepository
         [switch] $NoDownloads,
         [switch] $NoBuilds,
         $MSBuild,
-        [Parameter(Mandatory=$true)][bool][ref]$Succeeded
+        [Parameter(Mandatory=$true)][ref]$Succeeded
     )
 
     $origLoc = Get-Location
@@ -27,6 +27,7 @@ function SetupRepository
     git submodule update --init
     
     FixSymbolicLinksForDirectory -Directory "$PSScriptRoot\..\..\src\SpectatorView.Unity\"
+    FixSymbolicLinksForDirectory -Directory "$PSScriptRoot\..\..\samples\Build2019Demo.Unity\"
 
     If (!$NoBuilds)
     {

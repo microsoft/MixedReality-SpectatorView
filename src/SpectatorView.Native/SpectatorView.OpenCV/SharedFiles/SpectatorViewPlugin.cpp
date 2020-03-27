@@ -38,7 +38,9 @@ extern "C" __declspec(dllexport) bool __stdcall DetectMarkers(
     float* focalLength,
     float* principalPoint,
     float* radialDistortion,
+    int radialDistortionCount,
     float* tangentialDistortion,
+    int tangentialDistortionCount,
     float markerSize,
     int arUcoMarkerDictionaryId)
 {
@@ -51,7 +53,9 @@ extern "C" __declspec(dllexport) bool __stdcall DetectMarkers(
             focalLength,
             principalPoint,
             radialDistortion,
+            radialDistortionCount,
             tangentialDistortion,
+            tangentialDistortionCount,
             markerSize,
             arUcoMarkerDictionaryId);
     }

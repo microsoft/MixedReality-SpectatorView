@@ -30,19 +30,19 @@ if ($ExternalSetupResult -eq $true)
 }
 
 $OpenCVSucceeded = $true
-# if (($ExternalSetupResult -eq $true) -And ($ElgatoResult -eq $true))
-# {
-#     Write-Host "Building OpenCV"
-#     if ($ForceRebuild)
-#     {
-#         BuildOpenCV -ForceRebuild -Succeeded ([ref]$OpenCVSucceeded)
-#     }
-#     else
-#     {
-#         BuildOpenCV -Succeeded ([ref]$OpenCVSucceeded)
-#     }
-#     Write-Host "`nOpenCV Build Succeeded: $OpenCVSucceeded`n"
-# }
+if (($ExternalSetupResult -eq $true) -And ($ElgatoResult -eq $true))
+{
+    Write-Host "Building OpenCV"
+    if ($ForceRebuild)
+    {
+        BuildOpenCV -ForceRebuild -Succeeded ([ref]$OpenCVSucceeded)
+    }
+    else
+    {
+        BuildOpenCV -Succeeded ([ref]$OpenCVSucceeded)
+    }
+    Write-Host "`nOpenCV Build Succeeded: $OpenCVSucceeded`n"
+}
 
 $success = ($ExternalSetupResult -eq $true) -And ($OpenCVSucceeded -eq $true) -And ($ElgatoResult -eq $true)
 Write-Host "`nNative Project Setup Suceeded: $success`n"
