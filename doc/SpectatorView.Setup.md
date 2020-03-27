@@ -109,7 +109,7 @@ If you are building Azure Spatial Anchors on iOS, you will need to take some add
 
 ![Marker](images/AndroidSpectatorViewExampleBuildSettings.png)
 
-5. Add your Unity project's main scene as the second included scene in the Unity Build Settings 
+5. Add your Unity project's main scene as the second included scene in the Unity Build Settings. 
 
 6. `Build and Run` the application through Unity's Build Settings. If you're targeting a new Android development device, you may need to enable developer options and debugging. For information on setting up your Android device for debugging, see [here](https://developer.android.com/studio/debug/dev-options).
 
