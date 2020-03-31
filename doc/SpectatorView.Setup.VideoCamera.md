@@ -223,7 +223,7 @@ If you chose not to immediately upload your calibration data to your device or h
 
 # Setting up Azure Kinect filming
 
-TODO
+Unlike video camera filming, Azure Kinect filming does not require manual camera calibration. After building/obtaining the [native Spectator View components](../src/SpectatorView.Native/README.md), you should be ready for filming. For more information on filming with an Azure Kinect camera, see [here](../src/SpectatorView.Unity/Assets/SpectatorView/Scripts/Compositor/README.md).
 
 # Filming
 After you have calibrated your rig, you will be ready to film HoloLens experiences with your video camera. For more information on filming, see [here](../src/SpectatorView.Unity/Assets/SpectatorView/Scripts/Compositor/README.md).

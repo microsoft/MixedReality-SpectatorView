@@ -34,14 +34,14 @@ There are currently two ways to consume the com.microsoft.mixedreality.spectator
 3. Run `tools\scripts\CreateUnityPackage.bat` in an administrator cmd window.
     > Note: It may take a while to build external dependencies for Spectator View's native components the first time this script is run.
 4. Extract the generated packages\com.microsoft.mixedreality.spectatorview.*.zip somewhere in/near your project (don't place the package inside your Unity project's Assets folder).
-5. Add a reference to the com.microsoft.mixedreality.spectatorview.* folder to your Unity project's Package/manifest.json file.
+5. Add a reference to the com.microsoft.mixedreality.spectatorview.* folder to your Unity project's Package/manifest.json file. For more information on referencing a local Unity package, see [here](https://docs.unity3d.com/Manual/upm-ui-local.html).
 
 ### Referencing MixedReality-SpectatorView as a submodule
 1. Add the MixedReality-SpectatorView repository as a submodule to your preexisting git repository.
 2. Checkout your desired branch (`master`).
     > Note: It may take a while to build external dependencies for Spectator View's native components the first time this script is run.
 3. Run `tools\scripts\CreateUnityPackage.bat` in an administrator cmd window.
-4. Add a reference to the submodule folder src/SpectatorView.Unity/Assets in your Unity project's Package/manifest.json file.
+4. Add a reference to the submodule folder src/SpectatorView.Unity/Assets in your Unity project's Package/manifest.json file. For more information on referencing a local Unity package, see [here](https://docs.unity3d.com/Manual/upm-ui-local.html).
 
 ### Detailed Unity Setup
 For more information on setting up a Spectator View project after obtaining the com.microsoft.mixedreality.spectatorview.* Unity package, see the following pages:
