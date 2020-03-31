@@ -95,12 +95,16 @@ The Compositor window allows you to choose which type of spatial coordinate shar
 
 **Instructions for Azure Kinect camera**
 
-The Shared Spatial Coordinate feature allows placing the stationary Azure Kinect camera relative to a stationary marker. Azure Kinect supports locating an ArUco marker as its only supported strategy.
+The Shared Spatial Coordinate feature allows placing the stationary Azure Kinect camera relative to a stationary marker. To set up a shared spatial coordinate between the Azure Kinect and a HoloLens 2, use the "ArUco Three Marker" detector for the Holographic Camera, and use the "QR Code" marker for the App HoloLens.
 
-1. Choose ArUco as the spatial alignment strategy from the drop-down within the Holographic Camera box.
-2. Place an ArUco marker within view of the Azure Kinect camera.
-3. Click the "Located Shared Spatial Coordinate" button inside the Holographic Camera box.
-4. Once the marker detector has located the ArUco marker, the status should change from "Locating shared spatial coordinate..." to "Located".
+1. Print out the [ArUco Three Marker](../../../../../../doc/images/ArUcoThreeMarkerBoard.pdf) board on legal sized paper.
+![ArUco Three Marker Board](../../../../../../doc/images/ArUcoThreeMarkerBoard.png)
+2. Choose "ArUco Three Marker" as the spatial alignment strategy from the drop-down within the Holographic Camera box.
+3. Measure the physical length of one side of one of the printed ArUco markers, and ensure that that size is input into the settings drop-down next to the spatial alignment strategy as the Marker Size (m). Each marker should be approximately 10cm when printed on legal sized paper (8.5" x 14").
+4. Place the printed ArUco three marker board within view of the Azure Kinect camera.
+5. Click the "Located Shared Spatial Coordinate" button inside the Holographic Camera box.
+6. Once the marker detector has located the ArUco markers, the status should change from "Locating shared spatial coordinate..." to "Located".
+7. Repeat these steps for the App HoloLens, ensuring that you are using the "QR Code" spatial alignment strategy.
 
 ### Connect the compositor to your application
 

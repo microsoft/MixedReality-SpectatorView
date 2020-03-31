@@ -214,6 +214,73 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   debugLogging: 0
+--- !u!1 &2266944067061548094
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8242869975458920944}
+  - component: {fileID: 1222191072359230848}
+  - component: {fileID: 3323796090886243585}
+  m_Layer: 0
+  m_Name: ArUco Three Marker Detector
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8242869975458920944
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2266944067061548094}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 6579738506115233227}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1222191072359230848
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2266944067061548094}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 641229ae64ca7db4c8f5701d9bb36879, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  debugLogging: 1
+  markerDetector: {fileID: 3323796090886243585}
+--- !u!114 &3323796090886243585
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2266944067061548094}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a244e3e3278e0a24fa787aef94e0e017, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _debugLogging: 1
+  _markerSize: 0.03
+  _markerPositionBehavior: 0
+  RequiredObservations: 5
+  RequiredInlierCount: 5
+  MaximumMarkerSampleCount: 15
+  MaximumPositionDistanceStandardDeviation: 0.01
+  MaximumRotationAngleStandardDeviation: 0.75
+  MarkerInlierStandardDeviationThreshold: 1.5
 --- !u!1 &2268461339357874905
 GameObject:
   m_ObjectHideFlags: 0
@@ -577,6 +644,7 @@ Transform:
   - {fileID: 1965015816197526300}
   - {fileID: 7319944958139230604}
   - {fileID: 574002819891885436}
+  - {fileID: 8242869975458920944}
   m_Father: {fileID: 5795882921077350206}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
