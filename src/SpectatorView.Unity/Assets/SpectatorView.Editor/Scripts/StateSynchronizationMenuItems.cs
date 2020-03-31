@@ -15,30 +15,30 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
     {
         private static IEqualityComparer<IAssetCache> assetTypeComparer = new AssetCacheTypeEqualityComparer();
 
-        private const string disableSpectatorViewPreBuild = "Spectator View/Disable Spectator View Pre-build steps";
-        public static bool DisablePreBuildSteps
+        private const string enableSpectatorViewPreBuild = "Spectator View/Enable Spectator View Pre-build Steps";
+        public static bool EnablePreBuildSteps
         {
             get
             {
-                return PlayerPrefs.GetInt(disableSpectatorViewPreBuild, 0) > 0;
+                return PlayerPrefs.GetInt(enableSpectatorViewPreBuild, 1) > 0;
             }
             private set
             {
-                PlayerPrefs.SetInt(disableSpectatorViewPreBuild, value ? 1 : 0);
+                PlayerPrefs.SetInt(enableSpectatorViewPreBuild, value ? 1 : 0);
                 PlayerPrefs.Save();
             }
         }
 
-        private const string disableUpdatingMenuItem = "Spectator View/Disable updating asset caches when building";
-        public static bool DisableUpdatingAssetCaches
+        private const string enableUpdatingMenuItem = "Spectator View/Enable Updating Asset Caches When Building";
+        public static bool EnableUpdatingAssetCaches
         {
             get
             {
-                return PlayerPrefs.GetInt(disableUpdatingMenuItem, 0) > 0;
+                return PlayerPrefs.GetInt(enableUpdatingMenuItem, 1) > 0;
             }
             private set
             {
-                PlayerPrefs.SetInt(disableUpdatingMenuItem, value ? 1 : 0);
+                PlayerPrefs.SetInt(enableUpdatingMenuItem, value ? 1 : 0);
                 PlayerPrefs.Save();
             }
         }
@@ -71,31 +71,31 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
             return assetCaches.Distinct(assetTypeComparer);
         }
 
-        [MenuItem(disableSpectatorViewPreBuild, priority = 100)]
-        public static void DisableSpectatorViewPreBuild()
+        [MenuItem(enableSpectatorViewPreBuild, priority = 100)]
+        public static void EnableSpectatorViewPreBuild()
         {
-            DisablePreBuildSteps = !DisablePreBuildSteps;
-            Menu.SetChecked(disableSpectatorViewPreBuild, DisablePreBuildSteps);
+            EnablePreBuildSteps = !EnablePreBuildSteps;
+            Menu.SetChecked(enableSpectatorViewPreBuild, EnablePreBuildSteps);
         }
 
-        [MenuItem(disableSpectatorViewPreBuild, true, priority = 100)]
-        public static bool DisableSpectatorViewPreBuild_Validate()
+        [MenuItem(enableSpectatorViewPreBuild, true, priority = 100)]
+        public static bool EnableSpectatorViewPreBuild_Validate()
         {
-            Menu.SetChecked(disableSpectatorViewPreBuild, DisablePreBuildSteps);
+            Menu.SetChecked(enableSpectatorViewPreBuild, EnablePreBuildSteps);
             return true;
         }
 
-        [MenuItem(disableUpdatingMenuItem, priority = 101)]
-        public static void DisableUpdatingAssetCachesWhenBuilding()
+        [MenuItem(enableUpdatingMenuItem, priority = 101)]
+        public static void EnableUpdatingAssetCachesWhenBuilding()
         {
-            DisableUpdatingAssetCaches = !DisableUpdatingAssetCaches;
-            Menu.SetChecked(disableUpdatingMenuItem, DisableUpdatingAssetCaches);
+            EnableUpdatingAssetCaches = !EnableUpdatingAssetCaches;
+            Menu.SetChecked(enableUpdatingMenuItem, EnableUpdatingAssetCaches);
         }
 
-        [MenuItem(disableUpdatingMenuItem, true, priority = 101)]
-        public static bool DisableUpdatingAssetCachesWhenBuilding_Validate()
+        [MenuItem(enableUpdatingMenuItem, true, priority = 101)]
+        public static bool EnableUpdatingAssetCachesWhenBuilding_Validate()
         {
-            Menu.SetChecked(disableUpdatingMenuItem, DisableUpdatingAssetCaches);
+            Menu.SetChecked(enableUpdatingMenuItem, EnableUpdatingAssetCaches);
             return true;
         }
 

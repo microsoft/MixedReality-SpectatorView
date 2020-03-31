@@ -33,12 +33,12 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
 
         public void OnPreprocessBuild(BuildReport report)
         {
-            if (!StateSynchronizationMenuItems.DisablePreBuildSteps)
+            if (StateSynchronizationMenuItems.EnablePreBuildSteps)
             {
                 RunPreBuildSteps();
             }
 
-            if (!StateSynchronizationMenuItems.DisableUpdatingAssetCaches)
+            if (StateSynchronizationMenuItems.EnableUpdatingAssetCaches)
             {
                 StateSynchronizationMenuItems.UpdateAllAssetCaches();
             }
