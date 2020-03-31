@@ -23,6 +23,7 @@ static bool videoInitialized = false;
 
 static BYTE* colorBytes = new BYTE[FRAME_BUFSIZE_RGBA];
 static BYTE* depthBytes = new BYTE[FRAME_BUFSIZE_DEPTH16];
+static BYTE* bodyMaskBytes = new BYTE[FRAME_BUFSIZE_DEPTH16];
 static BYTE* holoBytes = new BYTE[FRAME_BUFSIZE_RGBA];
 
 #define NUM_VIDEO_BUFFERS 10
@@ -630,7 +631,7 @@ UNITYDLL bool CreateUnityBodyMaskTexture(ID3D11ShaderResourceView*& srv)
 {
     if (g_UnityBodySRV == nullptr && g_pD3D11Device != nullptr)
     {
-        g_bodyMaskTexture = DirectXHelper::CreateTexture(g_pD3D11Device, depthBytes, FRAME_WIDTH, FRAME_HEIGHT, FRAME_BPP_DEPTH16, DXGI_FORMAT_R16_UNORM);
+        g_bodyMaskTexture = DirectXHelper::CreateTexture(g_pD3D11Device, bodyMaskBytes, FRAME_WIDTH, FRAME_HEIGHT, FRAME_BPP_DEPTH16, DXGI_FORMAT_R16_UNORM);
 
         if (g_bodyMaskTexture == nullptr)
         {
