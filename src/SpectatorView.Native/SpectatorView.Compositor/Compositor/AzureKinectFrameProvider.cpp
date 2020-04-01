@@ -11,8 +11,7 @@
 #endif
 
 AzureKinectFrameProvider::AzureKinectFrameProvider(ProviderType providerType)
-    : _captureFrameIndex(0)
-    , _colorSRV(nullptr)
+    : _colorSRV(nullptr)
     , _depthSRV(nullptr)
     , _bodySRV(nullptr)
     , _providerType(providerType)
@@ -23,7 +22,6 @@ AzureKinectFrameProvider::AzureKinectFrameProvider(ProviderType providerType)
 
 HRESULT AzureKinectFrameProvider::Initialize(ID3D11ShaderResourceView* colorSRV, ID3D11ShaderResourceView* depthSRV, ID3D11ShaderResourceView* bodySRV, ID3D11Texture2D* outputTexture)
 {
-    _captureFrameIndex = 0;
     _depthSRV = depthSRV;
     _bodySRV = bodySRV;
     _colorSRV = colorSRV;
@@ -63,10 +61,7 @@ LONGLONG AzureKinectFrameProvider::GetDurationHNS()
 
 void AzureKinectFrameProvider::Update(int compositeFrameIndex)
 {
-    if (cameraInput->UpdateSRVs(compositeFrameIndex, d3d11Device, _colorSRV, _depthSRV, _bodySRV))
-    {
-        _captureFrameIndex++;
-    }
+    cameraInput->UpdateSRVs(compositeFrameIndex, d3d11Device, _colorSRV, _depthSRV, _bodySRV);
 }
 
 bool AzureKinectFrameProvider::IsEnabled()

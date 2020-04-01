@@ -22,6 +22,7 @@ public:
     AzureKinectCameraInput(k4a_depth_mode_t depthMode, bool captureDepth, bool captureBodyMask);
     ~AzureKinectCameraInput();
 
+    int GetCaptureFrameIndex() { return _currentFrameIndex; }
     void GetCameraCalibrationInformation(CameraIntrinsics* calibration);
     void StartArUcoMarkerDetector(cv::aruco::PREDEFINED_DICTIONARY_NAME markerDictionaryName, float markerSize);
     void StopArUcoMarkerDetector();

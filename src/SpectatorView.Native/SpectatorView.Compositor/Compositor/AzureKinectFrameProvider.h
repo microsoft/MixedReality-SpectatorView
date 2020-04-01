@@ -28,7 +28,7 @@ public:
 
     virtual int GetCaptureFrameIndex() override
     {
-        return _captureFrameIndex;
+        return cameraInput->GetCaptureFrameIndex();
     }
    
    virtual bool IsCameraCalibrationInformationAvailable() override
@@ -52,7 +52,6 @@ private:
     std::shared_ptr<AzureKinectCameraInput> cameraInput;
 
     ProviderType _providerType;
-    int _captureFrameIndex;
     ID3D11ShaderResourceView* _colorSRV;
     ID3D11ShaderResourceView* _depthSRV;
     ID3D11ShaderResourceView* _bodySRV;

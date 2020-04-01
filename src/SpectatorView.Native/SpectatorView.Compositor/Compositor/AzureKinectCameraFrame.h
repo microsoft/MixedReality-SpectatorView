@@ -24,12 +24,30 @@ public:
     void StageImage(AzureKinectImageType imageType, k4a_image_t image);
     void UpdateSRV(AzureKinectImageType imageType, ID3D11Device* device, ID3D11ShaderResourceView* targetView);
 
+    bool TryBeginWriting();
+    void EndWriting();
+    bool TryBeginReading();
+    void EndReading();
+
 private:
+    enum class FrameStatus
+    {
+        Unused,
+        Writing,
+        Staged,
+        Reading
+    };
+
     uint8_t* _images[AZURE_KINECT_IMAGE_TYPE_COUNT] = { nullptr };
-    int _imageSizes[AZURE_KINECT_IMAGE_TYPE_COUNT];
+    int _imageSizes[AZURE_KINECT_IMAGE_TYPE_COUNT] = { 0 };
     int _imageStrides[AZURE_KINECT_IMAGE_TYPE_COUNT] = { 0 };
+
     bool _captureDepth;
     bool _captureBodyMask;
+
+    std::mutex _statusGuard;
+    FrameStatus _status;
+    int _writerCount;
 };
 
 #endif

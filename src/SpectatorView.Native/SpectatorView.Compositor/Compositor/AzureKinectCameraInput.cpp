@@ -145,6 +145,12 @@ void AzureKinectCameraInput::RunCaptureLoop()
 {
     while (!_stopRequested)
     {
+        if (!_cameraFrames[_currentFrameIndex % MAX_NUM_CACHED_BUFFERS]->TryBeginWriting())
+        {
+            Sleep(1);
+            continue;
+        }
+
         k4a_capture_t capture = nullptr;
 
         switch (k4a_device_get_capture(k4aDevice, &capture, K4A_WAIT_INFINITE))
@@ -215,21 +221,22 @@ void AzureKinectCameraInput::RunCaptureLoop()
         }
         k4a_capture_release(capture);
 
+        _cameraFrames[_currentFrameIndex % MAX_NUM_CACHED_BUFFERS]->EndWriting();
         _currentFrameIndex++;
     }
 }
 
 bool AzureKinectCameraInput::UpdateSRVs(int frameIndex, ID3D11Device* device, ID3D11ShaderResourceView* colorSRV, ID3D11ShaderResourceView* depthSRV, ID3D11ShaderResourceView* bodySRV)
 {
-    while (frameIndex >= _currentFrameIndex)
+    if (!_cameraFrames[frameIndex % MAX_NUM_CACHED_BUFFERS]->TryBeginReading())
     {
-        Sleep(1);
-        //return false;
+        return false;
     }
 
     _cameraFrames[frameIndex % MAX_NUM_CACHED_BUFFERS]->UpdateSRV(AzureKinectImageType::Color, device, colorSRV);
     _cameraFrames[frameIndex % MAX_NUM_CACHED_BUFFERS]->UpdateSRV(AzureKinectImageType::Depth, device, depthSRV);
     _cameraFrames[frameIndex % MAX_NUM_CACHED_BUFFERS]->UpdateSRV(AzureKinectImageType::BodyMask, device, bodySRV);
+    _cameraFrames[frameIndex % MAX_NUM_CACHED_BUFFERS]->EndReading();
     return true;
 }
 

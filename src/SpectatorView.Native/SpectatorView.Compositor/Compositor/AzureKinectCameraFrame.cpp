@@ -7,6 +7,8 @@
 AzureKinectCameraFrame::AzureKinectCameraFrame(bool captureDepth, bool captureBodyMask)
     : _captureDepth(captureDepth)
     , _captureBodyMask(captureBodyMask)
+    , _status(FrameStatus::Unused)
+    , _writerCount(0)
 {
     _imageSizes[(int)AzureKinectImageType::Color] = FRAME_BUFSIZE_RGBA;
     _imageSizes[(int)AzureKinectImageType::Depth] = FRAME_BUFSIZE_DEPTH16;
@@ -41,5 +43,64 @@ void AzureKinectCameraFrame::UpdateSRV(AzureKinectImageType imageType, ID3D11Dev
     if (targetView != nullptr)
     {
         DirectXHelper::UpdateSRV(device, targetView, _images[(int)imageType], _imageStrides[(int)imageType]);
+    }
+}
+
+bool AzureKinectCameraFrame::TryBeginWriting()
+{
+    std::lock_guard<std::mutex> guard(_statusGuard);
+    if (_status == FrameStatus::Writing)
+    {
+        _writerCount++;
+        return true;
+    }
+    else if (_status == FrameStatus::Unused || _status == FrameStatus::Staged)
+    {
+        _status = FrameStatus::Writing;
+        _writerCount = 1;
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+void AzureKinectCameraFrame::EndWriting()
+{
+    std::lock_guard<std::mutex> guard(_statusGuard);
+    if (_status == FrameStatus::Writing)
+    {
+        _writerCount--;
+
+        if (_writerCount == 0)
+        {
+            _status = FrameStatus::Staged;
+        }
+    }
+}
+
+bool AzureKinectCameraFrame::TryBeginReading()
+{
+    std::lock_guard<std::mutex> guard(_statusGuard);
+
+    if (_status == FrameStatus::Staged)
+    {
+        _status = FrameStatus::Reading;
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+void AzureKinectCameraFrame::EndReading()
+{
+    std::lock_guard<std::mutex> guard(_statusGuard);
+
+    if (_status == FrameStatus::Reading)
+    {
+        _status = FrameStatus::Unused;
     }
 }
