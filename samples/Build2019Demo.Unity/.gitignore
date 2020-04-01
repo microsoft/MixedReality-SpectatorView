@@ -70,3 +70,6 @@ UWP/
 *.privkey
 *.pfx
 *.pfx.meta
+
+Assets/Generated.SpectatorView.AssetCaches
+Assets/Generated.SpectatorView.AssetCaches.meta

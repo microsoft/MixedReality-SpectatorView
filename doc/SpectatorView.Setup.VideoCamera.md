@@ -1,16 +1,17 @@
-# Spectator View Video Camera Setup
+# Spectator View Video Camera and Azure Kinect Filming Setup
 
 Documentation below highlights the process of setting up a Video Camera filming experience. For more information on Spectator View Video Camera usage and supported functionality see [here](../src/SpectatorView.Unity/Assets/SpectatorView/Scripts/Compositor/README.md).
 
 ## Requirements
 
+### Video Camera Filming Requirements
 > Note: Video camera filming currently requires a HoloLens 2 for the camera rig. HoloLens 1 devices are not supported.
 
-1. HoloLens 2 (This device will be needed in addition to the device worn by the user)
+1. HoloLens 2 (This device will be needed in addition to the device worn by the user for filming with capture cards.)
 2. Windows PC
-3. Visual Studio 2017 installed on the PC
+3. Visual Studio 2019 installed on the PC
 4. Windows 10 SDK (10.0.18362.0)
-5. Unity installed on the PC
+5. Unity 2019 installed on the PC
 6. A video camera that outputs 1080p video over SDI or HDMI (Capture cards supported below require HDMI, so you may also need a SDI to HDMI converter)
 7. Blackmagic Design Intensity Pro 4K or Elgato HD 60S (Capture Cards)
 8. 3D Printed or machined HoloLens 2 Camera Mount (see `doc/models/HoloLens2CameraMount/`)
@@ -25,25 +26,35 @@ Documentation below highlights the process of setting up a Video Camera filming 
 
 >Note: When assembling the HoloLens 2 Camera Mount, be careful with the clamp.STL component. Consider sanding the poles on body.STL to prevent the clamp.STL from getting stuck/breaking.
 
-# Calibration
+### Azure Kinect Filming Requirements
+
+1. Windows PC
+2. Visual Studio 2019 installed on the PC
+3. Windows 10 SDK (10.0.18362.0)
+4. Unity 2019 installed on the PC
+5. An Azure Kinect
+
+# Setting up Video Camera Filming
+
+## Calibration
 
 Video camera filming relies on a physically mounted HoloLens 2 device generating position and orientation information for your video camera in the shared application space. This allows the Unity editor to understand where the video frame was filmed from in order to generate and composite Holograms into the feed. To get accurate tracking of your video camera in the physical world, you need to calculate the physical transform between the HoloLens 2 device and the video camera sensor. This is achieved through calibration.
+
+> Note: calibration is not required for filming with an Azure Kinect.
 
 The below instructions assume that you have already gone through the repository setup instructions [here](../README.md#getting-started-with-your-own-project) to obtain and reference the Spectator View codebase.
 
 ## Setup
 
-1. Build x64 Release versions of SpectatorView.Compositor.dll & SpectatorView.Compositor.UnityPlugin.dll based on the instructions [here](../src/SpectatorView.Native/ReadME.md).
-2. Build a x64 Release version of SpectatorView.OpenCV.dll based on the instructions [here](../src/SpectatorView.Native/ReadME.md).
-3. Copy these Dlls to the SpectatorView.Unity project by running `tools/Scripts/CopyPluginsToUnity.bat`.
-4. Download the [MixedReality QR Code Plugin](https://github.com/dorreneb/mixed-reality/releases) zip folder and extract its contents into the `external/MixedReality-QRCodePlugin` folder.
-5. Print the [Chessboard](images/Chessboard.png) used to calculate video camera intrinsics and mount it to a solid surface.
+1. Obtain the com.microsoft.mixedreality.spectatorview.* Unity package based on instructions [here](../README.md)
+2. Ensure you have `SpectatorView.Compositor.dll` and `SpectatorView.Compositor.UnityPlugin.dll` in your `com.microsoft.mixedreality.spectatorview.*\SpectatorView.Native\Plugins\x64` folder.
+3. Print the [Chessboard](images/Chessboard.png) used to calculate video camera intrinsics and mount it to a solid surface.
 
 >Note: This can be obtained by printing two copies of `doc/images/HalfChessboard.pdf` on 8.5x11 sheets of paper.
 
 ![Marker](images/Chessboard.png)
 
-6. Print the [Calibration Board](images/CalibrationBoard.png) used to calculate video camera extrinsics and mount it to a solid surface.
+4. Print the [Calibration Board](images/CalibrationBoard.png) used to calculate video camera extrinsics and mount it to a solid surface.
 
 >Note: This can be obtained by printing all of the `CalibrationBoard*.pdf` files in the `doc/images` folder on 8.5x11 sheets of paper. If you choose to print your own board using [CalibrationBoard.png](images/CalibrationBoard.png), make sure that each QR Code is larger than 5cm in length.
 
@@ -51,18 +62,18 @@ The below instructions assume that you have already gone through the repository 
 
 This [Calibration Board](images/CalibrationBoard.png) contains 18 QR Codes and ArUco markers pairs that are at known pixel distances from one another. With these marker pairs, calibration logic can use QR Code detection on the HoloLens 2 and ArUco detection in the editor to determine where ArUco markers in the video camera frame are in the physical world. **When printing this board, markers need to be larger than 5cm in length. It's also important to keep these marker pairs on the same page when printing so that their pixel distances from one another are maintained. The orientation of these pairs relative to other pairs does not need to be maintained (meaning, each marker pair can get printed on its own sheet of paper, but both the QR Code and ArUco marker in a pair should be printed on the same page at the same relative distance that they are at in the board).**
 
-7. On your HoloLens 2 device, disable sign in. This can be achieved by going to 'Settings -> Sign-in options'. For 'Require sign-in', select 'Never'.
+5. On your HoloLens 2 device, disable sign in. This can be achieved by going to 'Settings -> Sign-in options'. For 'Require sign-in', select 'Never'.
 
-8. Setup the [device portal](https://docs.microsoft.com/en-us/windows/uwp/debug-test-perf/device-portal-hololens) for your HoloLens 2 device. To see how to setup device portal, look [here](https://docs.microsoft.com/en-us/windows/uwp/debug-test-perf/device-portal-hololens).
+6. Setup the [device portal](https://docs.microsoft.com/en-us/windows/uwp/debug-test-perf/device-portal-hololens) for your HoloLens 2 device. To see how to setup device portal, look [here](https://docs.microsoft.com/en-us/windows/uwp/debug-test-perf/device-portal-hololens).
 
-9. Connect your HoloLens 2 to Wi-Fi and obtain its IP address. This can be done through the settings application on the device. Go to Settings -> Network & Internet -> Wi-Fi -> Hardware properties to obtain the device's IP address.
-10. Deploy the HolographiCamera.Unity project to your HoloLens 2 device.
+7. Connect your HoloLens 2 to Wi-Fi and obtain its IP address. This can be done through the settings application on the device. Go to Settings -> Network & Internet -> Wi-Fi -> Hardware properties to obtain the device's IP address.
+8. Deploy the HolographiCamera.Unity project to your HoloLens 2 device.
     1. Open the `src/HolographicCamera.Unity` project.
     2. Open the HolographicCamera Unity scene in the project.
     3. In the WSA Unity player settings, add the **QRCODESTRACKER_BINARY_AVAILABLE** preprocessor directive. (This is located via Build Settings -> Player Settings -> Other Settings -> 'Scripting Defined Symbols
     4. Build and deploy this project to your HoloLens 2 device.
 
-11. Test QR Code detection for the SpectatorView.HolographicCamera app deployed in step 7.
+9. Test QR Code detection for the SpectatorView.HolographicCamera app deployed in step 7.
     1. Build and Deploy the SpectatorView.HolographicCamera app to your device (see step 7).
     2. Open the SpectatorView.Example.Unity project.
     3. Open the SpectatorView.ExtrinsicsCalibration Unity scene.
@@ -75,7 +86,7 @@ This [Calibration Board](images/CalibrationBoard.png) contains 18 QR Codes and A
 
 >Note: Don't skip this testing step. You will need to accept the webcam permission dialogue that is launched when first attempting QR Code detection with the newly installed SpectatorView.HolographicCamera application. Once the HoloLens 2 is attached to the video camera rig, it will be extremely difficult/impossible to accept these dialogues without dismantling your rig.
 
-12. Attach your video camera to the PC capture card and ensure that the camera stream works.
+10. Attach your video camera to the PC capture card and ensure that the camera stream works.
     1. Attach your video camera by HDMI or SDI to the capture card hooked up to your PC.
     2. Turn on your video camera.
     3. Open the SpectatorView.Example.Unity project.
@@ -85,7 +96,7 @@ This [Calibration Board](images/CalibrationBoard.png) contains 18 QR Codes and A
     6. Run the SpectatorViewCompositor scene in the Unity Editor.
     7. You should see the Camera Feed appear in the Compositor window if everything has been configured correctly.
 
-13. Attach your HoloLens 2 device to the video camera using the HoloLens 2 camera mount (Coming soon...)
+11. Attach your HoloLens 2 device to the video camera using the HoloLens 2 camera mount (Coming soon...)
 
 ## Camera Intrinsics
 
@@ -209,6 +220,10 @@ If you chose not to immediately upload your calibration data to your device or h
 2. Navigate to your HoloLens 2 Device's File explorer in the Device Portal. This can be found by going to 'System' -> 'File explorer'.
 3. Rename your chosen CalibrationData*.json file to CalibrationData.json.
 4. Upload this renamed CalibrationData.json file to the Pictures Library on your HoloLens device. This can be done by going to 'User Folders\Pictures'. Then you can upload the file.
+
+# Setting up Azure Kinect filming
+
+Unlike video camera filming, Azure Kinect filming does not require manual camera calibration. After building/obtaining the [native Spectator View components](../src/SpectatorView.Native/README.md), you should be ready for filming. For more information on filming with an Azure Kinect camera, see [here](../src/SpectatorView.Unity/Assets/SpectatorView/Scripts/Compositor/README.md).
 
 # Filming
 After you have calibrated your rig, you will be ready to film HoloLens experiences with your video camera. For more information on filming, see [here](../src/SpectatorView.Unity/Assets/SpectatorView/Scripts/Compositor/README.md).

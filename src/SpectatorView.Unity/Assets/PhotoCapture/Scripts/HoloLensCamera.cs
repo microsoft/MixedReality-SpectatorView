@@ -5,6 +5,8 @@
 // identity 'System.Numerics.Vectors, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a' of 'System.Numerics.Vectors', you may need to supply runtime policy
 #pragma warning disable 1701
 
+#pragma warning disable CS0618 // 'WorldManager' is obsolete: 'Support for built-in VR will be removed in Unity 2020.1.
+
 // We have this CAN_USE_UNITY_TYPES macro definition so that this file can serve as an example
 // for developers building C# windows camera applications outside of Unity.
 // Unity specific types should be contained behind this macro with suitable counterparts

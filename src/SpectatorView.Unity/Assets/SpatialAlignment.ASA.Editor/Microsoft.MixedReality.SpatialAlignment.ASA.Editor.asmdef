@@ -1,0 +1,17 @@
+{
+    "name": "Microsoft.MixedReality.SpatialAlignment.ASA.Editor",
+    "references": [
+        "GUID:108620227a2d2fb4b85ebbd9e1cd6188"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

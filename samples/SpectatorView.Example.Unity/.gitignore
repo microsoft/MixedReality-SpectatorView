@@ -73,3 +73,7 @@ UWP/
 # Avoid checking in build directories
 Assets/BuildTools.Unity
 Assets/BuildTools.Unity.meta
+
+# Avoid checking in asset caches
+Assets/Generated.SpectatorView.AssetCaches
+Assets/Generated.SpectatorView.AssetCaches.meta

@@ -4,30 +4,24 @@
 param(
     [switch]$ForceRebuild,
     [switch]$NoDownloads,
-    [switch]$ExcludeBlackmagic,
     [Parameter(Mandatory=$false)][ref]$Succeeded
 )
 
 Import-Module $PSScriptRoot\spectatorViewHelpers.psm1
 
-Write-Host "Setting up Blackmagic design dependencies"
-$BlackMagicResult = "False"
-if ($ExcludeBlackmagic)
+$ExternalSetupResult = "False"
+if ($NoDownloads)
 {
-    $BlackmagicResult = $true
-}
-elseif ($NoDownloads)
-{
-    SetupExternalDownloads -NoDownloads -Succeeded ([ref]$BlackMagicResult)
+    SetupExternalDownloads -NoDownloads -Succeeded ([ref]$ExternalSetupResult)
 }
 else
 {
-    SetupExternalDownloads -Succeeded ([ref]$BlackMagicResult)
+    SetupExternalDownloads -Succeeded ([ref]$ExternalSetupResult)
 }
-Write-Host "`nSetting up Blackmagic design dependencies Succeeded: $BlackMagicResult`n"
+Write-Host "`nSetting up external dependencies Succeeded: $ExternalSetupResult`n"
 
 $ElgatoResult = "False"
-if ($BlackMagicResult -eq $true)
+if ($ExternalSetupResult -eq $true)
 {
     Write-Host "Setting up elgato dependencies"
     AddElgatoSubmodule
@@ -35,8 +29,8 @@ if ($BlackMagicResult -eq $true)
     Write-Host "`nAdding elgato dependencies succeeded: $ElgatoResult`n"
 }
 
-$OpenCVSucceeded = "False"
-if (($BlackMagicResult -eq $true) -And ($ElgatoResult -eq $true))
+$OpenCVSucceeded = $true
+if (($ExternalSetupResult -eq $true) -And ($ElgatoResult -eq $true))
 {
     Write-Host "Building OpenCV"
     if ($ForceRebuild)
@@ -50,7 +44,7 @@ if (($BlackMagicResult -eq $true) -And ($ElgatoResult -eq $true))
     Write-Host "`nOpenCV Build Succeeded: $OpenCVSucceeded`n"
 }
 
-$success = ($BlackMagicResult -eq $true) -And ($OpenCVSucceeded -eq $true) -And ($ElgatoResult -eq $true)
+$success = ($ExternalSetupResult -eq $true) -And ($OpenCVSucceeded -eq $true) -And ($ElgatoResult -eq $true)
 Write-Host "`nNative Project Setup Suceeded: $success`n"
 if ($Succeeded)
 {

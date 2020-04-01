@@ -94,7 +94,7 @@ namespace Microsoft.MixedReality.SpectatorView
         {
             if (debugLogging)
             {
-                Debug.Log($"SpatialCoordinateWorldOriginTransformer: {message}");
+                Debug.Log($"SpatialCoordinateTransformer: {message}");
             }
         }
     }

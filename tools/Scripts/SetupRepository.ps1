@@ -1,24 +1,19 @@
 param(
-    [switch] $iOS,
     [switch] $NoDownloads
 )
 
 Import-Module "$PSScriptRoot\SetupRepositoryFunc.psm1"
 
+$repoSetupSucceeded = $false
 if ($NoDownloads)
 {
     Write-Host "Running setup with no downloads"
-    SetupRepository -NoDownloads
-}
-elseif ($iOS)
-{
-    Write-Host "Running setup with iOS dependencies"
-    SetupRepository -iOS
+    SetupRepository -NoDownloads -NoBuilds -Succeeded ([ref]$repoSetupSucceeded)
 }
 else
 {
     Write-Host "Running default repo setup"
-    SetupRepository
+    SetupRepository -NoBuilds -Succeeded ([ref]$repoSetupSucceeded)
 }
  
 Write-Host "`n"

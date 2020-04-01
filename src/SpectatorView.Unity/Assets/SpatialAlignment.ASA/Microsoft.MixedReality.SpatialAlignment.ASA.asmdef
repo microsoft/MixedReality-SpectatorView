@@ -1,0 +1,22 @@
+{
+    "name": "Microsoft.MixedReality.SpatialAlignment.ASA",
+    "references": [
+        "GUID:a9420e37d7990b54abdef6688edbe313",
+        "GUID:396e9e3590cefd44198cd1e642263f09",
+        "GUID:92703082f92b41ba80f0d6912de66115"
+    ],
+    "includePlatforms": [
+        "Android",
+        "Editor",
+        "iOS",
+        "WSA"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
