@@ -181,6 +181,7 @@ if EXIST "$(Elgato_Filter)" xcopy /y "$(Elgato_Filter)"</Command>
   <ItemGroup>
     <ClInclude Include="..\..\SpectatorView.OpenCV\SharedFiles\ArUcoMarkerDetector.h" />
     <ClInclude Include="..\..\SpectatorView.OpenCV\SharedFiles\DataStructures.h" />
+    <ClInclude Include="AzureKinectCameraFrame.h" />
     <ClInclude Include="AzureKinectCameraInput.h" />
     <ClInclude Include="AzureKinectFrameProvider.h" />
     <ClInclude Include="CompositorInterface.h" />
@@ -203,6 +204,7 @@ if EXIST "$(Elgato_Filter)" xcopy /y "$(Elgato_Filter)"</Command>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\SpectatorView.OpenCV\SharedFiles\ArUcoMarkerDetector.cpp" />
+    <ClCompile Include="AzureKinectCameraFrame.cpp" />
     <ClCompile Include="AzureKinectCameraInput.cpp" />
     <ClCompile Include="AzureKinectFrameProvider.cpp" />
     <ClCompile Include="CompositorInterface.cpp" />

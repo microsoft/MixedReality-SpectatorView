@@ -42,14 +42,7 @@ AzureKinectCameraInput::AzureKinectCameraInput(k4a_depth_mode_t depthMode, bool 
 
     for (int i = 0; i < MAX_NUM_CACHED_BUFFERS; i++)
     {
-        _colorImageBufferCache[i] = new uint8_t[FRAME_BUFSIZE_RGBA];
-        if (captureDepth)
-        {
-            _depthImageBufferCache[i] = new uint8_t[FRAME_BUFSIZE_DEPTH16];
-        }
-        if (captureBodyMask) {
-            _bodyMaskImageBufferCache[i] = new uint8_t[FRAME_BUFSIZE_DEPTH16];
-        }
+        _cameraFrames[i] = new AzureKinectCameraFrame(captureDepth, captureBodyMask);
     }
 
     config.color_format = K4A_IMAGE_FORMAT_COLOR_BGRA32;
@@ -141,6 +134,11 @@ AzureKinectCameraInput::~AzureKinectCameraInput()
         k4abt_tracker_destroy(k4abtTracker);
     }
 #endif
+
+    for (int i = 0; i < MAX_NUM_CACHED_BUFFERS; i++)
+    {
+        delete _cameraFrames[i];
+    }
 }
 
 void AzureKinectCameraInput::RunCaptureLoop()
@@ -165,7 +163,7 @@ void AzureKinectCameraInput::RunCaptureLoop()
         if (colorImage != nullptr)
         {
             _colorImageStride = k4a_image_get_stride_bytes(colorImage);
-            StageSRV(colorImage, _colorImageBufferCache[_currentFrameIndex % MAX_NUM_CACHED_BUFFERS], FRAME_BUFSIZE_RGBA);
+            _cameraFrames[_currentFrameIndex % MAX_NUM_CACHED_BUFFERS]->StageImage(AzureKinectImageType::Color, colorImage);
             UpdateArUcoMarkers(colorImage);
 
             if (_captureDepth)
@@ -174,7 +172,7 @@ void AzureKinectCameraInput::RunCaptureLoop()
                 if (depthImage != nullptr)
                 {
                     k4a_transformation_depth_image_to_color_camera(transformation, depthImage, transformedDepthImage);
-                    StageSRV(transformedDepthImage, _depthImageBufferCache[_currentFrameIndex % MAX_NUM_CACHED_BUFFERS], FRAME_BUFSIZE_DEPTH16);
+                    _cameraFrames[_currentFrameIndex % MAX_NUM_CACHED_BUFFERS]->StageImage(AzureKinectImageType::Depth, transformedDepthImage);
 
 #if defined(INCLUDE_AZUREKINECT_BODYTRACKING)
                     if (_captureBodyMask)
@@ -206,7 +204,7 @@ void AzureKinectCameraInput::RunCaptureLoop()
                         // Set transformed body mask buffer to 1 where bodies are not recognized  
                         SetTransformedBodyMaskBuffer(bodyMaskBuffer, height * width);
 
-                        StageSRV(transformedBodyMaskImage, _bodyMaskImageBufferCache[_currentFrameIndex % MAX_NUM_CACHED_BUFFERS], FRAME_BUFSIZE_DEPTH16);
+                        _cameraFrames[_currentFrameIndex % MAX_NUM_CACHED_BUFFERS]->StageImage(AzureKinectImageType::BodyMask, transformedBodyMaskImage);
                     }
 #endif
 
@@ -223,15 +221,15 @@ void AzureKinectCameraInput::RunCaptureLoop()
 
 bool AzureKinectCameraInput::UpdateSRVs(int frameIndex, ID3D11Device* device, ID3D11ShaderResourceView* colorSRV, ID3D11ShaderResourceView* depthSRV, ID3D11ShaderResourceView* bodySRV)
 {
-    if (frameIndex >= _currentFrameIndex)
+    while (frameIndex >= _currentFrameIndex)
     {
         Sleep(1);
         //return false;
     }
 
-    UpdateSRV(device, colorSRV, _colorImageBufferCache[frameIndex % MAX_NUM_CACHED_BUFFERS], _colorImageStride);
-    UpdateSRV(device, depthSRV, _depthImageBufferCache[frameIndex % MAX_NUM_CACHED_BUFFERS], _depthImageStride);
-    UpdateSRV(device, bodySRV, _bodyMaskImageBufferCache[frameIndex % MAX_NUM_CACHED_BUFFERS], _bodyMaskImageStride);
+    _cameraFrames[frameIndex % MAX_NUM_CACHED_BUFFERS]->UpdateSRV(AzureKinectImageType::Color, device, colorSRV);
+    _cameraFrames[frameIndex % MAX_NUM_CACHED_BUFFERS]->UpdateSRV(AzureKinectImageType::Depth, device, depthSRV);
+    _cameraFrames[frameIndex % MAX_NUM_CACHED_BUFFERS]->UpdateSRV(AzureKinectImageType::BodyMask, device, bodySRV);
     return true;
 }
 

@@ -7,6 +7,7 @@
 #if defined(INCLUDE_AZUREKINECT)
 
 #include "ArUcoMarkerDetector.h"
+#include "AzureKinectCameraFrame.h"
 #include <thread>
 #include <opencv2\aruco.hpp>
 #include <k4a/k4a.h>
@@ -46,9 +47,7 @@ private:
     k4a_image_t bodyMaskImage;
     k4a_depth_mode_t depthCameraMode = K4A_DEPTH_MODE_OFF;
 
-    uint8_t* _colorImageBufferCache[MAX_NUM_CACHED_BUFFERS];
-    uint8_t* _depthImageBufferCache[MAX_NUM_CACHED_BUFFERS];
-    uint8_t* _bodyMaskImageBufferCache[MAX_NUM_CACHED_BUFFERS];
+    AzureKinectCameraFrame* _cameraFrames[MAX_NUM_CACHED_BUFFERS];
 
     std::atomic_int _colorImageStride;
     int _depthImageStride;
