@@ -16,6 +16,11 @@
 #endif
 #define MAX_NUM_CACHED_BUFFERS 20
 
+// Reads and buffers input from the Azure Kinect camera into a circular buffer.
+// The input threads stage AzureKinectCameraFrames, which contain buffered copies
+// of the color, depth, and body index images for that frame.
+// The output thread calls UpdateSRVs to read staged frames and write the results
+// into the SRVs used by the compositor.
 class AzureKinectCameraInput
 {
 public:
@@ -42,8 +47,6 @@ public:
 
 private:
     void RunCaptureLoop();
-    void StageSRV(k4a_image_t image, uint8_t* targetBuffer, int targetBufferSize);
-    void UpdateSRV(ID3D11Device* device, ID3D11ShaderResourceView* targetView, uint8_t* sourceBuffer, int stride);
     void UpdateArUcoMarkers(k4a_image_t image);
 
     std::atomic_bool _captureDepth;

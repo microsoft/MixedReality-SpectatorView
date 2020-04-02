@@ -155,8 +155,13 @@ void AzureKinectCameraInput::RunCaptureLoop()
 {
     while (!_stopRequested)
     {
-        if (!_cameraFrames[_currentFrameIndex % MAX_NUM_CACHED_BUFFERS]->TryBeginWritingColorAndDepth())
+        int frameIndex = _currentFrameIndex % MAX_NUM_CACHED_BUFFERS;
+        if (!_cameraFrames[frameIndex]->TryBeginWritingColorAndDepth())
         {
+            // If the next frame in the buffer is still pending write or is being read from, then we've
+            // exceeded the capacity of the buffer and either the reader is blocking too long, or
+            // the body index processing thread has fallen behind.
+            OutputDebugString(L"Warning: frame buffer is completely full, and we can't begin writing to the next frame");
             continue;
         }
 
@@ -164,13 +169,11 @@ void AzureKinectCameraInput::RunCaptureLoop()
 
         switch (k4a_device_get_capture(k4aDevice, &capture, K4A_WAIT_INFINITE))
         {
-        case K4A_WAIT_RESULT_SUCCEEDED:
-            break;
         case K4A_WAIT_RESULT_TIMEOUT:
-            OutputDebugString(L"Timed out waiting for AzureKinect capture");
+            OutputDebugString(L"Error: Timed out waiting for AzureKinect capture");
             return;
         case K4A_WAIT_RESULT_FAILED:
-            OutputDebugString(L"Failed to capture from AzureKinect");
+            OutputDebugString(L"Error: Failed to capture from AzureKinect");
             return;
         }
 
@@ -178,7 +181,7 @@ void AzureKinectCameraInput::RunCaptureLoop()
         if (colorImage != nullptr)
         {
             _colorImageStride = k4a_image_get_stride_bytes(colorImage);
-            _cameraFrames[_currentFrameIndex % MAX_NUM_CACHED_BUFFERS]->StageImage(AzureKinectImageType::Color, colorImage);
+            _cameraFrames[frameIndex]->StageImage(AzureKinectImageType::Color, colorImage);
             UpdateArUcoMarkers(colorImage);
 
             if (_captureDepth)
@@ -187,18 +190,21 @@ void AzureKinectCameraInput::RunCaptureLoop()
                 if (depthImage != nullptr)
                 {
                     k4a_transformation_depth_image_to_color_camera(transformation, depthImage, transformedDepthImage);
-                    _cameraFrames[_currentFrameIndex % MAX_NUM_CACHED_BUFFERS]->StageImage(AzureKinectImageType::Depth, transformedDepthImage);
+                    _cameraFrames[frameIndex]->StageImage(AzureKinectImageType::Depth, transformedDepthImage);
 
 #if defined(INCLUDE_AZUREKINECT_BODYTRACKING)
                     if (_captureBodyMask)
                     {
-                        _cameraFrames[_currentFrameIndex % MAX_NUM_CACHED_BUFFERS]->BeginWritingBodyMask();
+                        // Move to the state of writing the body mask before enqueuing the capture.
+                        // This will put the frame in a state where it's waiting for the body mask
+                        // before entering the Staged state.
+                        _cameraFrames[frameIndex]->BeginWritingBodyMask();
                         k4a_wait_result_t queue_capture_result = k4abt_tracker_enqueue_capture(k4abtTracker, capture, K4A_WAIT_INFINITE);
 
                         if (queue_capture_result == K4A_WAIT_RESULT_FAILED)
                         {
-                            printf("Error! Adding capture to tracker process queue failed!\n");
-                            _cameraFrames[_currentFrameIndex % MAX_NUM_CACHED_BUFFERS]->EndWritingBodyMask();
+                            printf("Error: Adding capture to tracker process queue failed!\n");
+                            _cameraFrames[frameIndex]->EndWritingBodyMask();
                         }
                     }
 #endif
@@ -210,40 +216,31 @@ void AzureKinectCameraInput::RunCaptureLoop()
         }
         k4a_capture_release(capture);
 
-        _cameraFrames[_currentFrameIndex % MAX_NUM_CACHED_BUFFERS]->EndWritingColorAndDepth();
+        // End the writing state. If the state machine already transitioned
+        // to WritingBodyMask, this will have no effect. If the state machine
+        // is still in the WritingColorAndDepth state, it will move to the 
+        // Staged state to mark the frame as ready for reading.
+        _cameraFrames[frameIndex]->EndWritingColorAndDepth();
         _currentFrameIndex++;
     }
 }
 
 bool AzureKinectCameraInput::UpdateSRVs(int frameIndex, ID3D11Device* device, ID3D11ShaderResourceView* colorSRV, ID3D11ShaderResourceView* depthSRV, ID3D11ShaderResourceView* bodySRV)
 {
-    if (!_cameraFrames[frameIndex % MAX_NUM_CACHED_BUFFERS]->TryBeginReading())
+    int cameraFrameIndex = frameIndex % MAX_NUM_CACHED_BUFFERS;
+    if (!_cameraFrames[cameraFrameIndex]->TryBeginReading())
     {
+        // If the target frame is not ready to be read from yet because it's
+        // still being written to, or because we've already consumed that frame,
+        // then there's no need to update the target shader resource views again.
         return false;
     }
 
-    _cameraFrames[frameIndex % MAX_NUM_CACHED_BUFFERS]->UpdateSRV(AzureKinectImageType::Color, device, colorSRV);
-    _cameraFrames[frameIndex % MAX_NUM_CACHED_BUFFERS]->UpdateSRV(AzureKinectImageType::Depth, device, depthSRV);
-    _cameraFrames[frameIndex % MAX_NUM_CACHED_BUFFERS]->UpdateSRV(AzureKinectImageType::BodyMask, device, bodySRV);
-    _cameraFrames[frameIndex % MAX_NUM_CACHED_BUFFERS]->EndReading();
+    _cameraFrames[cameraFrameIndex]->UpdateSRV(AzureKinectImageType::Color, device, colorSRV);
+    _cameraFrames[cameraFrameIndex]->UpdateSRV(AzureKinectImageType::Depth, device, depthSRV);
+    _cameraFrames[cameraFrameIndex]->UpdateSRV(AzureKinectImageType::BodyMask, device, bodySRV);
+    _cameraFrames[cameraFrameIndex]->EndReading();
     return true;
-}
-
-void AzureKinectCameraInput::UpdateSRV(ID3D11Device* device, ID3D11ShaderResourceView* targetView, uint8_t* sourceBuffer, int stride)
-{
-    if (targetView != nullptr)
-    {
-        DirectXHelper::UpdateSRV(device, targetView, sourceBuffer, stride);
-    }
-}
-
-void AzureKinectCameraInput::StageSRV(k4a_image_t image, uint8_t* targetBuffer, int targetBufferSize)
-{
-    auto stride = k4a_image_get_stride_bytes(image);
-    auto buffer = k4a_image_get_buffer(image);
-    auto height = k4a_image_get_height_pixels(image);
-
-    memcpy_s(targetBuffer, targetBufferSize, buffer, height * stride);
 }
 
 void AzureKinectCameraInput::UpdateArUcoMarkers(k4a_image_t image)
@@ -344,8 +341,12 @@ void AzureKinectCameraInput::RunBodyIndexLoop()
             // Set transformed body mask buffer to 1 where bodies are not recognized  
             SetTransformedBodyMaskBuffer(bodyMaskBuffer, height * width);
 
-            _cameraFrames[_currentBodyMaskFrameIndex % MAX_NUM_CACHED_BUFFERS]->StageImage(AzureKinectImageType::BodyMask, transformedBodyMaskImage);
-            _cameraFrames[_currentBodyMaskFrameIndex % MAX_NUM_CACHED_BUFFERS]->EndWritingBodyMask();
+            // Stage the body mask image, and then end the WritingBodyMask state.
+            // This will transition the frame to the Staged state.
+            int frameIndex = _currentBodyMaskFrameIndex % MAX_NUM_CACHED_BUFFERS;
+            _cameraFrames[frameIndex]->StageImage(AzureKinectImageType::BodyMask, transformedBodyMaskImage);
+            _cameraFrames[frameIndex]->EndWritingBodyMask();
+
             _currentBodyMaskFrameIndex++;
         }
     }

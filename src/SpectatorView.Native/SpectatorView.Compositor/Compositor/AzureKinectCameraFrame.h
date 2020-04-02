@@ -15,6 +15,9 @@ enum class AzureKinectImageType
     BodyMask = 2
 };
 
+// Represents a single frame from the AzureKinect camera,
+// bundling together the color image, the depth image, and
+// the body mask image for that frame.
 class AzureKinectCameraFrame
 {
 public:
@@ -34,10 +37,26 @@ public:
 private:
     enum class FrameStatus
     {
+        // Marks a frame that is currently unusued, and is ready to be written
+        // to by the camera.
         Unused,
+
+        // Marks a frame that is currently in the process of having its color
+        // and depth images captured and staged.
         WritingColorAndDepth,
+
+        // Marks a frame that is currently in the process of having its body
+        // mask captured and staged.
         WritingBodyMask,
+
+        // Marks a frame that is fully-staged and ready to be read from.
+        // Staged frames can be overwritten when the reading thread is not
+        // consuming frames (e.g. if the Unity player is paused but the
+        // camera input is still pulling frames).
         Staged,
+
+        // Marks a frame that is currently being read from and will soon
+        // be released to the unused state.
         Reading
     };
 
