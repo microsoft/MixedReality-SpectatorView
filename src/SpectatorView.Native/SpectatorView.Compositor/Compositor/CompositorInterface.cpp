@@ -53,6 +53,13 @@ void CompositorInterface::SetOutputFrameProvider(IFrameProvider::ProviderType ty
 {
     DisableOutputFrameProvider();
 
+    // There is no need for a second instance of the same provider type
+    IFrameProvider::ProviderType inputProviderType = IFrameProvider::ProviderType::None;
+    if (frameProvider != nullptr)
+        inputProviderType = frameProvider->GetProviderType();
+    if (inputProviderType == type)
+        return;
+
 #if defined (INCLUDE_BLACKMAGIC)
     if (type == IFrameProvider::ProviderType::BlackMagic)
         outputFrameProvider = new DeckLinkManager();
