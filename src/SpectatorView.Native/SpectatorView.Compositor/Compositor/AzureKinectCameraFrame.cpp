@@ -8,7 +8,6 @@ AzureKinectCameraFrame::AzureKinectCameraFrame(bool captureDepth, bool captureBo
     : _captureDepth(captureDepth)
     , _captureBodyMask(captureBodyMask)
     , _status(FrameStatus::Unused)
-    , _writerCount(0)
 {
     _imageSizes[(int)AzureKinectImageType::Color] = FRAME_BUFSIZE_RGBA;
     _imageSizes[(int)AzureKinectImageType::Depth] = FRAME_BUFSIZE_DEPTH16;
@@ -46,18 +45,16 @@ void AzureKinectCameraFrame::UpdateSRV(AzureKinectImageType imageType, ID3D11Dev
     }
 }
 
-bool AzureKinectCameraFrame::TryBeginWriting()
+bool AzureKinectCameraFrame::TryBeginWritingColorAndDepth()
 {
     std::lock_guard<std::mutex> guard(_statusGuard);
-    if (_status == FrameStatus::Writing)
+    if (_status == FrameStatus::WritingColorAndDepth)
     {
-        _writerCount++;
         return true;
     }
     else if (_status == FrameStatus::Unused || _status == FrameStatus::Staged)
     {
-        _status = FrameStatus::Writing;
-        _writerCount = 1;
+        _status = FrameStatus::WritingColorAndDepth;
         return true;
     }
     else
@@ -66,17 +63,30 @@ bool AzureKinectCameraFrame::TryBeginWriting()
     }
 }
 
-void AzureKinectCameraFrame::EndWriting()
+void AzureKinectCameraFrame::EndWritingColorAndDepth()
 {
     std::lock_guard<std::mutex> guard(_statusGuard);
-    if (_status == FrameStatus::Writing)
+    if (_status == FrameStatus::WritingColorAndDepth)
     {
-        _writerCount--;
+        _status = FrameStatus::Staged;
+    }
+}
 
-        if (_writerCount == 0)
-        {
-            _status = FrameStatus::Staged;
-        }
+void AzureKinectCameraFrame::BeginWritingBodyMask()
+{
+    std::lock_guard<std::mutex> guard(_statusGuard);
+    if (_status == FrameStatus::WritingColorAndDepth)
+    {
+        _status = FrameStatus::WritingBodyMask;
+    }
+}
+
+void AzureKinectCameraFrame::EndWritingBodyMask()
+{
+    std::lock_guard<std::mutex> guard(_statusGuard);
+    if (_status == FrameStatus::WritingBodyMask)
+    {
+        _status = FrameStatus::Staged;
     }
 }
 

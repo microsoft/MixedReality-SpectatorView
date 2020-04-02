@@ -28,7 +28,7 @@ public:
 
     virtual int GetCaptureFrameIndex() override
     {
-        return cameraInput->GetCaptureFrameIndex();
+        return cameraInput == nullptr ? 0 : cameraInput->GetCaptureFrameIndex();
     }
    
    virtual bool IsCameraCalibrationInformationAvailable() override

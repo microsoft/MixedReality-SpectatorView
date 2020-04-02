@@ -22,7 +22,16 @@ public:
     AzureKinectCameraInput(k4a_depth_mode_t depthMode, bool captureDepth, bool captureBodyMask);
     ~AzureKinectCameraInput();
 
-    int GetCaptureFrameIndex() { return _currentFrameIndex; }
+    int GetCaptureFrameIndex()
+    {
+#if defined(INCLUDE_AZUREKINECT_BODYTRACKING)
+        if (_captureBodyMask)
+        {
+            return _currentBodyMaskFrameIndex;
+        }
+#endif
+        return _currentFrameIndex;
+    }
     void GetCameraCalibrationInformation(CameraIntrinsics* calibration);
     void StartArUcoMarkerDetector(cv::aruco::PREDEFINED_DICTIONARY_NAME markerDictionaryName, float markerSize);
     void StopArUcoMarkerDetector();
@@ -55,13 +64,16 @@ private:
     int _bodyMaskImageStride;
 
 #if defined(INCLUDE_AZUREKINECT_BODYTRACKING)
-    void GetBodyIndexMap(k4a_capture_t capture, k4abt_frame_t* bodyFrame, k4a_image_t* bodyIndexMap, uint8_t** bodyIndexBuffer);
+    void RunBodyIndexLoop();
+
     void ReleaseBodyIndexMap(k4abt_frame_t bodyFrame, k4a_image_t bodyIndexMap);
     void SetBodyMaskBuffer(uint16_t* bodyMaskBuffer, uint8_t* bodyIndexBuffer, int bufferSize);
     void SetTransformedBodyMaskBuffer(uint16_t* transformedBodyMaskBuffer, int bufferSize);
 
     k4abt_tracker_t k4abtTracker;
     k4abt_tracker_configuration_t tracker_config = K4ABT_TRACKER_CONFIG_DEFAULT;
+    std::shared_ptr<std::thread> _bodyIndexThread;
+    std::atomic_int32_t _currentBodyMaskFrameIndex;
 #endif
 
     std::shared_ptr<std::thread> _thread;

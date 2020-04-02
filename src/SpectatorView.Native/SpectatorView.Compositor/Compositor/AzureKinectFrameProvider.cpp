@@ -44,7 +44,7 @@ HRESULT AzureKinectFrameProvider::Initialize(ID3D11ShaderResourceView* colorSRV,
         break;
     }
 
-    cameraInput = std::make_shared<AzureKinectCameraInput>(depthCameraMode, _depthSRV != nullptr, _bodySRV != nullptr);
+    cameraInput = std::make_shared<AzureKinectCameraInput>(depthCameraMode, _depthSRV != nullptr && depthCameraMode != K4A_DEPTH_MODE_OFF, _bodySRV != nullptr && depthCameraMode != K4A_DEPTH_MODE_OFF);
 
     return S_OK;
 }

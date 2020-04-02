@@ -31,6 +31,7 @@ AzureKinectCameraInput::AzureKinectCameraInput(k4a_depth_mode_t depthMode, bool 
     , _depthImageStride(0)
     , _bodyMaskImageStride(0)
 #if defined(INCLUDE_AZUREKINECT_BODYTRACKING)
+    , _currentBodyMaskFrameIndex(0)
     , k4abtTracker(nullptr)
 #endif
 {
@@ -56,14 +57,14 @@ AzureKinectCameraInput::AzureKinectCameraInput(k4a_depth_mode_t depthMode, bool 
         goto FailedExit;
     }
 
+    if (K4A_RESULT_SUCCEEDED != k4a_device_get_calibration(k4aDevice, config.depth_mode, config.color_resolution, &calibration))
+    {
+        OutputDebugString(L"Failed to get camera calibration");
+        goto FailedExit;
+    }
+
     if (captureDepth)
     {
-        if (K4A_RESULT_SUCCEEDED != k4a_device_get_calibration(k4aDevice, config.depth_mode, config.color_resolution, &calibration))
-        {
-            OutputDebugString(L"Failed to get depth camera calibration");
-            goto FailedExit;
-        }
-
         transformation = k4a_transformation_create(&calibration);
         k4a_image_create(K4A_IMAGE_FORMAT_DEPTH16, calibration.color_camera_calibration.resolution_width, calibration.color_camera_calibration.resolution_height, 2 * calibration.color_camera_calibration.resolution_width, &transformedDepthImage);
         _depthImageStride = k4a_image_get_stride_bytes(transformedDepthImage);
@@ -88,6 +89,11 @@ AzureKinectCameraInput::AzureKinectCameraInput(k4a_depth_mode_t depthMode, bool 
     }
 
     _thread = std::make_shared<std::thread>(std::bind(&AzureKinectCameraInput::RunCaptureLoop, this));
+
+#if defined(INCLUDE_AZUREKINECT_BODYTRACKING)
+    _bodyIndexThread = std::make_shared<std::thread>(std::bind(&AzureKinectCameraInput::RunBodyIndexLoop, this));
+#endif
+
     return;
 
 FailedExit:
@@ -101,6 +107,10 @@ AzureKinectCameraInput::~AzureKinectCameraInput()
 {
     _stopRequested = true;
     _thread->join();
+
+#if defined(INCLUDE_AZUREKINECT_BODYTRACKING) 
+    _bodyIndexThread->join();
+#endif
 
     if (bodyMaskImage != nullptr)
     {
@@ -145,9 +155,8 @@ void AzureKinectCameraInput::RunCaptureLoop()
 {
     while (!_stopRequested)
     {
-        if (!_cameraFrames[_currentFrameIndex % MAX_NUM_CACHED_BUFFERS]->TryBeginWriting())
+        if (!_cameraFrames[_currentFrameIndex % MAX_NUM_CACHED_BUFFERS]->TryBeginWritingColorAndDepth())
         {
-            Sleep(1);
             continue;
         }
 
@@ -183,34 +192,14 @@ void AzureKinectCameraInput::RunCaptureLoop()
 #if defined(INCLUDE_AZUREKINECT_BODYTRACKING)
                     if (_captureBodyMask)
                     {
-                        auto height = k4a_image_get_height_pixels(depthImage);
-                        auto width = k4a_image_get_width_pixels(depthImage);
+                        _cameraFrames[_currentFrameIndex % MAX_NUM_CACHED_BUFFERS]->BeginWritingBodyMask();
+                        k4a_wait_result_t queue_capture_result = k4abt_tracker_enqueue_capture(k4abtTracker, capture, K4A_WAIT_INFINITE);
 
-                        uint16_t* bodyMaskBuffer = reinterpret_cast<uint16_t*>(k4a_image_get_buffer(bodyMaskImage));
-
-                        k4abt_frame_t bodyFrame;
-                        k4a_image_t bodyMap;
-                        uint8_t* bodyIndexBuffer;
-                        GetBodyIndexMap(capture, &bodyFrame, &bodyMap, &bodyIndexBuffer);
-
-                        if (bodyIndexBuffer != nullptr)
+                        if (queue_capture_result == K4A_WAIT_RESULT_FAILED)
                         {
-                            // Set body mask buffer to 0 where bodies are recognized  
-                            SetBodyMaskBuffer(bodyMaskBuffer, bodyIndexBuffer, height * width);
+                            printf("Error! Adding capture to tracker process queue failed!\n");
+                            _cameraFrames[_currentFrameIndex % MAX_NUM_CACHED_BUFFERS]->EndWritingBodyMask();
                         }
-                        ReleaseBodyIndexMap(bodyFrame, bodyMap);
-
-                        k4a_result_t result = k4a_transformation_depth_image_to_color_camera(transformation, bodyMaskImage, transformedBodyMaskImage);
-
-                        height = k4a_image_get_height_pixels(transformedBodyMaskImage);
-                        width = k4a_image_get_width_pixels(transformedBodyMaskImage);
-
-                        bodyMaskBuffer = reinterpret_cast<uint16_t*>(k4a_image_get_buffer(transformedBodyMaskImage));
-
-                        // Set transformed body mask buffer to 1 where bodies are not recognized  
-                        SetTransformedBodyMaskBuffer(bodyMaskBuffer, height * width);
-
-                        _cameraFrames[_currentFrameIndex % MAX_NUM_CACHED_BUFFERS]->StageImage(AzureKinectImageType::BodyMask, transformedBodyMaskImage);
                     }
 #endif
 
@@ -221,7 +210,7 @@ void AzureKinectCameraInput::RunCaptureLoop()
         }
         k4a_capture_release(capture);
 
-        _cameraFrames[_currentFrameIndex % MAX_NUM_CACHED_BUFFERS]->EndWriting();
+        _cameraFrames[_currentFrameIndex % MAX_NUM_CACHED_BUFFERS]->EndWritingColorAndDepth();
         _currentFrameIndex++;
     }
 }
@@ -323,29 +312,41 @@ void AzureKinectCameraInput::GetCameraCalibrationInformation(CameraIntrinsics* c
 }
 
 #if defined(INCLUDE_AZUREKINECT_BODYTRACKING)
-void AzureKinectCameraInput::GetBodyIndexMap(k4a_capture_t capture, k4abt_frame_t* bodyFrame, k4a_image_t* bodyIndexMap, uint8_t** bodyIndexBuffer)
+void AzureKinectCameraInput::RunBodyIndexLoop()
 {
-    k4a_wait_result_t queue_capture_result = k4abt_tracker_enqueue_capture(k4abtTracker, capture, K4A_WAIT_INFINITE);
-
-    if (queue_capture_result == K4A_WAIT_RESULT_FAILED)
+    while (!_stopRequested)
     {
-        printf("Error! Adding capture to tracker process queue failed!\n");
-        *bodyFrame = nullptr;
-        *bodyIndexMap = nullptr;
-        *bodyIndexBuffer = nullptr;
-    }
-    else
-    {
-        k4a_wait_result_t pop_frame_result = k4abt_tracker_pop_result(k4abtTracker, bodyFrame, K4A_WAIT_INFINITE);
+        k4abt_frame_t bodyFrame;
+        k4a_wait_result_t pop_frame_result = k4abt_tracker_pop_result(k4abtTracker, &bodyFrame, 0);
         if (pop_frame_result == K4A_WAIT_RESULT_SUCCEEDED)
         {
-            *bodyIndexMap = k4abt_frame_get_body_index_map(*bodyFrame);
-            *bodyIndexBuffer = k4a_image_get_buffer(*bodyIndexMap);
-        }
-        else
-        {
-            *bodyIndexMap = nullptr;
-            *bodyIndexBuffer = nullptr;
+            uint16_t* bodyMaskBuffer = reinterpret_cast<uint16_t*>(k4a_image_get_buffer(bodyMaskImage));
+            auto height = k4a_image_get_height_pixels(bodyMaskImage);
+            auto width = k4a_image_get_width_pixels(bodyMaskImage);
+
+            k4a_image_t bodyIndexMap = k4abt_frame_get_body_index_map(bodyFrame);
+            uint8_t* bodyIndexBuffer = k4a_image_get_buffer(bodyIndexMap);
+
+            if (bodyIndexBuffer != nullptr)
+            {
+                // Set body mask buffer to 0 where bodies are recognized  
+                SetBodyMaskBuffer(bodyMaskBuffer, bodyIndexBuffer, height * width);
+            }
+            ReleaseBodyIndexMap(bodyFrame, bodyIndexMap);
+
+            k4a_result_t result = k4a_transformation_depth_image_to_color_camera(transformation, bodyMaskImage, transformedBodyMaskImage);
+
+            height = k4a_image_get_height_pixels(transformedBodyMaskImage);
+            width = k4a_image_get_width_pixels(transformedBodyMaskImage);
+
+            bodyMaskBuffer = reinterpret_cast<uint16_t*>(k4a_image_get_buffer(transformedBodyMaskImage));
+
+            // Set transformed body mask buffer to 1 where bodies are not recognized  
+            SetTransformedBodyMaskBuffer(bodyMaskBuffer, height * width);
+
+            _cameraFrames[_currentBodyMaskFrameIndex % MAX_NUM_CACHED_BUFFERS]->StageImage(AzureKinectImageType::BodyMask, transformedBodyMaskImage);
+            _cameraFrames[_currentBodyMaskFrameIndex % MAX_NUM_CACHED_BUFFERS]->EndWritingBodyMask();
+            _currentBodyMaskFrameIndex++;
         }
     }
 }
