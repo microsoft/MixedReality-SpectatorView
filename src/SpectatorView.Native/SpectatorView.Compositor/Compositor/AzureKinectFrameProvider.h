@@ -80,7 +80,7 @@ private:
     k4a_depth_mode_t depthCameraMode = K4A_DEPTH_MODE_OFF;
 
 #if defined(INCLUDE_AZUREKINECT_BODYTRACKING)
-    k4abt_tracker_t k4abtTracker;
+    k4abt_tracker_t k4abtTracker = nullptr;
     k4abt_tracker_configuration_t tracker_config = K4ABT_TRACKER_CONFIG_DEFAULT;
 #endif
 
