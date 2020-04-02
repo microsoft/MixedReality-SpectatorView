@@ -52,8 +52,10 @@ public:
     virtual void GetLatestArUcoMarkers(int size, Marker* markers) override;
 
 private:
+#if defined(INCLUDE_AZUREKINECT_BODYTRACKING)
     void GetBodyIndexMap(k4a_capture_t capture, k4abt_frame_t* bodyFrame, k4a_image_t* bodyIndexMap, uint8_t** bodyIndexBuffer);
     void ReleaseBodyIndexMap(k4abt_frame_t bodyFrame, k4a_image_t bodyIndexMap);
+#endif
     void UpdateSRV(k4a_image_t bodyDepthImage, ID3D11ShaderResourceView* _srv);
     void UpdateArUcoMarkers(k4a_image_t image);
     void SetBodyMaskBuffer(uint16_t* bodyMaskBuffer, uint8_t* bodyIndexBuffer, int bufferSize);
@@ -78,7 +80,7 @@ private:
     k4a_depth_mode_t depthCameraMode = K4A_DEPTH_MODE_OFF;
 
 #if defined(INCLUDE_AZUREKINECT_BODYTRACKING)
-    k4abt_tracker_t k4abtTracker;
+    k4abt_tracker_t k4abtTracker = nullptr;
     k4abt_tracker_configuration_t tracker_config = K4ABT_TRACKER_CONFIG_DEFAULT;
 #endif
 
