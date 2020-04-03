@@ -778,11 +778,15 @@ void DeckLinkDevice::Update(int compositeFrameIndex)
     }
 }
 
-bool DeckLinkDevice::OutputYUV()
+bool DeckLinkDevice::ProvidesYUV()
 {
     return (pixelFormat == PixelFormat::YUV);
 }
 
+bool DeckLinkDevice::ExpectsYUV()
+{
+    return ProvidesYUV();
+}
 
 void DeckLinkDevice::BufferCache::ComputePixelChange(BYTE* prevBuffer, BMDPixelFormat framePixelFormat)
 {

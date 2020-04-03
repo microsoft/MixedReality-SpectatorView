@@ -244,7 +244,8 @@ namespace Microsoft.MixedReality.SpectatorView
 
         private int frameWidth;
         private int frameHeight;
-        private bool outputYUV;
+        private bool providesYUV;
+        private bool expectsYUV;
         private bool hardwareEncodeVideo;
         private IntPtr renderEvent;
 
@@ -272,7 +273,7 @@ namespace Microsoft.MixedReality.SpectatorView
         {
             get
             {
-                if (overrideColorTexture == null && outputYUV)
+                if (overrideColorTexture == null && providesYUV)
                 {
                     return YUVToRGBMat;
                 }
@@ -323,7 +324,8 @@ namespace Microsoft.MixedReality.SpectatorView
         {
             frameWidth = UnityCompositorInterface.GetFrameWidth();
             frameHeight = UnityCompositorInterface.GetFrameHeight();
-            outputYUV = UnityCompositorInterface.OutputYUV();
+            providesYUV = UnityCompositorInterface.ProvidesYUV();
+            expectsYUV = UnityCompositorInterface.ExpectsYUV();
             renderEvent = UnityCompositorInterface.GetRenderEventFunc();
             hardwareEncodeVideo = UnityCompositorInterface.HardwareEncodeVideo();
 
@@ -374,11 +376,8 @@ namespace Microsoft.MixedReality.SpectatorView
         private void Update()
         {
             // this updates after we start running or when the video source changes, so we need to check every frame
-            bool newOutputYUV = UnityCompositorInterface.OutputYUV();
-            if (outputYUV != newOutputYUV)
-            {
-                outputYUV = newOutputYUV;
-            }
+            providesYUV = UnityCompositorInterface.ProvidesYUV();
+            expectsYUV = UnityCompositorInterface.ExpectsYUV();
         }
 
         private void OnDestroy()
@@ -540,7 +539,7 @@ namespace Microsoft.MixedReality.SpectatorView
             // If an output texture override has been specified, use it instead of the composited texture
             Texture outputTexture = (overrideOutputTexture == null) ? compositeTexture : overrideOutputTexture;
 
-            Graphics.Blit(outputTexture, displayOutputTexture, outputYUV ? RGBToYUVMat : RGBToBGRMat);
+            Graphics.Blit(outputTexture, displayOutputTexture, expectsYUV ? RGBToYUVMat : RGBToBGRMat);
 
             Graphics.Blit(renderTexture, alphaTexture, extractAlphaMat);
 

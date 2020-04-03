@@ -108,14 +108,25 @@ bool DeckLinkManager::SupportsOutput()
     return false;
 }
 
-bool DeckLinkManager::OutputYUV()
+bool DeckLinkManager::ProvidesYUV()
 {
     if (!IsEnabled())
     {
         return false;
     }
 
-    return deckLinkDevice->OutputYUV();
+    return deckLinkDevice->ProvidesYUV();
+}
+
+
+bool DeckLinkManager::ExpectsYUV()
+{
+    if (!IsEnabled())
+    {
+        return false;
+    }
+
+    return deckLinkDevice->ExpectsYUV();
 }
 
 LONGLONG DeckLinkManager::GetTimestamp(int frame)

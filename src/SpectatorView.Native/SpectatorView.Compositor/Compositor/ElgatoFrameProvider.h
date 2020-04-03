@@ -59,7 +59,7 @@ public:
 
     virtual void Dispose();
 
-    bool OutputYUV()
+    bool ProvidesYUV()
     {
         return true;
     }

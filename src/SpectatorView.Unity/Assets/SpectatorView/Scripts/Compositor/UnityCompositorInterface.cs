@@ -140,7 +140,10 @@ namespace Microsoft.MixedReality.SpectatorView
         public static extern bool IsRecording();
 
         [DllImport(CompositorPluginDll)]
-        public static extern bool OutputYUV();
+        public static extern bool ProvidesYUV();
+
+        [DllImport(CompositorPluginDll)]
+        public static extern bool ExpectsYUV();
 
         [DllImport(CompositorPluginDll)]
         public static extern bool QueueingHoloFrames();

@@ -537,14 +537,24 @@ UNITYDLL void Reset()
     LeaveCriticalSection(&lock);
 }
 
-UNITYDLL bool OutputYUV()
+UNITYDLL bool ProvidesYUV()
 {
     if (ci == nullptr)
     {
         return false;
     }
 
-    return ci->OutputYUV();
+    return ci->ProvidesYUV();
+}
+
+UNITYDLL bool ExpectsYUV()
+{
+    if (ci == nullptr)
+    {
+        return false;
+    }
+
+    return ci->ExpectsYUV();
 }
 
 UNITYDLL LONGLONG GetCurrentUnityTime()

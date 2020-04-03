@@ -44,7 +44,7 @@ private:
         BGRA
     };
 
-    PixelFormat pixelFormat = PixelFormat::BGRA;
+    PixelFormat pixelFormat = PixelFormat::YUV;
 
     ULONG                     m_refCount;
     IDeckLink*                m_deckLink;
@@ -140,7 +140,8 @@ public:
 
     int GetNumQueuedOutputFrames();
 
-    bool OutputYUV();
+    bool ProvidesYUV();
+    bool ExpectsYUV();
 };
 
 class DeckLinkDeviceDiscovery :  public IDeckLinkDeviceNotificationCallback

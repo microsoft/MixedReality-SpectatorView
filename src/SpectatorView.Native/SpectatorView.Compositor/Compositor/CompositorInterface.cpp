@@ -420,14 +420,22 @@ void CompositorInterface::RecordAudioFrameAsync(BYTE* audioFrame, LONGLONG audio
     activeVideoEncoder->QueueAudioFrame(audioFrame, audioSize, sampleTime);
 }
 
-bool CompositorInterface::OutputYUV()
+bool CompositorInterface::ProvidesYUV()
 {
-    if (outputFrameProvider != nullptr)
-        return outputFrameProvider->OutputYUV();
     if (frameProvider == nullptr)
     {
         return false;
     }
 
-    return frameProvider->OutputYUV();
+    return frameProvider->ProvidesYUV();
+}
+
+bool CompositorInterface::ExpectsYUV()
+{
+    if (outputFrameProvider != nullptr)
+        return outputFrameProvider->ExpectsYUV();
+    if (frameProvider != nullptr)
+        return frameProvider->ExpectsYUV();
+
+    return false;
 }

@@ -45,8 +45,10 @@ public:
     // Stop capturing frames from the FrameProvider.
     virtual void Dispose() = 0;
 
-    // Return true if function outputs YUV frames, false otherwise.
-    virtual bool OutputYUV() = 0;
+    // Return true if function provides YUV frames, false otherwise.
+    virtual bool ProvidesYUV() = 0;
+    // Return true if the output expects YUV frames, false otherwise.
+    virtual bool ExpectsYUV() { return false; }
 
     virtual int GetCaptureFrameIndex() { return 0; }
     virtual int GetPixelChange(int frame) { return 0; }

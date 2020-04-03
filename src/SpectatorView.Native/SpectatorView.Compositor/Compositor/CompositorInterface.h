@@ -94,7 +94,8 @@ public:
         return alpha;
     }
 
-    DLLEXPORT bool OutputYUV();
+    DLLEXPORT bool ProvidesYUV();
+    DLLEXPORT bool ExpectsYUV();
 
 public:
     int compositeFrameIndex;

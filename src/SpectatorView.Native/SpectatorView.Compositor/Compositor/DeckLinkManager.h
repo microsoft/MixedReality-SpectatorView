@@ -32,7 +32,8 @@ public:
 
     void Dispose();
 
-    bool OutputYUV();
+    bool ProvidesYUV();
+    bool ExpectsYUV();
 
 private:
     DeckLinkDeviceDiscovery* deckLinkDiscovery = nullptr;

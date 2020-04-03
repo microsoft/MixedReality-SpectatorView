@@ -353,7 +353,7 @@ void AzureKinectFrameProvider::Dispose()
     DeleteCriticalSection(&lock);
 }
 
-bool AzureKinectFrameProvider::OutputYUV()
+bool AzureKinectFrameProvider::ProvidesYUV()
 {
     return false;
 }
