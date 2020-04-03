@@ -19,14 +19,14 @@ steps:
       -ForceRebuild
       -NoDownloads
 
-- task: MSBuild@1
+- task: VSBuild@1
   displayName: 'Building Native Plugins ARM Release'
   inputs:
     solution: src\SpectatorView.Native\SpectatorView.Native.sln
-    msbuildVersion: 15.0
-    msbuildArchitecture: x64
     platform: ARM
     configuration: Release
+    vsVersion: 16.0
+    msbuildArgs: /p:PlatformToolset="v142" # Allows 2019 toolchain with 2017 projects
   timeoutInMinutes: 20
 
 - task: MSBuild@1

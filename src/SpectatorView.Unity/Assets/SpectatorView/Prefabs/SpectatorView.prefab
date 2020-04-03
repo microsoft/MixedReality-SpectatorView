@@ -165,12 +165,13 @@ MonoBehaviour:
   - {fileID: 7339675784917655566}
   holoLensDeviceTrackingObserverPrefab: {fileID: 7587800220407364934, guid: 4db78bcbff185404e957fc4936f66211,
     type: 3}
-  androidDeviceTrackingObserverPrefab: {fileID: 2734810874534467918, guid: c2e3095c7ed2a564592b4e8616606af1,
+  androidDeviceTrackingObserverPrefab: {fileID: 693446283348776169, guid: 3026610e2659660438aeaea271507fc4,
     type: 3}
-  iOSDeviceTrackingObserverPrefab: {fileID: 1713614836779509041, guid: aa3260fda572e994bac56c784821b939,
+  iOSDeviceTrackingObserverPrefab: {fileID: 693446283348776169, guid: 3026610e2659660438aeaea271507fc4,
     type: 3}
   defaultMobileRecordingServiceVisualPrefab: {fileID: 3896832437802547649, guid: 9771d3a665ea3184f9c3731093a51da4,
     type: 3}
+  persistAcrossScenes: 1
   userDebugVisualPrefab: {fileID: 1958541147728546, guid: f115aa95a7b0e49498ffb20f0b5278d0,
     type: 3}
   userDebugVisualScale: 0.02

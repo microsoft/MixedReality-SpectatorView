@@ -7,12 +7,41 @@ using System.Linq;
 using System.IO;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
+using System.Collections;
 
 namespace Microsoft.MixedReality.SpectatorView.Editor
 {
     public static class StateSynchronizationMenuItems
     {
         private static IEqualityComparer<IAssetCache> assetTypeComparer = new AssetCacheTypeEqualityComparer();
+
+        private const string enableSpectatorViewPreBuild = "Spectator View/Enable Spectator View Pre-build Steps";
+        public static bool EnablePreBuildSteps
+        {
+            get
+            {
+                return PlayerPrefs.GetInt(enableSpectatorViewPreBuild, 1) > 0;
+            }
+            private set
+            {
+                PlayerPrefs.SetInt(enableSpectatorViewPreBuild, value ? 1 : 0);
+                PlayerPrefs.Save();
+            }
+        }
+
+        private const string enableUpdatingMenuItem = "Spectator View/Enable Updating Asset Caches When Building";
+        public static bool EnableUpdatingAssetCaches
+        {
+            get
+            {
+                return PlayerPrefs.GetInt(enableUpdatingMenuItem, 1) > 0;
+            }
+            private set
+            {
+                PlayerPrefs.SetInt(enableUpdatingMenuItem, value ? 1 : 0);
+                PlayerPrefs.Save();
+            }
+        }
 
         private class AssetCacheTypeEqualityComparer : IEqualityComparer<IAssetCache>
         {
@@ -42,18 +71,50 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
             return assetCaches.Distinct(assetTypeComparer);
         }
 
-        [MenuItem("Spectator View/Update All Asset Caches", priority = 100)]
+        [MenuItem(enableSpectatorViewPreBuild, priority = 100)]
+        public static void EnableSpectatorViewPreBuild()
+        {
+            EnablePreBuildSteps = !EnablePreBuildSteps;
+            Menu.SetChecked(enableSpectatorViewPreBuild, EnablePreBuildSteps);
+        }
+
+        [MenuItem(enableSpectatorViewPreBuild, true, priority = 100)]
+        public static bool EnableSpectatorViewPreBuild_Validate()
+        {
+            Menu.SetChecked(enableSpectatorViewPreBuild, EnablePreBuildSteps);
+            return true;
+        }
+
+        [MenuItem(enableUpdatingMenuItem, priority = 101)]
+        public static void EnableUpdatingAssetCachesWhenBuilding()
+        {
+            EnableUpdatingAssetCaches = !EnableUpdatingAssetCaches;
+            Menu.SetChecked(enableUpdatingMenuItem, EnableUpdatingAssetCaches);
+        }
+
+        [MenuItem(enableUpdatingMenuItem, true, priority = 101)]
+        public static bool EnableUpdatingAssetCachesWhenBuilding_Validate()
+        {
+            Menu.SetChecked(enableUpdatingMenuItem, EnableUpdatingAssetCaches);
+            return true;
+        }
+
+        [MenuItem("Spectator View/Update All Asset Caches", priority = 102)]
         public static void UpdateAllAssetCaches()
         {
             bool assetCacheFound = false;
 
-            foreach (IAssetCache assetCache in GetAllAssetCaches())
+            IEnumerable<IAssetCache> assetCaches = GetAllAssetCaches();
+            int numCaches = assetCaches.Count();
+            for (int i = 0; i < numCaches; i++)
             {
-                Debug.Log($"Updating asset cache {assetCache.GetType().Name}...");
+                IAssetCache assetCache = assetCaches.ElementAt(i);
+                EditorUtility.DisplayProgressBar($"Updating {numCaches} Asset Caches...", $"Updating the {assetCache.GetType().Name}'s Asset Caches.", i / (float)numCaches);
                 assetCache.UpdateAssetCache();
                 assetCache.SaveAssets();
                 assetCacheFound = true;
             }
+            EditorUtility.ClearProgressBar();
 
             if (!assetCacheFound)
             {
@@ -65,7 +126,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
             Debug.Log("Asset caches updated.");
         }
 
-        [MenuItem("Spectator View/Clear All Asset Caches", priority = 101)]
+        [MenuItem("Spectator View/Clear All Asset Caches", priority = 103)]
         public static void ClearAllAssetCaches()
         {
             bool assetCacheFound = false;
@@ -96,8 +157,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
                 GameObject hierarchyPrefab = new GameObject(StateSynchronizationSceneManager.DefaultStateSynchronizationPerformanceParametersPrefabName);
                 hierarchyPrefab.AddComponent<DefaultStateSynchronizationPerformanceParameters>();
 
-                AssetCache.EnsureAssetDirectoryExists();
-                prefab = PrefabUtility.SaveAsPrefabAsset(hierarchyPrefab, AssetCache.GetAssetCachePath(StateSynchronizationSceneManager.DefaultStateSynchronizationPerformanceParametersPrefabName, ".prefab"));
+                prefab = PrefabUtility.SaveAsPrefabAsset(hierarchyPrefab, SpectatorViewSettings.GetSettingsPath(StateSynchronizationSceneManager.DefaultStateSynchronizationPerformanceParametersPrefabName, ".prefab"));
                 Object.DestroyImmediate(hierarchyPrefab);
             }
 
@@ -112,8 +172,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
             {
                 GameObject hierarchyPrefab = new GameObject(StateSynchronizationSceneManager.CustomBroadcasterServicesPrefabName);
 
-                AssetCache.EnsureAssetDirectoryExists();
-                prefab = PrefabUtility.SaveAsPrefabAsset(hierarchyPrefab, AssetCache.GetAssetCachePath(StateSynchronizationSceneManager.CustomBroadcasterServicesPrefabName, ".prefab"));
+                prefab = PrefabUtility.SaveAsPrefabAsset(hierarchyPrefab, SpectatorViewSettings.GetSettingsPath(StateSynchronizationSceneManager.CustomBroadcasterServicesPrefabName, ".prefab"));
                 Object.DestroyImmediate(hierarchyPrefab);
             }
 
@@ -133,18 +192,17 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
                 hierarchyPrefab.AddComponent<MobileRecordingSettings>();
                 hierarchyPrefab.AddComponent<NetworkConfigurationSettings>();
 
-                AssetCache.EnsureAssetDirectoryExists();
-                prefab = PrefabUtility.SaveAsPrefabAsset(hierarchyPrefab, AssetCache.GetAssetCachePath(SpectatorView.SettingsPrefabName, ".prefab"));
+                prefab = PrefabUtility.SaveAsPrefabAsset(hierarchyPrefab, SpectatorViewSettings.GetSettingsPath(SpectatorView.SettingsPrefabName, ".prefab"));
                 Object.DestroyImmediate(hierarchyPrefab);
             }
             else
             {
-                GameObject editablePrefab = PrefabUtility.LoadPrefabContents(AssetCache.GetAssetCachePath(SpectatorView.SettingsPrefabName, ".prefab"));
+                GameObject editablePrefab = PrefabUtility.LoadPrefabContents(SpectatorViewSettings.GetSettingsPath(SpectatorView.SettingsPrefabName, ".prefab"));
                 EnsureComponent<BroadcasterSettings>(editablePrefab);
                 EnsureComponent<SpatialLocalizationInitializationSettings>(editablePrefab);
                 EnsureComponent<MobileRecordingSettings>(editablePrefab);
                 EnsureComponent<NetworkConfigurationSettings>(editablePrefab);
-                PrefabUtility.SaveAsPrefabAsset(editablePrefab, AssetCache.GetAssetCachePath(SpectatorView.SettingsPrefabName, ".prefab"));
+                PrefabUtility.SaveAsPrefabAsset(editablePrefab, SpectatorViewSettings.GetSettingsPath(SpectatorView.SettingsPrefabName, ".prefab"));
                 PrefabUtility.UnloadPrefabContents(editablePrefab);
             }
 

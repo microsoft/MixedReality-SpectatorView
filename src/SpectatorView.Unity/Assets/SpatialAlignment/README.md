@@ -2,8 +2,6 @@
 
 Spatial Alignment component provides abstractions for localization of MR content within the physical world. This also includes abstractions and implementations for the process of exchanging localization information between devices.
 
-> Note: The code is currently split between this folder,  `..\SpatialAlignment.ASA` and `..\SpectatorView\Scripts\SpatialAlignment`; this will be reconciled in the future updates.
-
 ## Key Concepts
 
 Before diving into the abstractions, we operate on two concepts when speaking of localization:

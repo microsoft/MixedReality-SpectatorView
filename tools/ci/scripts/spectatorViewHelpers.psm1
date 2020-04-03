@@ -32,12 +32,8 @@ function BuildOpenCV
     Remove-Item -Path "installed" -Force -Recurse
   }
 
-  if (!(Test-Path vcpkg.exe))
-  {
-    Write-Host "Preparing vcpkg"
-    & .\bootstrap-vcpkg.bat
-  }
-
+  Write-Host "Preparing vcpkg"
+  & .\bootstrap-vcpkg.bat
   Write-Host "Setting vcpkg installs to be available to MSBuild"
   & .\vcpkg integrate install
   Write-Host "Updating vcpkg"
@@ -45,7 +41,7 @@ function BuildOpenCV
   Write-Host "Upgrading vcpkg"
   & .\vcpkg upgrade --no-dry-run
 
-  if (!(Test-Path "installed\x86-windows"))
+  if (!(Test-Path "installed\x86-windows\lib\libprotobuf.lib"))
   {
     Write-Host "Building OpenCV dependencies"
     & .\vcpkg install protobuf:x86-windows --recurse
@@ -57,7 +53,7 @@ function BuildOpenCV
     $86Dependencies = "True"
   }
 
-  if (!(Test-Path "installed\x86-uwp"))
+  if (!(Test-Path "installed\x86-uwp\lib\opencv_aruco.lib"))
   {
     Write-Host "Building OpenCV x86 UWP"
     & .\vcpkg install opencv[contrib]:x86-uwp --recurse
@@ -69,7 +65,7 @@ function BuildOpenCV
     $86UWP = "True"
   }
 
-  if (!(Test-Path "installed\x64-windows"))
+  if (!(Test-Path "installed\x64-windows\lib\opencv_aruco.lib"))
   {
     Write-Host "Building OpenCV x64 Windows"
     & .\vcpkg install opencv[contrib]:x64-windows --recurse
@@ -84,7 +80,7 @@ function BuildOpenCV
   Write-Host "`n`nOpenCV Build Completed:"
   Write-Host "x86 Dependencies Succeeded: $86Dependencies"
   Write-Host "x86 UWP OpenCV Succeeded: $86UWP"
-  Write-Host "x86 Desktop OpenCV Succeeded: $64Windows"
+  Write-Host "x64 Desktop OpenCV Succeeded: $64Windows"
   $Succeeded.Value = ($86Dependencies -eq $true) -And ($86UWP -eq $true) -And ($64Windows -eq $true)
 
   Set-Location $origLoc
@@ -95,88 +91,6 @@ function AddElgatoSubmodule
   AddSubmodule -Repo https://github.com/elgatosf/gamecapture.git -DirectoryName gamecapture -Branch master
 }
 
-function HideAndroidAssets
-{
-   param
-   (
-     $ProjectPath
-   )
-
-   HideUnityAssetsDirectory -Path "$ProjectPath\Assets\GoogleARCore"
-}
-
-function IncludeAndroidAssets
-{
-   param
-   (
-     $ProjectPath
-   )
-
-   IncludeUnityAssetsDirectory -Path "$ProjectPath\Assets\.GoogleARCore"
-}
-
-function HideIOSAssets
-{
-   param
-   (
-     $ProjectPath
-   )
-
-   HideUnityAssetsDirectory -Path "$ProjectPath\Assets\ARKit-Unity-Plugin"
-}
-
-function IncludeIOSAssets
-{
-   param
-   (
-     $ProjectPath
-   )
-
-   IncludeUnityAssetsDirectory -Path "$ProjectPath\Assets\.ARKit-Unity-Plugin"
-}
-
-function HideASAAssets
-{
-   param
-   (
-     $ProjectPath
-   )
-
-   HideUnityAssetsDirectory -Path "$ProjectPath\Assets\AzureSpatialAnchorsPlugin"
-   HideUnityAssetsDirectory -Path "$ProjectPath\Assets\AzureSpatialAnchors.Resources"
-}
-
-function IncludeASAAssets
-{
-   param
-   (
-     $ProjectPath
-   )
-
-   IncludeUnityAssetsDirectory -Path "$ProjectPath\Assets\.AzureSpatialAnchorsPlugin"
-   IncludeUnityAssetsDirectory -Path "$ProjectPath\Assets\.AzureSpatialAnchors.Resources"
-}
-
-function HideQRCodePlugin
-{
-   param
-   (
-     $ProjectPath
-   )
-
-   HideUnityAssetsDirectory -Path "$ProjectPath\Assets\MixedReality-QRCodePlugin"
-}
-
-function IncludeQRCodePlugin
-{
-   param
-   (
-     $ProjectPath
-   )
-
-   IncludeUnityAssetsDirectory -Path "$ProjectPath\Assets\.MixedReality-QRCodePlugin"
-}
-
 function SetupExternalDownloads
 {
   param
@@ -185,29 +99,56 @@ function SetupExternalDownloads
     [Parameter(Mandatory=$true)][ref]$Succeeded
   )
 
-  $success = "False";
+  $success = $false;
   if ($NoDownloads)
   {
-    # This script set up dependencies for Blackmagic Design dependencies
-    # The behavior can be manually duplicated by populating an 'external\dependencies\BlackmagicDesign\Blackmagic DeckLink SDK 10.9.11' directory in your repo
-    # and by populating the external\MixedReality-QRCodePlugin and external\ARKit-Unity-Plugin directories
     SetupDependencyRepoBuildCI -Succeeded ([ref]$success)
-    Write-Host "BlackmagicDesign dependencies found: $success"
   }
   else
   {
-    DownloadQRCodePlugin
-    DownloadARKitPlugin
-    $success = Test-Path "$PSScriptRoot\..\..\..\external\dependencies\BlackmagicDesign\Blackmagic DeckLink SDK 10.9.11"
-    Write-Host "BlackmagicDesign dependencies found: $success"
-    if ($success -eq $false)
-    {
-      Write-Host "Native build will fail based on a missing BlackmagicDesign dependency."
-      Write-Host "To fix this issue, obtain Blackmagic DeckLink SDK 10.9.11 and add it to an 'external\dependencies\BlackmagicDesign\Blackmagic DeckLink SDK 10.9.11' directory."
-    }
+    SetupDependencyRepoBuildLocal -Succeeded ([ref]$success)
   }
 
   $Succeeded.Value = $success
+}
+
+function SetupDependencyRepoBuildLocal
+{
+  param(
+    [Parameter(Mandatory=$true)][ref]$Succeeded
+)
+
+  DownloadQRCodePlugin
+
+  $BlackMagicPath = "$PSScriptRoot\..\..\..\external\Blackmagic DeckLink SDK 10.9.11"
+  if (!(Test-Path $BlackMagicPath))
+  {
+    Write-Warning -message "Blackmagic decklink resources weren't found at $BlackMagicPath, Blackmagic decklink filming won't be included in the build."
+  }
+
+  $AzureSDKPath = "C:\Program Files\Azure Kinect SDK v1.3.0"
+  if (!(Test-Path $AzureSDKPath))
+  {
+    Write-Warning -message "Azure Kinect SDK wasn't found at $AzureSDKPath, Azure Kinect filming won't be included in the build."
+  }
+  else
+  {
+    New-Item -ItemType Directory -Force -Path "$PSScriptRoot\..\..\..\external\Azure Kinect SDK v1.3.0"
+    Copy-Item -Recurse -Path "C:\Program Files\Azure Kinect SDK v1.3.0\*" -Destination "$PSScriptRoot\..\..\..\external\Azure Kinect SDK v1.3.0" -Force
+  }
+
+  $AzureBodyTrackingSDKExpectedPath = "C:\Program Files\Azure Kinect Body Tracking SDK 1.0.0"
+  if (!(Test-Path $AzureBodyTrackingSDKExpectedPath))
+  {
+    Write-Warning -message "Azure Kinect Body Tracking SDK wasn't found at $AzureBodyTrackingSDKExpectedPath, Azure Kinect Body Tracking filming  won't be included in the build."
+  }
+  else
+  {
+    New-Item -ItemType Directory -Force -Path "$PSScriptRoot\..\..\..\external\Azure Kinect Body Tracking SDK 1.0.0"
+    Copy-Item -Recurse -Path "$AzureBodyTrackingSDKExpectedPath\*" -Destination "$PSScriptRoot\..\..\..\external\Azure Kinect Body Tracking SDK 1.0.0" -Force 
+  }
+
+  $Succeeded.Value = $?
 }
 
 function SetupDependencyRepoBuildCI
@@ -216,8 +157,45 @@ function SetupDependencyRepoBuildCI
     [Parameter(Mandatory=$true)][ref]$Succeeded
 )
 
-  Copy-Item -Path "$PSScriptRoot\..\..\..\external\dependencies\ARKit-Unity-Plugin\Unity-Technologies-unity-arkit-plugin-94e47eae5954\*" -Destination "$PSScriptRoot\..\..\..\external\ARKit-Unity-Plugin" -Force
-  Copy-Item -Path "$PSScriptRoot\..\..\..\external\dependencies\MixedReality-QRCodePlugin\*" -Destination "$PSScriptRoot\..\..\..\external\MixedReality-QRCodePlugin" -Force
-  Copy-Item -Path "$PSScriptRoot\dependencies.props" -Destination "$PSScriptRoot\..\..\..\src\SpectatorView.Native\SpectatorView.Compositor\dependencies.props" -Force
+  $QRCodePath = "$PSScriptRoot\..\..\..\external\dependencies\MixedReality-QRCodePlugin\"
+  if (Test-Path $QRCodePath)
+  {
+    Copy-Item -Recurse -Path "$QRCodePath\*" -Destination "$PSScriptRoot\..\..\..\external\MixedReality-QRCodePlugin" -Force
+  }
+  else
+  {
+    Write-Host "QR Code Dependencies not found, QR Code detection excluded from the build."
+  }
+
+  $AzureSDKPath = "$PSScriptRoot\..\..\..\external\dependencies\Azure Kinect SDK v1.3.0\"
+  if (Test-Path $AzureSDKPath)
+  {
+      Copy-Item -Recurse -Path "$AzureSDKPath\*" -Destination "$PSScriptRoot\..\..\..\external\Azure Kinect SDK v1.3.0" -Force
+  }
+  else
+  {
+    Write-Host "Azure kinect sdk not found. Azure kinect sdk excluded from the build."
+  }
+
+  $AzureBodyTrackingPath = "$PSScriptRoot\..\..\..\external\dependencies\Azure Kinect Body Tracking SDK 1.0.0\"
+  if (Test-Path $AzureBodyTrackingPath)
+  {
+    Copy-Item -Recurse -Path "$AzureBodyTrackingPath\*" -Destination "$PSScriptRoot\..\..\..\external\Azure Kinect Body Tracking SDK 1.0.0" -Force
+  }
+  else
+  {
+    Write-Host "Azure kinect body tracking sdk not found. Azure kinect body tracking sdk excluded from the build."
+  }
+
+  if (Test-Path "$PSScriptRoot\dependencies.props")
+  {
+    Copy-Item -Recurse -Path "$PSScriptRoot\dependencies.props" -Destination "$PSScriptRoot\..\..\..\src\SpectatorView.Native\SpectatorView.Compositor\dependencies.props" -Force
+  }
+  else
+  {
+    Write-Host "dependencies.props not found in ci script directory. Build may fail."
+    $Succeeded.Value = $false
+  }
+
   $Succeeded.Value = $?
 }

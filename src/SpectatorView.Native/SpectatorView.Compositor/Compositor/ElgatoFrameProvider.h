@@ -19,8 +19,6 @@
 #include <bdaiface.h>
 #include "qedit.h"
 
-#include <atlcomcli.h>
-
 #pragma comment(lib, "wmcodecdspuuid")    
 #pragma comment(lib, "dxguid")
 #pragma comment(lib, "strmbase")
