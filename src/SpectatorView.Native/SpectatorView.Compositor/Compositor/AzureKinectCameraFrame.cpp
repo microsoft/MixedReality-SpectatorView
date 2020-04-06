@@ -2,6 +2,8 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 #include "pch.h"
+
+#if defined(INCLUDE_AZUREKINECT)
 #include "AzureKinectCameraFrame.h"
 
 AzureKinectCameraFrame::AzureKinectCameraFrame(bool captureDepth, bool captureBodyMask)
@@ -124,3 +126,4 @@ void AzureKinectCameraFrame::EndReading()
         _status = FrameStatus::Unused;
     }
 }
+#endif
