@@ -30,6 +30,13 @@ namespace Microsoft.MixedReality.SpectatorView
         protected QRCodeMarkerDetector qrCodeMarkerDetector;
 
         /// <summary>
+        /// ArUco Code Marker Detector in scene
+        /// </summary>
+        [Tooltip("ArUco Code Marker Detector in scene")]
+        [SerializeField]
+        protected ArUcoMarkerDetector arucoCodeMarkerDetector;
+
+        /// <summary>
         /// Debug Visual Helper in scene that will place game objects on qr code markers in the scene.
         /// </summary>
         [Tooltip("Debug Visual Helper in scene that will place game objects on qr code markers in the scene.")]
@@ -48,6 +55,7 @@ namespace Microsoft.MixedReality.SpectatorView
         public static readonly string UploadCalibrationCommandHeader= "UPLOADCALIBDATA";
         public static readonly string UploadCalibrationResultCommandHeader = "UPLOADCALIBRESULT";
 
+        private IMarkerDetector markerDetector = null;
         private bool markersUpdated = false;
         private Dictionary<int, Marker> qrCodeMarkers = new Dictionary<int, Marker>();
         private Dictionary<int, GameObject> qrCodeDebugVisuals = new Dictionary<int, GameObject>();
@@ -84,14 +92,20 @@ namespace Microsoft.MixedReality.SpectatorView
 
         private void OnEnable()
         {
-            qrCodeMarkerDetector.MarkersUpdated += OnQRCodesMarkersUpdated;
-            qrCodeMarkerDetector.StartDetecting();
+            var detector = Application.platform == RuntimePlatform.WSAPlayerX86
+                ? arucoCodeMarkerDetector as MonoBehaviour
+                : qrCodeMarkerDetector as MonoBehaviour;
+            detector.gameObject.SetActive(true);
+            markerDetector = detector as IMarkerDetector;
+
+            markerDetector.MarkersUpdated += OnQRCodesMarkersUpdated;
+            markerDetector.StartDetecting();
         }
 
         private void OnDisable()
         {
-            qrCodeMarkerDetector.StopDetecting();
-            qrCodeMarkerDetector.MarkersUpdated -= OnQRCodesMarkersUpdated;
+            markerDetector.StopDetecting();
+            markerDetector.MarkersUpdated -= OnQRCodesMarkersUpdated;
         }
 
         private void Update()
@@ -125,7 +139,7 @@ namespace Microsoft.MixedReality.SpectatorView
             {
                 updatedMarkerIds.Add(marker.Key);
                 float size = 0;
-                if (qrCodeMarkerDetector.TryGetMarkerSize(marker.Key, out size))
+                if (markerDetector.TryGetMarkerSize(marker.Key, out size))
                 {
                     var qrCodeTopLeftPosition = CalcTopLeftFromCenter(marker.Value.Position, marker.Value.Rotation, size);
                     var qrCodeRotation = marker.Value.Rotation;
@@ -138,8 +152,14 @@ namespace Microsoft.MixedReality.SpectatorView
                         qrCodeDebugVisuals[marker.Key] = qrCodeDebugVisual;
                     }
 
-                    var originToQRCode = Matrix4x4.TRS(qrCodeTopLeftPosition, qrCodeRotation, Vector3.one);
-                    var arucoTopLeftPosition = originToQRCode.MultiplyPoint(new Vector3(-1.0f * ((2.0f * (size * markerPaddingRatio)) + (size)), 0, 0));
+                    Vector3 arucoTopLeftPosition;
+                    if (markerDetector is ArUcoMarkerDetector)
+                        arucoTopLeftPosition = qrCodeTopLeftPosition;
+                    else
+                    {
+                        var originToQRCode = Matrix4x4.TRS(qrCodeTopLeftPosition, qrCodeRotation, Vector3.one);
+                        arucoTopLeftPosition = originToQRCode.MultiplyPoint(new Vector3(-1.0f * ((2.0f * (size * markerPaddingRatio)) + (size)), 0, 0));
+                    }
                     // We assume that the aruco marker has the same orientation as the qr code marker because they are on the same plane/2d calibration board.
                     var arucoRotation = marker.Value.Rotation;
 
@@ -243,5 +263,13 @@ namespace Microsoft.MixedReality.SpectatorView
             corners.orientation = topLeftOrientation;
             return corners;
         }
+
+#if UNITY_EDITOR
+        private void OnValidate()
+        {
+            FieldHelper.ValidateType<QRCodeMarkerDetector>(markerDetector);
+            FieldHelper.ValidateType<ArUcoMarkerDetector>(markerDetector);
+        }
+#endif
     }
 }

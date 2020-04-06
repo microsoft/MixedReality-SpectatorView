@@ -212,8 +212,8 @@ namespace Microsoft.MixedReality.SpectatorView
         /// <inheritdoc />
         public bool TryGetMarkerSize(int markerId, out float size)
         {
-            size = 0.0f;
-            return false;
+            size = _markerSize;
+            return true;
         }
 
         private Task SetupCameraAsync()
