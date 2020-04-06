@@ -30,13 +30,21 @@ public:
     {
         return cameraInput == nullptr ? 0 : cameraInput->GetCaptureFrameIndex();
     }
-   
-   virtual bool IsCameraCalibrationInformationAvailable() override
+
+    virtual bool IsCameraCalibrationInformationAvailable() override
     {
         return true;
     }
 
-   virtual void GetCameraCalibrationInformation(CameraIntrinsics* calibration) override { cameraInput->GetCameraCalibrationInformation(calibration); }
+    virtual void GetCameraCalibrationInformation(CameraIntrinsics* calibration) override
+    {
+        memset(calibration, 0, sizeof(calibration));
+
+        if (cameraInput != nullptr)
+        {
+            cameraInput->GetCameraCalibrationInformation(calibration);
+        }
+    }
 
     virtual bool IsArUcoMarkerDetectorSupported() override
     {

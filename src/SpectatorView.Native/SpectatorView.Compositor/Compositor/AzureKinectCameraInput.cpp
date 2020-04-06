@@ -177,7 +177,7 @@ void AzureKinectCameraInput::RunCaptureLoop()
         {
         case K4A_WAIT_RESULT_TIMEOUT:
             OutputDebugString(L"Error: Timed out waiting for AzureKinect capture");
-            return;
+            continue;
         case K4A_WAIT_RESULT_FAILED:
             OutputDebugString(L"Error: Failed to capture from AzureKinect");
             return;

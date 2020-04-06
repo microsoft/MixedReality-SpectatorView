@@ -29,19 +29,29 @@ AzureKinectCameraFrame::~AzureKinectCameraFrame()
 
 void AzureKinectCameraFrame::StageImage(AzureKinectImageType imageType, k4a_image_t image)
 {
-    auto stride = k4a_image_get_stride_bytes(image);
-    auto buffer = k4a_image_get_buffer(image);
-    rsize_t height = k4a_image_get_height_pixels(image);
+    std::lock_guard<std::mutex> guard(_statusGuard);
 
-    _imageStrides[(int)imageType] = stride;
-    memcpy_s(_images[(int)imageType], _imageSizes[(int)imageType], buffer, height * stride);
+    if (_status == FrameStatus::WritingColorAndDepth || _status == FrameStatus::WritingBodyMask)
+    {
+        auto stride = k4a_image_get_stride_bytes(image);
+        auto buffer = k4a_image_get_buffer(image);
+        rsize_t height = k4a_image_get_height_pixels(image);
+
+        _imageStrides[(int)imageType] = stride;
+        memcpy_s(_images[(int)imageType], _imageSizes[(int)imageType], buffer, height * stride);
+    }
 }
 
 void AzureKinectCameraFrame::UpdateSRV(AzureKinectImageType imageType, ID3D11Device* device, ID3D11ShaderResourceView* targetView)
 {
-    if (targetView != nullptr)
+    std::lock_guard<std::mutex> guard(_statusGuard);
+
+    if (_status == FrameStatus::Reading)
     {
-        DirectXHelper::UpdateSRV(device, targetView, _images[(int)imageType], _imageStrides[(int)imageType]);
+        if (targetView != nullptr)
+        {
+            DirectXHelper::UpdateSRV(device, targetView, _images[(int)imageType], _imageStrides[(int)imageType]);
+        }
     }
 }
 
