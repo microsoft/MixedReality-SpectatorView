@@ -290,7 +290,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
                             compositionManager.StopRecording();
                         }
                     }
-                
+
                     if (GUILayout.Button("Take Picture"))
                     {
                         compositionManager.TakePicture();
@@ -336,7 +336,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
                         EditorGUILayout.BeginHorizontal();
                         {
                             GUIContent label = new GUIContent("Number of Blur Passes");
-                            compositionManager.TextureManager.numBlurPasses = (int) EditorGUILayout.Slider(
+                            compositionManager.TextureManager.numBlurPasses = (int)EditorGUILayout.Slider(
                                 label,
                                 compositionManager.TextureManager.numBlurPasses, 1, 5);
                         }
@@ -356,7 +356,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
                         EditorGUILayout.BeginHorizontal();
                         {
                             GUIContent label = new GUIContent("Number of Blur Passes");
-                            compositionManager.TextureManager.numBlurPasses = (int) EditorGUILayout.Slider(
+                            compositionManager.TextureManager.numBlurPasses = (int)EditorGUILayout.Slider(
                                 label,
                                 compositionManager.TextureManager.numBlurPasses, 1, 5);
                         }
@@ -536,7 +536,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
                     UpdateStatistics(compositionManager);
 
                     RenderTitle(framerateStatisticsMessage, framerateStatisticsColor);
-                    
+
                     int queuedFrameCount = compositionManager.GetQueuedOutputFrameCount();
                     Color queuedFrameColor = (queuedFrameCount > lowQueuedOutputFrameWarningMark) ? Color.green : Color.red;
                     RenderTitle($"{queuedFrameCount} Queued output frames", queuedFrameColor);
@@ -607,14 +607,12 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
 
         private void InstallAzureKinectBodyTrackingComponents()
         {
-            var rootPath = Path.GetDirectoryName(Application.dataPath.Replace(@"/", @"\"));
             string componentSourceDirectory = null;
 
             var assets = AssetDatabase.FindAssets(Path.GetFileNameWithoutExtension(azureKinectBodyTrackingSdkComponents[0]));
             if (assets.Length == 1)
             {
-                var assetPath = AssetDatabase.GUIDToAssetPath(assets[0]).Replace(@"/", @"\");
-                componentSourceDirectory = Path.GetDirectoryName(Path.Combine(rootPath, assetPath));
+                componentSourceDirectory = Path.GetDirectoryName(Path.GetFullPath(AssetDatabase.GUIDToAssetPath(assets[0])));
             }
             else if (assets.Length == 0)
             {
@@ -629,15 +627,18 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
 
             foreach (var component in azureKinectBodyTrackingSdkComponents)
             {
-                if (!File.Exists(Path.Combine(componentSourceDirectory, component)))
+                var sourcePath = Path.Combine(componentSourceDirectory, component);
+                if (!File.Exists(sourcePath))
                 {
                     UnityEngine.Debug.LogError($"Failed to find component {component}: it is missing from the Unity assets directory {componentSourceDirectory}");
                     return;
                 }
             }
 
-            // Run robocopy to perform a file copy operation in an elevated process that can write to Unity's install directory
-            var arguments = $"\"{componentSourceDirectory}\" \"{AppDomain.CurrentDomain.BaseDirectory}\" {string.Join(" ", azureKinectBodyTrackingSdkComponents)}";
+            // Run robocopy to perform a file copy operation in an elevated process that can write to Unity's install directory.
+            // Use /XC + /XO + /XN to only copy files that don't already exist in the target directory. Unity 2019 began including
+            // some of the CUDA dependencies in its installation.
+            var arguments = $"\"{componentSourceDirectory}\" \"{AppDomain.CurrentDomain.BaseDirectory}\" {string.Join(" ", azureKinectBodyTrackingSdkComponents)} /XC /XO /XN";
             ProcessStartInfo psi = new ProcessStartInfo("robocopy.exe", arguments);
             psi.UseShellExecute = true;
             psi.Verb = "runas";

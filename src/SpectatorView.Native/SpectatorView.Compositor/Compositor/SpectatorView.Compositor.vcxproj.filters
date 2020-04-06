@@ -72,6 +72,12 @@
     <ClInclude Include="..\..\SpectatorView.OpenCV\SharedFiles\DataStructures.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="AzureKinectCameraInput.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AzureKinectCameraFrame.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -108,6 +114,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\SpectatorView.OpenCV\SharedFiles\ArUcoMarkerDetector.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AzureKinectCameraInput.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AzureKinectCameraFrame.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
