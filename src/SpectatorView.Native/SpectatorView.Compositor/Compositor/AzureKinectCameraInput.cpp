@@ -109,7 +109,11 @@ FailedExit:
 AzureKinectCameraInput::~AzureKinectCameraInput()
 {
     _stopRequested = true;
-    _thread->join();
+
+    if (_thread != nullptr)
+    {
+        _thread->join();
+    }
 
 #if defined(INCLUDE_AZUREKINECT_BODYTRACKING)
     if (_bodyIndexThread != nullptr)
