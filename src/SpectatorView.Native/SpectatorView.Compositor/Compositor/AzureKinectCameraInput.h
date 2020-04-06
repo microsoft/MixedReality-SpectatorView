@@ -82,7 +82,6 @@ private:
 
     void ReleaseBodyIndexMap(k4abt_frame_t bodyFrame, k4a_image_t bodyIndexMap);
     void SetBodyMaskBuffer(uint16_t* bodyMaskBuffer, uint8_t* bodyIndexBuffer, int bufferSize);
-    void SetTransformedBodyMaskBuffer(uint16_t* transformedBodyMaskBuffer, int bufferSize);
 
     k4abt_tracker_t _k4abtTracker;
     k4abt_tracker_configuration_t _tracker_config = K4ABT_TRACKER_CONFIG_DEFAULT;
