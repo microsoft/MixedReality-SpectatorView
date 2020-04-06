@@ -26,7 +26,7 @@ namespace Microsoft.MixedReality.SpectatorView
         {
             get
             {
-#if UNITY_EDITOR
+#if UNITY_EDITOR || UNITY_WSA
                 // Suppported only in the editor, for detecting 3 ArUco marker boards
                 return true;
 #else
