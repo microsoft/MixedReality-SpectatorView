@@ -26,9 +26,10 @@ namespace Microsoft.MixedReality.SpectatorView
         {
             get
             {
-#if UNITY_EDITOR || UNITY_WSA
-                // Suppported only in the editor, for detecting 3 ArUco marker boards
+#if UNITY_EDITOR
                 return true;
+#elif UNITY_WSA
+                return Windows.ApplicationModel.Package.Current.Id.Architecture == Windows.System.ProcessorArchitecture.X86;
 #else
                 return false;
 #endif
