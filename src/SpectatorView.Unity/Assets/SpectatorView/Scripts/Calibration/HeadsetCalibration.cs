@@ -150,23 +150,23 @@ namespace Microsoft.MixedReality.SpectatorView
                 float size = 0;
                 if (markerDetector.TryGetMarkerSize(marker.Key, out size))
                 {
-                    var qrCodeTopLeftPosition = CalcTopLeftFromCenter(marker.Value.Position, marker.Value.Rotation, size);
-                    var qrCodeRotation = marker.Value.Rotation;
+                    var markerTopLeftPosition = CalcTopLeftFromCenter(marker.Value.Position, marker.Value.Rotation, size);
+                    var markerRotation = marker.Value.Rotation;
 
                     if (showDebugVisuals)
                     {
                         GameObject qrCodeDebugVisual = null;
                         qrCodeDebugVisuals.TryGetValue(marker.Key, out qrCodeDebugVisual);
-                        qrCodeDebugVisualHelper.CreateOrUpdateVisual(ref qrCodeDebugVisual, qrCodeTopLeftPosition, qrCodeRotation, size * Vector3.one);
+                        qrCodeDebugVisualHelper.CreateOrUpdateVisual(ref qrCodeDebugVisual, markerTopLeftPosition, markerRotation, size * Vector3.one);
                         qrCodeDebugVisuals[marker.Key] = qrCodeDebugVisual;
                     }
 
                     Vector3 arucoTopLeftPosition;
                     if (markerDetector is ArUcoMarkerDetector)
-                        arucoTopLeftPosition = qrCodeTopLeftPosition;
+                        arucoTopLeftPosition = markerTopLeftPosition;
                     else
                     {
-                        var originToQRCode = Matrix4x4.TRS(qrCodeTopLeftPosition, qrCodeRotation, Vector3.one);
+                        var originToQRCode = Matrix4x4.TRS(markerTopLeftPosition, markerRotation, Vector3.one);
                         arucoTopLeftPosition = originToQRCode.MultiplyPoint(new Vector3(-1.0f * ((2.0f * (size * markerPaddingRatio)) + (size)), 0, 0));
                     }
                     // We assume that the aruco marker has the same orientation as the qr code marker because they are on the same plane/2d calibration board.
@@ -182,7 +182,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
                     var markerPair = new MarkerPair();
                     markerPair.id = marker.Key;
-                    markerPair.qrCodeMarkerCorners = CalculateMarkerCorners(qrCodeTopLeftPosition, qrCodeRotation, size);
+                    markerPair.qrCodeMarkerCorners = CalculateMarkerCorners(markerTopLeftPosition, markerRotation, size);
                     markerPair.arucoMarkerCorners = CalculateMarkerCorners(arucoTopLeftPosition, arucoRotation, size);
 
                     lock (markerPairs)
