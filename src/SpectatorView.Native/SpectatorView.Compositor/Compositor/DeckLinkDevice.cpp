@@ -468,8 +468,10 @@ bool DeckLinkDevice::Init(ID3D11ShaderResourceView* colorSRV, ID3D11Texture2D* o
         if (m_deckLink->QueryInterface(IID_IDeckLinkInput, (void**)&m_deckLinkInput) != S_OK)
             return false;
     }
-    if (device == nullptr && outputTexture != nullptr)
+    else if (outputTexture != nullptr)
+    {
         outputTexture->GetDevice(&device);
+    }
 
     if (m_deckLink->QueryInterface(IID_IDeckLinkOutput, (void**)&m_deckLinkOutput) != S_OK)
     {

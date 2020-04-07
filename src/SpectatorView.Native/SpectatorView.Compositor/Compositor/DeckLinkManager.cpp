@@ -87,7 +87,9 @@ HRESULT DeckLinkManager::Initialize(ID3D11ShaderResourceView* colorSRV, ID3D11Sh
                     }
 
                     if (colorSRV != nullptr)
+                    {
                         deckLinkDevice->StartCapture(videoDisplayMode);
+                    }
                     deckLinkDevice->SetupVideoOutputFrame(videoDisplayMode);
                     return S_OK;
                 }

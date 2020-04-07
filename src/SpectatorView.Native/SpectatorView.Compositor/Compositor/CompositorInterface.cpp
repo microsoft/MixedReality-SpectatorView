@@ -219,7 +219,9 @@ void CompositorInterface::UpdateFrameProvider()
         frameProvider->Update(compositeFrameIndex);
     }
     if (outputFrameProvider != nullptr)
+    {
         outputFrameProvider->Update(compositeFrameIndex);
+    }
 }
 
 void CompositorInterface::Update()
