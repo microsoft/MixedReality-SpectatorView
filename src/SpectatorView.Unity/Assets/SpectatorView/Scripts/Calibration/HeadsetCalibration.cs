@@ -92,6 +92,15 @@ namespace Microsoft.MixedReality.SpectatorView
 
         private void OnEnable()
         {
+            if (!(qrCodeMarkerDetector is QRCodeMarkerDetector))
+            {
+                Debug.LogError("HeadsetCalibration is missing a valid QRCodeMarkerDetector");
+            }
+            if (!(arucoCodeMarkerDetector is ArUcoMarkerDetector))
+            {
+                Debug.LogError("HeadsetCalibration is missing a valid ArUcoMarkerDetector");
+            }
+
             var detector = Application.platform == RuntimePlatform.WSAPlayerX86
                 ? arucoCodeMarkerDetector as MonoBehaviour
                 : qrCodeMarkerDetector as MonoBehaviour;
@@ -263,13 +272,5 @@ namespace Microsoft.MixedReality.SpectatorView
             corners.orientation = topLeftOrientation;
             return corners;
         }
-
-#if UNITY_EDITOR
-        private void OnValidate()
-        {
-            FieldHelper.ValidateType<QRCodeMarkerDetector>(markerDetector);
-            FieldHelper.ValidateType<ArUcoMarkerDetector>(markerDetector);
-        }
-#endif
     }
 }
