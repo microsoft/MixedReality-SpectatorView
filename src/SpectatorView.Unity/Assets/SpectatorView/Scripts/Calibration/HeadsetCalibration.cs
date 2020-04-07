@@ -57,7 +57,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
         private IMarkerDetector markerDetector = null;
         private bool markersUpdated = false;
-        private Dictionary<int, Marker> qrCodeMarkers = new Dictionary<int, Marker>();
+        private Dictionary<int, Marker> markers = new Dictionary<int, Marker>();
         private Dictionary<int, GameObject> qrCodeDebugVisuals = new Dictionary<int, GameObject>();
         private Dictionary<int, GameObject> arucoDebugVisuals = new Dictionary<int, GameObject>();
         private readonly float markerPaddingRatio = 34f / (300f - (2f * 34f)); // padding pixels / marker width in pixels - This is based off of the output from CalibrationBoardGenerator.exe
@@ -78,7 +78,7 @@ namespace Microsoft.MixedReality.SpectatorView
             data.headsetData.position = Camera.main.transform.position;
             data.headsetData.rotation = Camera.main.transform.rotation;
             data.markers = new List<MarkerPair>();
-            foreach (var qrCodePair in qrCodeMarkers)
+            foreach (var qrCodePair in markers)
             {
                 if (markerPairs.ContainsKey(qrCodePair.Key))
                 {
@@ -107,14 +107,14 @@ namespace Microsoft.MixedReality.SpectatorView
             detector.gameObject.SetActive(true);
             markerDetector = detector as IMarkerDetector;
 
-            markerDetector.MarkersUpdated += OnQRCodesMarkersUpdated;
+            markerDetector.MarkersUpdated += OnMarkersUpdated;
             markerDetector.StartDetecting();
         }
 
         private void OnDisable()
         {
             markerDetector.StopDetecting();
-            markerDetector.MarkersUpdated -= OnQRCodesMarkersUpdated;
+            markerDetector.MarkersUpdated -= OnMarkersUpdated;
         }
 
         private void Update()
@@ -122,7 +122,7 @@ namespace Microsoft.MixedReality.SpectatorView
             if (markersUpdated)
             {
                 markersUpdated = false;
-                ProcessQRCodeUpdate();
+                ProcessMarkerUpdate();
             }
 
             while (sendQueue.Count > 0)
@@ -134,17 +134,17 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
-        private void OnQRCodesMarkersUpdated(Dictionary<int, Marker> markers)
+        private void OnMarkersUpdated(Dictionary<int, Marker> updatedMarkers)
         {
-            MergeDictionaries(qrCodeMarkers, markers);
+            MergeDictionaries(markers, updatedMarkers);
             markersUpdated = true;
         }
 
-        private void ProcessQRCodeUpdate()
+        private void ProcessMarkerUpdate()
         {
             HashSet<int> updatedMarkerIds = new HashSet<int>();
 
-            foreach (var marker in qrCodeMarkers)
+            foreach (var marker in markers)
             {
                 updatedMarkerIds.Add(marker.Key);
                 float size = 0;
