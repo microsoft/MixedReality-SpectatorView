@@ -202,6 +202,16 @@ PrefabInstance:
       propertyPath: arucoCodeMarkerDetector
       value: 
       objectReference: {fileID: 877813155}
+    - target: {fileID: 1460904458842936431, guid: 69cb88afa41c33e4cbb6993b2b3e54ca,
+        type: 3}
+      propertyPath: calculatedMarkerDebugVisualHelper
+      value: 
+      objectReference: {fileID: 157762655}
+    - target: {fileID: 1460904458842936431, guid: 69cb88afa41c33e4cbb6993b2b3e54ca,
+        type: 3}
+      propertyPath: detectedMarkerDebugVisualHelper
+      value: 
+      objectReference: {fileID: 157762656}
     - target: {fileID: 1460904458944976803, guid: 69cb88afa41c33e4cbb6993b2b3e54ca,
         type: 3}
       propertyPath: m_IsActive
@@ -246,6 +256,30 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6d2fa61057b61944483933d3cb5082f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &157762655 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1460904456985340956, guid: 69cb88afa41c33e4cbb6993b2b3e54ca,
+    type: 3}
+  m_PrefabInstance: {fileID: 157762652}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39ccca3aadb544d4e967cc92a8c721c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &157762656 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1460904457908917380, guid: 69cb88afa41c33e4cbb6993b2b3e54ca,
+    type: 3}
+  m_PrefabInstance: {fileID: 157762652}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39ccca3aadb544d4e967cc92a8c721c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &877813153
