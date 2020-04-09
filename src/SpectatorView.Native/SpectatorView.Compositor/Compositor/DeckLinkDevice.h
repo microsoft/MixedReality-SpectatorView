@@ -84,13 +84,12 @@ private:
 
     ID3D11ShaderResourceView* _colorSRV;
     ID3D11Texture2D* _outputTexture;
-    ID3D11Device* device;
+    ID3D11Device* device = nullptr;
 
     bool _useCPU;
     bool _passthroughOutput;
     BufferedTextureFetch outputTextureBuffer;
 
-    void SetupVideoOutputFrame(BMDDisplayMode videoDisplayMode);
     int lastCompositorFrameIndex = -1;
 
 public:
@@ -99,8 +98,10 @@ public:
 
     bool                                Init(ID3D11ShaderResourceView* colorSRV, ID3D11Texture2D* outputTexture, bool useCPU = false, bool passthroughOutput = false);
     bool                                IsCapturing() { return m_currentlyCapturing; };
+    bool                                IsOutputOnly() { return _colorSRV == nullptr && m_deckLinkOutput != nullptr; }
     bool                                SupportsFormatDetection() { return (m_supportsFormatDetection == TRUE); };
     bool                                StartCapture(BMDDisplayMode videoDisplayMode);
+    void                                SetupVideoOutputFrame(BMDDisplayMode videoDisplayMode);
     void                                StopCapture();
     IDeckLink*                          DeckLinkInstance() { return m_deckLink; }
 
@@ -139,7 +140,8 @@ public:
 
     int GetNumQueuedOutputFrames();
 
-    bool OutputYUV();
+    bool ProvidesYUV();
+    bool ExpectsYUV();
 };
 
 class DeckLinkDeviceDiscovery :  public IDeckLinkDeviceNotificationCallback

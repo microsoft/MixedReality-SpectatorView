@@ -384,6 +384,16 @@ UNITYDLL bool IsFrameProviderSupported(int providerId)
 	return ci->IsFrameProviderSupported((IFrameProvider::ProviderType) providerId);
 }
 
+UNITYDLL bool IsOutputFrameProviderSupported(int providerId)
+{
+	if (ci == nullptr)
+	{
+		ci = new CompositorInterface();
+	}
+
+	return ci->IsOutputFrameProviderSupported((IFrameProvider::ProviderType) providerId);
+}
+
 UNITYDLL bool IsOcclusionSettingSupported(int setting)
 {
     if (ci == nullptr)
@@ -394,7 +404,7 @@ UNITYDLL bool IsOcclusionSettingSupported(int setting)
     return ci->IsOcclusionSettingSupported((IFrameProvider::OcclusionSetting) setting);
 }
 
-UNITYDLL bool InitializeFrameProviderOnDevice(int providerId)
+UNITYDLL bool InitializeFrameProviderOnDevice(int providerId, int outputProviderId)
 {
     if (g_outputTexture == nullptr ||
         g_UnityColorSRV == nullptr ||
@@ -414,6 +424,7 @@ UNITYDLL bool InitializeFrameProviderOnDevice(int providerId)
     }
 
     ci->SetFrameProvider((IFrameProvider::ProviderType) providerId);
+    ci->SetOutputFrameProvider((IFrameProvider::ProviderType) outputProviderId);
     isInitialized = ci->Initialize(g_pD3D11Device, g_UnityColorSRV, g_UnityDepthSRV, g_UnityBodySRV, g_outputTexture);
 
     return isInitialized;
@@ -527,14 +538,24 @@ UNITYDLL void Reset()
     LeaveCriticalSection(&lock);
 }
 
-UNITYDLL bool OutputYUV()
+UNITYDLL bool ProvidesYUV()
 {
     if (ci == nullptr)
     {
         return false;
     }
 
-    return ci->OutputYUV();
+    return ci->ProvidesYUV();
+}
+
+UNITYDLL bool ExpectsYUV()
+{
+    if (ci == nullptr)
+    {
+        return false;
+    }
+
+    return ci->ExpectsYUV();
 }
 
 UNITYDLL LONGLONG GetCurrentUnityTime()

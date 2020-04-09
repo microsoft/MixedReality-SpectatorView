@@ -86,7 +86,11 @@ HRESULT DeckLinkManager::Initialize(ID3D11ShaderResourceView* colorSRV, ID3D11Sh
                         videoDisplayMode = bmdMode4kDCI2398;
                     }
 
-                    deckLinkDevice->StartCapture(videoDisplayMode);
+                    if (colorSRV != nullptr)
+                    {
+                        deckLinkDevice->StartCapture(videoDisplayMode);
+                    }
+                    deckLinkDevice->SetupVideoOutputFrame(videoDisplayMode);
                     return S_OK;
                 }
             }
@@ -106,14 +110,25 @@ bool DeckLinkManager::SupportsOutput()
     return false;
 }
 
-bool DeckLinkManager::OutputYUV()
+bool DeckLinkManager::ProvidesYUV()
 {
     if (!IsEnabled())
     {
         return false;
     }
 
-    return deckLinkDevice->OutputYUV();
+    return deckLinkDevice->ProvidesYUV();
+}
+
+
+bool DeckLinkManager::ExpectsYUV()
+{
+    if (!IsEnabled())
+    {
+        return false;
+    }
+
+    return deckLinkDevice->ExpectsYUV();
 }
 
 LONGLONG DeckLinkManager::GetTimestamp(int frame)
@@ -175,7 +190,7 @@ bool DeckLinkManager::IsEnabled()
         return false;
     }
     
-    return deckLinkDevice->IsCapturing();
+    return deckLinkDevice->IsCapturing() || deckLinkDevice->IsOutputOnly();
 }
 
 void DeckLinkManager::Dispose()

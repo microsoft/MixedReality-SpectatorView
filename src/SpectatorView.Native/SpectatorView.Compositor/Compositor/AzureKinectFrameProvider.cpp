@@ -79,7 +79,7 @@ void AzureKinectFrameProvider::Dispose()
     cameraInput = nullptr;
 }
 
-bool AzureKinectFrameProvider::OutputYUV()
+bool AzureKinectFrameProvider::ProvidesYUV()
 {
     return false;
 }

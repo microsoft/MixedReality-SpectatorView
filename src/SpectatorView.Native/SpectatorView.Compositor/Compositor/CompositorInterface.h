@@ -22,6 +22,7 @@ class CompositorInterface
 {
 private:
     IFrameProvider* frameProvider;
+    IFrameProvider* outputFrameProvider = nullptr;
     float alpha = 0.9f;
 
     VideoEncoder* videoEncoder1080p = nullptr;
@@ -42,7 +43,10 @@ private:
 public:
     DLLEXPORT CompositorInterface();
     DLLEXPORT void SetFrameProvider(IFrameProvider::ProviderType type);
+    DLLEXPORT void SetOutputFrameProvider(IFrameProvider::ProviderType type);
+    DLLEXPORT void DisableOutputFrameProvider();
 	DLLEXPORT bool IsFrameProviderSupported(IFrameProvider::ProviderType providerType);
+    DLLEXPORT bool IsOutputFrameProviderSupported(IFrameProvider::ProviderType providerType);
     DLLEXPORT bool IsOcclusionSettingSupported(IFrameProvider::OcclusionSetting setting);
     DLLEXPORT bool IsCameraCalibrationInformationAvailable();
     DLLEXPORT void GetCameraCalibrationInformation(CameraIntrinsics* cameraIntrinsics);
@@ -90,7 +94,8 @@ public:
         return alpha;
     }
 
-    DLLEXPORT bool OutputYUV();
+    DLLEXPORT bool ProvidesYUV();
+    DLLEXPORT bool ExpectsYUV();
 
 public:
     int compositeFrameIndex;

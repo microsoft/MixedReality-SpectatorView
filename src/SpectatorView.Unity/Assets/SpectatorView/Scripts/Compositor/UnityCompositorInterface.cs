@@ -140,7 +140,10 @@ namespace Microsoft.MixedReality.SpectatorView
         public static extern bool IsRecording();
 
         [DllImport(CompositorPluginDll)]
-        public static extern bool OutputYUV();
+        public static extern bool ProvidesYUV();
+
+        [DllImport(CompositorPluginDll)]
+        public static extern bool ExpectsYUV();
 
         [DllImport(CompositorPluginDll)]
         public static extern bool QueueingHoloFrames();
@@ -167,10 +170,13 @@ namespace Microsoft.MixedReality.SpectatorView
         public static extern bool IsFrameProviderSupported([MarshalAs(UnmanagedType.I4)] FrameProviderDeviceType providerId);
 
         [DllImport(CompositorPluginDll)]
+        public static extern bool IsOutputFrameProviderSupported([MarshalAs(UnmanagedType.I4)] FrameProviderDeviceType providerId);
+
+        [DllImport(CompositorPluginDll)]
         public static extern bool IsOcclusionSettingSupported([MarshalAs(UnmanagedType.I4)] OcclusionSetting setting);
 
         [DllImport(CompositorPluginDll)]
-        public static extern bool InitializeFrameProviderOnDevice([MarshalAs(UnmanagedType.I4)] FrameProviderDeviceType providerId);
+        public static extern bool InitializeFrameProviderOnDevice([MarshalAs(UnmanagedType.I4)] FrameProviderDeviceType providerId, [MarshalAs(UnmanagedType.I4)] FrameProviderDeviceType outputProviderId);
 
         [DllImport(CompositorPluginDll)]
         public static extern void Reset();

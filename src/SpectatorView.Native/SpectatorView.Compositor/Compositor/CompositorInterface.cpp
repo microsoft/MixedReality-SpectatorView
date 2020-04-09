@@ -19,6 +19,7 @@ CompositorInterface::CompositorInterface()
 
 void CompositorInterface::SetFrameProvider(IFrameProvider::ProviderType type)
 {
+    DisableOutputFrameProvider();
     if (frameProvider)
     {
         if (frameProvider->GetProviderType() == type)
@@ -48,6 +49,32 @@ void CompositorInterface::SetFrameProvider(IFrameProvider::ProviderType type)
 #endif
 }
 
+void CompositorInterface::SetOutputFrameProvider(IFrameProvider::ProviderType type)
+{
+    DisableOutputFrameProvider();
+
+    // There is no need for a second instance of the same provider type
+    IFrameProvider::ProviderType inputProviderType = IFrameProvider::ProviderType::None;
+    if (frameProvider != nullptr)
+        inputProviderType = frameProvider->GetProviderType();
+    if (inputProviderType == type)
+        return;
+
+#if defined (INCLUDE_BLACKMAGIC)
+    if (type == IFrameProvider::ProviderType::BlackMagic)
+        outputFrameProvider = new DeckLinkManager();
+#endif
+}
+
+void CompositorInterface::DisableOutputFrameProvider()
+{
+    if (outputFrameProvider == nullptr)
+        return;
+    outputFrameProvider->Dispose();
+    delete outputFrameProvider;
+    outputFrameProvider = nullptr;
+}
+
 bool CompositorInterface::IsFrameProviderSupported(IFrameProvider::ProviderType providerType)
 {
 #if defined(INCLUDE_ELGATO)
@@ -68,6 +95,17 @@ bool CompositorInterface::IsFrameProviderSupported(IFrameProvider::ProviderType 
 #endif
 
 	return false;
+}
+
+bool CompositorInterface::IsOutputFrameProviderSupported(IFrameProvider::ProviderType providerType)
+{
+#if defined(INCLUDE_BLACKMAGIC)
+    if (providerType == IFrameProvider::ProviderType::BlackMagic)
+        return true;
+#endif
+    if (providerType == IFrameProvider::ProviderType::None)
+        return true;
+    return false;
 }
 
 bool CompositorInterface::IsOcclusionSettingSupported(IFrameProvider::OcclusionSetting setting)
@@ -116,7 +154,14 @@ bool CompositorInterface::Initialize(ID3D11Device* device, ID3D11ShaderResourceV
 
     _device = device;
 
-    return SUCCEEDED(frameProvider->Initialize(colorSRV, depthSRV, bodySRV, outputTexture));
+    if (outputFrameProvider == nullptr)
+        return SUCCEEDED(frameProvider->Initialize(colorSRV, depthSRV, bodySRV, outputTexture));
+    else
+    {
+        return
+            SUCCEEDED(frameProvider->Initialize(colorSRV, depthSRV, bodySRV, nullptr)) &&
+            SUCCEEDED(outputFrameProvider->Initialize(nullptr, nullptr, nullptr, outputTexture));
+    }
 }
 
 bool CompositorInterface::IsArUcoMarkerDetectorSupported()
@@ -173,6 +218,10 @@ void CompositorInterface::UpdateFrameProvider()
     {
         frameProvider->Update(compositeFrameIndex);
     }
+    if (outputFrameProvider != nullptr)
+    {
+        outputFrameProvider->Update(compositeFrameIndex);
+    }
 }
 
 void CompositorInterface::Update()
@@ -189,6 +238,7 @@ void CompositorInterface::StopFrameProvider()
     {
         frameProvider->Dispose();
     }
+    DisableOutputFrameProvider();
 }
 
 LONGLONG CompositorInterface::GetTimestamp(int frame)
@@ -233,6 +283,9 @@ int CompositorInterface::GetPixelChange(int frame)
 
 int CompositorInterface::GetNumQueuedOutputFrames()
 {
+    if (outputFrameProvider != nullptr)
+        return outputFrameProvider->GetNumQueuedOutputFrames();
+
     if (frameProvider != nullptr)
     {
         return frameProvider->GetNumQueuedOutputFrames();
@@ -369,12 +422,22 @@ void CompositorInterface::RecordAudioFrameAsync(BYTE* audioFrame, LONGLONG audio
     activeVideoEncoder->QueueAudioFrame(audioFrame, audioSize, sampleTime);
 }
 
-bool CompositorInterface::OutputYUV()
+bool CompositorInterface::ProvidesYUV()
 {
     if (frameProvider == nullptr)
     {
         return false;
     }
 
-    return frameProvider->OutputYUV();
+    return frameProvider->ProvidesYUV();
+}
+
+bool CompositorInterface::ExpectsYUV()
+{
+    if (outputFrameProvider != nullptr)
+        return outputFrameProvider->ExpectsYUV();
+    if (frameProvider != nullptr)
+        return frameProvider->ExpectsYUV();
+
+    return false;
 }

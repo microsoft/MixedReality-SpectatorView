@@ -24,7 +24,7 @@ public:
     virtual bool IsEnabled() override;
     virtual bool SupportsOutput() override;
     virtual void Dispose() override;
-    virtual bool OutputYUV() override;
+    virtual bool ProvidesYUV() override;
 
     virtual int GetCaptureFrameIndex() override
     {
