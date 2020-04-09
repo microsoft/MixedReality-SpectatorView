@@ -348,9 +348,6 @@ void AzureKinectCameraInput::RunBodyIndexLoop()
 
             bodyMaskBuffer = reinterpret_cast<uint16_t*>(k4a_image_get_buffer(_transformedBodyMaskImage));
 
-            // Set transformed body mask buffer to 1 where bodies are not recognized  
-            SetTransformedBodyMaskBuffer(bodyMaskBuffer, height * width);
-
             // Stage the body mask image, and then end the WritingBodyMask state.
             // This will transition the frame to the Staged state.
             int frameIndex = _currentBodyMaskFrameIndex % MAX_NUM_CACHED_BUFFERS;
@@ -387,17 +384,6 @@ void AzureKinectCameraInput::SetBodyMaskBuffer(uint16_t* bodyMaskBuffer, uint8_t
         else
         {
             bodyMaskBuffer[i] = 0;
-        }
-    }
-}
-
-void AzureKinectCameraInput::SetTransformedBodyMaskBuffer(uint16_t* transformedBodyMaskBuffer, int bufferSize)
-{
-    for (int i = 0; i < bufferSize; i++)
-    {
-        if (transformedBodyMaskBuffer[i] > 0)
-        {
-            transformedBodyMaskBuffer[i] = 1;
         }
     }
 }
