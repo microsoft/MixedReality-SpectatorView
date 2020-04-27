@@ -1333,7 +1333,7 @@ namespace Microsoft.MixedReality.PhotoCapture
             }
         }
 
-        private CameraIntrinsics ConvertIntrinsics(Windows.Media.Devices.Core.CameraIntrinsics mediaFrameIntrinsics)
+        private CameraIntrinsics ConvertIntrinsics(global::Windows.Media.Devices.Core.CameraIntrinsics mediaFrameIntrinsics)
         {
             CameraIntrinsics intrinsics = null;
 
