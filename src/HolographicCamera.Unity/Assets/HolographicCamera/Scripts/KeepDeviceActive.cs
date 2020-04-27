@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+
+using UnityEngine;
 
 #if UNITY_WSA && WINDOWS_UWP
     using System;
