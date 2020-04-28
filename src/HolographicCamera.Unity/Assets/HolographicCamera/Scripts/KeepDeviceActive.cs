@@ -8,67 +8,68 @@ using UnityEngine;
     using Windows.System.Display;
 #endif
 
-public class KeepDeviceActive : MonoBehaviour
+namespace Microsoft.MixedReality.SpectatorView
 {
-#if UNITY_WSA && WINDOWS_UWP
-    private static DisplayRequest displayRequest;
-#endif
-
-    private void Start()
-    {
-        CreateDisplayRequest();
-    }
-
-    private void OnDestroy()
+    /// <summary>
+    /// This class creates a UWP/WSA DisplayRequest in order to prevent Windows devices from entering inactive states.
+    /// For Holographic Camera, this functionality allows the HoloLens device to remain on when it is mounted to the camera.
+    /// Without this class, the HoloLens would enter an inactive state due to a lack of motion, which in turn can break filming.
+    /// </summary>
+    public class KeepDeviceActive : MonoBehaviour
     {
 #if UNITY_WSA && WINDOWS_UWP
-        if (displayRequest != null)
+        private static DisplayRequest displayRequest;
+
+        private void Start()
         {
-            try
-            {
-                displayRequest.RequestRelease();
-                Debug.Log("Display request released.");
-            }
-            catch (Exception e)
-            {
-                Debug.LogError($"Error releasing display request: {e.Message}");
-            }
+            CreateDisplayRequest();
         }
-#endif
-    }
 
-    private void CreateDisplayRequest()
-    {
-#if UNITY_WSA && WINDOWS_UWP
-        UnityEngine.WSA.Application.InvokeOnUIThread(() =>
+        private void OnDestroy()
         {
-            if (displayRequest == null)
+            UnityEngine.WSA.Application.InvokeOnUIThread(() =>
             {
-                try
+                if (displayRequest != null)
                 {
-                    displayRequest = new DisplayRequest();
-                }
-                catch (Exception e)
-                {
-                    Debug.LogError($"Error creating display request: {e.Message}");
-                }
-            }
+                    try
+                    {
+                        displayRequest.RequestRelease();
+                        Debug.Log("Display request released.");
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.LogError($"Error releasing display request: {e.Message}");
+                    }
 
-            if (displayRequest != null)
+                    displayRequest = null;
+                }
+            }, true);
+        }
+
+        private void CreateDisplayRequest()
+        {
+            UnityEngine.WSA.Application.InvokeOnUIThread(() =>
             {
-                try
+                if (displayRequest == null)
                 {
-                        // This call activates a display-required request. If successful,  
-                        // the screen is guaranteed not to turn off automatically due to user inactivity. 
-                        displayRequest.RequestActive();
-                    Debug.Log("Display request activated. Device won't go inactive until closing this scene.");
+                    try
+                    {
+                        displayRequest = new DisplayRequest();
+                        if (displayRequest != null)
+                        {
+                            // This call activates a display-required request. If successful,  
+                            // the screen is guaranteed not to turn off automatically due to user inactivity. 
+                            displayRequest.RequestActive();
+                            Debug.Log("Display request activated. Device won't go inactive until closing this scene.");
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.LogError($"Error creating display request: {e.Message}");
+                    }
                 }
-                catch (Exception e)
-                {
-                    Debug.LogError($"Display request failed: {e.Message}");
-                }
-            }
-        }, true);
+            }, true);
+        }
 #endif
     }
 }
