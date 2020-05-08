@@ -35,15 +35,15 @@ AzureKinectCameraInput::AzureKinectCameraInput(k4a_depth_mode_t depthMode, bool 
     , _k4abtTracker(nullptr)
 #endif
 {
+    for (int i = 0; i < MAX_NUM_CACHED_BUFFERS; i++)
+    {
+        _cameraFrames[i] = new AzureKinectCameraFrame(captureDepth, captureBodyMask);
+    }
+
     if (K4A_RESULT_SUCCEEDED != k4a_device_open(K4A_DEVICE_DEFAULT, &_k4aDevice))
     {
         OutputDebugString(L"Failed to open AzureKinect device");
         goto FailedExit;
-    }
-
-    for (int i = 0; i < MAX_NUM_CACHED_BUFFERS; i++)
-    {
-        _cameraFrames[i] = new AzureKinectCameraFrame(captureDepth, captureBodyMask);
     }
 
     _config.color_format = K4A_IMAGE_FORMAT_COLOR_BGRA32;
