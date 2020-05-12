@@ -12,10 +12,11 @@ function DownloadNuGetPackage
   $zipOutputFolder = "$IntermediateFolder\$PackageName.$Version"
 
   $url = "https://www.nuget.org/api/v2/package/$PackageName/$Version"
-  [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-  $wc = New-Object System.Net.WebClient
-  Write-Host "Downloading $nugetFile from $url"
-  $wc.DownloadFile($url, $nugetFile)
+  # [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+  # $wc = New-Object System.Net.WebClient
+  # Write-Host "Downloading $nugetFile from $url"
+  # $wc.DownloadFile($url, $nugetFile)
+  Invoke-WebRequest -Uri $url -OutFile $nugetFile
 
   if (Test-Path -Path $nugetFile)
   {
