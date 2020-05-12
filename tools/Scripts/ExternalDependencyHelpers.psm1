@@ -33,18 +33,17 @@ function DownloadNuGetPackage
 
 function DownloadQRCodePlugin
 {
+  Write-Output "Downloading QRCode Dependencies for HoloLens"
   $mainFolder = "$PSScriptRoot\..\..\external\MixedReality-QRCodePlugin\"
   $contentFolder = "$mainFolder\UnityFiles\"
 
   Remove-Item -Path "$mainFolder\*Microsoft.*" -Recurse
   if (Test-Path $contentFolder)
   {
-    Remove-Item -Path "$contentFolder*" -Recurse
+    Remove-Item -Path "$contentFolder" -Recurse
   }
-  else
-  {
-    New-Item -ItemType Directory -Force -Path $contentFolder
-  }
+
+  New-Item -ItemType Directory -Force -Path $contentFolder
 
   DownloadNuGetPackage -PackageName "Microsoft.MixedReality.QR" -Version "0.5.2100" -IntermediateFolder $mainFolder -OutputFolder "$contentFolder"
   DownloadNuGetPackage -PackageName "Microsoft.VCRTForwarders" -Version "140.1.0.5" -IntermediateFolder $mainFolder -OutputFolder "$contentFolder"
