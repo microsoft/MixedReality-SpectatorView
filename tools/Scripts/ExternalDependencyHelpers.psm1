@@ -14,20 +14,29 @@ function DownloadNuGetPackage
   $url = "https://www.nuget.org/api/v2/package/$PackageName/$Version"
   [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
   $wc = New-Object System.Net.WebClient
+  Write-Host "Downloading $nugetFile from $url"
   $wc.DownloadFile($url, $nugetFile)
-  Copy-Item -Path $nugetFile -Destination $zipFile -Force
-  Expand-Archive -Path $zipFile -DestinationPath $zipOutputFolder -Force
 
-  if (Test-Path -Path "$zipOutputFolder\Unity")
+  if (Test-Path -Path $nugetFile)
   {
-    New-Item -Path "$OutputFolder\$PackageName.$Version\Unity" -ItemType Directory
-    Copy-Item -Path "$zipOutputFolder\Unity\*" -Destination "$OutputFolder\$PackageName.$Version\" -Recurse
+    Copy-Item -Path $nugetFile -Destination $zipFile -Force
+    Expand-Archive -Path $zipFile -DestinationPath $zipOutputFolder -Force
+  
+    if (Test-Path -Path "$zipOutputFolder\Unity")
+    {
+      New-Item -Path "$OutputFolder\$PackageName.$Version\Unity" -ItemType Directory
+      Copy-Item -Path "$zipOutputFolder\Unity\*" -Destination "$OutputFolder\$PackageName.$Version\" -Recurse
+    }
+  
+    if (Test-Path -Path "$zipOutputFolder\lib\unity")
+    {
+      New-Item -Path "$OutputFolder\$PackageName.$Version\lib\net46" -ItemType Directory
+      Copy-Item -Path "$zipOutputFolder\lib\unity\*" -Destination "$OutputFolder\$PackageName.$Version\" -Recurse
+    }
   }
-
-  if (Test-Path -Path "$zipOutputFolder\lib\unity")
+  else
   {
-    New-Item -Path "$OutputFolder\$PackageName.$Version\lib\net46" -ItemType Directory
-    Copy-Item -Path "$zipOutputFolder\lib\unity\*" -Destination "$OutputFolder\$PackageName.$Version\" -Recurse
+    Write-Error "Failed to obtain $nugetFile from $url"
   }
 }
 
