@@ -120,32 +120,46 @@ function SetupDependencyRepoBuildLocal
 
   DownloadQRCodePlugin
 
-  $BlackMagicPath = "$PSScriptRoot\..\..\..\external\Blackmagic DeckLink SDK 10.9.11"
-  if (!(Test-Path $BlackMagicPath))
-  {
-    Write-Warning -message "Blackmagic decklink resources weren't found at $BlackMagicPath, Blackmagic decklink filming won't be included in the build."
-  }
+  $DependenciesPropsFile = "$PSScriptRoot\..\..\..\src\SpectatorView.Native\SpectatorView.Compositor\dependencies.props"
 
-  $AzureSDKPath = "C:\Program Files\Azure Kinect SDK v1.3.0"
-  if (!(Test-Path $AzureSDKPath))
-  {
-    Write-Warning -message "Azure Kinect SDK wasn't found at $AzureSDKPath, Azure Kinect filming won't be included in the build."
+  if (Test-Path -Path $DependenciesPropsFile -PathType Leaf) {
+    [xml]$DependenciesPropsContent = Get-Content $DependenciesPropsFile
+
+    $SolutionDirVariable = "`$(SolutionDir)"
+    $SolutionDir = "$PSScriptRoot\..\..\..\src\SpectatorView.Native\"
+    $AzureKinectSDKFolder = $DependenciesPropsContent.Project.PropertyGroup.AzureKinectSDK.replace($SolutionDirVariable, $SolutionDir)
+
+    $BlackMagicPath = "$PSScriptRoot\..\..\..\external\Blackmagic DeckLink SDK 10.9.11"
+    if (!(Test-Path $BlackMagicPath))
+    {
+      Write-Warning -message "Blackmagic decklink resources weren't found at $BlackMagicPath, default paths for Blackmagic decklink filming won't resolve. If you have the SDK installed, update the path specified in src\SpectatorView.Native\SpectatorView.Compositor\dependencies.props."
+    }
+
+    $AzureSDKPath = "C:\Program Files\Azure Kinect SDK v1.3.0"
+    if (!(Test-Path $AzureSDKPath))
+    {
+      Write-Warning -message "Azure Kinect SDK wasn't found at $AzureSDKPath, default paths for Azure Kinect filming won't resolve.  If you have the SDK installed, update the path specified in src\SpectatorView.Native\SpectatorView.Compositor\dependencies.props."
+    }
+    else
+    {
+      New-Item -ItemType Directory -Force -Path "$PSScriptRoot\..\..\..\external\Azure Kinect SDK v1.3.0"
+      Copy-Item -Recurse -Path "C:\Program Files\Azure Kinect SDK v1.3.0\*" -Destination "$PSScriptRoot\..\..\..\external\Azure Kinect SDK v1.3.0" -Force
+    }
+
+    $AzureBodyTrackingSDKExpectedPath = "C:\Program Files\Azure Kinect Body Tracking SDK"
+    if (!(Test-Path $AzureBodyTrackingSDKExpectedPath))
+    {
+      Write-Warning -message "Azure Kinect Body Tracking SDK wasn't found at $AzureBodyTrackingSDKExpectedPath, default paths for Azure Kinect Body Tracking filming  won't resolve. If you have the SDK installed, update the path specified in src\SpectatorView.Native\SpectatorView.Compositor\dependencies.props."
+    }
+    else
+    {
+      New-Item -ItemType Directory -Force -Path "$PSScriptRoot\..\..\..\external\Azure Kinect Body Tracking SDK"
+      Copy-Item -Recurse -Path "$AzureBodyTrackingSDKExpectedPath\*" -Destination "$PSScriptRoot\..\..\..\external\Azure Kinect Body Tracking SDK" -Force 
+    }
   }
   else
   {
-    New-Item -ItemType Directory -Force -Path "$PSScriptRoot\..\..\..\external\Azure Kinect SDK v1.3.0"
-    Copy-Item -Recurse -Path "C:\Program Files\Azure Kinect SDK v1.3.0\*" -Destination "$PSScriptRoot\..\..\..\external\Azure Kinect SDK v1.3.0" -Force
-  }
-
-  $AzureBodyTrackingSDKExpectedPath = "C:\Program Files\Azure Kinect Body Tracking SDK"
-  if (!(Test-Path $AzureBodyTrackingSDKExpectedPath))
-  {
-    Write-Warning -message "Azure Kinect Body Tracking SDK wasn't found at $AzureBodyTrackingSDKExpectedPath, Azure Kinect Body Tracking filming  won't be included in the build."
-  }
-  else
-  {
-    New-Item -ItemType Directory -Force -Path "$PSScriptRoot\..\..\..\external\Azure Kinect Body Tracking SDK"
-    Copy-Item -Recurse -Path "$AzureBodyTrackingSDKExpectedPath\*" -Destination "$PSScriptRoot\..\..\..\external\Azure Kinect Body Tracking SDK" -Force 
+    Write-Error "Failed to locate src\SpectatorView.Native\SpectatorView.Compositor\dependencies.props. Native resources have not been validated"
   }
 
   $Succeeded.Value = $?
