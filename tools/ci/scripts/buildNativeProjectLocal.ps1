@@ -1,7 +1,7 @@
 param(
     $MSBuild,
     [switch]$ForceRebuild,
-    [Parameter(Mandatory=$true)][ref]$Succeeded
+    [ref]$LocalBuildSucceeded
 )
 
 $MSBuildPath = "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\amd64\MSBuild.exe"
@@ -14,14 +14,14 @@ elseif (!$MSBuild)
 {
     Write-Error Unable to locate MSBuild.exe
     Write-Host "You can specify a -MSBuild variable specifying the path for MSBuild.exe if it isn't found at $MSBuildPath"
-    $Succeeded.Value = $false
+    $LocalBuildSucceeded.Value = $false
     exit 1
 }
 
 if (!(Get-Command "nuget"))
 {
     Write-Error "NuGet.exe does not seem to be installed as a command on this computer."
-    $Succeeded.Value = $false
+    $LocalBuildSucceeded.Value = $false
     exit 1
 }
 
@@ -87,10 +87,9 @@ Write-Host "`nIncluded Compositor Components:"
 Write-Host "    Blackmagic Decklink:            " (Test-Path "$PSScriptRoot\..\..\..\external\Blackmagic DeckLink SDK 10.9.11")
 Write-Host "    Elgato:                         " (Test-Path "$PSScriptRoot\..\..\..\external\gamecapture")
 Write-Host "    Azure Kinect SDK:               " (Test-Path "$PSScriptRoot\..\..\..\external\Azure Kinect SDK v1.3.0")
-Write-Host "    Azure Kinect Body Tracking SDK: " (Test-Path "$PSScriptRoot\..\..\..\external\Azure Kinect Body Tracking SDK 1.0.0")
+Write-Host "    Azure Kinect Body Tracking SDK: " (Test-Path "$PSScriptRoot\..\..\..\external\Azure Kinect Body Tracking SDK")
 
 $success = ($SetupResult -eq $true) -And ($86Result -eq $true) -And ($64Result -eq $true) -And ($ARMResult -eq $true) -And ($CopyResult -eq $true)
-$Succeeded.Value = $success
+$LocalBuildSucceeded.Value = $success
 
-Write-Host "`nBuild Succeeded:" $Succeeded.Value
-exit $success
+Write-Host "`nBuild Succeeded:" $LocalBuildSucceeded.Value

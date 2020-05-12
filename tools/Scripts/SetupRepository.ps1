@@ -1,14 +1,25 @@
 param(
-    [switch] $NoDownloads
+    [switch] $NoDownloads,
+    [switch] $HardCopySymbolicLinks
 )
 
 Import-Module "$PSScriptRoot\SetupRepositoryFunc.psm1"
 
 $repoSetupSucceeded = $false
-if ($NoDownloads)
+if ($NoDownloads -And $HardCopySymbolicLinks)
+{
+    Write-Host "Running setup with no downloads and hard copying of symbolic links"
+    SetupRepository -NoDownloads -HardCopySymbolicLinks -NoBuilds -Succeeded ([ref]$repoSetupSucceeded)
+}
+elseif ($NoDownloads)
 {
     Write-Host "Running setup with no downloads"
     SetupRepository -NoDownloads -NoBuilds -Succeeded ([ref]$repoSetupSucceeded)
+}
+elseif ($HardCopySymbolicLinks)
+{
+    Write-Host "Running setup with hard copying of symbolic links"
+    SetupRepository -HardCopySymbolicLinks -NoBuilds -Succeeded ([ref]$repoSetupSucceeded)
 }
 else
 {

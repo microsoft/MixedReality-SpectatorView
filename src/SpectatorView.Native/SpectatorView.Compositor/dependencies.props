@@ -12,7 +12,7 @@
     <AzureKinectSDK>$(SolutionDir)\..\..\external\Azure Kinect SDK v1.3.0</AzureKinectSDK>
 
     <!-- From: https://docs.microsoft.com/en-us/azure/kinect-dk/body-sdk-download -->
-    <AzureKinectBodyTrackingSDK>$(SolutionDir)\..\..\external\Azure Kinect Body Tracking SDK 1.0.0</AzureKinectBodyTrackingSDK>
+    <AzureKinectBodyTrackingSDK>$(SolutionDir)\..\..\external\Azure Kinect Body Tracking SDK</AzureKinectBodyTrackingSDK>
     
     <AzureKinectIncludeDirectory>$(AzureKinectSDK)\sdk\include</AzureKinectIncludeDirectory>
     <AzureKinectLibraryDirectory>$(AzureKinectSDK)\sdk\windows-desktop\amd64\release\lib</AzureKinectLibraryDirectory>

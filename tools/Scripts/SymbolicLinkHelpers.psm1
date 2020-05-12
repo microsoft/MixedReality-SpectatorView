@@ -75,3 +75,43 @@ Function FixSymbolicLinksForDirectory {
 	git status --porcelain | Restore-SymbolicLinkFromTypeChange
     }
 }
+
+Function HardCopySymbolicLink {
+    [CmdletBinding()]
+    Param(
+        [Parameter(ValueFromPipeline)]$file
+    )
+
+    Process {
+        $fileContent = $file.Target
+        Write-Output "Copying content from $fileContent to "$file.FullName
+
+        $currDir = Get-Location
+        $fileDir = Split-Path $file.FullName
+        $fileName = Split-Path $file.FullName -Leaf
+
+        Set-Location $fileDir
+        (Get-Item $file).Delete()
+        New-Item -ItemType Directory -Force -Path $fileName
+        Copy-Item -Path "$fileContent\*" -Destination $fileName -Recurse
+
+        Set-Location $currDir
+    }
+}
+
+Function HardCopySymbolicLinksForDirectory {
+    Param(
+      $Directory
+    )
+
+    Process {
+	# If any links were created to the submodules but were broken,
+	# restore those symlinks now that the submodules are cloned.
+    Write-Output "Hard copying symbolic links for the following directory: $Directory"
+    $Directory | dir -Recurse | ?{$_.LinkType -eq "SymbolicLink" } | HardCopySymbolicLink
+
+	# If any links were created before the repository was configured to use
+	# symlinks, those links need to be restored.
+	git status --porcelain | Restore-SymbolicLinkFromTypeChange
+    }
+}

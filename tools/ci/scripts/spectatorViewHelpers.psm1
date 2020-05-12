@@ -137,15 +137,15 @@ function SetupDependencyRepoBuildLocal
     Copy-Item -Recurse -Path "C:\Program Files\Azure Kinect SDK v1.3.0\*" -Destination "$PSScriptRoot\..\..\..\external\Azure Kinect SDK v1.3.0" -Force
   }
 
-  $AzureBodyTrackingSDKExpectedPath = "C:\Program Files\Azure Kinect Body Tracking SDK 1.0.0"
+  $AzureBodyTrackingSDKExpectedPath = "C:\Program Files\Azure Kinect Body Tracking SDK"
   if (!(Test-Path $AzureBodyTrackingSDKExpectedPath))
   {
     Write-Warning -message "Azure Kinect Body Tracking SDK wasn't found at $AzureBodyTrackingSDKExpectedPath, Azure Kinect Body Tracking filming  won't be included in the build."
   }
   else
   {
-    New-Item -ItemType Directory -Force -Path "$PSScriptRoot\..\..\..\external\Azure Kinect Body Tracking SDK 1.0.0"
-    Copy-Item -Recurse -Path "$AzureBodyTrackingSDKExpectedPath\*" -Destination "$PSScriptRoot\..\..\..\external\Azure Kinect Body Tracking SDK 1.0.0" -Force 
+    New-Item -ItemType Directory -Force -Path "$PSScriptRoot\..\..\..\external\Azure Kinect Body Tracking SDK"
+    Copy-Item -Recurse -Path "$AzureBodyTrackingSDKExpectedPath\*" -Destination "$PSScriptRoot\..\..\..\external\Azure Kinect Body Tracking SDK" -Force 
   }
 
   $Succeeded.Value = $?
