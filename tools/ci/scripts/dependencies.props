@@ -2,18 +2,17 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="dependencies.user.props" Condition="Exists('dependencies.user.props')"/>
   <ImportGroup Label="PropertySheets" />
-  <!-- Note: this script is updated when running local build automation. Update dependencies.props in the tools\ci\scripts\ directory as needed. -->
   <PropertyGroup Label="UserMacros">
     <!-- From: https://www.blackmagicdesign.com/support -->
-    <DeckLink_inc>$(SolutionDir)\..\..\external\Blackmagic DeckLink SDK 10.9.11\Win\include</DeckLink_inc>
+    <DeckLink_inc>$(SolutionDir)\..\..\external\dependencies\Blackmagic DeckLink SDK 10.9.11\Win\include</DeckLink_inc>
     <!-- From: https://github.com/elgatosf/gamecapture -->
-    <Elgato_Filter Condition="$(Elgato_Filter) == ''">$(SolutionDir)\..\..\external\gamecapture\VideoCaptureFilter</Elgato_Filter>
+    <Elgato_Filter>$(SolutionDir)\..\..\external\gamecapture\VideoCaptureFilter</Elgato_Filter>
     
     <!-- From: https://docs.microsoft.com/en-us/azure/kinect-dk/sensor-sdk-download -->
-    <AzureKinectSDK>$(SolutionDir)\..\..\external\Azure Kinect SDK v1.3.0</AzureKinectSDK>
+    <AzureKinectSDK>$(SolutionDir)\..\..\external\dependencies\Azure Kinect SDK v1.3.0</AzureKinectSDK>
 
     <!-- From: https://docs.microsoft.com/en-us/azure/kinect-dk/body-sdk-download -->
-    <AzureKinectBodyTrackingSDK>$(SolutionDir)\..\..\external\Azure Kinect Body Tracking SDK 1.0.0</AzureKinectBodyTrackingSDK>
+    <AzureKinectBodyTrackingSDK>$(SolutionDir)\..\..\external\dependencies\Azure Kinect Body Tracking SDK</AzureKinectBodyTrackingSDK>
     
     <AzureKinectIncludeDirectory>$(AzureKinectSDK)\sdk\include</AzureKinectIncludeDirectory>
     <AzureKinectLibraryDirectory>$(AzureKinectSDK)\sdk\windows-desktop\amd64\release\lib</AzureKinectLibraryDirectory>

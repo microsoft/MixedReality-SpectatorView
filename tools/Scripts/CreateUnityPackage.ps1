@@ -35,16 +35,14 @@ $PackageName = $PackageProps.name
 $PackageVersion = $PackageProps.version
 $PackagePath = "$PSScriptRoot\..\..\packages\$PackageName.$PackageVersion"
 
-Write-Host "`nCreating package $PackageName.$PackageVersion"
-if (Test-Path -Path "$PSScriptRoot\..\..\packages\$PackageName.$PackageVersion")
+Write-Host "`nCreating package $PackageName.$PackageVersion $PackagePath"
+if (Test-Path -Path "$PackagePath")
 {
-    Remove-Item -Path "$PackagePath\*" -Recurse
-}
-else
-{
-    New-Item -Path "$PackagePath" -ItemType "directory"
+    Write-Host "Removing preexisting directory: $PackagePath"
+    Remove-Item -Path "$PackagePath" -Recurse
 }
 
+New-Item -Path "$PackagePath" -ItemType "directory"
 Copy-Item -Path "$PSScriptRoot\..\..\src\SpectatorView.Unity\Assets\*" -Destination $PackagePath -Recurse
 
-Write-Host "Created package: packages/$PackageName.$PackageVersion"
+Write-Host "Created package: packages\$PackageName.$PackageVersion"

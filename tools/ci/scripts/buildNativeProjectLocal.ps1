@@ -83,11 +83,20 @@ Write-Host "    x64 Build Succeeded:           $64Result"
 Write-Host "    ARM Build Succeeded:           $ARMResult"
 Write-Host "    Copy Native Plugins Succeeded: $CopyResult"
 
-Write-Host "`nIncluded Compositor Components:"
-Write-Host "    Blackmagic Decklink:            " (Test-Path "$PSScriptRoot\..\..\..\external\Blackmagic DeckLink SDK 10.9.11")
-Write-Host "    Elgato:                         " (Test-Path "$PSScriptRoot\..\..\..\external\gamecapture")
-Write-Host "    Azure Kinect SDK:               " (Test-Path "$PSScriptRoot\..\..\..\external\Azure Kinect SDK v1.3.0")
-Write-Host "    Azure Kinect Body Tracking SDK: " (Test-Path "$PSScriptRoot\..\..\..\external\Azure Kinect Body Tracking SDK")
+$DependenciesPropsFile = "$PSScriptRoot\..\..\..\src\SpectatorView.Native\SpectatorView.Compositor\dependencies.props"
+
+if (Test-Path -Path $DependenciesPropsFile -PathType Leaf) {
+  [xml]$DependenciesPropsContent = Get-Content $DependenciesPropsFile
+
+  $SolutionDirVariable = "`$(SolutionDir)"
+  $SolutionDir = "$PSScriptRoot\..\..\..\src\SpectatorView.Native\"
+
+  Write-Host "`nIncluded Compositor Components:"
+  Write-Host "    Blackmagic Decklink:            " (Test-Path $DependenciesPropsContent.Project.PropertyGroup.DeckLink_inc.replace($SolutionDirVariable, $SolutionDir))
+  Write-Host "    Elgato:                         " (Test-Path $DependenciesPropsContent.Project.PropertyGroup.Elgato_Filter.replace($SolutionDirVariable, $SolutionDir))
+  Write-Host "    Azure Kinect SDK:               " (Test-Path $DependenciesPropsContent.Project.PropertyGroup.AzureKinectSDK.replace($SolutionDirVariable, $SolutionDir))
+  Write-Host "    Azure Kinect Body Tracking SDK: " (Test-Path $DependenciesPropsContent.Project.PropertyGroup.AzureKinectBodyTrackingSDK.replace($SolutionDirVariable, $SolutionDir))
+}
 
 $success = ($SetupResult -eq $true) -And ($86Result -eq $true) -And ($64Result -eq $true) -And ($ARMResult -eq $true) -And ($CopyResult -eq $true)
 $LocalBuildSucceeded.Value = $success
