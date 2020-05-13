@@ -26,14 +26,14 @@ The below dependencies are optional but should be obtained if they are desired f
     * Search for Desktop Video & Desktop Video SDK in "Latest Downloads" (Note: **10.9.11** is the current version used in the SpectatorView.Compositor.dll. Newer versions may contain breaks.)
     * Extract downloaded content to a `external\Blackmagic DeckLink SDK 10.9.11` (make sure this path matches the path found in )
 
-There are currently two ways to consume the com.microsoft.mixedreality.spectatorview.* Unity package. You can either build the package and generate a *.zip file to share with your team or you can add the MixedReality-SpectatorView codebase as a submodule to your project.
+There are currently two ways to consume the com.microsoft.mixedreality.spectatorview.* Unity package. You can either build the package and generate a folder containing all project content to share with your team or you can add the MixedReality-SpectatorView codebase as a submodule to your project.
 
 ### Build a package to share with your team
 1. Clone the MixedReality-SpectatorView repository.
 2. Checkout your desired branch (`master`).
 3. Run `tools\scripts\CreateUnityPackage.bat` in an administrator cmd window.
     > Note: It may take a while to build external dependencies for Spectator View's native components the first time this script is run.
-4. Extract the generated packages\com.microsoft.mixedreality.spectatorview.*.zip somewhere in/near your project (don't place the package inside your Unity project's Assets folder).
+4. Copy the generated packages\com.microsoft.mixedreality.spectatorview.* somewhere in/near your project (don't place the package inside your Unity project's Assets folder).
 5. Add a reference to the com.microsoft.mixedreality.spectatorview.* folder to your Unity project's Package/manifest.json file. For more information on referencing a local Unity package, see [here](https://docs.unity3d.com/Manual/upm-ui-local.html).
 
 ### Referencing MixedReality-SpectatorView as a submodule
@@ -42,6 +42,10 @@ There are currently two ways to consume the com.microsoft.mixedreality.spectator
     > Note: It may take a while to build external dependencies for Spectator View's native components the first time this script is run.
 3. Run `tools\scripts\CreateUnityPackage.bat` in an administrator cmd window.
 4. Add a reference to the submodule folder src/SpectatorView.Unity/Assets in your Unity project's Package/manifest.json file. For more information on referencing a local Unity package, see [here](https://docs.unity3d.com/Manual/upm-ui-local.html).
+
+> Note 1: Creating a unity package is only supported on PCs. You can prepare the repo on Mac for building the iOS example applications by installing [powershell](https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell-core-on-macos?view=powershell-7) and running `tools\scripts\SetupRepository.ps1`.
+
+> Note 2: If your development setup does not allow for symbolic links, running `tools\scripts\CreateUnityPackage.bat -HardCopySymbolicLinks` will replace symbolic links in the project with copied file content. This should allow developers to generate unity packages, but it will make it more difficult to edit and contribute submodule changes. 
 
 ### Detailed Unity Setup
 For more information on setting up a Spectator View project after obtaining the com.microsoft.mixedreality.spectatorview.* Unity package, see the following pages:
