@@ -45,7 +45,8 @@ Not all spatial alignment strategies support all platforms. See the chart below 
 ### Azure Spatial Anchors
 
 1. Setup an [Azure Spatial Anchors account](https://docs.microsoft.com/en-us/azure/spatial-anchors/quickstarts/get-started-unity-hololens) and obtain an `Account ID` and `Primary Key`.
-2. Obtain [AzureSpatialAnchors v1.1.1](https://github.com/Azure/azure-spatial-anchors-samples/releases/tag/v1.1.1). This can be achieved by running the `tools/Scripts/SetupRepository.bat` script as an administrator or by manually copying assets content into the `external/Azure-Spatial-Anchors-Samples` folder.
+2. Obtain [AzureSpatialAnchors](https://github.com/Azure/azure-spatial-anchors-samples/releases/tag/v1.1.1) dependencies. This can be achieved by running the `tools\Scripts\SetupRepository.bat` script as an administrator.
+> Note: If your development environment does not support symbolic links, `tools\Scripts\SetupRepository.bat -HardCopySymbolicLinks` will replace symbolic links in the project with copied file content.
 3. Create a `SpectatorViewSettings` prefab by calling 'Spectator View' -> 'Edit Settings' in the toolbar.
 
 ![Marker](images/SpectatorViewSettingsMenu.png)
