@@ -14,6 +14,8 @@ To build the Microsoft.MixedReality.SpectatorView Unity package, you will need t
 
 1. Windows PC
 3. [Visual Studio 2019](https://visualstudio.microsoft.com/vs/) installed on the PC
+    * Universal Windows Platform development tools (installed through visual studio installer)
+    * Desktop development with C++ tools (installed through visual studio installer)
 4. [Windows 10 SDK (10.0.18362.0)](https://developer.microsoft.com/en-us/windows/downloads/windows-10-sdk)
 5. [Git](https://git-scm.com/downloads) installed on the PC and added to your `PATH` variable
 6. [NuGet](https://www.nuget.org/downloads) installed on the PC and added to your `PATH` variable

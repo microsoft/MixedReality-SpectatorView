@@ -8,6 +8,8 @@ To setup spectator view with a video camera, see [here](SpectatorView.Setup.Vide
 1. Windows PC
 2. HoloLens 2 or HoloLens
 3. [Visual Studio 2019](https://visualstudio.microsoft.com/vs/) installed on the PC
+    * Universal Windows Platform development tools (installed through visual studio installer)
+    * Desktop development with C++ tools (installed through visual studio installer)
 4. [Windows 10 SDK (10.0.18362.0)](https://developer.microsoft.com/en-us/windows/downloads/windows-10-sdk)
 5. [Unity 2019](https://unity3d.com/get-unity/download) installed on the PC
 
