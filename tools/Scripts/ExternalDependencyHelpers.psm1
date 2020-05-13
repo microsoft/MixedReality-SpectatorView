@@ -57,4 +57,6 @@ function DownloadQRCodePlugin
   # TODO - remove this deletion step once qr code nuget packages don't break mac builds
   Write-Host "Removing c# files that break in Unity packages for QRCode Dependencies in directory $contentFolder\*.cs*"
   Remove-Item -Recurse $contentFolder -Include *.cs*
+
+  Copy-Item -Path "QRCodeNotes\README.txt" -Destination $contentFolder
 }
