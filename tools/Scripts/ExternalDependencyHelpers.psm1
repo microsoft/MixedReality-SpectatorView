@@ -53,4 +53,8 @@ function DownloadQRCodePlugin
 
   DownloadNuGetPackage -PackageName "Microsoft.MixedReality.QR" -Version "0.5.2100" -IntermediateFolder $mainFolder -OutputFolder "$contentFolder"
   DownloadNuGetPackage -PackageName "Microsoft.VCRTForwarders" -Version "140.1.0.5" -IntermediateFolder $mainFolder -OutputFolder "$contentFolder"
+
+  # TODO - remove this deletion step once qr code nuget packages don't break mac builds
+  Write-Host "Removing c# files that break in Unity packages for QRCode Dependencies in directory $contentFolder\*.cs*"
+  Remove-Item -Recurse $contentFolder -Include *.cs*
 }
