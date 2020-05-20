@@ -67,7 +67,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
                 var packages = await SendJSONRequest<PackagesResponse>(InstalledPackagesRoute);
                 var optDeviceApp = packages.InstalledPackages?.FirstOrDefault(p => p.Name.Contains(HolographicCameraAppName));
-                if (packages.InstalledPackages == null || optDeviceApp == null || optDeviceApp.Value.PackageFullName == null)
+                if (optDeviceApp?.PackageFullName == null)
                 {
                     Debug.LogError("Could not find holographic camera app installed on device");
                 }
@@ -213,7 +213,7 @@ namespace Microsoft.MixedReality.SpectatorView
             var processes = await SendJSONRequest<ProcessesResponse>(RunningProcessesRoute);
             var optProcess = processes.Processes?.FirstOrDefault(
                 p => p.PackageFullName == deviceApp.Value.PackageFullName && p.ImageName != "RuntimeBroker.exe");
-            if (processes.Processes == null || optProcess == null || optProcess.Value.PackageFullName == null)
+            if (optProcess?.PackageFullName == null)
             {
                 State = DevicePortalState.NotStarted;
                 return;
