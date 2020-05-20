@@ -591,94 +591,98 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
             devicePortalFoldout = EditorGUILayout.Foldout(devicePortalFoldout, "Device Portal");
             if (devicePortalFoldout)
             {
-                EditorGUILayout.BeginVertical("Box");
-                bool prevEnabled = GUI.enabled;
-                GUILayout.Label("DevicePortal", EditorStyles.boldLabel);
-
-                string stateText, buttonText;
-                bool canPressButton = true;
-                Action onPressButton = () => { };
-                switch(devicePortal.State)
+                using (new EditorGUILayout.VerticalScope("Box"))
                 {
-                    case DevicePortalState.NotConnected:
-                        stateText = "<color=silver>Not Connected</color>";
-                        canPressButton =
-                            devicePortalUser.Trim() != "" &&
-                            devicePortalPassword != "" &&
-                            IPAddress.TryParse(holographicCameraIPAddress, out var _) &&
-                            EditorApplication.isPlaying;
-                        buttonText = "Connect";
-                        onPressButton = () => devicePortal.StartConnect(holographicCameraIPAddress, devicePortalUser, devicePortalPassword);
-                        break;
+                    bool prevEnabled = GUI.enabled;
+                    GUILayout.Label("DevicePortal", EditorStyles.boldLabel);
 
-                    case DevicePortalState.Connecting:
-                        stateText = "<color=silver>Connecting...</color>";
-                        buttonText = "Cancel";
-                        onPressButton = devicePortal.CancelConnect;
-                        break;
+                    string stateText, buttonText;
+                    bool canPressButton = true;
+                    Action onPressButton = () => { };
+                    switch (devicePortal.State)
+                    {
+                        case DevicePortalState.NotConnected:
+                            stateText = "<color=silver>Not Connected</color>";
+                            canPressButton =
+                                devicePortalUser.Trim() != "" &&
+                                devicePortalPassword != "" &&
+                                IPAddress.TryParse(holographicCameraIPAddress, out var _) &&
+                                EditorApplication.isPlaying;
+                            buttonText = "Connect";
+                            onPressButton = () => devicePortal.StartConnect(holographicCameraIPAddress, devicePortalUser, devicePortalPassword);
+                            break;
 
-                    case DevicePortalState.NotStarted:
-                        stateText = "<color=red>App was not started</color>";
-                        canPressButton = devicePortal.IsAppInstalled;
-                        buttonText = "Start App";
-                        onPressButton = devicePortal.StartApp;
-                        break;
+                        case DevicePortalState.Connecting:
+                            stateText = "<color=silver>Connecting...</color>";
+                            buttonText = "Cancel";
+                            onPressButton = devicePortal.CancelConnect;
+                            break;
 
-                    case DevicePortalState.NotRunning:
-                        stateText = "<color=orange>Started, but not running</color>";
-                        buttonText = "Stop App";
-                        onPressButton = devicePortal.StopApp;
-                        break;
+                        case DevicePortalState.NotStarted:
+                            stateText = "<color=red>App was not started</color>";
+                            canPressButton = devicePortal.IsAppInstalled;
+                            buttonText = "Start App";
+                            onPressButton = devicePortal.StartApp;
+                            break;
 
-                    case DevicePortalState.Running:
-                        stateText = "<color=green>Running</color>";
-                        buttonText = "Stop App";
-                        onPressButton = devicePortal.StopApp;
-                        break;
+                        case DevicePortalState.NotRunning:
+                            stateText = "<color=orange>Started, but not running</color>";
+                            buttonText = "Stop App";
+                            onPressButton = devicePortal.StopApp;
+                            break;
 
-                    case DevicePortalState.Starting:
-                        stateText = "<color=orange>Starting...</color>";
-                        buttonText = "Cancel";
-                        canPressButton = false;
-                        break;
+                        case DevicePortalState.Running:
+                            stateText = "<color=green>Running</color>";
+                            buttonText = "Stop App";
+                            onPressButton = devicePortal.StopApp;
+                            break;
 
-                    case DevicePortalState.Stopping:
-                        stateText = "<color=orange>Stopping...</color>";
-                        canPressButton = false;
-                        buttonText = "Cancel";
-                        break;
+                        case DevicePortalState.Starting:
+                            stateText = "<color=orange>Starting...</color>";
+                            buttonText = "Cancel";
+                            canPressButton = false;
+                            break;
 
-                    default:
-                        stateText = "<color=magenta>I don't know</color>";
-                        canPressButton = true;
-                        buttonText = "Disconnect";
-                        onPressButton = devicePortal.Disconnect;
-                        break;
+                        case DevicePortalState.Stopping:
+                            stateText = "<color=orange>Stopping...</color>";
+                            canPressButton = false;
+                            buttonText = "Cancel";
+                            break;
+
+                        default:
+                            stateText = "<color=magenta>I don't know</color>";
+                            canPressButton = true;
+                            buttonText = "Disconnect";
+                            onPressButton = devicePortal.Disconnect;
+                            break;
+                    }
+                    GUIStyle appStateStyle = EditorStyles.textField;
+                    appStateStyle.richText = true;
+                    appStateStyle.fontStyle = FontStyle.Bold;
+                    using (new GUILayout.HorizontalScope())
+                    {
+                        GUI.enabled = false;
+                        EditorGUILayout.TextField("State", stateText, appStateStyle);
+                        GUI.enabled = prevEnabled && canPressButton;
+                        if (GUILayout.Button(buttonText, GUILayout.Width(connectAndDisconnectButtonWidth)))
+                        {
+                            onPressButton();
+                        }
+                    }
+
+                    GUI.enabled = prevEnabled && devicePortal.State == DevicePortalState.NotConnected;
+                    devicePortalUser = EditorGUILayout.TextField("Username", devicePortalUser);
+                    devicePortalPassword = EditorGUILayout.PasswordField("Password", devicePortalPassword);
+                    EditorGUILayout.Space();
+
+                    GUI.enabled = prevEnabled && devicePortal.IsConnected;
+                    GUILayout.Label("Health", EditorStyles.boldLabel);
+                    EditorGUILayout.FloatField(new GUIContent("CPU", "The amount of CPU used by the app"), devicePortal.CPUUsage);
+                    EditorGUILayout.TextField(new GUIContent("RAM", "The amount of RAM used by the app"), $"{devicePortal.WorkingSet / 1024 / 1024}MiB");
+                    EditorGUILayout.TextField("Battery", $"{(int)(devicePortal.BatteryLevel * 100)}% {(devicePortal.IsPowered ? "- Powered" : "")}");
+
+                    GUI.enabled = prevEnabled;
                 }
-                GUIStyle appStateStyle = EditorStyles.textField;
-                appStateStyle.richText = true;
-                appStateStyle.fontStyle = FontStyle.Bold;
-                GUILayout.BeginHorizontal();
-                GUI.enabled = false;
-                EditorGUILayout.TextField("State", stateText, appStateStyle);
-                GUI.enabled = prevEnabled && canPressButton;
-                if (GUILayout.Button(buttonText, GUILayout.Width(connectAndDisconnectButtonWidth)))
-                    onPressButton();
-                GUILayout.EndHorizontal();
-
-                GUI.enabled = prevEnabled && devicePortal.State == DevicePortalState.NotConnected;
-                devicePortalUser = EditorGUILayout.TextField("Username", devicePortalUser);
-                devicePortalPassword = EditorGUILayout.PasswordField("Password", devicePortalPassword);
-                EditorGUILayout.Space();
-
-                GUI.enabled = prevEnabled && devicePortal.IsConnected;
-                GUILayout.Label("Health", EditorStyles.boldLabel);
-                EditorGUILayout.FloatField(new GUIContent("CPU", "The amount of CPU used by the app"), devicePortal.CPUUsage);
-                EditorGUILayout.TextField(new GUIContent("RAM", "The amount of RAM used by the app"), $"{devicePortal.WorkingSet / 1024 / 1024}MiB");
-                EditorGUILayout.TextField("Battery", $"{(int)(devicePortal.BatteryLevel * 100)}% {(devicePortal.IsPowered ? "- Powered" : "")}");
-
-                GUI.enabled = prevEnabled;
-                EditorGUILayout.EndVertical();
             }
         }
 

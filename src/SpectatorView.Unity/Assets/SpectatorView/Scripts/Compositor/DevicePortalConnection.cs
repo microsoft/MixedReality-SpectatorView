@@ -183,7 +183,9 @@ namespace Microsoft.MixedReality.SpectatorView
         private void Update()
         {
             if (!IsConnected || State == DevicePortalState.Starting || State == DevicePortalState.Stopping)
+            {
                 return;
+            }
 
             if (Time.time - lastHealthCheck >= healthCheckInterval)
             {

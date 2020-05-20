@@ -472,7 +472,9 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
         protected DevicePortalConnection GetDevicePortal()
         {
             if (cachedDevicePortal == null)
+            {
                 cachedDevicePortal = FindObjectOfType<DevicePortalConnection>();
+            }
             return cachedDevicePortal;
         }
 
