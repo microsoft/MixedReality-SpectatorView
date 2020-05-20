@@ -610,7 +610,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
                     case DevicePortalState.Connecting:
                         stateText = "<color=silver>Connecting...</color>";
                         buttonText = "Cancel";
-                        onPressButton = devicePortal.Cancel;
+                        onPressButton = devicePortal.CancelConnect;
                         break;
 
                     case DevicePortalState.NotStarted:
@@ -635,7 +635,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
                     case DevicePortalState.Starting:
                         stateText = "<color=orange>Starting...</color>";
                         buttonText = "Cancel";
-                        onPressButton = devicePortal.Cancel;
+                        canPressButton = false;
                         break;
 
                     case DevicePortalState.Stopping:

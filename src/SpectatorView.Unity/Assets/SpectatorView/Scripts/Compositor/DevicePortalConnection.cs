@@ -47,7 +47,7 @@ namespace Microsoft.MixedReality.SpectatorView
         private string authorization;
         private InstalledPackage? deviceApp;
         private float lastHealthCheck;
-        private CancellationTokenSource taskCTS = null;
+        private CancellationTokenSource connectCTS = null;
         private string StartAppRoute => StartAppRouteBase + Uri.EscapeDataString(Convert.ToBase64String(Encoding.UTF8.GetBytes(deviceApp.Value.PackageRelativeId)));
         private string StopAppRoute => StopAppRouteBase + Uri.EscapeDataString(Convert.ToBase64String(Encoding.UTF8.GetBytes(deviceApp.Value.PackageFullName)));
 
@@ -61,11 +61,13 @@ namespace Microsoft.MixedReality.SpectatorView
         public int WorkingSet { get; private set; } = 0;
         public float CPUUsage { get; private set; } = 0.0f;
 
+        public DeviceInfoObserver HolographicDeviceInfo { get; set; } = null;
+
         public void StartConnect(string ipAddress, string user, string password)
         {
             async Task Connect()
             {
-                var info = await SendJSONRequest<InfoResponse>(InfoRoute);
+                var info = await SendJSONRequest<InfoResponse>(InfoRoute, "GET", connectCTS.Token);
                 DeviceName = info.ComputerName;
 
                 var packages = await SendJSONRequest<PackagesResponse>(InstalledPackagesRoute);
@@ -80,22 +82,21 @@ namespace Microsoft.MixedReality.SpectatorView
                 }
 
                 await RunHealthCheck();
-                taskCTS = null;
             }
 
             State = DevicePortalState.Connecting;
             this.ipAddress = ipAddress;
             // mind the "auto-" prefix to bypass CSRF protection
             authorization = "Basic " + Convert.ToBase64String(Encoding.UTF8.GetBytes("auto-" + user + ":" + password));
-            taskCTS = new CancellationTokenSource();
-            Dispatcher.ScheduleAsync(Connect, taskCTS.Token);
+            connectCTS = new CancellationTokenSource();
+            Dispatcher.ScheduleAsync(Connect, connectCTS.Token);
         }
 
-        public void Cancel()
+        public void CancelConnect()
         {
-            if (taskCTS != null)
+            if (connectCTS != null)
             {
-                taskCTS.Cancel();
+                connectCTS.Cancel();
                 State = DevicePortalState.NotConnected;
             }
         }
@@ -139,8 +140,8 @@ namespace Microsoft.MixedReality.SpectatorView
                 return;
             }
             State = DevicePortalState.Starting;
-            taskCTS = new CancellationTokenSource();
-            Dispatcher.ScheduleAsync(StartAppAsync, taskCTS.Token);
+            var cts = new CancellationTokenSource();
+            Dispatcher.ScheduleAsync(StartAppAsync, cts.Token);
         }
 
         public void StopApp()
@@ -177,8 +178,8 @@ namespace Microsoft.MixedReality.SpectatorView
                 return;
             }
             State = DevicePortalState.Stopping;
-            taskCTS = new CancellationTokenSource();
-            Dispatcher.ScheduleAsync(StopAppAsync, taskCTS.Token);
+            var cts = new CancellationTokenSource();
+            Dispatcher.ScheduleAsync(StopAppAsync, cts.Token);
         }
 
         private void Update()
@@ -225,23 +226,21 @@ namespace Microsoft.MixedReality.SpectatorView
             WorkingSet = optProcess.Value.PrivateWorkingSet;
         }
 
-        private async Task<UnityWebRequest> SendRequest(string route, string method = "GET")
+        private async Task<UnityWebRequest> SendRequest(string route, string method = "GET", CancellationToken? ct = null)
         {
             var request = new UnityWebRequest($"https://{ipAddress}{route}", method);
             request.SetRequestHeader("authorization", authorization);
             request.certificateHandler = new DevicePortalCertificateHandler();
             request.downloadHandler = new DownloadHandlerBuffer();
             var requestOperation = request.SendWebRequest();
-            if (taskCTS == null)
-                taskCTS = new CancellationTokenSource();
-            await Dispatcher.WhenAsync(() => requestOperation.isDone, taskCTS.Token);
+            await Dispatcher.WhenAsync(() => requestOperation.isDone, ct ?? CancellationToken.None);
 
             return request;
         }
 
-        private async Task<T> SendJSONRequest<T>(string route, string method = "GET")
+        private async Task<T> SendJSONRequest<T>(string route, string method = "GET", CancellationToken? ct = null)
         {
-            var request = await SendRequest(route, method);
+            var request = await SendRequest(route, method, ct);
 
             if (request.isNetworkError || request.isHttpError)
             {
