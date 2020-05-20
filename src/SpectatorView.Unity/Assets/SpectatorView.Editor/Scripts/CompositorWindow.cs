@@ -39,7 +39,6 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
         private string appIPAddress;
         private string devicePortalUser;
         private string devicePortalPassword = "";
-        private bool devicePortalAutoConnect = true;
 
         private bool? isAzureKinectBodyTrackingSdkInstalledInUnity;
         private static readonly string[] azureKinectBodyTrackingSdkComponents = new[] { "onnxruntime.dll", "dnn_model_2_0.onnx", "cudnn64_7.dll", "cublas64_100.dll", "cudart64_100.dll" };
@@ -665,8 +664,6 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
                 GUI.enabled = prevEnabled && devicePortal.State == DevicePortalState.NotConnected;
                 devicePortalUser = EditorGUILayout.TextField("Username", devicePortalUser);
                 devicePortalPassword = EditorGUILayout.PasswordField("Password", devicePortalPassword);
-                const string autoConnectTooltip = "Automatically connects/disconnects the holographic camera upon app starting/stopping.";
-                devicePortalAutoConnect = EditorGUILayout.Toggle(new GUIContent("Auto Connect", autoConnectTooltip), devicePortalAutoConnect);
                 EditorGUILayout.Space();
 
                 GUI.enabled = prevEnabled && devicePortal.IsConnected;

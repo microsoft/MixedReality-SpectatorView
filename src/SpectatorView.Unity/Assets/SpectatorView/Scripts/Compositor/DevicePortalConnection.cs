@@ -61,8 +61,6 @@ namespace Microsoft.MixedReality.SpectatorView
         public int WorkingSet { get; private set; } = 0;
         public float CPUUsage { get; private set; } = 0.0f;
 
-        public DeviceInfoObserver HolographicDeviceInfo { get; set; } = null;
-
         public void StartConnect(string ipAddress, string user, string password)
         {
             async Task Connect()
