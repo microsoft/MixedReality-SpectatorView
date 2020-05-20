@@ -582,11 +582,16 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
 
         private void DevicePortalGUI()
         {
+            DevicePortalConnection devicePortal = GetDevicePortal();
+            if (devicePortal == null)
+            {
+                return;
+            }
+
             devicePortalFoldout = EditorGUILayout.Foldout(devicePortalFoldout, "Device Portal");
             if (devicePortalFoldout)
             {
                 EditorGUILayout.BeginVertical("Box");
-                DevicePortalConnection devicePortal = GetDevicePortal();
                 bool prevEnabled = GUI.enabled;
                 GUILayout.Label("DevicePortal", EditorStyles.boldLabel);
 
