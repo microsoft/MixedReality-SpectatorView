@@ -35,6 +35,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
 
         private CompositionManager cachedCompositionManager;
         private HolographicCameraObserver cachedHolographicCameraObserver;
+        private DevicePortalConnection cachedDevicePortal;
 
         protected int renderFrameWidth;
         protected int renderFrameHeight;
@@ -466,6 +467,13 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
             {
                 return null;
             }
+        }
+
+        protected DevicePortalConnection GetDevicePortal()
+        {
+            if (cachedDevicePortal == null)
+                cachedDevicePortal = FindObjectOfType<DevicePortalConnection>();
+            return cachedDevicePortal;
         }
 
         protected SpatialCoordinateSystemParticipant GetSpatialCoordinateSystemParticipant(DeviceInfoObserver device)
