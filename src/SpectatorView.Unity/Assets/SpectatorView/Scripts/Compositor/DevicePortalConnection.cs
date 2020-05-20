@@ -1,14 +1,11 @@
-using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
-using UnityEngine.Networking;
 using System;
+using System.Linq;
 using System.Threading;
-using System.Net;
 using System.Threading.Tasks;
-using System.Collections;
 using System.Text;
 using System.IO;
+using UnityEngine;
+using UnityEngine.Networking;
 
 namespace Microsoft.MixedReality.SpectatorView
 {
