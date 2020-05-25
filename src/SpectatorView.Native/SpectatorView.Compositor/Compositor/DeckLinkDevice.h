@@ -139,6 +139,7 @@ public:
     }
 
     int GetNumQueuedOutputFrames();
+    void SetOutputLowLatencyMode(bool isEnabled);
 
     bool ProvidesYUV();
     bool ExpectsYUV();

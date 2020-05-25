@@ -294,6 +294,18 @@ int CompositorInterface::GetNumQueuedOutputFrames()
     return 0;
 }
 
+void CompositorInterface::SetOutputLowLatencyMode(bool isEnabled)
+{
+    if (outputFrameProvider != nullptr)
+    {
+        outputFrameProvider->SetOutputLowLatencyMode(isEnabled);
+    }
+    else if (frameProvider != nullptr)
+    {
+        frameProvider->SetOutputLowLatencyMode(isEnabled);
+    }
+}
+
 void CompositorInterface::SetCompositeFrameIndex(int index)
 {
     compositeFrameIndex = index;

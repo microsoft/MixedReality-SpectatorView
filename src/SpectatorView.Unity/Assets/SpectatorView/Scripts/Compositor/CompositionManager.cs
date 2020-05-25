@@ -83,6 +83,7 @@ namespace Microsoft.MixedReality.SpectatorView
         private int outputDeviceIndex = -1;
         private int videoRecordingLayout = -1;
         private int occlusionMode = -1;
+        private bool? lowLatencyMode = null;
         private TextureManager textureManager = null;
         private MicrophoneInput microphoneInput;
 
@@ -253,6 +254,27 @@ namespace Microsoft.MixedReality.SpectatorView
                 {
                     occlusionMode = (int)value;
                     PlayerPrefs.SetInt(nameof(OcclusionMode), occlusionMode);
+                    PlayerPrefs.Save();
+                }
+            }
+        }
+
+        public bool LowLatencyMode
+        {
+            get
+            {
+                if (lowLatencyMode == null)
+                {
+                    lowLatencyMode = PlayerPrefs.GetInt(nameof(LowLatencyMode), 0) != 0;
+                }
+                return lowLatencyMode.Value;
+            }
+            set
+            {
+                if (lowLatencyMode != value)
+                {
+                    lowLatencyMode = value;
+                    PlayerPrefs.SetInt(nameof(LowLatencyMode), value ? 1 : 0);
                     PlayerPrefs.Save();
                 }
             }
@@ -504,7 +526,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
             //Set our current frame towards the latest captured frame. Dont get too close to it, and dont fall too far behind 
             int step = (captureFrameIndex - CurrentCompositeFrame);
-            if (step < 8)
+            if (step < (LowLatencyMode ? 2 : 8))
             {
                 step = 0;
             }
@@ -577,6 +599,7 @@ namespace Microsoft.MixedReality.SpectatorView
                             stationaryCameraBroadcaster.SetActive(true);
                             HolographicCameraObserver.Instance.ConnectTo("127.0.0.1");
                         }
+                        UnityCompositorInterface.SetOutputLowLatencyMode(LowLatencyMode);
                     }
                 }
                 else

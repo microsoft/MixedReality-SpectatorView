@@ -181,7 +181,13 @@ int DeckLinkManager::GetNumQueuedOutputFrames()
     return 0;
 }
 
-
+void DeckLinkManager::SetOutputLowLatencyMode(bool isEnabled)
+{
+    if (IsEnabled())
+    {
+        deckLinkDevice->SetOutputLowLatencyMode(isEnabled);
+    }
+}
 
 bool DeckLinkManager::IsEnabled()
 {

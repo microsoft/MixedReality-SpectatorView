@@ -308,6 +308,14 @@ UNITYDLL int GetNumQueuedOutputFrames()
     return 0;
 }
 
+UNITYDLL void SetOutputLowLatencyMode(bool isEnabled)
+{
+    if (ci != nullptr)
+    {
+        ci->SetOutputLowLatencyMode(isEnabled);
+    }
+}
+
 UNITYDLL void SetCompositeFrameIndex(int index)
 {
     if (ci != nullptr)

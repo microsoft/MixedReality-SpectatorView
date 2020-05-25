@@ -184,6 +184,13 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
 
                             compositionManager.OutputDevice = supportedOutputDevices[selectedIndex];
 
+                            EditorGUILayout.EndHorizontal();
+                            EditorGUILayout.Space();
+                            EditorGUILayout.BeginHorizontal();
+
+                            var lowLatencyLabel = new GUIContent("Low Latency Mode", "Disables buffers to prevent stutters on performance or IO problems. Enable only for live production.");
+                            compositionManager.LowLatencyMode = EditorGUILayout.Toggle(lowLatencyLabel, compositionManager.LowLatencyMode);
+
                             if ((supportedCaptureDevices[selectedIndex] != FrameProviderDeviceType.AzureKinect_DepthCamera_NFOV && supportedCaptureDevices[selectedIndex] != FrameProviderDeviceType.AzureKinect_DepthCamera_WFOV) || compositionManager.VideoRecordingLayout == VideoRecordingFrameLayout.Quad)
                             {
                                 GUI.enabled = false;

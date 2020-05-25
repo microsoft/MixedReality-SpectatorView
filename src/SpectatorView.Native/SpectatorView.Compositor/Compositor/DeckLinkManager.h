@@ -24,6 +24,7 @@ public:
     int GetCaptureFrameIndex();
     int GetPixelChange(int frame);
     int GetNumQueuedOutputFrames();
+    void SetOutputLowLatencyMode(bool isEnabled);
 
     void Update(int compositeFrameIndex);
 
