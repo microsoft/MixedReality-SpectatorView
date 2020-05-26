@@ -83,7 +83,7 @@ Write-Host "    Setup Succeeded:               $SetupResult"
 Write-Host "    x86 Build Succeeded:           $86Result"
 Write-Host "    x64 Build Succeeded:           $64Result"
 Write-Host "    ARM Build Succeeded:           $ARMResult"
-Write-Host "    ARM64 Build Succeeded:         $ARM64Reslt"
+Write-Host "    ARM64 Build Succeeded:         $ARM64Result"
 Write-Host "    Copy Native Plugins Succeeded: $CopyResult"
 
 $DependenciesPropsFile = "$PSScriptRoot\..\..\..\src\SpectatorView.Native\SpectatorView.Compositor\dependencies.props"
