@@ -30,6 +30,7 @@ Import-Module $PSScriptRoot\spectatorViewHelpers.psm1
 
 $SetupResult = "False"
 $ARMResult = "False"
+$ARM64Result = "False"
 $86Result = "False"
 $64Result = "False"
 $CopyResult = "False"
@@ -51,7 +52,8 @@ if ($SetupResult -eq $true)
     & nuget restore $PSScriptRoot\..\..\..\src\SpectatorView.Native\SpectatorView.Native.sln -verbosity detail -MSBuildPath $msbuildpath
 
     BuildProject -MSBuild $MSBuild -VSSolution $PSScriptRoot\..\..\..\src\SpectatorView.Native\SpectatorView.Native.sln -Configuration "Release" -Platform "ARM" -Succeeded ([ref]$ARMResult)
-    
+    BuildProject -MSBuild $MSBuild -VSSolution $PSScriptRoot\..\..\..\src\SpectatorView.Native\SpectatorView.Native.sln -Configuration "Release" -Platform "ARM64" -Succeeded ([ref]$ARM64Result)    
+
     $86Includes = "`"$PSScriptRoot\..\..\..\external\vcpkg\installed\x86-uwp\include`""
     $86LibDirs = "`"$PSScriptRoot\..\..\..\external\vcpkg\installed\x86-uwp\lib`""
     $86Libs = "`"$PSScriptRoot\..\..\..\external\vcpkg\installed\x86-uwp\lib\*.lib`""
@@ -81,6 +83,7 @@ Write-Host "    Setup Succeeded:               $SetupResult"
 Write-Host "    x86 Build Succeeded:           $86Result"
 Write-Host "    x64 Build Succeeded:           $64Result"
 Write-Host "    ARM Build Succeeded:           $ARMResult"
+Write-Host "    ARM64 Build Succeeded:         $ARM64Reslt"
 Write-Host "    Copy Native Plugins Succeeded: $CopyResult"
 
 $DependenciesPropsFile = "$PSScriptRoot\..\..\..\src\SpectatorView.Native\SpectatorView.Compositor\dependencies.props"
