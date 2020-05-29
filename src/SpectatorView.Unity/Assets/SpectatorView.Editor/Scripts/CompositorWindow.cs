@@ -670,6 +670,9 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
                         }
                     }
 
+                    GUI.enabled = false;
+                    EditorGUILayout.TextField("IP address", holographicCameraIPAddress);
+
                     GUI.enabled = prevEnabled && devicePortal.State == DevicePortalState.NotConnected;
                     devicePortalUser = EditorGUILayout.TextField("Username", devicePortalUser);
                     devicePortalPassword = EditorGUILayout.PasswordField("Password", devicePortalPassword);

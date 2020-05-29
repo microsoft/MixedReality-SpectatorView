@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 using System;
 using System.Linq;
 using System.Threading;
@@ -135,8 +137,7 @@ namespace Microsoft.MixedReality.SpectatorView
                 return;
             }
             State = DevicePortalState.Starting;
-            var cts = new CancellationTokenSource();
-            Dispatcher.ScheduleAsync(StartAppAsync, cts.Token);
+            Dispatcher.ScheduleAsync(StartAppAsync, CancellationToken.None);
         }
 
         public void StopApp()
@@ -173,8 +174,7 @@ namespace Microsoft.MixedReality.SpectatorView
                 return;
             }
             State = DevicePortalState.Stopping;
-            var cts = new CancellationTokenSource();
-            Dispatcher.ScheduleAsync(StopAppAsync, cts.Token);
+            Dispatcher.ScheduleAsync(StopAppAsync, CancellationToken.None);
         }
 
         private void Update()
@@ -186,8 +186,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
             if (Time.time - lastHealthCheck >= healthCheckInterval)
             {
-                var cts = new CancellationTokenSource();
-                Dispatcher.ScheduleAsync(RunHealthCheck, cts.Token);
+                Dispatcher.ScheduleAsync(RunHealthCheck, CancellationToken.None);
             }
         }
 
