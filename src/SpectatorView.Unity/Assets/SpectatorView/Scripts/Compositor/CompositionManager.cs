@@ -18,6 +18,13 @@ namespace Microsoft.MixedReality.SpectatorView
         private const int DSPBufferSize = 1024;
         private const AudioSpeakerMode SpeakerMode = AudioSpeakerMode.Stereo;
 
+        private static class InputFrameStep
+        {
+            public const int DefaultMinimum = 8;
+            public const int LowLatencyMinimum = 2;
+            public const int Maximum = 16;
+        }
+
         public enum Depth { None, Sixteen = 16, TwentyFour = 24 }
         public enum AntiAliasingSamples { One = 1, Two = 2, Four = 4, Eight = 8 };
 
@@ -526,13 +533,13 @@ namespace Microsoft.MixedReality.SpectatorView
 
             //Set our current frame towards the latest captured frame. Dont get too close to it, and dont fall too far behind 
             int step = (captureFrameIndex - CurrentCompositeFrame);
-            if (step < (LowLatencyMode ? 2 : 8))
+            if (step < (LowLatencyMode ? InputFrameStep.LowLatencyMinimum : InputFrameStep.DefaultMinimum))
             {
                 step = 0;
             }
-            else if (step > 16)
+            else if (step > InputFrameStep.Maximum)
             {
-                step -= 16;
+                step -= InputFrameStep.Maximum;
             }
             else
             {
