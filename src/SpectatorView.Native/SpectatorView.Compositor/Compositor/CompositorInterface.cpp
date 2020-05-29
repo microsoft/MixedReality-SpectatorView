@@ -294,15 +294,15 @@ int CompositorInterface::GetNumQueuedOutputFrames()
     return 0;
 }
 
-void CompositorInterface::SetOutputLowLatencyMode(bool isEnabled)
+void CompositorInterface::SetLatencyPreference(float latencyPreference)
 {
+    if (frameProvider != nullptr)
+    {
+        frameProvider->SetLatencyPreference(latencyPreference);
+    }
     if (outputFrameProvider != nullptr)
     {
-        outputFrameProvider->SetOutputLowLatencyMode(isEnabled);
-    }
-    else if (frameProvider != nullptr)
-    {
-        frameProvider->SetOutputLowLatencyMode(isEnabled);
+        outputFrameProvider->SetLatencyPreference(latencyPreference);
     }
 }
 

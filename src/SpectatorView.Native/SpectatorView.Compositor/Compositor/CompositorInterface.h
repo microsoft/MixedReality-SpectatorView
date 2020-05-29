@@ -69,7 +69,7 @@ public:
     DLLEXPORT int GetCaptureFrameIndex();
     DLLEXPORT int GetPixelChange(int frame);
     DLLEXPORT int GetNumQueuedOutputFrames();
-    DLLEXPORT void SetOutputLowLatencyMode(bool isEnabled);
+    DLLEXPORT void SetLatencyPreference(float latencyPreference);
 
     DLLEXPORT void SetCompositeFrameIndex(int index);
 

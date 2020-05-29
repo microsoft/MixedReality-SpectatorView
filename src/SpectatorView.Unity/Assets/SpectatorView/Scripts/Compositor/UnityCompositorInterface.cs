@@ -188,7 +188,7 @@ namespace Microsoft.MixedReality.SpectatorView
         public static extern int GetNumQueuedOutputFrames();
 
         [DllImport(CompositorPluginDll)]
-        public static extern void SetOutputLowLatencyMode(bool isEnabled);
+        public static extern void SetLatencyPreference(float latencyPreference);
 
         [DllImport(CompositorPluginDll)]
         public static extern IntPtr GetRenderEventFunc();

@@ -308,11 +308,11 @@ UNITYDLL int GetNumQueuedOutputFrames()
     return 0;
 }
 
-UNITYDLL void SetOutputLowLatencyMode(bool isEnabled)
+UNITYDLL void SetLatencyPreference(float latencyPreference)
 {
     if (ci != nullptr)
     {
-        ci->SetOutputLowLatencyMode(isEnabled);
+        ci->SetLatencyPreference(latencyPreference);
     }
 }
 

@@ -288,9 +288,10 @@ public:
 
     }
 
-    void SetLowLatencyMode(bool isEnabled)
+    void SetLatencyPreference(float latencyPreference)
     {
-        minFramesQueued = isEnabled ? 1 : defaultMinFramesQueued;
+        minFramesQueued = 1 + latencyPreference * (minFramesQueued - 1);
+        minFramesQueued = min(1UL, max(minFramesQueued, static_cast<unsigned long>(MAX_NUM_OUTPUT_FRAMES)));
     }
 
     HRESULT	STDMETHODCALLTYPE ScheduledFrameCompleted(IDeckLinkVideoFrame* completedFrame, BMDOutputFrameCompletionResult result)
@@ -742,9 +743,9 @@ int DeckLinkDevice::GetNumQueuedOutputFrames()
     return s_outputScheduler.framesQueued;
 }
 
-void DeckLinkDevice::SetOutputLowLatencyMode(bool isEnabled)
+void DeckLinkDevice::SetLatencyPreference(float latencyPreference)
 {
-    s_outputScheduler.SetLowLatencyMode(isEnabled);
+    s_outputScheduler.SetLatencyPreference(latencyPreference);
 }
 
 void DeckLinkDevice::Update(int compositeFrameIndex)

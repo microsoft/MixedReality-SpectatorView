@@ -182,14 +182,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
                                 .Select(x => x.ToString())
                                 .ToArray());
 
-                            compositionManager.OutputDevice = supportedOutputDevices[selectedIndex];
-
-                            EditorGUILayout.EndHorizontal();
-                            EditorGUILayout.Space();
-                            EditorGUILayout.BeginHorizontal();
-
-                            var lowLatencyLabel = new GUIContent("Low Latency Mode", "Disables buffers to prevent stutters on performance or IO problems. Enable only for live production.");
-                            compositionManager.LowLatencyMode = EditorGUILayout.Toggle(lowLatencyLabel, compositionManager.LowLatencyMode);
+                            compositionManager.OutputDevice = supportedOutputDevices[selectedIndex];                            
 
                             if ((supportedCaptureDevices[selectedIndex] != FrameProviderDeviceType.AzureKinect_DepthCamera_NFOV && supportedCaptureDevices[selectedIndex] != FrameProviderDeviceType.AzureKinect_DepthCamera_WFOV) || compositionManager.VideoRecordingLayout == VideoRecordingFrameLayout.Quad)
                             {
@@ -548,6 +541,9 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
                     }
 
                     EditorGUILayout.Space();
+
+                    var lowLatencyLabel = new GUIContent("Latency Preference", "Higher values improve resilience against stutters, lower values improve latency.");
+                    compositionManager.LatencyPreference = EditorGUILayout.Slider(lowLatencyLabel, compositionManager.LatencyPreference, 0.0f, 1.0f);
                 }
                 EditorGUILayout.EndVertical();
             }
