@@ -604,8 +604,8 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
                         case DevicePortalState.NotConnected:
                             stateText = "<color=silver>Not Connected</color>";
                             canPressButton =
-                                devicePortalUser.Trim() != "" &&
-                                devicePortalPassword != "" &&
+                                !string.IsNullOrWhiteSpace(devicePortalUser) &&
+                                !string.IsNullOrEmpty(devicePortalPassword) &&
                                 IPAddress.TryParse(holographicCameraIPAddress, out var _) &&
                                 EditorApplication.isPlaying;
                             buttonText = "Connect";
