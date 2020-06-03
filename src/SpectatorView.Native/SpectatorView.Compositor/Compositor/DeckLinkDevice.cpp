@@ -290,7 +290,7 @@ public:
 
     void SetLatencyPreference(float latencyPreference)
     {
-        minFramesQueued = 1 + latencyPreference * (minFramesQueued - 1);
+        minFramesQueued = 1 + latencyPreference * (defaultMinFramesQueued - 1);
         minFramesQueued = min(1UL, max(minFramesQueued, static_cast<unsigned long>(MAX_NUM_OUTPUT_FRAMES)));
     }
 
