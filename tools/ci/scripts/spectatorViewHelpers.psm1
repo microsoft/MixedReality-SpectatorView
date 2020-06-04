@@ -120,32 +120,35 @@ function SetupDependencyRepoBuildLocal
 
   DownloadQRCodePlugin
 
-  $BlackMagicPath = "$PSScriptRoot\..\..\..\external\Blackmagic DeckLink SDK 10.9.11"
-  if (!(Test-Path $BlackMagicPath))
-  {
-    Write-Warning -message "Blackmagic decklink resources weren't found at $BlackMagicPath, Blackmagic decklink filming won't be included in the build."
-  }
+  $DependenciesPropsFile = "$PSScriptRoot\..\..\..\src\SpectatorView.Native\SpectatorView.Compositor\dependencies.props"
 
-  $AzureSDKPath = "C:\Program Files\Azure Kinect SDK v1.3.0"
-  if (!(Test-Path $AzureSDKPath))
-  {
-    Write-Warning -message "Azure Kinect SDK wasn't found at $AzureSDKPath, Azure Kinect filming won't be included in the build."
+  if (Test-Path -Path $DependenciesPropsFile -PathType Leaf) {
+    [xml]$DependenciesPropsContent = Get-Content $DependenciesPropsFile
+
+    $SolutionDirVariable = "`$(SolutionDir)"
+    $SolutionDir = "$PSScriptRoot\..\..\..\src\SpectatorView.Native\"
+
+    $BlackMagicPath = $DependenciesPropsContent.Project.PropertyGroup.DeckLink_inc.replace($SolutionDirVariable, $SolutionDir)
+    if (!(Test-Path $BlackMagicPath))
+    {
+      Write-Warning -message "Blackmagic decklink resources weren't found at $BlackMagicPath, Blackmagic decklink dependencies won't resolve. If you have the SDK installed, update the path specified in src\SpectatorView.Native\SpectatorView.Compositor\dependencies.props."
+    }
+
+    $AzureSDKPath = $DependenciesPropsContent.Project.PropertyGroup.AzureKinectSDK.replace($SolutionDirVariable, $SolutionDir)
+    if (!(Test-Path $AzureSDKPath))
+    {
+      Write-Warning -message "Azure Kinect SDK wasn't found at $AzureSDKPath, Azure Kinect dependencies won't resolve. If you have the SDK installed, update the path specified in src\SpectatorView.Native\SpectatorView.Compositor\dependencies.props."
+    }
+
+    $AzureBodyTrackingSDKExpectedPath = $DependenciesPropsContent.Project.PropertyGroup.AzureKinectBodyTrackingSDK.replace($SolutionDirVariable, $SolutionDir)
+    if (!(Test-Path $AzureBodyTrackingSDKExpectedPath))
+    {
+      Write-Warning -message "Azure Kinect Body Tracking SDK wasn't found at $AzureBodyTrackingSDKExpectedPath, Azure Kinect Body Tracking dependencies won't resolve. If you have the SDK installed, update the path specified in src\SpectatorView.Native\SpectatorView.Compositor\dependencies.props."
+    }
   }
   else
   {
-    New-Item -ItemType Directory -Force -Path "$PSScriptRoot\..\..\..\external\Azure Kinect SDK v1.3.0"
-    Copy-Item -Recurse -Path "C:\Program Files\Azure Kinect SDK v1.3.0\*" -Destination "$PSScriptRoot\..\..\..\external\Azure Kinect SDK v1.3.0" -Force
-  }
-
-  $AzureBodyTrackingSDKExpectedPath = "C:\Program Files\Azure Kinect Body Tracking SDK 1.0.0"
-  if (!(Test-Path $AzureBodyTrackingSDKExpectedPath))
-  {
-    Write-Warning -message "Azure Kinect Body Tracking SDK wasn't found at $AzureBodyTrackingSDKExpectedPath, Azure Kinect Body Tracking filming  won't be included in the build."
-  }
-  else
-  {
-    New-Item -ItemType Directory -Force -Path "$PSScriptRoot\..\..\..\external\Azure Kinect Body Tracking SDK 1.0.0"
-    Copy-Item -Recurse -Path "$AzureBodyTrackingSDKExpectedPath\*" -Destination "$PSScriptRoot\..\..\..\external\Azure Kinect Body Tracking SDK 1.0.0" -Force 
+    Write-Error "Failed to locate src\SpectatorView.Native\SpectatorView.Compositor\dependencies.props. Native resources have not been validated"
   }
 
   $Succeeded.Value = $?
@@ -156,44 +159,44 @@ function SetupDependencyRepoBuildCI
   param(
     [Parameter(Mandatory=$true)][ref]$Succeeded
 )
-
-  $QRCodePath = "$PSScriptRoot\..\..\..\external\dependencies\MixedReality-QRCodePlugin\"
-  if (Test-Path $QRCodePath)
-  {
-    Copy-Item -Recurse -Path "$QRCodePath\*" -Destination "$PSScriptRoot\..\..\..\external\MixedReality-QRCodePlugin" -Force
-  }
-  else
-  {
-    Write-Host "QR Code Dependencies not found, QR Code detection excluded from the build."
-  }
-
-  $AzureSDKPath = "$PSScriptRoot\..\..\..\external\dependencies\Azure Kinect SDK v1.3.0\"
-  if (Test-Path $AzureSDKPath)
-  {
-      Copy-Item -Recurse -Path "$AzureSDKPath\*" -Destination "$PSScriptRoot\..\..\..\external\Azure Kinect SDK v1.3.0" -Force
-  }
-  else
-  {
-    Write-Host "Azure kinect sdk not found. Azure kinect sdk excluded from the build."
-  }
-
-  $AzureBodyTrackingPath = "$PSScriptRoot\..\..\..\external\dependencies\Azure Kinect Body Tracking SDK 1.0.0\"
-  if (Test-Path $AzureBodyTrackingPath)
-  {
-    Copy-Item -Recurse -Path "$AzureBodyTrackingPath\*" -Destination "$PSScriptRoot\..\..\..\external\Azure Kinect Body Tracking SDK 1.0.0" -Force
-  }
-  else
-  {
-    Write-Host "Azure kinect body tracking sdk not found. Azure kinect body tracking sdk excluded from the build."
-  }
-
   if (Test-Path "$PSScriptRoot\dependencies.props")
   {
     Copy-Item -Recurse -Path "$PSScriptRoot\dependencies.props" -Destination "$PSScriptRoot\..\..\..\src\SpectatorView.Native\SpectatorView.Compositor\dependencies.props" -Force
+
+    $DependenciesPropsFile = "$PSScriptRoot\..\..\..\src\SpectatorView.Native\SpectatorView.Compositor\dependencies.props"
+
+    if (Test-Path -Path $DependenciesPropsFile -PathType Leaf) {
+      [xml]$DependenciesPropsContent = Get-Content $DependenciesPropsFile
+  
+      $SolutionDirVariable = "`$(SolutionDir)"
+      $SolutionDir = "$PSScriptRoot\..\..\..\src\SpectatorView.Native\"
+  
+      $QRCodePath = "$PSScriptRoot\..\..\..\external\dependencies\MixedReality-QRCodePlugin\"
+      if (Test-Path $QRCodePath)
+      {
+        Copy-Item -Recurse -Path "$QRCodePath\*" -Destination "$PSScriptRoot\..\..\..\external\MixedReality-QRCodePlugin" -Force
+      }
+      else
+      {
+        Write-Warning "QR Code Dependencies not found, QR Code detection excluded from the build."
+      }
+  
+      $AzureSDKPath = $DependenciesPropsContent.Project.PropertyGroup.AzureKinectSDK.replace($SolutionDirVariable, $SolutionDir)
+      if (!(Test-Path $AzureSDKPath))
+      {
+        Write-Warning "Azure kinect sdk not found. Azure kinect sdk excluded from the build."
+      }
+  
+      $AzureBodyTrackingPath = $DependenciesPropsContent.Project.PropertyGroup.AzureKinectBodyTrackingSDK.replace($SolutionDirVariable, $SolutionDir)
+      if (!(Test-Path $AzureBodyTrackingPath))
+      {
+        Write-Warning "Azure kinect body tracking sdk not found. Azure kinect body tracking sdk excluded from the build."
+      }
+    }
   }
   else
   {
-    Write-Host "dependencies.props not found in ci script directory. Build may fail."
+    Write-Error "dependencies.props not found in ci script directory. Build will fail."
     $Succeeded.Value = $false
   }
 

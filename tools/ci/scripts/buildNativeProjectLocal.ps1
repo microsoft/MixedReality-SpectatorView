@@ -1,7 +1,7 @@
 param(
     $MSBuild,
     [switch]$ForceRebuild,
-    [Parameter(Mandatory=$true)][ref]$Succeeded
+    [ref]$LocalBuildSucceeded
 )
 
 $MSBuildPath = "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\amd64\MSBuild.exe"
@@ -14,14 +14,14 @@ elseif (!$MSBuild)
 {
     Write-Error Unable to locate MSBuild.exe
     Write-Host "You can specify a -MSBuild variable specifying the path for MSBuild.exe if it isn't found at $MSBuildPath"
-    $Succeeded.Value = $false
+    $LocalBuildSucceeded.Value = $false
     exit 1
 }
 
 if (!(Get-Command "nuget"))
 {
     Write-Error "NuGet.exe does not seem to be installed as a command on this computer."
-    $Succeeded.Value = $false
+    $LocalBuildSucceeded.Value = $false
     exit 1
 }
 
@@ -30,6 +30,7 @@ Import-Module $PSScriptRoot\spectatorViewHelpers.psm1
 
 $SetupResult = "False"
 $ARMResult = "False"
+$ARM64Result = "False"
 $86Result = "False"
 $64Result = "False"
 $CopyResult = "False"
@@ -51,7 +52,8 @@ if ($SetupResult -eq $true)
     & nuget restore $PSScriptRoot\..\..\..\src\SpectatorView.Native\SpectatorView.Native.sln -verbosity detail -MSBuildPath $msbuildpath
 
     BuildProject -MSBuild $MSBuild -VSSolution $PSScriptRoot\..\..\..\src\SpectatorView.Native\SpectatorView.Native.sln -Configuration "Release" -Platform "ARM" -Succeeded ([ref]$ARMResult)
-    
+    BuildProject -MSBuild $MSBuild -VSSolution $PSScriptRoot\..\..\..\src\SpectatorView.Native\SpectatorView.Native.sln -Configuration "Release" -Platform "ARM64" -Succeeded ([ref]$ARM64Result)    
+
     $86Includes = "`"$PSScriptRoot\..\..\..\external\vcpkg\installed\x86-uwp\include`""
     $86LibDirs = "`"$PSScriptRoot\..\..\..\external\vcpkg\installed\x86-uwp\lib`""
     $86Libs = "`"$PSScriptRoot\..\..\..\external\vcpkg\installed\x86-uwp\lib\*.lib`""
@@ -81,16 +83,25 @@ Write-Host "    Setup Succeeded:               $SetupResult"
 Write-Host "    x86 Build Succeeded:           $86Result"
 Write-Host "    x64 Build Succeeded:           $64Result"
 Write-Host "    ARM Build Succeeded:           $ARMResult"
+Write-Host "    ARM64 Build Succeeded:         $ARM64Result"
 Write-Host "    Copy Native Plugins Succeeded: $CopyResult"
 
-Write-Host "`nIncluded Compositor Components:"
-Write-Host "    Blackmagic Decklink:            " (Test-Path "$PSScriptRoot\..\..\..\external\Blackmagic DeckLink SDK 10.9.11")
-Write-Host "    Elgato:                         " (Test-Path "$PSScriptRoot\..\..\..\external\gamecapture")
-Write-Host "    Azure Kinect SDK:               " (Test-Path "$PSScriptRoot\..\..\..\external\Azure Kinect SDK v1.3.0")
-Write-Host "    Azure Kinect Body Tracking SDK: " (Test-Path "$PSScriptRoot\..\..\..\external\Azure Kinect Body Tracking SDK 1.0.0")
+$DependenciesPropsFile = "$PSScriptRoot\..\..\..\src\SpectatorView.Native\SpectatorView.Compositor\dependencies.props"
+
+if (Test-Path -Path $DependenciesPropsFile -PathType Leaf) {
+  [xml]$DependenciesPropsContent = Get-Content $DependenciesPropsFile
+
+  $SolutionDirVariable = "`$(SolutionDir)"
+  $SolutionDir = "$PSScriptRoot\..\..\..\src\SpectatorView.Native\"
+
+  Write-Host "`nIncluded Compositor Components:"
+  Write-Host "    Blackmagic Decklink:            " (Test-Path $DependenciesPropsContent.Project.PropertyGroup.DeckLink_inc.replace($SolutionDirVariable, $SolutionDir))
+  Write-Host "    Elgato:                         " (Test-Path $DependenciesPropsContent.Project.PropertyGroup.Elgato_Filter.replace($SolutionDirVariable, $SolutionDir))
+  Write-Host "    Azure Kinect SDK:               " (Test-Path $DependenciesPropsContent.Project.PropertyGroup.AzureKinectSDK.replace($SolutionDirVariable, $SolutionDir))
+  Write-Host "    Azure Kinect Body Tracking SDK: " (Test-Path $DependenciesPropsContent.Project.PropertyGroup.AzureKinectBodyTrackingSDK.replace($SolutionDirVariable, $SolutionDir))
+}
 
 $success = ($SetupResult -eq $true) -And ($86Result -eq $true) -And ($64Result -eq $true) -And ($ARMResult -eq $true) -And ($CopyResult -eq $true)
-$Succeeded.Value = $success
+$LocalBuildSucceeded.Value = $success
 
-Write-Host "`nBuild Succeeded:" $Succeeded.Value
-exit $success
+Write-Host "`nBuild Succeeded:" $LocalBuildSucceeded.Value

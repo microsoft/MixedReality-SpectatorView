@@ -10,11 +10,13 @@ $PluginDirectory = Join-Path -Path $PSScriptRoot -ChildPath "\..\..\src\Spectato
 $DesktopDirectory = Join-Path -Path $PluginDirectory -ChildPath "x64"
 $WSAx86Directory = Join-Path -Path $PluginDirectory -ChildPath "WSA\x86"
 $WSAARMDirectory = Join-Path -Path $PluginDirectory -ChildPath "WSA\ARM"
+$WSAARM64Directory = Join-Path -Path $PluginDirectory -ChildPath "WSA\ARM64"
 
 New-Item -ItemType Directory -Force -Path $PluginDirectory | Out-Null
 New-Item -ItemType Directory -Force -Path $DesktopDirectory | Out-Null
 New-Item -ItemType Directory -Force -Path $WSAx86Directory | Out-Null
 New-Item -ItemType Directory -Force -Path $WSAARMDirectory | Out-Null
+New-Item -ItemType Directory -Force -Path $WSAARM64Directory | Out-Null
 
 $OpenCVVersion = "" #A version may or may not exist depending on the build
 
@@ -95,7 +97,7 @@ $EmptyArUcoDlls = @( "$RootDirectory\EmptyDlls\ARM\SpectatorView.OpenCV.dll",
                      "$RootDirectory\EmptyDlls\ARM\opencv_imgproc$OpenCVVersion.dll",
                      "$RootDirectory\EmptyDlls\ARM\zlib1.dll")
 
-Write-Host "Copying empty ArUco marker detector dlls to $WSAARMDirectory"
+Write-Host "Copying empty ArUco marker detector dlls to $WSAARMDirectory and $WSAARM64Directory"
 foreach ($Dll in $EmptyArUcoDlls)
 {
   if (!(Test-Path $Dll)) {
@@ -104,6 +106,7 @@ foreach ($Dll in $EmptyArUcoDlls)
   else
   {
     Copy-Item -Force $Dll -Destination $WSAARMDirectory
+    Copy-Item -Force $Dll -Destination $WSAARM64Directory
   }
 }
 
@@ -132,6 +135,20 @@ foreach ($Dll in $WinRTARMExtensionDlls )
   else
   {
     Copy-Item -Force $Dll -Destination $WSAARMDirectory
+  }
+}
+
+$WinRTARM64ExtensionDlls = @( "$RootDirectory\ARM64\Release\SpectatorView.WinRTExtensions\SpectatorView.WinRTExtensions.dll")
+
+Write-Host "Copying WinRTExtension dlls to $WSAARM64Directory"
+foreach ($Dll in $WinRTARM64ExtensionDlls )
+{
+  if (!(Test-Path $Dll)) {
+    Write-Warning "$Dll not found, app functionality may not work correctly."
+  }
+  else
+  {
+    Copy-Item -Force $Dll -Destination $WSAARM64Directory
   }
 }
 
@@ -183,4 +200,5 @@ if (Test-Path -Path $DependenciesPropsFile -PathType Leaf) {
 Write-Host "Copying .meta files"
 Copy-Item -Force "$MetaFiles\WSA\x86\*.meta" -Destination $WSAx86Directory
 Copy-Item -Force "$MetaFiles\WSA\ARM\*.meta" -Destination $WSAARMDirectory
+Copy-Item -Force "$MetaFiles\WSA\ARM64\*.meta" -Destination $WSAARM64Directory
 Copy-Item -Force "$MetaFiles\x64\*.meta" -Destination $DesktopDirectory

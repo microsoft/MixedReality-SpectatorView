@@ -8,6 +8,8 @@ To setup spectator view with a video camera, see [here](SpectatorView.Setup.Vide
 1. Windows PC
 2. HoloLens 2 or HoloLens
 3. [Visual Studio 2019](https://visualstudio.microsoft.com/vs/) installed on the PC
+    * Universal Windows Platform development tools (installed through visual studio installer)
+    * Desktop development with C++ tools (installed through visual studio installer)
 4. [Windows 10 SDK (10.0.18362.0)](https://developer.microsoft.com/en-us/windows/downloads/windows-10-sdk)
 5. [Unity 2019](https://unity3d.com/get-unity/download) installed on the PC
 
@@ -45,7 +47,8 @@ Not all spatial alignment strategies support all platforms. See the chart below 
 ### Azure Spatial Anchors
 
 1. Setup an [Azure Spatial Anchors account](https://docs.microsoft.com/en-us/azure/spatial-anchors/quickstarts/get-started-unity-hololens) and obtain an `Account ID` and `Primary Key`.
-2. Obtain [AzureSpatialAnchors v1.1.1](https://github.com/Azure/azure-spatial-anchors-samples/releases/tag/v1.1.1). This can be achieved by running the `tools/Scripts/SetupRepository.bat` script as an administrator or by manually copying assets content into the `external/Azure-Spatial-Anchors-Samples` folder.
+2. Obtain [AzureSpatialAnchors](https://github.com/Azure/azure-spatial-anchors-samples/releases/tag/v1.1.1) dependencies. This can be achieved by running the `tools\Scripts\SetupRepository.bat` script as an administrator.
+> Note: If your development environment does not support symbolic links, `tools\Scripts\SetupRepository.bat -HardCopySymbolicLinks` will replace symbolic links in the project with copied file content.
 3. Create a `SpectatorViewSettings` prefab by calling 'Spectator View' -> 'Edit Settings' in the toolbar.
 
 ![Marker](images/SpectatorViewSettingsMenu.png)
@@ -56,14 +59,6 @@ Not all spatial alignment strategies support all platforms. See the chart below 
 ![Marker](images/ASAInspector.png)
 
 > Note: Use of an Account Id and Account Key can accelerate your development process. However, hardcoding these values into your application isn't a safe practice and should be avoided for enterprise deployed solutions. For your end application, its suggested to use an Access or Authentication token. More information on how to setup and use AAD tokens with ASA can be found [here](https://docs.microsoft.com/en-us/azure/spatial-anchors/concepts/authentication?tabs=csharp#azure-ad-user-authentication).
-
-#### Azure Spatial Anchors on iOS
-If you are building Azure Spatial Anchors on iOS, you will need to take some additional steps after generating your XCode project through Unity. After exporting an iOS version of your application in Unity, do the following:
-
-1. In the terminal, navigate to your xcode project folder.
-2. Run `'pod install --repo-update'` in the terminal when in your xcode project folder.
-3. Open and compile your application using the **xcode workspace**. Do NOT use the **xcode project**.
-> Note: Failing to take the above steps may result in errors such as 'Undefined symbols for architecture arm64' and 'framework not found Pods_Unity_iPhone' For more information on building ASA for iOS in Unity see [here](https://docs.microsoft.com/en-us/azure/spatial-anchors/quickstarts/get-started-unity-ios).
 
 ### QR Code Detection
 
@@ -122,15 +117,13 @@ If you are building Azure Spatial Anchors on iOS, you will need to take some add
 
 1. Open the `SpectatorView.ARFoundation.Spectator` Unity scene.
 2. Press the 'iOS' button on the `Platform Switcher` attached to `Spectator View` in the Unity inspector (This should configure the correct build settings and app capabilities).
-3. Export the iOS project to a XCode solution. Include the SpectatorView.ARFoundation.Spectator scene as the first scene in your Unity Build Settings. Add your project's main scene as th esecond scene in your Unity Build Settings. (If the scenes are missing from your Unity Build Settings, open the scene in the Unity editor and press 'Add Open Scenes' in the Unity Build Settings).
-4. Configure the [signing certificate](https://developer.apple.com/support/code-signing/) for your Unity generated project in XCode to reflect your developer account.
-5. Build and deploy the application through XCode to your desired device (See the below steps if using ASA).
-
-#### iOS with Azure Spatial Anchors
-1. In the terminal, navigate to your xcode project folder.
-2. Run `'pod install --repo-update'` in the terminal when in your xcode project folder.
-3. Open and compile your application using the **xcode workspace**. Do NOT use the **xcode project**.
+3. Build the iOS project to generate a XCode solution. Include the SpectatorView.ARFoundation.Spectator scene as the first scene in your Unity Build Settings. Add your project's main scene as the second scene in your Unity Build Settings. (If the scenes are missing from your Unity Build Settings, open the scene in the Unity editor and press 'Add Open Scenes' in the Unity Build Settings).
+4. In the terminal, navigate to your xcode project folder.
+5. Run `'pod install --repo-update'` in the terminal when in your xcode project folder.
+6. Open and compile your application using the **xcode workspace**. Do NOT use the **xcode project**.
 >Note: Failing to take the above steps may result in errors such as 'Undefined symbols for architecture arm64' and 'framework not found Pods_Unity_iPhone' For more information on building ASA for iOS in Unity see [here](https://docs.microsoft.com/en-us/azure/spatial-anchors/quickstarts/get-started-unity-ios).
+7. Configure the [signing certificate](https://developer.apple.com/support/code-signing/) for your Unity generated project in XCode to reflect your developer account.
+8. Build and deploy your project to your desired iOS device.
 
 ### Additional Notes
 1. Spectator View introduces an additional build step to generate asset caches. Asset caches need to be regenerated every time a new asset is added to your project. These asset caches are essentially a registry that allows spectator devices to know what content to dynamically create, display and tear down based on actions of the user. If you have a lot of assets in your project, regenerating asset caches may take a long time. You can disable updating asset caches every build in favor of manually updating asset caches when needed by checking `Disable updating asset caches when building` under the `Spectator View` toolbar item. You will then need to run `Update All Asset Caches` under the `Spectator View` toolbar whenever you add new content to your project.
