@@ -31,17 +31,21 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
         private bool colorCorrectionFoldout;
         private bool hologramSettingsFoldout;
         private bool occlusionSettingsFoldout;
+        private bool devicePortalFoldout;
 
         private float hologramAlpha;
 
         private float statisticsUpdateTimeSeconds = 0.0f;
         private string appIPAddress;
+        private string devicePortalUser;
+        private string devicePortalPassword = "";
 
         private bool? isAzureKinectBodyTrackingSdkInstalledInUnity;
         private static readonly string[] azureKinectBodyTrackingSdkComponents = new[] { "onnxruntime.dll", "dnn_model_2_0.onnx", "cudnn64_7.dll", "cublas64_100.dll", "cudart64_100.dll" };
 
         private static string holographicCameraIPAddressKey = $"{nameof(CompositorWindow)}.{nameof(holographicCameraIPAddress)}";
         private static string appIPAddressKey = $"{nameof(CompositorWindow)}.{nameof(appIPAddress)}";
+        private static string devicePortalUserKey = $"{nameof(CompositorWindow)}.{nameof(devicePortalUser)}";
 
         [MenuItem("Spectator View/Compositor", false, 0)]
         public static void ShowCompositorWindow()
@@ -61,6 +65,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
 
             holographicCameraIPAddress = PlayerPrefs.GetString(holographicCameraIPAddressKey, "localhost");
             appIPAddress = PlayerPrefs.GetString(appIPAddressKey, "localhost");
+            devicePortalUser = PlayerPrefs.GetString(devicePortalUserKey);
         }
 
         protected override void OnDisable()
@@ -69,6 +74,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
 
             PlayerPrefs.SetString(holographicCameraIPAddressKey, holographicCameraIPAddress);
             PlayerPrefs.SetString(appIPAddressKey, appIPAddress);
+            PlayerPrefs.SetString(devicePortalUserKey, devicePortalUser);
             PlayerPrefs.Save();
         }
 
@@ -83,6 +89,7 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
                 ColorCorrectionGUI();
                 HologramSettingsGUI();
                 CompositorStatsGUI();
+                DevicePortalGUI();
             }
             EditorGUILayout.EndScrollView();
         }
@@ -569,6 +576,121 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
                     statisticsUpdateTimeSeconds = 0.0f;
 
                     RenderTitle("Compositor is not running, no statistics available", Color.green);
+                }
+            }
+        }
+
+        private void DevicePortalGUI()
+        {
+            DevicePortalConnection devicePortal = GetDevicePortal();
+            if (devicePortal == null)
+            {
+                return;
+            }
+
+            devicePortalFoldout = EditorGUILayout.Foldout(devicePortalFoldout, "Device Portal");
+            if (devicePortalFoldout)
+            {
+                using (new EditorGUILayout.VerticalScope("Box"))
+                {
+                    bool prevEnabled = GUI.enabled;
+                    GUILayout.Label("DevicePortal", EditorStyles.boldLabel);
+
+                    string stateText, buttonText;
+                    bool canPressButton = true;
+                    Action onPressButton = () => { };
+                    switch (devicePortal.State)
+                    {
+                        case DevicePortalState.NotConnected:
+                            stateText = "<color=silver>Not Connected</color>";
+                            canPressButton =
+                                !string.IsNullOrWhiteSpace(devicePortalUser) &&
+                                !string.IsNullOrEmpty(devicePortalPassword) &&
+                                IPAddress.TryParse(holographicCameraIPAddress, out var _) &&
+                                EditorApplication.isPlaying;
+                            buttonText = "Connect";
+                            onPressButton = () => devicePortal.StartConnect(holographicCameraIPAddress, devicePortalUser, devicePortalPassword);
+                            break;
+
+                        case DevicePortalState.Connecting:
+                            stateText = "<color=silver>Connecting...</color>";
+                            buttonText = "Cancel";
+                            onPressButton = devicePortal.CancelConnect;
+                            break;
+
+                        case DevicePortalState.NotStarted:
+                            stateText = "<color=red>App was not started</color>";
+                            canPressButton = devicePortal.IsAppInstalled;
+                            buttonText = "Start App";
+                            onPressButton = devicePortal.StartApp;
+                            break;
+
+                        case DevicePortalState.NotRunning:
+                            stateText = "<color=orange>Started, but not running</color>";
+                            buttonText = "Stop App";
+                            onPressButton = devicePortal.StopApp;
+                            break;
+
+                        case DevicePortalState.Running:
+                            stateText = "<color=green>Running</color>";
+                            buttonText = "Stop App";
+                            onPressButton = devicePortal.StopApp;
+                            break;
+
+                        case DevicePortalState.Starting:
+                            stateText = "<color=orange>Starting...</color>";
+                            buttonText = "Cancel";
+                            canPressButton = false;
+                            break;
+
+                        case DevicePortalState.Stopping:
+                            stateText = "<color=orange>Stopping...</color>";
+                            canPressButton = false;
+                            buttonText = "Cancel";
+                            break;
+
+                        default:
+                            stateText = "<color=magenta>I don't know</color>";
+                            canPressButton = true;
+                            buttonText = "Disconnect";
+                            onPressButton = devicePortal.Disconnect;
+                            break;
+                    }
+                    GUIStyle appStateStyle = EditorStyles.textField;
+                    appStateStyle.richText = true;
+                    appStateStyle.fontStyle = FontStyle.Bold;
+                    using (new GUILayout.HorizontalScope())
+                    {
+                        GUI.enabled = false;
+                        EditorGUILayout.TextField("State", stateText, appStateStyle);
+                        GUI.enabled = prevEnabled && canPressButton;
+                        if (GUILayout.Button(buttonText, GUILayout.Width(connectAndDisconnectButtonWidth)))
+                        {
+                            onPressButton();
+                        }
+
+                        GUI.enabled = prevEnabled;
+                        if (devicePortal.IsConnected &&GUILayout.Button("Disconnect", GUILayout.Width(connectAndDisconnectButtonWidth)))
+                        {
+                            devicePortal.Disconnect();
+                        }
+                    }
+
+                    GUI.enabled = false;
+                    EditorGUILayout.TextField("IP address", holographicCameraIPAddress);
+
+                    GUI.enabled = prevEnabled && devicePortal.State == DevicePortalState.NotConnected;
+                    devicePortalUser = EditorGUILayout.TextField("Username", devicePortalUser);
+                    devicePortalPassword = EditorGUILayout.PasswordField("Password", devicePortalPassword);
+                    EditorGUILayout.Space();
+
+                    GUI.enabled = prevEnabled && devicePortal.IsConnected;
+                    GUILayout.Label("Health", EditorStyles.boldLabel);
+                    EditorGUILayout.FloatField(new GUIContent("CPU", "The amount of CPU used by the app"), devicePortal.CPUUsage);
+                    EditorGUILayout.TextField(new GUIContent("RAM", "The amount of RAM used by the app"), $"{devicePortal.WorkingSet / 1024 / 1024}MiB");
+                    EditorGUILayout.TextField("Battery", $"{(int)(devicePortal.BatteryLevel * 100)}% {(devicePortal.IsPowered ? "- Powered" : "")}");
+
+                    GUI.enabled = prevEnabled;
                 }
             }
         }
