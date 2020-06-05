@@ -668,6 +668,12 @@ namespace Microsoft.MixedReality.SpectatorView.Editor
                         {
                             onPressButton();
                         }
+
+                        GUI.enabled = prevEnabled;
+                        if (devicePortal.IsConnected &&GUILayout.Button("Disconnect", GUILayout.Width(connectAndDisconnectButtonWidth)))
+                        {
+                            devicePortal.Disconnect();
+                        }
                     }
 
                     GUI.enabled = false;

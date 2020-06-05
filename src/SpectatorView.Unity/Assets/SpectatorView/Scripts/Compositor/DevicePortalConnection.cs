@@ -72,6 +72,7 @@ namespace Microsoft.MixedReality.SpectatorView
                 if (optDeviceApp?.PackageFullName == null)
                 {
                     Debug.LogError("Could not find holographic camera app installed on device");
+                    deviceApp = null;
                 }
                 else
                 {
@@ -100,6 +101,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
         public void Disconnect()
         {
+            CancelConnect();
             State = DevicePortalState.NotConnected;
         }
 
