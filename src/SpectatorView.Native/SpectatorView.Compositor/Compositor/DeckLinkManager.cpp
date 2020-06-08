@@ -181,7 +181,13 @@ int DeckLinkManager::GetNumQueuedOutputFrames()
     return 0;
 }
 
-
+void DeckLinkManager::SetLatencyPreference(float latencyPreference)
+{
+    if (IsEnabled())
+    {
+        deckLinkDevice->SetLatencyPreference(latencyPreference);
+    }
+}
 
 bool DeckLinkManager::IsEnabled()
 {

@@ -18,6 +18,13 @@ namespace Microsoft.MixedReality.SpectatorView
         private const int DSPBufferSize = 1024;
         private const AudioSpeakerMode SpeakerMode = AudioSpeakerMode.Stereo;
 
+        private static class InputFrameStep
+        {
+            public const int DefaultMinimum = 8;
+            public const int LowLatencyMinimum = 2;
+            public const int Maximum = 16;
+        }
+
         public enum Depth { None, Sixteen = 16, TwentyFour = 24 }
         public enum AntiAliasingSamples { One = 1, Two = 2, Four = 4, Eight = 8 };
 
@@ -83,6 +90,7 @@ namespace Microsoft.MixedReality.SpectatorView
         private int outputDeviceIndex = -1;
         private int videoRecordingLayout = -1;
         private int occlusionMode = -1;
+        private float latencyPreference = -1.0f;
         private TextureManager textureManager = null;
         private MicrophoneInput microphoneInput;
 
@@ -254,6 +262,32 @@ namespace Microsoft.MixedReality.SpectatorView
                     occlusionMode = (int)value;
                     PlayerPrefs.SetInt(nameof(OcclusionMode), occlusionMode);
                     PlayerPrefs.Save();
+                }
+            }
+        }
+
+        public float LatencyPreference
+        {
+            get
+            {
+                if (latencyPreference < 0.0f)
+                {
+                    latencyPreference = PlayerPrefs.GetFloat(nameof(LatencyPreference), 1.0f);
+                }
+                return latencyPreference;
+            }
+            set
+            {
+                if (latencyPreference != value)
+                {
+                    latencyPreference = value;
+                    PlayerPrefs.SetFloat(nameof(LatencyPreference), latencyPreference);
+                    PlayerPrefs.Save();
+
+                    if (IsVideoFrameProviderInitialized)
+                    {
+                        UnityCompositorInterface.SetLatencyPreference(latencyPreference);
+                    }
                 }
             }
         }
@@ -504,13 +538,14 @@ namespace Microsoft.MixedReality.SpectatorView
 
             //Set our current frame towards the latest captured frame. Dont get too close to it, and dont fall too far behind 
             int step = (captureFrameIndex - CurrentCompositeFrame);
-            if (step < 8)
+            int minimum = Mathf.RoundToInt(Mathf.Lerp(InputFrameStep.LowLatencyMinimum, InputFrameStep.DefaultMinimum, LatencyPreference));
+            if (step < minimum)
             {
                 step = 0;
             }
-            else if (step > 16)
+            else if (step > InputFrameStep.Maximum)
             {
-                step -= 16;
+                step -= InputFrameStep.Maximum;
             }
             else
             {
@@ -577,6 +612,7 @@ namespace Microsoft.MixedReality.SpectatorView
                             stationaryCameraBroadcaster.SetActive(true);
                             HolographicCameraObserver.Instance.ConnectTo("127.0.0.1");
                         }
+                        UnityCompositorInterface.SetLatencyPreference(LatencyPreference);
                     }
                 }
                 else

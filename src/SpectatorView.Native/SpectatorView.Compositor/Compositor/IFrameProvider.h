@@ -53,6 +53,7 @@ public:
     virtual int GetCaptureFrameIndex() { return 0; }
     virtual int GetPixelChange(int frame) { return 0; }
     virtual int GetNumQueuedOutputFrames() { return 0; }
+    virtual void SetLatencyPreference(float latencyPreference) {}
     virtual bool IsCameraCalibrationInformationAvailable() { return false; }
     virtual void GetCameraCalibrationInformation(CameraIntrinsics* calibration) {}
 

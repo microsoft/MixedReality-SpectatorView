@@ -294,6 +294,18 @@ int CompositorInterface::GetNumQueuedOutputFrames()
     return 0;
 }
 
+void CompositorInterface::SetLatencyPreference(float latencyPreference)
+{
+    if (frameProvider != nullptr)
+    {
+        frameProvider->SetLatencyPreference(latencyPreference);
+    }
+    if (outputFrameProvider != nullptr)
+    {
+        outputFrameProvider->SetLatencyPreference(latencyPreference);
+    }
+}
+
 void CompositorInterface::SetCompositeFrameIndex(int index)
 {
     compositeFrameIndex = index;

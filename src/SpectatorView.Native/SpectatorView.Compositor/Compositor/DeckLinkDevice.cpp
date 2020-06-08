@@ -51,6 +51,8 @@ public:
 #define MAX_NUM_OUTPUT_FRAMES 20
     IDeckLinkMutableVideoFrame* outputVideoFrames[MAX_NUM_OUTPUT_FRAMES];
     int outputWriteIndex = 0;
+    const unsigned long defaultMinFramesQueued = MAX_NUM_OUTPUT_FRAMES - 4;
+    unsigned long minFramesQueued = defaultMinFramesQueued;
 
     OutputScheduler()
     {
@@ -219,7 +221,7 @@ public:
         if (started)
         {
             //Try to fill the queue back up
-            if (framesQueued < MAX_NUM_OUTPUT_FRAMES - 5)
+            if (framesQueued < minFramesQueued - 1)
                 duration += 20;
 
             //Make sure we dont fall behind on big hitches
@@ -243,7 +245,7 @@ public:
             if (!started)
             {
                 //Buffer frames, then start
-                if (framesQueued > MAX_NUM_OUTPUT_FRAMES - 4)
+                if (framesQueued >= minFramesQueued)
                 {
                     // Start
                     result = m_deckLinkOutput->StartScheduledPlayback(0, timeScale, 1.0);
@@ -284,6 +286,12 @@ public:
             }
         }
 
+    }
+
+    void SetLatencyPreference(float latencyPreference)
+    {
+        minFramesQueued = 1 + latencyPreference * (defaultMinFramesQueued - 1);
+        minFramesQueued = min(1UL, max(minFramesQueued, static_cast<unsigned long>(MAX_NUM_OUTPUT_FRAMES)));
     }
 
     HRESULT	STDMETHODCALLTYPE ScheduledFrameCompleted(IDeckLinkVideoFrame* completedFrame, BMDOutputFrameCompletionResult result)
@@ -735,6 +743,10 @@ int DeckLinkDevice::GetNumQueuedOutputFrames()
     return s_outputScheduler.framesQueued;
 }
 
+void DeckLinkDevice::SetLatencyPreference(float latencyPreference)
+{
+    s_outputScheduler.SetLatencyPreference(latencyPreference);
+}
 
 void DeckLinkDevice::Update(int compositeFrameIndex)
 {

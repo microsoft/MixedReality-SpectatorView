@@ -308,6 +308,14 @@ UNITYDLL int GetNumQueuedOutputFrames()
     return 0;
 }
 
+UNITYDLL void SetLatencyPreference(float latencyPreference)
+{
+    if (ci != nullptr)
+    {
+        ci->SetLatencyPreference(latencyPreference);
+    }
+}
+
 UNITYDLL void SetCompositeFrameIndex(int index)
 {
     if (ci != nullptr)

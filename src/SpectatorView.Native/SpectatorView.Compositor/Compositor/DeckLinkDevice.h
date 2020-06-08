@@ -139,6 +139,7 @@ public:
     }
 
     int GetNumQueuedOutputFrames();
+    void SetLatencyPreference(float latencyPreference);
 
     bool ProvidesYUV();
     bool ExpectsYUV();
