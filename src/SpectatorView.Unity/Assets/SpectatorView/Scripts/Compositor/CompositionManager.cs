@@ -284,10 +284,12 @@ namespace Microsoft.MixedReality.SpectatorView
                     PlayerPrefs.SetFloat(nameof(LatencyPreference), latencyPreference);
                     PlayerPrefs.Save();
 
+#if UNITY_EDITOR
                     if (IsVideoFrameProviderInitialized)
                     {
                         UnityCompositorInterface.SetLatencyPreference(latencyPreference);
                     }
+#endif
                 }
             }
         }
