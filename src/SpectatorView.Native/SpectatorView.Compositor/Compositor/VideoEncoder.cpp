@@ -347,8 +347,12 @@ void VideoEncoder::WriteVideo(std::unique_ptr<VideoEncoder::VideoInput> frame)
 #endif
     }
 
-    std::async(std::launch::async, [=, frame{ std::move(frame) }]() mutable
+    videoWriteFuture = std::async(std::launch::async, [=, frame{ std::move(frame) }, previousWriteFuture{ std::move(videoWriteFuture) }]() mutable
     {
+        if (previousWriteFuture.valid())
+        {
+            previousWriteFuture.wait();
+        }
         std::shared_lock<std::shared_mutex> lock(videoStateLock);
 
         HRESULT hr = E_PENDING;

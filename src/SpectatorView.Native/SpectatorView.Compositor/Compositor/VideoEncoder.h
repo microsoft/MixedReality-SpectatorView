@@ -119,6 +119,7 @@ private:
 
     std::shared_mutex videoStateLock;
     std::shared_mutex videoInputPoolLock;
+    std::future<void> videoWriteFuture;
 
 #if HARDWARE_ENCODE_VIDEO
     IMFDXGIDeviceManager* deviceManager = NULL;
