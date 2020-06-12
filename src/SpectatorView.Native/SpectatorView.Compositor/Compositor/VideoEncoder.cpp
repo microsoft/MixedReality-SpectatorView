@@ -6,6 +6,8 @@
 
 #include "codecapi.h"
 
+#define NUM_VIDEO_BUFFERS 10
+
 VideoEncoder::VideoEncoder(UINT frameWidth, UINT frameHeight, UINT frameStride, UINT fps,
     UINT32 audioSampleRate, UINT32 audioChannels, UINT32 audioBPS, UINT32 videoBitrate, UINT32 videoMpegLevel) :
     frameWidth(frameWidth),
@@ -21,10 +23,15 @@ VideoEncoder::VideoEncoder(UINT frameWidth, UINT frameHeight, UINT frameStride, 
     isRecording(false)
 {
 #if HARDWARE_ENCODE_VIDEO
-  inputFormat = MFVideoFormat_NV12;
+    inputFormat = MFVideoFormat_NV12;
 #else
-  inputFormat = MFVideoFormat_RGB32;
+    inputFormat = MFVideoFormat_RGB32;
 #endif
+
+    for (int i = 0; i < NUM_VIDEO_BUFFERS; i++)
+    {
+        videoInputPool.push(std::make_unique<VideoInput>(frameHeight * frameStride));
+    }
 }
 
 VideoEncoder::~VideoEncoder()
@@ -284,12 +291,12 @@ void VideoEncoder::WriteAudio(byte* buffer, int bufferSize, LONGLONG timestamp)
 #endif
 }
 
-void VideoEncoder::WriteVideo(byte* buffer, LONGLONG timestamp, LONGLONG duration)
+void VideoEncoder::WriteVideo(std::unique_ptr<VideoEncoder::VideoInput> frame)
 {
     std::shared_lock<std::shared_mutex> lock(videoStateLock);
 #if _DEBUG
 	{
-		std::wstring debugString = L"Writing Video, Timestamp:" + std::to_wstring(timestamp) + L"\n";
+		std::wstring debugString = L"Writing Video, Timestamp:" + std::to_wstring(frame->timestamp) + L"\n";
 		OutputDebugString(debugString.data());
 	}
 #endif
@@ -302,54 +309,45 @@ void VideoEncoder::WriteVideo(byte* buffer, LONGLONG timestamp, LONGLONG duratio
 
 	if (startTime == INVALID_TIMESTAMP)
 	{
-		startTime = timestamp;
+		startTime = frame->timestamp;
 #if _DEBUG 
-		std::wstring debugString = L"Start time set from video, Timestamp:" + std::to_wstring(timestamp) + L", StartTime:" + std::to_wstring(startTime) + L"\n";
+		std::wstring debugString = L"Start time set from video, Timestamp:" + std::to_wstring(frame->timestamp) + L", StartTime:" + std::to_wstring(startTime) + L"\n";
 		OutputDebugString(debugString.data());
 #endif
 	}
-    else if (timestamp < startTime)
+    else if (frame->timestamp < startTime)
     {
 #if _DEBUG 
-		std::wstring debugString = L"Video not recorded, Timestamp less than start time. Timestamp:" + std::to_wstring(timestamp) + L", StartTime:" + std::to_wstring(startTime) + L"\n";
+		std::wstring debugString = L"Video not recorded, Timestamp less than start time. Timestamp:" + std::to_wstring(frame->timestamp) + L", StartTime:" + std::to_wstring(startTime) + L"\n";
 		OutputDebugString(debugString.data());
 #endif
         return;
     }
 
-    if (timestamp == prevVideoTime)
+    if (frame->timestamp == prevVideoTime)
     {
 #if _DEBUG 
-		std::wstring debugString = L"Video not recorded, Timestamp equals prevVideoTime. Timestamp:" + std::to_wstring(timestamp) + L", StartTime:" + std::to_wstring(prevVideoTime) + L"\n";
+		std::wstring debugString = L"Video not recorded, Timestamp equals prevVideoTime. Timestamp:" + std::to_wstring(frame->timestamp) + L", StartTime:" + std::to_wstring(prevVideoTime) + L"\n";
 		OutputDebugString(debugString.data());
 #endif
         return;
     }
     
-    LONGLONG sampleTimeNow = timestamp;
+    LONGLONG sampleTimeNow = frame->timestamp;
     LONGLONG sampleTimeStart = startTime;
 
     LONGLONG sampleTime = sampleTimeNow - sampleTimeStart;
 
     if (prevVideoTime != INVALID_TIMESTAMP)
     {
-        duration = sampleTime - prevVideoTime;
+        frame->duration = sampleTime - prevVideoTime;
 #if _DEBUG 
-		std::wstring debugString = L"Updated write video duration:" + std::to_wstring(duration) + L", SampleTime:" + std::to_wstring(sampleTime) + L", PrevVideoTime:" + std::to_wstring(prevVideoTime) + L"\n";
+		std::wstring debugString = L"Updated write video duration:" + std::to_wstring(frame->duration) + L", SampleTime:" + std::to_wstring(sampleTime) + L", PrevVideoTime:" + std::to_wstring(prevVideoTime) + L"\n";
 		OutputDebugString(debugString.data());
 #endif
     }
 
-    // Copy frame to a temporary buffer and process on a background thread.
-#if HARDWARE_ENCODE_VIDEO
-    BYTE* tmpVideoBuffer = new BYTE[(int)(FRAME_BPP_NV12 * frameHeight * frameWidth)];
-    memcpy(tmpVideoBuffer, buffer, (int)(FRAME_BPP_NV12 * frameHeight * frameWidth));
-#else
-    BYTE* tmpVideoBuffer = new BYTE[frameHeight * frameStride];
-    memcpy(tmpVideoBuffer, buffer, frameHeight * frameStride);
-#endif
-
-    concurrency::create_task([=]()
+    std::async(std::launch::async, [=, frame{ std::move(frame) }]() mutable
     {
         std::shared_lock<std::shared_mutex> lock(videoStateLock);
 
@@ -357,7 +355,6 @@ void VideoEncoder::WriteVideo(byte* buffer, LONGLONG timestamp, LONGLONG duratio
         if (sinkWriter == NULL || !isRecording)
         {
             OutputDebugString(L"Must start recording before writing video frames.\n");
-            delete[] tmpVideoBuffer;
             return;
         }
 
@@ -387,7 +384,7 @@ void VideoEncoder::WriteVideo(byte* buffer, LONGLONG timestamp, LONGLONG duratio
             hr = MFCopyImage(
                 pData,                      // Destination buffer.
                 cbWidth,                    // Destination stride.
-                tmpVideoBuffer,
+                frame->buffer,
                 cbWidth,                    // Source stride.
                 cbWidth,                    // Image width in bytes.
                 imageHeight                 // Image height in pixels.
@@ -401,7 +398,7 @@ void VideoEncoder::WriteVideo(byte* buffer, LONGLONG timestamp, LONGLONG duratio
 
 #if _DEBUG
 		{
-			std::wstring debugString = L"Writing Video Sample, SampleTime:" + std::to_wstring(sampleTime) + L", SampleDuration:" + std::to_wstring(duration) + L", BufferLength:" + std::to_wstring(cbBuffer) + L"\n";
+			std::wstring debugString = L"Writing Video Sample, SampleTime:" + std::to_wstring(sampleTime) + L", SampleDuration:" + std::to_wstring(frame->duration) + L", BufferLength:" + std::to_wstring(cbBuffer) + L"\n";
 			OutputDebugString(debugString.data());
 		}
 #endif
@@ -414,14 +411,18 @@ void VideoEncoder::WriteVideo(byte* buffer, LONGLONG timestamp, LONGLONG duratio
         if (SUCCEEDED(hr)) { hr = pVideoSample->AddBuffer(pVideoBuffer); }
 
         if (SUCCEEDED(hr)) { hr = pVideoSample->SetSampleTime(sampleTime); } //100-nanosecond units
-        if (SUCCEEDED(hr)) { hr = pVideoSample->SetSampleDuration(duration); } //100-nanosecond units
+        if (SUCCEEDED(hr)) { hr = pVideoSample->SetSampleDuration(frame->duration); } //100-nanosecond units
 
         // Send the sample to the Sink Writer.
         if (SUCCEEDED(hr)) { hr = sinkWriter->WriteSample(videoStreamIndex, pVideoSample); }
 
         SafeRelease(pVideoSample);
         SafeRelease(pVideoBuffer);
-        delete[] tmpVideoBuffer;
+
+        {
+            std::shared_lock<std::shared_mutex>(videoInputPoolLock);
+            videoInputPool.push(std::move(frame));
+        }
 
         if (FAILED(hr))
         {
@@ -508,17 +509,32 @@ void VideoEncoder::StopRecording()
     SafeRelease(sinkWriter);
 }
 
-void VideoEncoder::QueueVideoFrame(byte* buffer, LONGLONG timestamp, LONGLONG duration)
+std::unique_ptr<VideoEncoder::VideoInput> VideoEncoder::GetAvailableVideoFrame()
+{
+    std::shared_lock<std::shared_mutex> lock(videoInputPoolLock);
+    if (videoInputPool.empty())
+    {
+        return std::make_unique<VideoInput>(frameStride * frameHeight);
+    }
+    else
+    {
+        auto result = std::move(videoInputPool.front());
+        videoInputPool.pop();
+        return result;
+    }
+}
+
+void VideoEncoder::QueueVideoFrame(std::unique_ptr<VideoEncoder::VideoInput> frame)
 {
     std::shared_lock<std::shared_mutex> lock(videoStateLock);
 
     if (acceptQueuedFrames)
     {
-        videoQueue.push(VideoInput(buffer, timestamp, duration));
 #if _DEBUG
-		std::wstring debugString = L"Pushed Video Input, Timestamp:" + std::to_wstring(timestamp) + L"\n";
-		OutputDebugString(debugString.data());
+        std::wstring debugString = L"Pushed Video Input, Timestamp:" + std::to_wstring(frame->timestamp) + L"\n";
+        OutputDebugString(debugString.data());
 #endif
+        videoQueue.push(std::move(frame));
     }
 }
 
@@ -548,8 +564,7 @@ void VideoEncoder::Update()
     {
         if (isRecording)
         {
-            VideoInput input = videoQueue.front();
-            WriteVideo(input.sharedBuffer, input.timestamp, input.duration);
+            WriteVideo(std::move(videoQueue.front()));
             videoQueue.pop();
         }
     }

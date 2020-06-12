@@ -178,8 +178,10 @@ void UpdateVideoRecordingFrame()
         float bpp = FRAME_BPP_RGBA;
 #endif
 
-        VideoTextureBuffer.FetchTextureData(g_pD3D11Device, videoBytes[videoBufferIndex], bpp);
-        ci->RecordFrameAsync(videoBytes[videoBufferIndex], queuedVideoFrameTime, queuedVideoFrameCount);
+        auto frame = ci->GetAvailableRecordFrame();
+        VideoTextureBuffer.FetchTextureData(g_pD3D11Device, frame->buffer, bpp);
+        frame->timestamp = queuedVideoFrameTime;
+        ci->RecordFrameAsync(std::move(frame), queuedVideoFrameCount);
     }
 
     if (lastVideoFrame >= 0 && lastRecordedVideoFrame != lastVideoFrame)

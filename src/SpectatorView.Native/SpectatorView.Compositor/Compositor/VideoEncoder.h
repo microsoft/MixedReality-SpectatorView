@@ -38,33 +38,38 @@ public:
     void StopRecording();
 
     // Used for recording video from a background thread.
-    void QueueVideoFrame(byte* buffer, LONGLONG timestamp, LONGLONG duration);
+    class VideoInput;
+    std::unique_ptr<VideoInput> GetAvailableVideoFrame();
+    void QueueVideoFrame(std::unique_ptr<VideoInput> frame);
     void QueueAudioFrame(byte* buffer, int bufferSize, LONGLONG timestamp);
 
     // Do not call this from a background thread.
     void Update();
 
-private:
-    void WriteVideo(byte* buffer, LONGLONG timestamp, LONGLONG duration);
-    void WriteAudio(byte* buffer, int bufferSize, LONGLONG timestamp);
-
-    LARGE_INTEGER freq;
-
     class VideoInput
     {
     public:
-        byte * sharedBuffer;
-
-        LONGLONG timestamp;
-        LONGLONG duration;
-
-        VideoInput(byte* buffer, LONGLONG timestamp, LONGLONG duration)
+        VideoInput(size_t bufferSize)
         {
-            this->sharedBuffer = buffer;
-            this->timestamp = timestamp;
-            this->duration = duration;
+            buffer = new byte[bufferSize];
         }
+
+        ~VideoInput()
+        {
+            delete[] buffer;
+        }
+
+        byte* buffer;
+
+        LONGLONG timestamp = INVALID_TIMESTAMP;
+        LONGLONG duration = INVALID_TIMESTAMP;
     };
+
+private:
+    void WriteVideo(std::unique_ptr<VideoInput> frame);
+    void WriteAudio(byte* buffer, int bufferSize, LONGLONG timestamp);
+
+    LARGE_INTEGER freq;
 
     class AudioInput
     {
@@ -108,10 +113,12 @@ private:
 
     LONGLONG startTime = INVALID_TIMESTAMP;
 
-    std::queue<VideoInput> videoQueue;
+    std::queue<std::unique_ptr<VideoInput>> videoInputPool;
+    std::queue<std::unique_ptr<VideoInput>> videoQueue;
     std::queue<AudioInput> audioQueue;
 
     std::shared_mutex videoStateLock;
+    std::shared_mutex videoInputPoolLock;
 
 #if HARDWARE_ENCODE_VIDEO
     IMFDXGIDeviceManager* deviceManager = NULL;
