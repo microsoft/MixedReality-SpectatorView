@@ -128,7 +128,7 @@ void UpdateVideoRecordingFrame()
 #endif
 
         auto frame = ci->GetAvailableRecordFrame();
-        VideoTextureBuffer.FetchTextureData(g_pD3D11Device, frame->buffer, bpp);
+        VideoTextureBuffer.FetchTextureData(g_pD3D11Device, frame->Lock(), bpp);
         frame->timestamp = queuedVideoFrameTime;
         ci->RecordFrameAsync(std::move(frame), queuedVideoFrameCount);
     }

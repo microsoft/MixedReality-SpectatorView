@@ -355,7 +355,7 @@ void VideoEncoder::WriteVideo(std::unique_ptr<VideoEncoder::VideoInput> frame)
         }
         std::shared_lock<std::shared_mutex> lock(videoStateLock);
 
-        HRESULT hr = E_PENDING;
+        HRESULT hr = S_OK;
         if (sinkWriter == NULL || !isRecording)
         {
             OutputDebugString(L"Must start recording before writing video frames.\n");
@@ -373,32 +373,7 @@ void VideoEncoder::WriteVideo(std::unique_ptr<VideoEncoder::VideoInput> frame)
 #endif
 
         IMFSample* pVideoSample = NULL;
-        IMFMediaBuffer* pVideoBuffer = NULL;
-        BYTE* pData = NULL;
-
-        // Create a new memory buffer.
-        hr = MFCreateMemoryBuffer(cbBuffer, &pVideoBuffer);
-
-        // Lock the buffer and copy the video frame to the buffer.
-        if (SUCCEEDED(hr)) { hr = pVideoBuffer->Lock(&pData, NULL, NULL); }
-
-        if (SUCCEEDED(hr))
-        {
-            //TODO: Can pVideoBuffer be created from an ID3D11Texture2D*?
-            hr = MFCopyImage(
-                pData,                      // Destination buffer.
-                cbWidth,                    // Destination stride.
-                frame->buffer,
-                cbWidth,                    // Source stride.
-                cbWidth,                    // Image width in bytes.
-                imageHeight                 // Image height in pixels.
-            );
-        }
-
-        if (pVideoBuffer)
-        {
-            pVideoBuffer->Unlock();
-        }
+        frame->Unlock();
 
 #if _DEBUG
 		{
@@ -408,11 +383,11 @@ void VideoEncoder::WriteVideo(std::unique_ptr<VideoEncoder::VideoInput> frame)
 #endif
 
         // Set the data length of the buffer.
-        if (SUCCEEDED(hr)) { hr = pVideoBuffer->SetCurrentLength(cbBuffer); }
+        if (SUCCEEDED(hr)) { hr = frame->mediaBuffer->SetCurrentLength(cbBuffer); }
 
         // Create a media sample and add the buffer to the sample.
         if (SUCCEEDED(hr)) { hr = MFCreateSample(&pVideoSample); }
-        if (SUCCEEDED(hr)) { hr = pVideoSample->AddBuffer(pVideoBuffer); }
+        if (SUCCEEDED(hr)) { hr = pVideoSample->AddBuffer(frame->mediaBuffer); }
 
         if (SUCCEEDED(hr)) { hr = pVideoSample->SetSampleTime(sampleTime); } //100-nanosecond units
         if (SUCCEEDED(hr)) { hr = pVideoSample->SetSampleDuration(frame->duration); } //100-nanosecond units
@@ -421,7 +396,6 @@ void VideoEncoder::WriteVideo(std::unique_ptr<VideoEncoder::VideoInput> frame)
         if (SUCCEEDED(hr)) { hr = sinkWriter->WriteSample(videoStreamIndex, pVideoSample); }
 
         SafeRelease(pVideoSample);
-        SafeRelease(pVideoBuffer);
 
         {
             std::shared_lock<std::shared_mutex>(videoInputPoolLock);

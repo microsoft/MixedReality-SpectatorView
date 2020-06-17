@@ -48,19 +48,38 @@ public:
 
     class VideoInput
     {
+        byte* buffer = nullptr;
     public:
         VideoInput(size_t bufferSize)
         {
-            buffer = new byte[bufferSize];
+            auto hr = MFCreateMemoryBuffer(bufferSize, &mediaBuffer);
         }
 
         ~VideoInput()
         {
-            delete[] buffer;
+            Unlock();
+            SafeRelease(mediaBuffer);
         }
 
-        byte* buffer;
+        byte* Lock()
+        {
+            if (buffer == nullptr)
+            {
+                mediaBuffer->Lock(&buffer, NULL, NULL);
+            }
+            return buffer;
+        }
 
+        void Unlock()
+        {
+            if (buffer != nullptr)
+            {
+                mediaBuffer->Unlock();
+                buffer = nullptr;
+            }
+        }
+
+        IMFMediaBuffer* mediaBuffer = nullptr;
         LONGLONG timestamp = INVALID_TIMESTAMP;
         LONGLONG duration = INVALID_TIMESTAMP;
     };
