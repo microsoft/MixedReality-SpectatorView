@@ -118,20 +118,16 @@ static int queuedVideoFrameCount = 0;
 
 void UpdateVideoRecordingFrame()
 {
+#if !HARDWARE_ENCODE_VIDEO
     //We have an old frame, lets get the data and queue it now
     if (VideoTextureBuffer.IsDataAvailable())
     {
-#if HARDWARE_ENCODE_VIDEO
-        float bpp = FRAME_BPP_NV12;
-#else
-        float bpp = FRAME_BPP_RGBA;
-#endif
-
         auto frame = ci->GetAvailableRecordFrame();
-        VideoTextureBuffer.FetchTextureData(g_pD3D11Device, frame->Lock(), bpp);
+        VideoTextureBuffer.FetchTextureData(g_pD3D11Device, frame->Lock(), FRAME_BPP_RGBA);
         frame->timestamp = queuedVideoFrameTime;
         ci->RecordFrameAsync(std::move(frame), queuedVideoFrameCount);
     }
+#endif
 
     if (lastVideoFrame >= 0 && lastRecordedVideoFrame != lastVideoFrame)
     {
@@ -161,7 +157,14 @@ void UpdateVideoRecordingFrame()
 
         lastRecordedVideoFrame = lastVideoFrame;
         queuedVideoFrameTime = lastVideoFrame * ci->GetColorDuration();
+#if HARDWARE_ENCODE_VIDEO
+        auto frame = ci->GetAvailableRecordFrame();
+        frame->CopyFrom(g_videoTexture);
+        frame->timestamp = queuedVideoFrameTime;
+        ci->RecordFrameAsync(std::move(frame), queuedVideoFrameCount);
+#else
         VideoTextureBuffer.PrepareTextureFetch(g_pD3D11Device, g_videoTexture);
+#endif
     }
 
     lastVideoFrame = ci->compositeFrameIndex;

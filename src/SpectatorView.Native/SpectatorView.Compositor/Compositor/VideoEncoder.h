@@ -46,7 +46,66 @@ public:
     // Do not call this from a background thread.
     void Update();
 
-    class VideoInput
+    class VideoInputBase
+    {
+    public:
+        IMFMediaBuffer* mediaBuffer = nullptr;
+        LONGLONG timestamp = INVALID_TIMESTAMP;
+        LONGLONG duration = INVALID_TIMESTAMP;
+    };
+
+#ifdef HARDWARE_ENCODE_VIDEO
+    class VideoInput : public VideoInputBase
+    {
+        ID3D11Device* device;
+        ID3D11DeviceContext* deviceContext;
+        ID3D11Texture2D* texture = nullptr;
+    public:
+        VideoInput(ID3D11Device* _device) : device(_device)
+        {
+            device->AddRef();
+            device->GetImmediateContext(&deviceContext);
+        }
+
+        ~VideoInput()
+        {
+            SafeRelease(texture);
+            SafeRelease(deviceContext);
+            SafeRelease(device);
+            SafeRelease(mediaBuffer);
+        }
+
+        void CopyFrom(ID3D11Texture2D* source)
+        {
+            if (texture == nullptr)
+            {
+                D3D11_TEXTURE2D_DESC existingDesc;
+                source->GetDesc(&existingDesc);
+
+                D3D11_TEXTURE2D_DESC textureDesc;
+                ZeroMemory(&textureDesc, sizeof(textureDesc));
+                textureDesc.Width = existingDesc.Width;
+                textureDesc.Height = existingDesc.Height;
+                textureDesc.MipLevels = existingDesc.MipLevels;
+                textureDesc.ArraySize = existingDesc.ArraySize;
+                textureDesc.Format = existingDesc.Format;
+                textureDesc.SampleDesc.Count = existingDesc.SampleDesc.Count;
+                textureDesc.SampleDesc.Quality = existingDesc.SampleDesc.Quality;
+                textureDesc.Usage = D3D11_USAGE_DEFAULT;
+
+                HRESULT hr = device->CreateTexture2D(&textureDesc, NULL, &texture);
+                if (SUCCEEDED(hr)) MFCreateDXGISurfaceBuffer(IID_ID3D11Texture2D, texture, 0, true, &mediaBuffer);
+                if (FAILED(hr))
+                {
+                    OutputDebugString(L"Creating video frame failed");
+                }
+            }
+
+            deviceContext->CopyResource(texture, source);
+        }
+    };
+#else
+    class VideoInput : public VideoInputBase
     {
         byte* buffer = nullptr;
     public:
@@ -78,11 +137,8 @@ public:
                 buffer = nullptr;
             }
         }
-
-        IMFMediaBuffer* mediaBuffer = nullptr;
-        LONGLONG timestamp = INVALID_TIMESTAMP;
-        LONGLONG duration = INVALID_TIMESTAMP;
     };
+#endif
 
 private:
     void WriteVideo(std::unique_ptr<VideoInput> frame);

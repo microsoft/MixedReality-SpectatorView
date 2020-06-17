@@ -27,11 +27,7 @@ VideoEncoder::VideoEncoder(UINT frameWidth, UINT frameHeight, UINT frameStride, 
 #else
     inputFormat = MFVideoFormat_RGB32;
 #endif
-
-    for (int i = 0; i < NUM_VIDEO_BUFFERS; i++)
-    {
-        videoInputPool.push(std::make_unique<VideoInput>(frameHeight * frameStride));
-    }
+    inputFormat = MFVideoFormat_RGB32;
 }
 
 VideoEncoder::~VideoEncoder()
@@ -52,7 +48,21 @@ bool VideoEncoder::Initialize(ID3D11Device* device)
     if (deviceManager != nullptr)
     {
         OutputDebugString(L"Resetting device manager with graphics device.\n");
-        deviceManager->ResetDevice(device, resetToken);
+        hr = deviceManager->ResetDevice(device, resetToken);
+    }
+    for (int i = 0; i < NUM_VIDEO_BUFFERS; i++)
+    {
+        videoInputPool.push(std::make_unique<VideoInput>(device));
+    }
+
+    ID3D10Multithread* multithread;
+    device->QueryInterface(&multithread);
+    multithread->SetMultithreadProtected(TRUE);
+
+#else
+    for (int i = 0; i < NUM_VIDEO_BUFFERS; i++)
+    {
+        videoInputPool.push(std::make_unique<VideoInput>(frameHeight * frameStride));
     }
 #endif
 
@@ -79,7 +89,7 @@ void VideoEncoder::StartRecording(LPCWSTR videoPath, bool encodeAudio)
     prevVideoTime = INVALID_TIMESTAMP;
     prevAudioTime = INVALID_TIMESTAMP;
 
-    HRESULT hr = E_PENDING;
+    HRESULT hr = S_OK;
 
     sinkWriter = NULL;
     videoStreamIndex = MAXDWORD;
@@ -94,13 +104,14 @@ void VideoEncoder::StartRecording(LPCWSTR videoPath, bool encodeAudio)
 #endif
 
     IMFAttributes *attr = nullptr;
-    MFCreateAttributes(&attr, 3);
+    MFCreateAttributes(&attr, 4);
 
     if (SUCCEEDED(hr)) { hr = attr->SetUINT32(MF_SINK_WRITER_DISABLE_THROTTLING, TRUE); }
 
 #if HARDWARE_ENCODE_VIDEO
     if (SUCCEEDED(hr)) { hr = attr->SetUINT32(MF_READWRITE_ENABLE_HARDWARE_TRANSFORMS, true); }
     if (SUCCEEDED(hr)) { hr = attr->SetUINT32(MF_READWRITE_DISABLE_CONVERTERS, false); }
+    if (SUCCEEDED(hr)) { hr = attr->SetUnknown(MF_SINK_WRITER_D3D_MANAGER, deviceManager); }
 #endif
 
     hr = MFCreateSinkWriterFromURL(videoPath, NULL, attr, &sinkWriter);
@@ -145,6 +156,10 @@ void VideoEncoder::StartRecording(LPCWSTR videoPath, bool encodeAudio)
     if (SUCCEEDED(hr)) { hr = MFSetAttributeSize(pVideoTypeIn, MF_MT_FRAME_SIZE, frameWidth, frameHeight); }
     if (SUCCEEDED(hr)) { hr = MFSetAttributeRatio(pVideoTypeIn, MF_MT_FRAME_RATE, fps, 1); }
     if (SUCCEEDED(hr)) { hr = MFSetAttributeRatio(pVideoTypeIn, MF_MT_PIXEL_ASPECT_RATIO, 1, 1); }
+    if (SUCCEEDED(hr)) { hr = pVideoTypeIn->SetUINT32(MF_MT_ALL_SAMPLES_INDEPENDENT, TRUE); }
+    if (SUCCEEDED(hr)) { hr = pVideoTypeIn->SetUINT32(MF_MT_DEFAULT_STRIDE, frameStride); }
+    if (SUCCEEDED(hr)) { hr = pVideoTypeIn->SetUINT32(MF_MT_FIXED_SIZE_SAMPLES, TRUE); }
+    if (SUCCEEDED(hr)) { hr = pVideoTypeIn->SetUINT32(MF_MT_SAMPLE_SIZE, frameStride * frameHeight); }
     if (SUCCEEDED(hr)) { hr = sinkWriter->SetInputMediaType(videoStreamIndex, pVideoTypeIn, NULL); }
 
     if (encodeAudio)
@@ -347,7 +362,8 @@ void VideoEncoder::WriteVideo(std::unique_ptr<VideoEncoder::VideoInput> frame)
 #endif
     }
 
-    videoWriteFuture = std::async(std::launch::async, [=, frame{ std::move(frame) }, previousWriteFuture{ std::move(videoWriteFuture) }]() mutable
+    //videoWriteFuture = std::async(std::launch::async, [=, frame{ std::move(frame) }, previousWriteFuture{ std::move(videoWriteFuture) }]() mutable
+    auto lambda = [=, frame{ std::move(frame) }, previousWriteFuture{ std::move(videoWriteFuture) }]() mutable
     {
         if (previousWriteFuture.valid())
         {
@@ -371,10 +387,9 @@ void VideoEncoder::WriteVideo(std::unique_ptr<VideoEncoder::VideoInput> frame)
         cbBuffer = (int)(FRAME_BPP_NV12 * frameWidth * frameHeight);
         imageHeight = (int)(FRAME_BPP_NV12 * frameHeight);
 #endif
+        
 
         IMFSample* pVideoSample = NULL;
-        frame->Unlock();
-
 #if _DEBUG
 		{
 			std::wstring debugString = L"Writing Video Sample, SampleTime:" + std::to_wstring(sampleTime) + L", SampleDuration:" + std::to_wstring(frame->duration) + L", BufferLength:" + std::to_wstring(cbBuffer) + L"\n";
@@ -382,9 +397,11 @@ void VideoEncoder::WriteVideo(std::unique_ptr<VideoEncoder::VideoInput> frame)
 		}
 #endif
 
+#if !HARDWARE_ENCODE_VIDEO
+        frame->Unlock();
+#endif
         // Set the data length of the buffer.
-        if (SUCCEEDED(hr)) { hr = frame->mediaBuffer->SetCurrentLength(cbBuffer); }
-
+        if (SUCCEEDED(hr)) { hr = frame->mediaBuffer->SetCurrentLength(frameHeight * frameStride); }
         // Create a media sample and add the buffer to the sample.
         if (SUCCEEDED(hr)) { hr = MFCreateSample(&pVideoSample); }
         if (SUCCEEDED(hr)) { hr = pVideoSample->AddBuffer(frame->mediaBuffer); }
@@ -406,7 +423,8 @@ void VideoEncoder::WriteVideo(std::unique_ptr<VideoEncoder::VideoInput> frame)
         {
             OutputDebugString(L"Error writing video frame.\n");
         }
-    });
+    };
+    lambda();
 
     prevVideoTime = sampleTime;
 }
@@ -492,7 +510,12 @@ std::unique_ptr<VideoEncoder::VideoInput> VideoEncoder::GetAvailableVideoFrame()
     std::shared_lock<std::shared_mutex> lock(videoInputPoolLock);
     if (videoInputPool.empty())
     {
+#if HARDWARE_ENCODE_VIDEO
+        OutputDebugString(L"Oh no video encoder input pool is empty");
+        return nullptr;
+#else
         return std::make_unique<VideoInput>(frameStride * frameHeight);
+#endif
     }
     else
     {

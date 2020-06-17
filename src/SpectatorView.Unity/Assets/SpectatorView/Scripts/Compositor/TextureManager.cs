@@ -565,7 +565,8 @@ namespace Microsoft.MixedReality.SpectatorView
                 }
 
                 // convert composite to the format expected by our video encoder (NV12 or BGR)
-                Graphics.Blit(videoSourceTexture, videoOutputTexture, hardwareEncodeVideo ? NV12VideoMat : BGRVideoMat);
+                //Graphics.Blit(videoSourceTexture, videoOutputTexture, hardwareEncodeVideo ? NV12VideoMat : BGRVideoMat);
+                Graphics.Blit(videoSourceTexture, videoOutputTexture, BGRVideoMat);
             }
 
             TextureRenderCompleted?.Invoke();
@@ -613,7 +614,7 @@ namespace Microsoft.MixedReality.SpectatorView
             RGBToYUVMat.SetFloat("_Width", frameWidth);
             RGBToYUVMat.SetFloat("_Height", frameHeight);
 
-            BGRVideoMat.SetFloat("_YFlip", 0);
+            BGRVideoMat.SetFloat("_YFlip", 1);
         }
 
         /// <summary>
