@@ -197,6 +197,7 @@ private:
     std::future<void> videoWriteFuture;
 
 #if HARDWARE_ENCODE_VIDEO
+    ID3D11Device* device;
     IMFDXGIDeviceManager* deviceManager = NULL;
     UINT resetToken = 0;
 #endif

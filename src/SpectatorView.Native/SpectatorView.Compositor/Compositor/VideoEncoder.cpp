@@ -44,6 +44,7 @@ bool VideoEncoder::Initialize(ID3D11Device* device)
 
 #if HARDWARE_ENCODE_VIDEO
     MFCreateDXGIDeviceManager(&resetToken, &deviceManager);
+    this->device = device;
 
     if (deviceManager != nullptr)
     {
@@ -362,8 +363,7 @@ void VideoEncoder::WriteVideo(std::unique_ptr<VideoEncoder::VideoInput> frame)
 #endif
     }
 
-    //videoWriteFuture = std::async(std::launch::async, [=, frame{ std::move(frame) }, previousWriteFuture{ std::move(videoWriteFuture) }]() mutable
-    auto lambda = [=, frame{ std::move(frame) }, previousWriteFuture{ std::move(videoWriteFuture) }]() mutable
+    videoWriteFuture = std::async(std::launch::async, [=, frame{ std::move(frame) }, previousWriteFuture{ std::move(videoWriteFuture) }]() mutable
     {
         if (previousWriteFuture.valid())
         {
@@ -378,30 +378,22 @@ void VideoEncoder::WriteVideo(std::unique_ptr<VideoEncoder::VideoInput> frame)
             return;
         }
 
-        LONG cbWidth = frameStride;
-        DWORD cbBuffer = cbWidth * frameHeight;
-        DWORD imageHeight = frameHeight;
-
-#if HARDWARE_ENCODE_VIDEO
-        cbWidth = frameWidth;
-        cbBuffer = (int)(FRAME_BPP_NV12 * frameWidth * frameHeight);
-        imageHeight = (int)(FRAME_BPP_NV12 * frameHeight);
-#endif
-        
-
+        DWORD cbBuffer = frameStride * frameHeight;
         IMFSample* pVideoSample = NULL;
 #if _DEBUG
-		{
-			std::wstring debugString = L"Writing Video Sample, SampleTime:" + std::to_wstring(sampleTime) + L", SampleDuration:" + std::to_wstring(frame->duration) + L", BufferLength:" + std::to_wstring(cbBuffer) + L"\n";
-			OutputDebugString(debugString.data());
-		}
+        {
+            std::wstring debugString = L"Writing Video Sample, SampleTime:" + std::to_wstring(sampleTime) + L", SampleDuration:" + std::to_wstring(frame->duration) + L", BufferLength:" + std::to_wstring(cbBuffer) + L"\n";
+            OutputDebugString(debugString.data());
+        }
 #endif
 
 #if !HARDWARE_ENCODE_VIDEO
         frame->Unlock();
 #endif
+
         // Set the data length of the buffer.
         if (SUCCEEDED(hr)) { hr = frame->mediaBuffer->SetCurrentLength(frameHeight * frameStride); }
+
         // Create a media sample and add the buffer to the sample.
         if (SUCCEEDED(hr)) { hr = MFCreateSample(&pVideoSample); }
         if (SUCCEEDED(hr)) { hr = pVideoSample->AddBuffer(frame->mediaBuffer); }
@@ -423,8 +415,7 @@ void VideoEncoder::WriteVideo(std::unique_ptr<VideoEncoder::VideoInput> frame)
         {
             OutputDebugString(L"Error writing video frame.\n");
         }
-    };
-    lambda();
+    });
 
     prevVideoTime = sampleTime;
 }
@@ -453,6 +444,11 @@ void VideoEncoder::StopRecording()
 
     concurrency::create_task([&]
     {
+        if (videoWriteFuture.valid())
+        {
+            videoWriteFuture.wait();
+            videoWriteFuture = {};
+        }
         while (!videoQueue.empty())
         {
 			videoQueue.pop();
@@ -511,8 +507,7 @@ std::unique_ptr<VideoEncoder::VideoInput> VideoEncoder::GetAvailableVideoFrame()
     if (videoInputPool.empty())
     {
 #if HARDWARE_ENCODE_VIDEO
-        OutputDebugString(L"Oh no video encoder input pool is empty");
-        return nullptr;
+        return std::make_unique<VideoInput>(device);
 #else
         return std::make_unique<VideoInput>(frameStride * frameHeight);
 #endif
