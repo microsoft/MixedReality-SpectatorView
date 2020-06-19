@@ -103,6 +103,14 @@ namespace Microsoft.MixedReality.SpectatorView
             return false;
         }
 
+        public bool AttachDynamicMeshFilter(GameObject gameObject, AssetId assetId, Mesh mesh)
+        {
+            ComponentExtensions.EnsureComponent<MeshRenderer>(gameObject);
+            MeshFilter filter = ComponentExtensions.EnsureComponent<MeshFilter>(gameObject);
+            filter.sharedMesh = mesh;
+            return true;
+        }
+
         public bool AttachSkinnedMeshRenderer(GameObject gameObject, AssetId assetId)
         {
             Mesh mesh = meshAssets.GetAsset(assetId);
