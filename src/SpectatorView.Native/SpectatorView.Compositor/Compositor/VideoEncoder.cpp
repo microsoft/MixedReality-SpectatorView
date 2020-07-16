@@ -368,6 +368,7 @@ void VideoEncoder::WriteVideo(std::unique_ptr<VideoEncoder::VideoInput> frame)
         if (previousWriteFuture.valid())
         {
             previousWriteFuture.wait();
+            previousWriteFuture = {};
         }
         std::shared_lock<std::shared_mutex> lock(videoStateLock);
 
