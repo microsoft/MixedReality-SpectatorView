@@ -388,6 +388,7 @@ void VideoEncoder::WriteVideo(std::unique_ptr<VideoEncoder::VideoInput> frame)
 #endif
 
 #if !HARDWARE_ENCODE_VIDEO
+        // In case the user locks the frame but forgets to unlock
         frame->Unlock();
 #endif
 
