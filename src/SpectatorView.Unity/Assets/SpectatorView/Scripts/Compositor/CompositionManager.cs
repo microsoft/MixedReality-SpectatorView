@@ -705,6 +705,55 @@ namespace Microsoft.MixedReality.SpectatorView
             }
         }
 
+        struct AudioStartEstimation
+        {
+            public bool IsValid { get; }
+            public AudioStartEstimation(double dspTime, int frameIndex, double frameDuration)
+            {
+                IsValid = true;
+                this.frameDuration = frameDuration;
+                errorRange = timeOffset = 0.0; // just to initialize the struct fully
+                ResetEstimation(dspTime, frameIndex);
+            }
+
+            private void ResetEstimation(double dspTime, int frameIndex)
+            {
+                errorRange = frameDuration;
+                timeOffset = frameIndex * frameDuration - dspTime;
+            }
+
+            public void Update(double dspTime, int frameIndex)
+            {
+                int expectedFrameIndex = (int)((timeOffset + dspTime) / frameDuration); // rounded down
+                int frameError = frameIndex - expectedFrameIndex;
+
+                if (frameError == 0)
+                {
+                    //Debug.Log("I was correct");
+                    return;
+                }
+                else if (System.Math.Abs(frameError) == 1)
+                {
+                    //Debug.Log($"Corrected {((timeOffset + dspTime) / frameDuration)} ({expectedFrameIndex}) not {frameIndex} timeOffset {frameError}, newTimeOffset {timeOffset}, newErrorRange {errorRange}");
+                    double bound = frameError * errorRange; // either lower/upper depending on sign(frameError)
+                    timeOffset = timeOffset + bound / 2.0;
+                    errorRange /= 2.0; // as long as there are no jumps (abs(frameError) > 1) we approach the correct value
+                }
+                else
+                {
+                    Debug.Log($"Time jumped too far, had to reset audio start estimation {((timeOffset + dspTime) / frameDuration)} not {frameIndex}");
+                    ResetEstimation(dspTime, frameIndex);
+                }
+            }
+
+            public double GetStartTime(double curDspTime) => timeOffset + curDspTime;
+
+            private double frameDuration;
+            private double timeOffset;
+            private double errorRange;
+        }
+        AudioStartEstimation audioStartEstimation;
+
         // This function is not/not always called on the main thread.
         private void OnAudioFilterRead(float[] data, int channels)
         {
@@ -713,15 +762,24 @@ namespace Microsoft.MixedReality.SpectatorView
                 return;
             }
 
+            if (!audioStartEstimation.IsValid)
+            {
+                audioStartEstimation = new AudioStartEstimation(
+                    AudioSettings.dspTime,
+                    UnityCompositorInterface.GetCaptureFrameIndex(),
+                    UnityCompositorInterface.GetColorDuration() / 10000000.0);
+            }
+            else
+            {
+                audioStartEstimation.Update(AudioSettings.dspTime, UnityCompositorInterface.GetCaptureFrameIndex());
+            }
+
             //Create new stream
             if (audioMemoryStream == null)
             {
                 audioMemoryStream = new MemoryStream();
                 audioStreamWriter = new BinaryWriter(audioMemoryStream);
-                double audioSettingsTime = AudioSettings.dspTime; // Audio time in seconds, more accurate than Time.time
-                double captureFrameTime = UnityCompositorInterface.GetCaptureFrameIndex() * UnityCompositorInterface.GetColorDuration() / 10000000.0; // Capture Frame Time in seconds
-                DebugLog($"Obtained Audio Sample, AudioSettingsTime:{audioSettingsTime}, CaptureFrameTime:{captureFrameTime}");
-                audioStartTime = captureFrameTime;
+                audioStartTime = audioStartEstimation.GetStartTime(AudioSettings.dspTime);
                 numCachedAudioFrames = 0;
             }
 
