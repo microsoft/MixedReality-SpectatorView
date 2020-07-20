@@ -39,9 +39,11 @@ public:
 
     // Used for recording video from a background thread.
     class VideoInput;
+    class AudioInput;
     std::unique_ptr<VideoInput> GetAvailableVideoFrame();
+    std::unique_ptr<AudioInput> GetAvailableAudioFrame();
     void QueueVideoFrame(std::unique_ptr<VideoInput> frame);
-    void QueueAudioFrame(byte* buffer, int bufferSize, LONGLONG timestamp);
+    void QueueAudioFrame(std::unique_ptr<AudioInput> frame);
 
     // Do not call this from a background thread.
     void Update();
@@ -140,27 +142,50 @@ public:
     };
 #endif
 
-private:
-    void WriteVideo(std::unique_ptr<VideoInput> frame);
-    void WriteAudio(byte* buffer, int bufferSize, LONGLONG timestamp);
-
-    LARGE_INTEGER freq;
-
     class AudioInput
     {
     public:
-        byte* buffer;
+        IMFMediaBuffer* mediaBuffer = nullptr;
+        int capacity = 0;
+        int currentSize = 0;
         LONGLONG timestamp;
-        int bufferSize;
 
-        AudioInput(byte* buffer, int buffSize, LONGLONG timestamp)
+        ~AudioInput()
         {
-            bufferSize = buffSize;
-            this->buffer = new byte[buffSize];
-            memcpy(this->buffer, buffer, buffSize);
+            SafeRelease(mediaBuffer);
+        }
+
+        void SetData(const byte* buffer, int bufferSize, LONGLONG timestamp)
+        {
+            if (bufferSize > capacity)
+            {
+                SafeRelease(mediaBuffer);
+                auto hr = MFCreateMemoryBuffer(bufferSize, &mediaBuffer);
+                if (FAILED(hr))
+                {
+                    OutputDebugString(L"Failed to create audio memory buffer");
+                }
+                capacity = bufferSize;
+            }
+            
+            byte* lockedBuffer;
+            if (FAILED(mediaBuffer->Lock(&lockedBuffer, nullptr, nullptr)))
+            {
+                return;
+            }
+            memcpy(lockedBuffer, buffer, bufferSize);
+            mediaBuffer->Unlock();
+            mediaBuffer->SetCurrentLength(bufferSize);
+            currentSize = bufferSize;
             this->timestamp = timestamp;
         }
     };
+
+private:
+    void WriteVideo(std::unique_ptr<VideoInput> frame);
+    void WriteAudio(std::unique_ptr<AudioInput> frame);
+
+    LARGE_INTEGER freq;
 
     IMFSinkWriter* sinkWriter;
     DWORD videoStreamIndex = MAXDWORD;
@@ -190,11 +215,14 @@ private:
 
     std::queue<std::unique_ptr<VideoInput>> videoInputPool;
     std::queue<std::unique_ptr<VideoInput>> videoQueue;
-    std::queue<AudioInput> audioQueue;
+    std::queue<std::unique_ptr<AudioInput>> audioInputPool;
+    std::queue<std::unique_ptr<AudioInput>> audioQueue;
 
     std::shared_mutex videoStateLock;
     std::shared_mutex videoInputPoolLock;
+    std::shared_mutex audioInputPoolLock;
     std::future<void> videoWriteFuture;
+    std::future<void> audioWriteFuture;
 
 #if HARDWARE_ENCODE_VIDEO
     ID3D11Device* device;

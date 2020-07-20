@@ -196,12 +196,12 @@ void VideoEncoder::StartRecording(LPCWSTR videoPath, bool encodeAudio)
 #endif
 }
 
-void VideoEncoder::WriteAudio(byte* buffer, int bufferSize, LONGLONG timestamp)
+void VideoEncoder::WriteAudio(std::unique_ptr<AudioInput> frame)
 {
     std::shared_lock<std::shared_mutex> lock(videoStateLock);
 #if _DEBUG
 	{
-		std::wstring debugString = L"Writing Audio, Timestamp:" + std::to_wstring(timestamp) + L"\n";
+		std::wstring debugString = L"Writing Audio, Timestamp:" + std::to_wstring(frame->timestamp) + L"\n";
 		OutputDebugString(debugString.data());
 	}
 #endif
@@ -209,33 +209,33 @@ void VideoEncoder::WriteAudio(byte* buffer, int bufferSize, LONGLONG timestamp)
 #if ENCODE_AUDIO
     if (!isRecording)
     {
-		std::wstring debugString = L"WriteAudio call failed: StartTime:" + std::to_wstring(startTime) + L", Timestamp:" + std::to_wstring(timestamp) + L"\n";
+		std::wstring debugString = L"WriteAudio call failed: StartTime:" + std::to_wstring(startTime) + L", Timestamp:" + std::to_wstring(frame->timestamp) + L"\n";
 		OutputDebugString(debugString.data());
         return;
     }
 	else if (startTime == INVALID_TIMESTAMP)
 	{
-		startTime = timestamp;
+		startTime = frame->timestamp;
 #if _DEBUG 
-		std::wstring debugString = L"Start time set from audio, Timestamp:" + std::to_wstring(timestamp) + L", StartTime:" + std::to_wstring(startTime) + L"\n";
+		std::wstring debugString = L"Start time set from audio, Timestamp:" + std::to_wstring(frame->timestamp) + L", StartTime:" + std::to_wstring(startTime) + L"\n";
 		OutputDebugString(debugString.data());
 #endif
 	}
-	else if (timestamp < startTime)
+	else if (frame->timestamp < startTime)
 	{
 #if _DEBUG 
-		std::wstring debugString = L"Audio not recorded, Timestamp less than start time. Timestamp:" + std::to_wstring(timestamp) + L", StartTime:" + std::to_wstring(startTime) + L"\n";
+		std::wstring debugString = L"Audio not recorded, Timestamp less than start time. Timestamp:" + std::to_wstring(frame->timestamp) + L", StartTime:" + std::to_wstring(startTime) + L"\n";
 		OutputDebugString(debugString.data());
 #endif
 		return;
 	}
 
-    LONGLONG sampleTimeNow = timestamp;
+    LONGLONG sampleTimeNow = frame->timestamp;
     LONGLONG sampleTimeStart = startTime;
 
     LONGLONG sampleTime = sampleTimeNow - sampleTimeStart;
 
-    LONGLONG duration = ((LONGLONG)((((float)AUDIO_SAMPLE_RATE * (16.0f /*bits per sample*/ / 8.0f /*bits per byte*/)) / (float)bufferSize) * 10000));
+    LONGLONG duration = ((LONGLONG)((((float)AUDIO_SAMPLE_RATE * (16.0f /*bits per sample*/ / 8.0f /*bits per byte*/)) / (float)frame->currentSize) * 10000));
     if (prevAudioTime != INVALID_TIMESTAMP)
     {
         duration = sampleTime - prevAudioTime;
@@ -245,62 +245,49 @@ void VideoEncoder::WriteAudio(byte* buffer, int bufferSize, LONGLONG timestamp)
 #endif
     }
 
-    // Copy frame to a temporary buffer and process on a background thread.
-    byte* tmpAudioBuffer = new byte[bufferSize];
-    memcpy(tmpAudioBuffer, buffer, bufferSize);
-
-    concurrency::create_task([=]()
+    audioWriteFuture = std::async(std::launch::async, [=, frame{ std::move(frame) }, previousWriteFuture{ std::move(audioWriteFuture) }]() mutable
     {
+        if (previousWriteFuture.valid())
+        {
+            previousWriteFuture.wait();
+            previousWriteFuture = {};
+        }
         std::shared_lock<std::shared_mutex> lock(videoStateLock);
 
-        HRESULT hr = E_PENDING;
         if (sinkWriter == NULL || !isRecording)
         {
             OutputDebugString(L"Must start recording before writing audio frames.\n");
-            delete[] tmpAudioBuffer;
             return;
         }
 
         IMFSample* pAudioSample = NULL;
-        IMFMediaBuffer* pAudioBuffer = NULL;
-
-        const DWORD cbAudioBuffer = bufferSize;
-
-        BYTE* pData = NULL;
-
-        hr = MFCreateMemoryBuffer(cbAudioBuffer, &pAudioBuffer);
-        if (SUCCEEDED(hr)) { hr = pAudioBuffer->Lock(&pData, NULL, NULL); }
-        memcpy(pData, tmpAudioBuffer, cbAudioBuffer);
-        if (pAudioBuffer)
-        {
-            pAudioBuffer->Unlock();
-        }
-
 
 #if _DEBUG
 		{
-			std::wstring debugString = L"Writing Audio Sample, SampleTime:" + std::to_wstring(sampleTime) + L", SampleDuration:" + std::to_wstring(duration) + L", BufferLength:" + std::to_wstring(cbAudioBuffer) + L"\n";
+			std::wstring debugString = L"Writing Audio Sample, SampleTime:" + std::to_wstring(sampleTime) + L", SampleDuration:" + std::to_wstring(duration) + L", BufferLength:" + std::to_wstring(frame->currentSize) + L"\n";
 			OutputDebugString(debugString.data());
 		}
 #endif
 
+        HRESULT hr = S_OK;
         if (SUCCEEDED(hr)) { hr = MFCreateSample(&pAudioSample); }
         if (SUCCEEDED(hr)) { hr = pAudioSample->SetSampleTime(sampleTime); }
         if (SUCCEEDED(hr)) { hr = pAudioSample->SetSampleDuration(duration); }
-        if (SUCCEEDED(hr)) { hr = pAudioBuffer->SetCurrentLength(cbAudioBuffer); }
-        if (SUCCEEDED(hr)) { hr = pAudioSample->AddBuffer(pAudioBuffer); }
+        if (SUCCEEDED(hr)) { hr = pAudioSample->AddBuffer(frame->mediaBuffer); }
 
         if (SUCCEEDED(hr)) { hr = sinkWriter->WriteSample(audioStreamIndex, pAudioSample); }
 
         SafeRelease(pAudioSample);
-        SafeRelease(pAudioBuffer);
 
         if (FAILED(hr))
         {
             OutputDebugString(L"Error writing audio frame.\n");
         }
 
-        delete[] tmpAudioBuffer;
+        {
+            std::shared_lock<std::shared_mutex> lock(audioInputPoolLock);
+            audioInputPool.push(std::move(frame));
+        }
     });
 
     prevAudioTime = sampleTime;
@@ -468,6 +455,11 @@ void VideoEncoder::StopRecording()
 
     concurrency::create_task([&]
     {
+        if (audioWriteFuture.valid())
+        {
+            audioWriteFuture.wait();
+            audioWriteFuture = {};
+        }
         while (!audioQueue.empty())
         {
             audioQueue.pop();
@@ -522,6 +514,21 @@ std::unique_ptr<VideoEncoder::VideoInput> VideoEncoder::GetAvailableVideoFrame()
     }
 }
 
+std::unique_ptr<VideoEncoder::AudioInput> VideoEncoder::GetAvailableAudioFrame()
+{
+    std::shared_lock<std::shared_mutex> lock(audioInputPoolLock);
+    if (audioInputPool.empty())
+    {
+        return std::make_unique<AudioInput>();
+    }
+    else
+    {
+        auto result = std::move(audioInputPool.front());
+        audioInputPool.pop();
+        return result;
+    }
+}
+
 void VideoEncoder::QueueVideoFrame(std::unique_ptr<VideoEncoder::VideoInput> frame)
 {
     std::shared_lock<std::shared_mutex> lock(videoStateLock);
@@ -536,17 +543,17 @@ void VideoEncoder::QueueVideoFrame(std::unique_ptr<VideoEncoder::VideoInput> fra
     }
 }
 
-void VideoEncoder::QueueAudioFrame(byte* buffer, int bufferSize, LONGLONG timestamp)
+void VideoEncoder::QueueAudioFrame(std::unique_ptr<VideoEncoder::AudioInput> frame)
 {
     std::shared_lock<std::shared_mutex> lock(videoStateLock);
 
     if (acceptQueuedFrames)
     {
-        audioQueue.push(AudioInput(buffer, bufferSize, timestamp));
 #if _DEBUG
-		std::wstring debugString = L"Pushed Audio Input, Timestamp:" + std::to_wstring(timestamp) + L"\n";
+		std::wstring debugString = L"Pushed Audio Input, Timestamp:" + std::to_wstring(frame->timestamp) + L"\n";
 		OutputDebugString(debugString.data());
 #endif
+        audioQueue.push(std::move(frame));
     }
 }
 
@@ -571,9 +578,7 @@ void VideoEncoder::Update()
     {
         if (isRecording)
         {
-            AudioInput input = audioQueue.front();
-            WriteAudio(input.buffer, input.bufferSize, input.timestamp);
-            delete[] input.buffer;
+            WriteAudio(std::move(audioQueue.front()));
             audioQueue.pop();
         }
     }

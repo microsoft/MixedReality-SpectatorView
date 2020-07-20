@@ -440,8 +440,9 @@ void CompositorInterface::RecordAudioFrameAsync(BYTE* audioFrame, LONGLONG audio
 	// The encoder will update sample times internally based on the first seen sample time when recording.
 	// The encoder, however, does assume that audio and video samples will be based on the same source time.
 	// Providing audio and video samples with different starting times will cause issues in the generated video file.
-	LONGLONG sampleTime = audioTime;
-    activeVideoEncoder->QueueAudioFrame(audioFrame, audioSize, sampleTime);
+    auto frame = activeVideoEncoder->GetAvailableAudioFrame();
+    frame->SetData(audioFrame, audioSize, audioTime);
+    activeVideoEncoder->QueueAudioFrame(std::move(frame));
 }
 
 bool CompositorInterface::ProvidesYUV()
