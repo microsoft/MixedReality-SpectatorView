@@ -26,56 +26,6 @@ static BYTE* depthBytes = new BYTE[FRAME_BUFSIZE_DEPTH16];
 static BYTE* bodyMaskBytes = new BYTE[FRAME_BUFSIZE_DEPTH16];
 static BYTE* holoBytes = new BYTE[FRAME_BUFSIZE_RGBA];
 
-#define NUM_VIDEO_BUFFERS 10
-
-static byte** videoBytes = nullptr;
-static int videoBufferIndex = 0;
-
-void AllocateVideoBuffers(VideoRecordingFrameLayout frameLayout)
-{
-    if (videoBytes != nullptr)
-        return;
-
-    videoBytes = new byte*[NUM_VIDEO_BUFFERS];
-
-    int frameBufferSize;
-    if (frameLayout == VideoRecordingFrameLayout::Quad)
-    {
-#if HARDWARE_ENCODE_VIDEO
-        frameBufferSize = QUAD_FRAME_BUFSIZE_NV12;
-#else
-        frameBufferSize = QUAD_FRAME_BUFSIZE_RGBA;
-#endif
-    }
-    else
-    {
-#if HARDWARE_ENCODE_VIDEO
-        frameBufferSize = FRAME_BUFSIZE_NV12;
-#else
-        frameBufferSize = FRAME_BUFSIZE_RGBA;
-#endif
-    }
-
-    for (int i = 0; i < NUM_VIDEO_BUFFERS; i++)
-    {
-        videoBytes[i] = new byte[frameBufferSize];
-    }
-}
-
-void FreeVideoBuffers()
-{
-    if (videoBytes == nullptr)
-        return;
-
-    for (int i = 0; i < NUM_VIDEO_BUFFERS; i++)
-    {
-        delete[] videoBytes[i];
-    }
-    delete[] videoBytes;
-    videoBytes = nullptr;
-}
-
-
 static ID3D11Texture2D* g_holoRenderTexture = nullptr;
 
 static ID3D11Texture2D* g_colorTexture = nullptr;
@@ -168,19 +118,16 @@ static int queuedVideoFrameCount = 0;
 
 void UpdateVideoRecordingFrame()
 {
+#if !HARDWARE_ENCODE_VIDEO
     //We have an old frame, lets get the data and queue it now
     if (VideoTextureBuffer.IsDataAvailable())
     {
-        videoBufferIndex = (videoBufferIndex + 1) % NUM_VIDEO_BUFFERS;
-#if HARDWARE_ENCODE_VIDEO
-        float bpp = FRAME_BPP_NV12;
-#else
-        float bpp = FRAME_BPP_RGBA;
-#endif
-
-        VideoTextureBuffer.FetchTextureData(g_pD3D11Device, videoBytes[videoBufferIndex], bpp);
-        ci->RecordFrameAsync(videoBytes[videoBufferIndex], queuedVideoFrameTime, queuedVideoFrameCount);
+        auto frame = ci->GetAvailableRecordFrame();
+        VideoTextureBuffer.FetchTextureData(g_pD3D11Device, frame->Lock(), FRAME_BPP_RGBA);
+        frame->timestamp = queuedVideoFrameTime;
+        ci->RecordFrameAsync(std::move(frame), queuedVideoFrameCount);
     }
+#endif
 
     if (lastVideoFrame >= 0 && lastRecordedVideoFrame != lastVideoFrame)
     {
@@ -210,7 +157,14 @@ void UpdateVideoRecordingFrame()
 
         lastRecordedVideoFrame = lastVideoFrame;
         queuedVideoFrameTime = lastVideoFrame * ci->GetColorDuration();
+#if HARDWARE_ENCODE_VIDEO
+        auto frame = ci->GetAvailableRecordFrame();
+        frame->CopyFrom(g_videoTexture);
+        frame->timestamp = queuedVideoFrameTime;
+        ci->RecordFrameAsync(std::move(frame), queuedVideoFrameCount);
+#else
         VideoTextureBuffer.PrepareTextureFetch(g_pD3D11Device, g_videoTexture);
+#endif
     }
 
     lastVideoFrame = ci->compositeFrameIndex;
@@ -444,8 +398,6 @@ UNITYDLL void StopFrameProvider()
     {
         ci->StopFrameProvider();
     }
-
-    FreeVideoBuffers();
 }
 
 UNITYDLL void SetAudioData(BYTE* audioData, int audioSize, double audioTime)
@@ -482,7 +434,6 @@ UNITYDLL bool StartRecording(VideoRecordingFrameLayout frameLayout, LPCWSTR lpcD
     {
         lastVideoFrame = -1;
 		lastRecordedVideoFrame = -1;
-        AllocateVideoBuffers(frameLayout);
         VideoTextureBuffer.ReleaseTextures();
         VideoTextureBuffer.Reset();
 		isRecording = ci->StartRecording(frameLayout, lpcDesiredFileName, desiredFileNameLength, inputFileNameLength, lpFileName, fileNameLength);
@@ -497,7 +448,6 @@ UNITYDLL void StopRecording()
     if (videoInitialized && ci != nullptr)
     {
         ci->StopRecording();
-        FreeVideoBuffers();
         isRecording = false;
     }
 }

@@ -80,7 +80,8 @@ public:
     DLLEXPORT void StopRecording();
     
 	// frameTime is in hundred nano seconds
-	DLLEXPORT void RecordFrameAsync(BYTE* videoFrame, LONGLONG frameTime, int numFrames);
+    DLLEXPORT std::unique_ptr<VideoEncoder::VideoInput> GetAvailableRecordFrame();
+	DLLEXPORT void RecordFrameAsync(std::unique_ptr<VideoEncoder::VideoInput>, int numFrames);
 
 	// audioTime is in hundrend nano seconds
     DLLEXPORT void RecordAudioFrameAsync(BYTE* audioFrame, LONGLONG audioTime, int audioSize);

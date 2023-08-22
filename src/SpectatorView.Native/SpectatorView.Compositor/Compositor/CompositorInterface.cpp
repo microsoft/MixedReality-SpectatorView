@@ -386,10 +386,20 @@ void CompositorInterface::StopRecording()
     activeVideoEncoder = nullptr;
 }
 
-void CompositorInterface::RecordFrameAsync(BYTE* videoFrame, LONGLONG frameTime, int numFrames)
+std::unique_ptr<VideoEncoder::VideoInput> CompositorInterface::GetAvailableRecordFrame()
+{
+    if (activeVideoEncoder == nullptr)
+    {
+        OutputDebugString(L"GetAvailableRecordFrame dropped, no active encoder\n");
+        return nullptr;
+    }
+    return activeVideoEncoder->GetAvailableVideoFrame();
+}
+
+void CompositorInterface::RecordFrameAsync(std::unique_ptr<VideoEncoder::VideoInput> frame, int numFrames)
 {
 #if _DEBUG
-	std::wstring debugString = L"RecordFrameAsync called, frameTime:" + std::to_wstring(frameTime) + L", numFrames:" + std::to_wstring(numFrames) + L"\n";
+	std::wstring debugString = L"RecordFrameAsync called, frameTime:" + std::to_wstring(frame->timestamp) + L", numFrames:" + std::to_wstring(numFrames) + L"\n";
 	OutputDebugString(debugString.data());
 #endif
 
@@ -407,8 +417,8 @@ void CompositorInterface::RecordFrameAsync(BYTE* videoFrame, LONGLONG frameTime,
 	// The encoder will update sample times internally based on the first seen sample time when recording.
 	// The encoder, however, does assume that audio and video samples will be based on the same source time.
 	// Providing audio and video samples with different starting times will cause issues in the generated video file.
-	LONGLONG sampleTime = frameTime;
-    activeVideoEncoder->QueueVideoFrame(videoFrame, sampleTime, numFrames * frameProvider->GetDurationHNS());
+    frame->duration = numFrames * frameProvider->GetDurationHNS();
+    activeVideoEncoder->QueueVideoFrame(std::move(frame));
 }
 
 void CompositorInterface::RecordAudioFrameAsync(BYTE* audioFrame, LONGLONG audioTime, int audioSize)
@@ -430,8 +440,9 @@ void CompositorInterface::RecordAudioFrameAsync(BYTE* audioFrame, LONGLONG audio
 	// The encoder will update sample times internally based on the first seen sample time when recording.
 	// The encoder, however, does assume that audio and video samples will be based on the same source time.
 	// Providing audio and video samples with different starting times will cause issues in the generated video file.
-	LONGLONG sampleTime = audioTime;
-    activeVideoEncoder->QueueAudioFrame(audioFrame, audioSize, sampleTime);
+    auto frame = activeVideoEncoder->GetAvailableAudioFrame();
+    frame->SetData(audioFrame, audioSize, audioTime);
+    activeVideoEncoder->QueueAudioFrame(std::move(frame));
 }
 
 bool CompositorInterface::ProvidesYUV()
